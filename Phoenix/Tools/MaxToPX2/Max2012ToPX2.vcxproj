@@ -71,7 +71,7 @@
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX2D</TargetName>
     <TargetExt>.dle</TargetExt>
-    <OutDir>..\..\..\Bin\Plugins\Max2012\32\Debug</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\32\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\Bin\Plugins\</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\32\Release</OutDir>
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX2</TargetName>
     <TargetExt>.dle</TargetExt>
@@ -106,12 +106,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max2012\x64\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x64;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max2012\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>MaxToPX2.def</ModuleDefinitionFile>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;comctl32.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;msxml2.lib;bmm.lib;igame.lib;d3d9.lib;d3dx9.lib;dxerr.lib;xinput.lib;dinput8.lib;dxguid.lib;PX2EngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <BaseAddress>0x02F60000</BaseAddress>
       <ImportLibrary>$(OutDir)Max2012ToPX2.lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -143,7 +147,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WIN32_LEAN_AND_MEAN;MAX2012TOPX2_VC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WIN32_LEAN_AND_MEAN;PX2_ENGINE_DLL_IMPORT;MAX2012TOPX2_VC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\PX2SDK\Include;..\..\ThirdPartiesLibs\Max2012\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -151,12 +155,16 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max2012\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max2012\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>MaxToPX2.def</ModuleDefinitionFile>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;comctl32.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;msxml2.lib;bmm.lib;igame.lib;d3d9.lib;d3dx9.lib;dxerr.lib;xinput.lib;dinput8.lib;dxguid.lib;PX2Core.lib;PX2Mathematics.lib;PX2Graphics.lib;PX2Unity.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;comctl32.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;msxml2.lib;bmm.lib;igame.lib;d3d9.lib;d3dx9.lib;dxerr.lib;xinput.lib;dinput8.lib;dxguid.lib;PX2Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)Max2012ToPX2.lib</ImportLibrary>
       <BaseAddress>0x02F60000</BaseAddress>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
