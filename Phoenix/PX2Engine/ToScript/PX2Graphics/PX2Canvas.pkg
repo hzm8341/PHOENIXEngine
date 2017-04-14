@@ -1,0 +1,31 @@
+// PX2Canvas.hpp
+
+	class Canvas : public SizeNode
+	{
+	public:
+		Canvas();
+		virtual ~Canvas();
+		
+		static Canvas *New();
+		static Canvas *New(const std::string &name);
+		
+		void CreateUICameraNode();
+		CameraNode *GetUICameraNode();
+		
+		// Draw
+	public:
+		void SetClearColor(const Float4 &color);
+		const Float4 &GetClearColor() const;
+
+		void SetClearDepth(float depth);
+		float GetClearDepth() const;
+
+		void SetClearStencil(unsigned int stencil);
+		unsigned int GetClearStencil() const;
+
+		void SetClearFlag(bool color, bool depth, bool stencil);
+		void GetClearFlag(bool &color, bool &depth, bool &stencil);
+
+		void SetOverWireframe(bool wireframe);
+		bool IsOverWireframe() const;
+	};

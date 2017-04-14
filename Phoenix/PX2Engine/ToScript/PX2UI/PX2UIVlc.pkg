@@ -1,0 +1,8 @@
+// PX2UIVlc.pkg
+
+	class UIVlc : public UIFrame
+	{
+	public:
+		UIVlc();
+		virtual ~UIVlc();
+	};

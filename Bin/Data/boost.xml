@@ -1,0 +1,10 @@
+<boost name="boost">
+	<config>
+		<var width="960" height="800"/>
+	</config>
+	<play>
+		<var projectname="General" playlogicmode="logic" isshowinfo="false"/>
+	</play>
+	<plugins>
+	</plugins>
+</boost>

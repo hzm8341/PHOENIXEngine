@@ -1,0 +1,78 @@
+// PX2Application.pkg
+
+	class Application
+	{
+		// SINGLETON
+	public:
+	
+		enum PlatformType
+		{
+			PLT_WINDOWS,
+			PLT_ANDROID,
+			PLT_IOS,
+			PLT_MAX_TYPE
+		};
+		PlatformType GetPlatformType() const;
+
+		// Update
+	public:
+		float GetElapsedTime();
+
+		// screen adjust
+	public:
+		void SetScreenSize(const Sizef &screenSize);
+		const Sizef &GetScreenSize() const;
+
+		// boost
+	public:
+		enum PlayLogicMode
+		{
+			PLM_SIMPLE,
+			PLM_LOGIC,
+			PLM_MAX_MODE
+		};
+
+		bool LoadBoost(const std::string &filename);
+		const Sizef &GetBoostSize() const;
+		const std::string &GetBoostProjectName() const;
+		PlayLogicMode GetPlayLogicMode() const;
+		std::string GetPlayLogicModeStr() const;
+		bool IsShowInfo() const;
+
+		void SetBoostProjectName(const std::string &boostProjectName);
+		void SetBoostSize(const Sizef &size);
+		void SetBoostSize(float width, float height);
+		void SetPlayLogicMode(PlayLogicMode mode);
+		void SetShowInfo(bool show);
+		
+		// project
+	public:
+		void NewProject(const std::string &pathname,
+			const std::string &projName, int so, int width, int height);
+		bool LoadProject(const std::string &pathname);
+		bool SaveProject();
+		bool SaveProjectAs(const std::string &pathname);
+		void CloseProject();
+		const std::string &GetProjectFilePath() const;
+
+		void NewScene();
+		bool LoadScene(const std::string &pathname);
+		bool SaveScene(const std::string &pathname);
+		bool SaveSceneAs(const std::string &pathname);
+		void CloseScene();
+
+		bool LoadUI(const std::string &pathname);
+		void CloseUI();
+
+		// play
+	public:
+		enum PlayType
+		{
+			PT_NONE,
+			PT_SIMULATE,
+			PT_PLAY,
+			PT_MAX_TYPE
+		};
+		void Play(PlayType type);
+		PlayType GetPlayType() const;
+	};

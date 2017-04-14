@@ -1,0 +1,8 @@
+<boost name="boost">
+	<config>
+		<var width="960" height="800"/>
+	</config>
+	<play>
+		<var projectname="Voxel" playlogicmode="logic" isshowinfo="false"/>
+	</play>
+</boost>

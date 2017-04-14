@@ -1,0 +1,28 @@
+<!doctype html>
+
+<title>Coder</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../doc/docs.css">
+
+<link rel="stylesheet" href="../lib/codemirror.css">
+<link rel="stylesheet" href="../theme/neat.css">
+<link rel="stylesheet" href="../theme/abcdef.css">
+<link rel="stylesheet" href="../theme/icecoder.css">
+<link rel="stylesheet" href="../theme/panda-syntax.css">
+<script src="../lib/codemirror.js"></script>
+<script src="../mode/meta.js"></script>
+<script src="../addon/selection/active-line.js"></script>
+<script src="../addon/edit/matchbrackets.js"></script>
+<style type="text/css">
+      .CodeMirror {border:none;font-size:15px; width:100%; height:100%;}
+      textarea {border-style:none;}
+    </style>
+<textarea id="code" name="code">PhoenixContent</textarea>
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+	theme: "icecoder",
+  });  
+</script>

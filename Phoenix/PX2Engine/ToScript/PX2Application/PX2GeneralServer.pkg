@@ -1,0 +1,7 @@
+// PX2GeneralServer.pkg
+
+	class GeneralServer
+	{
+	public:
+		void SendString(int clientid, const std::string &str);
+	};

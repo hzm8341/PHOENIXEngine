@@ -1,0 +1,22 @@
+// PX2UIItem.pkg
+
+	class UIRound : public UIFrame
+	{
+		UIRound();
+		virtual ~UIRound();
+
+		UIFPicBox *GetBack();
+		UIButton *GetButton();
+
+		void SetDragable(bool dragable);
+		bool IsDragable() const;
+
+		const Vector2f &GetDraggingDir() const;
+		float GetDraggingPercent() const;
+		const Vector2f &GetDraggedDir() const;
+		float GetDraggedPercent() const;
+		
+		int GetDragingDirSimple() const;
+
+		const APoint &GetCurPickWorldPos() const;
+	};

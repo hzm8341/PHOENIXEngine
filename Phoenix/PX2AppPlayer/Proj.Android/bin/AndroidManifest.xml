@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.appplay.ap"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="15" />
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.SEND_SMS"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+	<uses-permission android:name="android.permission.CALL_PHONE" />   
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/> 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> 
+	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />  
+	<uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" /> 
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	
+	<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+	    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/phoenix"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        
+        <!-- 请填写真实的APP_ID API_KEY SECRET_KEY -->
+        <meta-data android:name="com.baidu.speech.APP_ID" android:value="999999"/>
+        <meta-data android:name="com.baidu.speech.API_KEY" android:value="8MAxI5o7VjKSZOKeBzS4XtxO"/>
+        <meta-data android:name="com.baidu.speech.SECRET_KEY" android:value="Ge5GXVdGQpaxOmLzc8fOM8309ATCz9Ha"/>
+        <service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />
+        
+        <activity
+            android:name="org.appplay.ap.AppPlayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullscreenTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- meta-data define val for app-->                
+        <meta-data
+            android:name="isnettable"
+            android:value="false" /> 
+            
+        <meta-data
+            android:name="isbluetoothable"
+            android:value="true" /> 
+            
+        <meta-data
+            android:name="isvoiceable"
+            android:value="true" /> 
+        
+        <meta-data
+            android:name="isdebug"
+            android:value="false" /> 
+        
+        <meta-data
+            android:name="pfsdkname"
+            android:value="unknown" />  
+       
+        <meta-data
+            android:name="voicesdkname"
+            android:value="baidu" />  
+                        
+        <meta-data
+            android:name="appname"
+            android:value="appplay" />
+            
+        <meta-data
+            android:name="istest"
+            android:value="false" />
+            
+      	<meta-data 
+      	    android:name="url_libso"
+      	    android:value="http://www.***.com/DataUpdateAndroid/libAppPlay.so"/>
+      	
+      	<meta-data
+      	    android:name="url_version"
+      	    android:value="http://www.***.com/DataUpdateAndroid/version.xml"/>
+      	
+      	<meta-data 
+      	    android:name="url_libso_test"
+      	    android:value="http://www.***.com/test/DataUpdateAndroid/libAppPlay.so"/>
+      	
+      	<meta-data
+      	    android:name="url_version_test"
+      	    android:value="http://www.***.com/test/DataUpdateAndroid/version.xml"/>
+        
+    </application>
+
+</manifest>

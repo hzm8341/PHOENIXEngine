@@ -1,0 +1,16 @@
+// PX2Bluetooth.pkg
+
+	class Bluetooth
+	{
+	public:
+		bool IsAvailable() const;
+		bool IsConnected() const;
+
+		std::vector<std::string> GetPairedDevices();
+		void DisConnect();
+		void Connect(const std::string &addr);
+		void Send(const std::string &str, bool isAppendCRLF);
+		
+		void DoDiscovery();
+		void CancelDiscovery();
+	};

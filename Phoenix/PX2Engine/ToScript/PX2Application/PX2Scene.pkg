@@ -1,0 +1,15 @@
+// PX2Scene.pkg
+
+	class Scene : public Node
+	{
+	public:
+		Scene();
+		virtual ~Scene();
+		
+		// New
+	public:
+		static Scene *New();
+		static Scene *New(const std::string &name);		
+		
+		AmbientRegionController *GetAmbientRegionController();
+	};

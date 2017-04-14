@@ -1,0 +1,9 @@
+<project>
+	<general name="Block" screenorientation="portrait" width="640" height="1136" backcolor="127,127,127,255" projcolor="255,255,255,255"/>
+	<scene filename="Data/Block/scenes/test.px2obj"/>
+	<render_setting/>
+	<language/>
+	<publish ispublish="false"/>
+	<edit_setting uicamerapercent="1.000000"/>
+</project>
+
