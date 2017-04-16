@@ -14,6 +14,7 @@ namespace PX2
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_NAMES;
+		PX2_NEW(UIComboBox);
 		PX2_DECLARE_STREAM(UIComboBox);
 
 	public:

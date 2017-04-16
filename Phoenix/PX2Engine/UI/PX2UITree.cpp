@@ -129,6 +129,11 @@ void UITree::SetItemHeight(float height)
 	mItemHeight = height;
 }
 //----------------------------------------------------------------------------
+void UITree::SetIconArrowSpace(float space)
+{
+	mIconArrowSpace = space;
+}
+//----------------------------------------------------------------------------
 void UITree::SelectCallback(UIFrame *frame, UICallType type)
 {
 	if (type == UICT_PRESSED)

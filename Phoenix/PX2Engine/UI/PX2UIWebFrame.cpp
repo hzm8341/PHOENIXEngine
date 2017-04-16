@@ -612,15 +612,15 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 {
 	UIFrame::UpdateWorldData(applicationTime, elapsedTime);
 
-	Rectf screenRect = GetScreenRect();
+	Rectf rect = GetLocalRect();
 
 	bool isNeedReGenTex = false;
 	if (mTex2D)
 	{
-		if (screenRect.Width() != mTex2D->GetWidth() ||
-			screenRect.Height() != mTex2D->GetHeight())
+		if (rect.Width() != mTex2D->GetWidth() ||
+			rect.Height() != mTex2D->GetHeight())
 		{
-			if (screenRect.Width() != 0 && screenRect.Height() != 0)
+			if (rect.Width() != 0 && rect.Height() != 0)
 			{
 				isNeedReGenTex = true;
 			}
@@ -628,7 +628,7 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	}
 	else
 	{
-		if (screenRect.Width() != 0 && screenRect.Height() != 0)
+		if (rect.Width() != 0 && rect.Height() != 0)
 		{
 			isNeedReGenTex = true;
 		}
@@ -637,7 +637,7 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	if (isNeedReGenTex)
 	{
 		mWebViewImageData.clear();
-		mTex2D = new0 Texture2D(Texture::TF_A8R8G8B8, (int)screenRect.Width(), (int)screenRect.Height(), 1);
+		mTex2D = new0 Texture2D(Texture::TF_A8R8G8B8, (int)rect.Width(), (int)rect.Height(), 1);
 		mImagePicBox->GetUIPicBox()->SetTexture(mTex2D);
 
 		isNeedReGenTex = false;

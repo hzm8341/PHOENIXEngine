@@ -279,6 +279,14 @@ void UIFrameGridAlignControl::_UpdateItems(UIFrame *parent,
 			anchorParamHor[0] = -(halfCellSize[0] + (mSpacing[0] + cellSize.Width)*indexX) + mBorder[0];
 			anchorParamVer[0] = -(halfCellSize[1] + (mSpacing[1] + cellSize.Height)*indexZ) - mBorder[3];
 		}
+		else if (CAT_MIDDLE_CENTER == mChildAlignmentType)
+		{
+			anchorHor = Float2(0.5f, 0.5f);
+			anchorVer = Float2(0.5f, 0.5f);
+
+			anchorParamHor[0] = -allCotWidth / 2.0f + halfCellSize[0] + (mSpacing[0] + cellSize.Width)*indexX;
+			anchorParamVer[0] = 0.0f;
+		}
 
 		frame->SetAnchorHor(anchorHor);
 		frame->SetAnchorParamHor(anchorParamHor);

@@ -189,6 +189,10 @@ function sleep(second)
 	wrap(_sleep, second)
 end
 
+FES_NORMAL = 0
+FES_ITALIC = 1
+FES_UNDERLINE = 2
+
 FD_NORMAL = 0
 FD_SHADOW = 1
 FD_BORDER = 2

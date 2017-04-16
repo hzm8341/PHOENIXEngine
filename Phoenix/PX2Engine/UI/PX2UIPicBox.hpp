@@ -88,6 +88,7 @@ namespace PX2
 		const std::string &GetTexturePackName() const;
 		const std::string &GetElementName() const;
 
+		void SetUVRepeat(float uRepeat, float vRepeat);
 		void SetUVRepeat(const Float2 &uvRepeat);
 
 		void UseAlphaBlend(bool use);

@@ -6,6 +6,7 @@ using namespace PX2;
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, UIList);
 PX2_IMPLEMENT_STREAM(UIList);
 PX2_IMPLEMENT_FACTORY(UIList);
+PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UIList);
 
 //----------------------------------------------------------------------------
 UIList::UIList() :
@@ -23,6 +24,7 @@ mSelectedIndex(-1)
 	mMaskFrame->SetAnchorHor(0.0f, 1.0f);
 	mMaskFrame->SetAnchorParamHor(0.0f, -mSliderSize);
 	mMaskFrame->SetAnchorVer(0.0f, 1.0f);
+	mMaskFrame->CreateAddMask();
 
 	mContentFrame = new0 UIFrame();
 	mMaskFrame->AttachChild(mContentFrame);
@@ -131,6 +133,8 @@ void UIList::SetItemHeight(float height)
 //----------------------------------------------------------------------------
 UIItem *UIList::AddItem(const std::string &text)
 {
+	mMaskFrame->SetNeedAdjustChildrenMask(true);
+
 	UIItem *item = new0 UIItem();
 	mContentFrame->AttachChild(item);
 	mItems.push_back(item);
@@ -149,6 +153,7 @@ UIItem *UIList::AddItem(const std::string &text)
 	item->SetUserData("index", (int)(mItems.size() - 1));
 
 	mIsNeedRecal = true;
+	mIsUpdateSliderVisible = true;
 
 	return item;
 }

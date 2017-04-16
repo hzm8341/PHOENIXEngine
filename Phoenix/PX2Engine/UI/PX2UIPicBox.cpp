@@ -194,6 +194,11 @@ Texture *UIPicBox::GetTexture()
 	return GetMaterialInstance()->GetPixelTexture(0, "SampleBase");
 }
 //----------------------------------------------------------------------------
+void UIPicBox::SetUVRepeat(float uRepeat, float vRepeat)
+{
+	SetUVRepeat(Float2(uRepeat, vRepeat));
+}
+//----------------------------------------------------------------------------
 void UIPicBox::SetUVRepeat(const Float2 &uvRepeat)
 {
 	MaterialInstance *mi = GetMaterialInstance();

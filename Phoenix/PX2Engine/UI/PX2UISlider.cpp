@@ -16,17 +16,17 @@ PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UISlider);
 UISlider::UISlider() :
 mIsNeedReGenSliderLayout(true),
 mButSliderLength(20.0f),
-mPercent(0.0f),
+mPercent(0.5f),
 mIsNeededUpdate(true),
 mIsDraging(false)
 {
 	SetName("UISlider");
 
 	mDirectionType = DT_HORIZONTAL;
-	EnableAnchorLayout(false);
 
-	SetSize(200.0f, 10.0f);
-	SetPivot(0.5f, 0.5f);
+	SetAnchorHor(0.5f, 0.5f);
+	SetAnchorVer(0.5f, 0.5f);
+	SetSize(200.0f, 20.0f);
 
 	_GenSlider();
 
@@ -90,6 +90,8 @@ void UISlider::SetContentFrame(UIFrame *contentFrame)
 //----------------------------------------------------------------------------
 void UISlider::_RelativeSizeChangeCallback(SizeNode *tellObject)
 {
+	PX2_UNUSED(tellObject);
+
 	if (mContentFrame)
 		_UpdateSliderLength();
 }
@@ -147,9 +149,9 @@ void UISlider::_GenSlider()
 	mButSlider = new0 UIButton();
 	AttachChild(mButSlider);
 	mButSlider->LocalTransform.SetTranslateY(-1.0f);
-	mButSlider->EnableAnchorLayout(true);
 
 	UIPicBox *picBoxNormal = mButSlider->GetPicBoxAtState(UIButtonBase::BS_NORMAL);
+	PX2_UNUSED(picBoxNormal);
 	mButSlider->SetStateColor(UIButtonBase::BS_NORMAL, Float3::MakeColor(150, 150, 150));
 	mButSlider->SetStateColor(UIButtonBase::BS_HOVERED, Float3::MakeColor(175, 175, 175));
 	mButSlider->SetStateColor(UIButtonBase::BS_PRESSED, Float3::MakeColor(200, 200, 200));

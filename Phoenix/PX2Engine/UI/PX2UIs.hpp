@@ -26,5 +26,6 @@
 #include "PX2UIWebFrame.hpp"
 #include "PX2UIPropertyGrid.hpp"
 #include "PX2UIGridFrame.hpp"
+#include "PX2UIColorSelect.hpp"
 
 #endif

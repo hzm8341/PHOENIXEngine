@@ -5,6 +5,9 @@
 	public:
 		UIComboBox();
 		virtual ~UIComboBox();
+		
+		static UIComboBox *New();
+		static UIComboBox *New(const std::string &name);
 
 		UIItem *AddChooseStr(const std::string &choose);
 		void RemoveAllChooseStr();
@@ -14,6 +17,7 @@
 		void SetChooseListHeightSameWithChooses();
 
 		void Choose(int i);
+		void ChooseStr(const std::string &str);
 		int GetChoose() const;
 		std::string GetChooseStr() const;
 

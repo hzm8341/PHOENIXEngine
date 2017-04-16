@@ -55,6 +55,27 @@ void UIButtonBase::OnPivotChanged()
 void UIButtonBase::SetButType(ButType butType)
 {
 	mButType = butType;
+
+	if (BT_PICBOXSWAP == mButType)
+	{
+		UIPicBox *picNormal = new0 UIPicBox("Data/engine/white.png");
+		picNormal->SetName("Normal");
+		SetPicBox(BS_NORMAL, picNormal);
+
+		UIPicBox *picOver = new0 UIPicBox("Data/engine/white.png");
+		picOver->SetName("Hovered");
+		SetPicBox(BS_HOVERED, picOver);
+
+		UIPicBox *picDown = new0 UIPicBox("Data/engine/white.png");
+		picDown->SetName("Pressed");
+		SetPicBox(BS_PRESSED, picDown);
+
+		UIPicBox *picDis = new0 UIPicBox("Data/engine/white.png");
+		picDis->SetName("Disabled");
+		SetPicBox(BS_DISABLED, picDis);
+
+		SetButtonState(UIButtonBase::BS_NORMAL);
+	}
 }
 //----------------------------------------------------------------------------
 void UIButtonBase::SetButtonState(ButtonState state)

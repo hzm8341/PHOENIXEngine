@@ -33,4 +33,10 @@
 		int GetMaskVal() const;
 		UIPicBox *GetMask();
 		void DestoryMask();
+		
+		// GridAlign
+	public:
+		UIFrameGridAlignControl *CreateAddGridAlignCtrl(bool doResetPlay = true);
+		void DestoryGridAlignCtrl();
+		UIFrameGridAlignControl *GetGridAlignCtrl();
 	};

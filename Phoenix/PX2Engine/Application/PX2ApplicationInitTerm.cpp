@@ -541,7 +541,7 @@ bool Application::LoadBoost(const std::string &filename)
 			const std::string &pluginName = mPlugins[i];
 			if (!pluginName.empty())
 			{
-				std::string path = "PluginsCommon/" + pluginName + "/" + 
+				std::string path = "./PluginsCommon/" + pluginName + "/" + 
 					GetDllFileName(pluginName);
 				PX2_PLUGINMAN.Load(path);
 			}

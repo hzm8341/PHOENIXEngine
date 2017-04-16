@@ -5,6 +5,9 @@
 	public:
 		UIList();
 		virtual ~UIList();
+		
+		static UIList *New();
+		static UIList *New(const std::string &name);
 
 		void SetSliderSize(float size);
 		float GetSliderSize() const;

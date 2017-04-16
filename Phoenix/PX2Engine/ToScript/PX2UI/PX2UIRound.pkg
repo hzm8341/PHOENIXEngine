@@ -4,6 +4,9 @@
 	{
 		UIRound();
 		virtual ~UIRound();
+		
+		static UIRound *New();
+		static UIRound *New(const std::string &name);
 
 		UIFPicBox *GetBack();
 		UIButton *GetButton();

@@ -14,6 +14,8 @@ namespace PX2
 	class PX2_ENGINE_ITEM UIList : public UIFrame
 	{
 		PX2_DECLARE_RTTI;
+		PX2_DECLARE_NAMES;
+		PX2_NEW(UIList);
 		PX2_DECLARE_STREAM(UIList);
 
 	public:

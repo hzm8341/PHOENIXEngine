@@ -5,6 +5,9 @@
 	public:
 		UIProgressBar();
 		virtual ~UIProgressBar();
+		
+		static UIProgressBar *New();
+		static UIProgressBar *New(const std::string &name);
 
 		void SetBackPicBox(UIFPicBox *picBox);
 		void SetProgressPicBox(UIFPicBox *picBox);
