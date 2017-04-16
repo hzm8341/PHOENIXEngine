@@ -3210,6 +3210,9 @@
     <ClInclude Include="Unity\CURL\src\curl_share.h">
       <Filter>0.Base\Unity\Curl\curl\src</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\PX2CameraPlayController.hpp">
+      <Filter>0.Base\Graphics\Controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -5578,6 +5581,9 @@
     </ClCompile>
     <ClCompile Include="Unity\CURL\src\x509asn1.c">
       <Filter>0.Base\Unity\Curl\curl\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\PX2CameraPlayController.cpp">
+      <Filter>0.Base\Graphics\Controllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,12 +8,14 @@
 #include "PX2UIFPicBox.hpp"
 #include "PX2InputEventData.hpp"
 
+#if PX2_USE_AWESOMIUM
 namespace Awesomium
 {
 	class WebCore;
 	class WebView;
 	class BitmapSurface;
 }
+#endif
 
 namespace PX2
 {
@@ -92,7 +94,7 @@ namespace PX2
 
 		static int mNumberOfViews;
 
-#if defined (_WIN32) || defined (WIN32)
+#if defined PX2_USE_AWESOMIUM
 		void OnMousePressed(MouseButtonID code);
 		void OnMouseReleased(MouseButtonID code);
 		void OnKeyCodePressed(KeyCode code);

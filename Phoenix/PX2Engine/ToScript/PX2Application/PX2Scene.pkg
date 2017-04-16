@@ -2,14 +2,22 @@
 
 	class Scene : public Node
 	{
-	public:
 		Scene();
 		virtual ~Scene();
 		
-		// New
-	public:
 		static Scene *New();
-		static Scene *New(const std::string &name);		
-		
+		static Scene *New(const std::string &name);
+
+		EnvirParamController *GetEnvirParamController();
 		AmbientRegionController *GetAmbientRegionController();
+
+		void SetTerrain(Terrain *terrain);
+		Terrain *GetTerrain();
+
+		std::vector<CameraPtr> &GetCameras();
+
+		void SetMainCameraNode(CameraNode *camNode);
+		CameraNode *GetMainCameraNode();
+
+		void AdjustCameraFrustum(const Sizef &canvasSize);
 	};

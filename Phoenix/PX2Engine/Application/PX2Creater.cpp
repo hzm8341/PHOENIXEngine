@@ -81,7 +81,7 @@ Movable *Creater::CreateMovable_Rectangle()
 	mesh->SetName("Mesh");
 
 	MaterialInstance *mi = new0 MaterialInstance(
-		"Data/engine_mtls/std/std.px2obj", "std_light", false);
+		"Data/engine_mtls/std/std.px2obj", "std_lightshadow", false);
 	mesh->SetMaterialInstance(mi);
 
 	mi->SetPixelTexture(0, "SampleBase", tex);
@@ -114,8 +114,11 @@ Node *Creater::CreateNode_Model(const std::string &filename)
 	node->SetName("NodeModel");
 	
 	ModelController *mc = new0 ModelController();
-	mc->SetMovableFilename(filename);
 	node->AttachController(mc);
+	mc->SetAnimType(ModelController::AT_SKELETON);
+	mc->SetMovableFilename(filename);
+	mc->RegistToScriptSystem();
+	mc->ResetPlay();
 
 	return node;
 }
@@ -467,6 +470,12 @@ InterpCurveTranslateController *Creater::CreateICC_Translate()
 TriggerController *Creater::CreateTriggerController()
 {
 	TriggerController *ctrl = new0 TriggerController();
+	return ctrl;
+}
+//----------------------------------------------------------------------------
+CameraPlayController *Creater::CreateCameraPlayController()
+{
+	CameraPlayController *ctrl = new0 CameraPlayController();
 	return ctrl;
 }
 //----------------------------------------------------------------------------

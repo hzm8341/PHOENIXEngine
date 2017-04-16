@@ -209,7 +209,7 @@ bool BitStream::WriteBool(bool data)
 bool BitStream::WriteString(const std::string &str)
 {
 	WriteUInt16((uint16_t)str.length());
-	WriteBytes((uint8_t*)str.c_str(), str.length());
+	WriteBytes((uint8_t*)str.c_str(), (uint32_t)str.length());
 
 	return true;
 }

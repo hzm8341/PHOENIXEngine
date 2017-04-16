@@ -135,7 +135,8 @@ void ModelController::PlayAnim(Animation *anim)
 Animation *ModelController::PlayAnimByName(const std::string &name)
 {
 	Animation *anim = GetAnimByName(name);
-	if (anim) PlayAnim(anim);
+	if (anim) 
+		PlayAnim(anim);
 	return anim;
 }
 //----------------------------------------------------------------------------

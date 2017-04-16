@@ -21,6 +21,7 @@
 #include "PX2BlendTransformController.hpp"
 #include "PX2TargetTransformController.hpp"
 #include "PX2PushTransformController.hpp"
+#include "PX2CameraPlayController.hpp"
 
 // Animation
 #include "PX2ModelController.hpp"

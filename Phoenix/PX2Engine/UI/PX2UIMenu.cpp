@@ -16,6 +16,7 @@ mMenuType(mt)
 	mItemFontSize = 24;
 
 	UIFrameGridAlignControl *gridCtrl = CreateAddGridAlignCtrl();
+	PX2_UNUSED(gridCtrl);
 }
 //----------------------------------------------------------------------------
 UIMenu::~UIMenu()

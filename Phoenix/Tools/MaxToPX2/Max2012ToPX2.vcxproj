@@ -78,7 +78,7 @@
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX264D</TargetName>
     <TargetExt>.dle</TargetExt>
-    <OutDir>..\..\..\Bin\Plugins\Max2012\64\Debug</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\64\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -89,7 +89,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\Bin\Plugins\Max2012\64\Release</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\64\Release</OutDir>
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX264</TargetName>
     <TargetExt>.dle</TargetExt>

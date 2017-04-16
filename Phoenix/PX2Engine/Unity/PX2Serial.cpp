@@ -237,16 +237,16 @@ int Serial::Send(const char *buf_ptr, int size)
 //---------------------------------------------------------------------------
 int Serial::Send(const std::string &buffer)
 {
-	return Send(buffer.c_str(), buffer.size());
+	return Send(buffer.c_str(), (int)buffer.size());
 }
 //---------------------------------------------------------------------------
 int Serial::Receive(std::string &buffer)
 {
-	return Receive((char*)buffer.c_str(), buffer.size());
+	return Receive((char*)buffer.c_str(), (int)buffer.size());
 }
 //---------------------------------------------------------------------------
 bool Serial::Receive2(std::string &buffer)
 {
-	return Receive2((char*)buffer.c_str(), buffer.size());
+	return Receive2((char*)buffer.c_str(), (int)buffer.size());
 }
 //---------------------------------------------------------------------------

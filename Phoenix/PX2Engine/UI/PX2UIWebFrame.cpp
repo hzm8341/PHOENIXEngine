@@ -179,7 +179,7 @@ void setWebViewVisibleJNI(const int index, const bool visible) {
 		t.env->DeleteLocalRef(t.classID);
 	}
 }
-#elif defined (_WIN32) || defined (WIN32)
+#elif defined PX2_USE_AWESOMIUM
 #include <Awesomium/WebURL.h>
 #include <Awesomium/WebString.h>
 #include <Awesomium/STLHelpers.h>
@@ -222,7 +222,7 @@ void _OnDrawCallback (Renderer *renderer, Renderable *renderable)
 	}
 }
 
-#if defined (_WIN32) || defined (WIN32)
+#if defined PX2_USE_AWESOMIUM
 class WebFrameHandler  : public Object, public Awesomium::JSMethodHandler, public Awesomium::WebViewListener::Load
 {
 public:
@@ -356,7 +356,7 @@ mIsShowNativeView(false)
 #if defined (__ANDROID__)
 	mViewTag = createWebViewJNI();
 	sWebViews[mViewTag] = this;
-#elif defined (_WIN32) || defined (WIN32)
+#elif defined PX2_USE_AWESOMIUM
 	mWebCore = Awesomium::WebCore::instance();
 	if (!mWebCore)
 	{
@@ -389,7 +389,7 @@ UIWebFrame::~UIWebFrame()
 #if defined (__ANDROID__)
 	removeWebViewJNI(mViewTag);
 	sWebViews.erase(mViewTag);
-#elif defined (_WIN32) || defined (WIN32)
+#elif defined PX2_USE_AWESOMIUM
 	mObject = 0;
 
 	mWebView->Destroy();
@@ -444,8 +444,10 @@ void UIWebFrame::LoadURL(const std::string &url)
 {
 #if defined (__ANDROID__)
 	loadUrlJNI(mViewTag, url);
-#elif defined (_WIN32) || defined (WIN32)
+#elif defined PX2_USE_AWESOMIUM
 	mWebView->LoadURL(WebURL(WSLit(url.c_str())));
+#else
+	PX2_UNUSED(url);
 #endif
 }
 //----------------------------------------------------------------------------
@@ -507,42 +509,42 @@ void UIWebFrame::GoForward()
 //----------------------------------------------------------------------------
 void UIWebFrame::SelectAll()
 {
-#if defined (_WIN32) || defined(WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebView->SelectAll();
 #endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::Undo()
 {
-#if defined (_WIN32) || defined(WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebView->Undo();
 #endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::ReDo()
 {
-#if defined (_WIN32) || defined(WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebView->Redo();
 #endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::Cut()
 {
-#if defined (_WIN32) || defined(WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebView->Cut();
 #endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::Copy()
 {
-#if defined (_WIN32) || defined(WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebView->Copy();
 #endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::Paste()
 {
-#if defined (_WIN32) || defined(WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebView->Paste();
 #endif
 }
@@ -551,13 +553,15 @@ std::string UIWebFrame::EvaluateJS(const std::string &js)
 {
 #if defined (__ANDROID__)
 	return evaluateJSJNI(mViewTag, js);
-#elif defined (_WIN32) || defined(WIN32)
+#elif defined PX2_USE_AWESOMIUM
 	std::string strEmpty;
 	mWebView->ExecuteJavascript(WebString::CreateFromUTF8(js.c_str(), js.length()),
 		WebString::CreateFromUTF8(strEmpty.c_str(), 0));
 
 	return "";
 #endif
+
+	return "";
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::SetScalesPageToFit(const bool scalesPageToFit)
@@ -572,6 +576,8 @@ void UIWebFrame::SetScalesPageToFit(const bool scalesPageToFit)
 void UIWebFrame::OnEvent(Event *ent)
 {
 	UIFrame::OnEvent(ent);
+
+#if defined PX2_USE_AWESOMIUM
 
 	if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyPressed))
 	{
@@ -588,11 +594,15 @@ void UIWebFrame::OnEvent(Event *ent)
 		InputEventData ied = ent->GetData<InputEventData>();
 		OnKeyCodeChar(ied.KChar);
 	}
+
+#endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::OnSizeChanged()
 {
 	UIFrame::OnSizeChanged();
+
+#if defined PX2_USE_AWESOMIUM
 
 	int iWidth = (int)mSize.Width;
 	int iHeight = (int)mSize.Height;
@@ -601,6 +611,8 @@ void UIWebFrame::OnSizeChanged()
 	{
 		mWebView->Resize(iWidth, iHeight);
 	}
+
+#endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::OnPivotChanged()
@@ -655,7 +667,7 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 			screenRect.Width(), screenRect.Height());
 	}
 
-#elif defined (_WIN32) || defined (WIN32)
+#elif defined PX2_USE_AWESOMIUM
 	mWebCore->Update();
 #endif
 
@@ -714,7 +726,7 @@ void UIWebFrame::_GetWebViewImage()
 {
 #if defined (__ANDROID__) 
 	getWebViewImageJNI(mViewTag);
-#elif defined (_WIN32) || defined (WIN32)
+#elif defined PX2_USE_AWESOMIUM
 	mBitmapSurface = (BitmapSurface*)mWebView->surface();
 	if (!mBitmapSurface)
 		return;
@@ -853,6 +865,7 @@ void UIWebFrame::OnJSCallback(const std::string &message)
 {
 	PX2_LOG_INFO("OnJSCallback %s", message.c_str());
 }
+#if defined PX2_USE_AWESOMIUM
 //----------------------------------------------------------------------------
 void UIWebFrame::OnMousePressed(MouseButtonID code)
 {
@@ -1048,12 +1061,13 @@ void UIWebFrame::KeyboardButtonHelper(KeyCode code, bool isUp)
 
 	mWebView->InjectKeyboardEvent(ent);
 }
+#endif
 //----------------------------------------------------------------------------
 void UIWebFrame::OnWidgetPicked(const CanvasInputData &inputData)
 {
 	UIFrame::OnWidgetPicked(inputData);
 
-#if defined (_WIN32) || defined (WIN32)
+#if defined PX2_USE_AWESOMIUM
 	MouseButtonID mbID = MBID_LEFT;
 	if (CanvasInputData::MT_LEFT == inputData.TheMouseTag)
 	{
@@ -1109,7 +1123,7 @@ mIsTexNeedUpdate(true),
 mIsUpdateToTex(false),
 mIsShowNativeView(false)
 {
-#if defined (_WIN32) || defined (WIN32)
+#if defined PX2_USE_AWESOMIUM
 	mWebCore = 0;
 	mWebView = 0;
 	mBitmapSurface = 0;

@@ -30,6 +30,7 @@
 #include "PX2InterpCurveRotateCtrl.hpp"
 #include "PX2InterpCurveTranslateCtrl.hpp"
 #include "PX2TriggerController.hpp"
+#include "PX2CameraPlayController.hpp"
 #include "PX2BPPackage.hpp"
 #include "PX2BPFile.hpp"
 #include "PX2BPModule.hpp"
@@ -91,6 +92,7 @@ namespace PX2
 		InterpCurveRotateController *CreateICC_Rotate();
 		InterpCurveTranslateController *CreateICC_Translate();
 		TriggerController *CreateTriggerController();
+		CameraPlayController *CreateCameraPlayController();
 
 		// blue print
 		BPPackage *CreateBPPackage();
