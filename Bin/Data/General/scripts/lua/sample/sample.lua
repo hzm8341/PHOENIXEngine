@@ -11,9 +11,40 @@ g_s_t =
 g_s_UIFrame = nil
 g_s_TableFrame = nil
 g_s_MsgList = nil
+g_s_AnimCtrl = nil
 
 -- 创建首页
 function s_SampleCata()
+	PX2_SS:PlayMusic(0, "Data/General/media/music/strangething.mp3", true, 0.0)
+	
+	-- scene
+	local scene = Scene:New()
+	PX2_PROJ:SetScene(scene)
+	
+	local rect = PX2_CREATER:CreateMovable_Rectangle()
+	scene:AttachChild(rect)
+	rect.LocalTransform:SetUniformScale(10.0)
+	
+	local model = PX2_CREATER:CreateNode_Model("Data/General/models/actors/swk/model.px2obj")
+	scene:AttachChild(model)
+	model.LocalTransform:SetUniformScale(0.05)
+	model.LocalTransform:SetRotateDegree(0.0, 0.0, 180.0)
+	g_s_AnimCtrl = model:GetControllerByName("ModelController")
+	g_s_AnimCtrl:SetSkinAnimationConfig("Data/General/models/actors/swk/anim.xml")
+	local anim = g_s_AnimCtrl:GetAnimByName("show0")	
+	anim:SetPlayOnce(false)
+	anim:SetFrequency(1.0)
+	g_s_AnimCtrl:PlayAnim(anim)	
+	
+	local mainCameraNode = scene:GetMainCameraNode()
+	local cameraPlayCtrl = PX2_CREATER:CreateCameraPlayController()
+	model:AttachController(cameraPlayCtrl)
+	cameraPlayCtrl:SetCameraNode(mainCameraNode)
+	cameraPlayCtrl:SetCameraDistance(20.0)
+	cameraPlayCtrl:SetCameraDist(15.0, 30.0)
+	cameraPlayCtrl:ResetPlay()
+	
+	-- ui
 	local ui = PX2_PROJ:GetUI()
 	
 	local frame = UIFrame:New()
@@ -22,6 +53,7 @@ function s_SampleCata()
 	frame:SetAnchorHor(0.0, 1.0)
 	frame:SetAnchorVer(0.0, 1.0)
 	
+	-- main but
 	local but = UIButton:New()
 	frame:AttachChild(but)
 	but:SetName("ButHome")
@@ -30,14 +62,14 @@ function s_SampleCata()
 	but:SetSize(50, 50)
 	but:SetAnchorParamHor(50, 50)
 	but:SetAnchorParamVer(-50, -50)
-	but:SetScriptHandler("s_Callback")
-	
+	but:SetScriptHandler("s_Callback")	
 	local fPicBox = UIFPicBox:New()
 	but:AttachChild(fPicBox)
 	fPicBox.LocalTransform:SetTranslateY(-2.0)		
 	fPicBox:GetUIPicBox():SetTexture("Data/General/images/icons/run.png")
-	fPicBox:SetSize(30.0, 30.0)	
+	fPicBox:SetSize(30.0, 30.0)		
 	
+	-- uiFrame
 	g_s_UIFrame = UIFrame:New()
 	frame:AttachChild(g_s_UIFrame)
 	g_s_UIFrame:SetAnchorHor(0.0, 1.0)
@@ -87,7 +119,40 @@ function s_SampleCata()
 	g_s_MsgList:SetAnchorHor(0.0, 1.0)
 	g_s_MsgList:SetAnchorVer(0.0, 1.0)
 	g_s_MsgList:AddItem("msglist")
+		
+	g_s_UIFrame:Show(false)	
 	
+		
+	-- anim buts
+	local animBut0 = UIButton:New()
+	frame:AttachChild(animBut0)
+	animBut0:SetName("ButAnim0")
+	animBut0:SetAnchorHor(0.0, 0.0)
+	animBut0:SetAnchorVer(1.0, 1.0)
+	animBut0:SetSize(50, 50)
+	animBut0:SetAnchorParamHor(110, 110)
+	animBut0:SetAnchorParamVer(-50, -50)
+	animBut0:SetScriptHandler("s_Callback")	
+	local fPicBox0 = UIFPicBox:New()
+	animBut0:AttachChild(fPicBox0)
+	fPicBox0.LocalTransform:SetTranslateY(-2.0)		
+	fPicBox0:GetUIPicBox():SetTexture("Data/General/images/icons/anim.png")
+	fPicBox0:SetSize(30.0, 30.0)	
+	
+	local animBut1 = UIButton:New()
+	frame:AttachChild(animBut1)
+	animBut1:SetName("ButAnim1")
+	animBut1:SetAnchorHor(0.0, 0.0)
+	animBut1:SetAnchorVer(1.0, 1.0)
+	animBut1:SetSize(50, 50)
+	animBut1:SetAnchorParamHor(170.0, 170.0)
+	animBut1:SetAnchorParamVer(-50, -50)
+	animBut1:SetScriptHandler("s_Callback")	
+	local fPicBox1 = UIFPicBox:New()
+	animBut1:AttachChild(fPicBox1)
+	fPicBox1.LocalTransform:SetTranslateY(-2.0)		
+	fPicBox1:GetUIPicBox():SetTexture("Data/General/images/icons/anim.png")
+	fPicBox1:SetSize(30.0, 30.0)
 end
 -- PrintMsg
 function s_PrintMsg(str)
@@ -109,6 +174,10 @@ function s_Callback(objPtr, callType)
 	elseif UICT_RELEASED==callType then
 		if "ButHome" == name then
 			g_s_UIFrame:Show(not g_s_UIFrame:IsShow())
+		elseif "ButAnim0" == name then
+			g_s_AnimCtrl:PlayAnimByName("walk")
+		elseif "ButAnim1" == name then
+			g_s_AnimCtrl:PlayAnimByName("attack0")
 		elseif "But0"==name then
 			s_PrintMsg("UICT_RELEASED But0")
 		elseif "But1"==name then
