@@ -53,6 +53,7 @@ namespace PX2
 	protected:
 		void _CalSkins();
 		void _CalAnimNode(Movable *mov);
+		void _DetachKeyframeCtrl(Movable *mov);
 		virtual void SetControlledable(Controlledable* object);
 
 		bool mIsShareVI;

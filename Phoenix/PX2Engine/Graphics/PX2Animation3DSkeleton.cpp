@@ -158,6 +158,10 @@ void Animation3DSkeleton::_CollectKFC(Movable *mov, float &maxTime)
 				maxTime = (float)kfc->MaxTime;
 			}
 		}
+		else
+		{
+			assertion(false, "");
+		}
 	}
 	else if (0 == numContrls)
 	{

@@ -48,6 +48,9 @@ void ModelController::SetSkinAnimationConfig(const std::string &filename)
 {
 	mSkinAnimationConfig = filename;
 
+	if (mModelAnimMovable)
+		_DetachKeyframeCtrl(mModelAnimMovable);
+
 	int bufSize = 0;
 	char *buf = 0;
 

@@ -40,6 +40,8 @@ namespace PX2
 		int GetNumControllers () const;
 		Controller* GetController (int i) const;
 		Controller *GetControllerByName (const std::string &name) const;
+		template <typename CLASSTYPE>
+		CLASSTYPE *GetController() const;
 		bool HasController (Controller* controller);
 		void AttachController (Controller* controller);
 		void DetachController (Controller* controller);

@@ -234,13 +234,42 @@ void ModelController::_CalAnimNode(Movable *mov)
 		{
 			btc = new0 BlendTransformController(0, 0, true);
 			node->AttachController(btc);
+			btc->SetPriority(1);
 			btc->SetName("BTC");
 		}
-		mBTCMap[movName.c_str()] = btc;
+
+		FString fStr = FString(movName.c_str());
+		auto it = mBTCMap.find(fStr);
+		if (it == mBTCMap.end())
+		{
+			mBTCMap[fStr] = btc;
+		}
+		else
+		{
+			assertion(false, "movName already exist.");
+		}	
 
 		for (int i = 0; i < node->GetNumChildren(); i++)
 		{
 			_CalAnimNode(node->GetChild(i));
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void ModelController::_DetachKeyframeCtrl(Movable *mov)
+{
+	KeyframeControllerPtr kfc = mov->GetController<KeyframeController>();
+	if (kfc)
+	{
+		mov->DetachController(kfc);
+	}
+
+	Node *node = DynamicCast<Node>(mov);
+	if (node)
+	{
+		for (int i = 0; i < node->GetNumChildren(); i++)
+		{
+			_DetachKeyframeCtrl(node->GetChild(i));
 		}
 	}
 }

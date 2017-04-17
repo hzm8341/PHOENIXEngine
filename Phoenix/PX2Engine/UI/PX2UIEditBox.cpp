@@ -188,7 +188,7 @@ void UIEditBox::SetText(const std::string &text)
 {
 	mInputText->SetRealText(text);
 
-	_AdjustFadePicBoxPos(text.length(), false);
+	_AdjustFadePicBoxPos((int)text.length(), false);
 }
 //----------------------------------------------------------------------------
 void UIEditBox::SetFixedWidth(float fixedWidth)
@@ -361,7 +361,7 @@ int UIEditBox::_CalAttachCharaIndex(const APoint &attachWorldPos)
 	float posFromLeftPosX = GetSize().Width * GetPivot()[0] + localPos.X();
 
 	const std::string &text = mInputText->GetText();
-	int textLengthNum = text.length();
+	int textLengthNum = (int)text.length();
 	float textLength = mInputText->GetTextWidth();
 	float offsetX = mInputText->GetOffset()[0];
 

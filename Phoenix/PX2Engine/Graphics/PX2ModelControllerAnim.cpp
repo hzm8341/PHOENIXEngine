@@ -12,7 +12,7 @@ bool ModelController::AddAnim(Animation *anim)
 	if (HasAnim(anim)) return false;
 
 	const std::string &name = anim->GetName();
-	mAnimsMap[name.c_str()] = anim;
+	mAnimsMap[FString(name.c_str())] = anim;
 	anim->SetModelController(this);
 
 	return true;

@@ -301,6 +301,8 @@ void Project::SetScene(Scene *scene)
 
 	if (mScene)
 	{
+		mScene->WorldTransformIsCurrent = true;
+
 		Event *ent = PX2_CREATEEVENTEX(ProjectES, NewScene);
 		ent->SetData<Scene*>((Scene*)mScene);
 		PX2_EW.BroadcastingLocalEvent(ent);

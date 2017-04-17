@@ -65,6 +65,7 @@ void UIProgressBarCtrl::SetProgress(float progress)
 void UIProgressBarCtrl::_Update(double applicationTime, double elapsedTime)
 {
 	PX2_UNUSED(applicationTime);
+	PX2_UNUSED(elapsedTime);
 
 	float lastPointTime = 0.0f;
 	int numPoints = mValues.GetNumPoints();
