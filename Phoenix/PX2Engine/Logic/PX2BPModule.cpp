@@ -61,6 +61,7 @@ mIsCompilingAsParam_DoNotNeedCall(false)
 	mClassText->SetSize(0.0f, mItemHeight);
 	mClassText->SetDoPick(false);
 	UIPicBox *uiPicBox = mClassText->CreateAddBackgroundPicBox();
+	PX2_UNUSED(uiPicBox);
 	mClassText->GetText()->LocalTransform.SetTranslateY(-1.0f);
 
 	mNameText = new0 UIFText();
@@ -78,6 +79,7 @@ mIsCompilingAsParam_DoNotNeedCall(false)
 	SetSize(mSize);
 
 	UIPicBox *picBox = CreateAddBackgroundPicBox();
+	PX2_UNUSED(uiPicBox);
 }
 //----------------------------------------------------------------------------
 BPModule::~BPModule()
@@ -672,6 +674,7 @@ void BPModule::_UpdateModuleColorPos()
 		mBackgroundPicBox->SetColor(Float3::MakeColor(230, 230, 230));
 
 	UIPicBox *classPB = mClassText->GetBackgroundPicBox();
+	PX2_UNUSED(classPB);
 
 	if (MT_EVENT == mModuleType)
 	{
