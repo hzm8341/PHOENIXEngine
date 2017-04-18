@@ -257,9 +257,6 @@ void EU_ProjectItem::Load(InStream& source)
 void EU_ProjectItem::Link(InStream& source)
 {
 	UIItem::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void EU_ProjectItem::PostLink()

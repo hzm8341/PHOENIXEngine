@@ -12,8 +12,11 @@ Windows桌面系统，但没有开发板可以装Windows），开发难度很大
 
 下面是一些简单使用说明，我会逐步更新：
 
-下载ThirdPartiesLibs.zip http://url.cn/47RBPDi 将其放在Phoenix/Phoenix 目录下进行解压
+下载ThirdPartiesLibs.zip http://url.cn/47RBPDi 
+将其放在Phoenix/Phoenix 目录下进行解压
 如果需要编译编辑器，需要预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
+如果需要使用FBX导出插件，需要下载FBX.zip http://url.cn/47borsx
+将其解压到ThirdPartiesLibs中
 
 Bin/Dat/General 是一个空项目
 
