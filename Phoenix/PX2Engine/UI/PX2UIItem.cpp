@@ -503,9 +503,6 @@ void UIItem::Load(InStream& source)
 void UIItem::Link(InStream& source)
 {
 	UIFrame::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UIItem::PostLink()

@@ -46,6 +46,19 @@ void Plugin::ExecuteInit()
 	msPluginInitlizeFuns.clear();
 }
 //----------------------------------------------------------------------------
+void Plugin::ExecuteInitLast()
+{
+	if ((int)msPluginInitlizeFuns.size() > 0)
+	{
+		PluginInitlizeFun fun = msPluginInitlizeFuns[
+			msPluginInitlizeFuns.size() - 1];
+		if (fun)
+		{
+			(*fun)();
+		}
+	}
+}
+//----------------------------------------------------------------------------
 void Plugin::ExecuteTerm()
 {
 	auto it = msPluginTernamateFuns.begin();
@@ -56,6 +69,19 @@ void Plugin::ExecuteTerm()
 	}
 
 	msPluginTernamateFuns.clear();
+}
+//----------------------------------------------------------------------------
+void Plugin::ExecuteTermLast()
+{
+	if ((int)msPluginTernamateFuns.size() > 0)
+	{
+		PluginTernamateFun fun = msPluginTernamateFuns[
+			msPluginTernamateFuns.size() - 1];
+		if (fun)
+		{
+			(*fun)();
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Plugin::RemoveInit(PluginInitlizeFun fun)

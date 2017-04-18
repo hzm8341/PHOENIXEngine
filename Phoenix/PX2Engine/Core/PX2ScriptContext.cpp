@@ -52,6 +52,14 @@ bool ScriptContext::CallFileFunction(const std::string &filename,
 	return false;
 }
 //----------------------------------------------------------------------------
+bool ScriptContext::CallFunction(const std::string &funName, Object *obj0)
+{
+	PX2_UNUSED(funName);
+	PX2_UNUSED(obj0);
+
+	return false;
+}
+//----------------------------------------------------------------------------
 bool ScriptContext::CallFunction(const std::string &funName,
 	Object *obj0, int paramData1)
 {

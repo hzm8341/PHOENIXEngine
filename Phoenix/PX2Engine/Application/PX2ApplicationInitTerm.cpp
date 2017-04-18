@@ -288,6 +288,8 @@ bool Application::Terminate()
 	Play(Application::PT_NONE);
 	CloseProject();
 
+	Plugin::ExecuteTerm();
+
 	PX2_PLUGINMAN.UnloadPlugins();
 
 	PX2_SC_LUA->CallFile("Data/engine/scripts/lua/engine_end.lua");
@@ -542,11 +544,13 @@ bool Application::LoadBoost(const std::string &filename)
 			const std::string &pluginName = mPlugins[i];
 			if (!pluginName.empty())
 			{
-				std::string path = "./PluginsCommon/" + pluginName + "/" + 
+				std::string path = "PluginsCommon/" + pluginName + "/" + 
 					GetDllFileName(pluginName);
 				PX2_PLUGINMAN.Load(path);
 			}
 		}
+
+		Plugin::ExecuteInit();
 
 		return true;
 	}

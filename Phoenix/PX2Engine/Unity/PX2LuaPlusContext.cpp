@@ -222,6 +222,33 @@ bool LuaPlusContext::CallFileFunction(const std::string &filename,
 	return false;
 }
 //----------------------------------------------------------------------------
+bool LuaPlusContext::CallFunction(const std::string &funName, Object *obj0)
+{
+	LuaObject funcObj = mLuaPlusState->GetGlobal(funName.c_str());
+	if (!funcObj.IsNil())
+	{
+		LuaCall call = funcObj;
+
+		try
+		{
+			LuaObject objdata0;
+			objdata0.AssignLightUserdata(mLuaPlusState, obj0);
+
+			call << objdata0 << LuaRun();
+		}
+		catch (LuaException &e)
+		{
+			const char* msg = e.GetErrorMessage();
+			PX2_LOG_ERROR("%s", msg);
+			assertion(false, "%s", msg);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
 bool LuaPlusContext::CallFunction(const std::string &funName,
 	Object *obj0, int paramData1)
 {

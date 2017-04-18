@@ -28,6 +28,8 @@ mButtonState(BS_NORMAL)
 	mPressedBrightness = 1.0f;
 	mDisableBrightness = 1.0f;
 
+	mIsPicBoxSizeSameWithButton = true;
+
 	SetWidget(true);
 }
 //----------------------------------------------------------------------------
@@ -201,6 +203,40 @@ UIPicBox *UIButtonBase::GetPicBoxAtState(ButtonState state)
 	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+void UIButtonBase::SetPicBoxSizeSameWithButton(bool same)
+{
+	mIsPicBoxSizeSameWithButton = same;
+}
+//----------------------------------------------------------------------------
+bool UIButtonBase::IsPicBoxSizeSameWithButton() const
+{
+	return mIsPicBoxSizeSameWithButton;
+}
+//----------------------------------------------------------------------------
+void UIButtonBase::AutoMakeSizeFixable()
+{
+	Sizef sz;
+	if (mPicBoxNormal)
+	{
+		mPicBoxNormal->MakeSizeWithTex();
+		sz = mPicBoxNormal->GetSize();
+	}
+	if (mPicBoxOver)
+	{
+		mPicBoxOver->MakeSizeWithTex();
+	}
+	if (mPicBoxDown)
+	{
+		mPicBoxDown->MakeSizeWithTex();
+	}
+	if (mPicBoxDisabled)
+	{
+		mPicBoxDisabled->MakeSizeWithTex();
+	}
+
+	SetSize(sz);
 }
 //----------------------------------------------------------------------------
 void UIButtonBase::SetStateColor(ButtonState state, const Float3 &color)
@@ -408,17 +444,20 @@ UIText *UIButtonBase::GetText()
 //----------------------------------------------------------------------------
 void UIButtonBase::OnSizeChanged()
 {
-	if (mPicBoxNormal)
-		mPicBoxNormal->SetSize(mSize);
+	if (mIsPicBoxSizeSameWithButton)
+	{
+		if (mPicBoxNormal)
+			mPicBoxNormal->SetSize(mSize);
 
-	if (mPicBoxOver)
-		mPicBoxOver->SetSize(mSize);
+		if (mPicBoxOver)
+			mPicBoxOver->SetSize(mSize);
 
-	if (mPicBoxDown)
-		mPicBoxDown->SetSize(mSize);
+		if (mPicBoxDown)
+			mPicBoxDown->SetSize(mSize);
 
-	if (mPicBoxDisabled)
-		mPicBoxDisabled->SetSize(mSize);
+		if (mPicBoxDisabled)
+			mPicBoxDisabled->SetSize(mSize);
+	}
 }
 //----------------------------------------------------------------------------
 void UIButtonBase::UpdateWorldData(double applicationTime, double elapsedTime)
@@ -478,6 +517,7 @@ UIFrame(value),
 mButType(BT_COLOR),
 mButtonState(BS_NORMAL)
 {
+	mIsPicBoxSizeSameWithButton = true;
 }
 //----------------------------------------------------------------------------
 void UIButtonBase::Load(InStream& source)
@@ -507,6 +547,8 @@ void UIButtonBase::Load(InStream& source)
 	source.ReadPointer(mPicBoxDown);
 	source.ReadPointer(mPicBoxDisabled);
 	source.ReadEnum(mButtonState);
+
+	source.ReadBool(mIsPicBoxSizeSameWithButton);
 
 	PX2_END_DEBUG_STREAM_LOAD(UIButtonBase, source);
 }
@@ -569,6 +611,8 @@ void UIButtonBase::Save(OutStream& target) const
 	target.WritePointer(mPicBoxDisabled);
 	target.WriteEnum(mButtonState);
 
+	target.WriteBool(mIsPicBoxSizeSameWithButton);
+
 	PX2_END_DEBUG_STREAM_SAVE(UIButtonBase, target);
 }
 //----------------------------------------------------------------------------
@@ -599,6 +643,8 @@ int UIButtonBase::GetStreamingSize(Stream &stream) const
 	size += PX2_POINTERSIZE(mPicBoxDown);
 	size += PX2_POINTERSIZE(mPicBoxDisabled);
 	size += PX2_ENUMSIZE(mButtonState);
+
+	size += PX2_BOOLSIZE(mIsPicBoxSizeSameWithButton);
 
 	return size;
 }

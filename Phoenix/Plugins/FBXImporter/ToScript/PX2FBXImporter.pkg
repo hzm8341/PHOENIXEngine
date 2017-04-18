@@ -1,0 +1,12 @@
+// PX2FBXImporter.pkg
+
+	class FBXImporter
+	{
+	public:
+		FBXImporter();
+		~FBXImporter();
+
+		bool Import(const std::string &filename);
+		Node *GetScene();
+		void ClearScene();
+	};

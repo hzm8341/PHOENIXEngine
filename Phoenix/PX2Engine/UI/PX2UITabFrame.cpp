@@ -546,9 +546,6 @@ void UITabFrame::Load(InStream& source)
 void UITabFrame::Link(InStream& source)
 {
 	UIFrame::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UITabFrame::PostLink()

@@ -46,7 +46,6 @@ void UISizeExtendControl::_UpdateAlignFrame()
 	SizeNode *sn = DynamicCast<SizeNode>(GetControlledable());
 	SizeNode *parentSN = DynamicCast<SizeNode>(sn->GetParent());
 
-	const Sizef &frameSize = sn->GetSize();
 	const Sizef &parentFrameSize = parentSN->GetSize();
 
 	float parentWidthOverHeight = parentFrameSize.Width / parentFrameSize.Height;

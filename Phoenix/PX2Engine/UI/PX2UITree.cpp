@@ -314,9 +314,6 @@ void UITree::Load(InStream& source)
 void UITree::Link(InStream& source)
 {
 	UIFrame::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UITree::PostLink()

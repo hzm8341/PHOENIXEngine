@@ -481,9 +481,6 @@ void UISplitterFrame::Load(InStream& source)
 void UISplitterFrame::Link(InStream& source)
 {
 	UIFrame::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UISplitterFrame::PostLink()

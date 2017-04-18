@@ -51,4 +51,13 @@
 
 		void SetChildPickOnlyInSizeRange(bool onlyInRange);
 		bool IsChildPickOnlyInSizeRange() const;
+		
+		const CanvasInputData &GetLastPickData() const;
+		
+		void SetScriptHandlerWidgetPicked(const std::string &scriptHandler);
+		void SetScriptHandlerNodePicked(const std::string &scriptHandler);
+		void SetScriptHandlerNodeNotPicked(const std::string &scriptHandler);
+		std::string GetScriptHandlerWidgetPicked() const;
+		std::string GetScriptHandlerNodePicked() const;
+		std::string GetScriptHandlerNodeNotPicked() const;
 	};

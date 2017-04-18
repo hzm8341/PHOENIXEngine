@@ -92,6 +92,16 @@ void UIProgressBar::SetOverPicBox(UIFPicBox *picBox)
 	AttachChild(mOverPicBox);
 }
 //----------------------------------------------------------------------------
+void UIProgressBar::AutoMakeSizeFixable()
+{
+	if (mBackPicBox)
+	{
+		mBackPicBox->MakeSizeWithTex();
+		const Sizef &sz = mBackPicBox->GetSize();
+		SetSize(sz);
+	}
+}
+//----------------------------------------------------------------------------
 void UIProgressBar::OnPivotChanged()
 {
 	UIFrame::OnPivotChanged();

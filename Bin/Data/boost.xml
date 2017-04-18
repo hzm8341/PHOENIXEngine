@@ -6,6 +6,6 @@
 		<var projectname="General" playlogicmode="logic" isshowinfo="false"/>
 	</play>
 	<plugins>
-		<var name = ""/>
+		<var name = "FBXImporter"/>
 	</plugins>
 </boost>

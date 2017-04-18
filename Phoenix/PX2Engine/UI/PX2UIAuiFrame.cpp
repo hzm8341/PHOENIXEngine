@@ -106,9 +106,6 @@ void UIAuiFrame::Load(InStream& source)
 void UIAuiFrame::Link(InStream& source)
 {
 	UIFrame::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UIAuiFrame::PostLink()

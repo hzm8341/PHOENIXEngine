@@ -819,9 +819,6 @@ void UIAuiBlockFrame::Load(InStream& source)
 void UIAuiBlockFrame::Link(InStream& source)
 {
 	UIFrame::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UIAuiBlockFrame::PostLink()

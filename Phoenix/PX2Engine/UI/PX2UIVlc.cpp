@@ -57,6 +57,8 @@ void UIVlc::SetMode(Mode m)
 //----------------------------------------------------------------------------
 void UIVlc::StartVLC(const std::string &filename)
 {
+	PX2_UNUSED(filename);
+
 #if defined PX2_USE_VLC
 	if (mVLC)
 	{

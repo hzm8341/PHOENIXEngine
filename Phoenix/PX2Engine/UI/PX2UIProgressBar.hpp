@@ -31,6 +31,8 @@ namespace PX2
 		UIFPicBox *GetProgressPicBox();
 		UIFPicBox *GetOverPicBox();
 
+		virtual void AutoMakeSizeFixable();
+
 		virtual void OnPivotChanged();
 		virtual void OnSizeChanged();
 

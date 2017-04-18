@@ -3,6 +3,7 @@
 #include "PX2SizeNode.hpp"
 #include "PX2Canvas.hpp"
 #include "PX2FunObject.hpp"
+#include "PX2ScriptManager.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Node, SizeNode);
@@ -150,16 +151,31 @@ void SizeNode::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 void SizeNode::OnWidgetPicked(const CanvasInputData &inputData)
 {
 	mLastPickData = inputData;
+
+	if (!mScriptHandlerWidgetPicked.empty())
+	{
+		PX2_SC_LUA->CallFunction(mScriptHandlerWidgetPicked, this);
+	}
 }
 //----------------------------------------------------------------------------
 void SizeNode::OnSizeNodePicked(const CanvasInputData &inputData)
 {
 	mLastPickData = inputData;
+
+	if (!mScriptHandlerNodePicked.empty())
+	{
+		PX2_SC_LUA->CallFunction(mScriptHandlerNodePicked, this);
+	}
 }
 //----------------------------------------------------------------------------
 void SizeNode::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 {
 	mLastPickData = inputData;
+
+	if (!mScriptHandlerNodeNotPicked.empty())
+	{
+		PX2_SC_LUA->CallFunction(mScriptHandlerNodeNotPicked, this);
+	}
 
 	if (mIsNotPickRecursion)
 	{
@@ -172,6 +188,36 @@ void SizeNode::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 			}
 		}
 	}
+}
+//----------------------------------------------------------------------------
+void SizeNode::SetScriptHandlerWidgetPicked(const std::string &scriptHandler)
+{
+	mScriptHandlerWidgetPicked = scriptHandler;
+}
+//----------------------------------------------------------------------------
+void SizeNode::SetScriptHandlerNodePicked(const std::string &scriptHandler)
+{
+	mScriptHandlerNodePicked = scriptHandler;
+}
+//----------------------------------------------------------------------------
+void SizeNode::SetScriptHandlerNodeNotPicked(const std::string &scriptHandler)
+{
+	mScriptHandlerNodeNotPicked = scriptHandler;
+}
+//----------------------------------------------------------------------------
+std::string SizeNode::GetScriptHandlerWidgetPicked() const
+{
+	return mScriptHandlerWidgetPicked;
+}
+//----------------------------------------------------------------------------
+std::string SizeNode::GetScriptHandlerNodePicked() const
+{
+	return mScriptHandlerNodePicked;
+}
+//----------------------------------------------------------------------------
+std::string SizeNode::GetScriptHandlerNodeNotPicked() const
+{
+	return mScriptHandlerNodeNotPicked;
 }
 //----------------------------------------------------------------------------
 bool SizeNode::_IsInRect(const APoint &logicPos)

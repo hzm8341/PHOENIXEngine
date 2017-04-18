@@ -1053,9 +1053,6 @@ void UIPropertyItem::Load(InStream& source)
 void UIPropertyItem::Link(InStream& source)
 {
 	UIItem::Link(source);
-
-	if (mIPTCtrl)
-		source.ResolveLink(mIPTCtrl);
 }
 //----------------------------------------------------------------------------
 void UIPropertyItem::PostLink()

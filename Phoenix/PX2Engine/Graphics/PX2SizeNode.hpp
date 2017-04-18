@@ -139,9 +139,16 @@ namespace PX2
 
 		virtual void PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas);
 		virtual void OnWidgetPicked(const CanvasInputData &inputData);
-		virtual void OnSizeNodeNotPicked(const CanvasInputData &inputData);
 		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
+		virtual void OnSizeNodeNotPicked(const CanvasInputData &inputData);
 		const CanvasInputData &GetLastPickData() const;
+
+		void SetScriptHandlerWidgetPicked(const std::string &scriptHandler);
+		void SetScriptHandlerNodePicked(const std::string &scriptHandler);
+		void SetScriptHandlerNodeNotPicked(const std::string &scriptHandler);
+		std::string GetScriptHandlerWidgetPicked() const;
+		std::string GetScriptHandlerNodePicked() const;
+		std::string GetScriptHandlerNodeNotPicked() const;
 
 	protected:
 		bool _IsInRect(const APoint &logicPos);
@@ -151,6 +158,10 @@ namespace PX2
 		bool mIsChildPickOnlyInSizeRange;
 		bool mIsNotPickRecursion;
 		CanvasInputData mLastPickData;
+
+		std::string mScriptHandlerWidgetPicked;
+		std::string mScriptHandlerNodePicked;
+		std::string mScriptHandlerNodeNotPicked;
 	};
 
 	PX2_REGISTER_STREAM(SizeNode);

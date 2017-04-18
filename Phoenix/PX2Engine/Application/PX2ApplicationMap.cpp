@@ -144,6 +144,7 @@ bool Application::LoadProject(const std::string &pathname)
 	}
 
 #endif
+
 	Plugin::ExecuteInit();
 
 	std::string callFilenameLua = "Data/" + projName + "/scripts/lua/editor/editor.lua";
@@ -289,7 +290,7 @@ void Application::CloseProject()
 	debugTag = "D";
 #endif
 
-	Plugin::ExecuteTerm();
+	Plugin::ExecuteTermLast();
 
 #if defined (WIN32) || defined (_WIN32)
 	if (PX2_RM.IsFileFloderExist(dllFullpathFilename))

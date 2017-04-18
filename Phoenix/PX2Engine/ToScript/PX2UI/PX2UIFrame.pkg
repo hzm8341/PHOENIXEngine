@@ -8,6 +8,8 @@
 		
 		static UIFrame *New();
 		static UIFrame *New(const std::string &name);
+		
+		virtual void AutoMakeSizeFixable();
 
 		UIPicBox *CreateAddBackgroundPicBox(bool setWhite=true, 
 			const Float3&color=Float3::WHITE);

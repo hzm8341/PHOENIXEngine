@@ -34,6 +34,7 @@ namespace PX2
 
 		virtual bool CallFileFunction(const std::string &filename,
 			const std::string &funName);
+		virtual bool CallFunction(const std::string &funName, Object *obj0);
 		virtual bool CallFunction(const std::string &funName,
 			Object *obj0, int paramData1);
 

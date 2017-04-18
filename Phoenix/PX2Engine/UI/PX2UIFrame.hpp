@@ -33,6 +33,8 @@ namespace PX2
 		bool IsUseSkin() const;
 		virtual void ConfigSkinColor();
 
+		virtual void AutoMakeSizeFixable();
+
 		virtual void OnChildAttached(Movable *child);
 
 	protected:
@@ -116,15 +118,6 @@ namespace PX2
 		bool mIsNeedAdjustChildrenMask;
 		int mMaskVal;
 		UIPicBoxPtr mMaskPicBox;
-
-		// InputTrans
-	public:
-		InputPushTransformController *CreateAddIPTCtrl(bool doResetPlay = true);
-		void DestoryIPTCtrl();
-		InputPushTransformController *GetIPTCtrl();
-
-	protected:
-		InputPushTransformControllerPtr mIPTCtrl;
 
 		// GridAlign
 	public:

@@ -47,6 +47,11 @@ namespace PX2
 		void SetPicBox(ButtonState state, UIPicBox *pic);
 		UIPicBox *GetPicBoxAtState(ButtonState state);
 
+		void SetPicBoxSizeSameWithButton(bool same);
+		bool IsPicBoxSizeSameWithButton() const;
+
+		virtual void AutoMakeSizeFixable();
+
 		void SetStateColor(ButtonState state, const Float3 &color);
 		const Float3 &GetStateColor(ButtonState state) const;
 		void SetStateAlpha(ButtonState state, float alpha);
@@ -93,6 +98,8 @@ namespace PX2
 		ButtonState mButtonState;
 
 		UIFTextPtr mFText;
+
+		bool mIsPicBoxSizeSameWithButton;
 	};
 
 	PX2_REGISTER_STREAM(UIButtonBase);

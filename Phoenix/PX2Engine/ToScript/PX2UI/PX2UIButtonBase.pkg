@@ -26,6 +26,9 @@
 
 		void SetPicBox(ButtonState state, UIPicBox *pic);
 		UIPicBox *GetPicBoxAtState(ButtonState state);
+		
+		void SetPicBoxSizeSameWithButton(bool same);
+		bool IsPicBoxSizeSameWithButton() const;
 
 		void SetStateColor(ButtonState state, const Float3 &color);
 		const Float3 &GetStateColor(ButtonState state) const;

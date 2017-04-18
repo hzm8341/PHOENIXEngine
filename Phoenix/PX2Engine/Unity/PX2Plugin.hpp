@@ -64,7 +64,9 @@ namespace PX2
 
 	public:
 		static void ExecuteInit();
+		static void ExecuteInitLast();
 		static void ExecuteTerm();
+		static void ExecuteTermLast();
 
 	protected:
 		static void RemoveInit(PluginInitlizeFun fun);

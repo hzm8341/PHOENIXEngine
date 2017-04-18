@@ -62,11 +62,6 @@ inline UIPicBox *UIFrame::GetMask()
 	return mMaskPicBox;
 }
 //----------------------------------------------------------------------------
-inline InputPushTransformController *UIFrame::GetIPTCtrl()
-{
-	return mIPTCtrl;
-}
-//----------------------------------------------------------------------------
 inline UIFrameGridAlignControl *UIFrame::GetGridAlignCtrl()
 {
 	return mGridAlignCtrl;
