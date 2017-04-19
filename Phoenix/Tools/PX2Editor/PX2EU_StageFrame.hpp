@@ -17,6 +17,7 @@ namespace PX2
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_STREAM(EU_StageFrame);
+		PX2_NEW(EU_StageFrame);
 
 	public:
 		EU_StageFrame();

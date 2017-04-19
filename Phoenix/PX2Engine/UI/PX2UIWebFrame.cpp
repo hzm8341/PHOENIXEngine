@@ -339,7 +339,8 @@ UIWebFrame::UIWebFrame() :
 mViewTag(-1),
 mIsTexNeedUpdate(true),
 mIsUpdateToTex(false),
-mIsShowNativeView(false)
+mIsShowNativeView(false),
+mWebCore(0)
 {
 	mImagePicBox = new0 UIFPicBox();
 	AttachChild(mImagePicBox);
@@ -362,6 +363,11 @@ mIsShowNativeView(false)
 	{
 		WebConfig config;
 		mWebCore = WebCore::Initialize(config);
+	}
+	else
+	{
+		assertion(false, "web core initlize failed!");
+		PX2_LOG_ERROR("web core initlize failed!");
 	}
 
 	WebFrameHandler *handler = new WebFrameHandler();

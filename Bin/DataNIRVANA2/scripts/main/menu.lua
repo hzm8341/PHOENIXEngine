@@ -58,3 +58,38 @@ function n_CreateMainMenu()
 	PX2EU_MAN:Menu_Main_AddMainItem("Help", (PX2_LM_EDITOR:V("n_Help")))
 	PX2EU_MAN:Menu_Main_AddItem("Help", "About", (PX2_LM_EDITOR:V("n_About")), "", "")
 end
+
+function n_CreateMainMenu1()
+	-- File
+	PX2EU_MAN:Menu_Main_AddMainItem("File", (PX2_LM_EDITOR:V("n_File")))
+	PX2EU_MAN:Menu_Main_AddItem("File", "NewFile", PX2_LM_EDITOR:V("n_NewFile").."\tCtrl-N", "n_NewFile()", "Proj_NewFile")
+	PX2EU_MAN:Menu_Main_AddItemSeparater("File")
+	PX2EU_MAN:Menu_Main_AddItem("File", "OpenFile", PX2_LM_EDITOR:V("n_OpenFile").."\tCtrl-O", "n_NewFile()", "Proj_OpenFile")
+	PX2EU_MAN:Menu_Main_AddItem("File", "OpenDir", PX2_LM_EDITOR:V("n_OpenDir"), "n_OpenDir()", "Proj_OpenDir")
+	PX2EU_MAN:Menu_Main_AddItemSeparater("File")
+	PX2EU_MAN:Menu_Main_AddItem("File", "Save", PX2_LM_EDITOR:V("n_Save").."\tCtrl-S", "n_Save()", "Proj_Save")
+	PX2EU_MAN:Menu_Main_AddItem("File", "SaveAs", PX2_LM_EDITOR:V("n_SaveAs").."\tCtrl-Shift-S", "n_SaveSceneAs()", "Proj_Scene_SaveAs")
+	PX2EU_MAN:Menu_Main_AddItem("File", "SaveAll", PX2_LM_EDITOR:V("n_SaveAll"), "n_SaveAll()", "Proj_SaveAll")
+	PX2EU_MAN:Menu_Main_AddItemSeparater("File")
+	PX2EU_MAN:Menu_Main_AddItem("File", "Exit", PX2_LM_EDITOR:V("n_Exit"), "n_Exit()", "")
+	
+	-- Edit
+	PX2EU_MAN:Menu_Main_AddMainItem("Edit", (PX2_LM_EDITOR:V("n_Edit")))
+	PX2EU_MAN:Menu_Main_AddItem("Edit", "UnDo", PX2_LM_EDITOR:V("n_UnDo").."\tCtrl-Z", "n_UnDo()", "")
+	PX2EU_MAN:Menu_Main_AddItem("Edit", "ReDo", PX2_LM_EDITOR:V("n_ReDo").."\tCtrl-R", "n_ReDo()", "")
+	PX2EU_MAN:Menu_Main_AddItemSeparater("Edit")
+	PX2EU_MAN:Menu_Main_AddItem("Edit", "Copy", PX2_LM_EDITOR:V("n_Copy").."\tCtrl-C", "n_Copy()", "")
+	PX2EU_MAN:Menu_Main_AddItem("Edit", "Paste", PX2_LM_EDITOR:V("n_Paste").."\tCtrl-V", "n_Paste()", "")
+	PX2EU_MAN:Menu_Main_AddItem("Edit", "Clone", PX2_LM_EDITOR:V("n_Clone").."\tCtrl-D", "n_Clone()", "")
+	PX2EU_MAN:Menu_Main_AddItem("Edit", "Delete", PX2_LM_EDITOR:V("n_Delete").."\tCtrl-Delete", "n_DeleteSelection()", "")
+	
+	-- Debug
+	PX2EU_MAN:Menu_Main_AddMainItem("Debug", (PX2_LM_EDITOR:V("n_Debug")))
+	
+	-- Tool
+	PX2EU_MAN:Menu_Main_AddMainItem("Tool", (PX2_LM_EDITOR:V("n_Tool")))
+	
+	-- Help
+	PX2EU_MAN:Menu_Main_AddMainItem("Help", (PX2_LM_EDITOR:V("n_Help")))
+	PX2EU_MAN:Menu_Main_AddItem("Help", "About", (PX2_LM_EDITOR:V("n_About")), "", "")
+end

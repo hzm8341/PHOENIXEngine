@@ -33,7 +33,7 @@ EngineCanvas::EngineCanvas()
 	sceneCanvas->SetAnchorHor(0.0f, 1.0f);
 	sceneCanvas->SetAnchorVer(0.0f, 1.0f);
 	sceneCanvas->SetClearFlag(true, true, true);
-	sceneCanvas->SetClearColor(Float4::MakeColor(153, 217, 234, 255));
+	sceneCanvas->SetClearColor(Float4::MakeColor(30, 30, 30, 255));
 	sceneCanvas->SetRenderNodeUpdate(true);
 
 	EngineUICanvas *uiCanvas = new0 EngineUICanvas();
@@ -77,7 +77,7 @@ EngineCanvas::EngineCanvas()
 	SetName("EngineCanvas");
 
 	EnableAnchorLayout(true);
-	SetSize(400.0f, 400.0f);
+	SetSize(800.0f, 800.0f);
 	SetAnchorHor(0.5f, 0.5f);
 	SetAnchorVer(0.5f, 0.5f);
 	EnableScreenRectLayout(false);
@@ -145,6 +145,18 @@ void EngineCanvas::UpdateWorldData(double applicationTime,
 	double elapsedTime)
 {
 	Canvas::UpdateWorldData(applicationTime, elapsedTime);
+
+	Project *proj = Project::GetSingletonPtr();
+	if (!proj)
+	{
+		SetAnchorHor(0.0, 1.0);
+		SetAnchorVer(0.0, 1.0);
+	}
+	else
+	{
+		SetAnchorHor(0.5f, 0.5f);
+		SetAnchorVer(0.5f, 0.5f);
+	}
 
 	SizeNode *parent = DynamicCast<SizeNode>(GetParent());
 	if (!parent) return;

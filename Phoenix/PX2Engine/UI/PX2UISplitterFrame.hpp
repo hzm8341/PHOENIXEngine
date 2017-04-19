@@ -21,6 +21,7 @@ namespace PX2
 		UISplitterFrame(bool hor=true);
 		virtual ~UISplitterFrame();
 
+		void SetHor(bool isHor);
 		bool IsHor() const;
 
 		enum DragType

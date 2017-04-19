@@ -14,6 +14,7 @@ namespace PX2
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_STREAM(EU_ProjectTree);
+		PX2_NEW(EU_ProjectTree);
 
 	public:
 		EU_ProjectTree();

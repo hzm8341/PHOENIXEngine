@@ -31,6 +31,7 @@
 #include "PX2SelectionManager.hpp"
 #include "PX2Log.hpp"
 #include "PX2UISkinManager.hpp"
+#include "PX2UIWebFrame.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -52,7 +53,9 @@ bool EU_Manager::Initlize()
 	PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naPreStart");
 	PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naStart");
 
-	CreateUIWindowMain();
+	//CreateUIWindowMain();
+
+	//PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naEditorUICreated");
 
 	return true;
 }
@@ -617,10 +620,11 @@ UIAuiBlockFrame *EU_Manager::CreateFrame_Center()
 		blockFrame->GetObjectByName("UITabFrame_" + blockFrame->GetName()));
 
 	UIFrame *frameWelcome = new0 UIFrame();
+	frameWelcome->SetName("WelcomeFrame");
 	tabFrame->AddTab("Welcome", PX2_LM_EDITOR.GetValue("Welcome"), frameWelcome);
-	frameWelcome->SetAnchorHor(0.0f, 1.0f);
-	frameWelcome->SetAnchorVer(0.0f, 1.0f);
-	frameWelcome->CreateAddBackgroundPicBox(true, PX2_UISM.Color_ViewBackground);
+	frameWelcome->SetAnchorHor(0.0, 1.0f);
+	frameWelcome->SetAnchorVer(0.0, 1.0);
+	SetWelcomeFrame(frameWelcome);
 
 	EU_StageFrame *stageFrame = new0 EU_StageFrame();
 	tabFrame->AddTab("Stage", PX2_LM_EDITOR.GetValue("Stage"), stageFrame);
@@ -633,11 +637,6 @@ UIAuiBlockFrame *EU_Manager::CreateFrame_Center()
 	simuFrame->SetAnchorHor(0.0f, 1.0f);
 	simuFrame->SetAnchorVer(0.0f, 1.0f);
 	simuFrame->LocalTransform.SetTranslateY(-5.0f);
-
-	//EU_BluePrintFrame *bpFrame = new0 EU_BluePrintFrame();
-	//tabFrame->AddTab("BluePrint", "BluePrint", bpFrame);
-	//bpFrame->SetAnchorHor(0.0f, 1.0f);
-	//bpFrame->SetAnchorVer(0.0f, 1.0f);
 
 	tabFrame->AddUICallback(_TableCallback);
 
@@ -1047,6 +1046,16 @@ UIAuiBlockFrame *EU_Manager::CreateUIAuiBlockFrame2(UIAuiBlockFrame *parent,
 	return blockFrame;
 }
 //----------------------------------------------------------------------------
+void EU_Manager::SetWelcomeFrame(UIFrame *frame)
+{
+	mWelcomeFrame = frame;
+}
+//----------------------------------------------------------------------------
+UIFrame *EU_Manager::GetWelcomeFrame()
+{
+	return mWelcomeFrame;
+}
+//----------------------------------------------------------------------------
 void EU_Manager::ShowWindowUserLeaveUp(bool show)
 {
 	if (show)
@@ -1167,27 +1176,33 @@ void EU_Manager::OnEvent(Event *event)
 	if (ProjectES::IsEqual(event, ProjectES::NewProject) ||
 		ProjectES::IsEqual(event, ProjectES::LoadedProject))
 	{
-		Object *butSimu = mFrame_ToolBar->GetObjectByName("ButSimu");
-		butSimu->Enable(true);
+		if (mFrame_ToolBar)
+		{
+			Object *butSimu = mFrame_ToolBar->GetObjectByName("ButSimu");
+			butSimu->Enable(true);
 
-		Object *butPlay = mFrame_ToolBar->GetObjectByName("ButPlay");
-		butPlay->Enable(true);	
+			Object *butPlay = mFrame_ToolBar->GetObjectByName("ButPlay");
+			butPlay->Enable(true);
 
-		Object *butPlayInWindow = mFrame_ToolBar->GetObjectByName("ButPlayInWindow");
-		butPlayInWindow->Enable(true);
+			Object *butPlayInWindow = mFrame_ToolBar->GetObjectByName("ButPlayInWindow");
+			butPlayInWindow->Enable(true);
+		}
 
 		PX2_SELECTM_E->Clear();
 	}
 	else if (ProjectES::IsEqual(event, ProjectES::CloseProject))
 	{
-		Object *butSimu = mFrame_ToolBar->GetObjectByName("ButSimu");
-		butSimu->Enable(false);
+		if (mFrame_ToolBar)
+		{
+			Object *butSimu = mFrame_ToolBar->GetObjectByName("ButSimu");
+			butSimu->Enable(false);
 
-		Object *butPlay = mFrame_ToolBar->GetObjectByName("ButPlay");
-		butPlay->Enable(false);
+			Object *butPlay = mFrame_ToolBar->GetObjectByName("ButPlay");
+			butPlay->Enable(false);
 
-		Object *butPlayInWindow = mFrame_ToolBar->GetObjectByName("ButPlayInWindow");
-		butPlayInWindow->Enable(false);
+			Object *butPlayInWindow = mFrame_ToolBar->GetObjectByName("ButPlayInWindow");
+			butPlayInWindow->Enable(false);
+		}
 
 		PX2_SELECTM_E->Clear();
 	}

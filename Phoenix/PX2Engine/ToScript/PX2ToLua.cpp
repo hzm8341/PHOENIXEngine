@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 04/17/17 20:37:47.
+** Generated automatically by tolua++-1.0.92 on 04/19/17 19:44:07.
 */
 
 #ifndef __cplusplus
@@ -55624,6 +55624,39 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetHor of class  UISplitterFrame */
+#ifndef TOLUA_DISABLE_tolua_PX2_UISplitterFrame_SetHor00
+static int tolua_PX2_UISplitterFrame_SetHor00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UISplitterFrame",0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UISplitterFrame* self = (UISplitterFrame*)  tolua_tousertype(tolua_S,1,0);
+  bool isHor = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetHor'", NULL);
+#endif
+  {
+   self->SetHor(isHor);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetHor'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: IsHor of class  UISplitterFrame */
 #ifndef TOLUA_DISABLE_tolua_PX2_UISplitterFrame_IsHor00
 static int tolua_PX2_UISplitterFrame_IsHor00(lua_State* tolua_S)
@@ -67644,6 +67677,7 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"delete",tolua_PX2_UISplitterFrame_delete00);
    tolua_function(tolua_S,"New",tolua_PX2_UISplitterFrame_New00);
    tolua_function(tolua_S,"New",tolua_PX2_UISplitterFrame_New01);
+   tolua_function(tolua_S,"SetHor",tolua_PX2_UISplitterFrame_SetHor00);
    tolua_function(tolua_S,"IsHor",tolua_PX2_UISplitterFrame_IsHor00);
    tolua_constant(tolua_S,"DT_VALUE",UISplitterFrame::DT_VALUE);
    tolua_constant(tolua_S,"DT_PERCENT",UISplitterFrame::DT_PERCENT);

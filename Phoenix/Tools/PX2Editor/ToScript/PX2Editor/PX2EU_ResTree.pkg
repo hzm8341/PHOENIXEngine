@@ -11,8 +11,8 @@
 		EU_ResTree(ResTreeType rtt=RTT_DIR);
 		virtual ~EU_ResTree();
 		
-		static UIFrame *New();
-		static UIFrame *New(const std::string &name);
+		static EU_ProjectTree *New();
+		static EU_ProjectTree *New(const std::string &name);
 
 		virtual UIItem *AddItem(UIItem *parentItem, const std::string &label,
 			const std::string &name = "", Object *obj = 0);

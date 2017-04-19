@@ -59,6 +59,10 @@ namespace PX2
 			UILayoutPosType pos, UIAuiBlockFrame *&outCenter, 
 			const Sizef &size = Sizef(300.0f, 300.0f));
 
+		// welcome frame 
+		void SetWelcomeFrame(UIFrame *frame);
+		UIFrame *GetWelcomeFrame();
+
 		// UserLeaveUp
 		void ShowWindowUserLeaveUp(bool show);
 		bool IsWindowUserLeaveUpShow() const;
@@ -74,6 +78,7 @@ namespace PX2
 		UIFramePtr mFrame_ToolBar;
 		Pointer0<UIFrame> mFrame_StatusBar;
 		RenderWindowPtr mUserLeaveUpWindow;
+		UIFramePtr mWelcomeFrame;
 
 		// menus
 	public:

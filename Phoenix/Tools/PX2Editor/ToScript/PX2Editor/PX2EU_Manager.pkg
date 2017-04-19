@@ -28,6 +28,9 @@
 			const std::string &parentName);
 		void Menu_Edit_EndPopUp(const std::string &whe,
 			const APoint &pos); // x z
+			
+		void SetWelcomeFrame(UIFrame *frame);
+		UIFrame *GetWelcomeFrame();
 		
 		// commonds
 	public:

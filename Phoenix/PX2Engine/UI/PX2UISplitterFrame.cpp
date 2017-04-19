@@ -55,6 +55,20 @@ UISplitterFrame::~UISplitterFrame()
 {
 }
 //----------------------------------------------------------------------------
+void UISplitterFrame::SetHor(bool isHor)
+{
+	mIsHor = isHor;
+
+	if (mIsHor)
+	{
+		SetAnchorParamHor(Float2(20.0f, -20.0f));
+	}
+	else
+	{
+		SetAnchorParamVer(Float2(20.0f, -20.0f));
+	}
+}
+//----------------------------------------------------------------------------
 void UISplitterFrame::SetDragType(DragType dt)
 {
 	mDragType = dt;

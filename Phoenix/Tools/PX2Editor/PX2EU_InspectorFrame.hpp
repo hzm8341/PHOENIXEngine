@@ -16,6 +16,7 @@ namespace PX2
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_STREAM(EU_InspectorFrame);
+		PX2_NEW(EU_InspectorFrame);
 
 	public:
 		EU_InspectorFrame();
