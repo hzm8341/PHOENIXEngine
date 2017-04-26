@@ -23,6 +23,8 @@ namespace PX2
 
 		void SetFileClass(const std::string &filename,
 			const std::string &className);
+		void SetStringClass(const std::string &str,
+			const std::string &className);
 
 		virtual void ScriptOnAttached();
 		virtual void ScriptOnDetach();

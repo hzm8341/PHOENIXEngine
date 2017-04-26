@@ -96,7 +96,7 @@ void UIProgressBar::AutoMakeSizeFixable()
 {
 	if (mBackPicBox)
 	{
-		mBackPicBox->MakeSizeWithTex();
+		mBackPicBox->AutoMakeSizeFixable();
 		const Sizef &sz = mBackPicBox->GetSize();
 		SetSize(sz);
 	}

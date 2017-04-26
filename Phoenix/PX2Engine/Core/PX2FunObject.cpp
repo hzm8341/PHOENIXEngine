@@ -22,7 +22,8 @@ FunParam::~FunParam()
 FunObject::FunObject() :
 IsClassCatalogue(false),
 mParamType(PT_NONE),
-IsStatic(false)
+IsStatic(false),
+ParentFunObject(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -156,7 +157,7 @@ FunObject::ParamType FunObject::GetParamType() const
 	return mParamType;
 }
 //----------------------------------------------------------------------------
-FunObject *FunObject::GetAddClass(const std::string &className)
+FunObject *FunObject::GetClass(const std::string &className)
 {
 	if (IsClassCatalogue && ClassName == className)
 		return this;
@@ -164,13 +165,18 @@ FunObject *FunObject::GetAddClass(const std::string &className)
 	std::vector<Pointer0<FunObject> >::iterator it = mChildFunObjectVec_Class.begin();
 	for (; it != mChildFunObjectVec_Class.end(); it++)
 	{
-		FunObject *funObj = (*it)->GetAddClass(className);
+		FunObject *funObj = (*it)->GetClass(className);
 		if (funObj)
 		{
 			return funObj;
 		}
 	}
 
+	return 0;
+}
+//----------------------------------------------------------------------------
+FunObject *FunObject::AddClass(const std::string &className)
+{
 	FunObjectPtr funObj = new0 FunObject();
 	funObj->IsClassCatalogue = true;
 	funObj->ClassName = className;
@@ -217,24 +223,46 @@ void FunObject::AddFunObject(FunObject *funObj)
 	if (funObj->IsClassCatalogue)
 	{
 		mChildFunObjectVec_Class.push_back(funObj);
+		funObj->ParentFunObject = this;
 	}
 	else
 	{
 		funObj->ClassName = ClassName;
 		mChildFunObjectVec.push_back(funObj);
 	}
-
 }
 //----------------------------------------------------------------------------
 bool FunObject::IsHasFunObject(FunObject *funObj)
 {
+	for (int i = 0; i < (int)mChildFunObjectVec_Class.size(); i++)
+	{
+		if (funObj == mChildFunObjectVec_Class[i])
+			return true;
+	}
+
 	for (int i = 0; i<(int)mChildFunObjectVec.size(); i++)
 	{
-		if (funObj->Name == mChildFunObjectVec[i]->Name)
+		if (funObj == mChildFunObjectVec[i])
 			return true;
 	}
 
 	return false;
+}
+//----------------------------------------------------------------------------
+std::vector<FunObject*> FunObject::GetParentAndMeFunObjectList()
+{
+	std::vector<FunObject*> funList;
+	funList.push_back(this);
+
+	FunObject *parent = ParentFunObject;
+	while (parent)
+	{
+		funList.push_back(parent);
+
+		parent = parent->ParentFunObject;
+	}
+
+	return funList;
 }
 //----------------------------------------------------------------------------
 

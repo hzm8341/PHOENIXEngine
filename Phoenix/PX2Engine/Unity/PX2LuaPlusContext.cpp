@@ -280,6 +280,73 @@ bool LuaPlusContext::CallFunction(const std::string &funName,
 	return false;
 }
 //----------------------------------------------------------------------------
+bool LuaPlusContext::CallFunction(const std::string &funName,
+	Object *obj0, const std::string &paramStr)
+{
+	LuaObject funcObj = mLuaPlusState->GetGlobal(funName.c_str());
+	if (!funcObj.IsNil())
+	{
+		LuaCall call = funcObj;
+
+		try
+		{
+			LuaObject objdata0;
+			objdata0.AssignLightUserdata(mLuaPlusState, obj0);
+
+			LuaObject objData1;
+			objData1.AssignString(mLuaPlusState, paramStr.c_str(), 
+				(int)paramStr.length());
+
+			call << objdata0 << objData1 << LuaRun();
+		}
+		catch (LuaException &e)
+		{
+			const char* msg = e.GetErrorMessage();
+			PX2_LOG_ERROR("%s", msg);
+			assertion(false, "%s", msg);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool LuaPlusContext::CallFunction(const std::string &funName,
+	Object *obj0, int iData, const std::string &paramStr)
+{
+	LuaObject funcObj = mLuaPlusState->GetGlobal(funName.c_str());
+	if (!funcObj.IsNil())
+	{
+		LuaCall call = funcObj;
+
+		try
+		{
+			LuaObject objdata0;
+			objdata0.AssignLightUserdata(mLuaPlusState, obj0);
+
+			LuaObject objdata1;
+			objdata1.AssignInteger(mLuaPlusState, iData);
+
+			LuaObject objData2;
+			objData2.AssignString(mLuaPlusState, paramStr.c_str(),
+				(int)paramStr.length());
+
+			call << objdata0 << objdata1 << objData2 << LuaRun();
+		}
+		catch (LuaException &e)
+		{
+			const char* msg = e.GetErrorMessage();
+			PX2_LOG_ERROR("%s", msg);
+			assertion(false, "%s", msg);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
 void LuaPlusContext::SetUserTypePointer(const std::string &luaName,
 	const std::string &className, void *ptr)
 {

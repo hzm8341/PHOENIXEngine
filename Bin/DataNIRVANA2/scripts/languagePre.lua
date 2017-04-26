@@ -4,8 +4,12 @@ function n_AddLanguagePre()
 	PX2_LM_EDITOR:AddItem1("WelcomeToUse", "欢迎使用")
 
 	PX2_LM_EDITOR:AddItem1("Simu", "仿真")
+	PX2_LM_EDITOR:AddItem1("Logic", "逻辑")
 	PX2_LM_EDITOR:AddItem1("Ply", "运行")
 	PX2_LM_EDITOR:AddItem1("PlyW", "在窗口中运行")
+
+	PX2_LM_EDITOR:AddItem1("BlueBlock", "蓝块")
+	PX2_LM_EDITOR:AddItem1("BluePrint", "蓝图")
 
 	PX2_LM_EDITOR:AddItem1("Login", "登录")
 	PX2_LM_EDITOR:AddItem1("UserLevelUp", "升级为铂金用户")

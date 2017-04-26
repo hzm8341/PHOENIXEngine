@@ -182,7 +182,7 @@ namespace PX2
 		void _SortInRangePickWidget();
 
 	protected:
-		void _DoPick(const CanvasInputData &inputData);
+		virtual void _DoPick(const CanvasInputData &inputData);
 		APoint _PreScreenPosToLogicPos(const APoint &pos);
 		APoint _PreLogicPosToCameraPos(const APoint &pos, float worldRectLeft, 
 			float worldRectBottom, float worldRectWidth, float worldRectHeight);

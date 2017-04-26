@@ -7,6 +7,7 @@
 #include "PX2Mathematics.hpp"
 #include "PX2Graphics.hpp"
 #include "PX2Unity.hpp"
+#include "PX2Net.hpp"
 #include "PX2Terrains.hpp"
 #include "PX2Effect.hpp"
 #include "PX2UIs.hpp"

@@ -24,8 +24,6 @@ namespace PX2
 	*/
 	class PX2_ENGINE_ITEM Transform
 	{
-		PX2_DECLARE_FUNCTION;
-
 	public:
 		/**
 		* 初始为单位变换。

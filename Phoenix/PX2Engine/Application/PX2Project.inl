@@ -56,8 +56,3 @@ inline float Project::GetEdit_UICameraPercent() const
 	return mEdit_UICameraPercent;
 }
 //----------------------------------------------------------------------------
-inline Project::MenuItem *Project::GetMenuItem()
-{
-	return mItem;
-}
-//----------------------------------------------------------------------------

@@ -35,9 +35,9 @@ namespace PX2
 			const Timespan& timeout);
 		virtual int ConnectNB (const SocketAddress& address);
 
-		virtual void Bind (const SocketAddress& address,
+		virtual int Bind (const SocketAddress& address,
 			bool reuseAddress = false);
-		virtual void Bind6 (const SocketAddress& address, 
+		virtual int Bind6(const SocketAddress& address,
 			bool reuseAddress = false, bool ipV6Only = false);
 
 		virtual void Listen (int backlog = 64);

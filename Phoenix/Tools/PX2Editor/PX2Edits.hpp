@@ -15,5 +15,6 @@
 #include "PX2EU_StageFrame.hpp"
 #include "PX2EU_SimuFrame.hpp"
 #include "PX2EU_TimeLineFrame.hpp"
+#include "PX2EU_ContentFrame.hpp"
 
 #endif

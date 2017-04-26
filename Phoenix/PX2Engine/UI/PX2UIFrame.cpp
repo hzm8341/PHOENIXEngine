@@ -531,35 +531,6 @@ void UIFrame::OnPropertyChanged(const PropertyObject &obj)
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// Object Functions
-//----------------------------------------------------------------------------
-FunObject *UIFrame::RegistClassFunctions()
-{
-	FunObject *parFunObject = SizeNode::RegistClassFunctions();
-
-	FunObject *thisFunObj = parFunObject->GetAddClass("UIFrame");
-
-	{
-		FunObjectPtr funObj = new0 FunObject;
-		funObj->Name = "SetScriptHandler";
-		funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddInput("in_handlerstr", FPT_STRING, std::string(""));
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	{
-		FunObjectPtr funObj = new0 FunObject;
-		funObj->Name = "GetScriptHandler";
-		funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddOutput("ot_handlerstr", FPT_STRING, std::string("notvalied"));
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	return thisFunObj;
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
 // 持久化支持
 //----------------------------------------------------------------------------
 UIFrame::UIFrame(LoadConstructor value) :

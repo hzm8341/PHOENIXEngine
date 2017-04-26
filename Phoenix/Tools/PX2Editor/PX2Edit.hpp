@@ -283,6 +283,15 @@ namespace PX2
 	protected:
 		std::vector<std::string> mOpenedFiles;
 		std::string mActivateOpenedFile;
+
+		// Events
+	public:
+		void BroadCastEditorEventRefreshRes();
+		void BroadCastEditorEventUp();
+		void BroadCastEditorEventDown();
+		void BroadCastEditorEventPlayInWindow();
+		void OpenResIn(const std::string &pathFilename);
+		void OpenResOut(const std::string &pathFilename);
 	};
 
 #include "PX2Edit.inl"

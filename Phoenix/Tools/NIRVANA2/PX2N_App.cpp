@@ -97,7 +97,8 @@ void N_App::OnEvent(Event *event)
 {
 	if (EditorEventSpace::IsEqual(event, EditorEventSpace::N_PlayInWindow))
 	{
-		SimuApp();
+		SimuApp(ST_APP);
+		SimuApp(ST_SERVER);
 	}
 }
 //-----------------------------------------------------------------------------
@@ -129,7 +130,7 @@ N_Frame *N_App::CreateMainFrame()
 	return mainFrame;
 }
 //-----------------------------------------------------------------------------
-void N_App::SimuApp()
+void N_App::SimuApp(SimuType st)
 {
 	Project *proj = Project::GetSingletonPtr();
 	if (!proj) return;
@@ -137,24 +138,35 @@ void N_App::SimuApp()
 	const std::string &projName = proj->GetName();
 	std::string renderTag = Renderer::GetRenderTag();
 
+	std::string exeName = "AppPlayer";
+	if (ST_APP == st)
+		exeName = "AppPlayer" + renderTag;
+	else if (ST_SERVER == st)
+		exeName = "ServerPlayer" + renderTag;
+
 	std::string appName;
 
 #if defined(_WIN32) || defined(WIN32)
 
 #ifdef _DEBUG
 #if defined(_WIN64) || defined(WIN64)
-	appName = "AppPlayer64D.exe" + std::string(" ") + projName;
+	appName = exeName + "64D.exe" + std::string(" ") + projName;
 #else
-	appName = "AppPlayerD.exe" + std::string(" ") + projName;
+	appName = exeName + "D.exe" + std::string(" ") + projName;
 #endif
+
 #else
+
 #if defined(_WIN64) || defined(WIN64)
-	appName = "AppPlayer64.exe" + std::string(" ") + projName;
+	appName = exeName + std::string(" ") + projName;
 #else
-	appName = "AppPlayer.exe" + std::string(" ") + projName;
+	appName = exeName + ".exe" + std::string(" ") + projName;
 #endif
+
 #endif
+
 	WinExec(appName.c_str(), SW_SHOW);
+
 #endif
 }
 //-----------------------------------------------------------------------------

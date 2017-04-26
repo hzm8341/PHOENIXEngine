@@ -22,6 +22,7 @@ void N_Frame::OnCommondItem(wxCommandEvent &e)
 	if (it != mIDScripts.end())
 	{
 		std::string callStr = it->second;
+		callStr += "()";
 		PX2_SC_LUA->CallString(callStr);
 	}
 

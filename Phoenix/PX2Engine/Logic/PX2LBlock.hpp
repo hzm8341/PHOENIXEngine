@@ -37,6 +37,9 @@ namespace PX2
 
 		BlockType GetBlockType() const;
 
+		void SetFunOutputConvertToGeneral(bool convert);
+		bool IsFunOutputConvertToGeneral() const;
+
 		void SetClassName(const std::string &className);
 		const std::string &GetClassName() const;
 
@@ -89,6 +92,7 @@ namespace PX2
 
 	protected:
 		BlockType mBlockType;
+		bool mIsFunOutputConvertToGeneral;
 		std::string mClassName;
 		CtrlType mCtrlType;
 		ParamType mParamType;

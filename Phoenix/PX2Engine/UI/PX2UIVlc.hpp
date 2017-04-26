@@ -15,7 +15,6 @@ namespace PX2
 	class PX2_ENGINE_ITEM UIVlc : public UIFrame
 	{
 		PX2_DECLARE_RTTI;
-		PX2_DECLARE_FUNCTION;
 		PX2_NEW(UIVlc);
 		PX2_DECLARE_STREAM(UIVlc);
 

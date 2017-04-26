@@ -25,7 +25,7 @@ UIFPicBox::~UIFPicBox()
 {
 }
 //----------------------------------------------------------------------------
-void UIFPicBox::MakeSizeWithTex()
+void UIFPicBox::AutoMakeSizeFixable()
 {
 	if (mPicBox)
 	{

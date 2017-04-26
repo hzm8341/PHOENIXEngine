@@ -16,6 +16,8 @@ namespace PX2
 	PX2_EVENT(RefreshParamObject)
 	PX2_EVENT(CreateVariable)
 	PX2_EVENT(DeleteVariable)
+	PX2_EVENT(SetSelectLogicObject)
+	PX2_EVENT(RefreshGeneratedScript)
 	PX2_DECLARE_EVENT_END(LogicES)
 
 }

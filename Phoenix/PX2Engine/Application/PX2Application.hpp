@@ -34,7 +34,9 @@
 #include "PX2EngineEventHandler.hpp"
 #include "PX2EngineCanvas.hpp"
 #include "PX2UISizeExtendControl.hpp"
+#include "PX2AppBoostInfo.hpp"
 #include "PX2GeneralServer.hpp"
+#include "PX2GeneralClientConnector.hpp"
 
 namespace PX2
 {
@@ -86,6 +88,9 @@ namespace PX2
 			int numMaxConnects, int numMaxMsgHandlers);
 		GeneralServer *GetGeneralServer();
 
+		GeneralClientConnector *CreateGeneralClientConnector();
+		GeneralClientConnector *GetGeneralClientConnector();
+
 		void WillEnterForeground(bool isFirstTime);
 		void DidEnterBackground();
 
@@ -120,7 +125,8 @@ namespace PX2
 		BPManager *mBPManager;
 		Creater *mCreater;
 		EngineEventHandler *mEngineEventHandler;
-		GeneralServer *mGeneralServer;
+		GeneralServerPtr mGeneralServer;
+		GeneralClientConnectorPtr mGeneralClientConnector;
 
 		bool mIsInBackground;
 		bool mBeforeInBackgroundMusicEnable;
@@ -145,36 +151,39 @@ namespace PX2
 
 		// boost
 	public:
-		enum PlayLogicMode
+		enum BoostMode
 		{
-			PLM_SIMPLE,
-			PLM_LOGIC,
-			PLM_MAX_MODE
+			BM_APP,
+			BM_SERVER,
+			BM_MAX_MODE
 		};
+		void SetBoostMode(BoostMode mode);
+		BoostMode GetBoostMode() const;
 
 		bool LoadBoost(const std::string &filename);
+
 		const Sizef &GetBoostSize() const;
 		const std::string &GetBoostProjectName() const;
-		PlayLogicMode GetPlayLogicMode() const;
+		AppBoostInfo::PlayLogicMode GetPlayLogicMode() const;
 		std::string GetPlayLogicModeStr() const;
 		bool IsShowInfo() const;
+
+		AppBoostInfo &GetBoostServerInfo();
 
 		void SetBoostProjectName(const std::string &boostProjectName);
 		void SetBoostSize(const Sizef &size);
 		void SetBoostSize(float width, float height);
-		void SetPlayLogicMode(PlayLogicMode mode);
+		void SetPlayLogicMode(AppBoostInfo::PlayLogicMode mode);
 		void SetShowInfo(bool show);
 
 		bool WriteBoost();
 
 	protected:
-		PlayLogicMode _StrToPlayLogicMode(const std::string &str);
+		AppBoostInfo::PlayLogicMode _StrToPlayLogicMode(const std::string &str);
 
-		std::string mBoostProjectName;
-		Sizef mBoostSize;
-		std::vector<std::string> mPlugins;
-		PlayLogicMode mPlayLogicMode;
-		bool mIsShowInfo;
+		BoostMode mBoostMode;
+		AppBoostInfo mBoostInfo;
+		AppBoostInfo mBoostServerInfo;
 
 		// project
 	public:
@@ -231,6 +240,50 @@ namespace PX2
 
 	protected:
 		PlayType mPlayType;
+
+		// menus
+	public:
+		void Menu_Clear();
+		void Menu_AddSubItemCatalogue(
+			const std::string &parentAllName,
+			const std::string &name,
+			const std::string &title);
+		void Menu_AddItem(
+			const std::string &parentAllName,
+			const std::string &name,
+			const std::string &title,
+			const std::string &script);
+
+		class MenuItem
+		{
+		public:
+			MenuItem();
+			~MenuItem();
+
+			void Clear();
+
+			enum Type
+			{
+				T_SUB,
+				T_ITEM,
+				T_MAX_TYPE
+			};
+			Type TheType;
+
+			std::string AllName;
+
+			std::string Name;
+			std::string Title;
+			std::string Script;
+
+			MenuItem *GetMenuItem(const std::string &parentAllName);
+			std::vector<Pointer0<MenuItem> > Items;
+		};
+
+		MenuItem *GetMenuItem();
+
+	protected:
+		Pointer0<MenuItem> mItem;
 	};
 #include "PX2Application.inl"
 

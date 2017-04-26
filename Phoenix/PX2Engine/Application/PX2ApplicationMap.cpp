@@ -261,6 +261,7 @@ bool Application::SaveProjectAs(const std::string &pathname)
 //----------------------------------------------------------------------------
 void Application::CloseProject()
 {
+	PX2_LOGICM.Clear();
 	PX2_SELECTM.Clear();
 	URDoManager::GetSingleton().Clear();
 	URStateManager::GetSingleton().Clear();
@@ -281,9 +282,6 @@ void Application::CloseProject()
 
 	Event *ent = PX2_CREATEEVENTEX(ProjectES, CloseProject);
 	PX2_EW.BroadcastingLocalEvent(ent);
-
-	std::string callFilename = "Data/" + projName + "/scripts/lua/over.lua";
-	PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "over");
 
 	std::string debugTag = "";
 #ifdef _DEBUG
@@ -418,7 +416,8 @@ void Application::CloseUI()
 	if (!proj) return;
 
 	EngineUICanvas *uiCanvas = EngineUICanvas::GetSingletonPtr();
-	uiCanvas->Clear();
+	if (uiCanvas)
+		uiCanvas->Clear();
 
 	PX2_RM.ClearRes(mUIFilePath);
 	PX2_PROJ.SetUI(0);

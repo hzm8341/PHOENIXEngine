@@ -39,8 +39,7 @@ bool AppBase::IsInitlized ()
 bool AppBase::Initlize ()
 {
 	Application *app = new Application();
-	PX2_UNUSED(app);
-
+	app->SetBoostMode(Application::BM_APP);
 	return true;
 }
 //----------------------------------------------------------------------------

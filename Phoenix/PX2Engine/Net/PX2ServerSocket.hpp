@@ -21,12 +21,12 @@ namespace PX2
 
 		ServerSocket& operator = (const Socket& socket);
 
-		virtual void Bind(const SocketAddress& address,
+		virtual int Bind(const SocketAddress& address,
 			bool reuseAddress = false);
-		virtual void Bind(int16_t port, bool reuseAddress = false);
-		virtual void Bind6(const SocketAddress& address,
+		virtual int Bind(int16_t port, bool reuseAddress = false);
+		virtual int Bind6(const SocketAddress& address,
 			bool reuseAddress = false, bool ipV6Only = false);
-		virtual void Bind6(int16_t port, bool reuseAddress = false,
+		virtual int Bind6(int16_t port, bool reuseAddress = false,
 			bool ipV6Only = false);
 		virtual void Listen(int backlog = 64);
 		virtual StreamSocket AcceptConnection(SocketAddress& clientAddr);

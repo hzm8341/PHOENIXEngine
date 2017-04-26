@@ -27,5 +27,6 @@
 #include "PX2UIPropertyGrid.hpp"
 #include "PX2UIGridFrame.hpp"
 #include "PX2UIColorSelect.hpp"
+#include "PX2UICollapsePanel.hpp"
 
 #endif

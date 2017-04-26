@@ -2,7 +2,10 @@
 
 	class LogicManager
 	{
-	public:
+	public:				
+		void SetSelectObject(Object *object);
+		Object *GetSelectObject();
+	
 		void BeginAddFunObj(const std::string &funName);
 		void BeginAddClassFunObj(const std::string &className, const std::string &funName,
 			bool isStatic=false, const std::string &singltonName="", const std::string &tag="");

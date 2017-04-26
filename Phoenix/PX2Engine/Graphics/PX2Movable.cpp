@@ -404,35 +404,6 @@ void Movable::GetAllObjectsByName (const std::string& name,
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// Movable
-//----------------------------------------------------------------------------
-FunObject *Movable::RegistClassFunctions()
-{
-	FunObject *parentFunObj = Controlledable::RegistClassFunctions();
-
-	FunObject *thisFunObj = parentFunObj->GetAddClass("Movable");
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "GetLocalTransform";
-		funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddOutput("in_trans", FPT_POINTER, (Object*)0);
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "GetWorldTransform";
-		funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddOutput("in_trans", FPT_POINTER, (Object*)0);
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	return thisFunObj;
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
 // Property
 //----------------------------------------------------------------------------
 void Movable::RegistProperties ()

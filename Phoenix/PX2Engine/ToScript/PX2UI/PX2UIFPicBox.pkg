@@ -8,7 +8,7 @@
 	
 		UIFPicBox();
 		virtual ~UIFPicBox();
-		void MakeSizeWithTex();
+		void AutoMakeSizeFixable();
 
 		UIPicBox *GetUIPicBox();
 	};

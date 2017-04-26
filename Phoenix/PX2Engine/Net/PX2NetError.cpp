@@ -99,10 +99,10 @@ void NetError::Error(int code, const std::string& arg)
 		assertion(false, "Address GetFamily not supported:%d\n", code);
 		break;
 	case PX2_EADDRINUSE:
-		assertion(false, "Address %s already in use:%s,%d\n", arg, code);
+		assertion(false, "Address %s already in use:%d\n", arg.c_str(), code);
 		break;
 	case PX2_EADDRNOTAVAIL:
-		assertion(false, "Cannot assign requested address:%s,%d\n", arg, code);
+		assertion(false, "Cannot assign requested address:%s,%d\n", arg.c_str(), code);
 		break;
 	case PX2_ENETDOWN:
 		assertion(false, "Network is down:%d\n", code);

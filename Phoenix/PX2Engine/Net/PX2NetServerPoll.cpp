@@ -28,7 +28,9 @@ bool ServerPoll::Start()
 {
 	mIsShutdown = false;
 
-	mServerSocket.Bind(SocketAddress((uint16_t)mListenPort));
+	if (0 != mServerSocket.Bind(SocketAddress((uint16_t)mListenPort)))
+		return false;
+
 	mServerSocket.Listen();
 
 	mThreadListen = new0 Thread("ServerPollThread");

@@ -43,6 +43,8 @@ mCameraMoveLevel(1),
 mCameraMoveSpeedBase(20.0f),
 mEU_Man(0)
 {
+	PX2_LOGICM.SetPlatformType(LogicManager::PT_EDITOR);
+
 	mTimeLineEidt = new0 TimeLineEdit();
 	mTerrainEdit = new0 TerrainEdit();
 
@@ -97,6 +99,8 @@ bool Edit::LoadEditorTheme()
 //----------------------------------------------------------------------------
 bool Edit::Terminate()
 {
+	PX2_UIAUIM.Clear();
+
 	mEditCameraNode = 0;
 
 	mCopyObject = 0;
@@ -912,5 +916,48 @@ void Edit::SetActivateOpenedFile(const std::string &path)
 const std::string &Edit::GetActivateOpenedFile() const
 {
 	return mActivateOpenedFile;
+}
+//----------------------------------------------------------------------------
+void Edit::BroadCastEditorEventRefreshRes()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::RefreshRes);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::BroadCastEditorEventUp()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::UpRes);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::BroadCastEditorEventDown()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::DownRes);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::BroadCastEditorEventPlayInWindow()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::N_PlayInWindow);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::OpenResIn(const std::string &pathFilename)
+{
+	if (!PX2_EDIT.IsAddedOpenedFile(pathFilename))
+	{
+		PX2_EDIT.AddOpenedFile(pathFilename);
+	}
+}
+//----------------------------------------------------------------------------
+void Edit::OpenResOut(const std::string &pathFilename)
+{
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::OpenRes);
+	ent->SetData<std::string>(pathFilename);
+	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

@@ -138,6 +138,8 @@ void EngineUICanvas::_DoPick(const CanvasInputData &inputData)
 	{
 		inRangeWidget->OnWidgetPicked(inputData);
 	}
+
+	mPickedWidget = inRangeWidget;
 }
 //----------------------------------------------------------------------------
 void EngineUICanvas::Draw(Renderer *renderer)

@@ -1,11 +1,22 @@
 <boost name="boost">
-	<config>
-		<var width="960" height="800"/>
-	</config>
-	<play>
-		<var projectname="General" playlogicmode="logic" isshowinfo="false"/>
-	</play>
-	<plugins>
-		<var name = "FBXImporter"/>
-	</plugins>
+	<app>
+		<config>
+			<var width="640" height="960"/>
+		</config>
+		<play>
+			<var projectname="General" playlogicmode="logic" isshowinfo="false"/>
+		</play>
+		<plugins>
+			<var name="FBXImporter"/>
+			<var name="BlueBlock"/>
+		</plugins>
+	</app>
+	<server>
+		<play>
+			<var projectname="General" port="18180" nummaxconnection="4000"/>
+		</play>
+		<plugins>
+			<var name=""/>
+		</plugins>
+	</server>
 </boost>

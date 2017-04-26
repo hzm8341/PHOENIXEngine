@@ -56,28 +56,28 @@ ServerSocket& ServerSocket::operator = (const Socket& socket)
 	return *this;
 }
 //----------------------------------------------------------------------------
-void ServerSocket::Bind(const SocketAddress& address, bool reuseAddress)
+int ServerSocket::Bind(const SocketAddress& address, bool reuseAddress)
 {
-	GetImpl()->Bind(address, reuseAddress);
+	return GetImpl()->Bind(address, reuseAddress);
 }
 //----------------------------------------------------------------------------
-void ServerSocket::Bind(int16_t port, bool reuseAddress)
+int ServerSocket::Bind(int16_t port, bool reuseAddress)
 {
 	IPAddress wildcardAddr;
 	SocketAddress address(wildcardAddr, port);
-	GetImpl()->Bind(address, reuseAddress);
+	return GetImpl()->Bind(address, reuseAddress);
 }
 //----------------------------------------------------------------------------
-void ServerSocket::Bind6(const SocketAddress& address, bool reuseAddress, bool ipV6Only)
+int ServerSocket::Bind6(const SocketAddress& address, bool reuseAddress, bool ipV6Only)
 {
-	GetImpl()->Bind6(address, reuseAddress, ipV6Only);
+	return GetImpl()->Bind6(address, reuseAddress, ipV6Only);
 }
 //----------------------------------------------------------------------------
-void ServerSocket::Bind6(int16_t port, bool reuseAddress, bool ipV6Only)
+int ServerSocket::Bind6(int16_t port, bool reuseAddress, bool ipV6Only)
 {
 	IPAddress wildcardAddr;
 	SocketAddress address(wildcardAddr, port);
-	GetImpl()->Bind6(address, reuseAddress, ipV6Only);
+	return GetImpl()->Bind6(address, reuseAddress, ipV6Only);
 }
 //----------------------------------------------------------------------------
 void ServerSocket::Listen(int backlog)

@@ -5,10 +5,4 @@
 
 #include "PX2CorePre.hpp"
 
-//----------------------------------------------------------------------------
-#define PX2_DECLARE_FUNCTION \
-public: \
-	static FunObject *RegistClassFunctions();
-//----------------------------------------------------------------------------
-
 #endif

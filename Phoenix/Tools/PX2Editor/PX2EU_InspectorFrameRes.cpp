@@ -129,6 +129,11 @@ void EU_InspectorFrameRes::OnEvent(Event *event)
 				mCanvasModel->Show(false);
 			}
 		}
+		else if ("lua" == outExtention || "html" == outExtention ||
+			"xml"==outExtention || "txt" == outExtention)
+		{
+			/*_*/
+		}
 		else if (!outExtention.empty())
 		{
 			mShowCanvas->Show(false);

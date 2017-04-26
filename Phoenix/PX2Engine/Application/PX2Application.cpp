@@ -40,14 +40,12 @@ mIsInBackground(false),
 mBeforeInBackgroundMusicEnable(true),
 mBeforeInBackgroundSoundEnable(true),
 
-mPlayLogicMode(PLM_LOGIC),
+mBoostMode(BM_APP),
 mPlayType(PT_NONE),
 
 mAppTime(0),
 mLastAppTime(0),
-mElapsedTime(0),
-
-mIsShowInfo(false)
+mElapsedTime(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -148,6 +146,115 @@ void Application::Update()
 	if (mGeneralServer)
 		mGeneralServer->Run();
 
+	if (mGeneralClientConnector)
+		mGeneralClientConnector->Update((float)mElapsedTime);
+
 	PX2_GR.Draw();
+}
+//----------------------------------------------------------------------------
+void Application::Menu_Clear()
+{
+	mItem->Name = "ExtendMenu";
+}
+//----------------------------------------------------------------------------
+void Application::Menu_AddSubItemCatalogue(
+	const std::string &parentAllName,
+	const std::string &name,
+	const std::string &title)
+{
+	MenuItem *parentItem = 0;
+
+	if (!parentAllName.empty())
+	{
+		parentItem = mItem->GetMenuItem(parentAllName);
+	}
+	else
+	{
+		parentItem = mItem;
+	}
+
+	if (parentItem)
+	{
+		MenuItem *menuItem = new0 MenuItem();
+		menuItem->TheType = MenuItem::T_SUB;
+		menuItem->Name = name;
+		menuItem->Title = title;
+		menuItem->AllName = parentItem->AllName + name;
+
+		parentItem->Items.push_back(menuItem);
+	}
+}
+//----------------------------------------------------------------------------
+void Application::Menu_AddItem(
+	const std::string &parentAllName,
+	const std::string &name,
+	const std::string &title,
+	const std::string &script)
+{
+	MenuItem *parentItem = 0;
+
+	if (!parentAllName.empty())
+	{
+		parentItem = mItem->GetMenuItem(parentAllName);
+	}
+	else
+	{
+		parentItem = mItem;
+	}
+
+	if (parentItem)
+	{
+		MenuItem *menuItem = new0 MenuItem();
+		menuItem->TheType = MenuItem::T_ITEM;
+		menuItem->Name = name;
+		menuItem->Title = title;
+		menuItem->Script = script;
+		menuItem->AllName = parentItem->AllName + name;
+
+		parentItem->Items.push_back(menuItem);
+	}
+}
+//----------------------------------------------------------------------------
+Application::MenuItem::MenuItem()
+{
+	TheType = T_ITEM;
+}
+//----------------------------------------------------------------------------
+Application::MenuItem::~MenuItem()
+{
+}
+//----------------------------------------------------------------------------
+void Application::MenuItem::Clear()
+{
+	for (int i = 0; i < (int)Items.size(); i++)
+	{
+		MenuItem *item = Items[i];
+		item->Clear();
+	}
+
+	Items.clear();
+}
+//----------------------------------------------------------------------------
+Application::MenuItem *Application::MenuItem::GetMenuItem(
+	const std::string &parentAllName)
+{
+	for (int i = 0; i < (int)Items.size(); i++)
+	{
+		MenuItem *item = Items[i];
+
+		if (parentAllName == item->AllName)
+			return item;
+
+		MenuItem *subItem = item->GetMenuItem(parentAllName);
+		if (subItem)
+			return subItem;
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+Application::MenuItem *Application::GetMenuItem()
+{
+	return mItem;
 }
 //----------------------------------------------------------------------------

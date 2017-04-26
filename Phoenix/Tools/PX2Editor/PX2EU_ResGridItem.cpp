@@ -135,21 +135,7 @@ void EU_ResGridItem::_ButCallback(UIFrame *frame, UICallType type)
 				if ("txt" == outExt || "as" == outExt || "lua" == outExt
 					|| "xml" == outExt || "png"==outExt)
 				{
-					//if (!PX2_EDIT.IsAddedOpenedFile(pathFilename))
-					//{
-					//	PX2_EDIT.AddOpenedFile(pathFilename);
-					//}
-
-					Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::OpenRes);
-					ent->SetData<std::string>(pathFilename);
-					PX2_EW.BroadcastingLocalEvent(ent);
-				}
-				else if("px2obj" == outExt)
-				{
-					//if (!PX2_EDIT.IsAddedOpenedFile(pathFilename))
-					//{
-					//	PX2_EDIT.AddOpenedFile(pathFilename);
-					//}
+					PX2_EDIT.OpenResIn(pathFilename);
 				}
 			}
 		}

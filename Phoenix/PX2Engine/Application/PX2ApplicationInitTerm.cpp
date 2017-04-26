@@ -159,6 +159,10 @@ bool Application::Initlize()
 	mainCanvas->ComeInEventWorld();
 	mainCanvas->SetName("MainCanvas");
 
+	mItem = new0 MenuItem();
+	mItem->Name = "ExtendMenu";
+	mItem->TheType = Application::MenuItem::T_SUB;
+
 	RenderWindow *rw = PX2_GR.GetMainWindow();
 	rw->SetMainCanvas(mainCanvas);
 
@@ -234,16 +238,14 @@ GeneralServer *Application::CreateGeneralServer(int port,
 	if (mGeneralServer)
 	{
 		mGeneralServer->Shutdown();
-		delete0(mGeneralServer);
+		mGeneralServer = 0;
 	}
 
 	mGeneralServer = new0 GeneralServer(Server::ST_POLL, port, numMaxConnects,
 		numMaxMsgHandlers);
 
-	PX2_SC_LUA->SetUserTypePointer("PX2_SIMPLESERVER", "GeneralServer",
-		mGeneralServer);
-
-	mGeneralServer->Start();
+	PX2_SC_LUA->SetUserTypePointer("PX2_GS", "GeneralServer",
+		(GeneralServer*)mGeneralServer);
 
 	return mGeneralServer;
 }
@@ -251,6 +253,27 @@ GeneralServer *Application::CreateGeneralServer(int port,
 GeneralServer *Application::GetGeneralServer()
 {
 	return mGeneralServer;
+}
+//----------------------------------------------------------------------------
+GeneralClientConnector *Application::CreateGeneralClientConnector()
+{
+	if (mGeneralClientConnector)
+	{
+		mGeneralClientConnector->Disconnect();
+		mGeneralClientConnector = 0;
+	}
+
+	mGeneralClientConnector = new0 GeneralClientConnector();
+
+	PX2_SC_LUA->SetUserTypePointer("PX2_GCC", "GeneralClientConnector",
+		(GeneralClientConnector*)mGeneralClientConnector);
+
+	return mGeneralClientConnector;
+}
+//----------------------------------------------------------------------------
+GeneralClientConnector *Application::GetGeneralClientConnector()
+{
+	return mGeneralClientConnector;
 }
 //----------------------------------------------------------------------------
 void Application::WillEnterForeground(bool isFirstTime)
@@ -294,6 +317,8 @@ bool Application::Terminate()
 
 	PX2_SC_LUA->CallFile("Data/engine/scripts/lua/engine_end.lua");
 
+	mItem = 0;
+
 	mEngineCanvas = 0;
 
 	PX2_EW.Shutdown(true);
@@ -313,7 +338,13 @@ bool Application::Terminate()
 	if (mGeneralServer)
 	{
 		mGeneralServer->Shutdown();
-		delete0(mGeneralServer);
+		mGeneralServer = 0;
+	}
+
+	if (mGeneralClientConnector)
+	{
+		mGeneralClientConnector->Disconnect();
+		mGeneralClientConnector = 0;
 	}
 
 	if (mCreater)
@@ -509,6 +540,16 @@ bool Application::Terminate()
 	return true;
 }
 //----------------------------------------------------------------------------
+void Application::SetBoostMode(BoostMode mode)
+{
+	mBoostMode = mode;
+}
+//----------------------------------------------------------------------------
+Application::BoostMode Application::GetBoostMode() const
+{
+	return mBoostMode;
+}
+//----------------------------------------------------------------------------
 bool Application::LoadBoost(const std::string &filename)
 {
 	XMLData data;
@@ -518,36 +559,86 @@ bool Application::LoadBoost(const std::string &filename)
 	ResourceManager::GetSingleton().LoadBuffer(filename, bufferSize, buffer);
 	if (!buffer || bufferSize == 0) 
 	{
-		mBoostSize = Sizef(1136.0f, 600.0f);
+		mBoostInfo.BoostSize = Sizef(1136.0f, 600.0f);
 		return false;
 	}
 
 	if (data.LoadBuffer(buffer, bufferSize))
 	{
-		mBoostSize.Width = data.GetNodeByPath("config.var").AttributeToFloat("width");
-		mBoostSize.Height = data.GetNodeByPath("config.var").AttributeToFloat("height");
-		mBoostProjectName = data.GetNodeByPath("play.var").AttributeToString("projectname");
-		mPlayLogicMode = _StrToPlayLogicMode(data.GetNodeByPath("play.var").AttributeToString("playlogicmode"));
-		mIsShowInfo = data.GetNodeByPath("play.var").AttributeToBool("isshowinfo");
-
-		XMLNode nodePlugins = data.GetNodeByPath("plugins");
-		XMLNode nodePlugin = nodePlugins.IterateChild();
-		if (!nodePlugin.IsNull())
+		XMLNode rootNode = data.GetRootNode();
+		XMLNode nodeChild = rootNode.IterateChild();
+		while (!nodeChild.IsNull())
 		{
-			std::string name = nodePlugin.AttributeToString("name");
-			mPlugins.push_back(name);
-			nodePlugin = nodePlugins.IterateChild(nodePlugin);
-		}
-
-		for (int i = 0; i < (int)mPlugins.size(); i++)
-		{
-			const std::string &pluginName = mPlugins[i];
-			if (!pluginName.empty())
+			const std::string &name = nodeChild.GetName();
+			if ("app" == name)
 			{
-				std::string path = "PluginsCommon/" + pluginName + "/" + 
-					GetDllFileName(pluginName);
-				PX2_PLUGINMAN.Load(path);
+				mBoostInfo.BoostSize.Width = data.GetNodeByPath("app.config.var").AttributeToFloat("width");
+				mBoostInfo.BoostSize.Height = data.GetNodeByPath("app.config.var").AttributeToFloat("height");
+				mBoostInfo.ProjectName = data.GetNodeByPath("app.play.var").AttributeToString("projectname");
+				mBoostInfo.ThePlayLogicMode = _StrToPlayLogicMode(data.GetNodeByPath("app.play.var").AttributeToString("playlogicmode"));
+				mBoostInfo.IsShowInfo = data.GetNodeByPath("app.play.var").AttributeToBool("isshowinfo");
+
+				XMLNode nodePlugins = data.GetNodeByPath("app.plugins");
+				XMLNode nodePlugin = nodePlugins.IterateChild();
+				if (!nodePlugin.IsNull())
+				{
+					std::string name = nodePlugin.AttributeToString("name");
+					mBoostInfo.Plugins.push_back(name);
+
+					nodePlugin = nodePlugins.IterateChild(nodePlugin);
+				}
+
+				if (BM_APP == mBoostMode)
+				{
+					for (int i = 0; i < (int)mBoostInfo.Plugins.size(); i++)
+					{
+						const std::string &pluginName = mBoostInfo.Plugins[i];
+						if (!pluginName.empty())
+						{
+							std::string path = "PluginsCommon/" + pluginName + "/" +
+								GetDllFileName(pluginName);
+							PX2_PLUGINMAN.Load(path);
+						}
+					}
+				}
 			}
+			else if ("server" == name)
+			{
+				AppBoostInfo info;
+
+				XMLNode nodePlay = nodeChild.GetChild("play");
+				info.ProjectName = nodePlay.GetChild("var").AttributeToString("projectname");
+				info.Port = nodePlay.GetChild("var").AttributeToInt("port");
+				info.NumMaxConnection = nodePlay.GetChild("var").AttributeToInt("nummaxconnection");
+
+				XMLNode nodePlugins = nodeChild.GetChild("plugins");
+				XMLNode nodePlugin = nodePlugins.IterateChild();
+				if (!nodePlugin.IsNull())
+				{
+					std::string name = nodePlugin.AttributeToString("name");
+					info.Plugins.push_back(name);
+
+					nodePlugin = nodePlugins.IterateChild(nodePlugin);
+				}
+
+				mBoostServerInfo = info;
+
+				if (BM_SERVER == mBoostMode)
+				{
+					for (int i = 0; i < (int)mBoostServerInfo.Plugins.size(); i++)
+					{
+						const std::string &pluginName = mBoostServerInfo.Plugins[i];
+						if (!pluginName.empty())
+						{
+							std::string path = "PluginsCommon/" + pluginName + "/" +
+								GetDllFileName(pluginName);
+							PX2_PLUGINMAN.Load(path);
+						}
+					}
+				}
+			}
+
+			nodeChild = rootNode.IterateChild(nodeChild);
 		}
 
 		Plugin::ExecuteInit();
@@ -560,50 +651,50 @@ bool Application::LoadBoost(const std::string &filename)
 //----------------------------------------------------------------------------
 std::string Application::GetPlayLogicModeStr() const
 {
-	if (PLM_SIMPLE == mPlayLogicMode)
+	if (AppBoostInfo::PLM_SIMPLE == mBoostInfo.ThePlayLogicMode)
 		return "simple";
 
 	return "logic";
 }
 //----------------------------------------------------------------------------
-Application::PlayLogicMode Application::_StrToPlayLogicMode(
+AppBoostInfo::PlayLogicMode Application::_StrToPlayLogicMode(
 	const std::string &str)
 {
 	if ("simple" == str)
-		Application::PLM_SIMPLE;
+		AppBoostInfo::PLM_SIMPLE;
 
-	return PLM_LOGIC;
+	return AppBoostInfo::PLM_LOGIC;
 }
 //----------------------------------------------------------------------------
 bool Application::IsShowInfo() const
 {
-	return mIsShowInfo;
+	return mBoostInfo.IsShowInfo;
 }
 //----------------------------------------------------------------------------
 void Application::SetBoostProjectName(const std::string &boostProjectName)
 {
-	mBoostProjectName = boostProjectName;
+	mBoostInfo.ProjectName = boostProjectName;
 }
 //----------------------------------------------------------------------------
 void Application::SetBoostSize(const Sizef &size)
 {
-	mBoostSize = size;
+	mBoostInfo.BoostSize = size;
 }
 //----------------------------------------------------------------------------
 void Application::SetBoostSize(float width, float height)
 {
-	mBoostSize.Width = width;
-	mBoostSize.Height = height;
+	mBoostInfo.BoostSize.Width = width;
+	mBoostInfo.BoostSize.Height = height;
 }
 //----------------------------------------------------------------------------
-void Application::SetPlayLogicMode(PlayLogicMode mode)
+void Application::SetPlayLogicMode(AppBoostInfo::PlayLogicMode mode)
 {
-	mPlayLogicMode = mode;
+	mBoostInfo.ThePlayLogicMode = mode;
 }
 //----------------------------------------------------------------------------
 void Application::SetShowInfo(bool show)
 {
-	mIsShowInfo = show;
+	mBoostInfo.IsShowInfo = show;
 }
 //----------------------------------------------------------------------------
 bool Application::WriteBoost()
@@ -612,21 +703,26 @@ bool Application::WriteBoost()
 
 	data.Create();
 
-	XMLNode boostNode = data.NewChild("boost");
-	boostNode.SetAttributeString("name", "boost");
+	//XMLNode boostNode = data.NewChild("boost");
+	//boostNode.SetAttributeString("name", "boost");
 
-	XMLNode configNode = boostNode.NewChild("config");
+	//XMLNode configNode = boostNode.NewChild("config");
 
-	XMLNode varNode_config = configNode.NewChild("var");
-	varNode_config.SetAttributeInt("width", (int)mBoostSize.Width);
-	varNode_config.SetAttributeInt("height", (int)mBoostSize.Height);
+	//XMLNode varNode_config = configNode.NewChild("var");
+	//varNode_config.SetAttributeInt("width", (int)mBoostSize.Width);
+	//varNode_config.SetAttributeInt("height", (int)mBoostSize.Height);
 
-	XMLNode playNode = boostNode.NewChild("play");
-	XMLNode varNode_play = playNode.NewChild("var");
-	varNode_play.SetAttributeString("projectname", mBoostProjectName);
-	varNode_play.SetAttributeString("playlogicmode", GetPlayLogicModeStr());
+	//XMLNode playNode = boostNode.NewChild("play");
+	//XMLNode varNode_play = playNode.NewChild("var");
+	//varNode_play.SetAttributeString("projectname", mBoostProjectName);
+	//varNode_play.SetAttributeString("playlogicmode", GetPlayLogicModeStr());
 
 	return data.SaveFile("Data/boost.xml");
+}
+//----------------------------------------------------------------------------
+AppBoostInfo &Application::GetBoostServerInfo()
+{
+	return mBoostServerInfo;
 }
 //----------------------------------------------------------------------------
 void Application::SetScreenSize(const Sizef &screenSize)

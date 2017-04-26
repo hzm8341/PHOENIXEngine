@@ -620,6 +620,10 @@ xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
 xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
+
 xcopy /DY .\Application\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Application\*.inl ..\PX2SDK\Include
@@ -706,6 +710,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application\PX2AmbientRegionController.hpp" />
+    <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
     <ClInclude Include="Application\PX2Application.hpp" />
     <ClInclude Include="Application\PX2Applications.hpp" />
     <ClInclude Include="Application\PX2CameraController.hpp" />
@@ -714,6 +719,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Application\PX2EngineEventHandler.hpp" />
     <ClInclude Include="Application\PX2EngineSceneCanvas.hpp" />
     <ClInclude Include="Application\PX2EngineUICanvas.hpp" />
+    <ClInclude Include="Application\PX2GeneralClientConnector.hpp" />
+    <ClInclude Include="Application\PX2GeneralServer.hpp" />
     <ClInclude Include="Application\PX2ObjCast.hpp" />
     <ClInclude Include="Application\PX2Project.hpp" />
     <ClInclude Include="Application\PX2ProjectEvent.hpp" />
@@ -722,7 +729,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Application\PX2RedoUndo.hpp" />
     <ClInclude Include="Application\PX2RUStateManager.hpp" />
     <ClInclude Include="Application\PX2Scene.hpp" />
-    <ClInclude Include="Application\PX2GeneralServer.hpp" />
     <ClInclude Include="Application\PX2TriggerController.hpp" />
     <ClInclude Include="Application\PX2UI.hpp" />
     <ClInclude Include="Core\PX2Any.hpp" />
@@ -1239,6 +1245,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="UI\PX2UIButton.hpp" />
     <ClInclude Include="UI\PX2UIButtonBase.hpp" />
     <ClInclude Include="UI\PX2UICheckButton.hpp" />
+    <ClInclude Include="UI\PX2UICollapseItem.hpp" />
+    <ClInclude Include="UI\PX2UICollapsePanel.hpp" />
     <ClInclude Include="UI\PX2UIColorSelect.hpp" />
     <ClInclude Include="UI\PX2UIComboBox.hpp" />
     <ClInclude Include="UI\PX2UIDefine.hpp" />
@@ -1587,6 +1595,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\PX2AmbientRegionController.cpp" />
+    <ClCompile Include="Application\PX2AppBoostInfo.cpp" />
     <ClCompile Include="Application\PX2AppliactionPlay.cpp" />
     <ClCompile Include="Application\PX2Application.cpp" />
     <ClCompile Include="Application\PX2ApplicationInitTerm.cpp" />
@@ -1597,6 +1606,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2EngineEventHandler.cpp" />
     <ClCompile Include="Application\PX2EngineSceneCanvas.cpp" />
     <ClCompile Include="Application\PX2EngineUICanvas.cpp" />
+    <ClCompile Include="Application\PX2GeneralClientConnector.cpp" />
+    <ClCompile Include="Application\PX2GeneralServer.cpp" />
     <ClCompile Include="Application\PX2ObjCast.cpp" />
     <ClCompile Include="Application\PX2Project.cpp" />
     <ClCompile Include="Application\PX2ProjectEvent.cpp" />
@@ -1605,7 +1616,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2RedoUndo.cpp" />
     <ClCompile Include="Application\PX2RUStateManager.cpp" />
     <ClCompile Include="Application\PX2Scene.cpp" />
-    <ClCompile Include="Application\PX2GeneralServer.cpp" />
     <ClCompile Include="Application\PX2TriggerController.cpp" />
     <ClCompile Include="Application\PX2UI.cpp" />
     <ClCompile Include="Core\PX2Ascii.cpp" />
@@ -2018,6 +2028,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="UI\PX2UIButton.cpp" />
     <ClCompile Include="UI\PX2UIButtonBase.cpp" />
     <ClCompile Include="UI\PX2UICheckButton.cpp" />
+    <ClCompile Include="UI\PX2UICollapseItem.cpp" />
+    <ClCompile Include="UI\PX2UICollapsePanel.cpp" />
     <ClCompile Include="UI\PX2UIColorSelect.cpp" />
     <ClCompile Include="UI\PX2UIComboBox.cpp" />
     <ClCompile Include="UI\PX2UIDefine.cpp" />

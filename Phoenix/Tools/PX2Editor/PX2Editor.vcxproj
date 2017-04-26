@@ -57,6 +57,7 @@
     <ClCompile Include="PX2EU_CanvasTimeLineEdit.cpp" />
     <ClCompile Include="PX2EU_CF_BluePrint.cpp" />
     <ClCompile Include="PX2EU_ConsoleFrame.cpp" />
+    <ClCompile Include="PX2EU_ContentFrame.cpp" />
     <ClCompile Include="PX2EU_CreateFrame.cpp" />
     <ClCompile Include="PX2EU_EditFrame.cpp" />
     <ClCompile Include="PX2EU_InspectorFrameRes.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="PX2EU_CanvasTimeLineEdit.hpp" />
     <ClInclude Include="PX2EU_CF_BluePrint.hpp" />
     <ClInclude Include="PX2EU_ConsoleFrame.hpp" />
+    <ClInclude Include="PX2EU_ContentFrame.hpp" />
     <ClInclude Include="PX2EU_CreateFrame.hpp" />
     <ClInclude Include="PX2EU_EditFrame.hpp" />
     <ClInclude Include="PX2EU_InspectorFrameRes.hpp" />

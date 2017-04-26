@@ -27,7 +27,7 @@ int main(int numArguments, char** arguments)
 
 		PkgInfoManager::GetSingleton().Save("pkg.xml");
 
-		PkgInfoManager::GetSingleton().GenToASFile(genFilename);
+		//PkgInfoManager::GetSingleton().GenToASFile(genFilename);
 
 		PkgInfoManager::GetSingleton().Ternimate();
 	}

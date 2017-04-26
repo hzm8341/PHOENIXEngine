@@ -31,6 +31,8 @@ mButtonState(BS_NORMAL)
 	mIsPicBoxSizeSameWithButton = true;
 
 	SetWidget(true);
+
+	RegistToScriptSystem();
 }
 //----------------------------------------------------------------------------
 UIButtonBase::~UIButtonBase()
@@ -444,6 +446,8 @@ UIText *UIButtonBase::GetText()
 //----------------------------------------------------------------------------
 void UIButtonBase::OnSizeChanged()
 {
+	UIFrame::OnSizeChanged();
+
 	if (mIsPicBoxSizeSameWithButton)
 	{
 		if (mPicBoxNormal)
@@ -485,27 +489,6 @@ void UIButtonBase::OnPropertyChanged(const PropertyObject &obj)
 	{
 		SetSize(*Any_Cast<Sizef>(&obj.Data));
 	}
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
-// Functions
-//----------------------------------------------------------------------------
-FunObject *UIButtonBase::RegistClassFunctions()
-{
-	FunObject *parentFunObj = UIFrame::RegistClassFunctions();
-
-	FunObject *thisFunObj = parentFunObj->GetAddClass("UIButtonBase");
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "CreateAddText";
-		funObj->AddInput("in_but", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddInput("in_textstr", FPT_STRING, std::string("Button"));
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	return thisFunObj;
 }
 //----------------------------------------------------------------------------
 
@@ -566,6 +549,8 @@ void UIButtonBase::Link(InStream& source)
 void UIButtonBase::PostLink()
 {
 	UIFrame::PostLink();
+
+	RegistToScriptSystem();
 }
 //----------------------------------------------------------------------------
 bool UIButtonBase::Register(OutStream& target) const

@@ -37,8 +37,21 @@ namespace PX2
 			int numMaxConnects, int numMaxMsgHandlers);
 		virtual ~GeneralServer();
 
-		void SendString(int clientid, const std::string &str);
 		void AddCallback(GeneralServerCallback callBack);
+
+		void SendString(int clientid, const std::string &str);
+
+		bool IsHasOnConnectCallback(const std::string &callback) const;
+		void AddOnConnectCallback(const std::string &callback);
+		void RemoveOnConnectCallback(const std::string &callback);
+
+		bool IsHasOnDisConnectCallback(const std::string &callback) const;
+		void AddOnDisconnectCallback(const std::string &callback);
+		void RemoveOnDisconnectCallback(const std::string &callback);
+
+		bool IsHasOnRecvCallback(const std::string &callback) const;
+		void AddOnRecvCallback(const std::string &callback);
+		void RemoveOnRecvCallback(const std::string &callback);
 
 	protected:
 		virtual int OnConnect(unsigned int clientid);
@@ -46,6 +59,10 @@ namespace PX2
 		int OnString(unsigned int clientid, const void *pbuffer, int buflen);
 
 		std::vector<GeneralServerCallback> mCallbacks;
+
+		std::vector<std::string> mOnConnectCallbacks;
+		std::vector<std::string> mOnDisconnectCallbacks;
+		std::vector<std::string> mOnRecvCallbacks;
 	};
 
 #define  PX2_SIMPLE_SERVER GeneralServer::GetSingleton()

@@ -145,7 +145,7 @@ int SocketImpl::ConnectNB(const SocketAddress& address)
 	return rc;
 }
 //----------------------------------------------------------------------------
-void SocketImpl::Bind(const SocketAddress& address, bool reuseAddress)
+int SocketImpl::Bind(const SocketAddress& address, bool reuseAddress)
 {
 	if (mSocket == PX2_INVALID_SOCKET)
 	{
@@ -164,9 +164,11 @@ void SocketImpl::Bind(const SocketAddress& address, bool reuseAddress)
 	{
 		NetError::Error(address.ToString());
 	}
+
+	return rc;
 }
 //----------------------------------------------------------------------------
-void SocketImpl::Bind6(const SocketAddress& address, bool reuseAddress, 
+int SocketImpl::Bind6(const SocketAddress& address, bool reuseAddress,
 	bool ipV6Only)
 {
 #if defined(PX2_HAVE_IPV6)
@@ -200,6 +202,8 @@ void SocketImpl::Bind6(const SocketAddress& address, bool reuseAddress,
 #else
 	assertion(false, "No IPv6 support available.\n");
 #endif
+
+	return rc;
 }
 //----------------------------------------------------------------------------
 void SocketImpl::Listen (int backlog)

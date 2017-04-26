@@ -31,15 +31,17 @@ mIsPublish(false)
 
 	mLProject = new0 LProject();
 
-	mItem = new0 MenuItem();
-	mItem->TheType = Project::MenuItem::T_SUB;
-
 	ComeInEventWorld();
 }
 //----------------------------------------------------------------------------
 Project::~Project()
 {
 	GoOutEventWorld();
+}
+//----------------------------------------------------------------------------
+void Project::SetName(const std::string &name)
+{
+	Object::SetName(name);
 }
 //----------------------------------------------------------------------------
 void Project::Destory()
@@ -221,8 +223,6 @@ bool Project::Load(const std::string &filename)
 
 				Sizef size = Sizef((float)width, (float)height);
 				SetName(name);
-				mItem->Name = name;
-				mItem->AllName = name;
 				SetSize(size);
 				SetBackgroundColor(color);
 				SetProjBackgroundColor(projcolor);
@@ -464,104 +464,3 @@ void Project::OnPropertyChanged(const PropertyObject &obj)
 			progBackColor[2], 1.0f);
 	}
 }
-//----------------------------------------------------------------------------
-void Project::ProjectMenu_Clear()
-{
-	mItem->Name = GetName();
-}
-//----------------------------------------------------------------------------
-void Project::ProjectMenu_AddSubItemCatalogue(
-	const std::string &parentAllName,
-	const std::string &name,
-	const std::string &title)
-{
-	MenuItem *parentItem = 0;
-
-	if (!parentAllName.empty())
-	{
-		parentItem = mItem->GetMenuItem(parentAllName);
-	}
-	else
-	{
-		parentItem = mItem;
-	}
-
-	if (parentItem)
-	{
-		MenuItem *menuItem = new0 MenuItem();
-		menuItem->TheType = MenuItem::T_SUB;
-		menuItem->Name = name;
-		menuItem->Title = title;
-		menuItem->AllName = parentItem->AllName + name;
-
-		parentItem->Items.push_back(menuItem);
-	}
-}
-//----------------------------------------------------------------------------
-void Project::ProjectMenu_AddItem(
-	const std::string &parentAllName,
-	const std::string &name,
-	const std::string &title,
-	const std::string &script)
-{
-	MenuItem *parentItem = 0;
-
-	if (!parentAllName.empty())
-	{
-		parentItem = mItem->GetMenuItem(parentAllName);
-	}
-	else
-	{
-		parentItem = mItem;
-	}
-
-	if (parentItem)
-	{
-		MenuItem *menuItem = new0 MenuItem();
-		menuItem->TheType = MenuItem::T_ITEM;
-		menuItem->Name = name;
-		menuItem->Title = title;
-		menuItem->Script = script;
-		menuItem->AllName = parentItem->AllName + name;
-
-		parentItem->Items.push_back(menuItem);
-	}
-}
-//----------------------------------------------------------------------------
-Project::MenuItem::MenuItem()
-{
-	TheType = T_ITEM;
-}
-//----------------------------------------------------------------------------
-Project::MenuItem::~MenuItem()
-{
-}
-//----------------------------------------------------------------------------
-void Project::MenuItem::Clear()
-{
-	for (int i = 0; i < (int)Items.size(); i++)
-	{
-		MenuItem *item = Items[i];
-		item->Clear();
-	}
-
-	Items.clear();
-}
-//----------------------------------------------------------------------------
-Project::MenuItem *Project::MenuItem::GetMenuItem(const std::string &parentAllName)
-{
-	for (int i = 0; i < (int)Items.size(); i++)
-	{
-		MenuItem *item = Items[i];
-
-		if (parentAllName == item->AllName)
-			return item;
-
-		MenuItem *subItem = item->GetMenuItem(parentAllName);
-		if (subItem)
-			return subItem;
-	}
-
-	return 0;
-}
-//----------------------------------------------------------------------------

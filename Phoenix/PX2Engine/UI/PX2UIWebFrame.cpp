@@ -327,6 +327,9 @@ protected:
 };
 #endif
 
+#if defined PX2_USE_AWESOMIUM
+Awesomium::WebCore *UIWebFrame::msWebCore = 0;
+#endif
 //----------------------------------------------------------------------------
 int UIWebFrame::mNumberOfViews = 0;
 static std::map<int, UIWebFrame*> sWebViews;
@@ -340,14 +343,14 @@ mViewTag(-1),
 mIsTexNeedUpdate(true),
 mIsUpdateToTex(false),
 mIsShowNativeView(false),
-mWebCore(0)
+mIsAcceptKeyboardInput(true)
 {
 	mImagePicBox = new0 UIFPicBox();
 	AttachChild(mImagePicBox);
+	mImagePicBox->LocalTransform.SetTranslateY(-1.0f);
 	mImagePicBox->SetAnchorHor(0.0f, 1.0f);
 	mImagePicBox->SetAnchorVer(0.0, 1.0f);
 	mImagePicBox->GetUIPicBox()->SetTexture("Data/engine/block.png");
-	mImagePicBox->GetUIPicBox()->SetOnDrawCallback(_OnDrawCallback);
 	mImagePicBox->GetUIPicBox()->SetUserData("WebFrame", this);
 	Material *mtl = mImagePicBox->GetUIPicBox()->GetMaterialInstance()->GetMaterial();
 	mtl->GetPixelShader(0, 0)->SetFilter(0, Shader::SF_LINEAR);
@@ -355,26 +358,27 @@ mWebCore(0)
 	mNumberOfViews++;
 
 #if defined (__ANDROID__)
+	mImagePicBox->GetUIPicBox()->SetOnDrawCallback(_OnDrawCallback);
 	mViewTag = createWebViewJNI();
 	sWebViews[mViewTag] = this;
 #elif defined PX2_USE_AWESOMIUM
-	mWebCore = Awesomium::WebCore::instance();
-	if (!mWebCore)
+	if (!msWebCore)
 	{
 		WebConfig config;
-		mWebCore = WebCore::Initialize(config);
-	}
-	else
-	{
-		assertion(false, "web core initlize failed!");
-		PX2_LOG_ERROR("web core initlize failed!");
+		msWebCore = WebCore::Initialize(config);
+
+		if (!msWebCore)
+		{
+			assertion(false, "web core initlize failed!");
+			PX2_LOG_ERROR("web core initlize failed!");
+		}
 	}
 
 	WebFrameHandler *handler = new WebFrameHandler();
 	handler->SetWebFrame(this);
 	mObject = handler;
 
-	mWebView = mWebCore->CreateWebView(512, 512);
+	mWebView = msWebCore->CreateWebView(512, 512);
 	mWebView->set_js_method_handler(handler);
 	mWebView->set_load_listener(handler);
 	mBitmapSurface = 0;
@@ -400,13 +404,14 @@ UIWebFrame::~UIWebFrame()
 
 	mWebView->Destroy();
 
-	if (mWebCore && mNumberOfViews == 0)
+	if (msWebCore && mNumberOfViews == 0)
 	{
-		mWebCore->Shutdown();
+		msWebCore->Shutdown();
+		msWebCore = 0;
 	}
 
 	mWebView = 0;
-	mWebCore = 0;
+	msWebCore = 0;
 	mBitmapSurface = 0;
 #endif
 }
@@ -428,6 +433,16 @@ void UIWebFrame::SetUpdateToTex(bool updateToTex)
 bool UIWebFrame::IsUpdateToTex() const
 {
 	return mIsUpdateToTex;
+}
+//----------------------------------------------------------------------------
+void UIWebFrame::SetAcceptKeyboardInput(bool acpt)
+{
+	mIsAcceptKeyboardInput = acpt;
+}
+//----------------------------------------------------------------------------
+bool UIWebFrame::IsAcceptKeyboardInput() const
+{
+	return mIsAcceptKeyboardInput;
 }
 //----------------------------------------------------------------------------
 bool UIWebFrame::IsShowNativeView() const
@@ -452,6 +467,7 @@ void UIWebFrame::LoadURL(const std::string &url)
 	loadUrlJNI(mViewTag, url);
 #elif defined PX2_USE_AWESOMIUM
 	mWebView->LoadURL(WebURL(WSLit(url.c_str())));
+	mIsTexNeedUpdate = true;
 #else
 	PX2_UNUSED(url);
 #endif
@@ -565,9 +581,9 @@ std::string UIWebFrame::EvaluateJS(const std::string &js)
 		WebString::CreateFromUTF8(strEmpty.c_str(), 0));
 
 	return "";
-#endif
-
+#else
 	return "";
+#endif
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::SetScalesPageToFit(const bool scalesPageToFit)
@@ -584,21 +600,23 @@ void UIWebFrame::OnEvent(Event *ent)
 	UIFrame::OnEvent(ent);
 
 #if defined PX2_USE_AWESOMIUM
-
-	if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyPressed))
+	if (mIsAcceptKeyboardInput)
 	{
-		InputEventData ied = ent->GetData<InputEventData>();
-		OnKeyCodePressed(ied.KCode);
-	}
-	else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyReleased))
-	{
-		InputEventData ied = ent->GetData<InputEventData>();
-		OnKeyCodeReleased(ied.KCode);
-	}
-	else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyChar))
-	{
-		InputEventData ied = ent->GetData<InputEventData>();
-		OnKeyCodeChar(ied.KChar);
+		if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyPressed))
+		{
+			InputEventData ied = ent->GetData<InputEventData>();
+			OnKeyCodePressed(ied.KCode);
+		}
+		else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyReleased))
+		{
+			InputEventData ied = ent->GetData<InputEventData>();
+			OnKeyCodeReleased(ied.KCode);
+		}
+		else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyChar))
+		{
+			InputEventData ied = ent->GetData<InputEventData>();
+			OnKeyCodeChar(ied.KChar);
+		}
 	}
 
 #endif
@@ -652,13 +670,14 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 		}
 	}
 
-	if (isNeedReGenTex)
+	if (isNeedReGenTex && rect.Width()>0 && rect.Height()>0)
 	{
 		mWebViewImageData.clear();
 		mTex2D = new0 Texture2D(Texture::TF_A8R8G8B8, (int)rect.Width(), (int)rect.Height(), 1);
 		mImagePicBox->GetUIPicBox()->SetTexture(mTex2D);
 
 		isNeedReGenTex = false;
+		mIsUpdateToTex = true;
 	}
 
 #if defined (__ANDROID__) 
@@ -674,7 +693,7 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	}
 
 #elif defined PX2_USE_AWESOMIUM
-	mWebCore->Update();
+	msWebCore->Update();
 #endif
 
 	if (mIsUpdateToTex)
@@ -855,6 +874,7 @@ void UIWebFrame::OnFinishLoading(const std::string &url)
 {
 	PX2_LOG_INFO("OnFinishLoading %s", url.c_str());
 	SetScalesPageToFit(true);
+	mIsTexNeedUpdate = true;
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::OnFailLoading(const std::string &url)
@@ -1130,7 +1150,7 @@ mIsUpdateToTex(false),
 mIsShowNativeView(false)
 {
 #if defined PX2_USE_AWESOMIUM
-	mWebCore = 0;
+	msWebCore = 0;
 	mWebView = 0;
 	mBitmapSurface = 0;
 #endif

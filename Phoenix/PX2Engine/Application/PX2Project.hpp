@@ -25,6 +25,8 @@ namespace PX2
 		Project();
 		virtual ~Project();
 
+		virtual void SetName(const std::string &name);
+
 		// 使用该接口删除Project
 		static void Destory();
 
@@ -114,50 +116,6 @@ namespace PX2
 
 	protected:
 		float mEdit_UICameraPercent;
-
-		// menus
-	public: 
-		void ProjectMenu_Clear();
-		void ProjectMenu_AddSubItemCatalogue(
-			const std::string &parentAllName,
-			const std::string &name,
-			const std::string &title);
-		void ProjectMenu_AddItem(
-			const std::string &parentAllName,
-			const std::string &name,
-			const std::string &title,
-			const std::string &script);
-
-		class MenuItem
-		{
-		public:
-			MenuItem();
-			~MenuItem();
-
-			void Clear();
-
-			enum Type
-			{
-				T_SUB,
-				T_ITEM,
-				T_MAX_TYPE
-			};
-			Type TheType;
-
-			std::string AllName;
-
-			std::string Name;
-			std::string Title;
-			std::string Script;
-
-			MenuItem *GetMenuItem(const std::string &parentAllName);
-			std::vector<Pointer0<MenuItem> > Items;
-		};
-
-		MenuItem *GetMenuItem();
-
-	protected:
-		Pointer0<MenuItem> mItem;
 	};
 
 #define PX2_PROJ Project::GetSingleton()

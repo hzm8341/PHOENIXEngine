@@ -179,9 +179,9 @@ int ClientConnector::_InternalConnectNB()
 	}
 }
 //----------------------------------------------------------------------------
-int ClientConnector::ConnectB(const std::string &ip, int16_t port)
+int ClientConnector::ConnectB(const std::string &ip, int port)
 {
-	SocketAddress sa(ip, port);
+	SocketAddress sa(ip, (int16_t)port);
 	return ConnectB(sa);
 }
 //----------------------------------------------------------------------------
@@ -192,9 +192,9 @@ int ClientConnector::ConnectB(const SocketAddress &addr)
 	return _InternalConnectB();
 }
 //----------------------------------------------------------------------------
-int ClientConnector::ConnectNB(const std::string &ip, int16_t port)
+int ClientConnector::ConnectNB(const std::string &ip, int port)
 {
-	SocketAddress sa(ip, port);
+	SocketAddress sa(ip, (int16_t)port);
 	return ConnectNB(sa);
 }
 //----------------------------------------------------------------------------

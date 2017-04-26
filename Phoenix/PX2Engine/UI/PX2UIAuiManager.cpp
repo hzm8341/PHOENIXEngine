@@ -3,6 +3,7 @@
 #include "PX2UIAuiManager.hpp"
 #include "PX2UISkinManager.hpp"
 #include "PX2StringHelp.hpp"
+#include "PX2GraphicsRoot.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -19,8 +20,14 @@ UIAuiManager::~UIAuiManager()
 void UIAuiManager::Clear()
 {
 	mUIAuiFrames.clear();
-
 	mAuiContentFrames.clear();
+
+	RenderWindow *rw = PX2_GR.GetMainWindow();
+	Canvas *canvas = rw->GetMainCanvas();
+	if (canvas)
+	{
+		canvas->DetachAllChildren();
+	}
 }
 //----------------------------------------------------------------------------
 std::string UIAuiManager::GenName(const std::string &tag)

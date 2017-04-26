@@ -150,7 +150,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>Block64D</TargetName>
+    <TargetName>General64D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -174,7 +174,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>Block64</TargetName>
+    <TargetName>General64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -249,7 +249,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PX2_ENGINE_DLL_IMPORT;B_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PX2_ENGINE_DLL_IMPORT;GENERAL_DLL_EXPORT;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2Engine\Unity\LuaPlus;..\..\..\PX2SDK\Include;..\..\..\ThirdPartiesLibs\protobuf-3.1.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -260,7 +260,7 @@
       <AdditionalDependencies>PX2Engine64D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY "$(TargetPath)" ..\..\..\..\Bin\Data\Block\</Command>
+      <Command>xcopy /DY "$(TargetPath)"  ..\..\..\..\Bin\Data\General\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|x64'">
@@ -336,7 +336,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PX2_ENGINE_DLL_IMPORT;B_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PX2_ENGINE_DLL_IMPORT;GENERAL_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2Engine\Unity\LuaPlus;..\..\..\PX2SDK\Include;..\..\..\ThirdPartiesLibs\protobuf-3.1.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -349,7 +349,7 @@
       <AdditionalDependencies>PX2Engine64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY "$(TargetPath)" ..\..\..\..\Bin\Data\Block\</Command>
+      <Command>xcopy /DY "$(TargetPath)"  ..\..\..\..\Bin\Data\General\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

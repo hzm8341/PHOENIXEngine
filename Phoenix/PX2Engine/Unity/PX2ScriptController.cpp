@@ -30,6 +30,13 @@ void ScriptController::SetFileClass(const std::string &filename,
 	mClassName = className;
 }
 //---------------------------------------------------------------------------
+void ScriptController::SetStringClass(const std::string &str,
+	const std::string &className)
+{
+	mString = str;
+	mClassName = className;
+}
+//---------------------------------------------------------------------------
 const std::string &ScriptController::GetFilename() const
 {
 	return mFilename;
@@ -201,6 +208,7 @@ void ScriptController::Load(InStream& source)
 	mOneFrameSeconds = 1.0f / (float)mNumFixUpdatePerSeconds;
 
 	source.ReadString(mFilename);
+	source.ReadString(mString);
 	source.ReadString(mClassName);
 
 	PX2_END_DEBUG_STREAM_LOAD(ScriptController, source);
@@ -235,6 +243,7 @@ void ScriptController::Save(OutStream& target) const
 	target.Write(mNumFixUpdatePerSeconds);
 
 	target.WriteString(mFilename);
+	target.WriteString(mString);
 	target.WriteString(mClassName);
 
 	PX2_END_DEBUG_STREAM_SAVE(ScriptController, target);
@@ -248,6 +257,7 @@ int ScriptController::GetStreamingSize(Stream &stream) const
 	size += sizeof(mNumFixUpdatePerSeconds);
 
 	size += PX2_STRINGSIZE(mFilename);
+	size += PX2_STRINGSIZE(mString);
 	size += PX2_STRINGSIZE(mClassName);
 
 	return size;

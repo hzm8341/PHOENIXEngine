@@ -350,7 +350,7 @@ void N_Frame::OnEvent(Event *event)
 }
 //----------------------------------------------------------------------------
 void _CreateScriptFile(const std::string &pathName, const std::string &subDir,
-	const std::string &scFileName)
+	const std::string &scFileName, const std::string &defFunName)
 {
 	std::string scriptPath = "Data/" + pathName + subDir + scFileName;
 	std::ofstream outputFile;
@@ -373,14 +373,11 @@ void _CreateScriptFile(const std::string &pathName, const std::string &subDir,
 	std::string scriptContent;
 	if ("lua" == outExt)
 	{
-		scriptContent += "function start() \n";
+		scriptContent += "function pre" + defFunName + "() \n";
+		scriptContent += "end\n";
+
+		scriptContent += "function " + defFunName + "() \n";
 		scriptContent += "end";
-	}
-	else if ("as" == outExt)
-	{
-		scriptContent += "void start() \n";
-		scriptContent += "{\n";
-		scriptContent += "}\n";
 	}
 	outputFile << scriptContent;
 
@@ -418,12 +415,18 @@ void N_Frame::DoNewProject()
 			PX2_RM.CreateFloder("Data/", pathName + "scenes/");
 			PX2_RM.CreateFloder("Data/", pathName + "scripts/");
 			PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/");
-			PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/bp/");
 			PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/editor/");
+			PX2_RM.CreateFloder("Data/", pathName + "scripts_server/");
+			PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/");
+			PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/editor/");
 
-			_CreateScriptFile(pathName, "scripts/lua/", "start.lua");
-			_CreateScriptFile(pathName, "scripts/lua/", "end.lua");
-			_CreateScriptFile(pathName, "scripts/lua/editor/", "editor.lua");
+			_CreateScriptFile(pathName, "scripts/lua/", "play.lua", "play");
+			_CreateScriptFile(pathName, "scripts/lua/", "stop.lua", "stop");
+			_CreateScriptFile(pathName, "scripts/lua/editor/", "editor.lua", "editorplay");
+
+			_CreateScriptFile(pathName, "scripts_server/lua/", "play.lua", "play");
+			_CreateScriptFile(pathName, "scripts_server/lua/", "stop.lua", "stop");
+			_CreateScriptFile(pathName, "scripts_server/lua/editor/", "editor.lua", "editorstop");
 
 			std::string path = "Data/" + pathName + name + ".px2proj";
 			PX2_APP.NewProject(path, name, screenOriention, width,
@@ -634,6 +637,7 @@ void N_Frame::OnTimer(wxTimerEvent& e)
 		if (mIsNewProject)
 		{
 			DoNewProject();
+			DoSaveProject();
 		}
 		if (mIsOpenProject)
 		{

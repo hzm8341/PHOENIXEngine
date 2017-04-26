@@ -13,7 +13,6 @@ namespace PX2
 	class PX2_ENGINE_ITEM UIRound : public UIFrame
 	{
 		PX2_DECLARE_RTTI;
-		PX2_DECLARE_FUNCTION;
 		PX2_NEW(UIRound);
 		PX2_DECLARE_STREAM(UIRound);
 

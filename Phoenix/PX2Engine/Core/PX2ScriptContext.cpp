@@ -70,6 +70,27 @@ bool ScriptContext::CallFunction(const std::string &funName,
 	return false;
 }
 //----------------------------------------------------------------------------
+bool ScriptContext::CallFunction(const std::string &funName,
+	Object *obj0, const std::string &paramStr)
+{
+	PX2_UNUSED(funName);
+	PX2_UNUSED(obj0);
+	PX2_UNUSED(paramStr);
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool ScriptContext::CallFunction(const std::string &funName,
+	Object *obj0, int iData, const std::string &paramStr)
+{
+	PX2_UNUSED(funName);
+	PX2_UNUSED(obj0);
+	PX2_UNUSED(iData);
+	PX2_UNUSED(paramStr);
+
+	return false;
+}
+//----------------------------------------------------------------------------
 bool ScriptContext::CallObjectFunction(const std::string &funName,
 	Object *paramObj, const char *format, ...)
 {

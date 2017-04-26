@@ -500,26 +500,3 @@ void Transform::Invert3x3 (const HMatrix& mat, HMatrix& invMat)
 	invMat[2][2] *= invDet;
 }
 //----------------------------------------------------------------------------
-FunObject *Transform::RegistClassFunctions()
-{
-	FunObject *funObj = FunObjectManager::GetSingleton().GetAddFunMap("Transform");
-
-	{
-		//FunObjectPtr funObj = new0 FunObject();
-		//funObj->Name = "GetLocalTransform";
-		//funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		//funObj->AddOutput("in_trans", FPT_POINTER, (Object*)0);
-		//funObj->AddFunObject(funObj);
-	}
-
-	{
-		//FunObjectPtr funObj = new0 FunObject();
-		//funObj->Name = "GetWorldTransform";
-		//funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		//funObj->AddOutput("in_trans", FPT_POINTER, (Object*)0);
-		//funObj->AddFunObject(funObj);
-	}
-
-	return funObj;
-}
-//----------------------------------------------------------------------------

@@ -21,3 +21,8 @@ inline bool UITree::IsShowRootItem() const
 	return mIsShowRootItem;
 }
 //----------------------------------------------------------------------------
+inline UISlider *UITree::GetSlider()
+{
+	return mSlider;
+}
+//----------------------------------------------------------------------------

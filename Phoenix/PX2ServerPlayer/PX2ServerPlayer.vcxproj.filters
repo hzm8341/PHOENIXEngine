@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="PX2SPMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2SPPre.hpp" />
+    <ClInclude Include="PX2SPDefine.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ToScript">
+      <UniqueIdentifier>{bb675d12-b039-4caa-8193-404c51a57d6a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

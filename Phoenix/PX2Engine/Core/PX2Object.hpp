@@ -227,10 +227,6 @@ namespace PX2
 		static int msNumProperties;
 		bool mIsNameChangeable;
 
-		// function
-	public:
-		static FunObject *RegistClassFunctions();
-
 		// ³Ö¾Ã»¯
 	public:
 		typedef Object* (*FactoryFunction)(InStream& stream);

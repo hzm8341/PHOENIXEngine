@@ -36,6 +36,9 @@ namespace PX2
 		void SetUpdateToTex(bool updateToTex);
 		bool IsUpdateToTex() const;
 
+		void SetAcceptKeyboardInput(bool acpt);
+		bool IsAcceptKeyboardInput() const;
+
 		void LoadHTMLString(const std::string & str, const std::string & baseURL);
 		void LoadURL(const std::string &url);
 		void LoadFile(const std::string &fileName);
@@ -89,6 +92,7 @@ namespace PX2
 		bool mIsTexNeedUpdate;
 		bool mIsUpdateToTex;
 		bool mIsShowNativeView;
+		bool mIsAcceptKeyboardInput;
 
 		int mViewTag;
 
@@ -108,7 +112,7 @@ namespace PX2
 		void KeyboardButtonHelper(KeyCode code, bool isUp);
 		int ConvertKeyCode(KeyCode kc);
 
-		Awesomium::WebCore *mWebCore;
+		static Awesomium::WebCore *msWebCore;
 		Awesomium::WebView *mWebView;
 		Awesomium::BitmapSurface *mBitmapSurface;
 		ObjectPtr mObject;

@@ -280,43 +280,6 @@ void UIButton::_ResetDoublePressed()
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// UIButton
-//----------------------------------------------------------------------------
-FunObject *UIButton::RegistClassFunctions()
-{
-	FunObject *parentFunObj = UIButtonBase::RegistClassFunctions();
-
-	FunObject *thisFunObj = parentFunObj->GetAddClass("UIButton");
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "New";
-		funObj->AddInput("static", FPT_POINTER_THIS_STATIC, (Object*)0);
-		funObj->AddOutput("ot_but", FPT_POINTER, (Object*)0);
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "SetOnPressedFun";
-		funObj->AddInput("in_but", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddInput("in_funstr", FPT_STRING, std::string(""));
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "SetOnReleasedFun";
-		funObj->AddInput("in_but", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddInput("in_funstr", FPT_STRING, std::string(""));
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	return thisFunObj;
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
 // Property
 //----------------------------------------------------------------------------
 void UIButton::RegistProperties()

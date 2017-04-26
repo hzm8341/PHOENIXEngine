@@ -8,11 +8,14 @@
 #include "PX2XMLData.hpp"
 #include "PX2FunObject.hpp"
 #include "PX2ProjectEvent.hpp"
+#include "PX2LogicES.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
 LogicManager::LogicManager()
 {
+	mPlatformType = PT_EDITOR;
+	mUserType = UT_PRO;
 }
 //----------------------------------------------------------------------------
 LogicManager::~LogicManager()
@@ -21,10 +24,67 @@ LogicManager::~LogicManager()
 //----------------------------------------------------------------------------
 bool LogicManager::Initlize()
 {
-	//_InitlizeBP();
+	PX2_LOGICM.AddPkgInfo("Data/engine/pkg/pkg.xml");
+
 	_InitBlocks();
 
 	return true;
+}
+//----------------------------------------------------------------------------
+void LogicManager::Clear()
+{
+	mSelectObject = 0;
+}
+//----------------------------------------------------------------------------
+void LogicManager::SetSelectObject(Object *object)
+{
+	if (mSelectObject == object)
+		return;
+
+	mSelectObject = object;
+
+	Event *ent = PX2_CREATEEVENTEX(LogicES, SetSelectLogicObject);
+	ent->SetData<Object*>(mSelectObject);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+Object *LogicManager::GetSelectObject()
+{
+	return mSelectObject;
+}
+//----------------------------------------------------------------------------
+void LogicManager::SetCurGeneratedScript(const std::string &str)
+{
+	mCurGeneratedScript = str;
+
+	Event *ent = PX2_CREATEEVENTEX(LogicES, RefreshGeneratedScript);
+	ent->SetDataStr0(mCurGeneratedScript);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+const std::string &LogicManager::GetCurGeneratedScript() const
+{
+	return mCurGeneratedScript;
+}
+//----------------------------------------------------------------------------
+void LogicManager::SetPlatformType(PlatformType pt)
+{
+	mPlatformType = pt;
+}
+//----------------------------------------------------------------------------
+LogicManager::PlatformType LogicManager::GetPlatformType() const
+{
+	return mPlatformType;
+}
+//----------------------------------------------------------------------------
+void LogicManager::SetUserType(UserType ut)
+{
+	mUserType = ut;
+}
+//----------------------------------------------------------------------------
+LogicManager::UserType LogicManager::GetUserType() const
+{
+	return mUserType;
 }
 //----------------------------------------------------------------------------
 void LogicManager::_InitBlocks()
@@ -124,10 +184,8 @@ FunParamType GetParamType(const std::string &typeStr,
 	return fpt;
 }
 //----------------------------------------------------------------------------
-bool LogicManager::LoadPkgInfo(const std::string &filename)
+bool LogicManager::AddPkgInfo(const std::string &filename)
 {
-	std::map<std::string, FunObjectPtr> funObjectMap;
-
 	int bufSize = 0;
 	char *buf = 0;
 	if (PX2_RM.LoadBuffer(filename, bufSize, buf))
@@ -145,7 +203,8 @@ bool LogicManager::LoadPkgInfo(const std::string &filename)
 				std::string parentName = classNode.AttributeToString("parentname");
 
 				FunObjectPtr funObjectClass = new0 FunObject();
-				funObjectMap[className] = funObjectClass;
+				mClassFunsMap[className] = funObjectClass;
+				funObjectClass->CateName = "Func";
 				funObjectClass->IsClassCatalogue = true;
 				funObjectClass->ClassName = className;
 				funObjectClass->ParentClassName = parentName;
@@ -169,6 +228,7 @@ bool LogicManager::LoadPkgInfo(const std::string &filename)
 					if (is_class_member || is_static)
 					{
 						FunObjectPtr funObj = new0 FunObject;
+						funObj->CateName = "Func";
 						funObj->ClassName = className;
 						funObj->Name = strFunName;
 						funObjectClass->AddFunObject(funObj);
@@ -233,8 +293,8 @@ bool LogicManager::LoadPkgInfo(const std::string &filename)
 		}
 	}
 
-	auto it = funObjectMap.begin();
-	for (; it != funObjectMap.end(); it++)
+	auto it = mClassFunsMap.begin();
+	for (; it != mClassFunsMap.end(); it++)
 	{
 		std::string funObjName = it->first;
 		FunObject *funObj = it->second;
@@ -251,8 +311,8 @@ bool LogicManager::LoadPkgInfo(const std::string &filename)
 
 			if (!parentClassName.empty())
 			{
-				auto itParent = funObjectMap.find(parentClassName);
-				if (itParent != funObjectMap.end())
+				auto itParent = mClassFunsMap.find(parentClassName);
+				if (itParent != mClassFunsMap.end())
 				{
 					(*itParent).second->AddFunObject(funObj);
 				}
@@ -528,6 +588,24 @@ void LogicManager::_AddEvent(const std::string &catalogue, FunObject *funObj)
 	mEvents[catalogue].push_back(funObj->Name);
 	mEventObjects[funObj->Name] = funObj;
 	funObj->CateName = catalogue;
+}
+//----------------------------------------------------------------------------
+FunObject *LogicManager::GetClassFunObject(const std::string &className, 
+	const std::string &funName)
+{
+	FunObject *funObj = 0;
+
+	auto it = mClassFunsMap.find(className);
+	if (it != mClassFunsMap.end())
+	{
+		FunObject *classFunObj = it->second;
+		if (classFunObj)
+		{
+			funObj = classFunObj->GetFunObject(className, funName);
+		}
+	}
+
+	return funObj;
 }
 //----------------------------------------------------------------------------
 FunObject *LogicManager::GetFunObject(const std::string &name)

@@ -214,12 +214,8 @@ void ModelController::_CalSkins()
 	{
 		mModelAnimMovable->SetUpdatePriority(2);
 	}
-
-	Node *rootNode = DynamicCast<Node>(mMovable);
-	if (rootNode)
-	{
-		node->SetNeedCalUpdateChild(true);
-	}
+	
+	node->SetNeedCalUpdateChild(true);
 }
 //----------------------------------------------------------------------------
 void ModelController::_CalAnimNode(Movable *mov)

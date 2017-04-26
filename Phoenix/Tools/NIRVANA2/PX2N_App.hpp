@@ -27,7 +27,14 @@ namespace NA
 
 	protected:
 		N_Frame *CreateMainFrame();
-		void SimuApp();
+
+		enum SimuType
+		{
+			ST_APP,
+			ST_SERVER,
+			ST_MAX_TYPE
+		};
+		void SimuApp(SimuType st);
 	};
 
 	DECLARE_APP(N_App)

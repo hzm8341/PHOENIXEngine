@@ -301,8 +301,8 @@ void EU_Manager::CreateEditMenu(const APoint &pos, EditMenuType menuType)
 	EffectModule *selectEffectModule = DynamicCast<EffectModule>(obj);
 	Node *selectedNode = DynamicCast<Node>(obj);
 	BPFile *bpFile = DynamicCast<BPFile>(obj);
-	InterpCurveController *interpCurveCtrl =
-		DynamicCast<InterpCurveController>(obj);
+	Controller *ctrl = DynamicCast<Controller>(obj);
+	InterpCurveController *interpCurveCtrl = DynamicCast<InterpCurveController>(obj);
 
 	PX2EU_MAN.Menu_Edit_Begin("Stage", "Edit");
 
@@ -404,7 +404,7 @@ void EU_Manager::CreateEditMenu(const APoint &pos, EditMenuType menuType)
 			PX2_LM_EDITOR.V("n_CreateScriptControllerFromRes"), "n_CreateScriptControllerFromRes()");
 	}
 
-	if (selectedMovable || interpCurveCtrl || selectEffectableCtrl || selectEffectModule)
+	if (selectedMovable || ctrl || selectEffectableCtrl || selectEffectModule)
 	{
 		if (selectedMovable || selectEffectableCtrl)
 			PX2EU_MAN.Menu_Edit_AddItemSeparater("Stage", "Edit");
@@ -443,19 +443,17 @@ void EU_Manager::CreateEditMenu(const APoint &pos, EditMenuType menuType)
 	}
 
 	PX2EU_MAN.Menu_Edit_AddItemSeparater("Stage", "Edit");
-	Project *proj = Project::GetSingletonPtr();
-	if (proj) AddProjectItem(0, proj->GetMenuItem());
-
-
+	Application::MenuItem *menuItem = PX2_APP.GetMenuItem();
+	AddAppItem(0, menuItem);
 	PX2EU_MAN.Menu_Edit_EndPopUp("Stage", pos);
 }
 //----------------------------------------------------------------------------
-void EU_Manager::AddProjectItem(Project::MenuItem *itemParent, Project::MenuItem *item)
+void EU_Manager::AddAppItem(Application::MenuItem *itemParent, Application::MenuItem *item)
 {
 	const std::string &allName = item->AllName;
 	const std::string &itemName = item->Name;
 	const std::string &script = item->Script;
-	Project::MenuItem::Type type = item->TheType;
+	Application::MenuItem::Type type = item->TheType;
 
 	if (!itemParent)
 	{
@@ -465,11 +463,11 @@ void EU_Manager::AddProjectItem(Project::MenuItem *itemParent, Project::MenuItem
 	{
 		std::string parAllName = "Edit" + itemParent->AllName;
 
-		if (type == Project::MenuItem::T_SUB)
+		if (type == Application::MenuItem::T_SUB)
 		{
 			PX2EU_MAN.Menu_Edit_AddSubItem("Stage", parAllName, itemName, itemName);
 		}
-		else if (type == Project::MenuItem::T_ITEM)
+		else if (type == Application::MenuItem::T_ITEM)
 		{
 			PX2EU_MAN.Menu_Edit_AddItem("Stage", parAllName, itemName, itemName, script);
 		}
@@ -477,7 +475,7 @@ void EU_Manager::AddProjectItem(Project::MenuItem *itemParent, Project::MenuItem
 
 	for (int i = 0; i < (int)item->Items.size(); i++)
 	{
-		AddProjectItem(item, item->Items[i]);
+		AddAppItem(item, item->Items[i]);
 	}
 }
 //----------------------------------------------------------------------------

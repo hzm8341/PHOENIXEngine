@@ -49,7 +49,9 @@ bool AppPlayerApp::Initlize()
 	return false;
 }
 //----------------------------------------------------------------------------
-int main(int numArguments, char* arguments[]){	AppBase::msAppInitlizeFun();
+int main(int numArguments, char* arguments[])
+{
+	AppBase::msAppInitlizeFun();
 
 	int exitCode = AppBase::msEntry(numArguments, arguments);
 

@@ -16,6 +16,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Object, LBlock);
 //----------------------------------------------------------------------------
 LBlock::LBlock(BlockType type) :
 mBlockType(type),
+mIsFunOutputConvertToGeneral(false),
 mCtrlType(CT_NONE),
 mParamType(PT_NONE),
 mOwnObjectParam(0),
@@ -32,6 +33,16 @@ mParent(0)
 //----------------------------------------------------------------------------
 LBlock::~LBlock()
 {
+}
+//----------------------------------------------------------------------------
+void LBlock::SetFunOutputConvertToGeneral(bool convert)
+{
+	mIsFunOutputConvertToGeneral = convert;
+}
+//----------------------------------------------------------------------------
+bool LBlock::IsFunOutputConvertToGeneral() const
+{
+	return mIsFunOutputConvertToGeneral;
 }
 //----------------------------------------------------------------------------
 void LBlock::SetClassName(const std::string &className)
@@ -742,7 +753,8 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 	}
 	else if (MT_FUNCTION_GENERAL == bt || MT_FUNCTION_OUTPUT == bt)
 	{
-		if (MT_FUNCTION_GENERAL == bt)
+		if (MT_FUNCTION_GENERAL == bt ||
+			(MT_FUNCTION_OUTPUT == bt && mIsFunOutputConvertToGeneral))
 		{
 			_WriteTables(script, numTable);
 		}
@@ -832,32 +844,34 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 				}
 			}
 
-			if (MT_FUNCTION_GENERAL == bt)
-			{
-				bool isExitInput = mInputParamsVec.size() > 0;
-				bool isExitOutPut = mOutputParamsVec.size() > 0;
+			//if (MT_FUNCTION_GENERAL == bt ||
+			//	(MT_FUNCTION_OUTPUT == bt && mIsFunOutputConvertToGeneral))
+			//{
+			//	bool isExitInput = mInputParamsVec.size() > 0;
+			//	bool isExitOutPut = mOutputParamsVec.size() > 0;
 
-				if (isExitInput && isExitOutPut)
-				{
-					script += ", ";
-				}
+			//	if (isExitInput && isExitOutPut)
+			//	{
+			//		script += ", ";
+			//	}
 
-				for (int i = 0; i < (int)mOutputParamsVec.size(); i++)
-				{
-					LParam *outParam = mOutputParamsVec[i];
-					if (outParam)
-					{
-						outParam->Compile(script, numTable + 1, file);
+			//	for (int i = 0; i < (int)mOutputParamsVec.size(); i++)
+			//	{
+			//		LParam *outParam = mOutputParamsVec[i];
+			//		if (outParam)
+			//		{
+			//			outParam->Compile(script, numTable + 1, file);
 
-						if ((i + 1) < (int)mOutputParamsVec.size())
-						{
-							script += ", ";
-						}
-					}
-				}
-			}
+			//			if ((i + 1) < (int)mOutputParamsVec.size())
+			//			{
+			//				script += ", ";
+			//			}
+			//		}
+			//	}
+			//}
 
-			if (MT_FUNCTION_GENERAL == bt)
+			if (MT_FUNCTION_GENERAL == bt ||
+				(MT_FUNCTION_OUTPUT == bt && mIsFunOutputConvertToGeneral))
 			{
 				script += ")";
 
@@ -868,7 +882,8 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 
 				script += "\n";
 			}
-			else if (MT_FUNCTION_OUTPUT == bt)
+			else if (MT_FUNCTION_OUTPUT == bt ||
+				(MT_FUNCTION_OUTPUT == bt && mIsFunOutputConvertToGeneral))
 			{
 				script += ")";
 			}
@@ -1006,6 +1021,7 @@ LBlock::LBlock(LoadConstructor value) :
 Object(value),
 mOwnObjectParam(0),
 mCtrlType(CT_NONE),
+mIsFunOutputConvertToGeneral(false),
 mParamType(PT_NONE),
 mParent(0)
 {
@@ -1020,6 +1036,7 @@ void LBlock::Load(InStream& source)
 	PX2_VERSION_LOAD(source);
 
 	source.ReadEnum(mBlockType);
+	source.ReadBool(mIsFunOutputConvertToGeneral);
 	source.ReadString(mClassName);
 	source.ReadEnum(mCtrlType);
 	source.ReadEnum(mParamType);
@@ -1086,13 +1103,18 @@ void LBlock::PostLink()
 	Object::PostLink();
 
 	FunObject *funObj = 0;
-	if (!mFunObjectName.empty())
+	if (!mClassName.empty() && !mFunObjectName.empty())
+	{
+		funObj = PX2_LOGICM.GetClassFunObject(mClassName, mFunObjectName);
+	}
+	else if(!mFunObjectName.empty())
 	{
 		funObj = PX2_LOGICM.GetFunObject(mFunObjectName);
-		if (funObj)
-		{
-			mFunObject = *funObj;
-		}
+	}
+
+	if (funObj)
+	{
+		mFunObject = *funObj;
 	}
 
 	int inputSize = (int)mInputParamsVec.size();
@@ -1173,6 +1195,7 @@ void LBlock::Save(OutStream& target) const
 	PX2_VERSION_SAVE(target);
 
 	target.WriteEnum(mBlockType);
+	target.WriteBool(mIsFunOutputConvertToGeneral);
 	target.WriteString(mClassName);
 	target.WriteEnum(mCtrlType);
 	target.WriteEnum(mParamType);
@@ -1205,6 +1228,7 @@ int LBlock::GetStreamingSize(Stream &stream) const
 	size += PX2_VERSION_SIZE(mVersion);
 
 	size += PX2_ENUMSIZE(mBlockType);
+	size += PX2_BOOLSIZE(mIsFunOutputConvertToGeneral);
 	size += PX2_STRINGSIZE(mClassName);
 	size += PX2_ENUMSIZE(mCtrlType);
 	size += PX2_ENUMSIZE(mParamType);

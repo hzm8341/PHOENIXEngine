@@ -7,6 +7,7 @@
 #include "PX2Singleton_NeedNew.hpp"
 #include "PX2InterpCurve.hpp"
 #include "PX2FunObject.hpp"
+#include "PX2Object.hpp"
 
 namespace PX2
 {
@@ -18,12 +19,44 @@ namespace PX2
 		virtual ~LogicManager();
 
 		bool Initlize();
+		void Clear();
 
-		bool LoadPkgInfo(const std::string &filename);
+		bool AddPkgInfo(const std::string &filename);
+
+		void SetSelectObject(Object *object);
+		Object *GetSelectObject();
+
+		void SetCurGeneratedScript(const std::string &str);
+		const std::string &GetCurGeneratedScript() const;
+
+		enum PlatformType
+		{
+			PT_PHONE,
+			PT_PAD,
+			PT_EDITOR,
+			PT_OHTHER,
+			PT_MAX_TYPE
+		};
+		void SetPlatformType(PlatformType pt);
+		PlatformType GetPlatformType() const;
+
+		enum UserType
+		{
+			UT_BEGINNER, // 面向初学者
+			UT_PRO,	// 面向专业者
+			UT_MAX_TYPE
+		};
+		void SetUserType(UserType ut);
+		UserType GetUserType() const;
 
 	protected:
 		void _InitBlocks();
 		bool _InitlizeBP();
+
+		ObjectPtr mSelectObject;
+		PlatformType mPlatformType;
+		UserType mUserType;
+		std::string mCurGeneratedScript;
 
 		// add funs
 	public:
@@ -52,6 +85,7 @@ namespace PX2
 		FunObject *GetCurAddFunObject();
 
 	public:
+		FunObject *GetClassFunObject(const std::string &className, const std::string &funName);
 		FunObject *GetFunObject(const std::string &name);
 
 		// Events
@@ -113,6 +147,9 @@ namespace PX2
 		// Operators
 		std::map<std::string, std::vector<std::string> > mOperators;
 		std::map<std::string, FunObjectPtr> mOperatorsObjects;
+
+		// Object Funs
+		std::map<std::string, FunObjectPtr> mClassFunsMap;
 	};
 
 #include "PX2LogicManager.inl"

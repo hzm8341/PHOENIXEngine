@@ -21,4 +21,6 @@ function g_AddLanguage()
 	PX2_LM_APP:AddItem1("UISlider", "滑动条")
 	PX2_LM_APP:AddItem1("UIRound", "方向盘")
 	PX2_LM_APP:AddItem1("UIWebFrame", "浏览器框")
+
+	PX2_LM_APP:AddItem1("Server", "服务器")
 end

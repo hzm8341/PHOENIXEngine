@@ -59,6 +59,11 @@ Server::~Server()
 	}
 }
 //-----------------------------------------------------------------------------
+Server::ServerType Server::GetServerType() const
+{
+	return mServerType;
+}
+//-----------------------------------------------------------------------------
 const std::vector<int> &Server::GetThreadIDs() const
 {
 	return mServerImp->GetThreadIDs();
@@ -178,6 +183,18 @@ void Server::RegisterHandler(int msgid, MsgHandleFunc msgfunc)
 		"msgid must be in range");
 
 	mMsgHandlers[msgid] = msgfunc;
+}
+//----------------------------------------------------------------------------
+int Server::OnConnect(unsigned int clientid) 
+{ 
+	PX2_UNUSED(clientid);
+	return 0;
+}
+//----------------------------------------------------------------------------
+int Server::OnDisconnect(unsigned int clientid) 
+{ 
+	PX2_UNUSED(clientid);
+	return 0;
 }
 //----------------------------------------------------------------------------
 int Server::OnReservedMsg(unsigned int clientid, const void *pbuffer, int buflen)

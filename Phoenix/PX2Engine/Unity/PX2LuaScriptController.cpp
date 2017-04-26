@@ -111,6 +111,42 @@ void LuaScriptController::SetFileClass(const std::string &filename,
 	}
 }
 //---------------------------------------------------------------------------
+void LuaScriptController::SetStringClass(const std::string &str,
+	const std::string &className)
+{
+	ScriptController::SetStringClass(str, className);
+
+	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
+	luaContext->CallString(str);
+
+	LuaPlus::LuaObject subClass = mLuaState->GetGlobal(className.c_str());
+
+	LuaPlus::LuaObject constructionData = subClass;
+
+	//constructionData.AssignNil(mLuaState);
+
+	mLO_Self.AssignNewTable(mLuaState);
+	if (BuildCppDataFromScript(subClass, constructionData))
+	{
+		LuaPlus::LuaObject metaTableObj = mLuaState->GetGlobals().Lookup(
+			LuaSCRIPCONTROLLER_NAME);
+		assertion(!metaTableObj.IsNil(), "");
+
+		mLO_Self.SetLightUserdata("__object", this);
+		mLO_Self.SetMetatable(metaTableObj);
+
+		LuaPlus::LuaObject gst = mLuaState->GetGlobals().Lookup(gST_NAME);
+		assertion(!gst.IsNil(), "");
+		mSelfPObject = mLuaState->BoxPointer(this);
+		gst.SetObject(mSelfPObject, mLO_Self);
+		mSelfP = mSelfPObject.m_stackIndex;
+	}
+	else
+	{
+		mLO_Self.AssignNil(mLuaState);
+	}
+}
+//---------------------------------------------------------------------------
 bool LuaScriptController::BuildCppDataFromScript(
 	LuaPlus::LuaObject &scriptClass,
 	LuaPlus::LuaObject &constructionData)

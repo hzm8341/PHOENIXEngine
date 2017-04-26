@@ -69,7 +69,8 @@
 		ParamType GetParamType() const;
 
 	public:
-		FunObject *GetAddClass (const std::string &className);
+		FunObject *GetClass (const std::string &className);
+		FunObject *AddClass(const std::string &className);
 		FunObject *GetFunObject(const std::string &className,
 			const std::string &funName);
 

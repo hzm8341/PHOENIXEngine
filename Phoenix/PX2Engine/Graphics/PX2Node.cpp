@@ -630,35 +630,6 @@ void Node::OnPropertyChanged (const PropertyObject &obj)
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// Functions
-//----------------------------------------------------------------------------
-FunObject * Node::RegistClassFunctions()
-{
-	FunObject * parentFunObj = Movable::RegistClassFunctions();
-
-	FunObject *thisFunObj = parentFunObj->GetAddClass("Node");
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "AttachChild";
-		funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddInput("in_child", FPT_POINTER, (Object*)0);
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	{
-		FunObjectPtr funObj = new0 FunObject();
-		funObj->Name = "DetachChild";
-		funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
-		funObj->AddInput("in_child", FPT_POINTER, (Object*)0);
-		thisFunObj->AddFunObject(funObj);
-	}
-
-	return thisFunObj;
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
 // 持久化支持
 //----------------------------------------------------------------------------
 Node::Node(LoadConstructor value) :

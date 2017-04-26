@@ -3,12 +3,12 @@
 //----------------------------------------------------------------------------
 inline const Sizef &Application::GetBoostSize() const
 {
-	return mBoostSize;
+	return mBoostInfo.BoostSize;
 }
 //----------------------------------------------------------------------------
 inline const std::string &Application::GetBoostProjectName() const
 {
-	return mBoostProjectName;
+	return mBoostInfo.ProjectName;
 }
 //----------------------------------------------------------------------------
 inline const std::string &Application::GetProjectFilePath() const
@@ -21,9 +21,9 @@ inline const Sizef &Application::GetScreenSize() const
 	return mScreenSize;
 }
 //----------------------------------------------------------------------------
-inline Application::PlayLogicMode Application::GetPlayLogicMode() const
+inline AppBoostInfo::PlayLogicMode Application::GetPlayLogicMode() const
 {
-	return mPlayLogicMode;
+	return mBoostInfo.ThePlayLogicMode;
 }
 //----------------------------------------------------------------------------
 inline Canvas *Application::GetEngineCanvas()

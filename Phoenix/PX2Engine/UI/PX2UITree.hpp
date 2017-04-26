@@ -39,6 +39,8 @@ namespace PX2
 		void ClearAllSelectItems(bool callOnSelected);
 		UIItem *GetSelectedItem();
 
+		UISlider *GetSlider();
+
 		virtual void OnSelected(UIItem *item, bool isDoubleSelect);
 		void SelectCallback(UIFrame *frame, UICallType type);
 

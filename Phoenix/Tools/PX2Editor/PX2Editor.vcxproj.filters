@@ -23,10 +23,10 @@
       <Filter>UI\Console</Filter>
     </ClCompile>
     <ClCompile Include="PX2EU_BluePrintFrame.cpp">
-      <Filter>UI\StageFrames\BluePrint</Filter>
+      <Filter>UI\StageFrames\Logic\BluePrint</Filter>
     </ClCompile>
     <ClCompile Include="PX2EU_BPFrame.cpp">
-      <Filter>UI\StageFrames\BluePrint</Filter>
+      <Filter>UI\StageFrames\Logic\BluePrint</Filter>
     </ClCompile>
     <ClCompile Include="PX2TerrainBrush.cpp">
       <Filter>Edit\Terrain</Filter>
@@ -149,7 +149,7 @@
       <Filter>Edit\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="PX2EU_CanvasBP.cpp">
-      <Filter>UI\StageFrames\BluePrint</Filter>
+      <Filter>UI\StageFrames\Logic\BluePrint</Filter>
     </ClCompile>
     <ClCompile Include="PX2EU_PropertyGridEdit.cpp">
       <Filter>UI\Inspector\Edit</Filter>
@@ -159,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="PX2EU_StatusBar.cpp">
       <Filter>UI\StatusBar</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EU_ContentFrame.cpp">
+      <Filter>UI\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,10 +190,10 @@
       <Filter>UI\Console</Filter>
     </ClInclude>
     <ClInclude Include="PX2EU_BluePrintFrame.hpp">
-      <Filter>UI\StageFrames\BluePrint</Filter>
+      <Filter>UI\StageFrames\Logic\BluePrint</Filter>
     </ClInclude>
     <ClInclude Include="PX2EU_BPFrame.hpp">
-      <Filter>UI\StageFrames\BluePrint</Filter>
+      <Filter>UI\StageFrames\Logic\BluePrint</Filter>
     </ClInclude>
     <ClInclude Include="PX2TerrainBrush.hpp">
       <Filter>Edit\Terrain</Filter>
@@ -313,7 +316,7 @@
       <Filter>Edit\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="PX2EU_CanvasBP.hpp">
-      <Filter>UI\StageFrames\BluePrint</Filter>
+      <Filter>UI\StageFrames\Logic\BluePrint</Filter>
     </ClInclude>
     <ClInclude Include="PX2EU_PropertyGridEdit.hpp">
       <Filter>UI\Inspector\Edit</Filter>
@@ -323,6 +326,9 @@
     </ClInclude>
     <ClInclude Include="PX2EU_StatusBar.hpp">
       <Filter>UI\StatusBar</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EU_ContentFrame.hpp">
+      <Filter>UI\Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +401,6 @@
     <Filter Include="UI\StageFrames\Preview">
       <UniqueIdentifier>{56004526-447a-4b84-be97-9145f27e1e00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\StageFrames\BluePrint">
-      <UniqueIdentifier>{e8a2b78b-2db5-4cfe-824a-32d8c2e9509d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\TimeLine">
       <UniqueIdentifier>{cb5e7009-209b-4c5b-9b3d-d3f0a978f5e6}</UniqueIdentifier>
     </Filter>
@@ -406,6 +409,15 @@
     </Filter>
     <Filter Include="UI\StatusBar">
       <UniqueIdentifier>{240b3906-fd9a-40fb-ac89-9e044faf0205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Content">
+      <UniqueIdentifier>{f4abf991-0998-48f6-9f25-48a9c262f84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\StageFrames\Logic">
+      <UniqueIdentifier>{f546e78a-86f3-4388-9b67-c3e34c0e810f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\StageFrames\Logic\BluePrint">
+      <UniqueIdentifier>{e8a2b78b-2db5-4cfe-824a-32d8c2e9509d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

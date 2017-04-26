@@ -13,6 +13,9 @@
 
 		void SetUpdateToTex(bool updateToTex);
 		bool IsUpdateToTex() const;
+		
+		void SetAcceptKeyboardInput(bool acpt);
+		bool IsAcceptKeyboardInput() const;
 
 		void LoadHTMLString(const std::string &str, const std::string & baseURL);
 		void LoadURL(const std::string &url);

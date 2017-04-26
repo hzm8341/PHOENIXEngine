@@ -51,14 +51,16 @@ function s_SampleCata()
 	model1.LocalTransform:SetTranslate(-5, 0.0, 0.0)
 	model1:ResetPlay()
 	
-	local importer = FBXImporter()
-	importer:Import("Data/General/models/actors/swk/model.FBX")
-	local model2 = importer:GetScene()
-	scene:AttachChild(model2)
-	model2.LocalTransform:SetUniformScale(0.05)
-	model2.LocalTransform:SetRotateDegree(0.0, 0.0, 180.0)
-	model2.LocalTransform:SetTranslate(5, 0.0, 0.0)
-	model2:ResetPlay()
+	if nil~=FBXImporter then
+		local importer = FBXImporter()
+		importer:Import("Data/General/models/actors/swk/model.FBX")
+		local model2 = importer:GetScene()
+		scene:AttachChild(model2)
+		model2.LocalTransform:SetUniformScale(0.05)
+		model2.LocalTransform:SetRotateDegree(0.0, 0.0, 180.0)
+		model2.LocalTransform:SetTranslate(5, 0.0, 0.0)
+		model2:ResetPlay()
+	end
 	
 	-- ui
 	local ui = PX2_PROJ:GetUI()
@@ -119,6 +121,7 @@ function s_SampleCata()
 	g_s_TableFrame:AddTab("UISlider", PX2_LM_APP:GetValue("UISlider"), s_CreateUISlider())
 	g_s_TableFrame:AddTab("UIRound", PX2_LM_APP:GetValue("UIRound"), s_CreateUIRound())
 	g_s_TableFrame:AddTab("UIWebFrame", PX2_LM_APP:GetValue("UIWebFrame"), s_CreateUIWebFrame())
+	g_s_TableFrame:AddTab("Server", PX2_LM_APP:GetValue("Server"), s_CreateUIServer())
 	g_s_TableFrame:SetActiveTab("About")
 	
 	local rightFrame = UIFrame:New()
@@ -623,6 +626,97 @@ function s_CreateUIWebFrame()
 	webFrame:SetAnchorVer(0.0, 1.0)
 	webFrame:SetUpdateToTex(true)
 	webFrame:LoadURL("https://github.com/PhoenixIoT")
+	
+	return frame
+end
+
+-- Server
+g_s_ClientConnector = nil
+g_s_ClientMsgEditBox = nil
+g_s_ButConnect = nil
+g_s_ButSend = nil
+
+function s_ServerCallback(objPtr, callType)
+	local obj = Cast:ToO(objPtr)
+	
+	local name = obj:GetName()
+	if UICT_PRESSED==callType then
+	elseif UICT_RELEASED==callType then
+		if nil ~= g_s_ClientConnector then
+			if "ButConnect"==name then
+				if g_s_ClientConnector:IsConnected() then
+					g_s_ClientConnector:Disconnect()
+				else
+					g_s_ClientConnector:ConnectNB("127.0.0.1", 18180)
+				end
+			elseif "ButSend"==name then
+				if g_s_ClientConnector:IsConnected() then
+					local text = g_s_ClientMsgEditBox:GetText()
+					g_s_ClientConnector:SendString(text)
+				end
+			end
+		end
+	end
+end
+
+-- server
+function OnClientConnectorConnect(generalClientConnector)
+    PX2_LOGGER:LogInfo("ClientConnector", "OnClientConnectorConnect ")
+	g_s_ButConnect:CreateAddText("Connected!")
+	g_s_ClientMsgEditBox:Enable(true)
+	g_s_ButSend:Enable(true)
+end
+
+function OnClientConnectorDisConnect(generalClientConnector)
+    PX2_LOGGER:LogInfo("ClientConnector", "OnClientConnectorDisConnect ")
+	g_s_ButConnect:CreateAddText("ConnectToServer 127.0.0.1:18180")
+	g_s_ClientMsgEditBox:Enable(false)
+	g_s_ButSend:Enable(false)
+end
+
+function OnClientConnectorRecv(generalClientConnector, str)
+    PX2_LOGGER:LogInfo("ClientConnector", "OnClientConnectorRecv "..":"..str)
+	g_s_MsgList:AddItem(str)
+end
+
+function s_CreateUIServer()
+	local frame = UIFrame:New()
+	frame.LocalTransform:SetTranslateY(-1.0)
+	frame:SetAnchorHor(0.0, 1.0)
+	frame:SetAnchorVer(0.0, 1.0)
+
+	local editbox = UIEditBox:New()
+	frame:AttachChild(editbox)
+	g_s_ClientMsgEditBox = editbox
+	editbox:SetScriptHandler("s_ServerCallback")
+	editbox:RegistToScriptSystem()
+	editbox:Enable(false)
+
+	local butConnect = UIButton:New()
+	frame:AttachChild(butConnect)
+	g_s_ButConnect = butConnect
+	butConnect:SetName("ButConnect")
+	butConnect:SetAnchorParamVer(100.0, 100.0)
+	butConnect:SetSize(300, 40)
+	butConnect:SetScriptHandler("s_ServerCallback")
+	butConnect:CreateAddText("ConnectToServer 127.0.0.1:18180")
+
+	local butSend = UIButton:New()
+	frame:AttachChild(butSend)
+	g_s_ButSend = butSend
+	butSend:SetName("ButSend")
+	butSend:SetAnchorParamVer(-100.0, -100.0)
+	butSend:SetSize(300, 40)
+	butSend:SetScriptHandler("s_ServerCallback")
+	butSend:CreateAddText("SendMsg")
+	butSend:Enable(false)
+
+	-- connector
+	local clientConnector = PX2_APP:CreateGeneralClientConnector()
+	g_s_ClientConnector = clientConnector
+	clientConnector:AddOnConnectCallback("OnClientConnectorConnect")
+	clientConnector:AddOnDisconnectCallback("OnClientConnectorDisConnect")
+	clientConnector:AddOnRecvCallback("OnClientConnectorRecv")
 	
 	return frame
 end

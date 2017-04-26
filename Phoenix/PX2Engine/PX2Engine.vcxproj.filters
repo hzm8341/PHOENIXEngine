@@ -550,9 +550,6 @@
     <Filter Include="0.Base\Unity\Voice">
       <UniqueIdentifier>{a25acd62-b1b1-4060-970c-a3958b256149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.Application\GeneralServer">
-      <UniqueIdentifier>{e3b996d0-7840-442e-850c-6f8f9f3f7bf7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2.Application\CameraCtrl">
       <UniqueIdentifier>{3b059404-9747-4e80-8357-b9e8a8b46d13}</UniqueIdentifier>
     </Filter>
@@ -573,6 +570,12 @@
     </Filter>
     <Filter Include="0.Base\Unity\Curl\curl\config">
       <UniqueIdentifier>{572c5e59-a90b-43c6-9780-285329401ab2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\UI\Frames\CollapsePanel">
+      <UniqueIdentifier>{43c74bdf-679d-41ad-9717-20e0deb93fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.Application\Net">
+      <UniqueIdentifier>{a2269cf3-cd1b-4d27-bb5f-a48106143d1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2292,9 +2295,6 @@
     <ClInclude Include="Application\PX2AmbientRegionController.hpp">
       <Filter>2.Application\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Application\PX2EngineEventHandler.hpp">
-      <Filter>2.Application</Filter>
-    </ClInclude>
     <ClInclude Include="Effect\PX2BeamEmitter.hpp">
       <Filter>1.Ext\Effect\Effects\Beam</Filter>
     </ClInclude>
@@ -2835,9 +2835,6 @@
     <ClInclude Include="Unity\PX2VoiceEventType.hpp">
       <Filter>0.Base\Unity\Voice</Filter>
     </ClInclude>
-    <ClInclude Include="Application\PX2GeneralServer.hpp">
-      <Filter>2.Application\GeneralServer</Filter>
-    </ClInclude>
     <ClInclude Include="Application\PX2CameraController.hpp">
       <Filter>2.Application\CameraCtrl</Filter>
     </ClInclude>
@@ -3212,6 +3209,24 @@
     </ClInclude>
     <ClInclude Include="Graphics\PX2CameraPlayController.hpp">
       <Filter>0.Base\Graphics\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PX2UICollapsePanel.hpp">
+      <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PX2UICollapseItem.hpp">
+      <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2AppBoostInfo.hpp">
+      <Filter>2.Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineEventHandler.hpp">
+      <Filter>2.Application\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2GeneralServer.hpp">
+      <Filter>2.Application\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2GeneralClientConnector.hpp">
+      <Filter>2.Application\Net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -4724,9 +4739,6 @@
     <ClCompile Include="Application\PX2AmbientRegionController.cpp">
       <Filter>2.Application\Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="Application\PX2EngineEventHandler.cpp">
-      <Filter>2.Application</Filter>
-    </ClCompile>
     <ClCompile Include="Effect\PX2BeamEmitter.cpp">
       <Filter>1.Ext\Effect\Effects\Beam</Filter>
     </ClCompile>
@@ -5228,9 +5240,6 @@
     <ClCompile Include="Unity\PX2VoiceEventType.cpp">
       <Filter>0.Base\Unity\Voice</Filter>
     </ClCompile>
-    <ClCompile Include="Application\PX2GeneralServer.cpp">
-      <Filter>2.Application\GeneralServer</Filter>
-    </ClCompile>
     <ClCompile Include="Application\PX2CameraController.cpp">
       <Filter>2.Application\CameraCtrl</Filter>
     </ClCompile>
@@ -5584,6 +5593,24 @@
     </ClCompile>
     <ClCompile Include="Graphics\PX2CameraPlayController.cpp">
       <Filter>0.Base\Graphics\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PX2UICollapsePanel.cpp">
+      <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PX2UICollapseItem.cpp">
+      <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineEventHandler.cpp">
+      <Filter>2.Application\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2AppBoostInfo.cpp">
+      <Filter>2.Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2GeneralServer.cpp">
+      <Filter>2.Application\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2GeneralClientConnector.cpp">
+      <Filter>2.Application\Net</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

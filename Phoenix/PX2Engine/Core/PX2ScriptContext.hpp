@@ -39,6 +39,10 @@ namespace PX2
 		virtual bool CallFunction(const std::string &funName, Object *obj0);
 		virtual bool CallFunction(const std::string &funName,
 			Object *obj0, int paramData1);
+		virtual bool CallFunction(const std::string &funName,
+			Object *obj0, const std::string &paramStr);
+		virtual bool CallFunction(const std::string &funName,
+			Object *obj0, int iData, const std::string &paramStr);
 
 		// type pointer function
 		virtual void SetUserTypePointer(const std::string &luaName,

@@ -8,6 +8,7 @@
 #include "PX2SmartPointer.hpp"
 #include "PX2SocketAddress.hpp"
 #include "PX2StreamSocket.hpp"
+#include "PX2Object.hpp"
 
 namespace PX2
 {
@@ -21,7 +22,7 @@ namespace PX2
 		CONNSTATE_WAITSERVER, //向服务器发送完消息， 等待回复消息
 	};
 
-	class PX2_ENGINE_ITEM ClientConnector
+	class PX2_ENGINE_ITEM ClientConnector : public Object
 	{
 	public:
 		typedef int (ClientConnector::*ServerMsgHandleFunc)(const void *pbuffer, int buflen);
@@ -33,9 +34,9 @@ namespace PX2
 		void RegisterHandler(int msgid, ServerMsgHandleFunc msgfunc, bool need_answer=true, int other_answer_msg=-1);
 
 		StreamSocket &GetSocket ();
-		int ConnectB(const std::string &ip, int16_t port);
+		int ConnectB(const std::string &ip, int port);
 		int ConnectB(const SocketAddress &addr);
-		int ConnectNB(const std::string &ip, int16_t port);
+		int ConnectNB(const std::string &ip, int port);
 		int ConnectNB(const SocketAddress &addr);
 		void Disconnect();
 		int GetConnectState ();
@@ -50,7 +51,7 @@ namespace PX2
 
 		int SendMsgToServerBuffer(int msgid, const char *buf, int size);
 
-		int Update(float elapsedSeconds);
+		virtual int Update(float elapsedSeconds);
 
 	private:
 		struct ServerMsgDesc

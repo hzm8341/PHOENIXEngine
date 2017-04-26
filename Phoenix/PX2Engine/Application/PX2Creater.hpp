@@ -57,6 +57,8 @@ namespace PX2
 		Node *CreateNode_Model(const std::string &filename);
 		Movable *CreateMovable_FromRes(const std::string &filename);
 		ScriptController *CreateScriptController_FromRes(const std::string &filename);
+		ScriptController *CreateScriptController_FromBuffer(const std::string &bufStr, 
+			const std::string &className);
 
 		// sky
 		Movable *CreateSkyBox(const std::string &skyDirPath);

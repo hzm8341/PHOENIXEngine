@@ -27,8 +27,7 @@ void Selection::AddObject(Object *obj)
 
 	_UpdateSelect();
 
-	Event *ent = 0;
-	ent = EditES::CreateEventX(EditES::AddSelect);
+	Event *ent = PX2_CREATEEVENTEX(EditES, AddSelect);
 	ent->SetData<Object*>(obj);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
@@ -52,10 +51,9 @@ void Selection::RemoveObject(Object *obj)
 	{
 		_UpdateSelect();
 
-		Event *emt = 0;
-		emt = EditES::CreateEventX(EditES::RemoveSelect);
-		emt->SetData<Object*>(obj);
-		EventWorld::GetSingleton().BroadcastingLocalEvent(emt);
+		Event *ent = PX2_CREATEEVENTEX(EditES, RemoveSelect);
+		ent->SetData<Object*>(obj);
+		EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 	}
 }
 //----------------------------------------------------------------------------
@@ -83,7 +81,7 @@ void Selection::Clear()
 
 	_UpdateSelect();
 
-	Event *ent = EditES::CreateEventX(EditES::RemoveAllSelects);
+	Event *ent = PX2_CREATEEVENTEX(EditES, RemoveAllSelects);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

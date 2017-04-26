@@ -96,16 +96,21 @@ namespace PX2
 		ParamType mParamType;
 
 	public:
-		FunObject *GetAddClass (const std::string &className);
+		FunObject *GetClass (const std::string &className);
+		FunObject *AddClass(const std::string &className);
 		FunObject *GetFunObject(const std::string &className,
 			const std::string &funName);
 
 		void AddFunObject(FunObject *funObj);
 		bool IsHasFunObject(FunObject *funObj);
 
+		std::vector<FunObject*> GetParentAndMeFunObjectList();
+
 	public:
 		std::vector<Pointer0<FunObject> > mChildFunObjectVec_Class;
 		std::vector<Pointer0<FunObject> > mChildFunObjectVec;
+
+		FunObject *ParentFunObject;
 	};
 
 	typedef Pointer0<FunObject> FunObjectPtr;

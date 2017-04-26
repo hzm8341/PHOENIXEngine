@@ -5,6 +5,7 @@
 
 #include "PX2NetEventBuffer.hpp"
 #include "PX2NetServerImp.hpp"
+#include "PX2Object.hpp"
 
 namespace PX2
 {
@@ -21,7 +22,7 @@ namespace PX2
 		CER_USER_ERROR = 7,			// ÆäËü´íÎó
 	};
 
-	class PX2_ENGINE_ITEM Server
+	class PX2_ENGINE_ITEM Server : public Object
 	{
 	public:
 		typedef int (Server::*MsgHandleFunc)(unsigned int clientid,
@@ -103,8 +104,8 @@ namespace PX2
 		Server();
 
 		int OnReservedMsg (unsigned int clientid, const void *pbuffer, int buflen);
-		virtual int OnConnect(unsigned int clientid) = 0;
-		virtual int OnDisconnect(unsigned int clientid) = 0;
+		virtual int OnConnect(unsigned int clientid);
+		virtual int OnDisconnect(unsigned int clientid);
 
 	protected:
 		ServerType mServerType;

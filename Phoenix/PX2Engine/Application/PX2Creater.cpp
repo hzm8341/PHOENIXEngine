@@ -166,6 +166,15 @@ ScriptController *Creater::CreateScriptController_FromRes(
 	return sc;
 }
 //----------------------------------------------------------------------------
+ScriptController *Creater::CreateScriptController_FromBuffer(
+	const std::string &bufStr, const std::string &className)
+{
+	ScriptController *sc = new0 LuaScriptController();
+	sc->SetStringClass(bufStr, className);
+
+	return sc;
+}
+//----------------------------------------------------------------------------
 ParticleEmitter *Creater::CreateParticleEmitter()
 {
 	ParticleEmitter *pe = new0 ParticleEmitter();

@@ -18,9 +18,9 @@ PX2_IMPLEMENT_FACTORY(EU_ResTree);
 EU_ResTree::EU_ResTree(ResTreeType rtt):
 mResTreeType(rtt)
 {
-	//mOpenData = AddItem(mRootItem, PX2_LM_EDITOR.GetValue("OpenedData"), "OpenedData");
-	//mOpenData->SetName("OpenedData");
-	//mOpenData->GetFText()->GetText()->SetDrawStyle(FD_SHADOW);
+	mOpenData = AddItem(mRootItem, PX2_LM_EDITOR.GetValue("OpenedData"), "OpenedData");
+	mOpenData->SetName("OpenedData");
+	mOpenData->GetFText()->GetText()->SetDrawStyle(FD_SHADOW);
 
 	if (RTT_DIR == mResTreeType)
 	{
@@ -98,6 +98,10 @@ void EU_ResTree::OnSelected(UIItem *item, bool isDouble)
 		if (RTT_DIR == mResTreeType)
 		{
 			PX2_EDIT.ChangeSelectResDir(path, Edit::CDT_TREE_REFRESH);
+
+			SelectResData srd;
+			srd.ResPathname = path;
+			PX2_EDIT.SetSelectedResource(srd);
 		}
 	}
 }
@@ -149,18 +153,18 @@ void EU_ResTree::OnEvent(Event *event)
 	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::OpenContentRes))
 	{
-		//std::string path = event->GetData<std::string>();
+		std::string path = event->GetData<std::string>();
 
-		//std::string outPath;
-		//std::string outBaseName;
-		//std::string outExtention;
-		//StringHelp::SplitFullFilename(path, outPath, outBaseName, outExtention);
-		//std::string filename = outBaseName + "." + outExtention;
+		std::string outPath;
+		std::string outBaseName;
+		std::string outExtention;
+		StringHelp::SplitFullFilename(path, outPath, outBaseName, outExtention);
+		std::string filename = outBaseName + "." + outExtention;
 
-		//UIItem *itemChild = AddItem(mOpenData, filename, path);
-		//itemChild->SetName(path);
-		//itemChild->SetUserData("path", path);
-		//itemChild->SetUserData("filename", filename);
+		UIItem *itemChild = AddItem(mOpenData, filename, path);
+		itemChild->SetName(path);
+		itemChild->SetUserData("path", path);
+		itemChild->SetUserData("filename", filename);
 	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::RemoveContentRes))
 	{

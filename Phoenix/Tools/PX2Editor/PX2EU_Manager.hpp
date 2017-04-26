@@ -10,6 +10,7 @@
 #include "PX2RenderWindow.hpp"
 #include "PX2EventHandler.hpp"
 #include "PX2Project.hpp"
+#include "PX2Application.hpp"
 
 namespace PX2
 {
@@ -137,7 +138,7 @@ namespace PX2
 		EditMenuType GetEidtMenuType();
 
 	protected:
-		void AddProjectItem(Project::MenuItem *itemParent, Project::MenuItem *item);
+		void AddAppItem(Application::MenuItem *itemParent, Application::MenuItem *item);
 
 		EditMenuType mEditMenuType;
 

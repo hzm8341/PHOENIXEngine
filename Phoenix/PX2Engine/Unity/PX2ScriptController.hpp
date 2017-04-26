@@ -22,6 +22,8 @@ namespace PX2
 
 		virtual void SetFileClass(const std::string &filename,
 			const std::string &className);
+		virtual void SetStringClass(const std::string &str,
+			const std::string &className);
 
 		const std::string &GetFilename() const;
 		const std::string &GetClassName() const;
@@ -58,6 +60,7 @@ namespace PX2
 		float mFiexUpdateTiming;
 
 		std::string mFilename;
+		std::string mString;
 		std::string mClassName;
 	};
 
