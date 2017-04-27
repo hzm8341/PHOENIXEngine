@@ -10,4 +10,6 @@
 		static EffectableController *ToEffectController(Object *obj);
 		static Object *ToO(void *obj);
 		static ScriptController *ToSC(void *obj);
+		static GeneralServer *ToGS(void *obj);
+		static GeneralClientConnector *ToGCC(void *obj);
 	};

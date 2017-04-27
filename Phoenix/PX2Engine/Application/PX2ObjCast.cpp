@@ -39,3 +39,13 @@ ScriptController *Cast::ToSC(void *obj)
 	return (ScriptController*)obj;
 }
 //----------------------------------------------------------------------------
+GeneralServer *Cast::ToGS(void *obj)
+{
+	return (GeneralServer*)obj;
+}
+//----------------------------------------------------------------------------
+GeneralClientConnector *Cast::ToGCC(void *obj)
+{
+	return (GeneralClientConnector*)obj;
+}
+//----------------------------------------------------------------------------

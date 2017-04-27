@@ -580,7 +580,7 @@ bool Application::LoadBoost(const std::string &filename)
 
 				XMLNode nodePlugins = data.GetNodeByPath("app.plugins");
 				XMLNode nodePlugin = nodePlugins.IterateChild();
-				if (!nodePlugin.IsNull())
+				while (!nodePlugin.IsNull())
 				{
 					std::string name = nodePlugin.AttributeToString("name");
 					mBoostInfo.Plugins.push_back(name);
@@ -613,7 +613,7 @@ bool Application::LoadBoost(const std::string &filename)
 
 				XMLNode nodePlugins = nodeChild.GetChild("plugins");
 				XMLNode nodePlugin = nodePlugins.IterateChild();
-				if (!nodePlugin.IsNull())
+				while (!nodePlugin.IsNull())
 				{
 					std::string name = nodePlugin.AttributeToString("name");
 					info.Plugins.push_back(name);

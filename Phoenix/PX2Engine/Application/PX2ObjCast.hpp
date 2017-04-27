@@ -7,6 +7,8 @@
 #include "PX2Node.hpp"
 #include "PX2ScriptController.hpp"
 #include "PX2EffectableController.hpp"
+#include "PX2GeneralServer.hpp"
+#include "PX2GeneralClientConnector.hpp"
 
 namespace PX2
 {
@@ -21,6 +23,8 @@ namespace PX2
 		static EffectableController *ToEffectController(Object *obj);
 		static Object *ToO(void *obj);
 		static ScriptController *ToSC(void *obj);
+		static GeneralServer *ToGS(void *obj);
+		static GeneralClientConnector *ToGCC(void *obj);
 	};
 
 }

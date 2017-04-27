@@ -4,16 +4,19 @@ function preplay()
 
 end
 
-function OnConnect(generalServer, clientID)
+function OnConnect(objPtr, clientID)
     PX2_LOGGER:LogInfo("ServerPlayer", "OnConnect "..clientID)
 end
 
-function OnDisConnect(generalServer, clientID)
+function OnDisConnect(objPtr, clientID)
     PX2_LOGGER:LogInfo("ServerPlayer", "OnDisConnect "..clientID)
 end
 
-function OnRecv(generalServer, clientID, strBuf)
+function OnRecv(objPtr, clientID, strBuf)
     PX2_LOGGER:LogInfo("ServerPlayer", "OnRecv "..clientID..":"..strBuf)
+
+    generalServer = Cast:ToGS(objPtr)
+    generalServer:SendString(clientID, "wow!")
 end
 
 function play()

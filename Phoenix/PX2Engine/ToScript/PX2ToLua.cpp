@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 04/26/17 20:57:16.
+** Generated automatically by tolua++-1.0.92 on 04/27/17 11:12:37.
 */
 
 #ifndef __cplusplus
@@ -64584,6 +64584,66 @@ static int tolua_PX2_Cast_ToSC00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: ToGS of class  Cast */
+#ifndef TOLUA_DISABLE_tolua_PX2_Cast_ToGS00
+static int tolua_PX2_Cast_ToGS00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Cast",0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  void* obj = ((void*)  tolua_touserdata(tolua_S,2,0));
+  {
+   GeneralServer* tolua_ret = (GeneralServer*)  Cast::ToGS(obj);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"GeneralServer");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ToGS'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ToGCC of class  Cast */
+#ifndef TOLUA_DISABLE_tolua_PX2_Cast_ToGCC00
+static int tolua_PX2_Cast_ToGCC00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Cast",0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  void* obj = ((void*)  tolua_touserdata(tolua_S,2,0));
+  {
+   GeneralClientConnector* tolua_ret = (GeneralClientConnector*)  Cast::ToGCC(obj);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"GeneralClientConnector");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ToGCC'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: new of class  UI */
 #ifndef TOLUA_DISABLE_tolua_PX2_UI_new00
 static int tolua_PX2_UI_new00(lua_State* tolua_S)
@@ -70626,6 +70686,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ToEffectController",tolua_PX2_Cast_ToEffectController00);
    tolua_function(tolua_S,"ToO",tolua_PX2_Cast_ToO00);
    tolua_function(tolua_S,"ToSC",tolua_PX2_Cast_ToSC00);
+   tolua_function(tolua_S,"ToGS",tolua_PX2_Cast_ToGS00);
+   tolua_function(tolua_S,"ToGCC",tolua_PX2_Cast_ToGCC00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"UI","UI","UIFrame",tolua_collect_UI);

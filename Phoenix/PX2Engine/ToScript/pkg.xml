@@ -6908,6 +6908,14 @@
 				<param paramstr="ScriptController *" is_retrun="true" type_str="ScriptController" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
 				<param paramstr="void *obj" is_retrun="false" type_str="void" valuename_str="obj" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
+			<function name="ToGS" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="GeneralServer *" is_retrun="true" type_str="GeneralServer" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="void *obj" is_retrun="false" type_str="void" valuename_str="obj" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="ToGCC" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="GeneralClientConnector *" is_retrun="true" type_str="GeneralClientConnector" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="void *obj" is_retrun="false" type_str="void" valuename_str="obj" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
 		</class>
 		<class name="UI" parentname="UIFrame">
 			<function name="UI" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
