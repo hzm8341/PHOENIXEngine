@@ -1,0 +1,85 @@
+<rootnode>
+	<enums num="1"/>
+	<classes num="5">
+		<class name="UIBBlockCataFrame" parentname="UIFrame">
+			<function name="UIBBlockCataFrame" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="UIBBlockCataFrame" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockCataFrame *" is_retrun="true" type_str="UIBBlockCataFrame" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockCataFrame *" is_retrun="true" type_str="UIBBlockCataFrame" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
+		<class name="UIBBlockPanels" parentname="UIFrame">
+			<function name="UIBBlockPanels" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="UIBBlockPanels" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockPanels *" is_retrun="true" type_str="UIBBlockPanels" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockPanels *" is_retrun="true" type_str="UIBBlockPanels" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="ShowPanel" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;panelName" is_retrun="false" type_str="std::string" valuename_str="panelName" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
+		<class name="UIBBlockEdit" parentname="UIFrame">
+			<function name="UIBBlockEdit" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="UIBBlockEdit" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockEdit *" is_retrun="true" type_str="UIBBlockEdit" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockEdit *" is_retrun="true" type_str="UIBBlockEdit" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
+		<class name="UIBBlockEditToolFrame" parentname="UIFrame">
+			<function name="UIBBlockEditToolFrame" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="UIBBlockEditToolFrame" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockEditToolFrame *" is_retrun="true" type_str="UIBBlockEditToolFrame" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIBBlockEditToolFrame *" is_retrun="true" type_str="UIBBlockEditToolFrame" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetButtonRecycle" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIButton *" is_retrun="true" type_str="UIButton" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="BBlockScriptGenController" parentname="Controller">
+			<enum name="GenerateType">
+				<enum_item itemstr="GT_ENGINE"/>
+				<enum_item itemstr="GT_ARDUINO"/>
+				<enum_item itemstr="GT_NODEMCU"/>
+				<enum_item itemstr="GT_RASPBERRY"/>
+				<enum_item itemstr="GT_MAX_TYPE"/>
+			</enum>
+			<function name="BBlockScriptGenController" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="BBlockScriptGenController" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="BBlockScriptGenController *" is_retrun="true" type_str="BBlockScriptGenController" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="BBlockScriptGenController *" is_retrun="true" type_str="BBlockScriptGenController" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetGenerateType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="GenerateType at" is_retrun="false" type_str="GenerateType" valuename_str="at" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetGenerateType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="GenerateType " is_retrun="true" type_str="GenerateType" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetLFile" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="LFile *" is_retrun="true" type_str="LFile" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+	</classes>
+</rootnode>
+

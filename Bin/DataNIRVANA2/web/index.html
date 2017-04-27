@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+<style>
+.full-width {
+  width:100%;
+}
+.half-width {
+  width:60%;
+}
+.left-width {
+  width:60px;
+}
+.black-ground {
+  background-color:#1d1d1d;
+}
+.title-content-vgap {
+  height:20px;
+}
+.content-vgap {
+  height:10px;
+}
+.content-vgap-min {
+  height:5px;
+}
+.news-vgap {
+  height:15px;
+}
+.news-content-div {
+  width:400px;
+  height:65px;
+  font-size:2;
+  color:#c2bcc2;
+  background-color:#1a191a;
+}
+.newsWrapper {
+  cursor:pointer;
+  color:#c2bcc2;
+}
+
+.newWrapper-mouse-over {
+  cursor:pointer;
+  color:#c2bcc2;
+  text-decoration:underline;
+}
+
+.logo-pic {
+   width:80px;
+   height:80px;
+   float:left;
+   background:url(./images/phoenix.png) no-repeat;
+   background-size:cover;
+   background-position:center;
+}
+
+a:link,a:visited {
+  font-size:2;
+  color:#6093e7;
+  text-decoration:none;
+}
+
+a:hover,a:active {
+  font-size:2;
+  color:#c2bcc2; 
+  text-decoration:none; 
+}
+
+body {
+  font-family:Arial;
+  font-size:3;
+  background-color:#1d1d1d;
+}
+</style>
+<script type="text/javascript">
+  function underLine(e) {
+    e.className = 'newWrapper-mouse-over';
+  }
+  function noneLine(e) {
+    e.className = 'newWrapper';
+  }
+  function visitLink(e) {
+    window.open(e.getAttribute("data-href"));
+  }
+</script>
+<title>PhoenixIOT</title>
+</head>
+<body>
+   <div id="topDiv" class="full-width black-ground" style="height:60px;"></div>
+   <div id="logoDiv" class="full-width black-ground" style="height:128px;">
+     <div id="blank1" style="width:128px;height:128px;float:left"></div>
+	 <div id="logoDiv" class="logo-pic"></div>
+	 <div id="blank2" style="width:40px;height:128px;float:left"></div>
+	 <div id="welcomeDiv" style="display:inline;">
+	   <font size="6" color="#a4a0ca">Hello,欢迎使用<i>Phoenix</i>IOT!</font><br>
+	   <p><font size="3" color="#c6c6c6">基于Lua的机器人系統解決方案，从0开始，开发和部署你的机器人</font></p>
+	 </div>
+   </div>
+   
+   <div id="wrapperDiv" class="full-width black-ground" style="height：800px;">
+     <table>
+        <tr>
+          <td class="left-width"></td>
+		  <td style="width:1200px;">
+		    <table class="full-width"><tr>
+	           <td class="half-width" align="left" valign="top">
+			     <div><font size="3" color="#c2bcc2">开始</font></div>
+				 <div class="title-content-vgap"></div>
+				 <div><a href="#">新建项目</a></div>
+				 <div class="content-vgap"></div>
+				 <div><a href="#">打开项目</a></div>
+				 <div class="content-vgap"></div>
+				 <div><a href="#">产品介紹</a></div>
+				 <div style="height:120px;"></div>
+				 <div><font size="3" color="#c2bcc2">帮助</font></div>
+				 <div class="title-content-vgap"></div>
+				 <div><a href="#">介绍视频</a></div>
+				 <div class="content-vgap"></div>
+				 <div><a href="#">GitHub仓库</a></div>
+				 <div class="content-vgap"></div>
+				 <div class="content-vgap" style="width:16%;border-top:1px solid #595959"></div>
+				 <div><a href="#">ManyKit.com</a></div>
+				 <div style="height:90px;"></div>
+				 <div><font size="2" color="#c2bcc2">引擎PX2Engine，PX2AppPlayer，以Boost Software License进行发布。</font></div>
+				 <div class="content-vgap-min"></div>
+				 <div><font size="2" color="#c2bcc2">编辑器PX2Editor Nirvana以GPL协议进行发布。</font></div>
+				 <div class="content-vgap-min"></div>
+				 <div style="width:100%;">
+				   <font size="2" color="#c2bcc2">
+				      在Boost协议下，你拥有非常宽松的政策，可以自由修改引擎核心，甚至可以形<br>
+					  成自己的一个版本；在GPL协议下，你不可以引用编辑器的代码形成一个商业<br>
+					  版本，必須也是以GPL协议进行开源发布。
+				   </font>
+				 </div>
+			   </td>
+	           <td id="newsLinks" class="half-width" align="left" valign="top">
+			      <div><font size="3" color="#c2bcc2">快速链接</font></div>
+				  <div class="title-content-vgap"></div>
+				  <div class="news-content-div"><label data-href="#" class="newsWrapper" onmouseover="underLine(this);" onmouseout="noneLine(this);" onclick="visitLink(this);">开始你的第一个应用，使用引擎创建一个界面。</label></div>
+				  <div class="news-vgap"></div>
+				  <div class="news-content-div"><label data-href="#" class="newsWrapper" onmouseover="underLine(this);" onmouseout="noneLine(this);" onclick="visitLink(this);">几行代码，创造一个服务器。</label></div>
+				  <div class="news-vgap"></div>
+				  <div class="news-content-div"><label data-href="#" class="newsWrapper" onmouseover="underLine(this);" onmouseout="noneLine(this);" onclick="visitLink(this);">部署在树莓派上，就可以让这个小板子发挥巨大能量。</label></div>
+				  <div class="news-vgap"></div>
+				  <div class="news-content-div"><label data-href="#" class="newsWrapper" onmouseover="underLine(this);" onmouseout="noneLine(this);" onclick="visitLink(this);">官方机器人车，你的第一个个人DIY机器人。</label></div>
+				  <div class="news-vgap"></div>
+				  <div class="news-content-div"><label data-href="#" class="newsWrapper" onmouseover="underLine(this);" onmouseout="noneLine(this);" onclick="visitLink(this);">传感器不够？这里有大量通用传感器成为你的可用之选。</label></div>
+				  <div class="news-vgap"></div>
+				  <div class="news-content-div"><label data-href="#" class="newsWrapper" onmouseover="underLine(this);" onmouseout="noneLine(this);" onclick="visitLink(this);">让我们一起学习开发一个真正的游戏吧！</label></div>
+				  <div class="news-vgap"></div>
+			   </td>
+		    </tr></table>
+		  </td>
+	    </tr>	
+     </table>
+   </div>
+</body>
+</html>
