@@ -1,0 +1,32 @@
+// PX2EU_Manager.pkg
+
+	class EU_Manager
+	{	
+		// commonds
+	public:
+		void NewProject();
+		void OpenProject();
+		void SaveProject();
+		void CloseProject();
+		void NewScene();
+		void OpenScene();
+		void SaveScene();
+		void SaveSceneAs();
+		void CloseScene();
+		void Exit();
+		void Import();
+		void Export();
+		
+		// edit menu
+	public:
+		enum EditMenuType
+		{
+			EMT_PROJTREE,
+			EMT_SCENE,
+			EMT_UI,
+			EMT_BP,
+			EMT_MAX_TYPE
+		};
+		void CreateEditMenu(const APoint &pos, EditMenuType menuType);
+		EditMenuType GetEidtMenuType();
+	};

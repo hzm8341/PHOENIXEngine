@@ -1,0 +1,21 @@
+// PX2EU_ProjectTree.pkg
+
+	class EU_ProjectTree : public UITree
+	{
+		EU_ProjectTree();
+		virtual ~EU_ProjectTree();
+		
+		static EU_ProjectTree *New();
+		static EU_ProjectTree *New(const std::string &name);
+
+		void SetShowType(ShowType st);
+		ShowType GetShowType() const;
+
+		virtual UIItem *AddItem(UIItem *parentItem,
+			const std::string &label, const std::string &name = "", 
+			Object *obj = 0);
+
+		virtual void OnEvent(Event *ent);
+		virtual void OnSelected(UIItem *item, bool isDouble);
+		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
+	};

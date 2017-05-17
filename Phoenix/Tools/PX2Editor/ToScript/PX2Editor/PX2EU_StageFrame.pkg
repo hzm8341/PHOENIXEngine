@@ -1,0 +1,10 @@
+// PX2EU_StageFrame.pkg
+
+	class EU_StageFrame : public UIFrame, public Visitor
+	{
+		EU_StageFrame();
+		virtual ~EU_StageFrame();
+		
+		static EU_StageFrame *New();
+		static EU_StageFrame *New(const std::string &name);
+	};
