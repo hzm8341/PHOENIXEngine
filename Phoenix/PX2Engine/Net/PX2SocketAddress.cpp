@@ -92,7 +92,7 @@ SocketAddress::SocketAddress(const struct sockaddr* addr, px2_socklen_t length)
 #if defined(PX2_HAVE_IPV6)
 	else if (length == sizeof(struct sockaddr_in6))
 	{
-		mImpl = new IPv6SocketAddressImpl(reinterpret_cast<
+		mImpl = new0 IPv6SocketAddressImpl(reinterpret_cast<
 			const struct sockaddr_in6*>(addr));
 	}
 #endif

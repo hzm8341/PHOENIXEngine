@@ -26,7 +26,7 @@ const std::string GraphicsRoot::sTerResPath = "TerResPath";
 GraphicsRoot::GraphicsRoot ()
 {
 	mIsInEditor = false;
-	mIsUIShareDraw = false;
+	mIsUIShareDraw = true;
 	mPlayType = PT_NONE;
 
 	MaterialManager *mi = new0 MaterialManager();
@@ -175,6 +175,7 @@ void GraphicsRoot::Draw()
 void GraphicsRoot::SetInEditor(bool isInEditor)
 {
 	mIsInEditor = isInEditor;
+	mIsUIShareDraw = !mIsInEditor;
 }
 //----------------------------------------------------------------------------
 void GraphicsRoot::SetUIShareDraw(bool shareDraw)

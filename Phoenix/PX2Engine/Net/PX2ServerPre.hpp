@@ -6,7 +6,7 @@
 #include "PX2CorePre.hpp"
 #include "PX2NetPre.hpp"
 
-#if defined(__LINUX__)
+#if defined(__LINUX__) || defined (__ANDROID__)
 #define PX2_HAVE_FD_POLL
 #include <poll.h>
 #endif

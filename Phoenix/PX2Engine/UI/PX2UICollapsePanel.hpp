@@ -29,8 +29,8 @@ namespace PX2
 		void _MarkCollpaseRecal();
 
 	protected:
+		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
 		void _SliderCallback(UIFrame *frame, UICallType type);
-
 		virtual void UpdateWorldData(double applicationTime, double elapsedTime);
 		void _CalCollpase();
 		void _UpdateContentPos();

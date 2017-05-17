@@ -1,6 +1,7 @@
 // PX2UIProgressBar.cpp
 
 #include "PX2UIProgressBar.hpp"
+#include "PX2StringHelp.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI_V(PX2, UIFrame, UIProgressBar, 1);
@@ -52,6 +53,25 @@ mIsNeedAdujst(true)
 //----------------------------------------------------------------------------
 UIProgressBar::~UIProgressBar()
 {
+}
+//----------------------------------------------------------------------------
+UIFText *UIProgressBar::CreateAddProgressText()
+{
+	if (mProgressText)
+	{
+		DetachChild(mProgressText);
+		mProgressText = 0;
+	}
+
+	mProgressText = new0 UIFText();
+	AttachChild(mProgressText);
+	mProgressText->LocalTransform.SetTranslateY(-4.0f);
+	mProgressText->SetAnchorHor(0.0f, 1.0f);
+	mProgressText->SetAnchorVer(0.0, 1.0f);
+	mProgressText->GetText()->SetFontColor(Float3::WHITE);
+	mProgressText->GetText()->SetText("0/100");
+
+	return mProgressText;
 }
 //----------------------------------------------------------------------------
 void UIProgressBar::SetBackPicBox(UIFPicBox *picBox)
@@ -129,6 +149,12 @@ void UIProgressBar::SetProgress(float progress, bool callLogic)
 	const Sizef &size = GetSize();
 	Sizef sizeProgross = size;
 	sizeProgross.Width = size.Width * progress;
+
+	if (mProgressText)
+	{
+		int iPercent = (int)(progress * 100.0f);
+		mProgressText->GetText()->SetText(StringHelp::IntToString(iPercent) + "/100");
+	}
 
 	if (mProgressPicBox)
 	{
@@ -254,6 +280,8 @@ void UIProgressBar::Load(InStream& source)
 	source.ReadPointer(mProgressPicBox);
 	source.ReadPointer(mOverPicBox);
 
+	source.ReadPointer(mProgressText);
+
 	source.Read(mProgress);
 
 	source.ReadPointer(mPBCtrl);
@@ -268,6 +296,8 @@ void UIProgressBar::Link(InStream& source)
 	source.ResolveLink(mBackPicBox);
 	source.ResolveLink(mProgressPicBox);
 	source.ResolveLink(mOverPicBox);
+
+	source.ResolveLink(mProgressText);
 
 	source.ResolveLink(mPBCtrl);
 }
@@ -284,6 +314,8 @@ bool UIProgressBar::Register(OutStream& target) const
 		target.Register(mBackPicBox);
 		target.Register(mProgressPicBox);
 		target.Register(mOverPicBox);
+
+		target.Register(mProgressText);
 
 		target.Register(mPBCtrl);
 
@@ -304,6 +336,8 @@ void UIProgressBar::Save(OutStream& target) const
 	target.WritePointer(mProgressPicBox);
 	target.WritePointer(mOverPicBox);
 
+	target.WritePointer(mProgressText);
+
 	target.Write(mProgress);
 
 	target.WritePointer(mPBCtrl);
@@ -319,6 +353,8 @@ int UIProgressBar::GetStreamingSize(Stream &stream) const
 	size += PX2_POINTERSIZE(mBackPicBox);
 	size += PX2_POINTERSIZE(mProgressPicBox);
 	size += PX2_POINTERSIZE(mOverPicBox);
+
+	size += PX2_POINTERSIZE(mProgressText);
 
 	size += sizeof(mProgress);
 

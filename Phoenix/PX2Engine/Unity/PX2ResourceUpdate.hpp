@@ -4,6 +4,8 @@
 #define PX2RESOURCEUPDATE_HPP
 
 #include "PX2UnityPre.hpp"
+#include "PX2FString.hpp"
+#include "PX2SmartPointer.hpp"
 
 namespace PX2
 {
@@ -42,19 +44,18 @@ namespace PX2
 		ResourceVersion Version;
 		bool IsCurrent;
 	};
+	typedef Pointer0<ResourceVersionItem> ResourceVersionItemPtr;
 
-	class PX2_ENGINE_ITEM ResourceFileMark
+	class PX2_ENGINE_ITEM ResourceFileInfoItem
 	{
 	public:
-		ResourceFileMark ();
-		~ResourceFileMark ();
+		ResourceFileInfoItem ();
+		~ResourceFileInfoItem ();
 
 		std::string Path;
-		int32_t BufferSize;
-		char MD5[16];
-
-		static int ResourceUpdateVersion;
+		std::string MD5;
 	};
+	typedef Pointer0<ResourceFileInfoItem> ResourceFileInfoItemPtr;
 
 #include "PX2ResourceUpdate.inl"
 

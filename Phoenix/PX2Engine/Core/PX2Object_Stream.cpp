@@ -61,7 +61,8 @@ mIsEnable(true),
 mIsActivated(true),
 mReadedVersion(0),
 mCurStream(0),
-mID(0)
+mID(0),
+mIsNameChangeable(true)
 {
 	mEventHandler = new0 ObjectEventHandler(this);
 }

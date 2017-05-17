@@ -4,10 +4,6 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-std::vector<PluginInitlizeFun> Plugin::msPluginInitlizeFuns;
-//----------------------------------------------------------------------------
-std::vector<PluginTernamateFun> Plugin::msPluginTernamateFuns;
-//----------------------------------------------------------------------------
 Plugin::Plugin() 
 {
 	mName = "Plugin";
@@ -32,87 +28,5 @@ void Plugin::OnUninstall()
 //----------------------------------------------------------------------------
 void Plugin::OnUpdate()
 {
-}
-//----------------------------------------------------------------------------
-void Plugin::ExecuteInit()
-{
-	auto it = msPluginInitlizeFuns.begin();
-	for (; it != msPluginInitlizeFuns.end(); it++)
-	{
-		PluginInitlizeFun fun = *it;
-		(*fun)();
-	}
-
-	msPluginInitlizeFuns.clear();
-}
-//----------------------------------------------------------------------------
-void Plugin::ExecuteInitLast()
-{
-	if ((int)msPluginInitlizeFuns.size() > 0)
-	{
-		PluginInitlizeFun fun = msPluginInitlizeFuns[
-			msPluginInitlizeFuns.size() - 1];
-		if (fun)
-		{
-			(*fun)();
-		}
-	}
-}
-//----------------------------------------------------------------------------
-void Plugin::ExecuteTerm()
-{
-	auto it = msPluginTernamateFuns.begin();
-	for (; it != msPluginTernamateFuns.end(); it++)
-	{
-		PluginTernamateFun fun = *it;
-		(*fun)();
-	}
-
-	msPluginTernamateFuns.clear();
-}
-//----------------------------------------------------------------------------
-void Plugin::ExecuteTermLast()
-{
-	if ((int)msPluginTernamateFuns.size() > 0)
-	{
-		PluginTernamateFun fun = msPluginTernamateFuns[
-			msPluginTernamateFuns.size() - 1];
-		if (fun)
-		{
-			(*fun)();
-		}
-	}
-}
-//----------------------------------------------------------------------------
-void Plugin::RemoveInit(PluginInitlizeFun fun)
-{
-	auto it = msPluginInitlizeFuns.begin();
-	for (; it != msPluginInitlizeFuns.end();)
-	{
-		if (*it == fun)
-		{
-			it = msPluginInitlizeFuns.erase(it);
-		}
-		else
-		{
-			it++;
-		}
-	}
-}
-//----------------------------------------------------------------------------
-void Plugin::RemoveTerm(PluginTernamateFun fun)
-{
-	auto it = msPluginTernamateFuns.begin();
-	for (; it != msPluginTernamateFuns.end();)
-	{
-		if (*it == fun)
-		{
-			it = msPluginTernamateFuns.erase(it);
-		}
-		else
-		{
-			it++;
-		}
-	}
 }
 //----------------------------------------------------------------------------

@@ -116,8 +116,7 @@ bool operator < (const ResourceVersion& a, const ResourceVersion& b)
 //----------------------------------------------------------------------------
 // ResourceVersionItem
 //----------------------------------------------------------------------------
-ResourceVersionItem::ResourceVersionItem ()
-	:
+ResourceVersionItem::ResourceVersionItem ():
 IsCurrent(false)
 {
 }
@@ -128,18 +127,11 @@ ResourceVersionItem::~ResourceVersionItem()
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// ResourceFileMark
-//----------------------------------------------------------------------------
-int ResourceFileMark::ResourceUpdateVersion = 0;
-//----------------------------------------------------------------------------
-ResourceFileMark::ResourceFileMark ()
-	:
-BufferSize(0)
+ResourceFileInfoItem::ResourceFileInfoItem ()
 {
-	memset(MD5, 0, 16*sizeof(unsigned char));
 }
 //----------------------------------------------------------------------------
-ResourceFileMark::~ResourceFileMark ()
+ResourceFileInfoItem::~ResourceFileInfoItem ()
 {
 }
 //----------------------------------------------------------------------------

@@ -20,6 +20,7 @@ ServerIocp::~ServerIocp()
 //----------------------------------------------------------------------------
 bool ServerIocp::Start()
 {
+	mIsStarted = false;
 	mIsShutdown = false;
 	mNumListenThread = 0;
 	mNumIOWorkerThread = 0;
@@ -38,11 +39,14 @@ bool ServerIocp::Start()
 		return false;
 	}
 
+	mIsStarted = true;
+
 	return true;
 }
 //----------------------------------------------------------------------------
 void ServerIocp::Shutdown()
 {
+	mIsStarted = false;
 	mIsShutdown = true;
 
 	while (mNumListenThread > 0)
@@ -231,7 +235,7 @@ bool ServerIocp::_SetupListener()
 	if (INVALID_SOCKET == mSktListenSocket)
 		return false;
 
-	mListenSocket = StreamSocket(mSktListenSocket);
+	mListenSocket = ServerSocket(mSktListenSocket);
 
 	// Event for handling Network IO
 	mhEvent = WSACreateEvent();

@@ -284,7 +284,7 @@ ToLua/tolua_push.c \
 ToLua/tolua_to.c \
 LuaPlus/LuaPlus.cpp \
 LuaPlus/LuaPlusAddons.c \
-LuaPlus/LuaState_DumpObject.cpp
+SQLite/sqlite3.c
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
 $(LOCAL_PATH)/ImageLibs/PNG/ \
@@ -298,6 +298,7 @@ $(LOCAL_PATH)/LuaPlus/ \
 $(LOCAL_PATH)/CURL/config/android \
 $(LOCAL_PATH)/CURL/src \
 $(LOCAL_PATH)/CURL/ \
+$(LOCAL_PATH)/SQLite/ \
 $(PX2_ROOT)/PX2SDK/Include/ \
 $(LOCAL_PATH)/AppPlay/ \
 $(LOCAL_PATH)/PlatformSDK/ \

@@ -37,7 +37,6 @@ namespace PX2
 		int _OnRead(ClientContext *pcontext);
 		int _OnWrite(ClientContext *clientContext);
 
-		ServerSocket mServerSocket;
 		Thread *mThreadListen;
 	};
 

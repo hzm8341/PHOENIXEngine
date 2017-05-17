@@ -3,16 +3,16 @@
 //----------------------------------------------------------------------------
 inline StringTokenizer::Iterator StringTokenizer::Begin() const
 {
-	return _tokens.begin();
+	return mTokens.begin();
 }
 //----------------------------------------------------------------------------
 inline StringTokenizer::Iterator StringTokenizer::End() const
 {
-	return _tokens.end();
+	return mTokens.end();
 }
 //----------------------------------------------------------------------------
-inline std::size_t StringTokenizer::Count() const
+inline int StringTokenizer::Count()
 {
-	return _tokens.size();
+	return (int)mTokens.size();
 }
 //----------------------------------------------------------------------------

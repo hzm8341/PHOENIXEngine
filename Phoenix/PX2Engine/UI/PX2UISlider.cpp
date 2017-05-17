@@ -5,6 +5,7 @@
 #include "PX2ScriptManager.hpp"
 #include "PX2UIDefine.hpp"
 #include "PX2Math.hpp"
+#include "PX2RenderWindow.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, UISlider);
@@ -246,14 +247,14 @@ void UISlider::_SliderDrag(UIFrame *frame, UICallType type)
 	}
 }
 //----------------------------------------------------------------------------
-void UISlider::OnWidgetPicked(const CanvasInputData &inputData)
+void UISlider::OnSizeNodePicked(const CanvasInputData &inputData)
 {
 	if (UIPT_MOVED == inputData.PickType)
 	{
 		if (IsDraging())
 		{
 			const Sizef &size = GetSize();
-			const AVector &moveDelta = inputData.MoveDelta;
+			AVector moveDelta = inputData.MoveDelta;
 
 			float percent = GetPercent();
 			float addPercent = 0.0f;

@@ -15,6 +15,8 @@
 #include "PX2ProjectEventController.hpp"
 #include "PX2ServerInfoManager.hpp"
 #include "PX2Bluetooth.hpp"
+#include "PX2ErrorHandler.hpp"
+#include "PX2ThreadPool.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -115,12 +117,13 @@ bool Application::Initlize()
 	mLogicManager = new0 LogicManager();
 	mLogicManager->Initlize();
 
-	mBPManager = new0 BPManager();
-
 	mCreater = new0 Creater();
 
 	mEngineEventHandler = new0 EngineEventHandler();
 	PX2_EW.ComeIn(mEngineEventHandler);
+
+	mEngineServer = new0 EngineServer(Server::ST_POLL, 7717);
+	mEngineClientConnector = new0 EngineClientConnector();
 
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
 
@@ -232,6 +235,16 @@ Renderer *Application::GetRenderer(const std::string &name)
 	return 0;
 }
 //----------------------------------------------------------------------------
+EngineServer *Application::GetEngineServer()
+{
+	return mEngineServer;
+}
+//----------------------------------------------------------------------------
+EngineClientConnector *Application::GetEngineClientConnector()
+{
+	return mEngineClientConnector;
+}
+//----------------------------------------------------------------------------
 GeneralServer *Application::CreateGeneralServer(int port,
 	int numMaxConnects, int numMaxMsgHandlers)
 {
@@ -241,7 +254,11 @@ GeneralServer *Application::CreateGeneralServer(int port,
 		mGeneralServer = 0;
 	}
 
-	mGeneralServer = new0 GeneralServer(Server::ST_POLL, port, numMaxConnects,
+	Server::ServerType st = Server::ST_POLL;
+#if defined (WIN32) || defined (_WIN32)
+	st = Server::ST_IOCP;
+#endif
+	mGeneralServer = new0 GeneralServer(st, port, numMaxConnects,
 		numMaxMsgHandlers);
 
 	PX2_SC_LUA->SetUserTypePointer("PX2_GS", "GeneralServer",
@@ -311,8 +328,6 @@ bool Application::Terminate()
 	Play(Application::PT_NONE);
 	CloseProject();
 
-	Plugin::ExecuteTerm();
-
 	PX2_PLUGINMAN.UnloadPlugins();
 
 	PX2_SC_LUA->CallFile("Data/engine/scripts/lua/engine_end.lua");
@@ -322,6 +337,21 @@ bool Application::Terminate()
 	mEngineCanvas = 0;
 
 	PX2_EW.Shutdown(true);
+
+	ErrorHandler *eh = ErrorHandler::GetSingletonPtr();
+	if (eh)
+	{
+		delete0(eh);
+		ErrorHandler::Set(0);
+	}
+
+	ThreadPool *tp = ThreadPool::GetSingletonPtr();
+	if (tp)
+	{
+		tp->StopAll();
+		delete0(tp);
+		ThreadPool::Set(0);
+	}
 
 	mScriptMan->TernimateAll();
 	if (mScriptMan)
@@ -347,16 +377,22 @@ bool Application::Terminate()
 		mGeneralClientConnector = 0;
 	}
 
+	if (mEngineServer)
+	{
+		mEngineServer->Shutdown();
+		mEngineServer = 0;
+	}
+
+	if (mEngineClientConnector)
+	{
+		mEngineClientConnector->Disconnect();
+		mEngineClientConnector = 0;
+	}
+
 	if (mCreater)
 	{
 		delete0(mCreater);
 		Creater::Set(0);
-	}
-
-	if (mBPManager)
-	{
-		delete0(mBPManager);
-		BPManager::Set(0);
 	}
 
 	if (mLogicManager)
@@ -577,6 +613,7 @@ bool Application::LoadBoost(const std::string &filename)
 				mBoostInfo.ProjectName = data.GetNodeByPath("app.play.var").AttributeToString("projectname");
 				mBoostInfo.ThePlayLogicMode = _StrToPlayLogicMode(data.GetNodeByPath("app.play.var").AttributeToString("playlogicmode"));
 				mBoostInfo.IsShowInfo = data.GetNodeByPath("app.play.var").AttributeToBool("isshowinfo");
+				mBoostInfo.IsDataReWriteToDataUpdate = data.GetNodeByPath("app.play.var").AttributeToBool("datawrite");
 
 				XMLNode nodePlugins = data.GetNodeByPath("app.plugins");
 				XMLNode nodePlugin = nodePlugins.IterateChild();
@@ -640,8 +677,6 @@ bool Application::LoadBoost(const std::string &filename)
 
 			nodeChild = rootNode.IterateChild(nodeChild);
 		}
-
-		Plugin::ExecuteInit();
 
 		return true;
 	}

@@ -48,7 +48,7 @@ namespace PX2
 		virtual void OnBeDetach();
 	
 	protected:
-		virtual void OnWidgetPicked(const CanvasInputData &inputData);
+		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
 		virtual void OnSizeNodeNotPicked(const CanvasInputData &inputData);
 
 	protected:

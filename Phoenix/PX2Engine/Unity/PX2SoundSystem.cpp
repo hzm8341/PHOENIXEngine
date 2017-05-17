@@ -170,12 +170,12 @@ void SoundSystem::EnableSounds(bool enable)
 	mIsSoundEnable = enable;
 }
 //----------------------------------------------------------------------------
-inline void SoundSystem::SetMaxNumPlaySameTime(const char *filename, int num)
+void SoundSystem::SetMaxNumPlaySameTime(const char *filename, int num)
 {
 	mPlaySameTimeObjMap[filename].MaxNum = num;
 }
 //----------------------------------------------------------------------------
-inline int SoundSystem::GetMaxNumPlaySameTime(const char *filename) const
+int SoundSystem::GetMaxNumPlaySameTime(const char *filename) const
 {
 	std::map<FString, PlaySameTimeObj>::const_iterator it =
 		mPlaySameTimeObjMap.find(filename);
@@ -188,12 +188,12 @@ inline int SoundSystem::GetMaxNumPlaySameTime(const char *filename) const
 	return mDefaultMaxNumPlaySameTime;
 }
 //----------------------------------------------------------------------------
-inline void SoundSystem::SetPlaySameTimeRange(const char *filename, float time)
+void SoundSystem::SetPlaySameTimeRange(const char *filename, float time)
 {
 	mPlaySameTimeObjMap[filename].SameTimeRange = time;
 }
 //----------------------------------------------------------------------------
-inline float SoundSystem::GetPlaySameTimeRange(const char *filename) const
+float SoundSystem::GetPlaySameTimeRange(const char *filename) const
 {
 	std::map<FString, PlaySameTimeObj>::const_iterator it =
 		mPlaySameTimeObjMap.find(filename);

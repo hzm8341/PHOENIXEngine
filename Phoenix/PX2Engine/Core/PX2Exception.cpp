@@ -1,179 +1,121 @@
 // PX2Exception.cpp
 
 #include "PX2Exception.hpp"
-#include "PX2System.hpp"
+#include <typeinfo>
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-std::string Exception::mAppName;
-//----------------------------------------------------------------------------
-#if defined WIN32 || defined _WIN32
-#include <windows.h>
-#if defined _MSC_VER || defined __USE_MINIDUMP__
-#include "dbghelp.h"
-typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
-	CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
-	CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
-	CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam);
-int Exception::msRefCounter = 0;
-#elif __GNUC__
-/**/
-#endif
-#else //Unix/Linux
-/**/
-#endif
-
-#ifndef COMPILER_STRING
-#ifdef __GNUC__
-/**/
-#else
-#define COMPILER_STRING  ""
-#endif
-#endif
-
-#define COMPILATION_DATE  __DATE__ " " __TIME__
-//----------------------------------------------------------------------------
-Exception::Exception():
-mIsInstalled(false)
+Exception::Exception(int code) : _pNested(0), _code(code)
 {
 }
 //----------------------------------------------------------------------------
-Exception::~Exception()
+Exception::Exception(const std::string& msg, int code) :
+_msg(msg), _pNested(0), _code(code)
 {
-	if (mIsInstalled)
+}
+//----------------------------------------------------------------------------
+Exception::Exception(const std::string& msg, const std::string& arg, int code) :
+_msg(msg), _pNested(0), _code(code)
+{
+	if (!arg.empty())
 	{
-		RemoveHandler();
+		_msg.append(": ");
+		_msg.append(arg);
 	}
 }
 //----------------------------------------------------------------------------
-bool Exception::InstallHandler(std::string appName)
+Exception::Exception(const std::string& msg, const Exception& nested, int code) :
+_msg(msg), _pNested(nested.clone()), _code(code)
 {
-#if defined WIN32 || defined __WINDOWS__
-#if defined _MSC_VER || defined __USE_MINIDUMP__
-	++msRefCounter;
-	if (1 == msRefCounter)
-	{
-		mAppName = appName;
-		::SetUnhandledExceptionFilter(Exception::MiniDumpExceptionHandler);
-	}
-
-#elif __GNUC__
-	/**/
-#endif
-#else // Unix/Linux
-	/**/
-#endif
-
-	mIsInstalled = true;
-	return true;
 }
 //----------------------------------------------------------------------------
-bool Exception::RemoveHandler()
+Exception::Exception(const Exception& exc) :
+std::exception(exc),
+_msg(exc._msg),
+_code(exc._code)
 {
-	if (!mIsInstalled)
-	{
-		return false;
-	}
-
-#if defined WIN32 || defined __WINDOWS__
-#if defined _MSC_VER || defined __USE_MINIDUMP__
-	--msRefCounter;
-	if (msRefCounter == 0)
-	{
-		::SetUnhandledExceptionFilter(0);
-	}
-#elif __GNUC__
-	/**/
-#endif	
-#else //Unix/Linux
-	/**/
-#endif
-
-	mIsInstalled = false;
-	return true;
+	_pNested = exc._pNested ? exc._pNested->clone() : 0;
 }
 //----------------------------------------------------------------------------
-#if defined WIN32 || defined __WINDOWS__
-#if defined _MSC_VER || defined __USE_MINIDUMP__
-long Exception::MiniDumpExceptionHandler(struct _EXCEPTION_POINTERS *pExceptionInfo)
+Exception::~Exception() throw()
 {
-	HMODULE hDll = NULL;
-	char szAppPath[_MAX_PATH];
-	std::string strAppDirectory;
-
-	GetModuleFileName(NULL, szAppPath, _MAX_PATH);
-	strAppDirectory = szAppPath;
-	strAppDirectory = strAppDirectory.substr(0, strAppDirectory.rfind("\\"));
-	if(strAppDirectory.rfind('\\') != strAppDirectory.size())
-	{
-		strAppDirectory += '\\';
-	}
-
-	std::string strFileNameDbgHelp = strAppDirectory + "DBGHELP.DLL";
-	hDll = ::LoadLibrary(strFileNameDbgHelp.c_str());
-
-	if (!hDll)
-	{
-		hDll = ::LoadLibrary("DBGHELP.DLL");
-	}
-
-	if (!hDll)
-	{
-		std::cout << "Could not generate report - DBGHELP.DLL could not be found." << std::endl;
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-
-	MINIDUMPWRITEDUMP pDump = (MINIDUMPWRITEDUMP)::GetProcAddress( hDll, "MiniDumpWriteDump");
-	if(!pDump)
-	{
-		std::cout << "Could not generate report - DBGHELP.DLL is to old." << std::endl;
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-
-	SYSTEMTIME stLocalTime;
-	GetLocalTime(&stLocalTime);
-
-	char dumpfile[250] = {'\0'};
-	sprintf(dumpfile, "%s-%04d-%02d-%02d_%02d%02d%02d_%d.dmp",
-		mAppName.c_str(),
-		stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay,
-		stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond,
-		System::GetCurrentThreadID());
-
-	std::string strFileNameDump = strAppDirectory + dumpfile;
-
-	HANDLE hFile = ::CreateFile(strFileNameDump.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL );
-
-	if (hFile == INVALID_HANDLE_VALUE)
-	{
-		std::cout << "Could not create memory dump file." << std::endl;
-		return EXCEPTION_EXECUTE_HANDLER;
-	}
-
-	_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
-
-	ExInfo.ThreadId = ::GetCurrentThreadId();
-	ExInfo.ExceptionPointers = pExceptionInfo;
-	ExInfo.ClientPointers = NULL;
-
-	std::cout << "Generating minidump file... " << dumpfile << std::endl;
-
-	BOOL bOK = pDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL );
-	if(!bOK)
-	{
-		std::cout << "Could not dump memory to file." << std::endl;
-		::CloseHandle(hFile);
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-
-	::CloseHandle(hFile);
-	return EXCEPTION_EXECUTE_HANDLER;
+	delete _pNested;
 }
-#elif __GNUC__
-/**/
-#endif
 //----------------------------------------------------------------------------
-#else //Unix/Linux
-/**/
-#endif
+Exception& Exception::operator = (const Exception& exc)
+{
+	if (&exc != this)
+	{
+		Exception* newPNested = exc._pNested ? exc._pNested->clone() : 0;
+		delete _pNested;
+		_msg = exc._msg;
+		_pNested = newPNested;
+		_code = exc._code;
+	}
+	return *this;
+}
+//----------------------------------------------------------------------------
+const char* Exception::name() const throw()
+{
+	return "Exception";
+}
+//----------------------------------------------------------------------------
+const char* Exception::className() const throw()
+{
+	return typeid(*this).name();
+}
+//----------------------------------------------------------------------------
+const char* Exception::what() const throw()
+{
+	return name();
+}
+//----------------------------------------------------------------------------
+std::string Exception::displayText() const
+{
+	std::string txt = name();
+	if (!_msg.empty())
+	{
+		txt.append(": ");
+		txt.append(_msg);
+	}
+	return txt;
+}
+//----------------------------------------------------------------------------
+void Exception::extendedMessage(const std::string& arg)
+{
+	if (!arg.empty())
+	{
+		if (!_msg.empty()) _msg.append(": ");
+		_msg.append(arg);
+	}
+}
+//----------------------------------------------------------------------------
+Exception* Exception::clone() const
+{
+	return new Exception(*this);
+}
+//----------------------------------------------------------------------------
+void Exception::rethrow() const
+{
+	throw *this;
+}
+//----------------------------------------------------------------------------
+PX2_IMPLEMENT_EXCEPTION(RuntimeException, Exception, "Runtime exception")
+PX2_IMPLEMENT_EXCEPTION(NotFoundException, RuntimeException, "Not found")
+PX2_IMPLEMENT_EXCEPTION(IOException, RuntimeException, "I/O error")
+PX2_IMPLEMENT_EXCEPTION(DataException, RuntimeException, "Data error")
+PX2_IMPLEMENT_EXCEPTION(SyntaxException, DataException, "Syntax error")
+PX2_IMPLEMENT_EXCEPTION(OutOfMemoryException, RuntimeException, "Out of memory")
+
+PX2_IMPLEMENT_EXCEPTION(URISyntaxException, SyntaxException, "Bad URI syntax")
+PX2_IMPLEMENT_EXCEPTION(PathSyntaxException, SyntaxException, "Bad path syntax")
+PX2_IMPLEMENT_EXCEPTION(FileException, IOException, "File access error")
+PX2_IMPLEMENT_EXCEPTION(FileExistsException, FileException, "File exists")
+PX2_IMPLEMENT_EXCEPTION(FileNotFoundException, FileException, "File not found")
+PX2_IMPLEMENT_EXCEPTION(PathNotFoundException, FileException, "Path not found")
+PX2_IMPLEMENT_EXCEPTION(FileReadOnlyException, FileException, "File is read-only")
+PX2_IMPLEMENT_EXCEPTION(FileAccessDeniedException, FileException, "Access to file denied")
+PX2_IMPLEMENT_EXCEPTION(CreateFileException, FileException, "Cannot create file")
+PX2_IMPLEMENT_EXCEPTION(OpenFileException, FileException, "Cannot open file")
+PX2_IMPLEMENT_EXCEPTION(WriteFileException, FileException, "Cannot write file")
+PX2_IMPLEMENT_EXCEPTION(ReadFileException, FileException, "Cannot read file")

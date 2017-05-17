@@ -132,7 +132,7 @@ int ClientConnector::_InternalConnectB()
 	mRecvLen = 0;
 	mSendLen = 0;
 
-	int result = mSocket.ConnectB(mAddr);
+	int result = mSocket.ConnectB(mConnectToAddr);
 
 	if (0 != result)
 	{
@@ -151,7 +151,7 @@ int ClientConnector::_InternalConnectNB()
 	mRecvLen = 0;
 	mSendLen = 0;
 
-	int result = mSocket.ConnectNB(mAddr);
+	int result = mSocket.ConnectNB(mConnectToAddr);
 
 	if (0 != result)
 	{
@@ -187,7 +187,7 @@ int ClientConnector::ConnectB(const std::string &ip, int port)
 //----------------------------------------------------------------------------
 int ClientConnector::ConnectB(const SocketAddress &addr)
 {
-	mAddr = addr;
+	mConnectToAddr = addr;
 
 	return _InternalConnectB();
 }
@@ -200,7 +200,7 @@ int ClientConnector::ConnectNB(const std::string &ip, int port)
 //----------------------------------------------------------------------------
 int ClientConnector::ConnectNB(const SocketAddress &addr)
 {
-	mAddr = addr;
+	mConnectToAddr = addr;
 	
 	return _InternalConnectNB();
 }

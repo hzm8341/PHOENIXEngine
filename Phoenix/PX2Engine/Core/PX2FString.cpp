@@ -20,7 +20,10 @@ struct stShareString
 
 	~stShareString()
 	{
-		delete [] Str;
+		if (Str)
+		{
+			delete[] Str;
+		}
 	}
 
 	stShareString *Next;

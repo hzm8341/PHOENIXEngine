@@ -103,6 +103,7 @@ mPickedWidget(0)
 	SetClearFlag(true, true, true);
 	SetClearColor(Float4::BLACK);
 
+	SetChildNotPickRecursion(false);
 	SetActivateSelfCtrled(false);
 	ComeInEventWorld();
 }
@@ -670,12 +671,14 @@ void Canvas::_FlushShareDraw(Renderer *renderer)
 }
 //----------------------------------------------------------------------------
 CanvasInputData Canvas::ConvertInputEventDataToCanvasInputData(
-	const APoint &screenPos, const APoint &logicPos, int entType, int butID,
+	const APoint &screenPos,
+	const APoint &logicPos, int entType, int butID,
 	float wheel)
 {
 	CanvasInputData cid;
 	cid.ScreenPos = screenPos;
 	cid.LogicPos = logicPos;
+	cid.CameraLogicPos = logicPos;
 	cid.Wheel = wheel;
 
 	cid.TheMouseTag = CanvasInputData::MT_LEFT;
@@ -847,7 +850,7 @@ void Canvas::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsEnable())
 		return;
 
-	bool isPosInSizeRange = _IsInRect(inputData.LogicPos);
+	bool isPosInSizeRange = _IsInRect(inputData.CameraLogicPos);
 
 	if (isPosInSizeRange)
 	{
@@ -897,51 +900,57 @@ void Canvas::OnWidgetPicked(const CanvasInputData &inputData)
 	camLogicPos.X() = (float)((int)camLogicPos.X());
 	camLogicPos.Y() = (float)((int)camLogicPos.Y());
 	camLogicPos.Z() = (float)((int)camLogicPos.Z());
+	
+	PickInputData data1;
+	data1.ScreenPos = screenPos;
+	data1.LogicPos = logicPos;
+	data1.CameraLogicPos = camLogicPos;
+	data1.Wheel = data.Wheel;
 
-	if (UIPT_MOVED == data.PickType)
-	{
-		OnMotion(screenPos, camLogicPos);
-	}
-	else if (UIPT_PRESSED == data.PickType)
+	if (UIPT_PRESSED == data.PickType)
 	{
 		if (CanvasInputData::MT_LEFT == data.TheMouseTag)
 		{
-			OnLeftDown(screenPos, camLogicPos);
+			OnLeftDown(data1);
 		}
 		else if (CanvasInputData::MT_RIGHT == data.TheMouseTag)
 		{
-			OnRightDown(screenPos, camLogicPos);
+			OnRightDown(data1);
 		}
 		else if (CanvasInputData::MT_MIDDLE == data.TheMouseTag)
 		{
-			OnMiddleDown(screenPos, camLogicPos);
+			OnMiddleDown(data1);
 		}
 	}
 	else if (UIPT_RELEASED == data.PickType)
 	{
 		if (CanvasInputData::MT_LEFT == data.TheMouseTag)
 		{
-			OnLeftUp(screenPos, camLogicPos);
+			OnLeftUp(data1);
 		}
 		else if (CanvasInputData::MT_RIGHT == data.TheMouseTag)
 		{
-			OnRightUp(screenPos, camLogicPos);
+			OnRightUp(data1);
 		}
 		else if (CanvasInputData::MT_MIDDLE == data.TheMouseTag)
 		{
-			OnMiddleUp(screenPos, camLogicPos);
+			OnMiddleUp(data1);
 		}
 	}
 	else if (UIPT_DOUBLE_PRESSED == data.PickType)
 	{
 		if (CanvasInputData::MT_LEFT == data.TheMouseTag)
 		{
-			OnLeftDClick(screenPos, camLogicPos);
+			OnLeftDClick(data1);
 		}
 	}
 	else if (UIPT_WHELLED == data.PickType)
 	{
-		OnMouseWheel(screenPos, camLogicPos, data.Wheel);
+		OnMouseWheel(data1);
+	}
+	else if (UIPT_MOVED == data.PickType)
+	{
+		OnMotion(data1);
 	}
 }
 //----------------------------------------------------------------------------
@@ -968,29 +977,30 @@ void Canvas::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 	//SizeNode::OnSizeNodeNotPicked(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnLeftDown(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnLeftDown(const PickInputData &data)
 {
 	mIsPressed = true;
 	mIsLeftPressed = true;
 	mIsMoved = false;
 	mMoveDelta = AVector::ZERO;
 
-	mPressedPos = logicPos;
+	mPressedPos = data.LogicPos;
 
 	mLastPickPos = mCurPickPos;
 	mCurPickPos = mPressedPos;
 
-	mLeftPressedPos = logicPos;
+	mLeftPressedPos = data.LogicPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_PRESSED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnLeftUp(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnLeftUp(const PickInputData &data)
 {
 	mIsPressed = false;
 	mIsLeftPressed = false;
@@ -999,123 +1009,130 @@ void Canvas::OnLeftUp(const APoint &screenPos, const APoint &logicPos)
 	mLastPickPos = mCurPickPos;
 	mCurPickPos = mReleasedPos;
 
-	mLeftReleasedPos = logicPos;
+	mLeftReleasedPos = data.LogicPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_RELEASED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnLeftDClick(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnLeftDClick(const PickInputData &data)
 {
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_DOUBLE_PRESSED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnMiddleDown(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnMiddleDown(const PickInputData &data)
 {
 	mIsPressed = true;
 	mIsMiddlePressed = true;
 	mIsMoved = false;
 	mMoveDelta = AVector::ZERO;
 
-	mPressedPos = logicPos;
+	mPressedPos = data.LogicPos;
 
 	mLastPickPos = mCurPickPos;
-	mCurPickPos = logicPos;
+	mCurPickPos = data.LogicPos;
 
-	mMiddlePressedPos = logicPos;
+	mMiddlePressedPos = data.LogicPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_PRESSED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnMiddleUp(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnMiddleUp(const PickInputData &data)
 {
 	mIsPressed = false;
 	mIsMiddlePressed = false;
 	mIsMoved = false;
 
 	mLastPickPos = mCurPickPos;
-	mCurPickPos = logicPos;
+	mCurPickPos = data.LogicPos;
 
-	mMiddleReleasedPos = logicPos;
+	mMiddleReleasedPos = data.LogicPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_RELEASED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnMouseWheel(const APoint &screenPos, const APoint &logicPos, float delta)
+void Canvas::OnMouseWheel(const PickInputData &data)
 {
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
-	inputData.Wheel = delta;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
+	inputData.Wheel = data.Wheel;
 	inputData.PickType = UIPT_WHELLED;
 
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnRightDown(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnRightDown(const PickInputData &data)
 {
 	mIsPressed = true;
 	mIsRightPressed = true;
 	mIsMoved = false;
 	mMoveDelta = AVector::ZERO;
 
-	mPressedPos = logicPos;
+	mPressedPos = data.LogicPos;
 
 	mLastPickPos = mCurPickPos;
-	mCurPickPos = logicPos;
+	mCurPickPos = data.LogicPos;
 
-	mRightPressedPos = logicPos;
+	mRightPressedPos = data.LogicPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_RIGHT;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_PRESSED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnRightUp(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnRightUp(const PickInputData &data)
 {
 	mIsPressed = false;
 	mIsRightPressed = false;
 	mIsMoved = false;
 
 	mLastPickPos = mCurPickPos;
-	mCurPickPos = logicPos;
+	mCurPickPos = data.LogicPos;
 
-	mRightReleasedPos = logicPos;
+	mRightReleasedPos = data.LogicPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_RIGHT;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.PickType = UIPT_RELEASED;
 	_DoPick(inputData);
 }
 //----------------------------------------------------------------------------
-void Canvas::OnMotion(const APoint &screenPos, const APoint &logicPos)
+void Canvas::OnMotion(const PickInputData &data)
 {
-	mCurPickPos = logicPos;
+	mCurPickPos = data.LogicPos;
 	mMoveDelta = mCurPickPos - mLastPickPos;
 
 	mLastPickPos = mCurPickPos;
@@ -1123,8 +1140,9 @@ void Canvas::OnMotion(const APoint &screenPos, const APoint &logicPos)
 	mIsMoved = true;
 
 	CanvasInputData inputData;
-	inputData.ScreenPos = screenPos;
-	inputData.LogicPos = logicPos;
+	inputData.ScreenPos = data.ScreenPos;
+	inputData.LogicPos = data.LogicPos;
+	inputData.CameraLogicPos = data.CameraLogicPos;
 	inputData.MoveDelta = mMoveDelta;
 	inputData.PickType = UIPT_MOVED;
 	_DoPick(inputData);

@@ -117,7 +117,8 @@ void SizeNode::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsActivated())
 		return;
 
-	bool isPosInSizeRange = _IsInRect(inputData.LogicPos);
+
+	bool isPosInSizeRange = _IsInRect(inputData.CameraLogicPos);
 
 	if (isPosInSizeRange)
 	{

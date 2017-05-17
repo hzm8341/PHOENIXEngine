@@ -13,6 +13,7 @@ namespace PX2
 	PX2_EVENT(AddObject)
 	PX2_EVENT(RemoveObject)
 	PX2_EVENT(CanvasDestory)
+	PX2_EVENT(WindowSizeChanged)
 	PX2_EVENT(WindowMaxSize)
 	PX2_EVENT(WindowShow)
 	PX2_EVENT(WindowHide)

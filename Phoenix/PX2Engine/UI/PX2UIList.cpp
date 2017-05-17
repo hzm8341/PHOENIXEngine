@@ -15,7 +15,8 @@ mIsUpdateSliderVisible(true),
 mSliderSize(10),
 mItemHeight(20.0f),
 mIsUpdateContentPos(true),
-mSelectedIndex(-1)
+mSelectedIndex(-1),
+mNumMaxItems(-1)
 {
 	mMaskFrame = new0 UIFrame();
 	AttachChild(mMaskFrame);
@@ -133,6 +134,11 @@ void UIList::SetItemHeight(float height)
 //----------------------------------------------------------------------------
 UIItem *UIList::AddItem(const std::string &text)
 {
+	if (GetNumItems() >= GetNumMaxItems())
+	{
+		RemoveItem(GetItemByIndex(0));
+	}
+
 	mMaskFrame->SetNeedAdjustChildrenMask(true);
 
 	UIItem *item = new0 UIItem();
@@ -169,6 +175,40 @@ UIItem *UIList::GetItem(const std::string &text)
 	return 0;
 }
 //----------------------------------------------------------------------------
+UIItem *UIList::GetItemByIndex(int index)
+{
+	if (0 <= index && index < (int)mItems.size())
+	{
+		return mItems[index];
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+void UIList::RemoveItem(UIItem *item)
+{
+	mContentFrame->DetachChild(item);
+
+	auto it = mItems.begin();
+	for (; it != mItems.end();)
+	{
+		if (item == *it)
+		{
+			mItems.erase(it);
+			return;
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+int UIList::GetNumItems() const
+{
+	return (int)mItems.size();
+}
+//----------------------------------------------------------------------------
 int UIList::GetItemIndex(const std::string &text) const
 {
 	for (int i = 0; i < (int)mItems.size(); i++)
@@ -194,6 +234,11 @@ void UIList::RemoveAllItems()
 float UIList::GetContentHeight() const
 {
 	return mItemHeight * (int)mItems.size();
+}
+//----------------------------------------------------------------------------
+void UIList::SetNumMaxItems(int numMax)
+{
+	mNumMaxItems = numMax;
 }
 //----------------------------------------------------------------------------
 void UIList::SelectItem(int index)
@@ -324,7 +369,8 @@ mIsUpdateSliderVisible(true),
 mSliderSize(10),
 mItemHeight(20.0f),
 mIsUpdateContentPos(true),
-mSelectedIndex(-1)
+mSelectedIndex(-1),
+mNumMaxItems(-1)
 {
 	SetChildPickOnlyInSizeRange(true);
 }
@@ -352,6 +398,8 @@ void UIList::Load(InStream& source)
 	source.ReadPointer(mSlider);
 
 	source.ReadAggregate(mTextColor);
+
+	source.Read(mNumMaxItems);
 
 	PX2_END_DEBUG_STREAM_LOAD(UIList, source);
 }
@@ -467,6 +515,8 @@ void UIList::Save(OutStream& target) const
 
 	target.WriteAggregate(mTextColor);
 
+	target.Write(mNumMaxItems);
+
 	PX2_END_DEBUG_STREAM_SAVE(UIList, target);
 }
 //----------------------------------------------------------------------------
@@ -486,6 +536,8 @@ int UIList::GetStreamingSize(Stream &stream) const
 	size += PX2_POINTERSIZE(mSlider);
 
 	size += sizeof(mTextColor);
+
+	size += sizeof(mNumMaxItems);
 
 	return size;
 }

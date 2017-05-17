@@ -15,7 +15,6 @@ using namespace PX2;
 LogicManager::LogicManager()
 {
 	mPlatformType = PT_EDITOR;
-	mUserType = UT_PRO;
 }
 //----------------------------------------------------------------------------
 LogicManager::~LogicManager()
@@ -26,7 +25,8 @@ bool LogicManager::Initlize()
 {
 	PX2_LOGICM.AddPkgInfo("Data/engine/pkg/pkg.xml");
 
-	_InitBlocks();
+	_InitCtrls();
+	_InitFuns();
 
 	return true;
 }
@@ -36,7 +36,7 @@ void LogicManager::Clear()
 	mSelectObject = 0;
 }
 //----------------------------------------------------------------------------
-void LogicManager::SetSelectObject(Object *object)
+void LogicManager::SetSelectLogicObject(Object *object)
 {
 	if (mSelectObject == object)
 		return;
@@ -48,7 +48,7 @@ void LogicManager::SetSelectObject(Object *object)
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
-Object *LogicManager::GetSelectObject()
+Object *LogicManager::GetSelectLogicObject()
 {
 	return mSelectObject;
 }
@@ -77,17 +77,7 @@ LogicManager::PlatformType LogicManager::GetPlatformType() const
 	return mPlatformType;
 }
 //----------------------------------------------------------------------------
-void LogicManager::SetUserType(UserType ut)
-{
-	mUserType = ut;
-}
-//----------------------------------------------------------------------------
-LogicManager::UserType LogicManager::GetUserType() const
-{
-	return mUserType;
-}
-//----------------------------------------------------------------------------
-void LogicManager::_InitBlocks()
+void LogicManager::_InitCtrls()
 {
 	BeginAddFunObj("Program");
 	AddOutput("Start", FPT_LINK);
@@ -113,6 +103,12 @@ void LogicManager::_InitBlocks()
 	BeginAddFunObj("Coroutine");
 	AddOutput("CorDo", FPT_LINK);
 	EndAddFun_Ctrl("Ctrl");
+}
+//----------------------------------------------------------------------------
+void LogicManager::_InitFuns()
+{
+	BeginAddFunObj("FunctionStart");
+	EndAddFun_General("GlobalFuns");
 }
 //----------------------------------------------------------------------------
 FunParamType GetParamType(const std::string &typeStr,
@@ -201,10 +197,12 @@ bool LogicManager::AddPkgInfo(const std::string &filename)
 			{
 				std::string className = classNode.AttributeToString("name");
 				std::string parentName = classNode.AttributeToString("parentname");
+				std::string singletonName = classNode.AttributeToString("singletonname");
 
 				FunObjectPtr funObjectClass = new0 FunObject();
 				mClassFunsMap[className] = funObjectClass;
 				funObjectClass->CateName = "Func";
+				funObjectClass->SigletonName = singletonName;
 				funObjectClass->IsClassCatalogue = true;
 				funObjectClass->ClassName = className;
 				funObjectClass->ParentClassName = parentName;
@@ -229,6 +227,7 @@ bool LogicManager::AddPkgInfo(const std::string &filename)
 					{
 						FunObjectPtr funObj = new0 FunObject;
 						funObj->CateName = "Func";
+						funObj->SigletonName = singletonName;
 						funObj->ClassName = className;
 						funObj->Name = strFunName;
 						funObjectClass->AddFunObject(funObj);
@@ -473,7 +472,7 @@ void LogicManager::AddOutput(const std::string &name,
 	}
 	else if (FPT_BOOL == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, false);
+		mCurAddFunObj->AddOutput(name, funParamType, true);
 	}
 	else if (FPT_STRING == funParamType)
 	{
@@ -590,6 +589,21 @@ void LogicManager::_AddEvent(const std::string &catalogue, FunObject *funObj)
 	funObj->CateName = catalogue;
 }
 //----------------------------------------------------------------------------
+FunObject *LogicManager::GetClassFunObject(const std::string &className)
+{
+	auto it = mClassFunsMap.find(className);
+	if (it != mClassFunsMap.end())
+	{
+		FunObject *classFunObj = it->second;
+		if (classFunObj)
+		{
+			return classFunObj;
+		}
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
 FunObject *LogicManager::GetClassFunObject(const std::string &className, 
 	const std::string &funName)
 {
@@ -662,6 +676,17 @@ FunObject *LogicManager::GetCtrl(const std::string &name)
 	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+const std::map<std::string, std::vector<std::string> > &LogicManager::
+GetParams() const
+{
+	return mParams;
+}
+//----------------------------------------------------------------------------
+std::map<std::string, std::vector<std::string> > &LogicManager::GetParams()
+{
+	return mParams;
 }
 //----------------------------------------------------------------------------
 FunObject *LogicManager::GetParam(const std::string &name)

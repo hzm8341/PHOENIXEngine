@@ -40,6 +40,9 @@ namespace PX2
 		void SetFunOutputConvertToGeneral(bool convert);
 		bool IsFunOutputConvertToGeneral() const;
 
+		void SetUseThisPointer(bool useThisPointer);
+		bool IsUseThisPointer() const;
+
 		void SetClassName(const std::string &className);
 		const std::string &GetClassName() const;
 
@@ -93,6 +96,7 @@ namespace PX2
 	protected:
 		BlockType mBlockType;
 		bool mIsFunOutputConvertToGeneral;
+		bool mIsUseThisPointer;
 		std::string mClassName;
 		CtrlType mCtrlType;
 		ParamType mParamType;

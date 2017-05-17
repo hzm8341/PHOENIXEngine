@@ -11,6 +11,7 @@ using namespace PX2;
 //-----------------------------------------------------------------------------
 ServerImp::ServerImp(int port, int numMaxConnects, int numMaxMsgHandlers,
 	BufferEventQueue *peventque) :
+mIsStarted(false),
 mIsShutdown(true),
 mListenPort(port),
 mNumMaxConnects(numMaxConnects),
@@ -34,6 +35,16 @@ ServerImp::~ServerImp()
 {
 	delete [] mAllContext;
 	mAllContext = 0;
+}
+//----------------------------------------------------------------------------
+bool ServerImp::IsStarted() const
+{
+	return mIsStarted;
+}
+//----------------------------------------------------------------------------
+ServerSocket ServerImp::GetListenSocket()
+{
+	return mListenSocket;
 }
 //----------------------------------------------------------------------------
 bool ServerImp::PostWrite(unsigned int clientid, char *psrc, int srclen)

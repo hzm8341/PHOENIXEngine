@@ -31,9 +31,6 @@
 #include "PX2InterpCurveTranslateCtrl.hpp"
 #include "PX2TriggerController.hpp"
 #include "PX2CameraPlayController.hpp"
-#include "PX2BPPackage.hpp"
-#include "PX2BPFile.hpp"
-#include "PX2BPModule.hpp"
 using namespace PX2;
 
 namespace PX2
@@ -95,17 +92,6 @@ namespace PX2
 		InterpCurveTranslateController *CreateICC_Translate();
 		TriggerController *CreateTriggerController();
 		CameraPlayController *CreateCameraPlayController();
-
-		// blue print
-		BPPackage *CreateBPPackage();
-		BPFile *CreateBPFile();
-		BPModule *CreateBPModule(const std::string &className, const std::string &funName);
-		BPModule *CreateBPModuleGeneral(const std::string &genFunName);
-		BPModule *CreateBPModuleFunctionStart();
-		BPModule *CreateBPEvent(const std::string &spaceName, const std::string &eventName);
-		BPModule *CreateBPOption(const std::string &optionName);
-		BPModule *CreateBPOperator(const std::string &operatorName);
-		BPModule *CreateBPParam(const std::string &paramName);
 
 	public:
 		void AddObject(Object *parent, Object *obj,

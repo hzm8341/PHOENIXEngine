@@ -19,6 +19,11 @@ Movable *Cast::ToMovable(Object *obj)
 	return DynamicCast<Movable>(obj);
 }
 //----------------------------------------------------------------------------
+SizeNode *Cast::ToSizeNode(Object *obj)
+{
+	return DynamicCast<SizeNode>(obj);
+}
+//----------------------------------------------------------------------------
 Node *Cast::ToNode(Object *obj)
 {
 	return DynamicCast<Node>(obj);

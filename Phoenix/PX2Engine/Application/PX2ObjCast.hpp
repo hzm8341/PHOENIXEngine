@@ -9,6 +9,7 @@
 #include "PX2EffectableController.hpp"
 #include "PX2GeneralServer.hpp"
 #include "PX2GeneralClientConnector.hpp"
+#include "PX2SizeNode.hpp"
 
 namespace PX2
 {
@@ -20,6 +21,7 @@ namespace PX2
 		static Controlledable *ToControlledable(Object *obj);
 		static Movable *ToMovable(Object *obj);
 		static Node *ToNode(Object *obj);
+		static SizeNode *ToSizeNode(Object *obj);
 		static EffectableController *ToEffectController(Object *obj);
 		static Object *ToO(void *obj);
 		static ScriptController *ToSC(void *obj);

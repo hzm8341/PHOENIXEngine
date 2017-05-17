@@ -120,6 +120,13 @@ void RenderWindow::SetScreenSize(const Sizef &size)
 		mMainCanvas->SetScreenRect(Rectf(0.0f, 0.0f, mScreenSize.Width, 
 			mScreenSize.Height));
 		mMainCanvas->SetSize(mScreenSize);
+
+		if (IsMain())
+		{
+			Event *ent = GraphicsES::CreateEventX(
+				GraphicsES::WindowSizeChanged);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
 	}
 
 	if (mRenderer)

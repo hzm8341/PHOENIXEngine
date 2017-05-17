@@ -97,8 +97,8 @@ void ProjectEventController::OnEvent(Event *event)
 			}
 			else if (ProjectES::IsEqual(event, ProjectES::CloseUI))
 			{
-			//	canvas->SetRenderNode(0);
-			//	canvas->RemoveAllCameras();
+				canvas->SetRenderNode(0);
+				canvas->RemoveAllCameras();
 			}			
 			else if (ProjectES_Internal::IsEqual(event, ProjectES_Internal::SceneUICamerasChanged))
 			{

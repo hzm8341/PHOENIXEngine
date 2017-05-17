@@ -32,14 +32,15 @@ namespace PX2
 		Iterator End() const;
 
 		const std::string& operator [] (std::size_t index) const;
-		std::size_t Count() const;
-		/// Returns the number of tokens.
+		
+		std::string GetAt(int index) const;
+		int Count();
 
 	private:
 		StringTokenizer(const StringTokenizer&);
 		StringTokenizer& operator = (const StringTokenizer&);
 
-		std::vector<std::string> _tokens;
+		std::vector<std::string> mTokens;
 	};
 #include "PX2StringTokenizer.inl"
 

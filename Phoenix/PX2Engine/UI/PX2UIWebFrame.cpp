@@ -686,6 +686,7 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	if (engineCanvas)
 	{
 		canvasScreenRect = EngineUICanvas::GetSingleton().GetScreenRect();
+		Rectf screenRect = GetScreenRect();
 		float top = canvasScreenRect.Height() - screenRect.Top;
 
 		setWebViewRectJNI(mViewTag, screenRect.Left, top,

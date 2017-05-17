@@ -20,7 +20,6 @@ namespace PX2
 		virtual int Update(float elapsedSeconds);
 
 		bool IsConnected() const;
-
 		void OnConnectedToServer();
 		void OnDisConnectedToServer();
 

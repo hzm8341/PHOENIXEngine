@@ -3,8 +3,8 @@
 	class LogicManager
 	{
 	public:				
-		void SetSelectObject(Object *object);
-		Object *GetSelectObject();
+		void SetSelectLogicObject(Object *object);
+		Object *GetSelectLogicObject();
 	
 		void BeginAddFunObj(const std::string &funName);
 		void BeginAddClassFunObj(const std::string &className, const std::string &funName,

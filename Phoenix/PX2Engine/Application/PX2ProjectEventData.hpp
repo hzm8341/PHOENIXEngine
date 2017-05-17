@@ -5,6 +5,7 @@
 
 #include "PX2CorePre.hpp"
 #include "PX2InputEventData.hpp"
+#include "PX2Float2.hpp"
 
 namespace PX2
 {

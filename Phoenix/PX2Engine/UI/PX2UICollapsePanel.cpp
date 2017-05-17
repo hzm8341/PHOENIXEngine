@@ -16,6 +16,14 @@ mIsNeedUpdateContentPos(true)
 
 	float sliderSize = 10;
 
+	mContentFrame = new0 UIFrame();
+	AttachChild(mContentFrame);
+	mContentFrame->SetAnchorHor(0.0f, 1.0f);
+	mContentFrame->SetAnchorParamHor(0.0f, -sliderSize);
+	mContentFrame->SetAnchorVer(1.0f, 1.0f);
+	mContentFrame->SetPivot(0.5f, 1.0f);
+	mContentFrame->CreateAddBackgroundPicBox();
+
 	mSlider = new0 UISlider();
 	mSlider->LocalTransform.SetTranslateY(-1.0f);
 	mSlider->SetDirectionType(UISlider::DT_VERTICALITY);
@@ -30,13 +38,6 @@ mIsNeedUpdateContentPos(true)
 	mSlider->SetContentFrame(mContentFrame);
 	mSlider->SetMemUICallback(this,
 		(UIFrame::MemUICallback)(&UICollapsePanel::_SliderCallback));
-
-	mContentFrame = new0 UIFrame();
-	AttachChild(mContentFrame);
-	mContentFrame->SetAnchorHor(0.0f, 1.0f);
-	mContentFrame->SetAnchorParamHor(0.0f, -sliderSize);
-	mContentFrame->SetAnchorVer(1.0f, 1.0f);
-	mContentFrame->SetPivot(0.5f, 1.0f);
 
 	mSlider->SetPercent(0.0f);
 }
@@ -78,6 +79,19 @@ void UICollapsePanel::OnSizeChanged()
 void UICollapsePanel::_MarkCollpaseRecal()
 {
 	mIsNeedRecalCollpase = true;
+}
+//----------------------------------------------------------------------------
+void UICollapsePanel::OnSizeNodePicked(const CanvasInputData &inputData)
+{
+	UIFrame::OnSizeNodePicked(inputData);
+
+	if (UIPT_WHELLED == inputData.PickType)
+	{
+		float percent = mSlider->GetPercent();
+		percent -= inputData.Wheel * 0.008f;
+		percent = Mathf::Clamp(percent, 0.0f, 1.0f);
+		mSlider->SetPercent(percent);
+	}
 }
 //----------------------------------------------------------------------------
 void UICollapsePanel::_SliderCallback(UIFrame *frame, UICallType type)
@@ -141,8 +155,6 @@ void UICollapsePanel::_CalCollpase()
 	}
 
 	mContentFrame->SetHeight(height);
-
-	SetHeight(height);
 }
 //----------------------------------------------------------------------------
 

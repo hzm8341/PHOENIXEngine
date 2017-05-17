@@ -17,6 +17,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Object, LBlock);
 LBlock::LBlock(BlockType type) :
 mBlockType(type),
 mIsFunOutputConvertToGeneral(false),
+mIsUseThisPointer(false),
 mCtrlType(CT_NONE),
 mParamType(PT_NONE),
 mOwnObjectParam(0),
@@ -43,6 +44,16 @@ void LBlock::SetFunOutputConvertToGeneral(bool convert)
 bool LBlock::IsFunOutputConvertToGeneral() const
 {
 	return mIsFunOutputConvertToGeneral;
+}
+//----------------------------------------------------------------------------
+void LBlock::SetUseThisPointer(bool useThisPointer)
+{
+	mIsUseThisPointer = useThisPointer;
+}
+//----------------------------------------------------------------------------
+bool LBlock::IsUseThisPointer() const
+{
+	return mIsUseThisPointer;
 }
 //----------------------------------------------------------------------------
 void LBlock::SetClassName(const std::string &className)
@@ -782,6 +793,16 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 		}
 		else
 		{
+			bool isUseThisPointer = IsUseThisPointer();
+			if (isUseThisPointer)
+			{
+				if ((int)mInputParamsVec.size() > 0)
+				{
+					LParam *param = mInputParamsVec[0];
+					param->Compile(script, numTable + 1, file);
+				}
+			}
+
 			if (pt == PT_ENGINE || pt == PT_NODEMCU)
 			{
 				if (pt == PT_ENGINE)
@@ -798,11 +819,18 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 					{
 						if (mFunObject.ClassName.empty())
 						{
-							script += "";
+							/*_*/
 						}
 						else
 						{
-							script += "self._ctrlable:";
+							if (!isUseThisPointer)
+							{
+								script += "self._ctrlable:";
+							}
+							else
+							{
+								script += ":";
+							}
 						}
 					}
 				}
@@ -843,32 +871,6 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 					}
 				}
 			}
-
-			//if (MT_FUNCTION_GENERAL == bt ||
-			//	(MT_FUNCTION_OUTPUT == bt && mIsFunOutputConvertToGeneral))
-			//{
-			//	bool isExitInput = mInputParamsVec.size() > 0;
-			//	bool isExitOutPut = mOutputParamsVec.size() > 0;
-
-			//	if (isExitInput && isExitOutPut)
-			//	{
-			//		script += ", ";
-			//	}
-
-			//	for (int i = 0; i < (int)mOutputParamsVec.size(); i++)
-			//	{
-			//		LParam *outParam = mOutputParamsVec[i];
-			//		if (outParam)
-			//		{
-			//			outParam->Compile(script, numTable + 1, file);
-
-			//			if ((i + 1) < (int)mOutputParamsVec.size())
-			//			{
-			//				script += ", ";
-			//			}
-			//		}
-			//	}
-			//}
 
 			if (MT_FUNCTION_GENERAL == bt ||
 				(MT_FUNCTION_OUTPUT == bt && mIsFunOutputConvertToGeneral))
@@ -1022,6 +1024,7 @@ Object(value),
 mOwnObjectParam(0),
 mCtrlType(CT_NONE),
 mIsFunOutputConvertToGeneral(false),
+mIsUseThisPointer(false),
 mParamType(PT_NONE),
 mParent(0)
 {
@@ -1037,6 +1040,7 @@ void LBlock::Load(InStream& source)
 
 	source.ReadEnum(mBlockType);
 	source.ReadBool(mIsFunOutputConvertToGeneral);
+	source.ReadBool(mIsUseThisPointer);
 	source.ReadString(mClassName);
 	source.ReadEnum(mCtrlType);
 	source.ReadEnum(mParamType);
@@ -1196,6 +1200,7 @@ void LBlock::Save(OutStream& target) const
 
 	target.WriteEnum(mBlockType);
 	target.WriteBool(mIsFunOutputConvertToGeneral);
+	target.WriteBool(mIsUseThisPointer);
 	target.WriteString(mClassName);
 	target.WriteEnum(mCtrlType);
 	target.WriteEnum(mParamType);
@@ -1229,6 +1234,7 @@ int LBlock::GetStreamingSize(Stream &stream) const
 
 	size += PX2_ENUMSIZE(mBlockType);
 	size += PX2_BOOLSIZE(mIsFunOutputConvertToGeneral);
+	size += PX2_BOOLSIZE(mIsUseThisPointer);
 	size += PX2_STRINGSIZE(mClassName);
 	size += PX2_ENUMSIZE(mCtrlType);
 	size += PX2_ENUMSIZE(mParamType);

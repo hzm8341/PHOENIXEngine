@@ -44,8 +44,8 @@
 #pragma warning(pop)
 #endif
 
-// Exception
-#include "PX2Exception.hpp"
+// ExceptionDump
+#include "PX2ExceptionDump.hpp"
 
 // Help
 #include "PX2Environment.hpp"
@@ -118,5 +118,8 @@
 // XMLJSON
 #include "PX2JSONData.hpp"
 #include "PX2XMLData.hpp"
+
+// Untity
+#include "PX2StringTokenizer.hpp"
 
 #endif

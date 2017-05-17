@@ -21,6 +21,11 @@ inline float UIProgressBar::GetProgress() const
 	return mProgress;
 }
 //----------------------------------------------------------------------------
+inline UIFText *UIProgressBar::GetProgressText()
+{
+	return mProgressText;
+}
+//----------------------------------------------------------------------------
 inline UIProgressBarCtrl *UIProgressBar::GetProgressBarCtrl()
 {
 	return mPBCtrl;

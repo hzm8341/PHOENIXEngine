@@ -61,9 +61,9 @@ static void pngReadCallBack(png_structp png_ptr, png_bytep data, png_size_t leng
 {
 	tImageSource* isource = (tImageSource*)png_get_io_ptr(png_ptr);
 
-	if((int)(isource->offset + length) <= isource->size)
+	if ((int)(isource->offset + length) <= isource->size)
 	{
-		memcpy(data, isource->data+isource->offset,length);
+		memcpy(data, isource->data + isource->offset, length);
 		isource->offset += (int)length;
 	}
 	else
@@ -106,13 +106,13 @@ const TexPackElement &ResManGetTexPackElementFun(const std::string &texPackPath,
 	return ResourceManager::GetSingleton().GetTexPackElement(texPackPath, eleName);
 }
 //----------------------------------------------------------------------------
+std::string ResourceManager::mDataUpdateServerType;
 std::string ResourceManager::msResPath;
 std::string ResourceManager::mWriteablePath;
 TexPack ResourceManager::msIvalidTexPack;
 TexPackElement ResourceManager::msIvalidTexPackElement;
-std::string ResourceManager::mDataUpdateServerType;
 //----------------------------------------------------------------------------
-ResourceManager::ResourceManager () :
+ResourceManager::ResourceManager() :
 mDDSKeepCompressed(true),
 mLoadRecordMutex(0),
 mLoadingDequeMutex(0),
@@ -123,10 +123,6 @@ mGarbageCollectTime(6.0f),
 mGarbageUpdateTime(1.0f),
 mResTableMutex(0),
 mCurl(0),
-mEndVersionList(19870824),
-mDataVersionList(1023),
-mDataUpdateVersionList(1023),
-mUpdateVersionList(1023),
 mResourceUpdateCallback(0)
 {
 	mCurl = new0 CurlObj();
@@ -155,7 +151,7 @@ mResourceUpdateCallback(0)
 		char full_path[_MAX_PATH + 1];
 		GetModuleFileName(NULL, full_path, _MAX_PATH + 1);
 		std::string ret((char*)full_path);
-		ret =  ret.substr(0, ret.rfind("\\") + 1);
+		ret = ret.substr(0, ret.rfind("\\") + 1);
 
 		msResPath = StringHelp::StandardisePath(ret);
 	}
@@ -189,14 +185,11 @@ mResourceUpdateCallback(0)
 	}
 #endif
 
-#if defined WIN32
-	mDataUpdatePath = "DataUpdateWIN/";
-#elif defined __ANDROID__
-	mDataUpdatePath = "DataUpdateAndroid/";
-#endif
+	mDataUpdateFromPath = "Data/";
+	mDataUpdateWritePath = "DataUpdate/";
 }
 //----------------------------------------------------------------------------
-ResourceManager::~ResourceManager ()
+ResourceManager::~ResourceManager()
 {
 	mQuitLoading = true;
 	mLoadingDequeSemaphore->Set();
@@ -236,12 +229,11 @@ ResourceManager::~ResourceManager ()
 		delete0(mCurl);
 	}
 
-	mDataVersionList.Clear(); 
-	mDataUpdateVersionList.Clear(); 
-	mUpdateVersionList.Clear(); 
+	mLocalDataFileTable.clear();
+	mDataUpdateFileTable.clear();
 }
 //----------------------------------------------------------------------------
-void ResourceManager::Update (double appSeconds, double elapsedSeconds)
+void ResourceManager::Update(double appSeconds, double elapsedSeconds)
 {
 	if (mIsUseGarbageCollect)
 	{
@@ -251,19 +243,19 @@ void ResourceManager::Update (double appSeconds, double elapsedSeconds)
 	PX2_UNUSED(elapsedSeconds);
 }
 //----------------------------------------------------------------------------
-void ResourceManager::Clear ()
+void ResourceManager::Clear()
 {
 	mResTableMutex->Enter();
 	mResTable.clear();
 	mResTableMutex->Leave();
 
-	mTexPacksMutex->Enter();	
+	mTexPacksMutex->Enter();
 	mTexPacks.clear();
 	mPackElements.clear();
 	mTexPacksMutex->Leave();
 }
 //----------------------------------------------------------------------------
-void ResourceManager::ClearRes (const std::string &resPath)
+void ResourceManager::ClearRes(const std::string &resPath)
 {
 	if (resPath.empty()) return;
 
@@ -278,7 +270,7 @@ void ResourceManager::ClearRes (const std::string &resPath)
 	mResTableMutex->Leave();
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::BlockLoad (const std::string &filename)
+Object *ResourceManager::BlockLoad(const std::string &filename)
 {
 	if (filename.empty())
 	{
@@ -293,7 +285,7 @@ Object *ResourceManager::BlockLoad (const std::string &filename)
 	return loadRec.Obj;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::BlockLoadCopy (const std::string &filename)
+Object *ResourceManager::BlockLoadCopy(const std::string &filename)
 {
 	Object *obj = BlockLoad(filename);
 
@@ -305,7 +297,7 @@ Object *ResourceManager::BlockLoadCopy (const std::string &filename)
 	return 0;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::BlockLoadShareCopy (const std::string &filename, bool vb,
+Object *ResourceManager::BlockLoadShareCopy(const std::string &filename, bool vb,
 	bool ib, bool mi)
 {
 	Object *obj = BlockLoad(filename);
@@ -318,7 +310,7 @@ Object *ResourceManager::BlockLoadShareCopy (const std::string &filename, bool v
 	return 0;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::CreateFloder (const std::string &parentPath, 
+bool ResourceManager::CreateFloder(const std::string &parentPath,
 	const std::string &path)
 {
 	std::string tempPath = path;
@@ -328,7 +320,7 @@ bool ResourceManager::CreateFloder (const std::string &parentPath,
 	while (bIsTrue)
 	{
 		int pos = (int)tempPath.find('/', index);
-		if(-1 == pos)
+		if (-1 == pos)
 		{
 			break;
 		}
@@ -381,12 +373,14 @@ bool ResourceManager::CopyTheFile(const std::string &srcFilename,
 #if defined(_WIN32) || defined(WIN32)
 	return TRUE == CopyFile(srcFilename.c_str(), dstFilename.c_str(), true);
 #else
+	PX2_UNUSED(srcFilename);
+	PX2_UNUSED(dstFilename);
 	return false;
 #endif
 
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::LoadBuffer (const std::string &filename, int &bufferSize, 
+bool ResourceManager::LoadBuffer(const std::string &filename, int &bufferSize,
 	char* &buffer)
 {
 	if (filename.empty())
@@ -433,7 +427,7 @@ bool ResourceManager::LoadBuffer(const std::string &filename, std::string &buf)
 	return false;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::ReWriteFileToWriteablePath(const std::string &filename, 
+bool ResourceManager::ReWriteFileToWriteablePath(const std::string &filename,
 	const std::string &toDestPath)
 {
 	const std::string &wirteablePath = PX2_RM.GetWriteablePath();
@@ -443,19 +437,22 @@ bool ResourceManager::ReWriteFileToWriteablePath(const std::string &filename,
 		std::string destPath = wirteablePath + toDestPath;
 		bool ret = FileIO::Save(destPath, true, (int)bufStr.length(),
 			bufStr.c_str());
+
+		PX2_RM.ClearRes(filename);
+
 		return ret;
 	}
 
 	return false;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::ShareCopyVB_IB (Object *objFrom)
+Object *ResourceManager::ShareCopyVB_IB(Object *objFrom)
 {
 	if (!objFrom)
 		return 0;
 
 	Object *obj = objFrom->Copy("");
-	
+
 	if (obj)
 	{
 		Node *node = DynamicCast<Node>(obj);
@@ -474,7 +471,7 @@ Object *ResourceManager::ShareCopyVB_IB (Object *objFrom)
 	return obj;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::ShareCopyVB_IB_MI (Object *objFrom)
+Object *ResourceManager::ShareCopyVB_IB_MI(Object *objFrom)
 {
 	if (!objFrom)
 		return 0;
@@ -499,7 +496,7 @@ Object *ResourceManager::ShareCopyVB_IB_MI (Object *objFrom)
 	return obj;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::ShareCopyMI (Object *objFrom)
+Object *ResourceManager::ShareCopyMI(Object *objFrom)
 {
 	if (!objFrom)
 		return 0;
@@ -524,7 +521,7 @@ Object *ResourceManager::ShareCopyMI (Object *objFrom)
 	return obj;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::ShareCopy (Object *objFrom, bool vb, bool ib,
+Object *ResourceManager::ShareCopy(Object *objFrom, bool vb, bool ib,
 	bool mi)
 {
 	if (!objFrom)
@@ -550,7 +547,7 @@ Object *ResourceManager::ShareCopy (Object *objFrom, bool vb, bool ib,
 	return obj;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::Dump (const std::string &filename)
+void ResourceManager::Dump(const std::string &filename)
 {
 	ScopedCS dequeCS(mResTableMutex);
 
@@ -595,7 +592,7 @@ void ResourceManager::Dump (const std::string &filename)
 	}
 }
 //----------------------------------------------------------------------------
-void ResourceManager::BeginDumpDiff ()
+void ResourceManager::BeginDumpDiff()
 {
 	mBeginDumpDiffFiles.clear();
 
@@ -611,7 +608,7 @@ void ResourceManager::BeginDumpDiff ()
 	}
 }
 //----------------------------------------------------------------------------
-void ResourceManager::EndDumpDiff (const std::string &filename)
+void ResourceManager::EndDumpDiff(const std::string &filename)
 {
 	ScopedCS dequeCS(mResTableMutex);
 
@@ -647,13 +644,13 @@ void ResourceManager::EndDumpDiff (const std::string &filename)
 			}
 
 			std::vector<std::string>::iterator it = std::find(
-				mBeginDumpDiffFiles.begin(), mBeginDumpDiffFiles.end(), 
+				mBeginDumpDiffFiles.begin(), mBeginDumpDiffFiles.end(),
 				record.Filename);
 
 			if (it == mBeginDumpDiffFiles.end())
 			{
 				fprintf(outFile, format.c_str(), refCount,
-					(int)record.TheRecordType, record.BufferSize, 
+					(int)record.TheRecordType, record.BufferSize,
 					record.Filename.c_str());
 			}
 		}
@@ -665,7 +662,7 @@ void ResourceManager::EndDumpDiff (const std::string &filename)
 	}
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::IsTexPack (const std::string &texPackPath)
+bool ResourceManager::IsTexPack(const std::string &texPackPath)
 {
 	int bufferSize = 0;
 	char *buffer = 0;
@@ -676,7 +673,7 @@ bool ResourceManager::IsTexPack (const std::string &texPackPath)
 		std::string outExt;
 		StringHelp::SplitFullFilename(texPackPath, outPath, outBaseName, outExt);
 
-		if ("xml"==outExt || "XML"==outExt)
+		if ("xml" == outExt || "XML" == outExt)
 		{
 			XMLData data;
 			if (data.LoadBuffer(buffer, bufferSize))
@@ -695,7 +692,7 @@ bool ResourceManager::IsTexPack (const std::string &texPackPath)
 	return false;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::AddTexPack (const std::string &texPackPath)
+bool ResourceManager::AddTexPack(const std::string &texPackPath)
 {
 	mTexPacksMutex->Enter();
 
@@ -733,7 +730,7 @@ bool ResourceManager::AddTexPack (const std::string &texPackPath)
 			int width = rootNode.AttributeToInt("width");
 			int height = rootNode.AttributeToInt("height");
 			TexPack pack;
-			pack.ImageFullPath = outPath+imagePath;
+			pack.ImageFullPath = outPath + imagePath;
 			pack.ImagePath = imagePath;
 			pack.Width = width;
 			pack.Height = height;
@@ -772,7 +769,7 @@ bool ResourceManager::AddTexPack (const std::string &texPackPath)
 				if (childNode.HasAttribute("oH"))
 					oH = childNode.AttributeToInt("oH");
 				if (childNode.HasAttribute("r"))
-					rolated = (std::string(childNode.AttributeToString("r"))=="y");
+					rolated = (std::string(childNode.AttributeToString("r")) == "y");
 
 				TexPackElement ele;
 				ele.X = x;
@@ -787,11 +784,11 @@ bool ResourceManager::AddTexPack (const std::string &texPackPath)
 				ele.TexWidth = width;
 				ele.TexHeight = height;
 				ele.ElementName = eleName;
-				ele.ImagePathFull = outPath+imagePath;
+				ele.ImagePathFull = outPath + imagePath;
 
 				pack.Elements.push_back(ele);
 
-				std::string allStr = texPackPath+eleName;
+				std::string allStr = texPackPath + eleName;
 
 				mPackElements.insert(std::pair<FString, TexPackElement>(allStr.c_str(), ele));
 
@@ -811,7 +808,7 @@ bool ResourceManager::AddTexPack (const std::string &texPackPath)
 	return false;
 }
 //----------------------------------------------------------------------------
-const TexPack &ResourceManager::GetTexPack (const std::string &texPackPath)
+const TexPack &ResourceManager::GetTexPack(const std::string &texPackPath)
 {
 	mTexPacksMutex->Enter();
 
@@ -828,12 +825,12 @@ const TexPack &ResourceManager::GetTexPack (const std::string &texPackPath)
 	return msIvalidTexPack;
 }
 //----------------------------------------------------------------------------
-const TexPackElement &ResourceManager::GetTexPackElement (
+const TexPackElement &ResourceManager::GetTexPackElement(
 	const std::string &texPackPath, const std::string &eleName)
 {
 	mTexPacksMutex->Enter();
 
-	std::string allStr = texPackPath+eleName;
+	std::string allStr = texPackPath + eleName;
 
 	auto it = mPackElements.find(allStr.c_str());
 	if (it != mPackElements.end())
@@ -847,7 +844,7 @@ const TexPackElement &ResourceManager::GetTexPackElement (
 	return msIvalidTexPackElement;
 }
 //----------------------------------------------------------------------------
-ResHandle ResourceManager::BackgroundLoad (
+ResHandle ResourceManager::BackgroundLoad(
 	const std::string &filename)
 {
 	LoadRecord &rec = InsertRecord(filename.c_str(), false);
@@ -868,13 +865,13 @@ ResHandle ResourceManager::BackgroundLoad (
 	return (ResHandle)&rec;
 }
 //----------------------------------------------------------------------------
-ResHandle ResourceManager::BackgroundDoFun (const std::string &funName, 
+ResHandle ResourceManager::BackgroundDoFun(const std::string &funName,
 	BackgroundFun func)
 {
 	LoadRecord &rec = InsertRecord(funName.c_str(), func);
 
 	{
-		ScopedCS scopedCS(mLoadRecordMutex);		
+		ScopedCS scopedCS(mLoadRecordMutex);
 
 		if (LS_UNLOADED == rec.State)
 		{
@@ -889,7 +886,7 @@ ResHandle ResourceManager::BackgroundDoFun (const std::string &funName,
 	return (ResHandle)&rec;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::SetUseGarbageCollect (bool use)
+void ResourceManager::SetUseGarbageCollect(bool use)
 {
 	mIsUseGarbageCollect = use;
 
@@ -899,14 +896,14 @@ void ResourceManager::SetUseGarbageCollect (bool use)
 	}
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::CheckRes (ResHandle handle)
+Object *ResourceManager::CheckRes(ResHandle handle)
 {
 	if (0 == handle)
 		return 0;
 
 	LoadRecord &rec = *((LoadRecord *)handle);
 
-	if (LS_LOADED==rec.State && rec.TheRecordType==LoadRecord::RT_OBJECT)
+	if (LS_LOADED == rec.State && rec.TheRecordType == LoadRecord::RT_OBJECT)
 	{
 		return rec.Obj;
 	}
@@ -914,14 +911,14 @@ Object *ResourceManager::CheckRes (ResHandle handle)
 	return 0;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::CheckFun (ResHandle handle)
+bool ResourceManager::CheckFun(ResHandle handle)
 {
 	if (0 == handle)
 		return false;
 
 	LoadRecord &rec = *((LoadRecord *)handle);
 
-	if (LS_LOADED == rec.State && rec.TheRecordType==LoadRecord::RT_FUN)
+	if (LS_LOADED == rec.State && rec.TheRecordType == LoadRecord::RT_FUN)
 	{
 		return true;
 	}
@@ -929,10 +926,10 @@ bool ResourceManager::CheckFun (ResHandle handle)
 	return false;
 }
 //----------------------------------------------------------------------------
-ResourceManager::LoadState ResourceManager::GetResLoadState (ResHandle handle)
+ResourceManager::LoadState ResourceManager::GetResLoadState(ResHandle handle)
 {
 	LoadRecord &rec = *(LoadRecord *)handle;
-	
+
 	return rec.State;
 }
 //----------------------------------------------------------------------------
@@ -958,7 +955,7 @@ void ResourceManager::SetWriteablePath(const std::string &path)
 	PX2_LOG_INFO("WriteablePath:%s", mWriteablePath.c_str());
 }
 //----------------------------------------------------------------------------
-void ResourceManager::GarbageCollect (double appSeconds, double elapsedSeconds)
+void ResourceManager::GarbageCollect(double appSeconds, double elapsedSeconds)
 {
 	mGarbageUpdateTime -= (float)elapsedSeconds;
 	if (mGarbageUpdateTime > 0.0f)
@@ -979,8 +976,8 @@ void ResourceManager::GarbageCollect (double appSeconds, double elapsedSeconds)
 
 		LoadRecord &record = iter->second;
 
-		if (LS_LOADED==record.State && 
-			appSeconds>(record.LastTouchedTime+mGarbageCollectTime))
+		if (LS_LOADED == record.State &&
+			appSeconds > (record.LastTouchedTime + mGarbageCollectTime))
 		{
 			if (LoadRecord::RT_OBJECT == record.TheRecordType)
 			{
@@ -1016,7 +1013,7 @@ void ResourceManager::GarbageCollect (double appSeconds, double elapsedSeconds)
 	}
 }
 //----------------------------------------------------------------------------
-ResourceManager::LoadRecord::LoadRecord ()
+ResourceManager::LoadRecord::LoadRecord()
 {
 	TheRecordType = RT_OBJECT;
 	Fun = 0;
@@ -1025,12 +1022,12 @@ ResourceManager::LoadRecord::LoadRecord ()
 	BufferSize = 0;
 }
 //----------------------------------------------------------------------------
-ResourceManager::LoadRecord::~LoadRecord ()
+ResourceManager::LoadRecord::~LoadRecord()
 {
 	Buffer = 0;
 }
 //----------------------------------------------------------------------------
-unsigned int ResourceManager::RunLoadingThread ()
+unsigned int ResourceManager::RunLoadingThread()
 {
 	LoadRecord *rec = 0;
 
@@ -1077,7 +1074,7 @@ static bool CheckResourceCCZFile(std::string &inoutPath)
 		std::string tmppath = newPath.substr(5);
 		if(stat(tmppath.c_str(), &fileStat) < 0) //ccz文件不存在
 		{
-			return false;
+		return false;
 		}
 		*/
 
@@ -1088,7 +1085,7 @@ static bool CheckResourceCCZFile(std::string &inoutPath)
 }
 #endif
 //----------------------------------------------------------------------------
-ResourceManager::LoadRecord &ResourceManager::InsertRecord (
+ResourceManager::LoadRecord &ResourceManager::InsertRecord(
 	const FString &fn, bool isBuffer)
 {
 	std::string writeablePath = PX2_RM.GetWriteablePath();
@@ -1099,6 +1096,7 @@ ResourceManager::LoadRecord &ResourceManager::InsertRecord (
 	CheckResourceCCZFile(dstFilename);
 #endif
 
+	// adjust path
 	bool isHasUpdate = IsHasUpdate(dstFilename, dstFilename);
 	PX2_UNUSED(isHasUpdate);
 
@@ -1122,7 +1120,7 @@ ResourceManager::LoadRecord &ResourceManager::InsertRecord (
 	return rec;
 }
 //----------------------------------------------------------------------------
-ResourceManager::LoadRecord &ResourceManager::InsertRecord (
+ResourceManager::LoadRecord &ResourceManager::InsertRecord(
 	const FString &funName, BackgroundFun fun)
 {
 	ScopedCS scopeCS(mResTableMutex);
@@ -1139,7 +1137,7 @@ ResourceManager::LoadRecord &ResourceManager::InsertRecord (
 	return rec;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::_LoadTheRecord (LoadRecord &rec)
+void ResourceManager::_LoadTheRecord(LoadRecord &rec)
 {
 	bool needLoad = false;
 	{
@@ -1186,7 +1184,7 @@ void ResourceManager::_LoadTheRecord (LoadRecord &rec)
 	}
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::_LoadObject (const std::string &filename)
+Object *ResourceManager::_LoadObject(const std::string &filename)
 {
 	Object *obj = 0;
 
@@ -1197,28 +1195,20 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 
 	char *buffer = 0;
 	int bufferSize = 0;
-	if("dds"==outExtention || "DDS"==outExtention)
+	if ("dds" == outExtention || "DDS" == outExtention)
 	{
 		obj = LoadTextureFromDDS(filename);
 	}
 	else if (_LoadBuffer(filename, bufferSize, buffer))
 	{
-		if ("ccz"==outExtention)
+		if ("ccz" == outExtention)
 		{
 			obj = LoadTextureFromPVRTC_CCZ(bufferSize, buffer);
 		}
-		else if ("png"==outExtention || "PNG"==outExtention || "jpg"==outExtention 
-			|| "JPG"==outExtention )
+		else if ("png" == outExtention || "PNG" == outExtention || "jpg" == outExtention
+			|| "JPG" == outExtention)
 		{
 			obj = LoadTexFormOtherImagefile(outExtention, bufferSize, buffer);
-		}
-		else if ("fbx" == outExtention || "FBX" == outExtention)
-		{
-			//FBXImporter importer;
-			//if (importer.Import(filename))
-			//{
-			//	obj = importer.GetScene();
-			//}
 		}
 		else
 		{
@@ -1239,7 +1229,7 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 	return obj;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::_LoadBuffer (const std::string &fn,
+bool ResourceManager::_LoadBuffer(const std::string &fn,
 	int &bufferSize, char* &buffer)
 {
 	std::string dstFilename = fn;
@@ -1247,7 +1237,7 @@ bool ResourceManager::_LoadBuffer (const std::string &fn,
 		return false;
 
 	bool fromOut = false;
-	if ('/' == dstFilename[0] || '.'==dstFilename[0])
+	if ('/' == dstFilename[0] || '.' == dstFilename[0])
 	{
 		fromOut = true;
 	}
@@ -1266,297 +1256,67 @@ bool ResourceManager::_LoadBuffer (const std::string &fn,
 #elif defined (_WIN32) || defined (WIN32) || defined (__LINUX__)
 	return FileIO::Load(dstFilename, true, bufferSize, buffer);
 #elif defined (__IOS__)
-    std::string fullFilename = msResPath + dstFilename;
+	std::string fullFilename = msResPath + dstFilename;
 	return FileIO::Load(fullFilename, true, bufferSize, buffer);
 #endif
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::SaveTex2DPNG(Texture2D *tex2d, const std::string &filename)
+void ResourceManager::SetDataUpdateServerType(
+	const std::string &dataUpdateServerType)
 {
-	//int width = tex2d->GetWidth();
-	//int height = tex2d->GetHeight();
-	//int bytePerPixel = tex2d->GetPixelSize();
-
-	//ILuint image;
-	//ilGenImages(1, &image);
-	//ilBindImage(image);
-
-	//ilLoadDataL(tex2d->GetData(0), width*height*bytePerPixel, width, height, 1, bytePerPixel);
-
-	//ilEnable(IL_FILE_OVERWRITE);
-	//ilSave(IL_PNG, filename.c_str());
-
-	//ilDeleteImages(1, &image);
-
-	PX2_UNUSED(tex2d);
-	PX2_UNUSED(filename);
-
-	return true;
+	mDataUpdateServerType = dataUpdateServerType;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::LoadDataVersionXML (const std::string &filename)
+const std::string &ResourceManager::GetDataUpdateServerType()
 {
-	mDataVersionItem = 0;
+	return mDataUpdateServerType;
+}
+//----------------------------------------------------------------------------
+void ResourceManager::_RMReWriteProcessXMLNode(ResourceFileTable &table,
+	XMLNode node)
+{
+	XMLNode childNode = node.IterateChild();
+	while (!childNode.IsNull())
+	{
+		std::string name = childNode.GetName();
 
-	char *buffer = 0;
-	int bufferSize = 0;
-	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
+		if ("dir" == name)
+		{
+			_RMReWriteProcessXMLNode(table, childNode);
+		}
+		else if ("file" == name)
+		{
+			std::string filename = childNode.AttributeToString("filename");
+			std::string md5 = childNode.AttributeToString("md5");
+
+			ResourceFileInfoItemPtr item = new0 ResourceFileInfoItem();
+			item->Path = filename;
+			item->MD5 = md5;
+
+			table[FString(filename.c_str())] = item;
+		}
+
+		childNode = node.IterateChild(childNode);
+	}
+}
+//----------------------------------------------------------------------------
+bool ResourceManager::LoadFileTableXML(ResourceFileTable &table, 
+	const std::string &filename)
+{
+	table.clear();
+
+	char *buf = 0;
+	int bufSize = 0;
+	if (LoadBuffer(filename, bufSize, buf))
 	{
 		XMLData data;
-		if (data.LoadBuffer(buffer, bufferSize))
-		{
-			XMLNode rootNode = data.GetRootNode();
-			std::string name = rootNode.GetName();
-			if (!rootNode.IsNull() && "Version"==name)
-			{
-				std::string val = rootNode.AttributeToString("value");
-				mDataVersionItem = new0 ResourceVersionItem();
-				mDataVersionItem->Version = ResourceVersion(val);
-			}
-		}
+		data.LoadBuffer(buf, bufSize);
+		XMLNode rootNode = data.GetRootNode();
+		std::string versionStr = rootNode.AttributeToString("version");
 
-		return true;
-	}
-	else
-	{
-		assertion(false, "LoadDataVersionXML &s failed.\n", filename.c_str());
-		return false;
-	}
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::LoadDataUpateVersionXML (const std::string &filename)
-{
-	mDataUpdateVersionItem = 0;
+		_RMReWriteProcessXMLNode(table, rootNode);
 
-	if (access(filename.c_str(), 0) != 0)
-	{
-		return false;
-	}
-
-	char *buffer = 0;
-	int bufferSize = 0;
-	if (FileIO::Load(filename,true, bufferSize, buffer))
-	{
-		XMLData data;
-		if (data.LoadBuffer(buffer, bufferSize))
-		{
-			XMLNode rootNode = data.GetRootNode();
-			std::string name = rootNode.GetName();
-			if (!rootNode.IsNull() && "Version"==name)
-			{
-				std::string val = rootNode.AttributeToString("value");
-				mDataUpdateVersionItem = new0 ResourceVersionItem();
-				mDataUpdateVersionItem->Version = ResourceVersion(val);
-			}
-		}
-
-		delete1(buffer);
-		bufferSize = 0;
-
-		return true;
-	}
-	else
-	{
-		assertion(false, "LoadDataVersionXML &s failed.\n", filename.c_str());
-		return false;
-	}
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::LoadUpdateVersionXML (const std::string &filename)
-{
-	mUpdateVersionItem = 0;
-
-	if (access(filename.c_str(), 0) != 0)
-	{
-		return false;
-	}
-
-	char *buffer = 0;
-	int bufferSize = 0;
-	bool ret = false;
-
-	if (FileIO::Load(filename, true, bufferSize, buffer))
-	{
-		XMLData data;
-		if (data.LoadBuffer(buffer, bufferSize))
-		{
-			XMLNode rootNode = data.GetRootNode();
-			std::string name = rootNode.GetName();
-			if (!rootNode.IsNull() && "Version"==name)
-			{
-				std::string val = rootNode.AttributeToString("value");
-
-				mUpdateVersionItem = new0 ResourceVersionItem();
-				mUpdateVersionItem->Version = ResourceVersion(val);
-
-				ret = true;
-			}
-		}
-
-		delete1(buffer);
-		bufferSize = 0;
-	}
-
-	return ret;
-}
-//----------------------------------------------------------------------------
-void ResourceManager::BeginWriteVersionList ()
-{
-	mVersionListToWrite.clear();
-}
-//----------------------------------------------------------------------------
-void ResourceManager::AddVersionFile (const std::string &filename, 
-	DirType type) // 仅供PC使用
-{
-	// version.xml 不需要计算版本信息
-	if (filename.find("version.xml") != string::npos)
-		return;
-
-	// versionList.dat 不需要计算版本信息
-	if (filename.find("versionList.dat") != string::npos)
-		return;
-
-	if (filename.find("libPX2GamePlayJNI.so") != std::string::npos)
-		return;
-
-	char *buffer = 0;
-	int bufferSize = 0;
-	if (FileIO::Load(filename, true, bufferSize, buffer))
-	{
-		ResourceFileMark mark;
-
-		std::string savedPath = filename;
-		if (type == DT_WIN)
-		{
-			// empty
-		}
-		else if (type == DT_ANDROID)
-		{
-			std::string repaceStr = "DataAndroid/";
-			savedPath = savedPath.substr(repaceStr.length(), savedPath.length()-repaceStr.length());
-			savedPath = "Data/" + savedPath;
-		}
-		else if (type == DT_IOS)
-		{
-			std::string repaceStr = "DataIOS/";
-			savedPath = savedPath.substr(repaceStr.length(), savedPath.length()-repaceStr.length());
-			savedPath = "Data/" + savedPath;
-		}
-
-		mark.Path = savedPath;
-		mark.BufferSize = bufferSize;
-		Md5String(mark.MD5, buffer, bufferSize);
-
-		mVersionListToWrite.push_back(mark);
-
-		delete1(buffer);
-		bufferSize = 0;
-	}
-	else
-	{
-		assertion(false, "AddVersionFile &s failed.\n", filename.c_str());
-		PX2_LOG_ERROR("AddVersionFile &s failed.\n", filename.c_str());
-	}
-}
-//----------------------------------------------------------------------------
-void ResourceManager::EndWriteVersionList (const std::string &filename)
-{
-	FileIO out;
-	if (out.Open(filename, FileIO::FM_DEFAULT_WRITE))
-	{
-		int32_t version = ResourceFileMark::ResourceUpdateVersion;
-		out.Write(sizeof(int), &version);
-		
-		int32_t num = (int32_t)mVersionListToWrite.size();
-		out.Write(sizeof(num), &num);
-		for (int i=0; i<num; i++)
-		{
-			const ResourceFileMark &mark = mVersionListToWrite[i];
-
-			int pathLen = (int)mark.Path.length();
-			out.Write(sizeof(int), &pathLen);
-			out.Write(sizeof(char), (int)mark.Path.length(), &(mark.Path[0]));
-			out.Write(sizeof(mark.BufferSize), &mark.BufferSize);
-			out.Write(sizeof(char), 16, &mark.MD5[0]);
-		}
-
-		int endValue = mEndVersionList;
-		out.Write(sizeof(int), &endValue);
-
-		out.Close();
-
-		PX2_LOG_INFO("EndWriteVersionList: %d", num);
-	}
-}
-//----------------------------------------------------------------------------
-void ResourceManager::WriteDataList (const std::string &filename, 
-	VersionListTable &table)
-{
-	FileIO out;
-	if (out.Open(filename, FileIO::FM_DEFAULT_WRITE))
-	{
-		int32_t version = ResourceFileMark::ResourceUpdateVersion;
-		out.Write(sizeof(int), &version);
-
-		int num = 0;
-		VersionListTable::Element *ele = table.Iterate(0);
-		while (ele)
-		{
-			num++;
-			ele = table.Iterate(ele);
-		}
-
-		out.Write(sizeof(num), &num);
-
-		ele = table.Iterate(0);
-		while (ele)
-		{
-			const ResourceFileMark &mark = ele->value;
-			
-			int pathLen = (int)mark.Path.length();
-			out.Write(sizeof(int), &pathLen);
-			out.Write(sizeof(char), (int)mark.Path.length(), &(mark.Path[0]));
-			out.Write(sizeof(mark.BufferSize), &mark.BufferSize);
-			out.Write(sizeof(char), 16, &mark.MD5[0]);
-
-			ele = table.Iterate(ele);
-		}
-
-		int endValue = mEndVersionList;
-		out.Write(sizeof(int), &endValue);
-
-		out.Close();
-	}
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::IsVersionListValued (const std::string &filename)
-{
-	char *buffer = 0;
-	int bufferSize = 0;
-	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
-	{
-		if (bufferSize < sizeof(int))
-		{
-			return false;
-		}
-
-		BufferIO in;
-		if (in.Open(bufferSize, buffer, BufferIO::BM_DEFAULT_READ))
-		{
-			in.IncrementNumBytesProcessed(bufferSize-sizeof(int));
-			
-			int endVal = 0;
-			in.Read(sizeof(endVal), &endVal);
-
-			if (mEndVersionList != endVal)
-			{
-				in.Close();
-
-				return false;
-			}
-
-			in.Close();
-		}
+		ClearRes(filename);
 
 		return true;
 	}
@@ -1564,107 +1324,39 @@ bool ResourceManager::IsVersionListValued (const std::string &filename)
 	return false;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::LoadDataVersionList (const std::string &filename)
+void ResourceManager::ClearDataFiletable()
 {
-	mDataVersionList.Clear();
-
-	if (!IsVersionListValued(filename))
-		return false;
-
-	char *buffer = 0;
-	int bufferSize = 0;
-	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
-	{
-		BufferIO in;
-		if (in.Open(bufferSize, buffer, BufferIO::BM_DEFAULT_READ))
-		{
-			ReadVersionList(in, mDataVersionList);
-
-			in.Close();
-		}
-
+	mLocalDataFileTable.clear();
+}
+//----------------------------------------------------------------------------
+void ResourceManager::ClearDataUpdateFiletable()
+{
+	mDataUpdateFileTable.clear();
+}
+//----------------------------------------------------------------------------
+bool ResourceManager::IsHasUpdate(const std::string &filename)
+{
+	auto it = mDataUpdateFileTable.find(filename.c_str());
+	if (it != mDataUpdateFileTable.end())
 		return true;
-	}
 
 	return false;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::LoadDataUpdateVersionList (const std::string &filename)
-{
-	mDataUpdateVersionList.Clear();
-
-	if (access(filename.c_str(), 0) != 0)
-	{
-		return false;
-	}
-
-	if (!IsVersionListValued(filename))
-		return false;
-
-	FileIO in;
-	if (in.Open(filename, FileIO::FM_DEFAULT_READ))
-	{
-		ReadVersionList(in, mDataUpdateVersionList);
-
-		in.Close();
-
-		return true;
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::LoadUpdateVersionList (const std::string &filename)
-{
-	mUpdateVersionList.Clear();
-
-	if (access(filename.c_str(), 0) != 0)
-	{
-		return false;
-	}
-
-	if (!IsVersionListValued(filename))
-		return false;
-
-	FileIO in;
-	if (in.Open(filename, FileIO::FM_DEFAULT_READ))
-	{
-		ReadVersionList(in, mUpdateVersionList);
-
-		in.Close();
-
-		return true;
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::IsHasUpdate (const std::string &filename)
-{
-	// 更新表里有新的
-	VersionListTable::Element *ele = mDataUpdateVersionList.Find(filename.c_str());
-	if (ele)
-	{
-		return true;
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::IsHasUpdate (const std::string &filename,
+bool ResourceManager::IsHasUpdate(const std::string &filename,
 	std::string &outUpdatedFilename)
 {
 	std::string writeablePath = PX2_RM.GetWriteablePath();
 
-	// 更新表里有新的
-	VersionListTable::Element *ele = mDataUpdateVersionList.Find(filename.c_str());
-	if (ele)
+	auto it = mDataUpdateFileTable.find(filename.c_str());
+	if (it != mDataUpdateFileTable.end())
 	{
 		std::string replaceFilename = filename;
 		std::string left = "Data/";
 
-		replaceFilename = replaceFilename.substr(left.length(), replaceFilename.length()-left.length());
-		replaceFilename = writeablePath + mDataUpdatePath + replaceFilename;
+		replaceFilename = replaceFilename.substr(left.length(),
+			replaceFilename.length() - left.length());
+		replaceFilename = writeablePath + mDataUpdateWritePath + replaceFilename;
 
 		outUpdatedFilename = replaceFilename;
 
@@ -1674,253 +1366,112 @@ bool ResourceManager::IsHasUpdate (const std::string &filename,
 	return false;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::ReadVersionList (FileIO &in, VersionListTable &table)
-{
-	int curVersion = 0;
-	in.Read(sizeof(curVersion), &curVersion);
-
-	int num = 0;
-	in.Read(sizeof(num), &num);
-	for (int i=0; i<num; i++)
-	{
-		ResourceFileMark mark;
-
-		int pathLen = 0;
-		in.Read(sizeof(pathLen), &pathLen);
-		mark.Path.resize(pathLen);
-		in.Read(sizeof(char), pathLen, &mark.Path[0]);
-		in.Read(sizeof(mark.BufferSize), &mark.BufferSize);
-		in.Read(sizeof(char), 16, &mark.MD5[0]);
-
-		table.Insert(mark.Path.c_str(), mark);
-	}
-}
-//----------------------------------------------------------------------------
-void ResourceManager::ReadVersionList (BufferIO &in, VersionListTable &table)
-{
-	int curVersion = 0;
-	in.Read(sizeof(curVersion), &curVersion);
-
-	int num = 0;
-	in.Read(sizeof(num), &num);
-	for (int i=0; i<num; i++)
-	{
-		ResourceFileMark mark;
-
-		int pathLen = 0;
-		in.Read(sizeof(pathLen), &pathLen);
-		mark.Path.resize(pathLen);
-		in.Read(sizeof(char), pathLen, &mark.Path[0]);
-		in.Read(sizeof(mark.BufferSize), &mark.BufferSize);
-		in.Read(sizeof(char), 16, &mark.MD5[0]);
-
-		table.Insert(mark.Path.c_str(), mark);
-	}
-}
-//----------------------------------------------------------------------------
-bool ResourceManager::Download (const std::string &fullPath,
+bool ResourceManager::Download(const std::string &fullPath,
 	const std::string &url)
 {
 	CreateFloder("", fullPath);
 	return mCurl->Download(fullPath, url);
 }
 //----------------------------------------------------------------------------
-void ResourceManager::DoResourceUpdateStuffs (const std::string &wwwAddr)
+void ResourceManager::SetResourceUpdateAddr(const std::string &updateAddr)
 {
+	mResourceUpdateAddr = updateAddr;
+}
+//----------------------------------------------------------------------------
+const std::string &ResourceManager::GetResourceUpdateAddr() const
+{
+	return mResourceUpdateAddr;
+}
+//----------------------------------------------------------------------------
+void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr, 
+	const std::string &projName)
+{
+	std::string filelist_www = wwwAddr + mDataUpdateFromPath + projName + "/filelist.xml";
+
 	std::string writeablePath = PX2_RM.GetWriteablePath();
+	std::string filelistPrepare = writeablePath + mDataUpdateWritePath + projName + "/filelist_prepare.xml";
+	std::string filelistToUpdate = writeablePath + mDataUpdateWritePath + projName + "/filelist_temp.xml";
+	std::string filelist = writeablePath + mDataUpdateWritePath + projName + "/filelist.xml";
 
-	ResourceVersion localVersion;
-
-	// data
-	PX2_RM.LoadDataVersionXML("Data/version.xml");
-	const ResourceVersionItem *dataRVI = PX2_RM.GetDataVersionItem();
-	PX2_RM.LoadDataVersionList("Data/versionList.dat");
-	ResourceManager::VersionListTable &dataList = PX2_RM.GetDataVersionList ();
-	if (dataRVI)
-		localVersion = dataRVI->Version;
-
-	// data update
-	PX2_RM.LoadDataUpateVersionXML(writeablePath + mDataUpdatePath + "version.xml");
-	const ResourceVersionItem *dataUpdateRVI = PX2_RM.GetDataUpdateVersionItem();
-	ResourceManager::VersionListTable *dataUpdateList = 0;
-	if (dataUpdateRVI)
-	{
-		localVersion = dataUpdateRVI->Version;
-
-		if (PX2_RM.LoadDataUpdateVersionList(writeablePath + mDataUpdatePath + "versionList.dat"))
-		{
-			dataUpdateList = &(PX2_RM.GetDataUpdateVersionList ());
-		}
-	}
-
-	PX2_RM.SetVersion(localVersion);
-
-	// 下载更新资源xml
-	std::string wVersionXMLPath_Temp = writeablePath + mDataUpdatePath + "version_Temp.xml";
-	std::string wwwVersionXMLURL = wwwAddr + mDataUpdatePath + "version.xml";
-
-	if (!PX2_RM.Download(wVersionXMLPath_Temp, wwwVersionXMLURL)) // 下载
+	if (!PX2_RM.Download(filelistPrepare, filelist_www)) // 预备下载
 		return;
-	//PX2_RM.LoadUpdateVersionXML (wVersionXMLPath_Temp);
-	const ResourceVersionItem *updateRVI = PX2_RM.GetUpdateVersionItem ();
 
-	// 有更新, 杂七杂八的事情开始了
-	if (updateRVI)
+	if (!PX2_RM.Download(filelistToUpdate, filelist_www)) // 下载
+		return;
+
+	ResourceFileTable tableToUpdate;
+	PX2_RM.LoadFileTableXML(tableToUpdate, filelistToUpdate);
+	int numUpdateFiles = (int)tableToUpdate.size();
+
+	if (0 == numUpdateFiles)
 	{
-		// 只要资源有更新就更新
-		if (updateRVI->Version.GetRes()>localVersion.GetRes())
+		if (mResourceUpdateCallback)
+			mResourceUpdateCallback(1.0f);
+	}
+	else
+	{
+		ResourceFileTable newTable;
+
+		auto itUpdate = tableToUpdate.begin();
+		for (; itUpdate != tableToUpdate.end(); itUpdate++)
 		{
-			// 将versionList下载下来
-			std::string wVersionListPath_Temp = writeablePath + mDataUpdatePath + "versionList_Temp.dat";
-			std::string wwwVersionListURL = wwwAddr + mDataUpdatePath + "versionList.dat";
-			if (!PX2_RM.Download(wVersionListPath_Temp, wwwVersionListURL))
-				return;
+			FString filename = itUpdate->first;
+			ResourceFileInfoItem *itemUpdate = itUpdate->second;
+			newTable[filename] = itemUpdate;
 
-			// 读取更新表
-			PX2_RM.LoadUpdateVersionList(wVersionListPath_Temp);
-			ResourceManager::VersionListTable &updateVersionList = PX2_RM.GetUpdateVersionList();
+			bool isNeedDownload = false;
+			std::string downloadFilename;
 
-			// 数量
-			int numElements = 0;
-			ResourceManager::VersionListTable::Element *newestUpdateEle0 = updateVersionList.Iterate(0);
-			while (newestUpdateEle0)
+			auto it = mDataUpdateFileTable.find(filename);
+			if (it == mDataUpdateFileTable.end())
 			{
-				numElements++;
-				newestUpdateEle0 = updateVersionList.Iterate(newestUpdateEle0);
-			}
-
-			Pointer0<ResourceManager::VersionListTable> recreateUpdateDataList = new0 ResourceManager::VersionListTable(1023);
-			if (0 != numElements)
-			{
-				int curEleIndex = 0;
-
-				// 遍历表，如果这个资源原先没有就添加，如果有了MD5不同就直接下载
-				ResourceManager::VersionListTable::Element *newestUpdateEle = updateVersionList.Iterate(0);
-				while (newestUpdateEle)
-				{
-					const ResourceFileMark &newestUpdateMark = newestUpdateEle->value;
-					bool doDownLoad = false;
-
-					ResourceManager::VersionListTable::Element *dataMark = dataList.Find(newestUpdateEle->key);
-					ResourceManager::VersionListTable::Element *dataUpdateMark = 0;
-					if (dataUpdateList)
-					{
-						dataUpdateMark = dataUpdateList->Find(newestUpdateEle->key);
-					}
-
-					if (!dataMark && !dataUpdateMark)
-					{
-						// 新加的文件，直接添加
-						recreateUpdateDataList->Insert(newestUpdateEle->key, newestUpdateEle->value);
-
-						doDownLoad = true;
-					}
-
-					if (dataUpdateMark)
-					{
-						 // 已经有过更新的，md5不同，替换为最新的
-						if (0!=memcmp(newestUpdateMark.MD5, dataUpdateMark->value.MD5, 16*sizeof(char)))
-						{
-							recreateUpdateDataList->Insert(newestUpdateEle->key, newestUpdateEle->value);
-							doDownLoad = true;
-						}
-						else
-						{
-							recreateUpdateDataList->Insert(dataUpdateMark->key, dataUpdateMark->value);
-						}						
-					}
-					else if (dataMark)
-					{
-						 // 从没有过更新的，添加
-						if (0!=memcmp(newestUpdateMark.MD5, dataMark->value.MD5, 16*sizeof(char)))
-						{
-							recreateUpdateDataList->Insert(newestUpdateEle->key, newestUpdateEle->value);
-							doDownLoad = true;
-						}
-					}
-
-					if (doDownLoad)
-					{
-						std::string dataStr = "Data/";
-						std::string dstPath = newestUpdateMark.Path;
-						dstPath = dstPath.substr(dataStr.length(), newestUpdateMark.Path.length()-dataStr.length());
-						dstPath =  mDataUpdatePath +dstPath;
-
-						std::string toDownLoadURL = wwwAddr + dstPath;
-						std::string downLoadPath = writeablePath + dstPath;
-
-						if (PX2_RM.Download(downLoadPath, toDownLoadURL))
-						{
-							// 写入新的versionList.dat
-							PX2_RM.WriteDataList (writeablePath+ mDataUpdatePath + "versionList.dat", *recreateUpdateDataList);
-						}
-					}
-
-					curEleIndex++;
-					float percent = (float)curEleIndex/(float)numElements;
-					if (mResourceUpdateCallback)
-						mResourceUpdateCallback(percent);
-
-					newestUpdateEle = updateVersionList.Iterate(newestUpdateEle);
-				}
-
-				// 跟新完毕，下载正式的version.xml
-				std::string new_wVersionXMLPath = writeablePath + mDataUpdatePath + "version.xml";
-				std::string new_wwwVersionXMLURL = wwwAddr + mDataUpdatePath + "version.xml";
-				if (PX2_RM.Download(new_wVersionXMLPath, new_wwwVersionXMLURL))
-				{
-					// 重新读取versionXML versionList
-					if (PX2_RM.LoadDataUpateVersionXML(writeablePath+mDataUpdatePath+"version.xml"))
-					{
-						PX2_RM.LoadDataUpdateVersionList(writeablePath+mDataUpdatePath+"versionList.dat");
-
-						// 设置最新的版本
-						PX2_RM.SetVersion(PX2_RM.GetDataUpdateVersionItem()->Version);
-					}
-				}
+				isNeedDownload = true; 
+				downloadFilename = filename;
 			}
 			else
 			{
-				if (mResourceUpdateCallback)
+				if (itemUpdate->MD5 != it->second->MD5)
 				{
-					mResourceUpdateCallback(1.0f);
+					isNeedDownload = true;
+					downloadFilename = filename;
+				}
+				else
+				{
+					isNeedDownload = false;
 				}
 			}
-		}
-		else if (updateRVI->Version.GetLib()>localVersion.GetLib())
-		{
-			// 下载正式的version.xml
-			std::string new_wVersionXMLPath = writeablePath + mDataUpdatePath + "version.xml";
-			std::string new_wwwVersionXMLURL = wwwAddr + mDataUpdatePath + "version.xml";
-			if (PX2_RM.Download(new_wVersionXMLPath, new_wwwVersionXMLURL))
+
+			if (isNeedDownload)
 			{
-				// 重新读取versionXML versionList
-				if (PX2_RM.LoadDataUpateVersionXML(writeablePath+mDataUpdatePath+"version.xml"))
-				{
-					PX2_RM.SetVersion(PX2_RM.GetDataUpdateVersionItem()->Version);
-				}
+				std::string wwwURL = wwwAddr + downloadFilename;
+				std::string dataKey = "Data/";
+				std::string dstDownloadFilename = downloadFilename.substr(dataKey.length(), 
+					downloadFilename.length() - dataKey.length());
+				std::string downloadPath = writeablePath + mDataUpdateWritePath + dstDownloadFilename;
+
+				PX2_RM.Download(downloadPath, wwwURL);
 			}
 		}
+
+		// set table
+		mDataUpdateFileTable = newTable;
+
+		// down last
+		if (!PX2_RM.Download(filelist, filelist_www))
+			return;
+
+		if (mResourceUpdateCallback)
+			mResourceUpdateCallback(1.0f);
 	}
 }
 //----------------------------------------------------------------------------
-void ResourceManager::SetResourceUpdateCallback (
+void ResourceManager::SetResourceUpdateCallback(
 	ResourceUpdateStuffsCallback callback)
 {
 	mResourceUpdateCallback = callback;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::SetDataUpdateServerType (const std::string &type)
-{
-	mDataUpdateServerType = type;
-}
-//----------------------------------------------------------------------------
-std::string &ResourceManager::GetDataUpdateServerType ()
-{
-	return mDataUpdateServerType;
-}
-//----------------------------------------------------------------------------
-Texture2D *ResourceManager::LoadTexFormOtherImagefile (std::string outExt,
+Texture2D *ResourceManager::LoadTexFormOtherImagefile(std::string outExt,
 	int bufferSize, const char*buffer)
 {
 	if (!buffer || bufferSize <= 0) return 0;
@@ -1937,43 +1488,43 @@ Texture2D *ResourceManager::LoadTexFormOtherImagefile (std::string outExt,
 //----------------------------------------------------------------------------
 Texture2D *ResourceManager::_initWithPngData(const char *pData, int nDatalen)
 {
-// length of bytes to check if it is a valid png file
+	// length of bytes to check if it is a valid png file
 #define PNGSIGSIZE  8
 	Texture2D* texture = 0;
-	png_byte        header[PNGSIGSIZE]   = {0}; 
-	png_structp     png_ptr     =   0;
-	png_infop       info_ptr    = 0;
+	png_byte        header[PNGSIGSIZE] = { 0 };
+	png_structp     png_ptr = 0;
+	png_infop       info_ptr = 0;
 
-	do 
+	do
 	{
 		// png header len is 8 bytes
-		if(nDatalen < PNGSIGSIZE)
+		if (nDatalen < PNGSIGSIZE)
 			break;
 
 		// check the data is png or not
 		memcpy(header, pData, PNGSIGSIZE);
-		if(png_sig_cmp(header, 0, PNGSIGSIZE))
+		if (png_sig_cmp(header, 0, PNGSIGSIZE))
 			break;
 
 		// init png_struct
 		png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-		if(! png_ptr)
+		if (!png_ptr)
 			break;
 
 		// init png_info
 		info_ptr = png_create_info_struct(png_ptr);
-		if(! info_ptr)
+		if (!info_ptr)
 			break;
 
-//#if (CC_TARGET_PLATFORM != CC_PLATFORM_BADA && CC_TARGET_PLATFORM != CC_PLATFORM_NACL)
-//		CC_BREAK_IF(setjmp(png_jmpbuf(png_ptr)));
-//#endif
+		//#if (CC_TARGET_PLATFORM != CC_PLATFORM_BADA && CC_TARGET_PLATFORM != CC_PLATFORM_NACL)
+		//		CC_BREAK_IF(setjmp(png_jmpbuf(png_ptr)));
+		//#endif
 
 		// set the read call back function
 		tImageSource imagesource;
-		imagesource.data    = (unsigned char*)pData;
-		imagesource.size    = nDatalen;
-		imagesource.offset  = 0;
+		imagesource.data = (unsigned char*)pData;
+		imagesource.size = nDatalen;
+		imagesource.offset = 0;
 		png_set_read_fn(png_ptr, &imagesource, pngReadCallBack);
 
 		// read png header info
@@ -1987,11 +1538,11 @@ Texture2D *ResourceManager::_initWithPngData(const char *pData, int nDatalen)
 		png_uint_32 color_type = png_get_color_type(png_ptr, info_ptr);
 
 		Texture::Format format = Texture::TF_A8R8G8B8;
-		if(color_type == PNG_COLOR_TYPE_RGB_ALPHA)
+		if (color_type == PNG_COLOR_TYPE_RGB_ALPHA)
 		{
 			format = Texture::TF_A8R8G8B8;
 		}
-		else if(color_type == PNG_COLOR_TYPE_RGB)
+		else if (color_type == PNG_COLOR_TYPE_RGB)
 		{
 			format = Texture::TF_R8G8B8;
 		}
@@ -2012,12 +1563,12 @@ Texture2D *ResourceManager::_initWithPngData(const char *pData, int nDatalen)
 		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
 		{
 			png_set_tRNS_to_alpha(png_ptr);
-		}  
+		}
 		// reduce images with 16-bit samples to 8 bits
 		if (bitsPerComponent == 16)
 		{
-			png_set_strip_16(png_ptr);            
-		} 
+			png_set_strip_16(png_ptr);
+		}
 		// expand grayscale images to RGB
 		if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
 		{
@@ -2028,14 +1579,14 @@ Texture2D *ResourceManager::_initWithPngData(const char *pData, int nDatalen)
 		// m_nBitsPerComponent will always be 8
 		bitsPerComponent = 8;
 		png_uint_32 rowbytes;
-		png_bytep* row_pointers = (png_bytep*)malloc( sizeof(png_bytep) * height );
+		png_bytep* row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
 
 		png_read_update_info(png_ptr, info_ptr);
 
 		rowbytes = (png_uint_32)png_get_rowbytes(png_ptr, info_ptr);
 
 		unsigned char* data = new unsigned char[rowbytes * height];
-		
+
 		char* textureData = texture->GetData(0);
 
 		for (unsigned short i = 0; i < height; ++i)
@@ -2046,25 +1597,25 @@ Texture2D *ResourceManager::_initWithPngData(const char *pData, int nDatalen)
 
 		png_read_end(png_ptr, NULL);
 
-		png_uint_32 channel = rowbytes/width;
+		png_uint_32 channel = rowbytes / width;
 		if (channel == 4)
 		{
 			unsigned int *tmp = (unsigned int *)textureData;
-			for(unsigned short i = 0; i < height; i++)
+			for (unsigned short i = 0; i < height; i++)
 			{
-				for(unsigned int j = 0; j < rowbytes; j += 4)
+				for (unsigned int j = 0; j < rowbytes; j += 4)
 				{
-					*tmp++ = PX2_RGB_PREMULTIPLY_ALPHA( row_pointers[i][j], row_pointers[i][j + 1], 
-						row_pointers[i][j + 2], row_pointers[i][j + 3] );
+					*tmp++ = PX2_RGB_PREMULTIPLY_ALPHA(row_pointers[i][j], row_pointers[i][j + 1],
+						row_pointers[i][j + 2], row_pointers[i][j + 3]);
 				}
 			}
 		}
-		else if(channel == 3)
+		else if (channel == 3)
 		{
 			unsigned char *tmp = (unsigned char *)textureData;
-			for(unsigned short i = 0; i < height; i++)
+			for (unsigned short i = 0; i < height; i++)
 			{
-				for(unsigned int j = 0; j < rowbytes;)
+				for (unsigned int j = 0; j < rowbytes;)
 				{
 					*tmp++ = row_pointers[i][j];
 					*tmp++ = row_pointers[i][j + 1];
@@ -2123,7 +1674,7 @@ typedef struct {
 #define kPVR3TexturePixelFormat_PVRTC_4BPP_RGB   2
 #define kPVR3TexturePixelFormat_PVRTC_4BPP_RGBA  3
 #define kPVR3TexturePixelFormat_ETC1             6
-	
+
 /* supported channel type formats */
 #define kPVR3TexturePixelFormat_BGRA_8888  0x0808080861726762ULL
 #define kPVR3TexturePixelFormat_RGBA_8888  0x0808080861626772ULL
@@ -2136,42 +1687,42 @@ typedef struct {
 #define kPVR3TexturePixelFormat_LA_88      0x000008080000616cULL
 
 enum {
-	kPVR3TextureFlagPremultipliedAlpha	= (1<<1)	// has premultiplied alpha
+	kPVR3TextureFlagPremultipliedAlpha = (1 << 1)	// has premultiplied alpha
 };
 
 struct CCZHeader {
-    unsigned char   sig[4];             // signature. Should be 'CCZ!' 4 bytes
-    unsigned short  compression_type;   // should 0
-    unsigned short  version;            // should be 2 (although version type==1 is also supported)
-    unsigned int    reserved;           // Reserved for users.
-    unsigned int    len;                // size of the uncompressed file
+	unsigned char   sig[4];             // signature. Should be 'CCZ!' 4 bytes
+	unsigned short  compression_type;   // should 0
+	unsigned short  version;            // should be 2 (although version type==1 is also supported)
+	unsigned int    reserved;           // Reserved for users.
+	unsigned int    len;                // size of the uncompressed file
 };
 
 enum {
-    CCZ_COMPRESSION_ZLIB,               // zlib format.
-    CCZ_COMPRESSION_BZIP2,              // bzip2 format (not supported yet)
-    CCZ_COMPRESSION_GZIP,               // gzip format (not supported yet)
-    CCZ_COMPRESSION_NONE,               // plain (not supported yet)
+	CCZ_COMPRESSION_ZLIB,               // zlib format.
+	CCZ_COMPRESSION_BZIP2,              // bzip2 format (not supported yet)
+	CCZ_COMPRESSION_GZIP,               // gzip format (not supported yet)
+	CCZ_COMPRESSION_NONE,               // plain (not supported yet)
 };
 
 static unsigned int randSeed = 0;
 static unsigned int MyRand()
 {
-	randSeed = randSeed*171589117 + 892332411;
+	randSeed = randSeed * 171589117 + 892332411;
 	return randSeed;
 }
 
 static void DecryptBuffer(unsigned char *buffer, int n)
 {
 	randSeed = n + 123;
-	int enclen = (MyRand()%100) + 23;
-	if(enclen > n) enclen = n;
+	int enclen = (MyRand() % 100) + 23;
+	if (enclen > n) enclen = n;
 
 	enclen /= 4;
 	unsigned int *pdata = (unsigned int *)buffer;
-	for(int i=0; i<enclen; i++)
+	for (int i = 0; i < enclen; i++)
 	{
-		unsigned int src = (unsigned int)buffer[i*4] + ((unsigned int)buffer[i*4+1]<<8) +  ((unsigned int)buffer[i*4+2]<<16) + ((unsigned int)buffer[i*4+3]<<24);
+		unsigned int src = (unsigned int)buffer[i * 4] + ((unsigned int)buffer[i * 4 + 1] << 8) + ((unsigned int)buffer[i * 4 + 2] << 16) + ((unsigned int)buffer[i * 4 + 3] << 24);
 		pdata[i] = src ^ MyRand();
 	}
 }
@@ -2187,14 +1738,14 @@ Texture2D *ResourceManager::LoadTextureFromPVRTC_CCZ(int bufferSize, const char 
 	unsigned long newlen = CC_SWAP_INT32_BIG_TO_HOST(cczheader->len);
 	char *newbuffer = new char[newlen];
 
-	if(cczheader->reserved > 0)
+	if (cczheader->reserved > 0)
 	{
-		DecryptBuffer((unsigned char *)buffer+sizeof(CCZHeader), bufferSize-sizeof(CCZHeader));
+		DecryptBuffer((unsigned char *)buffer + sizeof(CCZHeader), bufferSize - sizeof(CCZHeader));
 		cczheader->reserved = 0;
 	}
 
 	Texture2D *ptex = NULL;
-	if(Z_OK == uncompress((Bytef *)newbuffer, &newlen, (const Bytef *)buffer+headsize, bufferSize-headsize))
+	if (Z_OK == uncompress((Bytef *)newbuffer, &newlen, (const Bytef *)buffer + headsize, bufferSize - headsize))
 	{
 		ptex = LoadTextureFromPVRTC(newlen, newbuffer);
 	}
@@ -2205,66 +1756,66 @@ Texture2D *ResourceManager::LoadTextureFromPVRTC_CCZ(int bufferSize, const char 
 
 Texture2D *ResourceManager::LoadTextureFromPVRTC(int dataLength, const char *dataPointer)
 {
-    if (dataLength < int(sizeof(ccPVRv3TexHeader)))
-    {
+	if (dataLength < int(sizeof(ccPVRv3TexHeader)))
+	{
 		return NULL;
 	}
-	
+
 	ccPVRv3TexHeader *header = (ccPVRv3TexHeader *)dataPointer;
-	
+
 	// validate version
 	if (CC_SWAP_INT32_BIG_TO_HOST(header->version) != 0x50565203)
-    {
+	{
 		PX2_LOG_INFO("pvr file version mismatch");
 		return NULL;
 	}
-	
+
 	// parse pixel format
 	uint64_t pixelFormat = header->pixelFormat;
 	int bpp;
 	Texture::Format format;
-    
-	if(pixelFormat == kPVR3TexturePixelFormat_PVRTC_2BPP_RGB)
+
+	if (pixelFormat == kPVR3TexturePixelFormat_PVRTC_2BPP_RGB)
 	{
 		bpp = 2;
 		format = Texture::TF_RGB_PVRTC_2B;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_PVRTC_2BPP_RGBA)
+	else if (pixelFormat == kPVR3TexturePixelFormat_PVRTC_2BPP_RGBA)
 	{
 		bpp = 2;
 		format = Texture::TF_RGBA_PVRTC_2B;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_PVRTC_4BPP_RGB)
+	else if (pixelFormat == kPVR3TexturePixelFormat_PVRTC_4BPP_RGB)
 	{
 		bpp = 4;
 		format = Texture::TF_RGB_PVRTC_4B;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_PVRTC_4BPP_RGBA)
+	else if (pixelFormat == kPVR3TexturePixelFormat_PVRTC_4BPP_RGBA)
 	{
 		bpp = 4;
 		format = Texture::TF_RGBA_PVRTC_4B;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_ETC1)
+	else if (pixelFormat == kPVR3TexturePixelFormat_ETC1)
 	{
 		bpp = 4;
 		format = Texture::TF_RGB_ETC1;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_RGBA_8888)
+	else if (pixelFormat == kPVR3TexturePixelFormat_RGBA_8888)
 	{
 		bpp = 32;
 		format = Texture::TF_A8R8G8B8;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_RGBA_4444)
+	else if (pixelFormat == kPVR3TexturePixelFormat_RGBA_4444)
 	{
 		bpp = 16;
 		format = Texture::TF_A4R4G4B4;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_RGBA_5551)
+	else if (pixelFormat == kPVR3TexturePixelFormat_RGBA_5551)
 	{
 		bpp = 16;
 		format = Texture::TF_A1R5G5B5;
 	}
-	else if(pixelFormat == kPVR3TexturePixelFormat_RGB_565)
+	else if (pixelFormat == kPVR3TexturePixelFormat_RGB_565)
 	{
 		bpp = 16;
 		format = Texture::TF_R5G6B5;
@@ -2274,80 +1825,80 @@ Texture2D *ResourceManager::LoadTextureFromPVRTC(int dataLength, const char *dat
 		PX2_LOG_INFO("Cannot support pvr pixelformat");
 		return NULL;
 	}
-	
+
 	// PVRv3 specifies premultiply alpha in a flag -- should always respect this in PVRv3 files
 	//uint32_t flags = CC_SWAP_INT32_LITTLE_TO_HOST(header->flags);
 	//bool premul_alpha = (flags & kPVR3TextureFlagPremultipliedAlpha)!=0;
-    
+
 	// sizing
 	uint32_t width = CC_SWAP_INT32_LITTLE_TO_HOST(header->width);
 	uint32_t height = CC_SWAP_INT32_LITTLE_TO_HOST(header->height);
 	uint32_t dataOffset = 0, dataSize = 0;
 	uint32_t blockSize = 0, widthBlocks = 0, heightBlocks = 0;
 	uint8_t *bytes = NULL;
-	
+
 	dataOffset = (sizeof(ccPVRv3TexHeader) + header->metadataLength);
 	bytes = (uint8_t *)dataPointer;
-	
+
 	unsigned int mipmaps = header->numberOfMipmaps;
 	Texture2D *texture = new0 Texture2D(format, width, height, mipmaps);
-    
+
 	for (unsigned int i = 0; i < mipmaps; i++)
-    {
+	{
 		switch (pixelFormat)
-        {
-			case kPVR3TexturePixelFormat_PVRTC_2BPP_RGB :
-			case kPVR3TexturePixelFormat_PVRTC_2BPP_RGBA :
-				blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
-				widthBlocks = width / 8;
-				heightBlocks = height / 4;
-				break;
-			case kPVR3TexturePixelFormat_PVRTC_4BPP_RGB :
-			case kPVR3TexturePixelFormat_PVRTC_4BPP_RGBA :
-				blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
-				widthBlocks = width / 4;
-				heightBlocks = height / 4;
-				break;
-			case kPVR3TexturePixelFormat_ETC1 :
-				blockSize = 4 * 4;
-				widthBlocks = width / 4;
-				heightBlocks = height / 4;
-				break;
-			case kPVR3TexturePixelFormat_BGRA_8888:
-				return 0;
-			default:
-				blockSize = 1;
-				widthBlocks = width;
-				heightBlocks = height;
-				break;
+		{
+		case kPVR3TexturePixelFormat_PVRTC_2BPP_RGB:
+		case kPVR3TexturePixelFormat_PVRTC_2BPP_RGBA:
+			blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
+			widthBlocks = width / 8;
+			heightBlocks = height / 4;
+			break;
+		case kPVR3TexturePixelFormat_PVRTC_4BPP_RGB:
+		case kPVR3TexturePixelFormat_PVRTC_4BPP_RGBA:
+			blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+			widthBlocks = width / 4;
+			heightBlocks = height / 4;
+			break;
+		case kPVR3TexturePixelFormat_ETC1:
+			blockSize = 4 * 4;
+			widthBlocks = width / 4;
+			heightBlocks = height / 4;
+			break;
+		case kPVR3TexturePixelFormat_BGRA_8888:
+			return 0;
+		default:
+			blockSize = 1;
+			widthBlocks = width;
+			heightBlocks = height;
+			break;
 		}
-        
+
 		// Clamp to minimum number of blocks
 		if (widthBlocks < 2)
-        {
+		{
 			widthBlocks = 2;
-        }
+		}
 		if (heightBlocks < 2)
-        {
+		{
 			heightBlocks = 2;
-        }
-		
+		}
+
 		dataSize = widthBlocks * heightBlocks * ((blockSize  * bpp) / 8);
-		unsigned int packetLength = ((unsigned int)dataLength-dataOffset);
+		unsigned int packetLength = ((unsigned int)dataLength - dataOffset);
 		packetLength = packetLength > dataSize ? dataSize : packetLength;
 
 		assertion(texture->GetNumLevelBytes(i) == int(packetLength), "wrong PVR file packetLength");
-		memcpy(texture->GetData(i), bytes+dataOffset, packetLength);
-		
+		memcpy(texture->GetData(i), bytes + dataOffset, packetLength);
+
 		dataOffset += packetLength;
-		assertion(int(dataOffset)<=dataLength, "TexturePVR Invalid lenght");
-		
-		width = width>>1;
-		if(width == 0) width = 1;
+		assertion(int(dataOffset) <= dataLength, "TexturePVR Invalid lenght");
+
+		width = width >> 1;
+		if (width == 0) width = 1;
 		height = height >> 1;
-		if(height == 0) height = 1;
+		if (height == 0) height = 1;
 	}
-	
+
 	return texture;
 }
 //----------------------------------------------------------------------------
@@ -2361,12 +1912,12 @@ typedef unsigned int uint32;
 
 #define FOURCC(c0, c1, c2, c3) (c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
 
-const DWORD D3DFMT_R16F				= 111;
-const DWORD D3DFMT_G16R16F			= 112;
-const DWORD D3DFMT_A16B16G16R16F	= 113;
-const DWORD D3DFMT_R32F				= 114;
-const DWORD D3DFMT_G32R32F			= 115;
-const DWORD D3DFMT_A32B32G32R32F	= 116;
+const DWORD D3DFMT_R16F = 111;
+const DWORD D3DFMT_G16R16F = 112;
+const DWORD D3DFMT_A16B16G16R16F = 113;
+const DWORD D3DFMT_R32F = 114;
+const DWORD D3DFMT_G32R32F = 115;
+const DWORD D3DFMT_A32B32G32R32F = 116;
 
 const uint32 DDS_PIXELFORMAT_SIZE = 8 * sizeof(uint32);
 const uint32 DDS_CAPS_SIZE = 4 * sizeof(uint32);
@@ -2400,14 +1951,14 @@ const uint32 DDS_HEADER_SIZE = 19 * sizeof(uint32) + DDS_PIXELFORMAT_SIZE + DDS_
 
 struct DDPIXELFORMAT
 {
-	DWORD dwSize; 
-	DWORD dwFlags; 
-	DWORD dwFourCC; 
-	DWORD dwRGBBitCount; 
-	DWORD dwRBitMask; 
-	DWORD dwGBitMask; 
-	DWORD dwBBitMask; 
-	DWORD dwRGBAlphaBitMask; 
+	DWORD dwSize;
+	DWORD dwFlags;
+	DWORD dwFourCC;
+	DWORD dwRGBBitCount;
+	DWORD dwRBitMask;
+	DWORD dwGBitMask;
+	DWORD dwBBitMask;
+	DWORD dwRGBAlphaBitMask;
 };
 
 struct DDSCAPS2
@@ -2415,7 +1966,7 @@ struct DDSCAPS2
 	DWORD    dwCaps;
 	DWORD    dwCaps2;
 	DWORD    dwCaps3;
-	DWORD    dwCaps4; 
+	DWORD    dwCaps4;
 };
 
 struct DDSHeader
@@ -2436,13 +1987,13 @@ struct DDSHeader
 
 static Texture::Format ConvertFourCCFormat(uint32_t fourcc)
 {
-	switch(fourcc)
+	switch (fourcc)
 	{
-	case FOURCC('D','X','T','1'):
+	case FOURCC('D', 'X', 'T', '1'):
 		return Texture::TF_DXT1;
-	case FOURCC('D','X','T','3'):
+	case FOURCC('D', 'X', 'T', '3'):
 		return Texture::TF_DXT3;
-	case FOURCC('D','X','T','5'):
+	case FOURCC('D', 'X', 'T', '5'):
 		return Texture::TF_DXT5;
 	default:
 		assertion(false, "other format is not supportted.");
@@ -2450,10 +2001,10 @@ static Texture::Format ConvertFourCCFormat(uint32_t fourcc)
 	};
 }
 
-static void GetDescInfo (const DDSHeader &header, int &width, int &height,
-						 int &minmap, Texture::Format &format)
+static void GetDescInfo(const DDSHeader &header, int &width, int &height,
+	int &minmap, Texture::Format &format)
 {
-	if(strncmp(header.magic, "DDS ", 4) != 0)
+	if (strncmp(header.magic, "DDS ", 4) != 0)
 	{
 		assertion(false, "this is not DDS.");
 	}
@@ -2461,11 +2012,11 @@ static void GetDescInfo (const DDSHeader &header, int &width, int &height,
 	if (header.dwFlags & DDSD_CAPS)
 	{
 		const DDSCAPS2 &caps = header.ddsCaps;
-		if(caps.dwCaps2&DDSCAPS2_CUBEMAP)
+		if (caps.dwCaps2&DDSCAPS2_CUBEMAP)
 		{
 			assertion(false, "current not supported.");
 		}
-		else if(caps.dwCaps2&DDSCAPS2_VOLUME)
+		else if (caps.dwCaps2&DDSCAPS2_VOLUME)
 		{
 			assertion(false, "current not supported.");
 		}
@@ -2477,7 +2028,7 @@ static void GetDescInfo (const DDSHeader &header, int &width, int &height,
 
 	if (header.dwFlags&DDSD_MIPMAPCOUNT)
 	{
-		assertion(((header.ddsCaps.dwCaps&DDSCAPS_MIPMAP)!=0), "must has minmap.");
+		assertion(((header.ddsCaps.dwCaps&DDSCAPS_MIPMAP) != 0), "must has minmap.");
 		minmap = header.dwMipMapCount;
 	}
 	else
@@ -2487,11 +2038,11 @@ static void GetDescInfo (const DDSHeader &header, int &width, int &height,
 
 	const DDPIXELFORMAT &fmt = header.ddpfPixelFormat;
 
-	if(fmt.dwFlags & DDPF_RGB)
+	if (fmt.dwFlags & DDPF_RGB)
 	{
 		assertion(false, "");
 	}
-	else if(fmt.dwFlags & DDPF_FOURCC)
+	else if (fmt.dwFlags & DDPF_FOURCC)
 	{
 		format = ConvertFourCCFormat(fmt.dwFourCC);
 	}
@@ -2501,7 +2052,7 @@ static void GetDescInfo (const DDSHeader &header, int &width, int &height,
 	}
 }
 
-Texture2D *ResourceManager::LoadTextureFromDDS (const std::string &filename)
+Texture2D *ResourceManager::LoadTextureFromDDS(const std::string &filename)
 {
 	PX2_UNUSED(filename);
 
@@ -2521,7 +2072,7 @@ Texture2D *ResourceManager::LoadTextureFromDDS (const std::string &filename)
 	int width = 0;
 	int height = 0;
 	int minmap = 1;
-	Texture::Format format;
+	Texture::Format format = Texture::TF_A8R8G8B8;
 	GetDescInfo(header, width, height, minmap, format);
 
 	Texture2D *texture = new0 Texture2D(format, width, height, minmap);
@@ -2537,7 +2088,7 @@ Texture2D *ResourceManager::LoadTextureFromDDS (const std::string &filename)
 	return texture;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::GetFileDataFromZip (const std::string &packageName,
+bool ResourceManager::GetFileDataFromZip(const std::string &packageName,
 	const std::string &filename, int &bufferSize, char* &buffer)
 {
 	if (packageName.empty() || filename.empty())
@@ -2580,7 +2131,7 @@ bool ResourceManager::GetFileDataFromZip (const std::string &packageName,
 	int readedSize = 0;
 	readedSize = unzReadCurrentFile(ufile, buffer, fileInfo.uncompressed_size);
 
-	if (0!=readedSize && (fileInfo.uncompressed_size!=(unsigned long)readedSize))
+	if (0 != readedSize && (fileInfo.uncompressed_size != (unsigned long)readedSize))
 	{
 		assertion(false, "the file size is wrong.");
 
@@ -2600,10 +2151,10 @@ bool ResourceManager::GetFileDataFromZip (const std::string &packageName,
 	return true;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::ShareCopyProcess (Node *node, Node *nodeFrom,
+void ResourceManager::ShareCopyProcess(Node *node, Node *nodeFrom,
 	bool vb, bool ib, bool mi)
 {
-	for (int i=0; i<nodeFrom->GetNumChildren(); i++)
+	for (int i = 0; i < nodeFrom->GetNumChildren(); i++)
 	{
 		Movable *movFrom = nodeFrom->GetChild(i);
 		Movable *movTo = node->GetChild(i);
@@ -2621,7 +2172,7 @@ void ResourceManager::ShareCopyProcess (Node *node, Node *nodeFrom,
 	}
 }
 //----------------------------------------------------------------------------
-void ResourceManager::ShareCopyProcess (Renderable *renderable,
+void ResourceManager::ShareCopyProcess(Renderable *renderable,
 	Renderable *renderableFrom, bool vb, bool ib, bool mi)
 {
 	VertexFormat *vf1 = renderableFrom->GetVertexFormat();
@@ -2646,7 +2197,7 @@ void ResourceManager::ShareCopyProcess (Renderable *renderable,
 	}
 }
 //----------------------------------------------------------------------------
-void ResourceManager::Run ()
+void ResourceManager::Run()
 {
 	RunLoadingThread();
 }

@@ -65,7 +65,8 @@ const
 		return it->second;
 	}
 
-	*isValied = false;
+	if (isValied)
+		*isValied = false;
 
 	return 0;
 }

@@ -2,5 +2,3 @@
 
 #include "PX2ProjectEventData.hpp"
 using namespace PX2;
-
-//----------------------------------------------------------------------------

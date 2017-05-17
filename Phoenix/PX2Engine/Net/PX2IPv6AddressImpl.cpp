@@ -3,6 +3,7 @@
 #include "PX2IPv6AddressImpl.hpp"
 #include "PX2Assert.hpp"
 #include "PX2StringHelp.hpp"
+#include "PX2NumberFormatter.hpp"
 using namespace PX2;
 
 template <typename T>
@@ -96,7 +97,7 @@ IPv6AddressImpl::~IPv6AddressImpl ()
 //----------------------------------------------------------------------------
 std::string IPv6AddressImpl::ToString() const
 {
-	assertion(false, "not implemented.\n");
+	assertion(false, "Not implemented.");
 	return "";
 }
 //----------------------------------------------------------------------------
@@ -255,7 +256,7 @@ void IPv6AddressImpl::Mask(const IPAddressImpl* mask, const IPAddressImpl* set)
 //----------------------------------------------------------------------------
 IPAddressImpl* IPv6AddressImpl::Clone() const
 {
-	return new IPv6AddressImpl(&mAddr, mScope);
+	return new0 IPv6AddressImpl(&mAddr, mScope);
 }
 //----------------------------------------------------------------------------
 IPv6AddressImpl IPv6AddressImpl::operator & (const IPv6AddressImpl& addr) const

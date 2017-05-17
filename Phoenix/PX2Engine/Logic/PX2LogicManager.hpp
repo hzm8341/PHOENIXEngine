@@ -23,8 +23,8 @@ namespace PX2
 
 		bool AddPkgInfo(const std::string &filename);
 
-		void SetSelectObject(Object *object);
-		Object *GetSelectObject();
+		void SetSelectLogicObject(Object *object);
+		Object *GetSelectLogicObject();
 
 		void SetCurGeneratedScript(const std::string &str);
 		const std::string &GetCurGeneratedScript() const;
@@ -40,22 +40,12 @@ namespace PX2
 		void SetPlatformType(PlatformType pt);
 		PlatformType GetPlatformType() const;
 
-		enum UserType
-		{
-			UT_BEGINNER, // 面向初学者
-			UT_PRO,	// 面向专业者
-			UT_MAX_TYPE
-		};
-		void SetUserType(UserType ut);
-		UserType GetUserType() const;
-
 	protected:
-		void _InitBlocks();
-		bool _InitlizeBP();
+		void _InitCtrls();
+		void _InitFuns();
 
 		ObjectPtr mSelectObject;
 		PlatformType mPlatformType;
-		UserType mUserType;
 		std::string mCurGeneratedScript;
 
 		// add funs
@@ -85,6 +75,7 @@ namespace PX2
 		FunObject *GetCurAddFunObject();
 
 	public:
+		FunObject *GetClassFunObject(const std::string &className);
 		FunObject *GetClassFunObject(const std::string &className, const std::string &funName);
 		FunObject *GetFunObject(const std::string &name);
 
@@ -106,7 +97,10 @@ namespace PX2
 		FunObject *GetCtrl(const std::string &name);
 
 		// Params
-		const std::map<std::string, std::vector<std::string> > &GetParams() const;
+		typedef std::map<std::string, std::vector<std::string> > ParamsType;
+		typedef std::map<std::string, std::vector<std::string> >::iterator ParamsTypeIterator;
+		const ParamsType &GetParams() const;
+		ParamsType &GetParams();
 		std::map<std::string, FunObjectPtr> &GetParamMap();
 		FunObject *GetParam(const std::string &name);
 
@@ -114,6 +108,7 @@ namespace PX2
 		const std::map<std::string, std::vector<std::string> > &GetOperators() const;
 		std::map<std::string, FunObjectPtr> &GetOperatorMap();
 		FunObject *GetOperator(const std::string &name);
+
 
 	protected:
 		void _AddGenFun(const std::string &catalogue, FunObject *funObj);
@@ -141,7 +136,7 @@ namespace PX2
 		std::map<std::string, FunObjectPtr> mCtrlObjects;
 
 		// Param
-		std::map<std::string, std::vector<std::string> > mParams;
+		ParamsType mParams;
 		std::map<std::string, FunObjectPtr> mParamObjects;
 
 		// Operators

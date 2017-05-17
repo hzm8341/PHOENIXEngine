@@ -6,6 +6,7 @@
 #include "PX2UIPre.hpp"
 #include "PX2UIFrame.hpp"
 #include "PX2UIFPicBox.hpp"
+#include "PX2UIFText.hpp"
 #include "PX2Size.hpp"
 #include "PX2UIProgressBarCtrl.hpp"
 
@@ -30,6 +31,8 @@ namespace PX2
 		UIFPicBox *GetBackPicBox();
 		UIFPicBox *GetProgressPicBox();
 		UIFPicBox *GetOverPicBox();
+		UIFText *CreateAddProgressText();
+		UIFText *GetProgressText();
 
 		virtual void AutoMakeSizeFixable();
 
@@ -59,6 +62,8 @@ namespace PX2
 		UIFPicBoxPtr mOverPicBox;
 		float mProgress;
 		UIProgressBarCtrlPtr mPBCtrl;
+
+		UIFTextPtr mProgressText;
 	};
 
 	PX2_REGISTER_STREAM(UIProgressBar);

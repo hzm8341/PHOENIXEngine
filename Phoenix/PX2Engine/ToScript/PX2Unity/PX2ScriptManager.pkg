@@ -2,7 +2,7 @@
 
 	class ScriptManager
 	{
-		// SINGLETON
+		// SINGLETON Application
 		
 		ScriptContext *GetContext(ScriptContext::ContextType type);
 	};

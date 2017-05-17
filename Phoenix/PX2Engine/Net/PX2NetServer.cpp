@@ -59,9 +59,19 @@ Server::~Server()
 	}
 }
 //-----------------------------------------------------------------------------
+int Server::GetPort() const
+{
+	return mPort;
+}
+//-----------------------------------------------------------------------------
 Server::ServerType Server::GetServerType() const
 {
 	return mServerType;
+}
+//-----------------------------------------------------------------------------
+ServerSocket Server::GetListenSocket()
+{
+	return mServerImp->GetListenSocket();
 }
 //-----------------------------------------------------------------------------
 const std::vector<int> &Server::GetThreadIDs() const
@@ -102,12 +112,19 @@ void Server::Shutdown()
 	mServerImp->Shutdown();
 }
 //-----------------------------------------------------------------------------
-void Server::Run()
+void Server::Run(float elapsedTime)
 {
+	PX2_UNUSED(elapsedTime);
+
 	if (mServerImp)
 		mServerImp->OnRun();
 
 	HandleClientEvents();
+}
+//-----------------------------------------------------------------------------
+bool Server::IsStarted() const
+{
+	return mServerImp->IsStarted();
 }
 //-----------------------------------------------------------------------------
 ClientContext *Server::GetClientContext(int clientID)

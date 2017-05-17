@@ -29,6 +29,7 @@ namespace PX2
 		virtual void OnSizeChanged();
 
 	protected:
+		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
 		virtual void UpdateWorldData(double applicationTime,
 			double elapsedTime);
 		void _UpdateContentPos();

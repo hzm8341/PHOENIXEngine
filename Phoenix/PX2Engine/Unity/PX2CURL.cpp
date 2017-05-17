@@ -174,6 +174,8 @@ bool CurlObj::Download(const std::string &filename,
 
 		if (std::string(mCurlErrDesc) != "Failed writing body (1 != 1460)")
 			return false;
+
+		return false;
 	}
 
 	return true;

@@ -21,12 +21,11 @@ mIsBloomConfigChanged(true)
 	mScreenCamera = new0 Camera(false);
 	mScreenCamera->SetAxes(AVector::UNIT_Y, AVector::UNIT_Z, AVector::UNIT_X);
 
-	std::string renderTag = Renderer::GetRenderTag();
-
 	mPicBox_Shadow = new0 UIPicBox();
 	mPicBox_Shadow->SetSize(200.0f, 200.0f);
 	mPicBox_Shadow->SetPivot(Float2::ZERO);
-	if ("OGLES" == renderTag || "OpenGL" == renderTag)
+	std::string renderTag = Renderer::GetRenderTag();
+	if ("OpenGLES" == renderTag || "OpenGL" == renderTag)
 		mPicBox_Shadow->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
 
 	SetPickPosRecal(true);
@@ -67,7 +66,6 @@ void EngineSceneCanvas::UpdateWorldData(double applicationTime,
 
 	if (mIsShadowMapConfigChanged)
 	{
-		mIsShadowMapConfigChanged = false;
 		_UpdateShadowChanged();
 	}
 
@@ -95,21 +93,39 @@ void EngineSceneCanvas::_UpdateShadowChanged()
 		if (epc->IsShadowRenderTargetSizeSameWithCanvas())
 			rtSize = Sizef(mScreenRect.Width(), mScreenRect.Height());
 
-		Texture::Format tformat = Texture::TF_A8R8G8B8;
-		mRenderTarget_Shadow = new0 RenderTarget(1, tformat,
-			(int)rtSize.Width, (int)rtSize.Height, false, true, false);
-		mMaterial_Shadow = new0 ShadowMap_Material();
+		if (rtSize.Width > 0 && rtSize.Height > 0)
+		{
+			Texture::Format tformat = Texture::TF_A8R8G8B8;
 
-		epc->SetLight_Dir_DepthTexture(mRenderTarget_Shadow->GetDepthStencilTexture());
+			std::string renderTag = Renderer::GetRenderTag();
+			if ("OpenGLES" == renderTag)
+			{
+				mRenderTarget_Shadow = new0 RenderTarget(1, tformat,
+					(int)rtSize.Width, (int)rtSize.Height, false, true, true);
+			}
+			else
+			{
+				mRenderTarget_Shadow = new0 RenderTarget(1, tformat,
+					(int)rtSize.Width, (int)rtSize.Height, false, true, false);
+			}
 
-		mPicBox_Shadow->SetTexture(mRenderTarget_Shadow->GetDepthStencilTexture());
-		mPicBox_Shadow->Update(0.0f);
-		mPicBox_Shadow->GetMaterialInstance()->GetMaterial()->GetAlphaProperty(0, 0)->BlendEnabled = false;
+			mMaterial_Shadow = new0 ShadowMap_Material();
+
+			epc->SetLight_Dir_DepthTexture(mRenderTarget_Shadow->GetDepthStencilTexture());
+
+			mPicBox_Shadow->SetTexture(mRenderTarget_Shadow->GetDepthStencilTexture());
+			mPicBox_Shadow->Update(0.0f);
+			mPicBox_Shadow->GetMaterialInstance()->GetMaterial()->GetAlphaProperty(0, 0)->BlendEnabled = false;
+
+			mIsShadowMapConfigChanged = false;
+		}
 	}
 	else
 	{
 		mRenderTarget_Shadow = 0;
 		mPicBox_Shadow->SetTexture(0);
+
+		mIsShadowMapConfigChanged = false;
 	}
 }
 //----------------------------------------------------------------------------
@@ -183,7 +199,7 @@ void EngineSceneCanvas::_UpdateBloomChanged()
 			(int)norMormalSize.Width, (int)norMormalSize.Height, false, true, false);
 		mBloomPicBox_Normal = new0 UIPicBox();
 		mBloomPicBox_Normal->SetPivot(Float2::ZERO);
-		if ("OGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_Normal->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
+		if ("OpenGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_Normal->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
 		mBloomPicBox_Normal->SetSize(mSize);
 		mBloomPicBox_Normal->Update(0.0f);
 		mBloomPicBox_Normal->GetMaterialInstance()->GetMaterial()->GetAlphaProperty(0, 0)->BlendEnabled = false;
@@ -193,7 +209,7 @@ void EngineSceneCanvas::_UpdateBloomChanged()
 			(int)otherSize.Width, (int)otherSize.Height, false, false, false);
 		mBloomPicBox_Bright = new0 UIPicBox();
 		mBloomPicBox_Bright->SetPivot(Float2::ZERO);
-		if ("OGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_Bright->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
+		if ("OpenGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_Bright->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
 		mBloomPicBox_Bright->SetSize(mSize);
 		mBloomPicBox_Bright->SetMaterialInstance(blurMtlInstanceBloomBright);
 		mBloom_BrightParam = blurMtlInstanceBloomBright->GetPixelConstant(0, "BrightParam");
@@ -205,7 +221,7 @@ void EngineSceneCanvas::_UpdateBloomChanged()
 		mBloomPicBox_BlurH = new0 UIPicBox();
 		mBloomPicBox_BlurH->SetPivot(Float2::ZERO);
 		mBloomPicBox_BlurH->SetMaterialInstance(blurMtlInstanceH);
-		if ("OGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_BlurH->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
+		if ("OpenGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_BlurH->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
 		mBloomPicBox_BlurH->SetSize(mSize);
 		mBloomPicBox_BlurH->SetUVRepeat(Float2::UNIT);
 		mBloomPicBox_BlurH->SetTexture("Data/engine/default.png");
@@ -221,7 +237,7 @@ void EngineSceneCanvas::_UpdateBloomChanged()
 		mBloomPicBox_BlurV = new0 UIPicBox();
 		mBloomPicBox_BlurV->SetPivot(Float2::ZERO);
 		mBloomPicBox_BlurV->SetMaterialInstance(blurMtlInstanceV);
-		if ("OGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_BlurV->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
+		if ("OpenGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_BlurV->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
 		mBloomPicBox_BlurV->SetSize(mSize);
 		mBloomPicBox_BlurV->SetUVRepeat(Float2::UNIT);
 		mBloomPicBox_BlurV->SetTexture("Data/engine/default.png");
@@ -235,7 +251,7 @@ void EngineSceneCanvas::_UpdateBloomChanged()
 		mBloomPicBox_Final = new0 UIPicBox();
 		mBloomPicBox_Final->SetPivot(Float2::ZERO);
 		mBloomPicBox_Final->SetSize(mSize);
-		if ("OGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_Final->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
+		if ("OpenGLES" == renderTag || "OpenGL" == renderTag) mBloomPicBox_Final->SetPicBoxType(UIPicBox::PBT_NORAML_UVREVERSE);
 		mBloomPicBox_Final->SetMaterialInstance(mBoom_MtlInstance);
 		mBloom_Param = mBoom_MtlInstance->GetPixelConstant(0, "BloomParam");
 		mBloomPicBox_Final->Update(0.0f);
@@ -479,7 +495,7 @@ void EngineSceneCanvas::_Draw(Camera *camera, Renderer *renderer,
 	if (isShadowPass)
 		renderer->Disable(mRenderTarget_Shadow);
 
-	//// draw depthtexture
+	// draw depthtexture
 	//_SetCameraF(mScreenCamera, mPicBox_Shadow);
 	//renderer->SetCamera(mScreenCamera);
 	//renderer->Draw(mPicBox_Shadow);

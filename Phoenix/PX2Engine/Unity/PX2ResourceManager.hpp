@@ -32,6 +32,16 @@ namespace PX2
 
 		virtual void Update (double appSeconds, double elapsedSeconds);
 
+		// Load
+	public:
+		// 设置资源路径.在Android系统中，为apk所在目录
+		static void SetResourcePath(const std::string &resPath);
+		static void SetWriteablePath(const std::string &path);
+
+		/// 获得可写路径,在PC上为程序当前目录，在移动设备上由该设备API返回。
+		static std::string GetWriteablePath();
+		static std::string GetResourcePath();
+
 		/// 资源加载状态
 		enum LoadState
 		{
@@ -42,7 +52,6 @@ namespace PX2
 			LS_MAX_STATE
 		};
 
-		// 加载
 		void Clear ();
 		void ClearRes (const std::string &resPath);
 		Object *BlockLoad (const std::string &filename);
@@ -58,128 +67,26 @@ namespace PX2
 		Object *ShareCopyVB_IB_MI (Object *objFrom);
 		Object *ShareCopyMI (Object *objFrom);
 		Object *ShareCopy (Object *objFrom, bool vb, bool ib, bool mi);
-		
-		void Dump (const std::string &filename);
-		void BeginDumpDiff ();
-		void EndDumpDiff (const std::string &filename);
 
+		bool LoadBuffer(const std::string &filename, int &bufferSize,
+			char* &buffer);
+		bool LoadBuffer(const std::string &filename, std::string &buf);
+
+		bool IsTexPack(const std::string &texPackPath);
+		bool AddTexPack(const std::string &texPackPath);
+		const TexPack &GetTexPack(const std::string &texPackPath);
+		const TexPackElement &GetTexPackElement(
+			const std::string &texPackPath, const std::string &eleName);
+
+		void DDSKeepCompressed(bool keep = true);
+		bool IsDDSKeepCompressed() const;
+		
 		void SetUseGarbageCollect (bool use);
 		bool IsUseGarbageCollect () const;
 		void SetGarbageCollectTime (float seconds);
 		float GetGarbageCollectTime () const;
 
-		// folder
-		// CreateFloder("Data/", "myproject/")
-		// IsFloderExist("Data/myproject/")
-		bool CreateFloder (const std::string &parentPath, const std::string &path);
-		// Folder末尾需要/
-		bool IsFileFloderExist (const std::string &path);
-		bool CopyTheFile(const std::string &srcFilename, const std::string &dstFilename);
-
-		/// 获得buffer,如果是Android设备从apk中获取
-		/**
-		* 你需要负责使用delete1释放获得的buffer
-		*/
-		bool LoadBuffer (const std::string &filename, int &bufferSize, 
-			char* &buffer);
-		bool LoadBuffer(const std::string &filename, std::string &buf);
-
-		// 加载文件，重新写到可写目录，destPath无需加writepath，只需如"Stage/vlcvideo.sdp"
-		bool ReWriteFileToWriteablePath(const std::string &filename, const std::string &destPath);
-		
-		// tex pack
-		bool IsTexPack (const std::string &texPackPath);
-		bool AddTexPack (const std::string &texPackPath);
-		const TexPack &GetTexPack (const std::string &texPackPath);
-		const TexPackElement &GetTexPackElement (
-			const std::string &texPackPath, const std::string &eleName);
-
-		/// 获得可写路径
-		/**
-		* 在PC上为程序当前目录，在移动设备上由该设备API返回。
-		*/
-		static std::string GetWriteablePath ();
-		static std::string GetResourcePath ();
-
-		// 加载选项
-		void DDSKeepCompressed (bool keep=true);
-		bool IsDDSKeepCompressed ();
-
-		// Save
-		bool SaveTex2DPNG (Texture2D *tex2d, const std::string &filename);
-
-		// data version
-		/**
-		* data version 是记录在Data目录里版本信息，该版本信息和包打到一起
-		*/
-		bool LoadDataVersionXML (const std::string &filename);
-		const ResourceVersionItem *GetDataVersionItem () const;
-
-		// data update version
-		/**
-		* data update version 记录在可写路径中，直接用打开文件的方式打开
-		*/
-		bool LoadDataUpateVersionXML (const std::string &filename);
-		const ResourceVersionItem *GetDataUpdateVersionItem () const;
-
-		// update version
-		/**
-		* update version 是从服务器下载的版本信息，该版本信息程序发布的时候没有
-		* 有过更新后才有。
-		*/
-		bool LoadUpdateVersionXML (const std::string &filename);
-		const ResourceVersionItem *GetUpdateVersionItem () const;
-
-		// versionlist read
-		/**
-		* 读取相应版本的版本信息
-		*/
-		typedef HashTable<FString, ResourceFileMark, FixedStringHashCoder> VersionListTable;
-
-		bool IsVersionListValued (const std::string &filename);
-
-		bool LoadDataVersionList (const std::string &filename);
-		VersionListTable &GetDataVersionList ();
-		bool LoadDataUpdateVersionList (const std::string &filename);
-		VersionListTable &GetDataUpdateVersionList ();
-		bool LoadUpdateVersionList (const std::string &filename);
-		VersionListTable &GetUpdateVersionList ();
-		bool IsHasUpdate (const std::string &filename, std::string &outUpdatedFilename);
-		bool IsHasUpdate (const std::string &filename);
-
-		void SetVersion (const ResourceVersion &version);
-		const ResourceVersion &GetVersion () const;
-
-		enum DirType
-		{
-			DT_WIN,
-			DT_ANDROID,
-			DT_IOS,
-			DT_MAX_TYPE
-		};
-		// versionlist writes
-		/**
-		* 在工具中生成版本信息
-		*/
-		void BeginWriteVersionList ();
-		void AddVersionFile (const std::string &filename, DirType type);
-		void EndWriteVersionList (const std::string &filename);
-		void WriteDataList (const std::string &filename, VersionListTable &table);
-
-		// download
-		/**
-		* fullPath是完整的路径
-		*/
-		bool Download (const std::string &fullPath, const std::string &url);
-
-		// 资源跟新相关的所有事情
-		void DoResourceUpdateStuffs (const std::string &wwwAddr);
-		void SetResourceUpdateCallback (ResourceUpdateStuffsCallback callback);
-		
-		static void SetDataUpdateServerType (const std::string &type);
-		static std::string &GetDataUpdateServerType ();
-
-public_internal:
+	public_internal:
 		struct LoadRecord
 		{
 			enum RecordType
@@ -190,8 +97,8 @@ public_internal:
 				RT_MAX_TYPE
 			};
 
-			LoadRecord ();
-			~LoadRecord ();
+			LoadRecord();
+			~LoadRecord();
 
 			RecordType TheRecordType;
 			BackgroundFun Fun;
@@ -205,37 +112,31 @@ public_internal:
 			double LastTouchedTime;
 		};
 
-		unsigned int RunLoadingThread ();
-		void GarbageCollect (double appSeconds, double elapsedSeconds);
-        
-		// 设置资源路径.在Android系统中，为apk所在目录
-		static void SetResourcePath (const std::string &resPath);   
-        static void SetWriteablePath(const std::string &path);
+		unsigned int RunLoadingThread();
+		void GarbageCollect(double appSeconds, double elapsedSeconds);
 
-		virtual void Run ();
+		virtual void Run();
 
 	protected:
-		LoadRecord &InsertRecord (const FString &filename, bool isBuffer);
-		LoadRecord &InsertRecord (const FString &funName, BackgroundFun fun);
-		void _LoadTheRecord (LoadRecord &rec);
-		Object *_LoadObject (const std::string &filename);
-		bool _LoadBuffer (const std::string &filename, int &bufferSize,
+		LoadRecord &InsertRecord(const FString &filename, bool isBuffer);
+		LoadRecord &InsertRecord(const FString &funName, BackgroundFun fun);
+		void _LoadTheRecord(LoadRecord &rec);
+		Object *_LoadObject(const std::string &filename);
+		bool _LoadBuffer(const std::string &filename, int &bufferSize,
 			char* &buffer);
-		Texture2D *LoadTexFormOtherImagefile (std::string outExt, 
+		Texture2D *LoadTexFormOtherImagefile(std::string outExt,
 			int bufferSize, const char*buffer);
-		Texture2D *LoadTextureFromDDS (const std::string &filename);
+		Texture2D *LoadTextureFromDDS(const std::string &filename);
 		Texture2D *LoadTextureFromPVRTC(int bufferSize, const char *buffer);
 		Texture2D *LoadTextureFromPVRTC_CCZ(int bufferSize, const char *buffer);
 		Texture2D *_initWithPngData(const char *pData, int nDatalen);
-		bool GetFileDataFromZip (const std::string &packageName, 
+		bool GetFileDataFromZip(const std::string &packageName,
 			const std::string &filename, int &bufferSize, char* &buffer);
-		void ShareCopyProcess (Node *node, Node *nodeFrom, bool vb, bool ib,
+		void ShareCopyProcess(Node *node, Node *nodeFrom, bool vb, bool ib,
 			bool mi);
-		void ShareCopyProcess (Renderable *renderable,
+		void ShareCopyProcess(Renderable *renderable,
 			Renderable *renderableFrom, bool vb, bool ib, bool mi);
-		void ReadVersionList (FileIO &in, VersionListTable &table);
-		void ReadVersionList (BufferIO &in, VersionListTable &table);
-		
+
 	private:
 		bool mDDSKeepCompressed;
 		Mutex *mLoadRecordMutex;
@@ -260,33 +161,81 @@ public_internal:
 		static std::string msResPath;
 		static std::string mWriteablePath;
 
-		// curl
+		// Dump
+	public:
+		void Dump(const std::string &filename);
+		void BeginDumpDiff();
+		void EndDumpDiff(const std::string &filename);
+
+	private:
+		std::vector<std::string> mBeginDumpDiffFiles;
+
+		// Folder
+	public:
+		// folder
+		// CreateFloder("Data/", "myproject/")
+		// IsFloderExist("Data/myproject/")
+		bool CreateFloder (const std::string &parentPath, const std::string &path);
+		// Folder末尾需要/
+		bool IsFileFloderExist (const std::string &path);
+		bool CopyTheFile(const std::string &srcFilename, const std::string &dstFilename);
+
+		// 加载文件，重新写到可写目录，destPath无需加writepath，只需如"Stage/vlcvideo.sdp"
+		bool ReWriteFileToWriteablePath(const std::string &filename, const std::string &destPath);
+
+		// Update
+	public:
+		typedef std::map<FString, ResourceFileInfoItemPtr> ResourceFileTable;
+		typedef std::map<FString, ResourceFileInfoItemPtr>::iterator ResourceFileTableIterator;
+
+		// 加标记，看是不是从测试服务器更新
+		static void SetDataUpdateServerType(const std::string &dataUpdateServerType);
+		static const std::string &GetDataUpdateServerType();
+
+		const std::string &GetDataUpdateFromPath () const;
+		const std::string &GetDataUpdateWritePath() const;
+
+		void SetVersion(const ResourceVersion &version);
+		const ResourceVersion &GetVersion() const;
+
+		bool LoadFileTableXML(ResourceFileTable &table, const std::string &filename);
+
+		void ClearDataFiletable();
+		const ResourceVersionItem *GetDataVersionItem() const;
+		ResourceFileTable &GetDataFiletable();
+
+		void ClearDataUpdateFiletable();
+		const ResourceVersionItem *GetDataUpdateVersionItem() const;
+		ResourceFileTable &GetDataUpdateFileTable();
+
+		bool IsHasUpdate(const std::string &filename);
+		bool IsHasUpdate(const std::string &filename, std::string &outUpdatedFilename);
+
+		void SetResourceUpdateAddr(const std::string &updateAddr);
+		const std::string &GetResourceUpdateAddr() const;
+		void DoResourceUpdateStuffs(const std::string &wwwAddr, const std::string &projName);
+		void SetResourceUpdateCallback(ResourceUpdateStuffsCallback callback);
+		bool Download(const std::string &fullPath, const std::string &url);
+
+	protected:
+		void ReadVersionList(FileIO &in, ResourceFileTable &table);
+		void ReadVersionList(BufferIO &in, ResourceFileTable &table);
+		void _RMReWriteProcessXMLNode(ResourceFileTable &table, XMLNode node);
+
 		CurlObj *mCurl;
 
-		// data version
-		Pointer0<ResourceVersionItem> mDataVersionItem;
-
-		// data update version
-		Pointer0<ResourceVersionItem> mDataUpdateVersionItem;
-
-		// udpate version
-		Pointer0<ResourceVersionItem> mUpdateVersionItem;
-
-		// version
-		ResourceVersion mVersion;
-
-		// version list
-		int mEndVersionList;
-		std::vector<ResourceFileMark> mVersionListToWrite;
-		VersionListTable mDataVersionList; 
-		VersionListTable mDataUpdateVersionList; 
-		VersionListTable mUpdateVersionList; 
-		ResourceUpdateStuffsCallback mResourceUpdateCallback;
-		std::string mDataUpdatePath;
 		static std::string mDataUpdateServerType;
 
-		// dump
-		std::vector<std::string> mBeginDumpDiffFiles;
+		std::string mDataUpdateFromPath;
+		std::string mDataUpdateWritePath;
+
+		ResourceVersion mVersion;
+
+		ResourceFileTable mLocalDataFileTable;
+		ResourceFileTable mDataUpdateFileTable;
+
+		std::string mResourceUpdateAddr;
+		ResourceUpdateStuffsCallback mResourceUpdateCallback;
 	};
 
 #include "PX2ResourceManager.inl"

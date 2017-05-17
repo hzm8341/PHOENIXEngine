@@ -17,6 +17,8 @@ namespace PX2
 	PX2_EVENT(ReDo)
 	PX2_EVENT(NoUnDo)
 	PX2_EVENT(NoReDo)
+	PX2_EVENT(N_Window)
+	PX2_EVENT(N_AddMenu)
 	PX2_DECLARE_EVENT_END(EditES)
 
 }

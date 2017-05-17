@@ -25,6 +25,7 @@ mUICollapsePanel(0)
 	mExpandBut = new0 UIButton();
 	AttachChild(mExpandBut);
 	mExpandBut->SetName("ButCollpase");
+	mExpandBut->LocalTransform.SetTranslateY(-2.0f);
 	mExpandBut->SetAnchorHor(0.0f, 1.0f);
 	mExpandBut->SetAnchorVer(1.0f, 1.0f);
 	mExpandBut->SetAnchorParamHor(0.0f, -1.0f);
@@ -133,6 +134,9 @@ bool UICollapseItem::IsExpand() const
 //----------------------------------------------------------------------------
 void UICollapseItem::SetContentHeight(float cntHeight)
 {
+	if (mContentFrame)
+		mContentFrame->SetHeight(cntHeight);
+
 	mContentHeight = cntHeight;
 	SetHeight(mExpandButHeight + mContentHeight);
 

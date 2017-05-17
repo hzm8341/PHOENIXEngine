@@ -7,6 +7,7 @@
 		static Controlledable *ToControlledable(Object *obj);
 		static Movable *ToMovable(Object *obj);
 		static Node *ToNode(Object *obj);
+		static SizeNode *ToSizeNode(Object *obj);
 		static EffectableController *ToEffectController(Object *obj);
 		static Object *ToO(void *obj);
 		static ScriptController *ToSC(void *obj);

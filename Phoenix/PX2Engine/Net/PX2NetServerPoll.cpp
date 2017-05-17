@@ -2,6 +2,7 @@
 
 #include "PX2NetServerPoll.hpp"
 #include "PX2Log.hpp"
+#include "PX2System.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -17,24 +18,21 @@ ServerPoll::ServerPoll(int port, int numMaxConnects, int numMaxMsgHandlers,
 //----------------------------------------------------------------------------
 ServerPoll::~ServerPoll()
 {
-	if (mThreadListen)
-	{
-		mThreadListen->Join();
-		delete0(mThreadListen);
-	}
 }
 //----------------------------------------------------------------------------
 bool ServerPoll::Start()
 {
 	mIsShutdown = false;
 
-	if (0 != mServerSocket.Bind(SocketAddress((uint16_t)mListenPort)))
+	if (0 != mListenSocket.Bind(SocketAddress((uint16_t)mListenPort)))
 		return false;
 
-	mServerSocket.Listen();
+	mListenSocket.Listen();
 
 	mThreadListen = new0 Thread("ServerPollThread");
 	mThreadListen->Start(*this);
+
+	mIsStarted = true;
 
 	return true;
 }
@@ -54,9 +52,9 @@ void ServerPoll::_AcceptRun()
 	while (!mIsShutdown)
 	{
 		Timespan timeout(250000);
-		if (mServerSocket.Poll(timeout, Socket::SELECT_READ))
+		if (mListenSocket.Poll(timeout, Socket::SELECT_READ))
 		{
-			StreamSocket ss = mServerSocket.AcceptConnection();
+			StreamSocket ss = mListenSocket.AcceptConnection();
 
 			_AddClientSocket(ss);
 		}
@@ -236,6 +234,17 @@ int ServerPoll::_OnWrite(ClientContext *pcontext)
 void ServerPoll::Shutdown()
 {
 	mIsShutdown = true;
+	mIsStarted = false;
+
+	System::SleepSeconds(0.1f);
+
+	if (mThreadListen)
+	{
+		mThreadListen->Join();
+		delete0(mThreadListen);
+	}
+
+	mListenSocket.Close();
 }
 //----------------------------------------------------------------------------
 void ServerPoll::DisconnectClient(unsigned int clientID)

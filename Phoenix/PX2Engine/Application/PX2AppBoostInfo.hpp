@@ -30,6 +30,7 @@ namespace PX2
 		Sizef BoostSize;
 		PlayLogicMode ThePlayLogicMode;
 		bool IsShowInfo;
+		bool IsDataReWriteToDataUpdate;
 
 		// server
 		int Port;

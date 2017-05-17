@@ -31,7 +31,6 @@ mAccoutManager(0),
 mUIAuiManager(0),
 mUISkinManager(0),
 mLogicManager(0),
-mBPManager(0),
 mCreater(0),
 mEngineEventHandler(0),
 mGeneralServer(0),
@@ -143,118 +142,18 @@ void Application::Update()
 	// graph
 	PX2_GR.Update(mAppTime, mElapsedTime);
 
+	if (mEngineServer)
+		mEngineServer->Run(mElapsedTime);
+
+	if (mEngineClientConnector)
+		mEngineClientConnector->Update((float)mElapsedTime);
+
 	if (mGeneralServer)
-		mGeneralServer->Run();
+		mGeneralServer->Run(mElapsedTime);
 
 	if (mGeneralClientConnector)
 		mGeneralClientConnector->Update((float)mElapsedTime);
 
 	PX2_GR.Draw();
-}
-//----------------------------------------------------------------------------
-void Application::Menu_Clear()
-{
-	mItem->Name = "ExtendMenu";
-}
-//----------------------------------------------------------------------------
-void Application::Menu_AddSubItemCatalogue(
-	const std::string &parentAllName,
-	const std::string &name,
-	const std::string &title)
-{
-	MenuItem *parentItem = 0;
-
-	if (!parentAllName.empty())
-	{
-		parentItem = mItem->GetMenuItem(parentAllName);
-	}
-	else
-	{
-		parentItem = mItem;
-	}
-
-	if (parentItem)
-	{
-		MenuItem *menuItem = new0 MenuItem();
-		menuItem->TheType = MenuItem::T_SUB;
-		menuItem->Name = name;
-		menuItem->Title = title;
-		menuItem->AllName = parentItem->AllName + name;
-
-		parentItem->Items.push_back(menuItem);
-	}
-}
-//----------------------------------------------------------------------------
-void Application::Menu_AddItem(
-	const std::string &parentAllName,
-	const std::string &name,
-	const std::string &title,
-	const std::string &script)
-{
-	MenuItem *parentItem = 0;
-
-	if (!parentAllName.empty())
-	{
-		parentItem = mItem->GetMenuItem(parentAllName);
-	}
-	else
-	{
-		parentItem = mItem;
-	}
-
-	if (parentItem)
-	{
-		MenuItem *menuItem = new0 MenuItem();
-		menuItem->TheType = MenuItem::T_ITEM;
-		menuItem->Name = name;
-		menuItem->Title = title;
-		menuItem->Script = script;
-		menuItem->AllName = parentItem->AllName + name;
-
-		parentItem->Items.push_back(menuItem);
-	}
-}
-//----------------------------------------------------------------------------
-Application::MenuItem::MenuItem()
-{
-	TheType = T_ITEM;
-}
-//----------------------------------------------------------------------------
-Application::MenuItem::~MenuItem()
-{
-}
-//----------------------------------------------------------------------------
-void Application::MenuItem::Clear()
-{
-	for (int i = 0; i < (int)Items.size(); i++)
-	{
-		MenuItem *item = Items[i];
-		item->Clear();
-	}
-
-	Items.clear();
-}
-//----------------------------------------------------------------------------
-Application::MenuItem *Application::MenuItem::GetMenuItem(
-	const std::string &parentAllName)
-{
-	for (int i = 0; i < (int)Items.size(); i++)
-	{
-		MenuItem *item = Items[i];
-
-		if (parentAllName == item->AllName)
-			return item;
-
-		MenuItem *subItem = item->GetMenuItem(parentAllName);
-		if (subItem)
-			return subItem;
-	}
-
-	return 0;
-}
-//----------------------------------------------------------------------------
-Application::MenuItem *Application::GetMenuItem()
-{
-	return mItem;
 }
 //----------------------------------------------------------------------------

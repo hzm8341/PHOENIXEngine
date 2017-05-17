@@ -30,9 +30,16 @@ namespace PX2
 
 		UIItem *AddItem(const std::string &text);
 		UIItem *GetItem(const std::string &text);
+		UIItem *GetItemByIndex(int index);
+		void RemoveItem(UIItem *item);
+
+		int GetNumItems() const;
 		int GetItemIndex(const std::string &text) const;
 		void RemoveAllItems();
 		float GetContentHeight() const;
+
+		void SetNumMaxItems(int numMax);
+		int GetNumMaxItems() const;
 
 		void SelectItem(int index);
 		void AddSelectItem(UIItem *item);
@@ -70,6 +77,8 @@ namespace PX2
 
 		std::vector<UIItemPtr> mSelectedItems;
 		int mSelectedIndex;
+
+		int mNumMaxItems;
 	};
 
 #include "PX2UIList.inl"

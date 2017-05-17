@@ -212,12 +212,6 @@ ThreadPool::~ThreadPool()
 	}
 }
 //----------------------------------------------------------------------------
-ThreadPool &ThreadPool::GetSingleton ()
-{
-	static ThreadPool pool;
-	return pool;
-}
-//----------------------------------------------------------------------------
 void ThreadPool::AddCapacity(int n)
 {
 	ScopedCS cs(mMutex);

@@ -26,7 +26,14 @@ namespace PX2
 
 		void Close();
 
+		SocketAddress GetPeerAddress() const;
+		SocketAddress GetAddress() const;
+
 		bool IsValid() const;
+		void SetNoDelay(bool flag);
+
+		void SetSendTimeout(const Timespan& timeout);
+		void SetReceiveTimeout(const Timespan& timeout);
 
 		enum SelectMode
 		{

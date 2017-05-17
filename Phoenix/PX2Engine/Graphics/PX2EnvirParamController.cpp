@@ -34,7 +34,7 @@ EnvirParamController::EnvirParamController()
 
 	mIsUseShadowMap = true;
 	mShadowRenderTargetSize = Sizef(1024.0f, 1024.0f);
-	mIsShadowRenderTargetSizeSameWithCanvas = false;
+	mIsShadowRenderTargetSizeSameWithCanvas = true;
 
 	mIsUseBloom = false;
 

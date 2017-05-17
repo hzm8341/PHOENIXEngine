@@ -8,6 +8,7 @@ AppBoostInfo::AppBoostInfo()
 {
 	ThePlayLogicMode = PLM_LOGIC;
 	IsShowInfo = false;
+	IsDataReWriteToDataUpdate = false;
 
 	Port = 10180;
 	NumMaxConnection = 4000;

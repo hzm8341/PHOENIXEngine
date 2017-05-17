@@ -11,7 +11,7 @@ inline void ResourceManager::DDSKeepCompressed (bool keep)
 	mDDSKeepCompressed = keep;
 }
 //----------------------------------------------------------------------------
-inline bool ResourceManager::IsDDSKeepCompressed ()
+inline bool ResourceManager::IsDDSKeepCompressed() const
 {
 	return mDDSKeepCompressed;
 }
@@ -31,46 +31,35 @@ inline float ResourceManager::GetGarbageCollectTime () const
 	return mGarbageCollectTime;
 }
 //----------------------------------------------------------------------------
-inline const ResourceVersionItem *ResourceManager::GetDataVersionItem () const
-{
-	return mDataVersionItem;
-}
-//----------------------------------------------------------------------------
-inline const ResourceVersionItem *ResourceManager::GetDataUpdateVersionItem () const
-{
-	return mDataUpdateVersionItem;
-}
-//----------------------------------------------------------------------------
-inline const ResourceVersionItem *ResourceManager::GetUpdateVersionItem () const
-{
-	return mUpdateVersionItem;
-}
-//----------------------------------------------------------------------------
-inline ResourceManager::VersionListTable &ResourceManager::
-	GetDataVersionList ()
-{
-	return mDataVersionList;
-}
-//----------------------------------------------------------------------------
-inline ResourceManager::VersionListTable &ResourceManager::
-	GetDataUpdateVersionList ()
-{
-	return mDataUpdateVersionList;
-}
-//----------------------------------------------------------------------------
-inline ResourceManager::VersionListTable &ResourceManager::
-	GetUpdateVersionList ()
-{
-	return mUpdateVersionList;
-}
-//----------------------------------------------------------------------------
-inline void ResourceManager::SetVersion (const ResourceVersion &version)
+inline void ResourceManager::SetVersion(const ResourceVersion &version)
 {
 	mVersion = version;
 }
 //----------------------------------------------------------------------------
-inline const ResourceVersion &ResourceManager::GetVersion () const
+inline const ResourceVersion &ResourceManager::GetVersion() const
 {
 	return mVersion;
+}
+//----------------------------------------------------------------------------
+inline const std::string &ResourceManager::GetDataUpdateFromPath() const
+{
+	return mDataUpdateFromPath;
+}
+//----------------------------------------------------------------------------
+inline const std::string &ResourceManager::GetDataUpdateWritePath() const
+{
+	return mDataUpdateWritePath;
+}
+//----------------------------------------------------------------------------
+inline ResourceManager::ResourceFileTable &ResourceManager::
+	GetDataFiletable ()
+{
+	return mLocalDataFileTable;
+}
+//----------------------------------------------------------------------------
+inline ResourceManager::ResourceFileTable &ResourceManager::
+	GetDataUpdateFileTable ()
+{
+	return mDataUpdateFileTable;
 }
 //----------------------------------------------------------------------------

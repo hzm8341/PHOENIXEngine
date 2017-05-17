@@ -152,15 +152,15 @@ namespace PX2
 		bool IsEntered() const;
 		virtual void OnEnter();
 		virtual void OnLeave();
-		virtual void OnLeftDown(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnLeftUp(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnLeftDClick(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnMiddleDown(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnMiddleUp(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnMouseWheel(const APoint &screenPos, const APoint &logicPos, float delta);
-		virtual void OnRightDown(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnRightUp(const APoint &screenPos, const APoint &logicPos);
-		virtual void OnMotion(const APoint &screenPos, const APoint &logicPos);
+		virtual void OnLeftDown(const PickInputData &data);
+		virtual void OnLeftUp(const PickInputData &data);
+		virtual void OnLeftDClick(const PickInputData &data);
+		virtual void OnMiddleDown(const PickInputData &data);
+		virtual void OnMiddleUp(const PickInputData &data);
+		virtual void OnMouseWheel(const PickInputData &data);
+		virtual void OnRightDown(const PickInputData &data);
+		virtual void OnRightUp(const PickInputData &data);
+		virtual void OnMotion(const PickInputData &data);
 
 		virtual void PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas);
 		virtual void OnWidgetPicked(const CanvasInputData &inputData);

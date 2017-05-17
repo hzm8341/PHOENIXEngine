@@ -8,6 +8,7 @@
 #include "PX2ScriptManager.hpp"
 #include "PX2StringHelp.hpp"
 #include "PX2SelectionManager.hpp"
+#include "PX2SoundSystem.hpp"
 #include "PX2Log.hpp"
 using namespace PX2;
 
@@ -35,18 +36,119 @@ void Application::NewProject(const std::string &pathname,
 	Event *entUI = PX2_CREATEEVENTEX(ProjectES, NewUI);
 	entUI->SetData<UI*>(TheProject->GetUI());
 	PX2_EW.BroadcastingLocalEvent(entUI);
-
-	Event *entBP = PX2_CREATEEVENTEX(ProjectES, NewLP);
-	entBP->SetData<LProject*>(TheProject->GetLProject());
-	PX2_EW.BroadcastingLocalEvent(entBP);
 }
 //----------------------------------------------------------------------------
-bool Application::LoadProject(const std::string &pathname)
+void _ReWriteProcessXMLNode(XMLNode node)
+{
+	std::string writeablePath = PX2_RM.GetWriteablePath();
+	const std::string &updateWritePath = PX2_RM.GetDataUpdateWritePath();
+
+	XMLNode childNode = node.IterateChild();
+	while (!childNode.IsNull())
+	{
+		std::string name = childNode.GetName();
+		std::string filename = childNode.AttributeToString("filename");
+		std::string md5Str = childNode.AttributeToString("md5");
+		std::string strData = "Data/";
+		std::string subFilename = filename.substr(strData.length(), filename.length() - strData.length());
+
+		if ("directory" == name)
+		{
+			PX2_RM.CreateFloder(writeablePath + updateWritePath, subFilename);
+			_ReWriteProcessXMLNode(childNode);
+		}
+		else if ("file" == name)
+		{
+			std::string outPath;
+			std::string outFilename;
+			StringHelp::SplitFilename(subFilename, outPath, outFilename);
+
+			PX2_RM.CreateFloder(writeablePath + updateWritePath, outPath);
+
+			std::string dstPath = updateWritePath + subFilename;
+			PX2_RM.ReWriteFileToWriteablePath(filename, dstPath);
+		}
+
+		childNode = node.IterateChild(childNode);
+	}
+}
+//----------------------------------------------------------------------------
+void Application::_ProcessReWrite(const std::string &projName)
+{
+	std::string writeablePath = PX2_RM.GetWriteablePath();
+	const std::string &updateWritePath = PX2_RM.GetDataUpdateWritePath();
+
+	std::string writeDataPath = writeablePath + "DataUpdate/";
+	std::string projNamePath = projName + "/";
+
+	PX2_RM.CreateFloder(writeDataPath, projNamePath);
+
+	std::string filesPath = "Data/" + projName + "/" + "filelist.xml";
+	PX2_RM.ReWriteFileToWriteablePath(filesPath,
+		updateWritePath + projName + "/" + "filelist.xml");
+
+	int bufSize = 0;
+	char *buf = 0;
+	if (PX2_RM.LoadBuffer(filesPath, bufSize, buf))
+	{
+		XMLData data;
+		if (data.LoadBuffer(buf, bufSize))
+		{
+			XMLNode rootNode = data.GetRootNode();
+			_ReWriteProcessXMLNode(rootNode);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+bool Application::LoadProject(const std::string &name)
+{
+	if (name.empty())
+		return false;
+
+	std::string writeablePath = PX2_RM.GetWriteablePath();
+	std::string writeDataPath = writeablePath + "DataUpdate/";
+	std::string projWriteDataPath = writeDataPath + name + "/";
+
+	if (mBoostInfo.IsDataReWriteToDataUpdate)
+	{
+		if (!PX2_RM.IsFileFloderExist(projWriteDataPath))
+		{
+			PX2_RM.CreateFloder(writeablePath, "DataUpdate/");
+			_ProcessReWrite(name);
+		}
+	}
+
+	std::string writeDataFilelistPath = projWriteDataPath + "filelist.xml";
+	if (!PX2_RM.LoadFileTableXML(PX2_RM.GetDataUpdateFileTable(), writeDataFilelistPath))
+	{
+		PX2_LOG_INFO("LoadFileTableXML %s failed", writeDataFilelistPath.c_str());
+
+		PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), "Data/" + name + "/filelist.xml");
+	}
+	else
+	{
+		PX2_LOG_INFO("LoadFileTableXML %s suc", writeDataFilelistPath.c_str());
+	}
+
+	std::string addrPath = "ftp://127.0.0.1/";
+	const std::string &resUpdateAddr = PX2_RM.GetResourceUpdateAddr();
+	if (!resUpdateAddr.empty())
+		addrPath = resUpdateAddr;
+
+	PX2_RM.DoResourceUpdateStuffs(addrPath, name);
+
+	std::string path = "Data/" + name + "/" + name + ".px2proj";
+	return PX2_APP.LoadProjectByPath(path);
+}
+//----------------------------------------------------------------------------
+bool Application::LoadProjectByPath(const std::string &pathname)
 {
 	bool canDoChange = (Application::PT_NONE == GetPlayType());
 	if (!canDoChange) return false;
 
 	CloseProject();
+	
+	// load
 
 	bool loadResult = false;
 	TheProject = new0 Project();
@@ -67,12 +169,6 @@ bool Application::LoadProject(const std::string &pathname)
 		if (!uiFilename.empty())
 		{
 			LoadUI(uiFilename);
-		}
-
-		const std::string &lFilename = TheProject->GetLFilename();
-		if (!lFilename.empty())
-		{
-			LoadLP(lFilename);
 		}
 
 		mProjectFilePath = pathname;
@@ -113,39 +209,42 @@ bool Application::LoadProject(const std::string &pathname)
 	}
 
 #elif defined (__LINUX__)
-	std::string projDllFolder = GetProjDataFolderPath();
-	std::string projDllFilename = GetProjDllFileName();
+	std::string projDllFolder = GetProjDataFolderPath(projName);
+	std::string projDllFilename = GetDllFileName(projName);
 	std::string dllFullpathFilename = projDllFolder + projDllFilename;
 
 	PX2_LOG_INFO("Project dll filename:%s", dllFullpathFilename.c_str());
 
 	if (PX2_RM.IsFileFloderExist(dllFullpathFilename))
 	{
-		PX2_LOG_INFO("Begin load project dll: %s", dllFullpathFilename.c_str());
+		PX2_LOG_INFO("Begin load project so: %s", dllFullpathFilename.c_str());
 
 		PX2_PLUGINMAN.Load(dllFullpathFilename);
 
-		PX2_LOG_INFO("End load project dll: %s", dllFullpathFilename.c_str());
+		PX2_LOG_INFO("End load project so: %s", dllFullpathFilename.c_str());
 	}
 
 #elif defined (__ANDROID__)
-	std::string soFilename = "lib" + projName + ".so";
-	std::string originSOFilename = "Data/" + soFilename;
-	const std::string writePath = PX2_RM.GetWriteablePath();
-	std::string writePathSOFilename = writePath + soFilename;
+	//std::string soFilename = "lib" + projName + "SO.so";
+	//std::string originSOFilename = "Data/" + soFilename;
+	//const std::string writePath = PX2_RM.GetWriteablePath();
+	//std::string writePathSOFilename = writePath + soFilename;
 
-	char *soBuf = 0;
-	int soSize = 0;
-	if (PX2_RM.LoadBuffer(originSOFilename, soSize, soBuf))
-	{
-		bool ret = FileIO::Save(writePathSOFilename, true, soSize, soBuf);
-		PX2_LOG_INFO("FileIO::Save ret %s", ret ? "true" : "false");
-		PX2_LOG_INFO("SoSize:%d", soSize);
-	}
+	//char *soBuf = 0;
+	//int soSize = 0;
+	//if (PX2_RM.LoadBuffer(originSOFilename, soSize, soBuf))
+	//{
+	//	bool ret = FileIO::Save(writePathSOFilename, true, soSize, soBuf);
+	//	PX2_LOG_INFO("FileIO::Save ret %s", ret ? "true" : "false");
+	//	PX2_LOG_INFO("SoSize:%d", soSize);
 
+	//	PX2_LOG_INFO("Begin load project so: %s", writePathSOFilename.c_str());
+
+	//	PX2_PLUGINMAN.Load(writePathSOFilename);
+
+	//	PX2_LOG_INFO("End load project so: %s", writePathSOFilename.c_str());
+	//}
 #endif
-
-	Plugin::ExecuteInit();
 
 	std::string callFilenameLua = "Data/" + projName + "/scripts/lua/editor/editor.lua";
 	PX2_SC_LUA->CallFileFunction(callFilenameLua.c_str(), "editorstart");
@@ -266,6 +365,8 @@ void Application::CloseProject()
 	URDoManager::GetSingleton().Clear();
 	URStateManager::GetSingleton().Clear();
 
+	PX2_SS.PlayMusic(0, 0, true, 0.0f);
+
 	Project *oldProj = Project::GetSingletonPtr();
 	if (!oldProj) return;
 
@@ -278,7 +379,6 @@ void Application::CloseProject()
 
 	CloseScene();
 	CloseUI();
-	CloseLP();
 
 	Event *ent = PX2_CREATEEVENTEX(ProjectES, CloseProject);
 	PX2_EW.BroadcastingLocalEvent(ent);
@@ -287,8 +387,6 @@ void Application::CloseProject()
 #ifdef _DEBUG
 	debugTag = "D";
 #endif
-
-	Plugin::ExecuteTermLast();
 
 #if defined (WIN32) || defined (_WIN32)
 	if (PX2_RM.IsFileFloderExist(dllFullpathFilename))
@@ -422,42 +520,6 @@ void Application::CloseUI()
 	PX2_RM.ClearRes(mUIFilePath);
 	PX2_PROJ.SetUI(0);
 	mUIFilePath.clear();
-}
-//----------------------------------------------------------------------------
-bool Application::LoadLP(const std::string &pathname)
-{
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return false;
-
-	Project *proj = Project::GetSingletonPtr();
-	if (!proj) return false;
-
-	//ObjectPtr bpObj = PX2_RM.BlockLoad(pathname);
-	ObjectPtr obj;
-	LProject *bpPackage = DynamicCast<LProject>(obj);
-	if (bpPackage)
-	{
-		mBPFilePath = pathname;
-
-		Project::GetSingleton().SetLProject(bpPackage);
-
-		return true;
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-void Application::CloseLP()
-{
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return;
-
-	Project *proj = Project::GetSingletonPtr();
-	if (!proj) return;
-
-	PX2_RM.ClearRes(mBPFilePath);
-	PX2_PROJ.SetLProject(0);
-	mBPFilePath.clear();
 }
 //----------------------------------------------------------------------------
 std::string Application::_CalSavePath(const std::string &pathname)

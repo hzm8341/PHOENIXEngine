@@ -3,7 +3,6 @@
 #include "PX2Application.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2ProjectEvent.hpp"
-#include "PX2BPManager.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------

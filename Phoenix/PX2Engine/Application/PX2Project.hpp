@@ -11,7 +11,6 @@
 #include "PX2Canvas.hpp"
 #include "PX2UIFrame.hpp"
 #include "PX2UI.hpp"
-#include "PX2LProject.hpp"
 
 namespace PX2
 {
@@ -61,19 +60,11 @@ namespace PX2
 		float GetWidth() const;
 		float GetHeight() const;
 
-		void SetBackgroundColor(const Float4 &color);
-		const Float4 &GetBackgroundColor() const;
-
-		void SetProjBackgroundColor(const Float4 &color);
-		const Float4 &GetProjBackgroundColor() const;
-
 		void SetPublish(bool pub);
 		bool IsPublish() const;
 
 	protected:
 		Sizef mSize;
-		Float4 mBackgroundColor;
-		Float4 mProjBackgroundColor;
 		bool mIsPublish;
 
 		// Scene
@@ -98,16 +89,6 @@ namespace PX2
 	protected:
 		std::string mUIFilename;
 		UIPtr mUI;
-
-		// BluePrint
-	public:
-		void SetLProject(LProject *package);
-		LProject *GetLProject();
-		const std::string &GetLFilename() const;
-
-	protected:
-		std::string mLFilename;
-		LProjectPtr mLProject;
 
 		// edit setting
 	public:

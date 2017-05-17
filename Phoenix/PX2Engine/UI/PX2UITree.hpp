@@ -49,6 +49,7 @@ namespace PX2
 	protected:
 		virtual void UpdateWorldData(double applicationTime,
 			double elapsedTime);
+		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
 		void _UpdateContentPos();
 		void _SliderCallback(UIFrame *frame, UICallType type);
 

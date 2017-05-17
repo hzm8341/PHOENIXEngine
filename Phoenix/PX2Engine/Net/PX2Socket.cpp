@@ -51,12 +51,37 @@ void Socket::Close()
 		mImpl->Close();
 }
 //----------------------------------------------------------------------------
+SocketAddress Socket::GetPeerAddress() const
+{
+	return mImpl->GetPeerAddress();
+}
+//----------------------------------------------------------------------------
+SocketAddress Socket::GetAddress() const
+{
+	return mImpl->GetAddress();
+}
+//----------------------------------------------------------------------------
 bool Socket::IsValid() const
 {
 	if (!mImpl)
 		return false;
 
 	return PX2_INVALID_SOCKET != mImpl->GetSocket();
+}
+//----------------------------------------------------------------------------
+void Socket::SetNoDelay(bool flag)
+{
+	mImpl->SetNoDelay(flag);
+}
+//----------------------------------------------------------------------------
+void Socket::SetSendTimeout(const Timespan& timeout)
+{
+	mImpl->SetSendTimeout(timeout);
+}
+//----------------------------------------------------------------------------
+void Socket::SetReceiveTimeout(const Timespan& timeout)
+{
+	mImpl->SetReceiveTimeout(timeout);
 }
 //----------------------------------------------------------------------------
 bool Socket::Poll(const Timespan& timeout, int mode) const

@@ -8,35 +8,15 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 HostEntry DNS::GetHostByName (const std::string &hostname)
 {
-#if defined(PX2_HAVE_ADDRINFO)
-	struct addrinfo* ai;
-	struct addrinfo hints;
-	std::memset(&hints, 0, sizeof(hints));
-	hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
-	int rc = getaddrinfo(hostname.c_str(), NULL, &hints, &ai); 
-	if (rc == 0)
-	{
-		HostEntry result(ai);
-		freeaddrinfo(ai);
-		return result;
-	}
-	else
-	{
-		Aierror(rc, hostname);
-	}
-#else
-
-#ifdef __ANDROID__
-	return HostEntry();
-#else
+//#ifdef __ANDROID__
+//	return HostEntry();
+//#else
 	struct hostent* he = gethostbyname(hostname.c_str());
 	if (he)
 	{
 		return HostEntry(he);
 	}
-#endif
-
-#endif
+//#endif
 
 	Error(LastError(), hostname);
 

@@ -19,8 +19,6 @@ namespace PX2
 	PX2_EVENT(CloseScene)
 	PX2_EVENT(NewUI)
 	PX2_EVENT(CloseUI)
-	PX2_EVENT(NewLP)
-	PX2_EVENT(CloseLP)
 	PX2_EVENT(Play)
 	PX2_EVENT(Stop)
 	PX2_EVENT(SceneCanvasSizeChanged)

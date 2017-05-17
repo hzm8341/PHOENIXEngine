@@ -1,9 +1,8 @@
 // PX2ResourceManager.pkg
 
 	class ResourceManager
+	// SINGLETON ResourceManager
 	{
-		// SINGLETON
-	
 		enum LoadState
 		{
 			LS_UNLOADED,
@@ -38,6 +37,8 @@
 		bool CreateFloder (const std::string &parentPath, const std::string &path);
 		bool IsFileFloderExist (const std::string &path);
 		
+		bool ReWriteFileToWriteablePath(const std::string &filename, const std::string &destPath);
+		
 		bool IsTexPack (const std::string &texPackPath);
 		bool AddTexPack (const std::string &texPackPath);
 		const TexPack &GetTexPack (const std::string &texPackPath);
@@ -46,6 +47,4 @@
 		
 		static std::string GetWriteablePath ();
 		static std::string GetResourcePath ();
-		
-		bool SaveTex2DPNG (Texture2D *tex2d, const std::string &filename);
 	};

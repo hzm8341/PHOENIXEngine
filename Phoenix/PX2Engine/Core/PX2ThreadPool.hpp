@@ -8,6 +8,7 @@
 #include "PX2Runnable.hpp"
 #include "PX2Thread.hpp"
 #include "PX2Eventt.hpp"
+#include "PX2Singleton_NeedNew.hpp"
 
 namespace PX2
 {
@@ -40,7 +41,7 @@ namespace PX2
 		Mutex *mMutex;
 	};
 	
-	class ThreadPool
+	class ThreadPool : public Singleton<ThreadPool>
 	{
 	public:
 		ThreadPool(int minCapacity = 2,	int maxCapacity = 16,
@@ -49,8 +50,6 @@ namespace PX2
 			int maxCapacity = 16, int idleTime = 60,
 			int stackSize = 0);
 		~ThreadPool();
-
-		static ThreadPool &GetSingleton ();
 
 		void AddCapacity(int n);
 		int Capacity() const;
@@ -68,8 +67,6 @@ namespace PX2
 		void JoinAll();
 		void Collect();
 		const std::string& name() const;
-
-		static ThreadPool& DefaultPool();
 
 	protected:
 		PooledThread* GetThread();

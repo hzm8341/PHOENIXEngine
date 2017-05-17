@@ -1,6 +1,7 @@
 // PX2DynLibManager.cpp
 
 #include "PX2DynLibManager.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------

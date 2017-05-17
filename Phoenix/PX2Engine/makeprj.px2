@@ -53,6 +53,7 @@ INCPATH := \
 	-I ../Unity/ZLib/ \
 	-I ../Unity/ZLib/minzip/ \
 	-I ../Unity/ImageLibs/PNG/ \
+	-I ../Unity/SQLite/ \
 	-I ../Unity/FreeType/ \
 	-I ../Unity/FreeType/include/ \
 	-I ../Unity/FreeType/include/freetype/ \

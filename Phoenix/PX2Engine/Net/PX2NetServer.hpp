@@ -39,11 +39,15 @@ namespace PX2
 			int numMaxMsgHandlers);
 		virtual ~Server();
 
+		int GetPort() const;
+
 		ServerType GetServerType() const;
+		ServerSocket GetListenSocket();
 
 		bool Start();
 		void Shutdown();
-		void Run();
+		virtual void Run(float elapsedTime);
+		bool IsStarted() const;
 
 		const std::vector<int> &GetThreadIDs() const;
 

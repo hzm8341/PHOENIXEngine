@@ -17,7 +17,6 @@
 
 		bool Start();
 		void Shutdown();
-		void Run();
 
 		const std::vector<int> &GetThreadIDs() const;
 

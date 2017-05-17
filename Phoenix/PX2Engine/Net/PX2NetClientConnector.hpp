@@ -53,7 +53,7 @@ namespace PX2
 
 		virtual int Update(float elapsedSeconds);
 
-	private:
+	protected:
 		struct ServerMsgDesc
 		{
 			ServerMsgHandleFunc handler;
@@ -74,7 +74,7 @@ namespace PX2
 		int mSendLen;
 		std::string mRawSendStr;
 
-		SocketAddress mAddr;
+		SocketAddress mConnectToAddr;
 		StreamSocket mSocket;
 
 	private:

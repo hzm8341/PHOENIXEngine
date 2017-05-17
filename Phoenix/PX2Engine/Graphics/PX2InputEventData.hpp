@@ -231,8 +231,21 @@ namespace PX2
 
 		APoint ScreenPos;
 		APoint LogicPos;
+		APoint CameraLogicPos;
 
 		AVector MoveDelta;
+		float Wheel;
+	};
+
+	class PX2_ENGINE_ITEM PickInputData
+	{
+	public:
+		PickInputData();
+		~PickInputData();
+
+		APoint ScreenPos;
+		APoint LogicPos;
+		APoint CameraLogicPos;
 		float Wheel;
 	};
 

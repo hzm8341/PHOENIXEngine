@@ -5,11 +5,14 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
+std::string HostEntry::mAndroidIP;
+//----------------------------------------------------------------------------
+std::string HostEntry::mAndroidMac;
+//----------------------------------------------------------------------------
 HostEntry::HostEntry()
 {
 }
 //----------------------------------------------------------------------------
-#ifndef __ANDROID__
 HostEntry::HostEntry(struct hostent* entry)
 {
 	assertion(0!=entry, "entry must not be null.\n");
@@ -34,7 +37,6 @@ HostEntry::HostEntry(struct hostent* entry)
 		}
 	}
 }
-#endif
 //----------------------------------------------------------------------------
 #if defined(PX2_HAVE_ADDRINFO)
 HostEntry::HostEntry(struct addrinfo* ainfo)
@@ -77,6 +79,22 @@ mName(entry.mName),
 mAliases(entry.mAliases),
 mAddresses(entry.mAddresses)
 {
+}
+//----------------------------------------------------------------------------
+void HostEntry::SetAndroidIPMac(std::string ip, std::string mac)
+{
+	mAndroidIP = ip;
+	mAndroidMac = mac;
+}
+//----------------------------------------------------------------------------
+std::string HostEntry::GetAndroidIP()
+{
+	return mAndroidIP;
+}
+//----------------------------------------------------------------------------
+std::string HostEntry::GetAndroidMac()
+{
+	return mAndroidMac;
 }
 //----------------------------------------------------------------------------
 HostEntry& HostEntry::operator = (const HostEntry& entry)

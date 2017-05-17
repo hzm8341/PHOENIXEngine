@@ -32,11 +32,11 @@ StringTokenizer::StringTokenizer(const std::string& str,
 		if (options & TOK_IGNORE_EMPTY)
 		{
 			if (it3 != it1)
-				_tokens.push_back(std::string(it1, it3));
+				mTokens.push_back(std::string(it1, it3));
 		}
 		else
 		{
-			_tokens.push_back(std::string(it1, it3));
+			mTokens.push_back(std::string(it1, it3));
 		}
 		it1 = it2;
 		if (it1 != end) ++it1;
@@ -50,10 +50,20 @@ StringTokenizer::~StringTokenizer()
 const std::string& StringTokenizer::operator [] (std::size_t index) 
 	const
 {
-	if (index >= _tokens.size())
+	if (index >= mTokens.size())
 	{
 		assertion(false, "index should be in right range.\n");
 	}
-	return _tokens[index];
+	return mTokens[index];
+}
+//----------------------------------------------------------------------------
+std::string StringTokenizer::GetAt(int index) const
+{
+	if (0 <= index && index <(int)mTokens.size())
+	{
+		return mTokens[index];
+	}
+
+	return "";
 }
 //----------------------------------------------------------------------------

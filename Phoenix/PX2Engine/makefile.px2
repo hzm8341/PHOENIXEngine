@@ -21,6 +21,8 @@ endif
 	cd Unity/Lua							;  make -f makelua.px2 CFG=$(CFG)
 	cd Unity/ToLua							;  make -f maketolua.px2 CFG=$(CFG)
 	cd Unity/LuaPlus						;  make -f makeluaplus.px2 CFG=$(CFG)
+	cd Unity/SQLite							;  make -f makesqlite.px2 CFG=$(CFG)
+	cd Unity/curl							;  make -f makecurl.px2 CFG=$(CFG)
 	cd Unity/google/protobuf				;  make -f makegooglepb.px2 CFG=$(CFG)
 	cd Unity							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Net							 		&& make -f ../makeprj.px2 CFG=$(CFG)

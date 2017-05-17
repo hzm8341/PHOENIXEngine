@@ -141,12 +141,19 @@ void UI::_UpdateCamera()
 {
 	float helfWidth = mSize.Width / 2.0f;
 	float helfHeight = mSize.Height / 2.0f;
-	mDefaultCamera->SetFrustum(0.1f, Mathf::FAbs(msUICameraY) + 1000.0f,
-		-helfHeight, helfHeight, -helfWidth, helfWidth);
 
-	mDefaultCameraNode->LocalTransform.SetTranslate(
-		helfWidth + LeftBottomCornerOffset.X(), msUICameraY,
-		helfHeight + LeftBottomCornerOffset.Z());
+	if (mDefaultCamera)
+	{
+		mDefaultCamera->SetFrustum(0.1f, Mathf::FAbs(msUICameraY) + 1000.0f,
+			-helfHeight, helfHeight, -helfWidth, helfWidth);
+	}
+
+	if (mDefaultCameraNode)
+	{
+		mDefaultCameraNode->LocalTransform.SetTranslate(
+			helfWidth + LeftBottomCornerOffset.X(), msUICameraY,
+			helfHeight + LeftBottomCornerOffset.Z());
+	}
 }
 //----------------------------------------------------------------------------
 void UI::OnEvent(Event *ent)

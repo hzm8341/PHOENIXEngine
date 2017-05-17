@@ -49,6 +49,11 @@ namespace PX2
 		static Timestamp FromUtcTime(UtcTimeVal val);
 		static TimeVal Resolution();
 
+#if defined(_WIN32)
+		static Timestamp FromFileTimeNP(uint32_t fileTimeLow, uint32_t fileTimeHigh);
+		void ToFileTimeNP(uint32_t& fileTimeLow, uint32_t& fileTimeHigh) const;
+#endif
+
 	private:
 		TimeVal mTimeVal;
 	};

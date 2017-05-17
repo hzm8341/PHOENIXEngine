@@ -38,12 +38,6 @@ inline std::map<std::string, FunObjectPtr> &LogicManager::GetCtrlMap()
 	return mCtrlObjects;
 }
 //----------------------------------------------------------------------------
-inline const std::map<std::string, std::vector<std::string> > &LogicManager::
-GetParams() const
-{
-	return mParams;
-}
-//----------------------------------------------------------------------------
 inline std::map<std::string, FunObjectPtr> &LogicManager::GetParamMap()
 {
 	return mParamObjects;

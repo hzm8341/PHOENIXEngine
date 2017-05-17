@@ -88,9 +88,6 @@
     <Filter Include="0.Base\Core\Design">
       <UniqueIdentifier>{4a4932c3-065c-48ac-8bdc-a7845a8e7d2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Core\Exception">
-      <UniqueIdentifier>{c6f5f390-c33a-4eb0-a638-2db02b20a1af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Core\Log">
       <UniqueIdentifier>{503a37fe-3fd5-424c-a5bf-7ff534acf69a}</UniqueIdentifier>
     </Filter>
@@ -126,9 +123,6 @@
     </Filter>
     <Filter Include="0.Base\Core\FunctionObject">
       <UniqueIdentifier>{838f04c7-8544-4011-96cb-6f5a61c5cfd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Core\Dir">
-      <UniqueIdentifier>{3a42e64f-8f08-4b3b-bd46-27715a3187be}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Core\XMLJSON">
       <UniqueIdentifier>{913d065b-533c-4032-873c-4630f89dcd6c}</UniqueIdentifier>
@@ -169,41 +163,14 @@
     <Filter Include="0.Base\Net\Base">
       <UniqueIdentifier>{e363cd8d-a407-46d5-be4d-be65f6d1cd59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Net\Clinet">
-      <UniqueIdentifier>{bbac70b8-7c7f-4195-8fd3-7d2bf5130695}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Net\Error">
       <UniqueIdentifier>{73217cd8-c98f-44f5-ad74-8b4159ee65cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\EventBuffer">
-      <UniqueIdentifier>{782ce85d-413f-43eb-8136-6734b39652c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Net\InitTerm">
       <UniqueIdentifier>{1942a645-5d6e-4124-8bfc-201e4d6a7a06}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Net\Sockets">
       <UniqueIdentifier>{ca9c3b81-ed21-40e0-adc0-9f481b505c20}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server">
-      <UniqueIdentifier>{31c0145f-2756-45ca-84cc-af1f62f7b631}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server\Imp">
-      <UniqueIdentifier>{841be4b6-5648-445d-8589-365542623eb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server\Imp\PollServer">
-      <UniqueIdentifier>{aca94897-11c9-442e-a244-60e144ad3d5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server\Imp\IOCPServer">
-      <UniqueIdentifier>{58cbd7de-5697-4c3a-a4d8-bbcd874da320}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server\Info">
-      <UniqueIdentifier>{f806abd4-c5f4-4225-be2b-3bc14ff11715}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server\User">
-      <UniqueIdentifier>{4843b6d9-e00d-416a-ab3e-7b97ad83d9c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0.Base\Net\Server\ServerSocket">
-      <UniqueIdentifier>{65bb203b-ce86-4492-881f-ea11020c70cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Unity">
       <UniqueIdentifier>{a9ec6aca-4443-4c60-9b60-01004fc2c136}</UniqueIdentifier>
@@ -538,9 +505,6 @@
     <Filter Include="1.Ext\Logic\Logic">
       <UniqueIdentifier>{639574ef-692d-4f63-bd81-cd1abe269544}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\Logic\BluePrint">
-      <UniqueIdentifier>{1026b44b-4f70-4fb9-9023-a9a4ee42c0fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1.Ext\Logic\EventSpace">
       <UniqueIdentifier>{f77586e2-6384-458d-b743-11b2f3157ccc}</UniqueIdentifier>
     </Filter>
@@ -562,6 +526,42 @@
     <Filter Include="0.Base\Unity\Curl">
       <UniqueIdentifier>{dbfc3842-2942-4202-a880-76bee849fb98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1.Ext\UI\Frames\CollapsePanel">
+      <UniqueIdentifier>{43c74bdf-679d-41ad-9717-20e0deb93fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.Application\Net">
+      <UniqueIdentifier>{a2269cf3-cd1b-4d27-bb5f-a48106143d1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\Sockets\ServerSocket">
+      <UniqueIdentifier>{65bb203b-ce86-4492-881f-ea11020c70cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\TcpServer">
+      <UniqueIdentifier>{8f94b262-7f02-42a9-a571-4066e628ab8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\Sockets\StreamSocket">
+      <UniqueIdentifier>{590591ca-5fbc-4a80-9ad6-65157e088f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\TcpServer\Notification">
+      <UniqueIdentifier>{c815aa26-5a0d-4947-997a-3ca8d67dfce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Core\ExceptionDump">
+      <UniqueIdentifier>{c6f5f390-c33a-4eb0-a638-2db02b20a1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Core\Exception">
+      <UniqueIdentifier>{25939d0b-1505-4e1b-ba71-f2a04d32a7ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\Exception">
+      <UniqueIdentifier>{c17cc329-0ea8-4139-964d-67b37db0611a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Core\DirFile">
+      <UniqueIdentifier>{3a42e64f-8f08-4b3b-bd46-27715a3187be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Unity\DataBase">
+      <UniqueIdentifier>{f33c9ec3-b19a-40f6-95bf-b1cf5871b6e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Unity\DataBase\SQLite">
+      <UniqueIdentifier>{f89e6a1b-c97d-49db-ae62-eecb0ee3f08a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="0.Base\Unity\Curl\curl">
       <UniqueIdentifier>{01bb5c94-7c9f-4eae-83c0-000c7c112ffe}</UniqueIdentifier>
     </Filter>
@@ -571,11 +571,44 @@
     <Filter Include="0.Base\Unity\Curl\curl\config">
       <UniqueIdentifier>{572c5e59-a90b-43c6-9780-285329401ab2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\UI\Frames\CollapsePanel">
-      <UniqueIdentifier>{43c74bdf-679d-41ad-9717-20e0deb93fc7}</UniqueIdentifier>
+    <Filter Include="0.Base\Net\ServerGame">
+      <UniqueIdentifier>{31c0145f-2756-45ca-84cc-af1f62f7b631}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.Application\Net">
-      <UniqueIdentifier>{a2269cf3-cd1b-4d27-bb5f-a48106143d1f}</UniqueIdentifier>
+    <Filter Include="0.Base\Net\ServerGame\Imp">
+      <UniqueIdentifier>{841be4b6-5648-445d-8589-365542623eb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerGame\Imp\PollServer">
+      <UniqueIdentifier>{aca94897-11c9-442e-a244-60e144ad3d5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerGame\Imp\IOCPServer">
+      <UniqueIdentifier>{58cbd7de-5697-4c3a-a4d8-bbcd874da320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerGame\User">
+      <UniqueIdentifier>{4843b6d9-e00d-416a-ab3e-7b97ad83d9c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerGame\EventBuffer">
+      <UniqueIdentifier>{782ce85d-413f-43eb-8136-6734b39652c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerGame\Info">
+      <UniqueIdentifier>{f806abd4-c5f4-4225-be2b-3bc14ff11715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerGame\Client">
+      <UniqueIdentifier>{bbac70b8-7c7f-4195-8fd3-7d2bf5130695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerHTTP">
+      <UniqueIdentifier>{97c6af78-8533-4052-a71d-92c07f96ed4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerHTTP\HTTP">
+      <UniqueIdentifier>{2fce9321-7cd7-4b56-a43c-d127823e2993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerHTTP\HTTP\StreamBuf">
+      <UniqueIdentifier>{7e579981-46f7-4c67-ac5a-07a065ed86f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerHTTP\Strcuts">
+      <UniqueIdentifier>{41f51698-c5ba-4756-98e3-87524b23e31e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Net\ServerHTTP\Server">
+      <UniqueIdentifier>{80bd4948-9d16-4247-a93d-8e1b48efb177}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -926,9 +959,6 @@
     </ClInclude>
     <ClInclude Include="Core\PX2Endian.hpp">
       <Filter>0.Base\Core\FileStream</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\PX2Exception.hpp">
-      <Filter>0.Base\Core\Exception</Filter>
     </ClInclude>
     <ClInclude Include="Core\PX2Eventt.hpp">
       <Filter>0.Base\Core\Thread</Filter>
@@ -1503,23 +1533,17 @@
     <ClInclude Include="Net\PX2SocketImpl.hpp">
       <Filter>0.Base\Net\Sockets</Filter>
     </ClInclude>
-    <ClInclude Include="Net\PX2StreamSocket.hpp">
-      <Filter>0.Base\Net\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="Net\PX2StreamSocketImpl.hpp">
-      <Filter>0.Base\Net\Sockets</Filter>
-    </ClInclude>
     <ClInclude Include="Net\PX2NetInitTerm.hpp">
       <Filter>0.Base\Net\InitTerm</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetEventBuffer.hpp">
-      <Filter>0.Base\Net\EventBuffer</Filter>
+      <Filter>0.Base\Net\ServerGame\EventBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetError.hpp">
       <Filter>0.Base\Net\Error</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetClientConnector.hpp">
-      <Filter>0.Base\Net\Clinet</Filter>
+      <Filter>0.Base\Net\ServerGame\Client</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2DNS.hpp">
       <Filter>0.Base\Net\Base</Filter>
@@ -1552,46 +1576,43 @@
       <Filter>0.Base\Net\Address\SocketAddr</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetServer.hpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetServerIocp.hpp">
-      <Filter>0.Base\Net\Server\Imp\IOCPServer</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp\IOCPServer</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetServerPoll.hpp">
-      <Filter>0.Base\Net\Server\Imp\PollServer</Filter>
-    </ClInclude>
-    <ClInclude Include="Net\PX2NetServerBuffer.hpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp\PollServer</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2NetServerImp.hpp">
-      <Filter>0.Base\Net\Server\Imp</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ClientContext.hpp">
-      <Filter>0.Base\Net\Server\Imp</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerDBManager.hpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerPre.hpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerInfo.hpp">
-      <Filter>0.Base\Net\Server\Info</Filter>
+      <Filter>0.Base\Net\ServerGame\Info</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerInfoManager.hpp">
-      <Filter>0.Base\Net\Server\Info</Filter>
+      <Filter>0.Base\Net\ServerGame\Info</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerUser.hpp">
-      <Filter>0.Base\Net\Server\User</Filter>
+      <Filter>0.Base\Net\ServerGame\User</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerUserManager.hpp">
-      <Filter>0.Base\Net\Server\User</Filter>
+      <Filter>0.Base\Net\ServerGame\User</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerSocketImpl.hpp">
-      <Filter>0.Base\Net\Server\ServerSocket</Filter>
+      <Filter>0.Base\Net\Sockets\ServerSocket</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2ServerSocket.hpp">
-      <Filter>0.Base\Net\Server\ServerSocket</Filter>
+      <Filter>0.Base\Net\Sockets\ServerSocket</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\PX2Canvas.hpp">
       <Filter>0.Base\Graphics\CanvasWindow</Filter>
@@ -1618,16 +1639,16 @@
       <Filter>0.Base\Graphics\Events</Filter>
     </ClInclude>
     <ClInclude Include="Core\PX2Dir.hpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClInclude>
     <ClInclude Include="Core\PX2DirData.hpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClInclude>
     <ClInclude Include="Core\PX2FileFn.hpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClInclude>
     <ClInclude Include="Core\PX2Filename.hpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\PX2RenderWindow.hpp">
       <Filter>0.Base\Graphics\CanvasWindow</Filter>
@@ -2091,24 +2112,6 @@
     <ClInclude Include="Unity\Lua\lzio.h">
       <Filter>0.Base\Unity\Script\Lua\Lua</Filter>
     </ClInclude>
-    <ClInclude Include="Logic\PX2BPEdit.hpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\PX2BPFile.hpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\PX2BPManager.hpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\PX2BPModule.hpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\PX2BPPackage.hpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\PX2BPParam.hpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClInclude>
     <ClInclude Include="UI\PX2UICheckButton.hpp">
       <Filter>1.Ext\UI\Frames\CheckBox</Filter>
     </ClInclude>
@@ -2513,9 +2516,6 @@
     </ClInclude>
     <ClInclude Include="Application\PX2RedoUndo.hpp">
       <Filter>2.Application\Redo</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\PX2LProject.hpp">
-      <Filter>1.Ext\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2Bluetooth.hpp">
       <Filter>0.Base\Unity\Bluetooth</Filter>
@@ -3228,6 +3228,204 @@
     <ClInclude Include="Application\PX2GeneralClientConnector.hpp">
       <Filter>2.Application\Net</Filter>
     </ClInclude>
+    <ClInclude Include="Net\PX2TCPServer.hpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2TCPServerConnection.hpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2TCPServerDispatcher.hpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2TCPServerParams.hpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2StreamSocket.hpp">
+      <Filter>0.Base\Net\Sockets\StreamSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2StreamSocketImpl.hpp">
+      <Filter>0.Base\Net\Sockets\StreamSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2TCPServerConnectionFactory.hpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2NetServerBuffer.hpp">
+      <Filter>0.Base\Net\ServerGame\Imp\IOCPServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2Notification.hpp">
+      <Filter>0.Base\Net\TcpServer\Notification</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2NotificationQueue.hpp">
+      <Filter>0.Base\Net\TcpServer\Notification</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPRequest.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPMessage.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2NameValueCollection.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2ListMap.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2MessageHeader.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2ExceptionDump.hpp">
+      <Filter>0.Base\Core\ExceptionDump</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2Exception.hpp">
+      <Filter>0.Base\Core\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2NetException.hpp">
+      <Filter>0.Base\Net\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2NumberParser.hpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2NumericString.hpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2NumberFormatter.hpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPResponse.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPCookie.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2DateTimeParser.hpp">
+      <Filter>0.Base\Core\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2DateTimeFormat.hpp">
+      <Filter>0.Base\Core\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2DateTimeFormatter.hpp">
+      <Filter>0.Base\Core\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2URI.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPSession.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPRequestHandlerFactory.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServer.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerConnection.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerParams.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerSession.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerRequest.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerResponse.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPRequestHandler.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerConnectionFactory.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerResponseImpl.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPServerRequestImpl.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2BufferedStreamBuf.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2BufferAllocator.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPBufferAllocator.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPBasicStreamBuf.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPHeaderStream.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2MemoryPool.hpp">
+      <Filter>0.Base\Core\Memory\ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPStream.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPFixedLengthStream.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2HTTPChunkedStream.hpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2CountingStream.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\PX2UnbufferedStreamBuf.hpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2ErrorHandler.hpp">
+      <Filter>0.Base\Core\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2StreamCopier.hpp">
+      <Filter>0.Base\Core\FileStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2DataBuffer.hpp">
+      <Filter>0.Base\Core\FileStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2File.hpp">
+      <Filter>0.Base\Core\DirFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2File_WIN32.hpp">
+      <Filter>0.Base\Core\DirFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2DataBase.hpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2DataBase_MySQL.hpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\SQLite\sqlite3.h">
+      <Filter>0.Base\Unity\DataBase\SQLite</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2DataBase_SQLite.hpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2DataBaseManager.hpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2EditEventData.hpp">
+      <Filter>0.Base\Unity\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineServer.hpp">
+      <Filter>2.Application\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineClientConnector.hpp">
+      <Filter>2.Application\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineNetCmdProcess.hpp">
+      <Filter>2.Application\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineNetDefine.hpp">
+      <Filter>2.Application\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineNetEvent.hpp">
+      <Filter>2.Application\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -3604,9 +3802,6 @@
     </ClCompile>
     <ClCompile Include="Core\PX2Endian.cpp">
       <Filter>0.Base\Core\FileStream</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\PX2Exception.cpp">
-      <Filter>0.Base\Core\Exception</Filter>
     </ClCompile>
     <ClCompile Include="Core\PX2Eventt.cpp">
       <Filter>0.Base\Core\Thread</Filter>
@@ -4145,23 +4340,17 @@
     <ClCompile Include="Net\PX2SocketImpl.cpp">
       <Filter>0.Base\Net\Sockets</Filter>
     </ClCompile>
-    <ClCompile Include="Net\PX2StreamSocket.cpp">
-      <Filter>0.Base\Net\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="Net\PX2StreamSocketImpl.cpp">
-      <Filter>0.Base\Net\Sockets</Filter>
-    </ClCompile>
     <ClCompile Include="Net\PX2NetInitTerm.cpp">
       <Filter>0.Base\Net\InitTerm</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetEventBuffer.cpp">
-      <Filter>0.Base\Net\EventBuffer</Filter>
+      <Filter>0.Base\Net\ServerGame\EventBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetError.cpp">
       <Filter>0.Base\Net\Error</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetClientConnector.cpp">
-      <Filter>0.Base\Net\Clinet</Filter>
+      <Filter>0.Base\Net\ServerGame\Client</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2DNS.cpp">
       <Filter>0.Base\Net\Base</Filter>
@@ -4194,43 +4383,40 @@
       <Filter>0.Base\Net\Address\SocketAddr</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetServer.cpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetServerIocp.cpp">
-      <Filter>0.Base\Net\Server\Imp\IOCPServer</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp\IOCPServer</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetServerPoll.cpp">
-      <Filter>0.Base\Net\Server\Imp\PollServer</Filter>
-    </ClCompile>
-    <ClCompile Include="Net\PX2NetServerBuffer.cpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp\PollServer</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2NetServerImp.cpp">
-      <Filter>0.Base\Net\Server\Imp</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ClientContext.cpp">
-      <Filter>0.Base\Net\Server\Imp</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerDBManager.cpp">
-      <Filter>0.Base\Net\Server</Filter>
+      <Filter>0.Base\Net\ServerGame</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerInfo.cpp">
-      <Filter>0.Base\Net\Server\Info</Filter>
+      <Filter>0.Base\Net\ServerGame\Info</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerInfoManager.cpp">
-      <Filter>0.Base\Net\Server\Info</Filter>
+      <Filter>0.Base\Net\ServerGame\Info</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerUser.cpp">
-      <Filter>0.Base\Net\Server\User</Filter>
+      <Filter>0.Base\Net\ServerGame\User</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerUserManager.cpp">
-      <Filter>0.Base\Net\Server\User</Filter>
+      <Filter>0.Base\Net\ServerGame\User</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerSocketImpl.cpp">
-      <Filter>0.Base\Net\Server\ServerSocket</Filter>
+      <Filter>0.Base\Net\Sockets\ServerSocket</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2ServerSocket.cpp">
-      <Filter>0.Base\Net\Server\ServerSocket</Filter>
+      <Filter>0.Base\Net\Sockets\ServerSocket</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\PX2Canvas.cpp">
       <Filter>0.Base\Graphics\CanvasWindow</Filter>
@@ -4257,16 +4443,16 @@
       <Filter>0.Base\Graphics\Events</Filter>
     </ClCompile>
     <ClCompile Include="Core\PX2Dir.cpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClCompile>
     <ClCompile Include="Core\PX2DirData.cpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClCompile>
     <ClCompile Include="Core\PX2FileFn.cpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClCompile>
     <ClCompile Include="Core\PX2Filename.cpp">
-      <Filter>0.Base\Core\Dir</Filter>
+      <Filter>0.Base\Core\DirFile</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\PX2RenderWindow.cpp">
       <Filter>0.Base\Graphics\CanvasWindow</Filter>
@@ -4582,24 +4768,6 @@
     </ClCompile>
     <ClCompile Include="Unity\Lua\print.c">
       <Filter>0.Base\Unity\Script\Lua\Lua</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2BPEdit.cpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2BPFile.cpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2BPManager.cpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2BPModule.cpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2BPPackage.cpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2BPParam.cpp">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
     </ClCompile>
     <ClCompile Include="UI\PX2UICheckButton.cpp">
       <Filter>1.Ext\UI\Frames\CheckBox</Filter>
@@ -4933,9 +5101,6 @@
     </ClCompile>
     <ClCompile Include="Application\PX2RedoUndo.cpp">
       <Filter>2.Application\Redo</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\PX2LProject.cpp">
-      <Filter>1.Ext\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2Bluetooth.cpp">
       <Filter>0.Base\Unity\Bluetooth</Filter>
@@ -5612,6 +5777,186 @@
     <ClCompile Include="Application\PX2GeneralClientConnector.cpp">
       <Filter>2.Application\Net</Filter>
     </ClCompile>
+    <ClCompile Include="Net\PX2TCPServer.cpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2TCPServerConnection.cpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2TCPServerDispatcher.cpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2TCPServerParams.cpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2StreamSocket.cpp">
+      <Filter>0.Base\Net\Sockets\StreamSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2StreamSocketImpl.cpp">
+      <Filter>0.Base\Net\Sockets\StreamSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2TCPServerConnectionFactory.cpp">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2NetServerBuffer.cpp">
+      <Filter>0.Base\Net\ServerGame\Imp\IOCPServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2Notification.cpp">
+      <Filter>0.Base\Net\TcpServer\Notification</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2NotificationQueue.cpp">
+      <Filter>0.Base\Net\TcpServer\Notification</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPRequest.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPMessage.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2NameValueCollection.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2MessageHeader.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2ExceptionDump.cpp">
+      <Filter>0.Base\Core\ExceptionDump</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2Exception.cpp">
+      <Filter>0.Base\Core\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2NetException.cpp">
+      <Filter>0.Base\Net\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2NumberParser.cpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2NumericString.cpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2NumberFormatter.cpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPResponse.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPCookie.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2DateTimeParser.cpp">
+      <Filter>0.Base\Core\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2DateTimeFormat.cpp">
+      <Filter>0.Base\Core\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2DateTimeFormatter.cpp">
+      <Filter>0.Base\Core\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2URI.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPSession.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPRequestHandlerFactory.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServer.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerParams.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerSession.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerRequest.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerResponse.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPRequestHandler.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerConnectionFactory.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerConnection.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerResponseImpl.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPServerRequestImpl.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPBufferAllocator.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPHeaderStream.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2MemoryPool.cpp">
+      <Filter>0.Base\Core\Memory\ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPStream.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPFixedLengthStream.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2HTTPChunkedStream.cpp">
+      <Filter>0.Base\Net\ServerHTTP\HTTP\StreamBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\PX2CountingStream.cpp">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2ErrorHandler.cpp">
+      <Filter>0.Base\Core\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2StreamCopier.cpp">
+      <Filter>0.Base\Core\FileStream</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2File.cpp">
+      <Filter>0.Base\Core\DirFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2File_WIN32.cpp">
+      <Filter>0.Base\Core\DirFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2DataBase.cpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2DataBase_MySQL.cpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\SQLite\sqlite3.c">
+      <Filter>0.Base\Unity\DataBase\SQLite</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2DataBase_SQLite.cpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2DataBaseManager.cpp">
+      <Filter>0.Base\Unity\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2ApplicationMenus.cpp">
+      <Filter>2.Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2EditEventData.cpp">
+      <Filter>0.Base\Unity\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineServer.cpp">
+      <Filter>2.Application\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineClientConnector.cpp">
+      <Filter>2.Application\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp">
+      <Filter>2.Application\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineNetEvent.cpp">
+      <Filter>2.Application\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\PX2GraphicsRoot.inl">
@@ -5906,16 +6251,16 @@
       <Filter>0.Base\Net\Sockets</Filter>
     </None>
     <None Include="Net\PX2NetEventBuffer.inl">
-      <Filter>0.Base\Net\EventBuffer</Filter>
+      <Filter>0.Base\Net\ServerGame\EventBuffer</Filter>
     </None>
     <None Include="Net\PX2NetClientConnector.inl">
-      <Filter>0.Base\Net\Clinet</Filter>
+      <Filter>0.Base\Net\ServerGame\Client</Filter>
     </None>
     <None Include="Net\PX2NetServerIocp.inl">
-      <Filter>0.Base\Net\Server\Imp\IOCPServer</Filter>
+      <Filter>0.Base\Net\ServerGame\Imp\IOCPServer</Filter>
     </None>
     <None Include="Net\PX2ServerUser.inl">
-      <Filter>0.Base\Net\Server\User</Filter>
+      <Filter>0.Base\Net\ServerGame\User</Filter>
     </None>
     <None Include="Graphics\PX2Canvas.inl">
       <Filter>0.Base\Graphics\CanvasWindow</Filter>
@@ -6081,21 +6426,6 @@
     </None>
     <None Include="Unity\Lua\Makefile">
       <Filter>0.Base\Unity\Script\Lua\Lua</Filter>
-    </None>
-    <None Include="Logic\PX2BPFile.inl">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </None>
-    <None Include="Logic\PX2BPManager.inl">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </None>
-    <None Include="Logic\PX2BPModule.inl">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </None>
-    <None Include="Logic\PX2BPPackage.inl">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
-    </None>
-    <None Include="Logic\PX2BPParam.inl">
-      <Filter>1.Ext\Logic\BluePrint</Filter>
     </None>
     <None Include="UI\PX2UIList.inl">
       <Filter>1.Ext\UI\Frames\List</Filter>
@@ -6339,6 +6669,24 @@
     </None>
     <None Include="Unity\PX2CURL.inl">
       <Filter>0.Base\Unity\Curl</Filter>
+    </None>
+    <None Include="Net\PX2TCPServerParams.inl">
+      <Filter>0.Base\Net\TcpServer</Filter>
+    </None>
+    <None Include="Core\PX2Exception.inl">
+      <Filter>0.Base\Core\Exception</Filter>
+    </None>
+    <None Include="Core\PX2NumberFormatter.inl">
+      <Filter>0.Base\Core\Untity</Filter>
+    </None>
+    <None Include="Net\PX2CountingStream.inl">
+      <Filter>0.Base\Net\ServerHTTP\Strcuts</Filter>
+    </None>
+    <None Include="Core\PX2DateTimeFormatter.inl">
+      <Filter>0.Base\Core\Time</Filter>
+    </None>
+    <None Include="Unity\PX2DataBase.inl">
+      <Filter>0.Base\Unity\DataBase</Filter>
     </None>
   </ItemGroup>
 </Project>

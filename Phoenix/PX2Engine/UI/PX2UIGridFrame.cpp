@@ -71,6 +71,19 @@ void UIGridFrame::UpdateWorldData(double applicationTime,
 	UIFrame::UpdateWorldData(applicationTime, elapsedTime);
 }
 //----------------------------------------------------------------------------
+void UIGridFrame::OnSizeNodePicked(const CanvasInputData &inputData)
+{
+	UIFrame::OnSizeNodePicked(inputData);
+
+	if (UIPT_WHELLED == inputData.PickType)
+	{
+		float percent = mSlider->GetPercent();
+		percent -= inputData.Wheel * 0.008f;
+		percent = Mathf::Clamp(percent, 0.0f, 1.0f);
+		mSlider->SetPercent(percent);
+	}
+}
+//----------------------------------------------------------------------------
 void UIGridFrame::_UpdateContentPos()
 {
 	float heightDist = mContentFrame->GetSize().Height - GetSize().Height;

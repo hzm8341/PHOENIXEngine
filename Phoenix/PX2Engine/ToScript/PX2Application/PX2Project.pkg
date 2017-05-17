@@ -2,7 +2,7 @@
 
 	class Project
 	{
-		// SINGLETON
+		// SINGLETON Application
 	
 		// Scene
 	public:

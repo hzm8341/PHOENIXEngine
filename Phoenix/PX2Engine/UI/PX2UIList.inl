@@ -1,6 +1,11 @@
 // PX2UIList.inl
 
 //----------------------------------------------------------------------------
+inline int UIList::GetNumMaxItems() const
+{
+	return mNumMaxItems;
+}
+//----------------------------------------------------------------------------
 inline float UIList::GetSliderSize() const
 {
 	return mSliderSize;

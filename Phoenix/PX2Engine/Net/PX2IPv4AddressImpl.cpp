@@ -211,7 +211,7 @@ void IPv4AddressImpl::Mask(const IPAddressImpl* mask, const IPAddressImpl* set)
 //----------------------------------------------------------------------------
 IPAddressImpl* IPv4AddressImpl::Clone() const
 {
-	return new IPv4AddressImpl(&mAddr);
+	return new0 IPv4AddressImpl(&mAddr);
 }
 //----------------------------------------------------------------------------
 IPv4AddressImpl IPv4AddressImpl::operator & (const IPv4AddressImpl& GetAddr) const

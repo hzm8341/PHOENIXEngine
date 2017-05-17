@@ -36,16 +36,6 @@ inline const std::string &Project::GetUIFilename() const
 	return mUIFilename;
 }
 //----------------------------------------------------------------------------
-inline LProject *Project::GetLProject()
-{
-	return mLProject;
-}
-//----------------------------------------------------------------------------
-inline const std::string &Project::GetLFilename() const
-{
-	return mLFilename;
-}
-//----------------------------------------------------------------------------
 inline void Project::SetEdit_UICameraPercent(float percent)
 {
 	mEdit_UICameraPercent = percent;

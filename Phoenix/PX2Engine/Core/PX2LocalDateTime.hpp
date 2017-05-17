@@ -90,6 +90,9 @@ namespace PX2
 	private:
 		DateTime mDateTime;
 		int mTZD;
+
+		friend class DateTimeFormatter;
+		friend class DateTimeParser;
 	};
 
 #include "PX2LocalDateTime.inl"

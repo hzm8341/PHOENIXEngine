@@ -22,10 +22,10 @@ mImpl(GetAddr.mImpl)
 IPAddress::IPAddress (Family family)
 {
 	if (family == IPv4)
-		mImpl = new IPv4AddressImpl();
+		mImpl = new0 IPv4AddressImpl();
 #if defined(PX2_HAVE_IPV6)
 	else if (family == IPv6)
-		mImpl = new IPv6AddressImpl();
+		mImpl = new0 IPv6AddressImpl();
 #endif
 	else
 	{
@@ -70,10 +70,10 @@ IPAddress::IPAddress(const std::string& addr, Family family)
 IPAddress::IPAddress(const void* addr, px2_socklen_t length)
 {
 	if (length == sizeof(struct in_addr))
-		mImpl = new IPv4AddressImpl(addr);
+		mImpl = new0 IPv4AddressImpl(addr);
 #if defined(PX2_HAVE_IPV6)
 	else if (length == sizeof(struct in6_addr))
-		mImpl = new IPv6AddressImpl(addr);
+		mImpl = new0 IPv6AddressImpl(addr);
 #endif
 	else
 	{
@@ -84,10 +84,10 @@ IPAddress::IPAddress(const void* addr, px2_socklen_t length)
 IPAddress::IPAddress(const void* addr, px2_socklen_t length, int32_t scope)
 {
 	if (length == sizeof(struct in_addr))
-		mImpl = new IPv4AddressImpl(addr);
+		mImpl = new0 IPv4AddressImpl(addr);
 #if defined(PX2_HAVE_IPV6)
 	else if (length == sizeof(struct in6_addr))
-		mImpl = new IPv6AddressImpl(addr, scope);
+		mImpl = new0 IPv6AddressImpl(addr, scope);
 #endif
 	else
 	{
@@ -101,7 +101,7 @@ IPAddress::IPAddress(unsigned prefix, Family family)
 	{
 		if (prefix <= 32)
 		{
-			mImpl = new IPv4AddressImpl(prefix);
+			mImpl = new0 IPv4AddressImpl(prefix);
 		}
 	}
 #if defined(PX2_HAVE_IPV6)
@@ -109,7 +109,7 @@ IPAddress::IPAddress(unsigned prefix, Family family)
 	{
 		if (prefix <= 128)
 		{
-			mImpl = new IPv6AddressImpl(prefix);
+			mImpl = new0 IPv6AddressImpl(prefix);
 		}
 	}
 #endif
@@ -129,11 +129,11 @@ IPAddress::IPAddress(const struct sockaddr& sockaddr)
 {
 	unsigned short GetFamily = sockaddr.sa_family;
 	if (GetFamily == AF_INET)
-		mImpl = new IPv4AddressImpl(
+		mImpl = new0 IPv4AddressImpl(
 		&reinterpret_cast<const struct sockaddr_in*>(&sockaddr)->sin_addr);
 #if defined(PX2_HAVE_IPV6)
 	else if (GetFamily == AF_INET6)
-		mImpl = new IPv6AddressImpl(
+		mImpl = new0 IPv6AddressImpl(
 		&reinterpret_cast<const struct sockaddr_in6*>(&sockaddr)->sin6_addr,
 		reinterpret_cast<const struct sockaddr_in6*>(&sockaddr)
 		->sin6_scope_id);

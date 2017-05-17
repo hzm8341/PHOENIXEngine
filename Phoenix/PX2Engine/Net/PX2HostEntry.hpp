@@ -19,10 +19,11 @@ namespace PX2
 		typedef std::vector<IPAddress>   AddressList;
 
 		HostEntry();
-
-#ifndef __ANDROID__
 		HostEntry(struct hostent* entry);
-#endif
+
+		static void SetAndroidIPMac(std::string ip, std::string mac);
+		static std::string GetAndroidIP();
+		static std::string GetAndroidMac();
 
 #if defined(PX2_HAVE_ADDRINFO)
 		HostEntry(struct addrinfo* info);
@@ -41,6 +42,9 @@ namespace PX2
 		std::string mName;
 		AliasList mAliases;
 		AddressList mAddresses;
+
+		static std::string mAndroidIP;
+		static std::string mAndroidMac;
 	};
 
 }

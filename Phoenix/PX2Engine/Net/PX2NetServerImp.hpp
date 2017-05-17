@@ -6,6 +6,7 @@
 #include "PX2NetPre.hpp"
 #include "PX2SmartPointer.hpp"
 #include "PX2StreamSocket.hpp"
+#include "PX2ServerSocket.hpp"
 #include "PX2NetEventBuffer.hpp"
 #include "PX2NetServerBuffer.hpp"
 #include "PX2ClientContext.hpp"
@@ -23,6 +24,8 @@ namespace PX2
 		virtual bool Start() = 0;
 		virtual void Shutdown() = 0;
 		virtual void OnRun() = 0;
+		bool IsStarted() const;
+		ServerSocket GetListenSocket();
 
 		const std::vector<int> &GetThreadIDs() const;
 
@@ -48,6 +51,7 @@ namespace PX2
 		void _EnterPendingIO(ClientContext *pcontext);
 		void _LeavePendingIO(ClientContext *pcontext);
 
+		bool mIsStarted;
 		bool mIsShutdown;
 		int mListenPort;
 		int mNumMaxConnects;
@@ -57,7 +61,7 @@ namespace PX2
 
 		std::vector<int> mThreadIDs;
 
-		StreamSocket mListenSocket;
+		ServerSocket mListenSocket;
 
 		ClientContext *mAllContext;
 		std::vector<ClientContext *> mFreeContext;

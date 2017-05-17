@@ -1,7 +1,7 @@
-// PX2UIWebView.hpp
+// PX2UIWebFrame.hpp
 
-#ifndef PX2UIWEBVIEW_HPP
-#define PX2UIWEbVIEW_HPP
+#ifndef PX2UIWEBFRAME_HPP
+#define PX2UIWEBFRAME_HPP
 
 #include "PX2UIPre.hpp"
 #include "PX2UIFrame.hpp"

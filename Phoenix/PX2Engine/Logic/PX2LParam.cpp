@@ -202,6 +202,10 @@ std::string LParam::GetTypeScirptStr()
 	{
 		str += "obj";
 	}
+	else if (FPT_POINTER_THIS == mDataType)
+	{
+		str += "obj";
+	}
 
 	return str;
 }

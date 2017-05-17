@@ -30,13 +30,14 @@
 #include "PX2RendererInput.hpp"
 #include "PX2TimerManager.hpp"
 #include "PX2LogicManager.hpp"
-#include "PX2BPManager.hpp"
 #include "PX2EngineEventHandler.hpp"
 #include "PX2EngineCanvas.hpp"
 #include "PX2UISizeExtendControl.hpp"
 #include "PX2AppBoostInfo.hpp"
 #include "PX2GeneralServer.hpp"
 #include "PX2GeneralClientConnector.hpp"
+#include "PX2EngineServer.hpp"
+#include "PX2EngineClientConnector.hpp"
 
 namespace PX2
 {
@@ -84,10 +85,12 @@ namespace PX2
 		RendererInput *GetRendererInput(const std::string &name);
 		Renderer *GetRenderer(const std::string &name);
 
+		EngineServer *GetEngineServer();
+		EngineClientConnector *GetEngineClientConnector();
+
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
 		GeneralServer *GetGeneralServer();
-
 		GeneralClientConnector *CreateGeneralClientConnector();
 		GeneralClientConnector *GetGeneralClientConnector();
 
@@ -122,9 +125,11 @@ namespace PX2
 		UIAuiManager *mUIAuiManager;
 		UISkinManager *mUISkinManager;
 		LogicManager *mLogicManager;
-		BPManager *mBPManager;
 		Creater *mCreater;
 		EngineEventHandler *mEngineEventHandler;
+
+		EngineServerPtr mEngineServer;
+		EngineClientConnectorPtr mEngineClientConnector;
 		GeneralServerPtr mGeneralServer;
 		GeneralClientConnectorPtr mGeneralClientConnector;
 
@@ -153,8 +158,8 @@ namespace PX2
 	public:
 		enum BoostMode
 		{
-			BM_APP,
-			BM_SERVER,
+			BM_APP = 1,
+			BM_SERVER = 2,
 			BM_MAX_MODE
 		};
 		void SetBoostMode(BoostMode mode);
@@ -189,7 +194,8 @@ namespace PX2
 	public:
 		void NewProject(const std::string &pathname,
 			const std::string &projName, int so, int width, int height);
-		bool LoadProject(const std::string &pathname);
+		bool LoadProject(const std::string &name);
+		bool LoadProjectByPath(const std::string &pathname);
 		bool SaveProject();
 		bool SaveProjectAs(const std::string &pathname);
 		void CloseProject();
@@ -204,9 +210,6 @@ namespace PX2
 		bool LoadUI(const std::string &pathname);
 		void CloseUI();
 
-		bool LoadLP(const std::string &pathname);
-		void CloseLP();
-
 		Canvas *GetEngineCanvas();
 
 	protected:
@@ -214,6 +217,8 @@ namespace PX2
 		bool _SaveSceneInternal(const std::string &pathname);
 		std::string GetProjDataFolderPath(const std::string &projName);
 		std::string GetDllFileName(const std::string &projName);
+		void _ProcessReWrite(const std::string &projName);
+		void _ProcessXMLNode(XMLNode node);
 
 		std::string mProjectName;
 		std::string mProjectFilePath;
@@ -241,7 +246,7 @@ namespace PX2
 	protected:
 		PlayType mPlayType;
 
-		// menus
+		// project tree menus
 	public:
 		void Menu_Clear();
 		void Menu_AddSubItemCatalogue(
@@ -284,6 +289,34 @@ namespace PX2
 
 	protected:
 		Pointer0<MenuItem> mItem;
+
+		// general editmenus
+	public:
+		void Menu_Main_AddMainItem(const std::string &name, const std::string &title);
+		void Menu_Main_AddSubItem(const std::string &parentName, const std::string &name,
+			const std::string &title);
+		void Menu_Main_AddItem(const std::string &parentName, const std::string &name,
+			const std::string &title, const std::string &script,
+			const std::string &tag = "");
+		void Menu_Main_AddItemSeparater(const std::string &parentName);
+
+		void Menu_Edit_Begin(const std::string &whe, const std::string &name);
+		void Menu_Edit_AddSubItem(const std::string &whe,
+			const std::string &parentName, const std::string &name,
+			const std::string &title);
+		void Menu_Edit_AddItem(const std::string &whe,
+			const std::string &parentName, const std::string &name,
+			const std::string &title,
+			const std::string &script,
+			const std::string &tag = "");
+		void Menu_Edit_AddItemSeparater(const std::string &whe,
+			const std::string &parentName);
+		void Menu_Edit_EndPopUp(const std::string &whe,
+			const APoint &pos); // x z
+
+	public:
+		RenderWindow *CreateUIWindow(RenderWindow *parent, const std::string &name,
+			const std::string &title, const APoint &pos, const Sizef &size, bool isFloat);
 	};
 #include "PX2Application.inl"
 

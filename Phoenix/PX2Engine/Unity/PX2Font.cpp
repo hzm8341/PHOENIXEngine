@@ -61,7 +61,7 @@ void Font::DumpTex ()
 			StringHelp::IntToString(mFontHeight) +
 			".png";
 
-			PX2_RM.SaveTex2DPNG(mTexture, filename);
+			//PX2_RM.SaveTex2DPNG(mTexture, filename);
 	}
 }
 //----------------------------------------------------------------------------

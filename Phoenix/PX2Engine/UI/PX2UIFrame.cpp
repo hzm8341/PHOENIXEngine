@@ -110,6 +110,8 @@ UIPicBox *UIFrame::CreateAddBackgroundPicBox(bool setWhite,
 	mBackgroundPicBox = new0 UIPicBox();
 	AttachChild(mBackgroundPicBox);
 	mBackgroundPicBox->SetName("BackPicBox");
+	mBackgroundPicBox->GetMaterialInstance()->GetMaterial()
+		->GetAlphaProperty(0, 0)->BlendEnabled = false;
 
 	mBackgroundPicBox->SetSize(mSize);
 	mBackgroundPicBox->SetPivot(mPivot);
@@ -243,7 +245,7 @@ void UIFrame::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 		return;
 
 	const Rectf &rect = GetWorldRect();
-	 bool isPosInSizeRange = _IsInRect(inputData.LogicPos);
+	bool isPosInSizeRange = _IsInRect(inputData.CameraLogicPos);
 
 	if (isPosInSizeRange)
 	{
@@ -277,7 +279,8 @@ void UIFrame::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 
 				APoint origin;
 				AVector dir;
-				cam->GetPickRay(inputData.LogicPos.X(), inputData.LogicPos.Z(), uiSize, origin, dir);
+				cam->GetPickRay(inputData.CameraLogicPos.X(),
+					inputData.CameraLogicPos.Z(), uiSize, origin, dir);
 
 				Picker picker;
 				picker.Execute(mPickRangeMovable, origin, dir, 0.0f, 10000.0f);
