@@ -64,6 +64,7 @@ namespace PX2
 		virtual bool Initlize();
 		virtual bool Terminate();
 
+		virtual void OnEvent(Event *ent);
 		virtual void SetTitle(const std::string &title);
 
 #if defined(_WIN32) || defined(WIN32)

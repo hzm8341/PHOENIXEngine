@@ -90,6 +90,30 @@ extern "C"
 			env->ReleaseStringUTFChars(deviceIDStr, str);
 		}
 	}
+	
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeIPMac
+	(JNIEnv *env, jclass, jstring ip, jstring mac)
+	{
+		const char* strIP;
+		jboolean isCopyIP;
+		strIP = env->GetStringUTFChars(ip, &isCopyIP);
+		
+		const char* strMac;
+		jboolean isCopyMac;
+		strMac = env->GetStringUTFChars(mac, &isCopyMac);
+		
+		appplay::NativeCall::SetIPMac(strIP, strMac);
+		
+		if (isCopyIP)
+		{
+			env->ReleaseStringUTFChars(ip, strIP);
+		}
+
+		if (isCopyMac)
+		{
+			env->ReleaseStringUTFChars(mac, strMac);
+		}
+	}
 
 	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeTouchPressed
 		(JNIEnv *, jclass, jint id, jfloat x, jfloat y)

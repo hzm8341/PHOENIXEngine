@@ -35,6 +35,9 @@ namespace appplay
 		
 		// deive id
 		static void SetDeviceIDStr(std::string deviceIDStr);
+		
+		// ip mac
+		static void SetIPMac(std::string ip, std::string mac);
 
 		// text
 		static void Text_InsertText(const char *text, int length);

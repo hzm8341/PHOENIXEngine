@@ -8,16 +8,16 @@
 namespace PX2
 {
 
-	//Plugin *plugin = 0;
+	Plugin *plugin = 0;
 
 	extern "C" void FBXIMPORTER_DLL_ITEM DLLLoadPlugin(void)
 	{
-		//plugin = new FBXImporterPlugin();
-		//PluginManager::GetSingleton().InstallPlugin(plugin);
+		plugin = new FBXImporterPlugin();
+		PluginManager::GetSingleton().InstallPlugin(plugin);
 	}
 
 	extern "C" void FBXIMPORTER_DLL_ITEM DLLUnloadPlugin(void)
 	{
-		//PluginManager::GetSingleton().UninstallPlugin(plugin);
+		PluginManager::GetSingleton().UninstallPlugin(plugin);
 	}
 }

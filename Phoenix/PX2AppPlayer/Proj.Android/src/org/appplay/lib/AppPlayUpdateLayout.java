@@ -130,10 +130,10 @@ public class AppPlayUpdateLayout extends LinearLayout
 								FileOutputStream fileOutputStream = null;
 								if (is != null) 
 								{
-									File file = new File(mTheActivity.sLibSO_Filename);
+									File file = new File(mTheActivity.sLibSO_AppPlay_Filename);
 									if (!file.exists()) 
 									{
-										new File(mTheActivity.sLibSO_Dir).mkdir();
+										new File(mTheActivity.sLibSO_AppPlay_Dir).mkdir();
 										
 										file.createNewFile();
 									}

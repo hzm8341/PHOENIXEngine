@@ -63,6 +63,11 @@ int AppBase::GetHeight() const
 	return mHeight;
 }
 //----------------------------------------------------------------------------
+void AppBase::OnEvent(Event *ent)
+{
+	PX2_UNUSED(ent);
+}
+//----------------------------------------------------------------------------
 bool AppBase::OnIdle ()
 {
 	PX2_APP.Update();

@@ -9,8 +9,6 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 Plugin *GeneralPlugin::sPlugin = 0;
 //----------------------------------------------------------------------------
-PX2_IMPLEMENT_PLUGIN(GeneralPlugin);
-//----------------------------------------------------------------------------
 GeneralPlugin::GeneralPlugin()
 {
 	mName = "GeneralPlugin";
@@ -18,25 +16,6 @@ GeneralPlugin::GeneralPlugin()
 //----------------------------------------------------------------------------
 GeneralPlugin::~GeneralPlugin()
 {
-}
-//----------------------------------------------------------------------------
-bool GeneralPlugin::PluginInitialize()
-{
-	sPlugin = new GeneralPlugin();
-	PluginManager::GetSingleton().InstallPlugin(sPlugin);
-
-	return true;
-}
-//----------------------------------------------------------------------------
-bool GeneralPlugin::PluginTerminate()
-{
-	if (sPlugin)
-	{
-		PluginManager::GetSingleton().UninstallPlugin(sPlugin);
-		sPlugin = 0;
-	}
-
-	return true;
 }
 //----------------------------------------------------------------------------
 void GeneralPlugin::OnInstall()

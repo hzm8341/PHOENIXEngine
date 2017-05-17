@@ -17,6 +17,7 @@ using namespace appplay;
 #include "PX2PlatformSDK.hpp"
 #include "PX2Bluetooth.hpp"
 #include "PX2VoiceSDK.hpp"
+#include "PX2HostEntry.hpp"
 using namespace PX2;
 #endif
 
@@ -166,6 +167,11 @@ void NativeCall::SetDeviceIDStr(std::string deviceIDStr)
 {
 #ifdef APPPLAY_PX2
 #endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::SetIPMac(std::string ip, std::string mac)
+{
+	HostEntry::SetAndroidIPMac(ip, mac);
 }
 //----------------------------------------------------------------------------
 void NativeCall::Text_InsertText(const char *text, int length)

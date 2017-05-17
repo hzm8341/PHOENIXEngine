@@ -2,13 +2,18 @@ package org.appplay.lib;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 
 import android.R.string;
 import android.provider.Settings;
 
+import org.apache.http.conn.util.InetAddressUtils;
 import org.appplay.ap.R;
 import org.appplay.bluetooth.BluetoothSPP;
 import org.appplay.bluetooth.BluetoothState;
@@ -37,6 +42,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -51,9 +58,9 @@ public class AppPlayBaseActivity extends Activity {
 	public static AppPlayBaseActivity sTheActivity;
 
 	// AppPlay LibSO
-	public static String sLibSO_Filename = "";
-	public static String sLibSO_Dir = "";
-	private static String sLibSO_Name = "AppPlay";
+	public static String sLibSO_AppPlay_Filename = "";
+	public static String sLibSO_AppPlay_Dir = "";
+	private static String sLibSO_AppPlay_Name = "AppPlay";
 
 	// Vsersion
 	public static String sVersion_Dir = "";
@@ -102,9 +109,9 @@ public class AppPlayBaseActivity extends Activity {
 
 		String dataDir = info.dataDir;
 
-		sLibSO_Dir = dataDir;
-		sLibSO_Filename = dataDir + "/lib" + sLibSO_Name + ".so";
-
+		sLibSO_AppPlay_Dir = dataDir;
+		sLibSO_AppPlay_Filename = dataDir + "/lib" + sLibSO_AppPlay_Name + ".so";
+		
 		sVersion_Dir = dataDir;
 		sVersion_Filename = info.dataDir + "/version.xml";
 		sVersion_Filename_Temp = info.dataDir + "/version_Temp.xml";
@@ -397,6 +404,14 @@ public class AppPlayBaseActivity extends Activity {
 			AppPlayNatives.nativeSetDataUpdateServerType("ResourceServerTest");
 		}
 	}
+	
+	private void _SetIPMac()
+	{
+		String ip = getLocalHostIp();
+		String mac = getLocalMac();		
+		AppPlayNatives.nativeIPMac(ip, mac);
+	}
+	
 
 	private boolean _IsAppOnForeground() {
 		ActivityManager activityManager = (ActivityManager) getApplicationContext()
@@ -431,6 +446,34 @@ public class AppPlayBaseActivity extends Activity {
 			}
 		});
 	}
+	
+	private void loadSO(String soName, String soFilename)
+	{
+		File fileLibSO = new File(soFilename);
+		if (fileLibSO.exists()) {
+			// a updated so, load it from a update dir
+
+			Log.d("appplay.lib", "begin - load sLibSO(from dir):" + soFilename);
+			System.load(soFilename);
+			Log.d("appplay.lib", "end - load sLibSO(form dir):"	+ soFilename);
+		}
+		else
+		{ // load so packaged with the first apk
+
+			Log.d("appplay.lib", "begin - load sLibSO(form init packaged):"	+ soName);
+			try 
+			{
+				System.loadLibrary(soName);
+			}
+			catch (UnsatisfiedLinkError ulink) 
+			{
+				ulink.printStackTrace();
+				Log.d("appplay.lib", "end - load sLibSO(form init packaged Failed):" + soName);
+			}
+
+			Log.d("appplay.lib", "end - load sLibSO(form init packaged):" + soName);
+		}
+	}
 
 	// updated ok, let's show our opengles view
 	public void Show_GLView() {
@@ -438,44 +481,17 @@ public class AppPlayBaseActivity extends Activity {
 			public void run() {
 
 				System.loadLibrary("fmodL");
-
-				File fileLibSO = new File(sLibSO_Filename);
-				if (fileLibSO.exists()) {
-					// a updated so, load it from a update dir
-
-					Log.d("appplay.lib", "begin - load sLibSO(from dir):"
-							+ sLibSO_Filename);
-
-					System.load(sLibSO_Filename);
-
-					Log.d("appplay.lib", "end - load sLibSO(form dir):"
-							+ sLibSO_Filename);
-				} else { // load so packaged with the first apk
-
-					Log.d("appplay.lib",
-							"begin - load sLibSO(form init packaged):"
-									+ sLibSO_Name);
-					try {
-						System.loadLibrary(sLibSO_Name);
-					} catch (UnsatisfiedLinkError ulink) {
-						ulink.printStackTrace();
-
-						Log.d("appplay.lib",
-								"end - load sLibSO(form init packaged Failed):"
-										+ sLibSO_Name);
-					}
-
-					Log.d("appplay.lib",
-							"end - load sLibSO(form init packaged):"
-									+ sLibSO_Name);
-				}
-				Log.d("appplay.lib", "ok - load sLibSO.");
+				
+				loadSO(sLibSO_AppPlay_Name, sLibSO_AppPlay_Filename);
 
 				_SetDeviceID();
 
 				// package name
 				String packageName = getApplication().getPackageName();
 				_SetPackageName(packageName);
+				
+				// ip mac
+				_SetIPMac();
 
 				// set platformsdk
 				PlatformSDKNatives
@@ -591,6 +607,50 @@ public class AppPlayBaseActivity extends Activity {
 	public static String GetPackageName() {
 		return msPackageName;
 	}
+	
+   public String getLocalHostIp()
+    {
+        String ipaddress = "";
+        try
+        {
+            Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces();
+            // 遍历所用的网络接口
+            while (en.hasMoreElements())
+            {
+                NetworkInterface nif = en.nextElement(); // 得到每一个网络接口绑定的所有ip
+                Enumeration<InetAddress> inet = nif.getInetAddresses();
+                
+                // 遍历每一个接口绑定的所有ip
+                while (inet.hasMoreElements())
+                {
+                    InetAddress ip = inet.nextElement();
+                    if (!ip.isLoopbackAddress() &&
+                    		InetAddressUtils.isIPv4Address(ip.getHostAddress()))
+                    {
+                        return ipaddress = ip.getHostAddress();
+                    }
+                }
+
+            }
+        }
+        catch (SocketException e)
+        {
+            Log.e("feige", "获取本地ip地址失败");
+            e.printStackTrace();
+        }
+        return ipaddress;
+
+    }
+   
+   public String getLocalMac()
+   {
+       String mac = "";
+       WifiManager wifiMng = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+       WifiInfo wifiInfor = wifiMng.getConnectionInfo();
+       mac = wifiInfor.getMacAddress();
+       return mac;
+   }
 
 	// platform sdk functions
 

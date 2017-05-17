@@ -11,8 +11,6 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 Plugin *FBXImporterPlugin::sPlugin = 0;
 //----------------------------------------------------------------------------
-PX2_IMPLEMENT_PLUGIN(FBXImporterPlugin);
-//----------------------------------------------------------------------------
 FBXImporterPlugin::FBXImporterPlugin()
 {
 	mName = "FBXImporterPlugin";
@@ -20,25 +18,6 @@ FBXImporterPlugin::FBXImporterPlugin()
 //----------------------------------------------------------------------------
 FBXImporterPlugin::~FBXImporterPlugin()
 {
-}
-//----------------------------------------------------------------------------
-bool FBXImporterPlugin::PluginInitialize()
-{
-	sPlugin = new FBXImporterPlugin();
-	PluginManager::GetSingleton().InstallPlugin(sPlugin);
-
-	return true;
-}
-//----------------------------------------------------------------------------
-bool FBXImporterPlugin::PluginTerminate()
-{
-	if (sPlugin)
-	{
-		PluginManager::GetSingleton().UninstallPlugin(sPlugin);
-		sPlugin = 0;
-	}
-
-	return true;
 }
 //----------------------------------------------------------------------------
 void FBXImporterPlugin::OnInstall()

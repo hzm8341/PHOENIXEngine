@@ -17,6 +17,7 @@
 #include "PX2Application.hpp"
 #include "PX2InputManager.hpp"
 #include "PX2UISizeExtendControl.hpp"
+#include "PX2ProjectEvent.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -494,6 +495,8 @@ bool App::Initlize()
 
 	PX2_APP.Initlize();
 
+	PX2_EW.ComeIn(this);
+
 	RenderWindow *rw = PX2_GR.GetMainWindow();
 	Canvas *canvasMain = DynamicCast<Canvas>(rw->GetMainCanvas());
 	PX2_APP.InitlizeDefaultEngineCanvas(canvasMain);
@@ -734,6 +737,8 @@ bool App::Initlize()
 //----------------------------------------------------------------------------
 bool App::Terminate()
 {
+	PX2_EW.GoOut(this);
+
 	bool ret = AppBase::Terminate();
 
 #if defined(__LINUX__)
@@ -741,6 +746,24 @@ bool App::Terminate()
 #endif
 
 	return ret;
+}
+//----------------------------------------------------------------------------
+void App::OnEvent(Event *ent)
+{
+	if (ProjectES::IsEqual(ent, ProjectES::NewProject))
+	{
+		const std::string &projName = PX2_PROJ.GetName();
+		SetTitle(GetTitleProj(projName));
+	}
+	else if (ProjectES::IsEqual(ent, ProjectES::LoadedProject))
+	{
+		const std::string &projName = PX2_PROJ.GetName();
+		SetTitle(GetTitleProj(projName));
+	}
+	else if (ProjectES::IsEqual(ent, ProjectES::CloseProject))
+	{
+		SetTitle(GetTitleProj(""));
+	}
 }
 //----------------------------------------------------------------------------
 void App::SetTitle(const std::string &title)

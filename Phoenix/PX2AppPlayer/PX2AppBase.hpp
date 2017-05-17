@@ -4,11 +4,12 @@
 #define PX2APPBASE_HPP
 
 #include "PX2AppFramePre.hpp"
+#include "PX2EventHandler.hpp"
 
 namespace PX2
 {
 
-	class AppBase
+	class AppBase : public EventHandler
 	{
 	protected:
 		AppBase ();
@@ -36,6 +37,7 @@ namespace PX2
 		int GetWidth () const;
 		int GetHeight() const;
 
+		virtual void OnEvent(Event *ent);
 		virtual bool OnIdle ();
 
 		// Enteries

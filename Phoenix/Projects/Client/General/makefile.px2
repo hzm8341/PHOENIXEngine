@@ -1,14 +1,14 @@
 CFG ?= Debug
-PROJ ?= Block
+PROJ ?= General
 
 build :
 	@mkdir -p $(CFG)
 	make -f makeprj.px2 CFG=$(CFG)
 	
 ifeq (ARM,$(findstring ARM,$(CFG)))
-	@cp -fp ./$(CFG)/libARMBlock.so ../../../../Bin/Data/$(PROJ)/
+	@cp -fp ./$(CFG)/libARMGeneral.so ../../../../Bin/Data/$(PROJ)/
 else
-	@cp -fp ./$(CFG)/libBlock.so ../../../../Bin/Data/$(PROJ)/
+	@cp -fp ./$(CFG)/libGeneral.so ../../../../Bin/Data/$(PROJ)/
 endif
 
 clean :

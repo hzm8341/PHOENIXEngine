@@ -1,4 +1,4 @@
-#Block
+#General
 
 CFG ?= Debug
 
@@ -13,10 +13,10 @@ CFLAGS += -O2 -DNDEBUG
 endif
 
 USESO := PX2Engine
-DSTSO := Block
+DSTSO := General
 ifeq (ARM,$(findstring ARM,$(CFG)))
 USESO := PX2EngineArm
-DSTSO := ARMBlock
+DSTSO := ARMGeneral
 endif
 
 LIBPATH := ../../../PX2SDK/Library/$(CFG)

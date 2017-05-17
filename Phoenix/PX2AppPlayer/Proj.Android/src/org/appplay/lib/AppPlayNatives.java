@@ -12,6 +12,7 @@ public class AppPlayNatives
 	public static native void nativeSetApkDataPath(String path);
 	public static native void nativeSetDataUpdateServerType (String type);
 	public static native void nativeSetDeviceIDStr(String deviceIDStr);
+	public static native void nativeIPMac(String ip, String mac);
 	
 	public static native void nativeTouchPressed(int id, float x, float y);
 	public static native void nativeTouchReleased(int id, float x, float y);

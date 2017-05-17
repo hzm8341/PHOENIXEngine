@@ -73,6 +73,14 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeSetDeviceIDStr
 
 /*
  * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeIPMac
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeIPMac
+  (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
  * Method:    nativeTouchPressed
  * Signature: (IFF)V
  */

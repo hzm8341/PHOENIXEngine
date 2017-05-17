@@ -31,11 +31,7 @@ bool AppPlayerApp::Initlize()
 
 		if (!projectName.empty())
 		{
-			std::string projectPath = "Data/" + projectName + "/" + projectName
-				+ ".px2proj";
-
-			// Load Project
-			PX2_APP.LoadProject(projectPath);
+			PX2_APP.LoadProject(projectName);
 		}
 
 		PX2_APP.Play(Application::PT_PLAY);

@@ -11,8 +11,6 @@ namespace PX2
 
 	class GENERAL_DLL_ITEM GeneralPlugin : public Plugin
 	{
-		PX2_DECLARE_PLUGIN(GeneralPlugin);
-
 	public:
 		GeneralPlugin();
 		virtual ~GeneralPlugin();
@@ -24,7 +22,6 @@ namespace PX2
 	private:
 		static Plugin *sPlugin;
 	};
-	PX2_REGISTER_PLUGIN(GeneralPlugin);
 
 }
 #endif
