@@ -15,7 +15,10 @@ g_s_AnimCtrl = nil
 
 -- 创建首页
 function s_SampleCata()
-	PX2_SS:PlayMusic(0, "Data/General/media/music/strangething.mp3", true, 0.0)
+	local musicName = "march.mp3"
+	PX2_RM:ReWriteFileToWriteablePath("Data/General/media/music/"..musicName, musicName)
+	local dstPath = ResourceManager:GetWriteablePath()..musicName
+	PX2_SS:PlayMusic(0, dstPath, true, 0.0)
 	
 	-- scene
 	local scene = Scene:New()
@@ -120,7 +123,7 @@ function s_SampleCata()
 	g_s_TableFrame:AddTab("UISplitter", PX2_LM_APP:GetValue("UISplitter"), s_CreateUISplitter())
 	g_s_TableFrame:AddTab("UISlider", PX2_LM_APP:GetValue("UISlider"), s_CreateUISlider())
 	g_s_TableFrame:AddTab("UIRound", PX2_LM_APP:GetValue("UIRound"), s_CreateUIRound())
-	g_s_TableFrame:AddTab("UIWebFrame", PX2_LM_APP:GetValue("UIWebFrame"), s_CreateUIWebFrame())
+	--g_s_TableFrame:AddTab("UIWebFrame", PX2_LM_APP:GetValue("UIWebFrame"), s_CreateUIWebFrame())
 	g_s_TableFrame:AddTab("Server", PX2_LM_APP:GetValue("Server"), s_CreateUIServer())
 	g_s_TableFrame:SetActiveTab("About")
 	
@@ -172,6 +175,39 @@ function s_SampleCata()
 	fPicBox1.LocalTransform:SetTranslateY(-2.0)		
 	fPicBox1:GetUIPicBox():SetTexture("Data/General/images/icons/anim.png")
 	fPicBox1:SetSize(30.0, 30.0)
+	
+	local logo = UIFPicBox:New()
+	frame:AttachChild(logo)
+	logo:SetName("Logo")
+	logo:SetAnchorHor(0.0, 0.0)
+	logo:SetAnchorParamHor(230.0, 230.0)
+	logo:SetAnchorVer(1.0, 1.0)
+	logo:SetAnchorParamVer(-50.0, -50.0)
+	logo:SetSize(50.0, 50.0)
+	logo:GetUIPicBox():SetTexture("Data/engine/phoenix.png")
+	
+	local textInfo = UIFText:New()
+	frame:AttachChild(textInfo)
+	textInfo:GetText():SetText("使用PhoenixIoT 开发你的机器人，APP，VR/AR应用，服务器程序")
+	textInfo:SetAnchorHor(0.0, 0.0)
+	textInfo:SetAnchorParamHor(270.0, 270.0)
+	textInfo:SetPivot(0.0, 0.5)
+	textInfo:SetAnchorVer(1.0, 1.0)
+	textInfo:SetAnchorParamVer(-50.0, -50.0)
+	textInfo:SetWidth(700.0)
+	textInfo:GetText():SetFontColor(Float3.WHITE)
+	textInfo:GetText():SetAligns(TEXTALIGN_LEFT+TEXTALIGN_TOP)
+	
+	--[[
+	local scaleCtrl = InterpCurveUniformScaleController:New()
+	scaleCtrl:Clear()
+	scaleCtrl:AddPoint(0.0, 1.0, ICM_CURVE_AUTO)
+	scaleCtrl:AddPoint(1.0, 1.0, ICM_CURVE_AUTO)
+	scaleCtrl.MaxTime = 1.0
+	scaleCtrl.Repeat = Controller.RT_CYCLE
+	logo:AttachController(scaleCtrl)
+	scaleCtrl:ResetPlay()
+	--]]
 end
 -- PrintMsg
 function s_PrintMsg(str)

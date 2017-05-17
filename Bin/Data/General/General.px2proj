@@ -1,5 +1,5 @@
 <project>
-	<general name="General" screenorientation="landscape" width="1136" height="640" backcolor="127,127,127,255" projcolor="255,255,255,255"/>
+	<general name="General" screenorientation="landscape" width="1136" height="640" isrewriteupdate="true"/>
 	<scene filename=""/>
 	<render_setting/>
 	<language/>

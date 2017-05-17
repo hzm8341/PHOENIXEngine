@@ -20,7 +20,9 @@ function OnRecv(objPtr, clientID, strBuf)
 end
 
 function play()
-    PX2_GS:AddOnConnectCallback("OnConnect")
-    PX2_GS:AddOnDisconnectCallback("OnDisConnect")
-    PX2_GS:AddOnRecvCallback("OnRecv")
+	if nil~= PX2_GS then
+		PX2_GS:AddOnConnectCallback("OnConnect")
+		PX2_GS:AddOnDisconnectCallback("OnDisConnect")
+		PX2_GS:AddOnRecvCallback("OnRecv")
+	end
 end
