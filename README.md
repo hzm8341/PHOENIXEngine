@@ -1,8 +1,9 @@
-#PHOENIX IoT
+PHOENIX IoT
+=====
 open soruce cross platform system for Games/AR/AI/IOT
-
 ***
-##简述
+简述
+----
 
 欢迎来到PhoenixIOT，这是一个可以用来开发游戏，AR应用，开发机器人等很多应用的引擎。
 
@@ -18,6 +19,8 @@ open soruce cross platform system for Games/AR/AI/IOT
 
 ***
 使用方法
+----
+
 下面是一些简单使用说明，我会逐步更新：
 
 下载ThirdPartiesLibs.zip http://url.cn/47RBPDi 
@@ -39,21 +42,22 @@ boost.lua可以对启动项二次修改
 紧接着运行，执行，General/lua/start.lua中的start
 
 ***
-##编译
-
-###依赖库
-
+编译
+----
+依赖库
+----
 ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 下载放置Phoenix/Phoenix目录下，解压。
 
 如需编译编辑器NIRVANA2，预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
 
-###windows
-
+windows
+----
 使用visualstudio打开Phoenix/Phoenix.sln编译
 
-###Linux
+Linux
+----
 1.编译引擎库libPX2Engine.so:
 
 	在目录Phoenix/Phoenix中执行:make CFG=ReleaseDynamic -f makefile.px2
@@ -65,8 +69,9 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 3.编译项目库General.so:
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseDynamic -f makefile.px2
-	
-####Linux Raspberry
+
+Linux Raspberry
+----
 1.编译引擎库libPX2Engine.so:
 
 	在目录Phoenix/Phoenix中执行:make CFG=ReleaseARMDynamic -f makefile.px2
