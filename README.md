@@ -57,29 +57,29 @@ windows
 
 Linux
 ----
-1.编译引擎库libPX2Engine.so:
+  - 编译引擎库libPX2Engine.so:
 
 	在目录Phoenix/Phoenix中执行:make CFG=ReleaseDynamic -f makefile.px2
 
-2.安装引擎库:
+  - 安装引擎库:
 
 	在目录Phoenix/Phoenix中执行:sudo make CFG=ReleaseDynamic -f makefile.px2 install
 
-3.编译项目库General.so:
+  - 编译项目库General.so:
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseDynamic -f makefile.px2
 
 Linux Raspberry
 ----
-1.编译引擎库libPX2Engine.so:
+  - 编译引擎库libPX2Engine.so:
 
 	在目录Phoenix/Phoenix中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
-2.安装引擎库:
+  - 安装引擎库:
 
 	在目录Phoenix/Phoenix中执行:sudo make CFG=ReleaseARMDynamic -f makefile.px2 install
 
-3.编译项目库General.so:
+  - 编译项目库General.so:
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
