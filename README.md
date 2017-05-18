@@ -1,14 +1,19 @@
 #PHOENIX IoT
-open soruce cross platform system for Games/AR/VR/AI/IOT
+open soruce cross platform system for Games/AR/AI/IOT
 
 ##简述
 
-	欢迎来到PhoenixIOT，这是一个可以用来开发游戏，开发机器人的引擎。
-	经过作者的努力，引擎可以运行字Windows上，ARM，Linux，LinuxARM上。
-	因为作者开发经费紧张，没有续费Mac开发者，新版本IOS一直还未移植。
+欢迎来到PhoenixIOT，这是一个可以用来开发游戏，AR应用，开发机器人等很多应用的引擎。
 
-	PhoniexIOT的目的是为了解决机器人开发中的大难题，众所周知，开发机器人大多用ROS系统，但是因为其Linux环境的限制（虽然支	
-	Windows桌面系统，但没有开发板可以装Windows），开发难度很大。我们希望借助游戏开发中的先进技术，通过脚本编程，让机器人开发更加快速。
+引擎底层使用C++作为开发语言，上层使用Lua作为项目逻辑语言，支持Lua的面向对象编程。得益于脚本语言的自由和灵活，
+你不需要等待，就可以立即部署你的项目到移动设备，支持Linux的物联网设备等。立即发布的模式免去了繁琐的打包过程，提高开发效率。
+
+众所周知，开发机器人大多用ROS系统，但是因为其Linux环境的限制（虽然支持Windows桌面系统，但没有开发板可以装Windows），开发难度很大。我们希望借助游戏开发中的先进技术，通过脚本编程，让机器人开发更加快速。
+
+引擎使用插件架构，第三方应用都可以作为Plugin集成进来，同时引擎支持两款图形编程插件BlueBlock和BluePrint。
+
+经过作者的努力，引擎可以运行字Windows上，ARM，Linux，LinuxARM上。
+因为作者开发经费紧张，没有续费Mac开发者，新版本IOS一直还未移植。
 
 ##使用方法
 下面是一些简单使用说明，我会逐步更新：

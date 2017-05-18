@@ -31,4 +31,6 @@ function n_AddLanguagePre()
 	PX2_LM_EDITOR:AddItem1("Simulation", "仿真")
 	PX2_LM_EDITOR:AddItem1("ConnectToServer", "连接服务器")
 	PX2_LM_EDITOR:AddItem1("DisConnectToServer", "从服务器断开")
+	
+	PX2_LM_EDITOR:AddItem1("ShowCode", "显示代码")
 end

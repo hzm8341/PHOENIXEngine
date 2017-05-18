@@ -5,15 +5,16 @@ function n_LeftProjectSplitterCallback(objPtr, callType)
 	local splitter = Cast:ToO(objPtr)
 	local ptrResTree = splitter:GetUserDataPointer("ResCanvas")
 	local resTree = Cast:ToO(ptrResTree)
-	local contentObj = splitter:GetUserDataPointer("ContentFrame")
-	local contentFrame = Cast:ToO(contentObj)
+	local contentObj = splitter:GetUserDataPointer("ResContentFrame")
+	local cntFrameObj = Cast:ToO(contentObj)
+	local cntFrame = Cast:ToSizeNode(cntFrameObj)
 	
 	local name = splitter:GetName()
 	if UICT_SPLITTER_DRAGING==callType then
 		if "SplitterLeft" == name then
 			local anchorParamVer = splitter:GetAnchorParamVer():X()
 			resTree:SetAnchorParamVer(anchorParamVer+4.0, -g_n_t.Size_LeftTitleBar)
-			contentFrame:SetSize(0.0, anchorParamVer-4.0)
+			cntFrame:SetSize(0.0, anchorParamVer-4.0)
 		end
 	end
 end
@@ -211,7 +212,7 @@ function n_CreateFrame_Left_Res()
 	gridFrame:RegistToScriptSystem()
 	
 	splitter:SetUserDataPointer("ResCanvas", resCanvas)
-	splitter:SetUserDataPointer("ContentFrame", frameContent)
+	splitter:SetUserDataPointer("ResContentFrame", frameContent)
 	
 	n_LeftProjectSplitterCallback(splitter, UICT_SPLITTER_DRAGING)
 		

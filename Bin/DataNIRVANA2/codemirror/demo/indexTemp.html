@@ -19,7 +19,29 @@
       .CodeMirror {border:none;font-size:15px; width:100%; height:100%;}
       textarea {border-style:none;}
     </style>
-<textarea id="code" name="code">--empty</textarea>
+<textarea id="code" name="code">
+
+BBlockScriptGenController = class(LSController, 
+{ 
+    _name = "BBlockScriptGenController",
+    _scriptControl = nil,
+    _ctrlable = nil,
+}); 
+
+function BBlockScriptGenController:OnAttached()
+    PX2_LOGGER:LogInfo("script_lua", ""..self._name.." OnAttached")
+    self._scriptControl = Cast:ToSC(self.__object)
+    self._ctrlable = self._scriptControl:GetControlledable()
+end
+
+function BBlockScriptGenController:OnInitUpdate()
+    PX2BBLOCK_SYS:getSpriteOfName("aaa"):attachChild(PX2BBLOCK_SYS:createSpriteEditBox())
+end
+
+function BBlockScriptGenController:OnUpdate()
+end
+
+</textarea>
 <script>
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,

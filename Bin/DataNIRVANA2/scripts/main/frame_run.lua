@@ -14,6 +14,8 @@ function n_PlayButCallback(objPtr, callType)
 	end
 end
 
+n_g_EditBoxRun = nil
+n_g_ButConnect = nil
 function n_CreateFrame_Left_Run()
 	local frame = UIFrame:New()
 	frame:SetAnchorHor(0.0, 1.0)
@@ -96,7 +98,9 @@ function n_CreateFrame_Left_Run()
 	local editBoxHeight = 22.0
 	local editBox = UIEditBox:New()
 	frame:AttachChild(editBox)
+	n_g_EditBoxRun = editBox
 	editBox.LocalTransform:SetTranslateY(-1.0)
+	editBox:GetInputText():SetFontScale(0.8)
 	editBox:SetSize(0.0, editBoxHeight)
 	editBox:SetAnchorHor(0.0, 1.0)
 	editBox:SetAnchorParamHor(0.0, -0.0)
@@ -105,6 +109,7 @@ function n_CreateFrame_Left_Run()
 	
 	local butConnectHeight = 26.0
 	local butConnect = UIButton:New("ButConnect")
+	n_g_ButConnect = butConnect
 	frame:AttachChild(butConnect)
 	butConnect.LocalTransform:SetTranslateY(-1.0)
 	butConnect:SetSize(butConnectHeight, butConnectHeight)
@@ -113,7 +118,13 @@ function n_CreateFrame_Left_Run()
 	butConnect:SetAnchorParamHor(0.0, -0.0)
 	butConnect:SetAnchorVer(1.0, 1.0)
 	butConnect:SetAnchorParamVer(-titleHeight-editBoxHeight-butConnectHeight*0.5, -titleHeight-editBoxHeight-butConnectHeight*0.5)
-	butConnect:CreateAddText(PX2_LM_EDITOR:GetValue("ConnectToServer"), Float3.WHITE)
+	butConnect:CreateAddText("ConnectToServer", Float3.WHITE)
+	butConnect:SetScriptHandler("n_ConnectCallback")
+	
+	local engineClientConnector = PX2_APP:GetEngineClientConnector()
+	engineClientConnector:AddOnConnectCallback("OnClientConnectorConnect")
+	engineClientConnector:AddOnDisconnectCallback("OnClientConnectorDisConnect")
+	engineClientConnector:RemoveOnRecvCallback("OnClientConnectorRecv")
 	
 	-- console
 	local consoleFrame = EU_ConcoleFrame:New()
@@ -124,4 +135,45 @@ function n_CreateFrame_Left_Run()
 	consoleFrame:SetAnchorParamVer(0.0, -titleHeight-editBoxHeight-butConnectHeight-10)
 	
 	return frame
+end
+
+function OnClientConnectorConnect(generalClientConnector)
+    PX2_LOGGER:LogInfo("EngineClientConnector", "OnClientConnectorConnect ")	
+	n_g_ButConnect:GetText():SetText("DisConnectToServer")
+	n_g_EditBoxRun:Enable(false)
+end
+
+function OnClientConnectorDisConnect(generalClientConnector)
+    PX2_LOGGER:LogInfo("EngineClientConnector", "OnClientConnectorDisConnect ")
+	n_g_ButConnect:GetText():SetText("ConnectToServer")
+	n_g_EditBoxRun:Enable(true)
+end
+
+function OnClientConnectorRecv(generalClientConnector, str)
+    PX2_LOGGER:LogInfo("EngineClientConnector", "OnClientConnectorRecv "..":"..str)
+end
+
+function n_ConnectCallback(objPtr, callType)
+	local but = Cast:ToO(objPtr)
+	local name = but:GetName()
+	if UICT_RELEASED==callType then
+		if "ButConnect" == name then
+			local textIPPort = n_g_EditBoxRun:GetText()
+			local engineClientConnector = PX2_APP:GetEngineClientConnector()
+			local isConnected = engineClientConnector:IsConnected()
+			if not isConnected then
+				if ""~=textIPPort then
+					local strToken = StringTokenizer(textIPPort, ":")
+					local numTok = strToken:Count()
+					if 2==numTok then
+						local strIP = strToken:GetAt(0)
+						local strPort = strToken:GetAt(1)				
+						engineClientConnector:ConnectNB(strIP, strPort)
+					end
+				end
+			else
+				engineClientConnector:Disconnect()
+			end
+		end
+	end
 end
