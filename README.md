@@ -1,6 +1,7 @@
 #PHOENIX IoT
 open soruce cross platform system for Games/AR/AI/IOT
 
+***
 ##简述
 
 欢迎来到PhoenixIOT，这是一个可以用来开发游戏，AR应用，开发机器人等很多应用的引擎。
@@ -15,7 +16,8 @@ open soruce cross platform system for Games/AR/AI/IOT
 经过作者的努力，引擎可以运行字Windows上，ARM，Linux，LinuxARM上。
 因为作者开发经费紧张，没有续费Mac开发者，新版本IOS一直还未移植。
 
-##使用方法
+***
+使用方法
 下面是一些简单使用说明，我会逐步更新：
 
 下载ThirdPartiesLibs.zip http://url.cn/47RBPDi 
@@ -36,6 +38,7 @@ boost.lua可以对启动项二次修改
 项目运行前，执行，General/lua/start.lua中的prestart
 紧接着运行，执行，General/lua/start.lua中的start
 
+***
 ##编译
 
 ###依赖库
