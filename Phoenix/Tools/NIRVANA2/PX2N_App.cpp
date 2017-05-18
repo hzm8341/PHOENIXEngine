@@ -137,6 +137,8 @@ void N_App::SimuApp(SimuType st)
 
 	const std::string &projName = proj->GetName();
 	std::string renderTag = Renderer::GetRenderTag();
+	if ("Dx9" == renderTag)
+		renderTag = "";
 
 	std::string exeName = "AppPlayer";
 	if (ST_APP == st)
@@ -158,7 +160,7 @@ void N_App::SimuApp(SimuType st)
 #else
 
 #if defined(_WIN64) || defined(WIN64)
-	appName = exeName + std::string(" ") + projName;
+	appName = exeName + "64.exe" + std::string(" ") + projName;
 #else
 	appName = exeName + ".exe" + std::string(" ") + projName;
 #endif

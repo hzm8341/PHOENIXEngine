@@ -11,6 +11,7 @@
 #include "PX2GraphicsEventType.hpp"
 #include "PX2EditorEventType.hpp"
 #include "PX2ProjectEvent.hpp"
+#include "PX2EditEventType.hpp"
 #include "PX2N_DlgCreateProject.hpp"
 using namespace NA;
 using namespace PX2;
@@ -111,12 +112,12 @@ void N_Frame::OnEvent(Event *event)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		if (EditorEventSpace::IsEqual(event, EditorEventSpace::N_Window))
+		if (EditES::IsEqual(event, EditES::N_Window))
 		{
 			mIsNWindow = true;
 			mNUIWindow = event->GetData<RenderWindow*>();
 		}
-		else if (EditorEventSpace::IsEqual(event, EditorEventSpace::N_AddMenu))
+		else if (EditES::IsEqual(event, EditES::N_AddMenu))
 		{
 			EED_AddMenu data = event->GetData<EED_AddMenu>();
 			if (data.Where == GetName())
@@ -389,8 +390,8 @@ void N_Frame::DoNewProject()
 	mIsNewProject = false;
 
 	DlgCreateProject dlg(this);
-
-	if (wxID_OK == dlg.ShowModal())
+	int showModal = dlg.ShowModal();
+	if (wxID_OK == showModal)
 	{
 		std::string name = dlg.mProjName;
 		int screenOriention = dlg.mScreenOrientation;
@@ -451,7 +452,7 @@ void N_Frame::DoOpenProject()
 	{
 		std::string path = dlg.GetPath();
 		path = StringHelp::StandardiseFilename(path);
-		PX2_APP.LoadProject(path);
+		PX2_APP.LoadProjectByPath(path);
 	}
 	else
 	{

@@ -3,10 +3,7 @@
 	<file filename="Data/General/database/sql/sample_mysql.sql" md5="fb0c73d013aa665fa1d84ce5626fc486"/>
 	<file filename="Data/General/database/sql/sample_sqlite.sql" md5="e85f7e1b72acb81fb9bf53a8e4ef3476"/>
 	<file filename="Data/General/fonts/hyswlongfangsong.ttf" md5="9cbd699236d2af79f95233aad8c29ba6"/>
-	<file filename="Data/General/General.dll" md5="b26558195a0b7d632bdc1103e3a6ecac"/>
 	<file filename="Data/General/General.px2proj" md5="88991fd5625a1515311b04700f599e5b"/>
-	<file filename="Data/General/GeneralD.dll" md5="1face3934db7fab3d9575596196df702"/>
-	<file filename="Data/General/General_bp.px2obj" md5="f8b6cd000693238372481657ad040781"/>
 	<file filename="Data/General/General_ui.px2obj" md5="586477ef54f01bd5e3b17d329eb914ad"/>
 	<file filename="Data/General/images/icons/anim.png" md5="69f3ec45dfb9a923668f9947359ea0b1"/>
 	<file filename="Data/General/images/icons/run.png" md5="a25a9ada52d4f742281345225e4405ff"/>
