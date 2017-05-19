@@ -850,18 +850,55 @@ void Canvas::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsEnable())
 		return;
 
-	bool isPosInSizeRange = _IsInRect(inputData.CameraLogicPos);
+	CanvasInputData data = inputData;
 
-	if (isPosInSizeRange)
+	APoint screenPos = data.ScreenPos;
+	APoint viewPortPos = _PreScreenPosToLogicPos(screenPos);
+
+	float worldRectLeft = GetWorldRect().Left;
+	float worldRectBottom = GetWorldRect().Bottom;
+	float worldRectWidth = GetWorldRect().Width();
+	float worldRectHeight = GetWorldRect().Height();
+
+	APoint logicPos = viewPortPos;
+	if (mIsPickPosRecal)
 	{
-		OnSizeNodePicked(inputData);
+		logicPos = WorldPosToViewPortPos(viewPortPos);
+	}
 
-		if (mIsWidget && this!=canvas)
-			canvas->_AddInRangePickWidget(this, inputData);
+	APoint camLogicPos = _PreLogicPosToCameraPos(logicPos, worldRectLeft,
+		worldRectBottom, worldRectWidth, worldRectHeight);
+	camLogicPos.X() = (float)((int)camLogicPos.X());
+	camLogicPos.Y() = (float)((int)camLogicPos.Y());
+	camLogicPos.Z() = (float)((int)camLogicPos.Z());
+
+	CanvasInputData data1;
+	data1.ScreenPos = screenPos;
+	data1.LogicPos = logicPos;
+	data1.CameraLogicPos = camLogicPos;
+	data1.Wheel = data.Wheel;
+
+	bool isPosInSizeRange = false;
+	if (mIsPickPosRecal)
+	{
+		isPosInSizeRange = data1.LogicPos.X() >= 0.0f && data1.LogicPos.X() <= GetSize().Width&&
+			data1.LogicPos.Z() >= 0.0f && data1.LogicPos.Z() <= GetSize().Height;
 	}
 	else
 	{
-		OnSizeNodeNotPicked(inputData);
+		isPosInSizeRange = _IsInRect(data1.LogicPos);
+	}
+
+	if (isPosInSizeRange)
+	{
+		OnSizeNodePicked(data);
+
+		if (mIsWidget && this!=canvas)
+			canvas->_AddInRangePickWidget(this, data1);
+	}
+	else
+	{
+		OnSizeNodeNotPicked(data1);
 	}
 }
 //----------------------------------------------------------------------------

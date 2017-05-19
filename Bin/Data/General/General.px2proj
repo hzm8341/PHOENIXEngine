@@ -1,5 +1,5 @@
 <project>
-	<general name="General" screenorientation="landscape" width="1136" height="640" isrewriteupdate="true"/>
+	<general name="General" screenorientation="landscape" width="1136" height="640"/>
 	<scene filename=""/>
 	<render_setting/>
 	<language/>
