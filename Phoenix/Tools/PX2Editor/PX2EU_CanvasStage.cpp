@@ -83,6 +83,7 @@ mCurCameraMoveSpeed_D(0.0f)
 
 	SetOverCameraNode(mStageCameraNode);
 
+	SetPickPosRecal(true);
 	SetActivateSelfCtrled(false);
 }
 //----------------------------------------------------------------------------
@@ -293,7 +294,7 @@ void EU_CanvasStage::UpdateWorldData(double applicationTime,
 	{	
 		if (mSceneNodeCtrl && mSceneNodeCtrl->IsDragNone())
 		{
-			float speedVal = 1.0f;
+			float speedVal = 0.5f;
 			if (VT_PERSPECTIVE == mViewType)
 			{
 				CameraDragType cdt = GetCameraDragType();
@@ -320,7 +321,7 @@ void EU_CanvasStage::UpdateWorldData(double applicationTime,
 				{
 					if (CDT_NORMAL_RIGHT == cdt)
 					{
-						_RolateCamera(delta[0] * speedVal, -delta[1] * speedVal);
+						_RolateCamera(delta[0] * speedVal, -delta[1] * speedVal * 0.5f);
 					}
 					else if (CDT_NORMAL_MIDDLE == cdt)
 					{
@@ -389,7 +390,7 @@ void EU_CanvasStage::_UpdateCameraCanvas()
 //----------------------------------------------------------------------------
 void EU_CanvasStage::_CreateGridGeometry()
 {
-	float gridSize = PX2_EDIT.GetEditParams()->GridSize;
+	float gridSize = PX2EU_MAN.GetEditParams()->GridSize;
 
 	VertexFormat *vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
 	StandardMesh sM(vf);
@@ -527,17 +528,15 @@ void EU_CanvasStage::OnLeftDown(const PickInputData &data)
 	mIsSelectMovableTransChanged = false;
 	mURDoCommand = 0;
 
-	APoint viewPortPos = WorldPosToViewPortPos(data.LogicPos);
-	_ClickSelectPos(viewPortPos);
+	_ClickSelectPos(data.LogicPos);
 
 	Edit::EditType et = PX2_EDIT.GetEditType();
 	if (Edit::ET_SCENE == et && mSceneNodeCtrl)
 	{
 		Camera *camera = mSceneNodeCtrlCanvas->GetOverCamera();
-		mSceneNodeCtrl->OnLeftDown(camera, viewPortPos, GetSize());
+		mSceneNodeCtrl->OnLeftDown(camera, data.LogicPos, GetSize());
 
-		APoint curViewPortPos = WorldPosToViewPortPos(mCurPickPos);
-		mSceneNodeCtrl->OnMotionCalDragType(camera, curViewPortPos,
+		mSceneNodeCtrl->OnMotionCalDragType(camera, mCurPickPos,
 			GetSize());
 		if (!mSceneNodeCtrl->IsDragNone())
 		{
@@ -548,7 +547,7 @@ void EU_CanvasStage::OnLeftDown(const PickInputData &data)
 		}
 		else
 		{
-			_ClickSelectScene(viewPortPos);
+			_ClickSelectScene(mCurPickPos);
 		}
 	}
 	else if (Edit::ET_TERRAIN == et)
@@ -556,8 +555,7 @@ void EU_CanvasStage::OnLeftDown(const PickInputData &data)
 		PX2_EDIT.GetTerrainEdit()->GetBrush()->SelectPage();
 		PX2_EDIT.GetTerrainEdit()->Apply(true);
 
-		APoint viewPortPos = WorldPosToViewPortPos(data.LogicPos);
-		_UpdateBrushPos(viewPortPos);
+		_UpdateBrushPos(data.LogicPos);
 	}
 }
 //----------------------------------------------------------------------------
@@ -631,7 +629,7 @@ void EU_CanvasStage::_ClickSelectScene(const APoint &scrPos)
 			int numObjs = PX2_SELECTM_E->GetNumObjects();
 			if (1 == numObjs && recordObj == PX2_SELECTM_E->GetFirstObject())
 			{
-				PX2_SELECTM_E->Clear();
+				/*_*/
 			}
 			else
 			{
@@ -699,6 +697,8 @@ void EU_CanvasStage::OnMiddleDown(const PickInputData &data)
 void EU_CanvasStage::OnMiddleUp(const PickInputData &data)
 {
 	Canvas::OnMiddleUp(data);
+
+	SetCameraDragType(CDT_NONE);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStage::OnMouseWheel(const PickInputData &data)
@@ -726,8 +726,7 @@ void EU_CanvasStage::OnRightDown(const PickInputData &data)
 	if (PX2EU_MAN.GetNumCombos() > 0)
 		return;
 
-	APoint viewPortPos = WorldPosToViewPortPos(data.LogicPos);
-	_ClickSelectPos(viewPortPos);
+	_ClickSelectPos(data.LogicPos);
 
 	Canvas::OnRightDown(data);
 }
@@ -744,11 +743,13 @@ void EU_CanvasStage::OnRightUp(const PickInputData &data)
 	if (PX2EU_MAN.GetNumCombos() > 0)
 		return;
 
+	SetCameraDragType(CDT_NONE);
+
 	if (!RenderWindow::IsScreenDrag())
 	{
 		if (mIsRightPressed)
 		{
-			CreateMenuOnSelect(data.LogicPos);
+			CreateMenuOnSelect(data.ScreenPos);
 		}
 	}
 
@@ -763,6 +764,7 @@ void EU_CanvasStage::OnMotion(const PickInputData &data)
 	if (PX2EU_MAN.GetNumCombos() > 0)
 		return;
 
+	APoint lastPickPos = mCurPickPos;
 	Canvas::OnMotion(data);
 
 	if (!Project::GetSingletonPtr()) return;
@@ -773,22 +775,19 @@ void EU_CanvasStage::OnMotion(const PickInputData &data)
 	if (!PX2_EDIT.IsEditModeNone())
 	{
 		Camera *camera = mSceneNodeCtrlCanvas->GetOverCamera();
-		APoint curViewPortPos = WorldPosToViewPortPos(mCurPickPos);
-		APoint lastViewPortPos = WorldPosToViewPortPos(mLastPickPos);
 
-		mSceneNodeCtrl->OnMotionCalDragType(camera, curViewPortPos,
+		mSceneNodeCtrl->OnMotionCalDragType(camera, mCurPickPos,
 			GetSize());
 
 		mSceneNodeCtrl->OnDraging(camera,
-			curViewPortPos, lastViewPortPos, GetSize());
+			mCurPickPos, lastPickPos, GetSize());
 		mIsSelectMovableTransChanged = true;
 	}
 
 	Edit::EditType et = PX2_EDIT.GetEditType();
 	if (et == Edit::ET_TERRAIN)
 	{
-		APoint viewPortPos = WorldPosToViewPortPos(data.LogicPos);
-		_UpdateBrushPos(viewPortPos);
+		_UpdateBrushPos(data.LogicPos);
 	}
 
 	Float2 delta = RenderWindow::GetMoveDelta();
@@ -1173,7 +1172,7 @@ void EU_CanvasStage::_UpdateBrushPos(const APoint &scrPos)
 //----------------------------------------------------------------------------
 void EU_CanvasStage::CreateMenuOnSelect(const APoint &pos)
 {
-	PX2EU_MAN.CreateEditMenu(pos, EU_Manager::EMT_SCENE);
+	PX2EU_MAN.CreateEditMenu("STAGE", pos, EU_Manager::EMT_SCENE);
 }
 //----------------------------------------------------------------------------
 

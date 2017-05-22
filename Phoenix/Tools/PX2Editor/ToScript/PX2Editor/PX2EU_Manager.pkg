@@ -27,6 +27,21 @@
 			EMT_BP,
 			EMT_MAX_TYPE
 		};
-		void CreateEditMenu(const APoint &pos, EditMenuType menuType);
+		void CreateEditMenu(const std::string &whereStr, const APoint &pos, EditMenuType menuType);
 		EditMenuType GetEidtMenuType();
+		
+		void SetLogicCanvas(Canvas *logicCanvas);
+		Canvas *GetLogicCanvas();
+		
+		// tool bar
+	public:
+		void AddTool(const std::string &whereStr, const std::string &icon, std::string &script, const std::string &helpStr = "", int type = 0);
+		void AddToolChoose(const std::string &whereStr, const std::string &script,
+			const std::string &choose0,
+			const std::string &choose1 = "",
+			const std::string &choose2 = "",
+			const std::string &choose3 = "",
+			const std::string &choose4 = "");
+		void AddToolSeparater(const std::string &whereStr);
+		void AddToolStretch(const std::string &whereStr);
 	};

@@ -104,7 +104,6 @@ bool GraphicsRoot::Initlize ()
 	mMainRenderWindow->SetMain(true);
 	mMainRenderWindow->SetName("Main");
 	mMainRenderWindow->SetFloat(false);
-	mMainRenderWindow->SetID(RenderWindow::GetNextWindowID());
 	mMainRenderWindow->SetScreenSize(Sizef(800.0f, 600.0f));
 	AddRenderWindow("Main", mMainRenderWindow);
 

@@ -47,6 +47,7 @@ namespace PX2
 		Float3 Color_Aui_TabbarBot_Active;
 		Float3 Color_Aui_TabbarText;
 		Float3 Color_Aui_TabbarText_Active;
+		Float3 Color_Aui_TabbarTextBot_Active;
 
 		Float3 Color_Page_Background;
 		Float3 Color_Page_Foreground;

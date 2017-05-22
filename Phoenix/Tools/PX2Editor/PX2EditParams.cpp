@@ -13,33 +13,33 @@ Theme::Theme()
 {
 	Name = "blue";
 
-	Color_Aui_Background = Float3::MakeColor(41, 57, 85);
+	Color_Aui_Background = Float3::MakeColor(30, 30, 30);
 
-	Color_Aui_CaptionBackground = Float3::MakeColor(77, 96, 130);
-	Color_Aui_CaptionBackground_Active = Float3::MakeColor(255, 242, 157);
+	Color_Aui_CaptionBackground = Float3::MakeColor(51, 51, 51);
+	Color_Aui_CaptionBackground_Active = Float3::MakeColor(61, 61, 61);
 
-	Color_Aui_Border = Float3::MakeColor(41, 57, 85);
-
-	Color_Aui_BorderThin = Float3::MakeColor(142, 155, 188);
-	Color_Aui_BorderThin_Center = Float3::MakeColor(41, 57, 85);
+	Color_Aui_Border = Float3::MakeColor(51, 51, 51);
+	Color_Aui_BorderThin = Float3::MakeColor(51, 51, 51);
+	Color_Aui_BorderThin_Center = Float3::MakeColor(51, 51, 51);
 
 	Color_Aui_CaptionText = Float3::WHITE;
-	Color_Aui_CaptionText_Active = Float3::BLACK;
+	Color_Aui_CaptionText_Active = Float3::WHITE;
 
-	Color_Aui_MenuBar_Background = Float3::MakeColor(214, 219, 233);
+	Color_Aui_MenuBar_Background = Float3::MakeColor(51, 51, 51);
 
-	Color_Aui_ToolBar_Background = Float3::MakeColor(207, 214, 229);
-	Color_Aui_ToolBar_Border = Float3::MakeColor(220, 224, 236);
-	Color_Aui_Toolbar_Separator = Float3::MakeColor(133, 145, 162);
+	Color_Aui_ToolBar_Background = Float3::MakeColor(100, 100, 100);
+	Color_Aui_ToolBar_Border = Float3::MakeColor(100, 100, 100);
+	Color_Aui_Toolbar_Separator = Float3::MakeColor(100, 100, 100);
 	Color_Aui_Toolbar_Text = Float3::BLACK;
-	Color_Aui_Toolbar_Flow = Float3::MakeColor(253, 244, 191);
-	Color_Aui_Toolbar_FlowBorder = Float3::MakeColor(229, 195, 101);
+	Color_Aui_Toolbar_Flow = Float3::MakeColor(51, 51, 51);
+	Color_Aui_Toolbar_FlowBorder = Float3::MakeColor(51, 51, 51);
 
-	Color_Aui_Tabbar = Float3::MakeColor(54, 78, 111);
-	Color_Aui_Tabbar_Active = Float3::MakeColor(255, 242, 157);
+	Color_Aui_Tabbar = Float3::MakeColor(51, 51, 51);
+	Color_Aui_Tabbar_Active = Float3::MakeColor(61, 61, 61);
 	Color_Aui_TabbarBot_Active = Float3::WHITE;
 	Color_Aui_TabbarText = Float3::WHITE;
-	Color_Aui_TabbarText_Active = Float3::BLACK;
+	Color_Aui_TabbarText_Active = Float3::WHITE;
+	Color_Aui_TabbarTextBot_Active = Float3::BLACK;
 
 	Color_Page_Background = Float3::WHITE;
 	Color_Page_Foreground = Float3::BLACK;
@@ -148,6 +148,9 @@ bool EditParams::Save(const std::string &filename)
 		node = themeNode.NewChild("aui_tabbartext_active");
 		node.SetAttributeString("val", ColorFloat3ToString(theme->Color_Aui_TabbarText_Active));
 
+		node = themeNode.NewChild("aui_tabbartextbot_active");
+		node.SetAttributeString("val", ColorFloat3ToString(theme->Color_Aui_TabbarTextBot_Active));
+
 		node = themeNode.NewChild("page_background");
 		node.SetAttributeString("val", ColorFloat3ToString(theme->Color_Page_Background));
 
@@ -165,6 +168,9 @@ bool EditParams::Save(const std::string &filename)
 //-----------------------------------------------------------------------------
 bool EditParams::Load(const std::string &filename)
 {
+	if (!PX2_RM.IsFileFloderExist(filename))
+		return false;
+
 	char *buffer = 0;
 	int bufferSize = 0;
 	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
@@ -236,6 +242,8 @@ bool EditParams::Load(const std::string &filename)
 						theme->Color_Aui_TabbarText = StringToColorFloat3(themeValNode.AttributeToString("val"));
 					else if ("aui_tabbartext_active" == themValName)
 						theme->Color_Aui_TabbarText_Active = StringToColorFloat3(themeValNode.AttributeToString("val"));
+					else if ("aui_tabbartextbot_active" == themValName)
+						theme->Color_Aui_TabbarTextBot_Active = StringToColorFloat3(themeValNode.AttributeToString("val"));
 
 					else if ("page_background" == themValName)
 						theme->Color_Page_Background = StringToColorFloat3(themeValNode.AttributeToString("val"));

@@ -60,7 +60,7 @@ bool N_App::OnInit()
 	PX2_APP.InitlizeRenderer();
 
 	Edit *edit = new0 Edit();
-	edit->Initlize();
+	edit->Initlize("2");
 
 	RenderWindow *rw = PX2_GR.GetMainWindow();
 	rw->SetWindowHandle(frame->GerRenderView()->GetHandle());

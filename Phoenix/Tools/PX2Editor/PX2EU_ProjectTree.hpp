@@ -43,15 +43,11 @@ namespace PX2
 		void _RefreshUI();
 		void _ClearUI();
 
-		void _RefreshBP();
-		void _ClearBP();
-
 		ShowType mShowType;
 
 		UIItemPtr mItemProject;
 		UIItemPtr mItemScene;
 		UIItemPtr mItemUI;
-		UIItemPtr mItemBP;
 	};
 
 	PX2_REGISTER_STREAM(EU_ProjectTree);

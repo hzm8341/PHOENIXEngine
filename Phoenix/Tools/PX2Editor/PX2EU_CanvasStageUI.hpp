@@ -36,13 +36,18 @@ namespace PX2
 		void _CreateCanvas();
 		void _UpdateUIRange();
 		void _AdjustCameraPercent();
-		void SetOverCameraNode(CameraNode *cameraNode);
+		void _SetOverCameraNode(CameraNode *cameraNode);
+		void _CreateNodeCtrl();
 
 		CanvasPtr mGridCanvas;
 		PX2::PolysegmentPtr mProjRangeSegment;
 		PX2::NodePtr mRangeNode;
 
 		CanvasPtr mCanvas;
+
+		CanvasPtr mCtrlCanvas;
+		UIObjectCtrlPtr mUIObjectCtrl;
+		NodePtr mUIObjectNode;
 
 		bool mIsInitSizeChanged;
 
@@ -52,7 +57,7 @@ namespace PX2
 		virtual void OnLeftDClick(const PickInputData &data);
 		virtual void OnMiddleDown(const PickInputData &data);
 		virtual void OnMiddleUp(const PickInputData &data);
-		virtual void OnMouseWheel(const PickInputData &data, float delta);
+		virtual void OnMouseWheel(const PickInputData &data);
 		virtual void OnRightDown(const PickInputData &data);
 		virtual void OnRightUp(const PickInputData &data);
 		virtual void OnMotion(const PickInputData &data);

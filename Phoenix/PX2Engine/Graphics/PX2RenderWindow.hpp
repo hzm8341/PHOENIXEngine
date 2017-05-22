@@ -67,7 +67,6 @@ namespace PX2
 		std::string mTitle;
 		APoint mPosition;
 		Sizef mScreenSize;
-		CanvasPtr mCanvas;
 
 		bool mIsMaxSize;
 		bool mIsShow;
@@ -80,16 +79,13 @@ namespace PX2
 		// Canvas;
 	public:
 		Canvas *GetMainCanvas();
-		Canvas *GetEngineCanvas();
 
 	public_internal:
 		void SetMainCanvas(Canvas *mainCanvas);
-		void SetEngineCanvas(Canvas *engineCanvas);
 
 	protected:
 		bool mIsCanvasNeedReCal;
 		CanvasPtr mMainCanvas;
-		CanvasPtr mEngineCanvas;
 		
 		// Tick
 	public:

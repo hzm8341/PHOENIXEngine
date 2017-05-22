@@ -25,6 +25,7 @@ namespace PX2
 	PX2_EVENT(N_PlayTip)
 	PX2_EVENT(N_Import)
 	PX2_EVENT(N_Export)
+	PX2_EVENT(N_AddTool)
 
 	PX2_EVENT(Undo)
 	PX2_EVENT(Redo)

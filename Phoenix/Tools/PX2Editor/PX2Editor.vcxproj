@@ -42,6 +42,7 @@
     <ClCompile Include="PX2Edit.cpp" />
     <ClCompile Include="PX2EditObject.cpp" />
     <ClCompile Include="PX2EditObjectTerrain.cpp" />
+    <ClCompile Include="PX2EditorEventData.cpp" />
     <ClCompile Include="PX2EditorEventType.cpp" />
     <ClCompile Include="PX2EditParams.cpp" />
     <ClCompile Include="PX2EditTimeLineEdit.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="PX2EditDefine.hpp" />
     <ClInclude Include="PX2EditObject.hpp" />
     <ClInclude Include="PX2EditObjectTerrain.hpp" />
+    <ClInclude Include="PX2EditorEventData.hpp" />
     <ClInclude Include="PX2EditorEventType.hpp" />
     <ClInclude Include="PX2EditParams.hpp" />
     <ClInclude Include="PX2EditorPre.hpp" />

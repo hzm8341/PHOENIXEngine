@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 05/11/17 16:51:26.
+** Generated automatically by tolua++-1.0.92 on 05/20/17 20:42:55.
 */
 
 #ifndef __cplusplus
@@ -29633,38 +29633,6 @@ static int tolua_PX2_RenderWindow_GetMainCanvas00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetMainCanvas'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetEngineCanvas of class  RenderWindow */
-#ifndef TOLUA_DISABLE_tolua_PX2_RenderWindow_GetEngineCanvas00
-static int tolua_PX2_RenderWindow_GetEngineCanvas00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"RenderWindow",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  RenderWindow* self = (RenderWindow*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetEngineCanvas'", NULL);
-#endif
-  {
-   Canvas* tolua_ret = (Canvas*)  self->GetEngineCanvas();
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Canvas");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetEngineCanvas'.",&tolua_err);
  return 0;
 #endif
 }
@@ -70191,7 +70159,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"IsCaptureMouse",tolua_PX2_RenderWindow_IsCaptureMouse00);
    tolua_function(tolua_S,"GetParentRenderWindow",tolua_PX2_RenderWindow_GetParentRenderWindow00);
    tolua_function(tolua_S,"GetMainCanvas",tolua_PX2_RenderWindow_GetMainCanvas00);
-   tolua_function(tolua_S,"GetEngineCanvas",tolua_PX2_RenderWindow_GetEngineCanvas00);
    tolua_constant(tolua_S,"CT_CURSOR_NONE",RenderWindow::CT_CURSOR_NONE);
    tolua_constant(tolua_S,"CT_CURSOR_ARROW",RenderWindow::CT_CURSOR_ARROW);
    tolua_constant(tolua_S,"CT_CURSOR_RIGHT_ARROW",RenderWindow::CT_CURSOR_RIGHT_ARROW);

@@ -41,11 +41,6 @@ inline GeoObjFactory *Edit::GetGOF()
 	return mGeoObjFactory;
 }
 //----------------------------------------------------------------------------
-inline EditParams *Edit::GetEditParams()
-{
-	return mEditParams;
-}
-//----------------------------------------------------------------------------
 inline void Edit::SetCameraMoveLevel(int level)
 {
 	mCameraMoveLevel = level;

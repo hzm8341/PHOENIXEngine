@@ -68,8 +68,8 @@ EU_StageFrame::EU_StageFrame()
 	mToolFrame = new0 UIFrame();
 	mToolFrame->SetUpdatePriority(10);
 	AttachChild(mToolFrame);
+	mToolFrame->LocalTransform.SetTranslateY(-130.0f);
 
-	mToolFrame->LocalTransform.SetTranslateY(-10.0f);
 	UIPicBox *picBox = mToolFrame->CreateAddBackgroundPicBox();
 	picBox->SetColor(PX2_UISM.Color_ToolBar);
 	mToolFrame->SetAnchorHor(0.0f, 1.0f);
@@ -289,15 +289,19 @@ void EU_StageFrame::Visit(Object *obj, int info)
 //----------------------------------------------------------------------------
 void EU_StageFrame::AddStage()
 {
+	float minus = 1.5f;
+
 	mCanvasStage = new0 EU_CanvasStage();
 	mCanvasStage->LocalTransform.SetTranslateY(-1.0f);
 	AttachChild(mCanvasStage);
-	mCanvasStage->SetAnchorParamVer(0.0f, -PX2_UISM.Size_ToolBar);
+	mCanvasStage->SetAnchorParamHor(minus, -minus);
+	mCanvasStage->SetAnchorParamVer(minus+1, -PX2_UISM.Size_ToolBar - minus);
 
 	mCanvasStageUI = new0 EU_CanvasStageUI();
 	mCanvasStageUI->LocalTransform.SetTranslateY(-10.0f);
 	AttachChild(mCanvasStageUI);
-	mCanvasStageUI->SetAnchorParamVer(0.0f, -PX2_UISM.Size_ToolBar);
+	mCanvasStageUI->SetAnchorParamHor(minus, -minus);
+	mCanvasStageUI->SetAnchorParamVer(minus+1, -PX2_UISM.Size_ToolBar);
 }
 //----------------------------------------------------------------------------
 

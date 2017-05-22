@@ -36,15 +36,16 @@ mIsInitSizeChanged(false)
 	_CreateGridGeometry();
 	_CreateCanvas();
 
+	_CreateNodeCtrl();
+
 	CameraNode *cn = CreateUICameraNode();
-	SetOverCameraNode(cn);
+	_SetOverCameraNode(cn);
 	EnableUICameraAutoAdjust(false);
 
 	SetPickPosRecal(true);
+	SetActivateSelfCtrled(false);
 
 	Enable(false);
-
-	SetActivateSelfCtrled(false);
 }
 //----------------------------------------------------------------------------
 EU_CanvasStageUI::~EU_CanvasStageUI()
@@ -79,10 +80,22 @@ void EU_CanvasStageUI::OnEvent(Event *event)
 		Enable(editUI);
 		Show(editUI);
 	}
-	else if (ProjectES_Internal::IsEqual(event, 
+	else if (ProjectES_Internal::IsEqual(event,
 		ProjectES_Internal::UISizeChanged))
 	{
 		_UpdateUIRange();
+	}
+	else if (ProjectES::IsEqual(event, ProjectES::NewUI))
+	{
+		Sizef canvasSize = GetSize();
+
+		UI *ui = PX2_PROJ.GetUI();
+		Sizef uiSize = ui->GetSize();
+
+		float posX = (canvasSize.Width - uiSize.Width) * 0.5f;
+		float posZ = (canvasSize.Height - uiSize.Height) * 0.5f;
+
+		mUICameraNode->LocalTransform.SetTranslate(-posX, msUICameraY, -posZ);
 	}
 }
 //----------------------------------------------------------------------------
@@ -155,10 +168,32 @@ void EU_CanvasStageUI::_CreateCanvas()
 	mCanvas->AttachController(new0 EU_ProjectEventController());
 }
 //----------------------------------------------------------------------------
-void EU_CanvasStageUI::SetOverCameraNode(CameraNode *cameraNode)
+void EU_CanvasStageUI::_SetOverCameraNode(CameraNode *cameraNode)
 {
 	mGridCanvas->SetOverCamera(cameraNode->GetCamera());
 	mCanvas->SetOverCamera(cameraNode->GetCamera());
+	mCtrlCanvas->SetOverCamera(cameraNode->GetCamera());
+}
+//----------------------------------------------------------------------------
+void EU_CanvasStageUI::_CreateNodeCtrl()
+{
+	mUIObjectCtrl = new0 UIObjectCtrl();
+	PX2_EW.ComeIn(mUIObjectCtrl);
+
+	mUIObjectNode = new0 Node();
+	mUIObjectNode->AttachChild(mUIObjectCtrl->GetCtrlsGroup());
+	mUIObjectNode->Update(Time::GetTimeInSeconds(), 0.0f, true);
+
+	mCtrlCanvas = new0 Canvas();
+	AttachChild(mCtrlCanvas);
+	mCtrlCanvas->LocalTransform.SetTranslateY(-3.0f);
+	mCtrlCanvas->SetName("UICanvas");
+	mCtrlCanvas->SetAnchorHor(0.0f, 1.0f);
+	mCtrlCanvas->SetAnchorVer(0.0f, 1.0f);
+	mCtrlCanvas->SetClearFlag(false, false, false);
+	mCtrlCanvas->SetRenderNodeUpdate(false);
+
+	mCtrlCanvas->AttachChild(mUIObjectNode);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageUI::_UpdateUIRange()
@@ -178,7 +213,7 @@ void EU_CanvasStageUI::_UpdateUIRange()
 	vba.Position<Float3>(2) = Float3(uiWidth, 0.0f, uiHeight);
 	vba.Position<Float3>(3) = Float3(-1.0f, 0.0f, uiHeight);
 	vba.Position<Float3>(4) = Float3(-1.0f, 0.0f, -1.0f);
-	Float4 color = Float4::MakeColor(50, 50, 50, 165);
+	Float4 color = Float4::MakeColor(255, 255, 255, 255);
 	vba.Color<Float4>(0, 0) = color;
 	vba.Color<Float4>(0, 1) = color;
 	vba.Color<Float4>(0, 2) = color;
@@ -187,9 +222,6 @@ void EU_CanvasStageUI::_UpdateUIRange()
 
 	mProjRangeSegment->UpdateModelSpace(Renderable::GU_MODEL_BOUND_ONLY);
 	Renderer::UpdateAll(mProjRangeSegment->GetVertexBuffer());
-
-	mUICameraNode->LocalTransform.SetTranslate(uiWidth / 2.0f, msUICameraY,
-		uiHeight / 2.0f);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageUI::_AdjustCameraPercent()
@@ -209,13 +241,16 @@ void EU_CanvasStageUI::OnLeftDown(const PickInputData &data)
 
 	Canvas::OnLeftDown(data);
 
-	APoint viewPortPos = WorldPosToViewPortPos(data.LogicPos);
-	_ClickSelectPos(viewPortPos);
-
 	Edit::EditType et = PX2_EDIT.GetEditType();
 	if (Edit::ET_UI == et)
 	{
+		APoint viewPortPos = WorldPosToViewPortPos(data.LogicPos);
+		_ClickSelectPos(viewPortPos);
+
 		_ClickSelectUI(viewPortPos);
+
+		if (mUIObjectCtrl)
+			mUIObjectCtrl->OnLeftDown(mCtrlCanvas, data);
 	}
 }
 //----------------------------------------------------------------------------
@@ -225,6 +260,13 @@ void EU_CanvasStageUI::OnLeftUp(const PickInputData &data)
 		return;
 
 	Canvas::OnLeftUp(data);
+
+	Edit::EditType et = PX2_EDIT.GetEditType();
+	if (Edit::ET_UI == et)
+	{
+		if (mUIObjectCtrl)
+			mUIObjectCtrl->OnLeftUp(mCtrlCanvas, data);
+	}
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageUI::OnLeftDClick(const PickInputData &data)
@@ -253,14 +295,14 @@ void EU_CanvasStageUI::OnMiddleUp(const PickInputData &data)
 	Canvas::OnMiddleUp(data);
 }
 //----------------------------------------------------------------------------
-void EU_CanvasStageUI::OnMouseWheel(const PickInputData &data, float delta)
+void EU_CanvasStageUI::OnMouseWheel(const PickInputData &data)
 {
 	if (!IsEnable())
 		return;
 
 	Canvas::OnMouseWheel(data);
 
-	_ZoomCamera(delta);
+	_ZoomCamera(data.Wheel);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageUI::OnRightDown(const PickInputData &data)
@@ -283,9 +325,12 @@ void EU_CanvasStageUI::OnRightUp(const PickInputData &data)
 	if (!proj)
 		return;
 
-	if (mIsRightPressed)
+	if (!RenderWindow::IsScreenDrag())
 	{
-		CreateMenuOnSelect(data.LogicPos);
+		if (mIsRightPressed)
+		{
+			CreateMenuOnSelect(data.ScreenPos);
+		}
 	}
 
 	Canvas::OnRightUp(data);
@@ -302,6 +347,13 @@ void EU_CanvasStageUI::OnMotion(const PickInputData &data)
 	{
 		// Camera 位置已经改变，通过这里获取移动位移
 		_PanCamera(-mMoveDelta.X(), mMoveDelta.Z());
+	}
+
+	Edit::EditType et = PX2_EDIT.GetEditType();
+	if (Edit::ET_UI == et)
+	{
+		if (mUIObjectCtrl)
+			mUIObjectCtrl->OnMotion(mCtrlCanvas, data);
 	}
 }
 //----------------------------------------------------------------------------
@@ -444,33 +496,41 @@ void EU_CanvasStageUI::_ClickSelectUI(const APoint &scrPos)
 	if ((int)picker.Records.size() > 0)
 	{
 		const PickRecord &record = picker.GetClosestToZero();
-		Object *recordObj = record.Intersected;
+		Object *recdObj = record.Intersected;
 
 		mSelectPoint = origin + direction*record.T;
 		PX2_EDIT.SetPickPos(mSelectPoint);
 
-		if (SM_SINGLE == mode)
+		Movable *movable = DynamicCast<Movable>(recdObj);
+		if (movable)
 		{
-			int numObjs = PX2_SELECTM_E->GetNumObjects();
-			if (1 == numObjs && recordObj == PX2_SELECTM_E->GetFirstObject())
+			UIFrame *uiFrame = movable->GetFirstParentDerivedFromType<UIFrame>();
+			if (uiFrame)
 			{
-				PX2_SELECTM_E->Clear();
-			}
-			else
-			{
-				PX2_SELECTM_E->Clear();
-				PX2_SELECTM_E->AddObject(recordObj);
-			}
-		}
-		else if (SM_MULTI == mode)
-		{
-			if (PX2_SELECTM_E->IsObjectIn(recordObj))
-			{
-				PX2_SELECTM_E->RemoveObject(recordObj);
-			}
-			else
-			{
-				PX2_SELECTM_E->AddObject(recordObj);
+				if (SM_SINGLE == mode)
+				{
+					int numObjs = PX2_SELECTM_E->GetNumObjects();
+					if (1 == numObjs && uiFrame == PX2_SELECTM_E->GetFirstObject())
+					{
+						/*_*/
+					}
+					else
+					{
+						PX2_SELECTM_E->Clear();
+						PX2_SELECTM_E->AddObject(uiFrame);
+					}
+				}
+				else if (SM_MULTI == mode)
+				{
+					if (PX2_SELECTM_E->IsObjectIn(uiFrame))
+					{
+						PX2_SELECTM_E->RemoveObject(uiFrame);
+					}
+					else
+					{
+						PX2_SELECTM_E->AddObject(uiFrame);
+					}
+				}
 			}
 		}
 	}
@@ -485,7 +545,7 @@ void EU_CanvasStageUI::_ClickSelectUI(const APoint &scrPos)
 //----------------------------------------------------------------------------
 void EU_CanvasStageUI::CreateMenuOnSelect(const APoint &pos)
 {
-	PX2EU_MAN.CreateEditMenu(pos, EU_Manager::EMT_UI);
+	PX2EU_MAN.CreateEditMenu("STAGE", pos, EU_Manager::EMT_UI);
 }
 //----------------------------------------------------------------------------
 

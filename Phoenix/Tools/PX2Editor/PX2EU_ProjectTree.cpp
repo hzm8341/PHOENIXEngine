@@ -39,7 +39,6 @@ mShowType(ST_GENERAL)
 
 	mItemScene = AddItem(mItemProject, "Scene");
 	mItemUI = AddItem(mItemProject, "UI");
-	mItemBP = AddItem(mItemProject, "BluePrint");
 }
 //----------------------------------------------------------------------------
 EU_ProjectTree::~EU_ProjectTree()
@@ -74,14 +73,6 @@ void EU_ProjectTree::OnEvent(Event *ent)
 	{
 		_ClearUI();
 	}
-	//else if (ProjectES::IsEqual(ent, ProjectES::NewBP))
-	//{
-	//	_RefreshBP();
-	//}
-	//else if (ProjectES::IsEqual(ent, ProjectES::CloseBP))
-	//{
-	//	_ClearBP();
-	//}
 
 	if (GraphicsES::IsEqual(ent, GraphicsES::AddObject))
 	{
@@ -90,12 +81,6 @@ void EU_ProjectTree::OnEvent(Event *ent)
 		if (!parentObj.IsExpired())
 		{
 			bool isBP = false;
-			//BPPackage *bpPackage = DynamicCast<BPPackage>(parentObj);
-			//BPFile *bpFile = DynamicCast<BPFile>(parentObj);
-			//BPModule *bpModule = DynamicCast<BPModule>(parentObj);
-			//if (bpPackage || bpFile || bpModule)
-			//	isBP = true;
-
 			UIItem *itemParent = GetItemByObject(parentObj);
 			if (itemParent)
 			{
@@ -176,7 +161,7 @@ void EU_ProjectTree::OnSizeNodePicked(const CanvasInputData &inputData)
 		if (firstObject)
 		{
 			EU_Manager::EditMenuType emt = EU_Manager::EMT_SCENE;
-			PX2EU_MAN.CreateEditMenu(inputData.LogicPos, emt);
+			PX2EU_MAN.CreateEditMenu("Project", inputData.LogicPos, emt);
 		}
 	}
 }
@@ -331,23 +316,6 @@ void EU_ProjectTree::_ClearUI()
 {
 	mItemUI->RemoveAllChildItems();
 	mItemUI->SetItemObject(0);
-}
-//----------------------------------------------------------------------------
-void EU_ProjectTree::_RefreshBP()
-{
-	_ClearBP();
-
-	//BPPackage *package = PX2_PROJ.GetBPPackage();
-	//mItemBP->SetItemObject(package);
-
-	//int expandLevel = 1;
-	//_RefreshOnMoveable(mItemBP, package, expandLevel, true);
-}
-//----------------------------------------------------------------------------
-void EU_ProjectTree::_ClearBP()
-{
-	mItemBP->RemoveAllChildItems();
-	mItemBP->SetItemObject(0);
 }
 //----------------------------------------------------------------------------
 void EU_ProjectTree::_RefreshOnMoveable(UIItem *parentItem, 

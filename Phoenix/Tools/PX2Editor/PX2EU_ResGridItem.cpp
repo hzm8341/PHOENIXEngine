@@ -148,7 +148,7 @@ void EU_ResGridItem::SetPathFilename(const std::string &pathFilename)
 	if (pathFilename.find(".") == std::string::npos)
 	{ // folder
 		Object *obj = PX2_RM.BlockLoad(
-			"DataNIRVANA2/images/icons/res/folder.png");
+			"Data/engine/folder.png");
 		tex2D = DynamicCast<Texture2D>(obj);
 	}
 	else if (pathFilename.find(".png") != std::string::npos)

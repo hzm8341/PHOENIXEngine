@@ -27,7 +27,6 @@ mEditAxisMode(EAM_WORLD),
 mEditMode(EM_NONE),
 mRenderMode(RM_NORMAL),
 mGeoObjFactory(0),
-mEditParams(0),
 IsAltDown(false),
 IsCtrlDown(false),
 IsShiftDown(false),
@@ -70,24 +69,22 @@ Edit::~Edit()
 	delete0(mTerrainEdit);
 }
 //----------------------------------------------------------------------------
-bool Edit::Initlize()
+bool Edit::Initlize(const std::string &tag)
 {
 	mGeoObjFactory = new0 GeoObjFactory();
-	mEditParams = new0 EditParams();
 
 	PX2_GR.SetInEditor(true);
 	mEU_Man = new0 EU_Manager();
-	mEU_Man->Initlize();
+	mEU_Man->Initlize(tag);
 	
 	return true;
 }
 //----------------------------------------------------------------------------
-bool Edit::LoadEditorTheme()
+bool Edit::Initlize1(const std::string &tag)
 {
-	bool loaded = mEditParams->Load("DataEditor/config/editconfig.xml");
-	mEditParams->SetCurTheme(mEditParams->GetCurThemeTypeStr());
+	mEU_Man->Initlize1(tag);
 
-	return loaded;
+	return true;
 }
 //----------------------------------------------------------------------------
 bool Edit::Terminate()
@@ -97,9 +94,6 @@ bool Edit::Terminate()
 	mEditCameraNode = 0;
 
 	mCopyObject = 0;
-
-	if (mEditParams)
-		mEditParams->Save("DataEditor/config/editconfig.xml");
 
 	if (mEU_Man)
 	{
@@ -111,8 +105,6 @@ bool Edit::Terminate()
 	{
 		delete0(mGeoObjFactory);
 	}
-
-	mEditParams = 0;
 	
 	return true;
 }

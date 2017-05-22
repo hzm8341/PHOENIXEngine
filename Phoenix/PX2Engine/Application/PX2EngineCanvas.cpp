@@ -667,8 +667,13 @@ void EngineCanvas::UpdateWorldData(double applicationTime,
 		mFPSUpdateTime = 0.0f;
 	}
 
+	int numPerFrame = 0;
 	Renderer *renderer = Renderer::GetDefaultRenderer();
-	int numPerFrame = renderer->GetNumDrawPrimitivePerFrame();
+	if (renderer)
+	{
+		numPerFrame = renderer->GetNumDrawPrimitivePerFrame();
+	}		
+
 	std::string infoStr = std::string("FPS:" + StringHelp::IntToString(mFPS) +
 		" DrCall:" + StringHelp::IntToString(numPerFrame));
 	mInfoText->GetText()->SetText(infoStr);

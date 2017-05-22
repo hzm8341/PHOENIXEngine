@@ -478,17 +478,11 @@ void UIButtonBase::RegistProperties()
 	UIFrame::RegistProperties();
 
 	AddPropertyClass("UIButtonBase");
-	AddProperty("Size", PT_SIZE, Any(GetSize()));
 }
 //----------------------------------------------------------------------------
 void UIButtonBase::OnPropertyChanged(const PropertyObject &obj)
 {
 	UIFrame::OnPropertyChanged(obj);
-
-	if ("Size" == obj.Name)
-	{
-		SetSize(*Any_Cast<Sizef>(&obj.Data));
-	}
 }
 //----------------------------------------------------------------------------
 

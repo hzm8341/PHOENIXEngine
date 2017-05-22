@@ -1151,11 +1151,11 @@ PX2::Node *GeoObjFactory::CreateUIRectCtrl(float smallRectSize)
 		vba.Position<Float3>(2) = Float3(smallRectSize, 0.0f, smallRectSize);
 		vba.Position<Float3>(3) = Float3(0.0f, 0.0f, smallRectSize);
 		vba.Position<Float3>(4) = Float3(0.0f, 0.0f, 0.0f);
-		vba.Color<Float4>(0, 0) = Float4::BLACK;
-		vba.Color<Float4>(0, 1) = Float4::BLACK;
-		vba.Color<Float4>(0, 2) = Float4::BLACK;
-		vba.Color<Float4>(0, 3) = Float4::BLACK;
-		vba.Color<Float4>(0, 4) = Float4::BLACK;
+		vba.Color<Float4>(0, 0) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 1) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 2) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 3) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 4) = Float4::MakeColor(150, 150, 150, 255);
 
 		smallRect->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 		smallRect->UpdateModelSpace(Renderable::GU_MODEL_BOUND_ONLY);

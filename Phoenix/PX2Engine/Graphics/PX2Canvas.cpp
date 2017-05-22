@@ -942,6 +942,7 @@ void Canvas::OnWidgetPicked(const CanvasInputData &inputData)
 	data1.ScreenPos = screenPos;
 	data1.LogicPos = logicPos;
 	data1.CameraLogicPos = camLogicPos;
+	data1.MoveDelta = data.MoveDelta;
 	data1.Wheel = data.Wheel;
 
 	if (UIPT_PRESSED == data.PickType)

@@ -148,6 +148,9 @@
     <ClCompile Include="PX2EU_ContentFrame.cpp">
       <Filter>UI\Content</Filter>
     </ClCompile>
+    <ClCompile Include="PX2EditorEventData.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2EditDefine.hpp" />
@@ -299,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="PX2EU_ContentFrame.hpp">
       <Filter>UI\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditorEventData.hpp">
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,8 +25,8 @@ namespace PX2
 		Edit();
 		~Edit();
 
-		bool Initlize();
-		bool LoadEditorTheme();
+		bool Initlize(const std::string &tag);
+		bool Initlize1(const std::string &tag);
 		bool Terminate();
 		void Reset();
 
@@ -106,12 +106,6 @@ namespace PX2
 		GeoObjFactory *mGeoObjFactory;
 		
 		static int msEditorID;
-
-	public:
-		EditParams *GetEditParams();
-
-	protected:
-		EditParamsPtr mEditParams;
 
 		// key
 	public:

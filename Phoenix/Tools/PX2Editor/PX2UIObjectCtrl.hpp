@@ -40,10 +40,9 @@ namespace PX2
 		// PX2 Event
 		virtual void OnEvent (PX2::Event *event);
 
-		void OnLeftDown(Canvas *canvas, const PX2::APoint &pos);
-		void OnLeftUp(Canvas *canvas, const PX2::APoint &pos);
-		void OnMotion(bool leftDown, Canvas *canvas,
-			PX2::APoint posNow, PX2::APoint posBefore);
+		void OnLeftDown(Canvas *canvas, const PickInputData &data);
+		void OnLeftUp(Canvas *canvas, const PickInputData &data);
+		void OnMotion(Canvas *canvas, const PickInputData &data);
 
 	protected:
 		void UpdateOnSelectUI();
@@ -56,6 +55,8 @@ namespace PX2
 		PX2::NodePtr mRectCtrl;
 		PX2::NodePtr mCrossCtrl;
 		float mSmallRectSize;
+
+		bool mIsLeftDown;
 	};
 
 	typedef Pointer0<UIObjectCtrl> UIObjectCtrlPtr;

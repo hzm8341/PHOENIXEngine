@@ -23,6 +23,7 @@ namespace PX2
 
 	protected:
 		void RefreshItems(const std::string &path, int flag);
+		void _RefreshGridItems();
 
 		std::string mSelectPath;
 	};

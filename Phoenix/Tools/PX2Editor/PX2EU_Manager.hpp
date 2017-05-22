@@ -11,6 +11,7 @@
 #include "PX2EventHandler.hpp"
 #include "PX2Project.hpp"
 #include "PX2Application.hpp"
+#include "PX2EditParams.hpp"
 
 namespace PX2
 {
@@ -27,10 +28,12 @@ namespace PX2
 		EU_Manager();
 		virtual ~EU_Manager();
 
-		bool Initlize();
+		bool Initlize(const std::string &tag);
+		bool Initlize1(const std::string &tag);
 		bool Terminate();
+		const std::string &GetEditorTag() const;
 
-		// old
+		EditParams *GetEditParams();
 
 		// windows
 		void CreateUIWindowMain();
@@ -62,6 +65,9 @@ namespace PX2
 		void SetWelcomeFrame(UIFrame *frame);
 		UIFrame *GetWelcomeFrame();
 
+		void SetLogicCanvas(Canvas *logicCanvas);
+		Canvas *GetLogicCanvas();
+
 		// UserLeaveUp
 		void ShowWindowUserLeaveUp(bool show);
 		bool IsWindowUserLeaveUpShow() const;
@@ -72,12 +78,15 @@ namespace PX2
 	protected:
 		UICheckButton *CreateCheckBut(const std::string &name, const std::string &text);
 
+		std::string mEditorUITag;
 		Pointer0<UIFrame> mFrame_Main;
 		UIAuiFramePtr mFrame_Content;
 		UIFramePtr mFrame_ToolBar;
 		Pointer0<UIFrame> mFrame_StatusBar;
 		RenderWindowPtr mUserLeaveUpWindow;
 		UIFramePtr mWelcomeFrame;
+		CanvasPtr mLogicCanvas;
+		EditParamsPtr mEditParams;
 
 		// commonds
 	public:
@@ -108,13 +117,25 @@ namespace PX2
 			EMT_BP,
 			EMT_MAX_TYPE
 		};
-		void CreateEditMenu(const APoint &pos, EditMenuType menuType);
+		void CreateEditMenu(const std::string &whereStr, const APoint &pos, EditMenuType menuType);
 		EditMenuType GetEidtMenuType();
 
 	protected:
-		void AddAppItem(Application::MenuItem *itemParent, Application::MenuItem *item);
+		void AddAppItem(const std::string &whereStr, Application::MenuItem *itemParent, Application::MenuItem *item);
 
 		EditMenuType mEditMenuType;
+
+		// tool bar
+	public:
+		void AddTool(const std::string &whereStr, const std::string &icon, std::string &script, const std::string &helpStr = "", int type = 0);
+		void AddToolChoose(const std::string &whereStr, const std::string &script,
+			const std::string &choose0,
+			const std::string &choose1 = "",
+			const std::string &choose2 = "",
+			const std::string &choose3 = "",
+			const std::string &choose4 = "");
+		void AddToolSeparater(const std::string &whereStr);
+		void AddToolStretch(const std::string &whereStr);
 
 		// Help
 	public:

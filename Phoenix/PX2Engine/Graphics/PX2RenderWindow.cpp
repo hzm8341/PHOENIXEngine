@@ -40,7 +40,10 @@ mIsShow(true),
 mIsCaptureMouse(false),
 mIsLeftDown(false)
 {
+	mScreenSize = Sizef(100.0f, 100.0f);
 	ComeInEventWorld();
+
+	SetID(RenderWindow::GetNextWindowID());
 }
 //----------------------------------------------------------------------------
 RenderWindow::~RenderWindow()
@@ -113,6 +116,12 @@ void RenderWindow::SetPosition(const APoint &pos)
 //----------------------------------------------------------------------------
 void RenderWindow::SetScreenSize(const Sizef &size)
 {
+	const std::string &name = GetName();
+	if ("ResGridRenderWindow" == name)
+	{
+		int a = 0;
+	}
+
 	mScreenSize = size;
 
 	if (mMainCanvas)
@@ -358,17 +367,6 @@ Canvas *RenderWindow::GetMainCanvas()
 	return mMainCanvas;
 }
 //----------------------------------------------------------------------------
-void RenderWindow::SetEngineCanvas(Canvas *engineCanvas)
-{
-	mEngineCanvas = engineCanvas;
-	mEngineCanvas->SetRenderWindow(this);
-}
-//----------------------------------------------------------------------------
-Canvas *RenderWindow::GetEngineCanvas()
-{
-	return mEngineCanvas;
-}
-//----------------------------------------------------------------------------
 bool CanvasLessThan(const Canvas *canvas0, const Canvas *canvas1)
 {
 	if (canvas0->IsMain() && !canvas1->IsMain())
@@ -424,48 +422,51 @@ void RenderWindow::_UpdateDragType()
 //----------------------------------------------------------------------------
 void RenderWindow::Update(double appSeconds, double elapsedSeconds)
 {
-	Float2 curCursorPos = GetCursorPos();
-	sCurCursorPos = curCursorPos;
-
-	if (IsScreenDrag())
+	if (IsMain())
 	{
-		Sizef screenSize = GetDeskScreenSize();
+		Float2 curCursorPos = GetCursorPos();
+		sCurCursorPos = curCursorPos;
 
-		bool doReset = false;
-		if (curCursorPos[0] <= 0)
+		if (IsScreenDrag())
 		{
-			doReset = true;
-			curCursorPos[0] = screenSize.Width - 2;
-		}
-		else if (curCursorPos[0] >= screenSize.Width - 1)
-		{
-			doReset = true;
-			curCursorPos[0] = 1;
-		}
-		else if (curCursorPos[1] <= 1)
-		{
-			doReset = true;
-			curCursorPos[1] = screenSize.Height - 2;
-		}
-		else if (curCursorPos[1] >= screenSize.Height - 1)
-		{
-			doReset = true;
-			curCursorPos[1] = 2;
+			Sizef screenSize = GetDeskScreenSize();
+
+			bool doReset = false;
+			if (curCursorPos[0] <= 0)
+			{
+				doReset = true;
+				curCursorPos[0] = screenSize.Width - 2;
+			}
+			else if (curCursorPos[0] >= screenSize.Width - 1)
+			{
+				doReset = true;
+				curCursorPos[0] = 1;
+			}
+			else if (curCursorPos[1] <= 1)
+			{
+				doReset = true;
+				curCursorPos[1] = screenSize.Height - 2;
+			}
+			else if (curCursorPos[1] >= screenSize.Height - 1)
+			{
+				doReset = true;
+				curCursorPos[1] = 2;
+			}
+
+			if (doReset)
+			{
+				sCurCursorPos = curCursorPos;
+				SetCursorPos(curCursorPos);
+				sLastCursorPos = curCursorPos;
+			}
 		}
 
-		if (doReset)
-		{
-			sCurCursorPos = curCursorPos;
-			SetCursorPos(curCursorPos);
-			sLastCursorPos = curCursorPos;
-		}
+		sMoveDelta[0] = sCurCursorPos[0] - sLastCursorPos[0];
+		sMoveDelta[1] = sCurCursorPos[1] - sLastCursorPos[1];
+		sLastCursorPos = curCursorPos;
+
+		_UpdateDragType();
 	}
-
-	sMoveDelta[0] = sCurCursorPos[0] - sLastCursorPos[0];
-	sMoveDelta[1] = sCurCursorPos[1] - sLastCursorPos[1];
-	sLastCursorPos = curCursorPos;
-
-	_UpdateDragType();
 
 	if (mMainCanvas)
 	{
@@ -520,7 +521,8 @@ void RenderWindow::OnEvent(Event *event)
 		if (viewID != GetID())
 			return;
 
-		mMainCanvas->OnFirstInput(data);
+		if (mMainCanvas)
+			mMainCanvas->OnFirstInput(data);
 	}
 	else if (GraphicsES::IsEqual(event, GraphicsES::AddObject))
 	{

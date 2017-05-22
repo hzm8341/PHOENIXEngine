@@ -31,6 +31,7 @@
 #include "PX2Log.hpp"
 #include "PX2UISkinManager.hpp"
 #include "PX2UIWebFrame.hpp"
+#include "PX2EditorEventData.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -42,24 +43,47 @@ EU_Manager::~EU_Manager()
 {
 }
 //----------------------------------------------------------------------------
-bool EU_Manager::Initlize()
+bool EU_Manager::Initlize(const std::string &tag)
 {
+	mEditorUITag = tag;
+
 	PX2_EW.ComeIn(this);
 
 	PX2_SC_LUA->SetUserTypePointer("PX2EU_MAN", "EU_Manager", this);
 
-	PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naPreStart");
-	PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naStart");
+	mEditParams = new0 EditParams();
+	bool loaded = mEditParams->Load("DataNIRVANAwx/config/config.xml");
+	mEditParams->SetCurTheme(mEditParams->GetCurThemeTypeStr());
 
-	//CreateUIWindowMain();
+	if ("2" == tag)
+	{
+		PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naPreStart");
+		PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naStart");
+	}
+	else if ("wx" == tag)
+	{
+		PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", "naPreStart");
+	}
 
-	//PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naEditorUICreated");
+	return true;
+}
+//----------------------------------------------------------------------------
+bool EU_Manager::Initlize1(const std::string &tag)
+{
+	if ("wx" == tag)
+	{
+		PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", "naStart");
+	}
 
 	return true;
 }
 //----------------------------------------------------------------------------
 bool EU_Manager::Terminate()
 {
+	if (mEditParams)
+		mEditParams->Save("DataNIRVANAwx/config/config.xml");
+	mEditParams = 0;
+
 	PX2_EW.GoOut(this);
 
 	EU_ResGridItem::sLastSelectItemBut = 0;
@@ -67,8 +91,19 @@ bool EU_Manager::Terminate()
 	mFrame_Main = 0;
 	mFrame_ToolBar = 0;
 	mFrame_StatusBar = 0;
+	mLogicCanvas = 0;
 
 	return true;
+}
+//----------------------------------------------------------------------------
+const std::string &EU_Manager::GetEditorTag() const
+{
+	return mEditorUITag;
+}
+//----------------------------------------------------------------------------
+EditParams *EU_Manager::GetEditParams()
+{
+	return mEditParams;
 }
 //----------------------------------------------------------------------------
 void EU_Manager::NewProject()
@@ -154,7 +189,7 @@ void EU_Manager::PlayTip(const std::string &title, const std::string &content)
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
-void EU_Manager::CreateEditMenu(const APoint &pos, EditMenuType menuType)
+void EU_Manager::CreateEditMenu(const std::string &whereStr, const APoint &pos, EditMenuType menuType)
 {
 	mEditMenuType = menuType;
 
@@ -167,73 +202,73 @@ void EU_Manager::CreateEditMenu(const APoint &pos, EditMenuType menuType)
 	Controller *ctrl = DynamicCast<Controller>(obj);
 	InterpCurveController *interpCurveCtrl = DynamicCast<InterpCurveController>(obj);
 
-	PX2_APP.Menu_Edit_Begin("Stage", "Edit");
+	PX2_APP.Menu_Edit_Begin(whereStr, "Edit");
 
 	if (selectedMovable || selectEffectableCtrl)
 	{
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "Edit", "Create", PX2_LM_EDITOR.V("n_Create"));
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "Edit", "Create", PX2_LM_EDITOR.V("n_Create"));
 	}
 	
 	if (selectedNode)
 	{
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreate", "Node", PX2_LM_EDITOR.V("n_Node"), "n_Create_Node");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "Node", PX2_LM_EDITOR.V("n_Node"), "n_Create_Node");
 
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "EditCreate", "Geometry", PX2_LM_EDITOR.V("n_Geometry"));
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateGeometry", "Plane", PX2_LM_EDITOR.V("n_Plane"), "n_Create_Geometry_Plane");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateGeometry", "Box", PX2_LM_EDITOR.V("n_Box"), "n_Create_Geometry_Box");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateGeometry", "Sphere", PX2_LM_EDITOR.V("n_Sphere"), "n_Create_Geometry_Sphere");
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "Geometry", PX2_LM_EDITOR.V("n_Geometry"));
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateGeometry", "Plane", PX2_LM_EDITOR.V("n_Plane"), "n_Create_Geometry_Plane");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateGeometry", "Box", PX2_LM_EDITOR.V("n_Box"), "n_Create_Geometry_Box");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateGeometry", "Sphere", PX2_LM_EDITOR.V("n_Sphere"), "n_Create_Geometry_Sphere");
 
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreate", "CameraNode", PX2_LM_EDITOR.V("n_Camera"), "n_Create_Camera");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "CameraNode", PX2_LM_EDITOR.V("n_Camera"), "n_Create_Camera");
 
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreate", "Terrain", PX2_LM_EDITOR.V("n_Terrain"), "n_Create_Terrain");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "Terrain", PX2_LM_EDITOR.V("n_Terrain"), "n_Create_Terrain");
 
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreate", "SkyBox", PX2_LM_EDITOR.V("n_SkyBox"), "n_Create_SkyBox");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "SkyBox", PX2_LM_EDITOR.V("n_SkyBox"), "n_Create_SkyBox");
 
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "EditCreate", "Effect", PX2_LM_EDITOR.V("n_Effect"));
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffect", "Billboard", PX2_LM_EDITOR.V("n_Billboard"), "n_Create_Billboard");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffect", "Particle", PX2_LM_EDITOR.V("n_Particle"), "n_Create_Particle");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffect", "Beam", PX2_LM_EDITOR.V("n_Beam"), "n_Create_Beam");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffect", "Ribbon", PX2_LM_EDITOR.V("n_Ribbon"), "n_Create_Ribbon");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffect", "Sound", PX2_LM_EDITOR.V("n_Sound"), "n_Create_Sound");
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "Effect", PX2_LM_EDITOR.V("n_Effect"));
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffect", "Billboard", PX2_LM_EDITOR.V("n_Billboard"), "n_Create_Billboard");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffect", "Particle", PX2_LM_EDITOR.V("n_Particle"), "n_Create_Particle");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffect", "Beam", PX2_LM_EDITOR.V("n_Beam"), "n_Create_Beam");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffect", "Ribbon", PX2_LM_EDITOR.V("n_Ribbon"), "n_Create_Ribbon");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffect", "Sound", PX2_LM_EDITOR.V("n_Sound"), "n_Create_Sound");
 
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "EditCreate", "UI", PX2_LM_EDITOR.V("n_UI"));
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIFrame", PX2_LM_EDITOR.V("n_UIFrame"), "n_Create_UIFrame");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIFPicBox", PX2_LM_EDITOR.V("n_UIFPicBox"), "n_Create_UIFPicBox");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIFText", PX2_LM_EDITOR.V("n_UIFText"), "n_Create_UIFPicBox");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIButton", PX2_LM_EDITOR.V("n_UIButton"), "n_Create_UIButton");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UICheckBox", PX2_LM_EDITOR.V("n_UICheckButton"), "n_Create_UICheckButton");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIComboBox", PX2_LM_EDITOR.V("n_UIComboBox"), "n_Create_UIComboBox");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIEditBox", PX2_LM_EDITOR.V("n_UIEditBox"), "n_Create_UIEditBox");
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "UI", PX2_LM_EDITOR.V("n_UI"));
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIFrame", PX2_LM_EDITOR.V("n_UIFrame"), "n_Create_UIFrame");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIFPicBox", PX2_LM_EDITOR.V("n_UIFPicBox"), "n_Create_UIFPicBox");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIFText", PX2_LM_EDITOR.V("n_UIFText"), "n_Create_UIFPicBox");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIButton", PX2_LM_EDITOR.V("n_UIButton"), "n_Create_UIButton");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UICheckBox", PX2_LM_EDITOR.V("n_UICheckButton"), "n_Create_UICheckButton");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIComboBox", PX2_LM_EDITOR.V("n_UIComboBox"), "n_Create_UIComboBox");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIEditBox", PX2_LM_EDITOR.V("n_UIEditBox"), "n_Create_UIEditBox");
 
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "EditCreateUI");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIPicBox", PX2_LM_EDITOR.V("n_UIPicBox"), "n_Create_UIPicBox");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateUI", "UIText", PX2_LM_EDITOR.V("n_UIText"), "n_Create_UIText");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreateUI");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIPicBox", PX2_LM_EDITOR.V("n_UIPicBox"), "n_Create_UIPicBox");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateUI", "UIText", PX2_LM_EDITOR.V("n_UIText"), "n_Create_UIText");
 
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "ImportSelected", PX2_LM_EDITOR.V("n_ImportSelectedRes"), "n_ImportSelectRes");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Import", PX2_LM_EDITOR.V("n_Import"), "n_Import");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "ImportSelected", PX2_LM_EDITOR.V("n_ImportSelectedRes"), "n_ImportSelectRes");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Import", PX2_LM_EDITOR.V("n_Import"), "n_Import");
 	}
 
 	if (obj)
 	{
 		if (selectedMovable)
-			PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
+			PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
 
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "ExportSelected", PX2_LM_EDITOR.V("n_Export"), "n_Export");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "ExportSelected", PX2_LM_EDITOR.V("n_Export"), "n_Export");
 	}
 
 	if (selectedMovable)
 	{
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "EditCreate");
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "EditCreate", "Controller", PX2_LM_EDITOR.V("n_Controller"));
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "ColorController", PX2_LM_EDITOR.V("n_ColorController"), "n_Create_Controller_ColorController");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "BrightnessController", PX2_LM_EDITOR.V("n_BrightnessController"), "n_Create_Controller_BrightnessController");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "AlphaController", PX2_LM_EDITOR.V("n_AlphaController"), "n_Create_Controller_AlphaController");
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "EditCreateController");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "UniformScaleController", PX2_LM_EDITOR.V("n_UniformScaleController"), "n_Create_Controller_UniformScaleController");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "ScaleController", PX2_LM_EDITOR.V("n_ScaleController"), "n_Create_Controller_ScaleController");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "RotateController", PX2_LM_EDITOR.V("n_RotateController"), "n_Create_Controller_RotateController");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateController", "TranslateController", PX2_LM_EDITOR.V("n_TranslateController"), "n_Create_Controller_TranslateController");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreate");
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "Controller", PX2_LM_EDITOR.V("n_Controller"));
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "ColorController", PX2_LM_EDITOR.V("n_ColorController"), "n_Create_Controller_ColorController");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "BrightnessController", PX2_LM_EDITOR.V("n_BrightnessController"), "n_Create_Controller_BrightnessController");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "AlphaController", PX2_LM_EDITOR.V("n_AlphaController"), "n_Create_Controller_AlphaController");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreateController");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "UniformScaleController", PX2_LM_EDITOR.V("n_UniformScaleController"), "n_Create_Controller_UniformScaleController");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "ScaleController", PX2_LM_EDITOR.V("n_ScaleController"), "n_Create_Controller_ScaleController");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "RotateController", PX2_LM_EDITOR.V("n_RotateController"), "n_Create_Controller_RotateController");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateController", "TranslateController", PX2_LM_EDITOR.V("n_TranslateController"), "n_Create_Controller_TranslateController");
 	}
 
 	if (selectEffectableCtrl)
@@ -243,69 +278,72 @@ void EU_Manager::CreateEditMenu(const APoint &pos, EditMenuType menuType)
 		const std::vector<std::string> &namesEA = ea->GetAllModuleNames_EA();
 		const std::vector<std::string> &namesEO = ea->GetAllModuleNames_EO();
 
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "EditCreate", "EffectMoudle", PX2_LM_EDITOR.V("n_EffectMoudle"));
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "EffectMoudle", PX2_LM_EDITOR.V("n_EffectMoudle"));
 
 		for (int i = 0; i < (int)namesEA.size(); i++)
 		{
 			std::string createStr = "n_CreateEffectableControllerModule('" + namesEA[i] + "')";
-			PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffectMoudle", namesEA[i], namesEA[i], createStr);
+			PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffectMoudle", namesEA[i], namesEA[i], createStr);
 		}
 
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "EditCreateEffectMoudle");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreateEffectMoudle");
 
 		for (int i = 0; i < (int)namesEO.size(); i++)
 		{
 			std::string createStr = "n_CreateEffectableControllerModule('" + namesEO[i] + "')";
-			PX2_APP.Menu_Edit_AddItem("Stage", "EditCreateEffectMoudle", namesEO[i], namesEO[i], createStr);
+			PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffectMoudle", namesEO[i], namesEO[i], createStr);
 		}
 	}
 
 	if (selectControlledable)
 	{
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "EditCreate");
-		PX2_APP.Menu_Edit_AddItem("Stage", "EditCreate", "CreateScriptController", 
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreate");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "CreateScriptController", 
 			PX2_LM_EDITOR.V("n_CreateScriptControllerFromRes"), "n_CreateScriptControllerFromRes");
 	}
 
 	if (selectedMovable || ctrl || selectEffectableCtrl || selectEffectModule)
 	{
 		if (selectedMovable || selectEffectableCtrl)
-			PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
+			PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
 
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Copy", PX2_LM_EDITOR.V("n_Copy"), "n_Copy");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Paste", PX2_LM_EDITOR.V("n_Paste"), "n_Paste");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Delete", PX2_LM_EDITOR.V("n_Delete"), "n_DeleteSelection");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Copy", PX2_LM_EDITOR.V("n_Copy"), "n_Copy");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Paste", PX2_LM_EDITOR.V("n_Paste"), "n_Paste");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Delete", PX2_LM_EDITOR.V("n_Delete"), "n_DeleteSelection");
 	}
 
 	if (selectedMovable || interpCurveCtrl || selectEffectableCtrl)
 	{
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "ResetPlay", PX2_LM_EDITOR.V("n_ResetPlay"), "n_AnimResetPlay");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Play", PX2_LM_EDITOR.V("n_Play"), "n_AnimPlayStop");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Pause", PX2_LM_EDITOR.V("n_Pause"), "n_AnimStop");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "Reset", PX2_LM_EDITOR.V("n_Reset"), "n_AnimReset");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "ResetPlay", PX2_LM_EDITOR.V("n_ResetPlay"), "n_AnimResetPlay");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Play", PX2_LM_EDITOR.V("n_Play"), "n_AnimPlayStop");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Pause", PX2_LM_EDITOR.V("n_Pause"), "n_AnimStop");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "Reset", PX2_LM_EDITOR.V("n_Reset"), "n_AnimReset");
 	}
 
 	if (selectedMovable)
 	{
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "FindInProjectTree", PX2_LM_EDITOR.V("n_FindInProjectTree"), "n_FindInProjectTree");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "FindInResTree", PX2_LM_EDITOR.V("n_FindInResTree"), "n_FindInResTree");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "FindInProjectTree", PX2_LM_EDITOR.V("n_FindInProjectTree"), "n_FindInProjectTree");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "FindInResTree", PX2_LM_EDITOR.V("n_FindInResTree"), "n_FindInResTree");
 	}
 
 	if (interpCurveCtrl || selectEffectModule)
 	{
-		PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
-		PX2_APP.Menu_Edit_AddItem("Stage", "Edit", "MakeCurve", PX2_LM_EDITOR.V("n_MakeCurve"), "n_MakeCurve");
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "Edit", "MakeCurve", PX2_LM_EDITOR.V("n_MakeCurve"), "n_MakeCurve");
 	}
 
-	PX2_APP.Menu_Edit_AddItemSeparater("Stage", "Edit");
-	Application::MenuItem *menuItem = PX2_APP.GetMenuItem();
-	AddAppItem(0, menuItem);
-	PX2_APP.Menu_Edit_EndPopUp("Stage", pos);
+	if (obj)
+	{
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "Edit");
+		Application::MenuItem *menuItem = PX2_APP.GetMenuItem();
+		AddAppItem(whereStr, 0, menuItem);
+		PX2_APP.Menu_Edit_EndPopUp(whereStr, pos);
+	}
 }
 //----------------------------------------------------------------------------
-void EU_Manager::AddAppItem(Application::MenuItem *itemParent, 
+void EU_Manager::AddAppItem(const std::string &whereStr, Application::MenuItem *itemParent,
 	Application::MenuItem *item)
 {
 	const std::string &allName = item->AllName;
@@ -315,7 +353,7 @@ void EU_Manager::AddAppItem(Application::MenuItem *itemParent,
 
 	if (!itemParent)
 	{
-		PX2_APP.Menu_Edit_AddSubItem("Stage", "Edit", allName, itemName);
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "Edit", allName, itemName);
 	}
 	else
 	{
@@ -323,23 +361,84 @@ void EU_Manager::AddAppItem(Application::MenuItem *itemParent,
 
 		if (type == Application::MenuItem::T_SUB)
 		{
-			PX2_APP.Menu_Edit_AddSubItem("Stage", parAllName, itemName, itemName);
+			PX2_APP.Menu_Edit_AddSubItem(whereStr, parAllName, itemName, itemName);
 		}
 		else if (type == Application::MenuItem::T_ITEM)
 		{
-			PX2_APP.Menu_Edit_AddItem("Stage", parAllName, itemName, itemName, script);
+			PX2_APP.Menu_Edit_AddItem(whereStr, parAllName, itemName, itemName, script);
 		}
 	}
 
 	for (int i = 0; i < (int)item->Items.size(); i++)
 	{
-		AddAppItem(item, item->Items[i]);
+		AddAppItem(whereStr, item, item->Items[i]);
 	}
 }
 //----------------------------------------------------------------------------
 EU_Manager::EditMenuType EU_Manager::GetEidtMenuType()
 {
 	return mEditMenuType;
+}
+//----------------------------------------------------------------------------
+void EU_Manager::AddTool(const std::string &whereStr, const std::string &icon,
+	std::string &script, const std::string &helpStr, int type)
+{
+	AddToolBarData data;
+	data.Where = whereStr;
+	data.TheType = AddToolBarData::T_TOOL;
+	data.Icon = icon;
+	data.Script = script;
+	data.HelpStr = helpStr;
+	data.DataType = type;
+
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::N_AddTool);
+	ent->SetData(data);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void EU_Manager::AddToolChoose(const std::string &whereStr, 
+	const std::string &script,
+	const std::string &choose0,
+	const std::string &choose1,
+	const std::string &choose2,
+	const std::string &choose3,
+	const std::string &choose4)
+{
+	AddToolBarData data;
+	data.Where = whereStr;
+	data.TheType = AddToolBarData::T_CHOOSE;
+	data.Script = script;
+	data.Chooses.push_back(choose0);
+	data.Chooses.push_back(choose1);
+	data.Chooses.push_back(choose2);
+	data.Chooses.push_back(choose3);
+	data.Chooses.push_back(choose4);
+
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::N_AddTool);
+	ent->SetData(data);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void EU_Manager::AddToolSeparater(const std::string &whereStr)
+{
+	AddToolBarData data;
+	data.Where = whereStr;
+	data.TheType = AddToolBarData::T_SPEARATER;
+
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::N_AddTool);
+	ent->SetData(data);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void EU_Manager::AddToolStretch(const std::string &whereStr)
+{
+	AddToolBarData data;
+	data.Where = whereStr;
+	data.TheType = AddToolBarData::T_STRETCH;
+
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::N_AddTool);
+	ent->SetData(data);
+	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void EU_Manager::CreateUIWindowMain()
@@ -846,6 +945,16 @@ void EU_Manager::SetWelcomeFrame(UIFrame *frame)
 UIFrame *EU_Manager::GetWelcomeFrame()
 {
 	return mWelcomeFrame;
+}
+//----------------------------------------------------------------------------
+void EU_Manager::SetLogicCanvas(Canvas *logicCanvas)
+{
+	mLogicCanvas = logicCanvas;
+}
+//----------------------------------------------------------------------------
+Canvas *EU_Manager::GetLogicCanvas()
+{
+	return mLogicCanvas;
 }
 //----------------------------------------------------------------------------
 void EU_Manager::ShowWindowUserLeaveUp(bool show)

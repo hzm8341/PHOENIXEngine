@@ -12,6 +12,9 @@
 #include "PX2GraphicsEventType.hpp"
 #include "PX2Picker.hpp"
 #include "PX2Renderer.hpp"
+#include "PX2EditEventType.hpp"
+#include "PX2EditorEventType.hpp"
+#include "PX2GraphicsRoot.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -19,6 +22,8 @@ UIObjectCtrl::UIObjectCtrl ()
 {
 	mDragIndex = -1;
 	mSmallRectSize = 8.0f;
+
+	mIsLeftDown = false;
 
 	mShapeType = ST_NONE;
 
@@ -64,20 +69,21 @@ PX2::Movable *UIObjectCtrl::GetCtrlsGroup()
 //----------------------------------------------------------------------------
 void UIObjectCtrl::OnEvent (PX2::Event *event)
 {
-	//if (EditES::IsEqual(event, EditES::AddSelect) ||
-	//	EditES::IsEqual(event, EditES::RemoveSelect) ||
-	//	EditES::IsEqual(event, EditES::RemoveAllSelects))
-	//{
-	//	UpdateOnSelectUI();
-	//}
-	//else if (EditEventSpace::IsEqual(event, EditEventSpace::ObjectTransformChanged))
-	//{
-	//	Object *obj = event->GetData<Object*>();
-	//	if (PX2_SELECTM_E->GetFirstObject() == obj)
-	//	{
-	//		UpdateOnSelectUI();
-	//	}
-	//}
+	if (EditES::IsEqual(event, EditES::AddSelect) ||
+		EditES::IsEqual(event, EditES::RemoveSelect) ||
+		EditES::IsEqual(event, EditES::RemoveAllSelects))
+	{
+		UpdateOnSelectUI();
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::ObjectTransformChanged) ||
+		EditorEventSpace::IsEqual(event, EditorEventSpace::ObjectSizeChanged))
+	{
+		Object *obj = event->GetData<Object*>();
+		if (PX2_SELECTM_E->GetFirstObject() == obj)
+		{
+			UpdateOnSelectUI();
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void UIObjectCtrl::UpdateOnSelectUI()
@@ -88,20 +94,20 @@ void UIObjectCtrl::UpdateOnSelectUI()
 	Sizef size;
 	Float2 pvoit = Float2::ZERO;
 
-	if (PX2_SELECTM_E->GetNumObjects() > 1) return;
+	//if (PX2_SELECTM_E->GetNumObjects() > 1) return;
 
 	Object *obj = PX2_SELECTM_E->GetFirstObject();
 	if (!obj) return;
 	
 	Movable *mov = DynamicCast<Movable>(obj);
-	SizeNode *sn = DynamicCast<SizeNode>(obj);
 	if (!mov) return;
+	UIFrame *uiFrame = DynamicCast<UIFrame>(mov);
 
-	if (sn)
+	if (uiFrame)
 	{
-		isCross = true;
-		pvoit = sn->GetPivot();
-		size = sn->GetSize();
+		isCross = false;
+		pvoit = uiFrame->GetPivot();
+		size = uiFrame->GetSize();
 	}
 	else
 	{
@@ -135,11 +141,11 @@ void UIObjectCtrl::UpdateOnSelectUI()
 		vba.Position<Float3>(2) = point2;
 		vba.Position<Float3>(3) = point3;
 		vba.Position<Float3>(4) = point0;
-		vba.Color<Float4>(0, 0) = Float4::BLACK;
-		vba.Color<Float4>(0, 1) = Float4::BLACK;
-		vba.Color<Float4>(0, 2) = Float4::BLACK;
-		vba.Color<Float4>(0, 3) = Float4::BLACK;
-		vba.Color<Float4>(0, 4) = Float4::BLACK;
+		vba.Color<Float4>(0, 0) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 1) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 2) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 3) = Float4::MakeColor(150, 150, 150, 255);
+		vba.Color<Float4>(0, 4) = Float4::MakeColor(150, 150, 150, 255);
 
 		polySeg->UpdateModelSpace(Renderable::GU_MODEL_BOUND_ONLY);		
 		Renderer::UpdateAll(polySeg->GetVertexBuffer());
@@ -173,151 +179,99 @@ void UIObjectCtrl::SetDragIndex (int index)
 	mDragIndex = index;
 }
 //----------------------------------------------------------------------------
-void UIObjectCtrl::OnLeftDown(Canvas *canvas, const PX2::APoint &pos)
+void UIObjectCtrl::OnLeftDown(Canvas *canvas, const PickInputData &data)
 {
-	int index = _GetDragIndex(canvas, pos);
+	int index = _GetDragIndex(canvas, data.LogicPos);
 	SetDragIndex(index);
 	UpdateOnSelectUI();
+
+	mIsLeftDown = true;
 }
 //----------------------------------------------------------------------------
-void UIObjectCtrl::OnLeftUp(Canvas *canvas, const PX2::APoint &pos)
+void UIObjectCtrl::OnLeftUp(Canvas *canvas, const PickInputData &data)
 {
 	PX2_UNUSED(canvas);
-	PX2_UNUSED(pos);
+	PX2_UNUSED(data);
+
+	mIsLeftDown = false;
 }
 //----------------------------------------------------------------------------
-void UIObjectCtrl::OnMotion(bool leftDown, Canvas *canvas,
-	PX2::APoint posNow, PX2::APoint posBefore)
+void UIObjectCtrl::OnMotion(Canvas *canvas, const PickInputData &data)
 {
-	//if (leftDown)
-	//{
-	//	int dragIndex = GetDragIndex();
+	if (!mIsLeftDown)
+		return;
 
-	//	if (0 == dragIndex)
-	//	{
-	//		posNow.Y() = renderer->GetHeight() - posNow.Y();
-	//		posBefore.Y() = renderer->GetHeight() - posBefore.Y();
+	int dragIndex = GetDragIndex();
+	const Sizef &canvasSize = canvas->GetSize();
+	Camera *camera = canvas->GetOverCamera();
 
-	//		TriMesh *meshHelp = EditSystem::GetSingleton().GetXZPlane();
+	UIFrame *frame = DynamicCast<UIFrame>(PX2_SELECTM_E->GetFirstObject());
+	if (!frame) return;
 
-	//		Camera *uiCam = UIManager::GetSingleton().GetDefaultView()->GetCamera();
-	//		Camera *beforeCam = renderer->GetCamera();
-	//		renderer->SetCamera(uiCam);
+	Float2 anchorHor = frame->GetAnchorHor();
+	Float2 anchorParamHor = frame->GetAnchorParamHor();
+	Float2 anchorVer = frame->GetAnchorVer();
+	Float2 anchorParamVer = frame->GetAnchorParamVer();
 
-	//		APoint rayOrigin_Now;
-	//		AVector rayDir_Now;
-	//		renderer->GetPickRay((int)posNow.X(), (int)posNow.Y(), 
-	//			rayOrigin_Now, rayDir_Now);
+	if (anchorHor[0] == anchorHor[1])
+	{
+		anchorParamHor[0] += data.MoveDelta.X();
+		anchorParamHor[1] = anchorParamHor[0];
+	}
+	else
+	{
+	}
 
-	//		APoint rayOrigin_Before;
-	//		AVector rayDir_Before;
-	//		renderer->GetPickRay((int)posBefore.X(), (int)posBefore.Y(), 
-	//			rayOrigin_Before, rayDir_Before);
+	if (anchorVer[0] == anchorVer[1])
+	{
+		anchorParamVer[0] += data.MoveDelta.Z();
+		anchorParamVer[1] += anchorParamVer[0];
+	}
+	else
+	{
+	}
 
-	//		renderer->SetCamera(beforeCam);
+	frame->SetAnchorHor(anchorHor);
+	frame->SetAnchorParamHor(anchorParamHor);
+	frame->SetAnchorVer(anchorHor);
+	frame->SetAnchorParamVer(anchorParamVer);
+	frame->Update(Time::GetTimeInSeconds(), 0.0f);
 
-	//		Picker pickerNow;
-	//		pickerNow.Execute(meshHelp, rayOrigin_Now, rayDir_Now, 0.0f,
-	//			Mathf::MAX_REAL);
-	//		float lengthNow = pickerNow.GetClosestToZero().T;
-	//		APoint positionNow(rayOrigin_Now + rayDir_Now*lengthNow);
+	UpdateOnSelectUI();
 
-	//		Picker pickerOrigin;
-	//		pickerOrigin.Execute(meshHelp, rayOrigin_Before, rayDir_Before, 0.0f,
-	//			Mathf::MAX_REAL);
-	//		float lengthBefore = pickerOrigin.GetClosestToZero().T;
-	//		APoint positionBefore(rayOrigin_Before + rayDir_Before*lengthBefore);
-
-	//		if (pickerNow.Records.empty() || pickerOrigin.Records.empty())
-	//			return;
-
-	//		AVector transMoved = positionNow - positionBefore;
-	//		AVector transDir = transMoved;
-	//		transDir.Normalize();		
-
-	//		Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::UIPosDrag);
-	//		ent->SetData(1);
-	//		EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
-
-
-	//		Movable *mov = DynamicCast<Movable>(
-	//			EditSystem::GetSingleton().GetSelection()->GetObjectAt(0));
-	//		Movable *movPar = 0;
-	//		if (mov)
-	//		{
-	//			movPar = mov->GetParent();
-	//		}
-
-	//		if (movPar)
-	//		{
-	//			transMoved = movPar->LocalTransform.Inverse() * transMoved;
-	//		}
-	//		
-	//		EditSystem::GetSingleton().GetSelection()->Translate(transMoved);
-	//	
-	//		if (mov)
-	//		{
-	//			int active = mCtrlsGroup->GetActiveChild();
-	//			mCtrlsGroup->GetChild(active)->WorldBoundIsCurrent = true;
-	//			mCtrlsGroup->GetChild(active)->WorldTransform = mov->WorldTransform;
-	//		}
-	//	}
-	//}
+	mCtrlsGroup->Update(Time::GetTimeInSeconds(), 0.0f);
 }
 //----------------------------------------------------------------------------
 int UIObjectCtrl::_GetDragIndex(Canvas *canvas, const PX2::APoint &pos)
 {
-	//Project *proj = Project::GetSingletonPtr();
-	//if (!proj) return -1;
+	Project *proj = Project::GetSingletonPtr();
+	if (!proj) return -1;
 
-	//UIFrame *uiFrame = proj->GetUIFrame();
+	const Sizef &canvasSize = canvas->GetSize();
+	Camera *camera = canvas->GetOverCamera();
 
-	//APoint origin;
-	//AVector direction;
-	//canvas->GetPickRay(pos[0], pos[2], origin, direction);
+	APoint origin;
+	AVector direction;
+	camera->GetPickRay(pos.X(), pos.Z(), canvasSize, origin, direction);
 
-	//ObjectPtr curSelectObj = PX2_SELECTM_E->GetFirstObject();
+	ObjectPtr curSelectObj = PX2_SELECTM_E->GetFirstObject();
+	UIFrame *uiFrame = DynamicCast<UIFrame>(curSelectObj);
+	if (!uiFrame) return -1;
 
-	//PX2::Picker picker;
-	//PX2::MovablePtr pickedMove = 0;
-	//picker.Execute(uiFrame, origin, direction, 0.0f, Mathf::MAX_REAL);
+	PX2::Picker picker;
+	PX2::MovablePtr pickedMove = 0;
+	picker.Execute(uiFrame, origin, direction, 0.0f, Mathf::MAX_REAL);
 
-	//if ((int)picker.Records.size() > 0)
-	//{
-	//	const PickRecord &rec = picker.GetClosestNonnegative();
-	//	pickedMove = rec.Intersected;
+	if ((int)picker.Records.size() > 0)
+	{
+		return 0;
+	}
+	else
+	{
+		PX2_SELECTM_E->Clear();
 
-	//	UIPicBox *picBox = DynamicCast<UIPicBox>(pickedMove);
-	//	UIFrame *uiFrame = DynamicCast<UIFrame>(pickedMove);
-
-	//	Movable *movPar = pickedMove->GetParent();
-	//	UIButton *butPar = DynamicCast<UIButton>(movPar);
-	//	UIProgressBar *progBarPar = DynamicCast<UIProgressBar>(movPar);
-	//	UIEditBox *editBoxPar = DynamicCast<UIEditBox>(movPar);
-
-	//	if (curSelectObj == pickedMove || curSelectObj == movPar) return 0;
-	//	else
-	//	{
-	//		PX2_SELECTM_E->Clear();
-
-	//		if (uiFrame || butPar || progBarPar || editBoxPar)
-	//		{
-	//			PX2_SELECTM_E->AddObject(movPar);
-	//		}
-	//		else if (picBox)
-	//		{
-	//			PX2_SELECTM_E->AddObject(picBox);
-	//		}
-	//	}
-
-	//	return 0;
-	//}
-	//else
-	//{
-	//	PX2_SELECTM_E->Clear();
-	//	
-	//	return -1;
-	//}
+		return -1;
+	}
 
 	return -1;
 }

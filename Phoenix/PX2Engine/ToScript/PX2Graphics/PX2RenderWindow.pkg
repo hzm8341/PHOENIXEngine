@@ -39,7 +39,6 @@
 		// Canvas;
 	public:
 		Canvas *GetMainCanvas();
-		Canvas *GetEngineCanvas();
 		
 		// DeskScreen
 	public:

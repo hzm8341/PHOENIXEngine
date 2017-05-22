@@ -246,6 +246,8 @@ namespace PX2
 		APoint ScreenPos;
 		APoint LogicPos;
 		APoint CameraLogicPos;
+
+		AVector MoveDelta;
 		float Wheel;
 	};
 

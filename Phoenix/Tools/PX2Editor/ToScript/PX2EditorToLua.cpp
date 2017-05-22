@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2Editor
-** Generated automatically by tolua++-1.0.92 on 04/30/17 11:30:00.
+** Generated automatically by tolua++-1.0.92 on 05/21/17 20:12:52.
 */
 
 #ifndef __cplusplus
@@ -108,6 +108,7 @@ static int tolua_collect_EU_InspectorFrame (lua_State* tolua_S)
 static void tolua_reg_types (lua_State* tolua_S)
 {
  tolua_usertype(tolua_S,"Sizef");
+ tolua_usertype(tolua_S,"Canvas");
  tolua_usertype(tolua_S,"EU_StageFrame");
  tolua_usertype(tolua_S,"UITree");
  tolua_usertype(tolua_S,"EU_ContentFrame");
@@ -119,115 +120,20 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CanvasInputData");
  tolua_usertype(tolua_S,"Visitor");
  tolua_usertype(tolua_S,"EU_SimuFrame");
- tolua_usertype(tolua_S,"Edit");
+ tolua_usertype(tolua_S,"EU_ResGridFrame");
  tolua_usertype(tolua_S,"ShowType");
  tolua_usertype(tolua_S,"EU_TimeLineFrame");
  tolua_usertype(tolua_S,"Event");
  tolua_usertype(tolua_S,"SelectResData");
  tolua_usertype(tolua_S,"EU_ProjectTree");
- tolua_usertype(tolua_S,"EU_ResGridFrame");
- tolua_usertype(tolua_S,"Object");
  tolua_usertype(tolua_S,"EU_ResTree");
+ tolua_usertype(tolua_S,"Object");
+ tolua_usertype(tolua_S,"Edit");
  tolua_usertype(tolua_S,"TimeLineEdit");
  tolua_usertype(tolua_S,"EU_Manager");
  tolua_usertype(tolua_S,"EU_ConcoleFrame");
  tolua_usertype(tolua_S,"UIItem");
 }
-
-/* method: Initlize of class  Edit */
-#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_Initlize00
-static int tolua_PX2Editor_Edit_Initlize00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Initlize'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->Initlize();
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Initlize'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: Terminate of class  Edit */
-#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_Terminate00
-static int tolua_PX2Editor_Edit_Terminate00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Terminate'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->Terminate();
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Terminate'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: Reset of class  Edit */
-#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_Reset00
-static int tolua_PX2Editor_Edit_Reset00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Reset'", NULL);
-#endif
-  {
-   self->Reset();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Reset'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
 
 /* method: SetEditType of class  Edit */
 #ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_SetEditType00
@@ -2131,25 +2037,28 @@ static int tolua_PX2Editor_EU_Manager_CreateEditMenu00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
-     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const APoint",0,&tolua_err)) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,3,&tolua_err) || !tolua_isusertype(tolua_S,3,"const APoint",0,&tolua_err)) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
   EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
-  const APoint* pos = ((const APoint*)  tolua_tousertype(tolua_S,2,0));
-  EU_Manager::EditMenuType menuType = ((EU_Manager::EditMenuType) (int)  tolua_tonumber(tolua_S,3,0));
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const APoint* pos = ((const APoint*)  tolua_tousertype(tolua_S,3,0));
+  EU_Manager::EditMenuType menuType = ((EU_Manager::EditMenuType) (int)  tolua_tonumber(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateEditMenu'", NULL);
 #endif
   {
-   self->CreateEditMenu(*pos,menuType);
+   self->CreateEditMenu(whereStr,*pos,menuType);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
   }
  }
- return 0;
+ return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'CreateEditMenu'.",&tolua_err);
@@ -2185,6 +2094,429 @@ static int tolua_PX2Editor_EU_Manager_GetEidtMenuType00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetEidtMenuType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetLogicCanvas of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_SetLogicCanvas00
+static int tolua_PX2Editor_EU_Manager_SetLogicCanvas00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Canvas",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  Canvas* logicCanvas = ((Canvas*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetLogicCanvas'", NULL);
+#endif
+  {
+   self->SetLogicCanvas(logicCanvas);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetLogicCanvas'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetLogicCanvas of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_GetLogicCanvas00
+static int tolua_PX2Editor_EU_Manager_GetLogicCanvas00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetLogicCanvas'", NULL);
+#endif
+  {
+   Canvas* tolua_ret = (Canvas*)  self->GetLogicCanvas();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Canvas");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetLogicCanvas'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddTool of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddTool00
+static int tolua_PX2Editor_EU_Manager_AddTool00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string icon = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  std::string script = ((std::string)  tolua_tocppstring(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddTool'", NULL);
+#endif
+  {
+   self->AddTool(whereStr,icon,script);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)icon);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+  }
+ }
+ return 3;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'AddTool'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddTool of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddTool01
+static int tolua_PX2Editor_EU_Manager_AddTool01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,1,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string icon = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  std::string script = ((std::string)  tolua_tocppstring(tolua_S,4,0));
+  const std::string helpStr = ((const std::string)  tolua_tocppstring(tolua_S,5,0));
+  int type = ((int)  tolua_tonumber(tolua_S,6,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddTool'", NULL);
+#endif
+  {
+   self->AddTool(whereStr,icon,script,helpStr,type);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)icon);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+   tolua_pushcppstring(tolua_S,(const char*)helpStr);
+  }
+ }
+ return 4;
+tolua_lerror:
+ return tolua_PX2Editor_EU_Manager_AddTool00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolChoose of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolChoose00
+static int tolua_PX2Editor_EU_Manager_AddToolChoose00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string script = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  const std::string choose0 = ((const std::string)  tolua_tocppstring(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolChoose'", NULL);
+#endif
+  {
+   self->AddToolChoose(whereStr,script,choose0);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+   tolua_pushcppstring(tolua_S,(const char*)choose0);
+  }
+ }
+ return 3;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'AddToolChoose'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolChoose of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolChoose01
+static int tolua_PX2Editor_EU_Manager_AddToolChoose01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string script = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  const std::string choose0 = ((const std::string)  tolua_tocppstring(tolua_S,4,0));
+  const std::string choose1 = ((const std::string)  tolua_tocppstring(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolChoose'", NULL);
+#endif
+  {
+   self->AddToolChoose(whereStr,script,choose0,choose1);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+   tolua_pushcppstring(tolua_S,(const char*)choose0);
+   tolua_pushcppstring(tolua_S,(const char*)choose1);
+  }
+ }
+ return 4;
+tolua_lerror:
+ return tolua_PX2Editor_EU_Manager_AddToolChoose00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolChoose of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolChoose02
+static int tolua_PX2Editor_EU_Manager_AddToolChoose02(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string script = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  const std::string choose0 = ((const std::string)  tolua_tocppstring(tolua_S,4,0));
+  const std::string choose1 = ((const std::string)  tolua_tocppstring(tolua_S,5,0));
+  const std::string choose2 = ((const std::string)  tolua_tocppstring(tolua_S,6,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolChoose'", NULL);
+#endif
+  {
+   self->AddToolChoose(whereStr,script,choose0,choose1,choose2);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+   tolua_pushcppstring(tolua_S,(const char*)choose0);
+   tolua_pushcppstring(tolua_S,(const char*)choose1);
+   tolua_pushcppstring(tolua_S,(const char*)choose2);
+  }
+ }
+ return 5;
+tolua_lerror:
+ return tolua_PX2Editor_EU_Manager_AddToolChoose01(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolChoose of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolChoose03
+static int tolua_PX2Editor_EU_Manager_AddToolChoose03(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,7,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,8,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string script = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  const std::string choose0 = ((const std::string)  tolua_tocppstring(tolua_S,4,0));
+  const std::string choose1 = ((const std::string)  tolua_tocppstring(tolua_S,5,0));
+  const std::string choose2 = ((const std::string)  tolua_tocppstring(tolua_S,6,0));
+  const std::string choose3 = ((const std::string)  tolua_tocppstring(tolua_S,7,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolChoose'", NULL);
+#endif
+  {
+   self->AddToolChoose(whereStr,script,choose0,choose1,choose2,choose3);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+   tolua_pushcppstring(tolua_S,(const char*)choose0);
+   tolua_pushcppstring(tolua_S,(const char*)choose1);
+   tolua_pushcppstring(tolua_S,(const char*)choose2);
+   tolua_pushcppstring(tolua_S,(const char*)choose3);
+  }
+ }
+ return 6;
+tolua_lerror:
+ return tolua_PX2Editor_EU_Manager_AddToolChoose02(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolChoose of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolChoose04
+static int tolua_PX2Editor_EU_Manager_AddToolChoose04(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,7,0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,8,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,9,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string script = ((const std::string)  tolua_tocppstring(tolua_S,3,0));
+  const std::string choose0 = ((const std::string)  tolua_tocppstring(tolua_S,4,0));
+  const std::string choose1 = ((const std::string)  tolua_tocppstring(tolua_S,5,0));
+  const std::string choose2 = ((const std::string)  tolua_tocppstring(tolua_S,6,0));
+  const std::string choose3 = ((const std::string)  tolua_tocppstring(tolua_S,7,0));
+  const std::string choose4 = ((const std::string)  tolua_tocppstring(tolua_S,8,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolChoose'", NULL);
+#endif
+  {
+   self->AddToolChoose(whereStr,script,choose0,choose1,choose2,choose3,choose4);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)script);
+   tolua_pushcppstring(tolua_S,(const char*)choose0);
+   tolua_pushcppstring(tolua_S,(const char*)choose1);
+   tolua_pushcppstring(tolua_S,(const char*)choose2);
+   tolua_pushcppstring(tolua_S,(const char*)choose3);
+   tolua_pushcppstring(tolua_S,(const char*)choose4);
+  }
+ }
+ return 7;
+tolua_lerror:
+ return tolua_PX2Editor_EU_Manager_AddToolChoose03(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolSeparater of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolSeparater00
+static int tolua_PX2Editor_EU_Manager_AddToolSeparater00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolSeparater'", NULL);
+#endif
+  {
+   self->AddToolSeparater(whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'AddToolSeparater'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: AddToolStretch of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_AddToolStretch00
+static int tolua_PX2Editor_EU_Manager_AddToolStretch00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  const std::string whereStr = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddToolStretch'", NULL);
+#endif
+  {
+   self->AddToolStretch(whereStr);
+   tolua_pushcppstring(tolua_S,(const char*)whereStr);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'AddToolStretch'.",&tolua_err);
  return 0;
 #endif
 }
@@ -4125,9 +4457,6 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
  tolua_beginmodule(tolua_S,NULL);
   tolua_cclass(tolua_S,"Edit","Edit","",NULL);
   tolua_beginmodule(tolua_S,"Edit");
-   tolua_function(tolua_S,"Initlize",tolua_PX2Editor_Edit_Initlize00);
-   tolua_function(tolua_S,"Terminate",tolua_PX2Editor_Edit_Terminate00);
-   tolua_function(tolua_S,"Reset",tolua_PX2Editor_Edit_Reset00);
    tolua_constant(tolua_S,"ET_SCENE",Edit::ET_SCENE);
    tolua_constant(tolua_S,"ET_TERRAIN",Edit::ET_TERRAIN);
    tolua_constant(tolua_S,"ET_UI",Edit::ET_UI);
@@ -4232,6 +4561,17 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_constant(tolua_S,"EMT_MAX_TYPE",EU_Manager::EMT_MAX_TYPE);
    tolua_function(tolua_S,"CreateEditMenu",tolua_PX2Editor_EU_Manager_CreateEditMenu00);
    tolua_function(tolua_S,"GetEidtMenuType",tolua_PX2Editor_EU_Manager_GetEidtMenuType00);
+   tolua_function(tolua_S,"SetLogicCanvas",tolua_PX2Editor_EU_Manager_SetLogicCanvas00);
+   tolua_function(tolua_S,"GetLogicCanvas",tolua_PX2Editor_EU_Manager_GetLogicCanvas00);
+   tolua_function(tolua_S,"AddTool",tolua_PX2Editor_EU_Manager_AddTool00);
+   tolua_function(tolua_S,"AddTool",tolua_PX2Editor_EU_Manager_AddTool01);
+   tolua_function(tolua_S,"AddToolChoose",tolua_PX2Editor_EU_Manager_AddToolChoose00);
+   tolua_function(tolua_S,"AddToolChoose",tolua_PX2Editor_EU_Manager_AddToolChoose01);
+   tolua_function(tolua_S,"AddToolChoose",tolua_PX2Editor_EU_Manager_AddToolChoose02);
+   tolua_function(tolua_S,"AddToolChoose",tolua_PX2Editor_EU_Manager_AddToolChoose03);
+   tolua_function(tolua_S,"AddToolChoose",tolua_PX2Editor_EU_Manager_AddToolChoose04);
+   tolua_function(tolua_S,"AddToolSeparater",tolua_PX2Editor_EU_Manager_AddToolSeparater00);
+   tolua_function(tolua_S,"AddToolStretch",tolua_PX2Editor_EU_Manager_AddToolStretch00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"EU_ResTree","EU_ResTree","UITree",tolua_collect_EU_ResTree);

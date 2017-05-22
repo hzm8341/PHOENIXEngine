@@ -3100,9 +3100,6 @@
 			<function name="GetMainCanvas" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="Canvas *" is_retrun="true" type_str="Canvas" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
-			<function name="GetEngineCanvas" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="Canvas *" is_retrun="true" type_str="Canvas" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
-			</function>
 			<function name="SetCursorType" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="CursorType ct" is_retrun="false" type_str="CursorType" valuename_str="ct" is_pointer="false" is_ref="false" is_const="false"/>

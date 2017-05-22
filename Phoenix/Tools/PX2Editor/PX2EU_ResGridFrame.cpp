@@ -24,6 +24,8 @@ EU_ResGridFrame::EU_ResGridFrame()
 		ctrl->SetCellSize(Sizef(90.0f, 90.0f));
 		ctrl->SetAutoAdjustContentSize(true);
 	}
+
+	_RefreshGridItems();
 }
 //----------------------------------------------------------------------------
 EU_ResGridFrame::~EU_ResGridFrame()
@@ -35,31 +37,28 @@ void EU_ResGridFrame::OnEvent(Event *event)
 {
 	if (EditorEventSpace::IsEqual(event, EditorEventSpace::RefreshRes))
 	{
-		const std::string &selectResDir = PX2_EDIT.GetSelectedResDir();
-		if (!selectResDir.empty())
-		{
-			mSelectPath = selectResDir;
-
-			RemoveAllItems();
-			RefreshItems(selectResDir, Dir::DIR_DIRS);
-			RefreshItems(selectResDir, Dir::DIR_FILES);
-		}
+		_RefreshGridItems();
 	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::ChangeResDir))
 	{
 		Edit::ChangeDirType cdt = event->GetData<Edit::ChangeDirType>();
 		if (cdt == Edit::CDT_TREE_REFRESH)
 		{
-			const std::string &selectResDir = PX2_EDIT.GetSelectedResDir();
-			if (!selectResDir.empty())
-			{
-				mSelectPath = selectResDir;
-
-				RemoveAllItems();
-				RefreshItems(selectResDir, Dir::DIR_DIRS);
-				RefreshItems(selectResDir, Dir::DIR_FILES);
-			}
+			_RefreshGridItems();
 		}
+	}
+}
+//----------------------------------------------------------------------------
+void EU_ResGridFrame::_RefreshGridItems()
+{
+	const std::string &selectResDir = PX2_EDIT.GetSelectedResDir();
+	if (!selectResDir.empty())
+	{
+		mSelectPath = selectResDir;
+
+		RemoveAllItems();
+		RefreshItems(selectResDir, Dir::DIR_DIRS);
+		RefreshItems(selectResDir, Dir::DIR_FILES);
 	}
 }
 //----------------------------------------------------------------------------
