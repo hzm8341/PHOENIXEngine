@@ -124,6 +124,8 @@ void Controlledable::AttachController (Controller* controller)
 
 	Event *ent = GraphicsES::CreateEventX(GraphicsES::AddObject,
 		"GraphicsES::AddObject");
+	ent->SetDataPointer0(controller);
+	ent->SetDataPointer1(this);
 	ent->SetData<AddObjectData>(data);
 	PX2_EW.BroadcastingLocalEvent(ent);
 
@@ -144,6 +146,7 @@ void Controlledable::DetachController (Controller* controller)
 			Event *ent = GraphicsES::CreateEventX(GraphicsES::RemoveObject,
 				"GraphicsES::RemoveObject");
 			ent->SetData<Object*>(controller);
+			ent->SetDataPointer0(controller);
 			PX2_EW.BroadcastingLocalEvent(ent);
 
 			return;
@@ -160,6 +163,7 @@ void Controlledable::DetachAllControllers ()
 		Event *ent = GraphicsES::CreateEventX(GraphicsES::RemoveObject,
 			"GraphicsES::RemoveObject");
 		ent->SetData<Object*>((Object*)mControllers[i]);
+		ent->SetDataPointer0((Object*)mControllers[i]);
 		PX2_EW.BroadcastingLocalEvent(ent);
 	}
 

@@ -3,6 +3,8 @@ package org.appplay.lib;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import org.appplay.ai.VoiceSDK;
+
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
@@ -24,7 +26,8 @@ class AppPlayRenderer implements GLSurfaceView.Renderer
     	
     	Log.d("appplay.lib", "AppPlayRenderer.onSurfaceCreated" + mWidth + " " + mHeight);
     	
-    	AppPlayNatives.nativeInit(mWidth, mHeight); 
+    	AppPlayNatives.nativeInit(mWidth, mHeight);    	
+		AppPlayNatives.nativeVoiceSetSDK(VoiceSDK.sPlatformStr);
     	
     	Log.d("appplay.lib", "end - nativeInit.");
     }

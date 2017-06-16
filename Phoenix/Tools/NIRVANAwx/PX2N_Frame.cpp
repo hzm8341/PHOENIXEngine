@@ -48,11 +48,10 @@ mRenderWindow(uiWindow)
 		SetName(name);
 		SetTitle(uiWindow->GetTitle());
 		SetSize(width, height);
-
-		if ("Main" == name)
-		{
-			MainFrame = this;
-		}
+	}
+	else
+	{
+		MainFrame = this;
 	}
 
 	mTimerID = PX2_EDIT_GETID;
@@ -89,6 +88,7 @@ void N_Frame::_Init()
 
 	mRenderViewBar = 0;
 	mNUIWindow = 0;
+	mIsTableSelect = false;
 
 	mIsOpeningRes = false;
 
@@ -121,9 +121,6 @@ void N_Frame::CreateRenderView(bool isCreateToolBar)
 			wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORIZONTAL);
 		renderViewToolBar->SetArtProvider(new PX2wxAuiToolBarArt(1));
 		renderViewToolBar->SetSize(wxSize(-1, 24));
-
-		//
-		renderViewToolBar->AddTool(0, "aa", wxBitmap());
 
 		renderViewToolBar->Realize();
 		mRenderViewBar = renderViewToolBar;
@@ -161,7 +158,9 @@ RenderView *N_Frame::GerRenderView()
 //----------------------------------------------------------------------------
 N_Frame::~N_Frame()
 {
-	PX2_EW.GoOut(this);
+	EventWorld *ew = EventWorld::GetSingletonPtr();
+	if (ew)
+		PX2_EW.GoOut(this);
 
 	if (mEditMenu)
 	{
@@ -180,6 +179,16 @@ N_Frame::~N_Frame()
 
 		mAuiManager->UnInit();
 		delete mAuiManager;
+	}
+}
+//----------------------------------------------------------------------------
+void N_Frame::SetTableSelect(bool select)
+{
+	mIsTableSelect = select;
+
+	if (mRenderView)
+	{
+		mRenderView->Show(mIsTableSelect);
 	}
 }
 //----------------------------------------------------------------------------
@@ -245,6 +254,61 @@ void N_Frame::OnEvent(Event *event)
 			mIsOpeningRes = true;
 			mOpeningResFilename = pathFilename;
 		}
+		else if (ProjectES::IsEqual(event, ProjectES::NewProject))
+		{
+			EnableMenusTag("Edit", true);
+
+			EnableMenusTag("Proj_Save", true);
+			EnableMenusTag("Proj_Close", true);
+
+			EnableMenusTag("Proj_Scene_NewScene", true);
+			EnableMenusTag("Proj_Scene_Open", true);
+			EnableMenusTag("Proj_Scene_Save", false);
+			EnableMenusTag("Proj_Scene_SaveAs", false);
+			EnableMenusTag("Proj_Scene_Close", false);
+		}
+		else if (ProjectES::IsEqual(event, ProjectES::LoadedProject))
+		{
+			EnableMenusTag("Edit", true);
+
+			EnableMenusTag("Proj_Save", true);
+			EnableMenusTag("Proj_Close", true);
+
+			EnableMenusTag("Proj_Scene_NewScene", true);
+			EnableMenusTag("Proj_Scene_Open", true);
+			EnableMenusTag("Proj_Scene_Save", false);
+			EnableMenusTag("Proj_Scene_SaveAs", false);
+			EnableMenusTag("Proj_Scene_Close", false);
+		}
+		else if (ProjectES::IsEqual(event, ProjectES::CloseProject))
+		{
+			EnableMenusTag("Edit", false);
+
+			EnableMenusTag("Proj_Save", false);
+			EnableMenusTag("Proj_Close", true);
+
+			EnableMenusTag("Proj_Scene_NewScene", false);
+			EnableMenusTag("Proj_Scene_Open", false);
+			EnableMenusTag("Proj_Scene_Save", false);
+			EnableMenusTag("Proj_Scene_SaveAs", false);
+			EnableMenusTag("Proj_Scene_Close", false);
+		}
+		else if (ProjectES::IsEqual(event, ProjectES::NewScene))
+		{
+			EnableMenusTag("Proj_Scene_NewScene", true);
+			EnableMenusTag("Proj_Scene_Open", true);
+			EnableMenusTag("Proj_Scene_Save", true);
+			EnableMenusTag("Proj_Scene_SaveAs", true);
+			EnableMenusTag("Proj_Scene_Close", true);
+		}
+		else if (ProjectES::IsEqual(event, ProjectES::CloseScene))
+		{
+			EnableMenusTag("Proj_Scene_NewScene", true);
+			EnableMenusTag("Proj_Scene_Open", true);
+			EnableMenusTag("Proj_Scene_Save", false);
+			EnableMenusTag("Proj_Scene_SaveAs", false);
+			EnableMenusTag("Proj_Scene_Close", false);
+		}
 		else if (ProjectES::IsEqual(event, ProjectES::Play))
 		{
 			std::vector<std::string> menuItems;
@@ -257,7 +321,6 @@ void N_Frame::OnEvent(Event *event)
 			menuItems.push_back("Proj_Scene_Save");
 			menuItems.push_back("Proj_Scene_SaveAs");
 			menuItems.push_back("Proj_Scene_Close");
-
 			_EnableMenus(menuItems, false);
 		}
 		else if (ProjectES::IsEqual(event, ProjectES::Stop))
@@ -282,6 +345,19 @@ void N_Frame::OnEvent(Event *event)
 		else if (EditorEventSpace::IsEqual(event, EditorEventSpace::N_Export))
 		{
 			mIsDoExport = true;
+		}
+		else if (EditorEventSpace::IsEqual(event, EditorEventSpace::SetCopyText))
+		{
+			const std::string &cpText = PX2_EDIT.GetCopyText();
+			OnResCopyResPath(cpText);
+		}
+		else if (EditorEventSpace::IsEqual(event, EditorEventSpace::TimeLine_SetInValue))
+		{
+			TimeLine_SelectCtrl_InValue();
+		}
+		else if (EditorEventSpace::IsEqual(event, EditorEventSpace::TimeLine_SetOutValue))
+		{
+			TimeLine_SelectCtrl_OutValue();
 		}
 	}
 	if (GraphicsES::IsEqual(event, GraphicsES::WindowMaxSize))
@@ -362,7 +438,7 @@ void N_Frame::OnEvent(Event *event)
 					}
 					else if (EED_AddMenu::IT_MAIN_ITEM == data.TheItemType)
 					{
-						AddMenuItem(menu, data.Title, data.Script, data.Tag);
+						AddMenuItem(menu, data.Title, data.Script, data.ScriptParam, data.Tag);
 					}
 					else if (EED_AddMenu::IT_MAIN_ITEMSPARATER == data.TheItemType)
 					{
@@ -401,7 +477,7 @@ void N_Frame::OnEvent(Event *event)
 						{
 							if (menu)
 							{
-								AddMenuItem(menu, data.Title, data.Script, data.Tag);
+								AddMenuItem(menu, data.Title, data.Script, data.ScriptParam, data.Tag);
 							}
 						}
 						else if (EED_AddMenu::IT_EDIT_ITEMSPARATER == data.TheItemType)
@@ -469,6 +545,13 @@ void N_Frame::OnEvent(Event *event)
 	}
 }
 //----------------------------------------------------------------------------
+void N_Frame::OnResCopyResPath(const std::string &text)
+{
+	wxTextDataObject *data = new wxTextDataObject(text);
+	wxTheClipboard->SetData(data);
+	wxTheClipboard->Close();
+}
+//----------------------------------------------------------------------------
 void _CreateScriptFile(const std::string &pathName, const std::string &subDir,
 	const std::string &scFileName, const std::string &defFunName)
 {
@@ -522,7 +605,7 @@ void N_Frame::DoNewProject()
 		bool isProjectFolderExist = PX2_RM.IsFileFloderExist("Data/" + pathName);
 		if (isProjectFolderExist)
 		{
-			MessageBox(PX2_LM_EDITOR.V("Notice"), PX2_LM_EDITOR.V("TipCreateProject"), 0);
+			MessageBox(PX2_LM_EDITOR.V("n_Notice"), PX2_LM_EDITOR.V("n_TipCreateProject"), 0);
 			return;
 		}
 		else
@@ -560,7 +643,7 @@ void N_Frame::DoOpenProject()
 	mIsOpenProject = false;
 
 	wxFileDialog dlg(this,
-		wxT("Open project"),
+		PX2_LM_EDITOR.GetValue("n_OpenProject"),
 		wxEmptyString,
 		wxEmptyString,
 		wxT("Project (*.px2proj)|*.px2proj"));
@@ -613,7 +696,7 @@ void N_Frame::DoOpenScene()
 	mIsOpenScene = false;
 
 	wxFileDialog dlg(this,
-		wxT("Open scene"),
+		PX2_LM_EDITOR.GetValue("n_OpenScene"),
 		wxEmptyString,
 		wxEmptyString,
 		wxT("scene (*.px2obj)|*.px2obj"));
@@ -642,7 +725,7 @@ void N_Frame::DoSaveScene()
 	else
 	{
 		wxFileDialog dlg(this,
-			wxT("Save scene"),
+			PX2_LM_EDITOR.GetValue("n_SaveScene"),
 			wxEmptyString,
 			wxEmptyString,
 			wxT("scene (*.px2obj)|*.px2obj"),
@@ -663,7 +746,7 @@ void N_Frame::DoSaveSceneAs()
 	mIsSaveSceneAs = false;
 
 	wxFileDialog dlg(this,
-		wxT("Save scene as"),
+		PX2_LM_EDITOR.GetValue("n_SaveSceneAs"),
 		wxEmptyString,
 		wxEmptyString,
 		wxT("scene (*.px2obj)|*.px2obj"),
@@ -689,8 +772,8 @@ void N_Frame::DoExit()
 {
 	mIsExit = false;
 
-	int ret = wxMessageBox(PX2_LM_EDITOR.GetValue("Notice"), PX2_LM_EDITOR.GetValue("Notice"),
-		wxYES_NO);
+	int ret = wxMessageBox(PX2_LM_EDITOR.GetValue("n_Tip0"),
+		PX2_LM_EDITOR.GetValue("n_Notice"), wxYES_NO);
 	if (wxYES == ret)
 	{
 		wxExit();
@@ -702,13 +785,13 @@ void N_Frame::OnImport()
 	int numObjs = PX2_SELECTM_E->GetNumObjects();
 	if (1 != numObjs)
 	{
-		PX2EU_MAN.PlayTip(PX2_LM_EDITOR.GetValue("Notice"),
-			PX2_LM_EDITOR.GetValue("TipNotHasParent"));
+		PX2EU_MAN.PlayTip(PX2_LM_EDITOR.GetValue("n_Notice"),
+			PX2_LM_EDITOR.GetValue("n_TipCreateProject"));
 		return;
 	}
 
 	wxFileDialog dlg(this,
-		PX2_LM_EDITOR.GetValue("Import"),
+		PX2_LM_EDITOR.GetValue("n_Import"),
 		wxEmptyString,
 		wxEmptyString,
 		wxT("object (*.px2obj)|*.px2obj|model (*.PX2OBJ)|*.PX2OBJ"));
@@ -727,13 +810,13 @@ void N_Frame::OnExport()
 	Object *obj = PX2_SELECTM_E->GetFirstObject();
 	if (1 != numObjs)
 	{
-		PX2EU_MAN.PlayTip(PX2_LM_EDITOR.GetValue("Notice"),
-			PX2_LM_EDITOR.GetValue("TipNotSelectAObject"));
+		PX2EU_MAN.PlayTip(PX2_LM_EDITOR.GetValue("n_Notice"),
+			PX2_LM_EDITOR.GetValue("n_TipNotSelectAObject"));
 		return;
 	}
 
 	wxFileDialog dlg(this,
-		PX2_LM_EDITOR.GetValue("Export"),
+		PX2_LM_EDITOR.GetValue("n_Export"),
 		wxT("Data/"),
 		wxEmptyString,
 		wxT("object (*.px2obj)|*.px2obj|model (*.PX2OBJ)|*.PX2OBJ"),
@@ -749,12 +832,6 @@ void N_Frame::OnExport()
 //----------------------------------------------------------------------------
 void N_Frame::OnSize(wxSizeEvent& e)
 {
-	std::string name = GetName();
-	if ("ResGridRenderWindow" == name)
-	{
-
-	}
-
 	e.Skip();
 }
 //----------------------------------------------------------------------------

@@ -72,6 +72,12 @@ namespace PX2
 		void ShowWindowUserLeaveUp(bool show);
 		bool IsWindowUserLeaveUpShow() const;
 
+		// InspectorView
+		void SetInspectorView(int val);
+
+		// ProjectTree
+		void SetProjectTreeLevel(int level);
+
 		virtual void Visit(Object *obj, int info);
 		virtual void OnEvent(Event *event);
 
@@ -136,16 +142,6 @@ namespace PX2
 			const std::string &choose4 = "");
 		void AddToolSeparater(const std::string &whereStr);
 		void AddToolStretch(const std::string &whereStr);
-
-		// Help
-	public:
-		bool AddOpenCombo(UIComboBox *comboBox);
-		bool IsHasOpenCombo(UIComboBox *comboBox) const;
-		bool RemoveOpenCombo(UIComboBox *comboBox);
-		int GetNumCombos() const;
-
-	protected:
-		std::vector<UIComboBox*> mOpenCombos;
 	};
 
 #define PX2EU_MAN EU_Manager::GetSingleton()

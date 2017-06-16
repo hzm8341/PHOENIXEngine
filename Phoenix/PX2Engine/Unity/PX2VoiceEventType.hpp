@@ -10,7 +10,13 @@ namespace PX2
 {
 
 	PX2_DECLARE_EVENT_BEGIN(PX2_ENGINE_ITEM VoiceSDKSpace)
-	PX2_EVENT(Results)
+	PX2_EVENT(SpeakStart)
+	PX2_EVENT(SpeakPause)
+	PX2_EVENT(SpeakCancel)
+	PX2_EVENT(SpeakFinish)
+	PX2_EVENT(RecordStart)
+	PX2_EVENT(RecordEnd)
+	PX2_EVENT(RecognizeResults)
 	PX2_DECLARE_EVENT_END(VoiceSDKSpace)
 
 	class PX2_ENGINE_ITEM VoiceData

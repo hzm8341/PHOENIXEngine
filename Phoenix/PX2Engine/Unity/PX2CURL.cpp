@@ -240,6 +240,7 @@ bool CurlObj::Download(const std::string &filename,
 	if (mFile)
 	{
 		fclose(mFile);
+		mFile = 0;
 	}
 
 	return true;

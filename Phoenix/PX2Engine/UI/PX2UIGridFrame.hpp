@@ -26,6 +26,8 @@ namespace PX2
 
 		void SetSliderPercent(float percent);
 
+		UIFrame *GetContentFrame();
+
 		virtual void OnSizeChanged();
 
 	protected:

@@ -52,9 +52,6 @@ EU_CanvasStageSimu::~EU_CanvasStageSimu()
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::SetActivate(bool act)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Show(act);
 
 	Canvas::SetActivate(act);
@@ -62,72 +59,46 @@ void EU_CanvasStageSimu::SetActivate(bool act)
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnLeftDown(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnLeftDown(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnLeftUp(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnLeftUp(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnLeftDClick(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnLeftDClick(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnMiddleDown(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnMiddleDown(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnMiddleUp(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnMiddleUp(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnMouseWheel(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnMouseWheel(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnRightDown(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnRightDown(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnRightUp(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnRightUp(data);
 }
 //----------------------------------------------------------------------------
 void EU_CanvasStageSimu::OnMotion(const PickInputData &data)
 {
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
 
 	Canvas::OnMotion(data);
 }

@@ -96,7 +96,9 @@ mShowTerrainGrid(0)
 //-----------------------------------------------------------------------------
 TerrainMakingPanel::~TerrainMakingPanel()
 {
-	PX2_EW.GoOut(this);
+	EventWorld *ew = EventWorld::GetSingletonPtr();
+	if (ew)
+		PX2_EW.GoOut(this);
 }
 //-----------------------------------------------------------------------------
 void TerrainMakingPanel::OnChoice(wxCommandEvent &event)
@@ -514,9 +516,9 @@ void TerrainMakingPanel::OnCheckBox(wxCommandEvent &event)
 //-----------------------------------------------------------------------------
 void TerrainMakingPanel::OnEvent(PX2::Event *event)
 {
-	//if (EditEventSpace::IsEqual(event, EditEventSpace::SelectTerrainPage))
-	//{
-	//	RefreshSelectPage();
-	//}
+	if (EditorEventSpace::IsEqual(event, EditorEventSpace::SelectTerrainPage))
+	{
+		RefreshSelectPage();
+	}
 }
 //-----------------------------------------------------------------------------

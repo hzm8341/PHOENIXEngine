@@ -20,6 +20,7 @@ namespace PX2
 	PX2_EVENT(WindowSetPosition)
 	PX2_EVENT(WindowSetCursorType)
 	PX2_EVENT(CameraNodeChanged)
+	PX2_EVENT(GeneralString)
 	PX2_DECLARE_EVENT_END(GraphicsES)
 
 }

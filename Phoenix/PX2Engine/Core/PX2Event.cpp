@@ -11,7 +11,9 @@ mSender(0),
 mReceiver(0),
 mDelayTime(0.0f),
 mDelayTiming(0.0f),
-mIsDoDelay(false)
+mIsDoDelay(false),
+mDataPointer0(0),
+mDataPointer1(0)
 {
 	mEventChannel.FillUserChannel();
 }
@@ -125,6 +127,26 @@ const std::string &Event::GetDataStr1() const
 const std::string &Event::GetDataStr2() const
 {
 	return mDataStr2;
+}
+//----------------------------------------------------------------------------
+void Event::SetDataPointer0(void *ptr)
+{
+	mDataPointer0 = ptr;
+}
+//----------------------------------------------------------------------------
+void *Event::GetDataPointer0()
+{
+	return mDataPointer0;
+}
+//----------------------------------------------------------------------------
+void Event::SetDataPointer1(void *ptr)
+{
+	mDataPointer1 = ptr;
+}
+//----------------------------------------------------------------------------
+void *Event::GetDataPointer1()
+{
+	return mDataPointer1;
 }
 //----------------------------------------------------------------------------
 bool Event::IsSystemEvent () const

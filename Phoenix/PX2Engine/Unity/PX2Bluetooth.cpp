@@ -2,6 +2,7 @@
 
 #include "PX2Bluetooth.hpp"
 #include "PX2StringTokenizer.hpp"
+#include "PX2Log.hpp"
 
 #if defined(__ANDROID__)
 #include "AppPlayJNI.hpp"
@@ -40,7 +41,7 @@ bool Bluetooth::IsConnected() const
 //----------------------------------------------------------------------------
 std::vector<std::string> Bluetooth::GetPairedDevices()
 {
-	std::vector<std::string> devices;
+	mPairedDevices.clear();
 
 	std::string allDeviceStr;
 
@@ -51,12 +52,25 @@ std::vector<std::string> Bluetooth::GetPairedDevices()
 	for (int i = 0; i < token.Count(); i++)
 	{
 		std::string deviceStr = token[i];
-		devices.push_back(deviceStr);
+		mPairedDevices.push_back(deviceStr);
 	}
 
 #endif
 
-	return devices;
+	return mPairedDevices;
+}
+//----------------------------------------------------------------------------
+int Bluetooth::GetNumPairedDevices() const
+{
+	return (int)mPairedDevices.size();
+}
+//----------------------------------------------------------------------------
+const std::string &Bluetooth::GetPairedDevice(int i) const
+{
+	if (0 <= i && i < (int)mPairedDevices.size())
+		return mPairedDevices[i];
+
+	return 0;
 }
 //----------------------------------------------------------------------------
 void Bluetooth::DisConnect()
@@ -79,9 +93,10 @@ void Bluetooth::Send(const std::string &str, bool isAppendCRLF)
 {
 	PX2_UNUSED(str);
 	PX2_UNUSED(isAppendCRLF);
+	PX2_LOG_INFO("Bluetooth Send %d Str %s", (int)str.length(), str.c_str());
 
 #if defined(__ANDROID__)
-	BluetoothSend(str.c_str(), isAppendCRLF);
+	BluetoothSend(str.c_str(), (int)str.length(), isAppendCRLF);
 #endif
 }
 //----------------------------------------------------------------------------
@@ -101,32 +116,37 @@ void Bluetooth::CancelDiscovery()
 //----------------------------------------------------------------------------
 void Bluetooth::OnConnected()
 {
-	Event *ent = BluetoothES::CreateEventX(BluetoothES::OnConnected);
+	Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnConnected);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void Bluetooth::OnConnectFailed()
 {
-	Event *ent = BluetoothES::CreateEventX(BluetoothES::OnConnectFailed);
+	Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnConnectFailed);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void Bluetooth::OnDisConnected()
 {
-	Event *ent = BluetoothES::CreateEventX(BluetoothES::OnDisConnected);
+	Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnDisConnected);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void Bluetooth::OnDisocveryNewDevice(const std::string &deviceStr)
 {
-	Event *ent = BluetoothES::CreateEventX(BluetoothES::OnDisocveryNewDevice);
+	Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnDisocveryNewDevice);
+	ent->SetDataStr0(deviceStr);
 	ent->SetData<std::string>(deviceStr);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void Bluetooth::OnDiscoveryFinished()
 {
-	Event *ent = BluetoothES::CreateEventX(BluetoothES::OnDiscoveryFinished);
+	Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnDiscoveryFinished);
 	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Bluetooth::OnReceive(const std::string &recvBuffer)
+{
 }
 //----------------------------------------------------------------------------

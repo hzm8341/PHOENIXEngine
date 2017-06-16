@@ -31,4 +31,13 @@
 // gpio
 #include "PX2GPIO.hpp"
 
+// serial
+#include "PX2Serial.hpp"
+
+// arduino
+#include "PX2Arduino.hpp"
+
+// VoiceSDK
+#include "PX2VoiceSDK.hpp"
+
 #endif

@@ -19,9 +19,12 @@ namespace PX2
 		FBXImporter();
 		~FBXImporter();
 
+		static FBXImporter* New();
+		static void Delete(FBXImporter *importer);
+
 		bool Import(const std::string &filename);
-		Node *GetScene();
-		void ClearScene();
+		void Clear();
+		Node *GetPX2Node();
 
 	protected:
 		void ProcessSkeletonHierarchy(FbxNode* inRootNode);
@@ -63,10 +66,11 @@ namespace PX2
 
 		FbxManager *mFbxManager;
 		FbxImporter *mFbxImporter;
-		FbxScene *mFbxScene;
 		FbxIOSettings *mFbxIOSettings;
 
-		Node *mPX2Scene;
+		FbxScene *mFbxScene;
+
+		NodePtr mPX2Scene;
 		std::map<FbxNode*, Node*> mFbxNode2Nodes;
 		std::map<FbxMesh*, std::vector<TriMesh*> > mFbxMesh2Meshes;
 		std::map<TriMesh*, Mtl*> mTriMesh2Mtls;

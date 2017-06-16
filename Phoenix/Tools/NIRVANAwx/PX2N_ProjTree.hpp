@@ -74,7 +74,21 @@ namespace NA
 
 		ProjTreeItem *mItemUI;
 
+		// edit menu
+	public:
+		wxMenu *CreateEditMenu();
+		void PopUpRightMenu(int x, int y);
+
+		wxMenu *AddSubMenuItem(wxMenu *menu, const std::string &title);
+		wxMenuItem *AddMenuItem(wxMenu *menu,
+			const std::string &title,
+			const std::string &script,
+			const std::string &scriptParam,
+			const std::string &tag = "");
+		void AddSeparater(wxMenu *menu);
+
 		wxMenu *mEditMenu;
+		std::map<std::string, wxMenu*> mMenuMap_Edit;
 	};
 
 }

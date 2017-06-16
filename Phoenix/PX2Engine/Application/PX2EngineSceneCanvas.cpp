@@ -6,6 +6,7 @@
 #include "PX2ProjectEventData.hpp"
 #include "PX2Project.hpp"
 #include "PX2GraphicsRoot.hpp"
+#include "PX2ScriptManager.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Canvas, EngineSceneCanvas);
@@ -30,6 +31,8 @@ mIsBloomConfigChanged(true)
 
 	SetPickPosRecal(true);
 	SetName("EngineSceneCanvas");
+
+	PX2_SC_LUA->SetUserTypePointer("PX2_ENGINESCENECANVAS", "EngineSceneCanvas", this);
 }
 //----------------------------------------------------------------------------
 EngineSceneCanvas::~EngineSceneCanvas()

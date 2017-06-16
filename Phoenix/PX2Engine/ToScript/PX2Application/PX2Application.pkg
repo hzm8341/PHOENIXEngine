@@ -8,19 +8,28 @@
 		enum PlatformType
 		{
 			PLT_WINDOWS,
+			PLT_LINUX,
 			PLT_ANDROID,
 			PLT_IOS,
 			PLT_MAX_TYPE
 		};
 		PlatformType GetPlatformType() const;
 
+		void SetQuit(bool quit);
+		bool IsQuit() const;	
+	
+	public:
+		const std::string &GetHostName() const;
+	
 		EngineServer *GetEngineServer();
-		EngineClientConnector *GetEngineClientConnector();		
+		EngineClientConnector *GetEngineClientConnector();	
 		
+		UDPServer *CreateEngineUDPServerClient();
+		UDPServer *GetEngineUDPServerClient();
+	
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
 		GeneralServer *GetGeneralServer();
-
 		GeneralClientConnector *CreateGeneralClientConnector();
 		GeneralClientConnector *GetGeneralClientConnector();
 
@@ -136,7 +145,7 @@
 		void Menu_Main_AddSubItem(const std::string &parentName, const std::string &name,
 			const std::string &title);
 		void Menu_Main_AddItem(const std::string &parentName, const std::string &name,
-			const std::string &title, const std::string &script,
+			const std::string &title, const std::string &script, const std::string &scriptParam="",
 			const std::string &tag = "");
 		void Menu_Main_AddItemSeparater(const std::string &parentName);
 
@@ -148,7 +157,8 @@
 			const std::string &parentName, const std::string &name,
 			const std::string &title,
 			const std::string &script,
-			const std::string &tag = "");
+			const std::string &scriptParam="",
+			const std::string &tag="");
 		void Menu_Edit_AddItemSeparater(const std::string &whe,
 			const std::string &parentName);
 		void Menu_Edit_EndPopUp(const std::string &whe,

@@ -7,6 +7,7 @@
 #include "PX2N_InspView.hpp"
 #include "PX2N_LogView.hpp"
 #include "PX2N_TextView.hpp"
+#include "PX2N_CntView.hpp"
 #include "PX2wxDockArt.hpp"
 #include "PX2StringHelp.hpp"
 #include "PX2SelectionManager.hpp"
@@ -125,6 +126,23 @@ void N_Frame::InitlizeAUI()
 	}
 
 	mAuiManager->Update();
+}
+//-----------------------------------------------------------------------------
+void N_Frame::InitMainFrameItems()
+{
+	std::vector<std::string> menuItems;
+	menuItems.push_back("Proj_NewProject");
+	menuItems.push_back("Proj_Save");
+	menuItems.push_back("Proj_Close");
+	menuItems.push_back("Proj_Scene_NewScene");
+	menuItems.push_back("Proj_Scene_Open");
+	menuItems.push_back("Proj_Scene_Save");
+	menuItems.push_back("Proj_Scene_SaveAs");
+	menuItems.push_back("Proj_Scene_Close");
+
+	EnableMenusTag("Edit", false);
+
+	_EnableMenus(menuItems, false);
 }
 //-----------------------------------------------------------------------------
 void N_Frame::_CreateMainToolBar()
@@ -265,6 +283,13 @@ void N_Frame::_CreateViewInspConsole(bool isTopStyle)
 	obj2.TheWindow = mTextView;
 	windowObjs.push_back(obj2);
 
+	mConnectView = new ConnectView(this);
+	WindowObj obj3;
+	obj3.Name = "CONNECT";
+	obj3.Caption = PX2_LM_EDITOR.GetValue("n_Connect");
+	obj3.TheWindow = mConnectView;
+	windowObjs.push_back(obj3);
+
 	_CreateView(windowObjs, "INSPECTORLOG", "INSPECTORLOG",
 		wxAuiPaneInfo().DefaultPane().Right(), isTopStyle);
 }
@@ -273,7 +298,7 @@ void N_Frame::_CreateViewTimeLine(bool isTopStyle)
 {
 	RenderWindow *rw = new0 RenderWindow();
 	PX2_GR.AddRenderWindow("TimeLine", rw);
-	rw->SetName("TimeLIne");
+	rw->SetName("TimeLine");
 	
 	Canvas *canva = new0 Canvas();
 	rw->SetMainCanvas(canva);

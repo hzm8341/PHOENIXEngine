@@ -99,20 +99,24 @@ void RenderView::OnTimer(wxTimerEvent& event)
 		std::string name = GetName();
 		if ("Main" == name)
 		{
-			PX2_EDIT.IsAltDown = wxGetKeyState(WXK_ALT);
-			PX2_EDIT.IsCtrlDown = wxGetKeyState(WXK_CONTROL);
-			PX2_EDIT.IsShiftDown = wxGetKeyState(WXK_SHIFT);
+			Edit *edit = Edit::GetSingletonPtr();
+			if (edit)
+			{
+				PX2_EDIT.IsAltDown = wxGetKeyState(WXK_ALT);
+				PX2_EDIT.IsCtrlDown = wxGetKeyState(WXK_CONTROL);
+				PX2_EDIT.IsShiftDown = wxGetKeyState(WXK_SHIFT);
 
-			PX2_EDIT.IsKeyDown_W = wxGetKeyState((wxKeyCode)87) || wxGetKeyState((wxKeyCode)119);
-			PX2_EDIT.IsKeyDown_S = wxGetKeyState((wxKeyCode)83) || wxGetKeyState((wxKeyCode)115);
-			PX2_EDIT.IsKeyDown_A = wxGetKeyState((wxKeyCode)65) || wxGetKeyState((wxKeyCode)97);
-			PX2_EDIT.IsKeyDown_D = wxGetKeyState((wxKeyCode)68) || wxGetKeyState((wxKeyCode)100);
+				PX2_EDIT.IsKeyDown_W = wxGetKeyState((wxKeyCode)87) || wxGetKeyState((wxKeyCode)119);
+				PX2_EDIT.IsKeyDown_S = wxGetKeyState((wxKeyCode)83) || wxGetKeyState((wxKeyCode)115);
+				PX2_EDIT.IsKeyDown_A = wxGetKeyState((wxKeyCode)65) || wxGetKeyState((wxKeyCode)97);
+				PX2_EDIT.IsKeyDown_D = wxGetKeyState((wxKeyCode)68) || wxGetKeyState((wxKeyCode)100);
 
-			PX2_EDIT.IsLeftMouseDown = wxGetMouseState().LeftIsDown();
-			PX2_EDIT.IsRightMouseDown = wxGetMouseState().RightIsDown();
-			PX2_EDIT.IsMidMouseDown = wxGetMouseState().MiddleIsDown();
+				PX2_EDIT.IsLeftMouseDown = wxGetMouseState().LeftIsDown();
+				PX2_EDIT.IsRightMouseDown = wxGetMouseState().RightIsDown();
+				PX2_EDIT.IsMidMouseDown = wxGetMouseState().MiddleIsDown();
 
-			PX2_APP.Update();
+				PX2_APP.Update();
+			}
 		}
 	}
 }
@@ -161,7 +165,6 @@ PX2::APoint wxPointToAPointRightAxis(wxPoint &point, wxSize &size)
 void RenderView::OnLeftDown(wxMouseEvent& e)
 {
 	SetFocus();
-	CaptureMouse();
 
 	wxPoint mousePos = e.GetPosition();
 	APoint pos = wxPointToAPointRightAxis(mousePos, mSize);
@@ -169,32 +172,41 @@ void RenderView::OnLeftDown(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(0, true);
-		PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(0, true);
+			PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_LEFT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_LEFT, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
 void RenderView::OnLeftUp(wxMouseEvent& e)
 {
-	if (this == GetCapture())
-		ReleaseMouse();
-
 	wxPoint mousePos = e.GetPosition();
 	APoint pos = wxPointToAPointRightAxis(mousePos, mSize);
 
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(0, false);
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_LEFT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(0, false);
+			PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_LEFT, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_LEFT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_LEFT, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -208,22 +220,26 @@ void RenderView::OnLeftDoubleClick(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(0, true);
-
-		PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, pos);
-		PX2_INPUTMAN.GetDefaultListener()->MouseDoublePressed(MBID_LEFT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(0, true);
+			PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, pos);
+			PX2_INPUTMAN.GetDefaultListener()->MouseDoublePressed(MBID_LEFT, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_LEFT, pos);
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseDoublePressed(MBID_LEFT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_LEFT, pos);
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseDoublePressed(MBID_LEFT, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
 void RenderView::OnMiddleDown(wxMouseEvent& e)
 {
 	SetFocus();
-	CaptureMouse();
 
 	wxPoint mousePos = e.GetPosition();
 	APoint pos = wxPointToAPointRightAxis(mousePos, mSize);
@@ -231,32 +247,41 @@ void RenderView::OnMiddleDown(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(2, true);
-		PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_MIDDLE, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(2, true);
+			PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_MIDDLE, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_MIDDLE, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_MIDDLE, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
 void RenderView::OnMiddleUp(wxMouseEvent& e)
 {
-	if (this == GetCapture())
-		ReleaseMouse();
-
 	wxPoint mousePos = e.GetPosition();
 	APoint pos = wxPointToAPointRightAxis(mousePos, mSize);
 
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(2, false);
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(2, false);
+			PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_MIDDLE, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_MIDDLE, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -268,12 +293,18 @@ void RenderView::OnMiddleDoubleClick(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(2, true);
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(2, true);
+			PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_MIDDLE, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_MIDDLE, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -286,18 +317,23 @@ void RenderView::OnMouseWheel(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		PX2_INPUTMAN.GetDefaultListener()->MouseWheeled(delta, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetDefaultListener()->MouseWheeled(delta, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseWheeled(delta, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseWheeled(delta, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
 void RenderView::OnRightDown(wxMouseEvent& e)
 {
 	SetFocus();
-	CaptureMouse();
 
 	wxPoint mousePos = e.GetPosition();
 	APoint pos = wxPointToAPointRightAxis(mousePos, mSize);
@@ -305,12 +341,18 @@ void RenderView::OnRightDown(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(1, true);
-		PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_RIGHT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(1, true);
+			PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_RIGHT, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_RIGHT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MousePressed(MBID_RIGHT, pos);
+		}
 	}
 
 	SetFocus();
@@ -318,21 +360,24 @@ void RenderView::OnRightDown(wxMouseEvent& e)
 //----------------------------------------------------------------------------
 void RenderView::OnRightUp(wxMouseEvent& e)
 {
-	if (this == GetCapture())
-		ReleaseMouse();
-
 	wxPoint mousePos = e.GetPosition();
 	APoint pos = wxPointToAPointRightAxis(mousePos, mSize);
 
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(1, false);
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(1, false);
+			PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_RIGHT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_RIGHT, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -344,13 +389,18 @@ void RenderView::OnRightDoubleClick(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		RenderWindow::SetMouseDown(1, true);
-
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			RenderWindow::SetMouseDown(1, true);
+			PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT, pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_RIGHT, pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseReleased(MBID_RIGHT, pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -362,11 +412,17 @@ void RenderView::OnMotion(wxMouseEvent& e)
 	std::string name = GetName();
 	if ("Main" == name)
 	{
-		PX2_INPUTMAN.GetDefaultListener()->MouseMoved(pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetDefaultListener()->MouseMoved(pos);
+		}
 	}
 	else
 	{
-		PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseMoved(pos);
+		if (InputManager::GetSingletonPtr())
+		{
+			PX2_INPUTMAN.GetInputListener(mRenderWindowID)->MouseMoved(pos);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -375,11 +431,117 @@ KeyCode ConverKeyCode(int wParam)
 	KeyCode code = KC_UNASSIGNED;
 	if (0x41 <= wParam && wParam <= 0x5A)
 	{
-		code = (KeyCode)(KC_A + (wParam - 0x41));
+		int dist = wParam - 0x41;
+
+		if (0 == dist)
+			code = KC_A;
+		else if (1 == dist)
+			code = KC_B;
+		else if (2 == dist)
+			code = KC_C;
+		else if (3 == dist)
+			code = KC_D;
+		else if (4 == dist)
+			code = KC_E;
+		else if (5 == dist)
+			code = KC_F;
+		else if (6 == dist)
+			code = KC_G;
+		else if (7 == dist)
+			code = KC_H;
+		else if (8 == dist)
+			code = KC_I;
+		else if (9 == dist)
+			code = KC_J;
+		else if (10 == dist)
+			code = KC_K;
+		else if (11 == dist)
+			code = KC_L;
+		else if (12 == dist)
+			code = KC_M;
+		else if (13 == dist)
+			code = KC_N;
+		else if (14 == dist)
+			code = KC_O;
+		else if (15 == dist)
+			code = KC_P;
+		else if (16 == dist)
+			code = KC_Q;
+		else if (17 == dist)
+			code = KC_R;
+		else if (18 == dist)
+			code = KC_S;
+		else if (19 == dist)
+			code = KC_T;
+		else if (20 == dist)
+			code = KC_U;
+		else if (21 == dist)
+			code = KC_V;
+		else if (22 == dist)
+			code = KC_W;
+		else if (23 == dist)
+			code = KC_X;
+		else if (24 == dist)
+			code = KC_Y;
+		else if (25 == dist)
+			code = KC_Z;
 	}
 	else if (0x61 <= wParam && wParam <= 0x7A)
 	{
-		code = (KeyCode)(KC_A + (wParam - 0x61));
+		int dist = wParam - 0x61;
+
+		if (0 == dist)
+			code = KC_A;
+		else if (1 == dist)
+			code = KC_B;
+		else if (2 == dist)
+			code = KC_C;
+		else if (3 == dist)
+			code = KC_D;
+		else if (4 == dist)
+			code = KC_E;
+		else if (5 == dist)
+			code = KC_F;
+		else if (6 == dist)
+			code = KC_G;
+		else if (7 == dist)
+			code = KC_H;
+		else if (8 == dist)
+			code = KC_I;
+		else if (9 == dist)
+			code = KC_J;
+		else if (10 == dist)
+			code = KC_K;
+		else if (11 == dist)
+			code = KC_L;
+		else if (12 == dist)
+			code = KC_M;
+		else if (13 == dist)
+			code = KC_N;
+		else if (14 == dist)
+			code = KC_O;
+		else if (15 == dist)
+			code = KC_P;
+		else if (16 == dist)
+			code = KC_Q;
+		else if (17 == dist)
+			code = KC_R;
+		else if (18 == dist)
+			code = KC_S;
+		else if (19 == dist)
+			code = KC_T;
+		else if (20 == dist)
+			code = KC_U;
+		else if (21 == dist)
+			code = KC_V;
+		else if (22 == dist)
+			code = KC_W;
+		else if (23 == dist)
+			code = KC_X;
+		else if (24 == dist)
+			code = KC_Y;
+		else if (25 == dist)
+			code = KC_Z;
 	}
 	else if (WXK_BACK == wParam)
 	{

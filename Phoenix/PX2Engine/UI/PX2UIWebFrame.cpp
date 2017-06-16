@@ -677,7 +677,6 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 		mImagePicBox->GetUIPicBox()->SetTexture(mTex2D);
 
 		isNeedReGenTex = false;
-		mIsUpdateToTex = true;
 	}
 
 #if defined (__ANDROID__) 

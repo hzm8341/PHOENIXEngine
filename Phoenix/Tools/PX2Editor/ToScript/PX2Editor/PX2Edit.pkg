@@ -47,11 +47,27 @@
 		
 		// Select
 	public:
+		void FocusOnSelection();
 		bool DeleteSelection();
 		
 	public:
+		enum ChangeDirType
+		{
+			CDT_ONLYSELECT,
+			CDT_TREE_REFRESH,
+			CDT_GRID_REFRESH,
+			CDT_MAX_TYPE
+		};
+		void ChangeSelectResDir(const std::string &path, ChangeDirType cdt);
 		const std::string &GetSelectedResDir() const;
+		void SetSelectPath_ChildFilenames(const std::vector<std::string> &filenamess);
+		void SetSelectPath_ChildPaths(const std::vector<std::string> &paths);
+		const std::vector<std::string> &GetSelectPath_ChildFilenames() const;
+		const std::vector<std::string> &GetSelectPath_ChildPaths() const;
+
+		void SetSelectedResource(const SelectResData &data);
 		const SelectResData &GetSelectedResource() const;
+		void CopySelectResourcePath();
 		
 	public:
 		void FindSelectInProjTree();
@@ -69,6 +85,8 @@
 		void CopyObject();
 		void PasteCopyedObject();
 		void CloneSelectedObject();
+		void SetCopyText(const std::string &copyText);
+		const std::string &GetCopyText() const;
 
 		// anim
 	public:
@@ -85,6 +103,10 @@
 		void MakeSelectTimeLineEdit();
 		void TimeLine_UIGroup_Delete();
 		void TimeLine_UIGroup_DeleteAll();
+		void TimeLine_AddPoint();
+		void TimeLine_DeletePoint();
+		void TimeLine_SetInValue();
+		void TimeLine_SetOutValue();
 		
 		// opened
 	public:
@@ -99,6 +121,7 @@
 		void BroadCastEditorEventUp();
 		void BroadCastEditorEventDown();
 		void BroadCastEditorEventPlayInWindow();		
+		void BroadCastEditorSaveText();
 		void OpenResIn(const std::string &pathFilename);
 		void OpenResOut(const std::string &pathFilename);
 	};

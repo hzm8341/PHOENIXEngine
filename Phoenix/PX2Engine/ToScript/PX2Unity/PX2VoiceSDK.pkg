@@ -1,0 +1,12 @@
+// PX2VoiceSDK.pkg
+	
+	class VoiceSDK
+	{
+	public:
+		const std::string &GetVoiceSDK() const;
+
+		void StartVoiceListening();
+		void EndVoiceListening();
+
+		void Speak(const std::string &text);
+	};

@@ -112,6 +112,12 @@ namespace PX2
 		void Break();
 		void Linear();
 		void Constant();
+
+	public:
+		void AddPoint();
+		void DeletePoint();
+		void SetInValue();
+		void SetOutValue();
 	};
 
 }

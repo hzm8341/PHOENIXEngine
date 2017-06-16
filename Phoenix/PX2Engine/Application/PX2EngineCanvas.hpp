@@ -32,6 +32,8 @@ namespace PX2
 
 		void SetDebugText(const std::string &debugText);
 		UIFrame *GetEngineFrame();
+		UIList *GetEngineUDPNeighborList();
+		UIList *GetEngineBluetoothList();
 		UIList *GetEngineInfoList();
 
 	protected:
@@ -51,6 +53,12 @@ namespace PX2
 
 		UIFramePtr mEngineFrame;
 		UICollapsePanelPtr mEngineCollapsePanel;
+		// UDP
+		UIListPtr mEngineUDPNeighbors;
+		// Bluetooth
+		UIButtonPtr mEngineBluetoothButConnect;
+		UIListPtr mEngineBluetoothList;
+		// info
 		UIListPtr mEngineInfoList;
 
 		int mFPS;

@@ -12,7 +12,6 @@ void v_std_lightshadow
 	in float3 modelNormal : NORMAL,
     in float2 modelTCoord0 : TEXCOORD0,
     out float4 clipPosition : POSITION,
-	out float4 vertexColor : COLOR,
     out float2 vertexTCoord0 : TEXCOORD0,
 	out float2 vertexTCoord1 : TEXCOORD1,
 	out float4 vertexTCoord2 : TEXCOORD2,
@@ -88,7 +87,6 @@ float GetDepth(float4 texCord, int i, int j)
 
 void p_std_lightshadow
 (
-	in float4 vertexColor : COLOR,
     in float2 vertexTCoord0 : TEXCOORD0,
 	in float2 vertexTCoord1 : TEXCOORD1,
 	in float4 vertexTCoord2 : TEXCOORD2,

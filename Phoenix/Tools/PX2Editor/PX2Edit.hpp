@@ -168,6 +168,7 @@ namespace PX2
 
 		void SetSelectedResource(const SelectResData &data);
 		const SelectResData &GetSelectedResource() const;
+		void CopySelectResourcePath();
 
 	protected:
 		std::vector<std::string> mSelectPath_ChildFilenames;
@@ -203,8 +204,12 @@ namespace PX2
 		void CloneSelectedObject();
 		void DeleteObject();
 
+		void SetCopyText(const std::string &copyText);
+		const std::string &GetCopyText() const;
+
 	protected:
 		PX2::ObjectPtr mCopyObject;
+		std::string mCopyText;
 
 		// export
 	public:
@@ -228,6 +233,10 @@ namespace PX2
 		void MakeSelectTimeLineEdit();
 		void TimeLine_UIGroup_Delete();
 		void TimeLine_UIGroup_DeleteAll();
+		void TimeLine_AddPoint();
+		void TimeLine_DeletePoint();
+		void TimeLine_SetInValue();
+		void TimeLine_SetOutValue();
 
 	protected:
 		TimeLineEdit *mTimeLineEidt;
@@ -267,6 +276,7 @@ namespace PX2
 		void BroadCastEditorEventUp();
 		void BroadCastEditorEventDown();
 		void BroadCastEditorEventPlayInWindow();
+		void BroadCastEditorSaveText();
 		void OpenResIn(const std::string &pathFilename);
 		void OpenResOut(const std::string &pathFilename);
 	};

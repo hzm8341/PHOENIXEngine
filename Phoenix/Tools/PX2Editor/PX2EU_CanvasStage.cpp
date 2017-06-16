@@ -228,16 +228,16 @@ void EU_CanvasStage::OnEvent(Event *event)
 			SetViewDetail(EU_CanvasStage::VD_WIREFRAME);
 		}
 	}
-	else if (GraphicsES::IsEqual(event, EditES::AddSelect))
+	else if (EditES::IsEqual(event, EditES::AddSelect))
 	{
 		_UpdateCameraCanvas();
 	}
-	else if (GraphicsES::IsEqual(event, EditES::RemoveSelect))
+	else if (EditES::IsEqual(event, EditES::RemoveSelect))
 	{
 		_UpdateCameraCanvas();
 		mURDoCommand = 0;
 	}
-	else if (GraphicsES::IsEqual(event, EditES::RemoveAllSelects))
+	else if (EditES::IsEqual(event, EditES::RemoveAllSelects))
 	{
 		_UpdateCameraCanvas();
 		mURDoCommand = 0;
@@ -520,9 +520,6 @@ void EU_CanvasStage::OnLeftDown(const PickInputData &data)
 	if (!IsEnable())
 		return;
 
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	Canvas::OnLeftDown(data);
 
 	mIsSelectMovableTransChanged = false;
@@ -663,9 +660,6 @@ void EU_CanvasStage::OnLeftUp(const PickInputData &data)
 	if (!IsEnable())
 		return;
 
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	if (mSceneNodeCtrl && !mSceneNodeCtrl->IsDragNone())
 	{
 		mSceneNodeCtrl->SetDragType(SceneNodeCtrl::DT_NONE);
@@ -723,9 +717,6 @@ void EU_CanvasStage::OnRightDown(const PickInputData &data)
 	if (!IsEnable())
 		return;
 
-	if (PX2EU_MAN.GetNumCombos() > 0)
-		return;
-
 	_ClickSelectPos(data.LogicPos);
 
 	Canvas::OnRightDown(data);
@@ -738,9 +729,6 @@ void EU_CanvasStage::OnRightUp(const PickInputData &data)
 
 	Project *proj = Project::GetSingletonPtr();
 	if (!proj)
-		return;
-
-	if (PX2EU_MAN.GetNumCombos() > 0)
 		return;
 
 	SetCameraDragType(CDT_NONE);
@@ -759,9 +747,6 @@ void EU_CanvasStage::OnRightUp(const PickInputData &data)
 void EU_CanvasStage::OnMotion(const PickInputData &data)
 {
 	if (!IsEnable())
-		return;
-
-	if (PX2EU_MAN.GetNumCombos() > 0)
 		return;
 
 	APoint lastPickPos = mCurPickPos;

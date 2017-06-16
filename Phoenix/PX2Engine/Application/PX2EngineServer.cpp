@@ -8,6 +8,7 @@
 #include "PX2Dir.hpp"
 #include "PX2EngineNetCmdProcess.hpp"
 #include "PX2EngineNetEvent.hpp"
+#include "PX2EngineNetDefine.hpp"
 #include "PX2Log.hpp"
 using namespace PX2;
 
@@ -87,18 +88,24 @@ void EngineServer::BroadCastPushProject(const std::string &projName)
 	for (; it != mConnections.end(); it++)
 	{
 		unsigned int clientID = it->first;
-		SendString(clientID, "pushproject " + projName);
+		SendString(clientID, CMD_PushProject + " " + projName);
 	}
 }
 //----------------------------------------------------------------------------
 int EngineServer::OnConnect(unsigned int clientid)
 {
+	ClientContext *clentContext = GetClientContext(clientid);
+	std::string ip = clentContext->TheSocket.GetAddress().GetHost()
+		.ToString();
+
 	_ConnectObj *cntObj = new0 _ConnectObj();
 	cntObj->ClientID = clientid;
+	cntObj->IP = ip;
 	mConnections[clientid] = cntObj;
 
 	Event *ent = PX2_CREATEEVENTEX(EngineNetES, OnEngineServerBeConnected);
 	ent->SetDataStr0(StringHelp::IntToString((int)clientid));
+	ent->SetDataStr1(ip);
 	PX2_EW.BroadcastingLocalEvent(ent);
 
 	return 0;
@@ -106,10 +113,13 @@ int EngineServer::OnConnect(unsigned int clientid)
 //----------------------------------------------------------------------------
 int EngineServer::OnDisconnect(unsigned int clientid)
 {
+	_ConnectObj *obj = mConnections[clientid];
+	std::string ip = obj->IP;
 	mConnections.erase(clientid);
 
 	Event *ent = PX2_CREATEEVENTEX(EngineNetES, OnEngineServerBeDisConnected);
 	ent->SetDataStr0(StringHelp::IntToString((int)clientid));
+	ent->SetDataStr1(ip);
 	PX2_EW.BroadcastingLocalEvent(ent);
 
 	return 0;
@@ -146,7 +156,8 @@ int EngineServer::OnString(unsigned int clientid, const void *pbuffer,
 		mConnections[clientid]->HeartTiming = 0.0f;
 	}
 
-	EngineNetCmdProcess::OnCmd(cmdStr, paramStr0, paramStr1);
+	EngineNetCmdProcess::OnCmd(mConnections[clientid]->IP, 
+		cmdStr, paramStr0, paramStr1);
 
 	return 0;
 }

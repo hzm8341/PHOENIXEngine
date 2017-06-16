@@ -32,6 +32,11 @@ PkgClassInfo::~PkgClassInfo()
 	}
 }
 //----------------------------------------------------------------------------
+bool PkgClassInfo::IsSingleton() const
+{
+	return !SingletonName.empty(); 
+}
+//----------------------------------------------------------------------------
 std::string PkgClassInfo::GetClassNameAS()
 {
 	if (IsTemplate)

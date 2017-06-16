@@ -10,7 +10,8 @@ PX2_IMPLEMENT_FACTORY(UICollapsePanel);
 //----------------------------------------------------------------------------
 UICollapsePanel::UICollapsePanel() :
 mIsNeedRecalCollpase(true),
-mIsNeedUpdateContentPos(true)
+mIsNeedUpdateContentPos(true),
+mExpandBarHeight(40.0f)
 {
 	SetName("UICollapsePanel");
 
@@ -19,7 +20,7 @@ mIsNeedUpdateContentPos(true)
 	mContentFrame = new0 UIFrame();
 	AttachChild(mContentFrame);
 	mContentFrame->SetAnchorHor(0.0f, 1.0f);
-	mContentFrame->SetAnchorParamHor(0.0f, -sliderSize);
+	mContentFrame->SetAnchorParamHor(1.0f, -sliderSize);
 	mContentFrame->SetAnchorVer(1.0f, 1.0f);
 	mContentFrame->SetPivot(0.5f, 1.0f);
 	mContentFrame->CreateAddBackgroundPicBox();
@@ -44,6 +45,16 @@ mIsNeedUpdateContentPos(true)
 //----------------------------------------------------------------------------
 UICollapsePanel::~UICollapsePanel()
 {
+}
+//----------------------------------------------------------------------------
+void UICollapsePanel::SetExpandBarHeight(float height)
+{
+	mExpandBarHeight = height;
+}
+//----------------------------------------------------------------------------
+float UICollapsePanel::GetExpandBarHeight() const
+{
+	return mExpandBarHeight;
 }
 //----------------------------------------------------------------------------
 void UICollapsePanel::RemoveAllItems()

@@ -16,10 +16,11 @@
 #include "PX2InputEvent.hpp"
 #include "PX2InputEventData.hpp"
 #include "PX2RenderWindow.hpp"
+#include "PX2EditorEventType.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-int Edit::msEditorID = 6001;
+int Edit::msEditorID = 10001;
 //----------------------------------------------------------------------------
 Edit::Edit() :
 mEditType(ET_SCENE),
@@ -73,7 +74,8 @@ bool Edit::Initlize(const std::string &tag)
 {
 	mGeoObjFactory = new0 GeoObjFactory();
 
-	PX2_GR.SetInEditor(true);
+	PX2_APP.SetInEditor(true);
+
 	mEU_Man = new0 EU_Manager();
 	mEU_Man->Initlize(tag);
 	
@@ -99,6 +101,7 @@ bool Edit::Terminate()
 	{
 		mEU_Man->Terminate();
 		delete0(mEU_Man);
+		EU_Manager::Set(0);
 	}
 
 	if (mGeoObjFactory)
@@ -337,6 +340,21 @@ void Edit::SetSelectedResource(const SelectResData &data)
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
+void Edit::CopySelectResourcePath()
+{
+	const SelectResData &resData = PX2_EDIT.GetSelectedResource();
+	SelectResData::SelectResType type = resData.GetSelectResType();
+
+	if (type == SelectResData::RT_NORMAL)
+	{
+		SetCopyText(resData.ResPathname);
+	}
+	else
+	{
+		SetCopyText(resData.EleName);
+	}
+}
+//----------------------------------------------------------------------------
 void Edit::CopyObject()
 {
 	Event *ent = PX2_CREATEEVENTEX(EditorEventSpace, Copy);
@@ -402,6 +420,18 @@ void Edit::DeleteObject()
 {
 	Event *ent = PX2_CREATEEVENTEX(EditorEventSpace, Delete);
 	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::SetCopyText(const std::string &copyText)
+{
+	mCopyText = copyText;
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::SetCopyText);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+const std::string &Edit::GetCopyText() const
+{
+	return mCopyText;
 }
 //----------------------------------------------------------------------------
 bool Edit::Import(const char *pathname)
@@ -601,6 +631,26 @@ void Edit::TimeLine_UIGroup_DeleteAll()
 	PX2_EDIT.GetTimeLineEdit()->SetSelectedUICurveGroup(0);
 }
 //----------------------------------------------------------------------------
+void Edit::TimeLine_AddPoint()
+{
+	GetTimeLineEdit()->AddPoint();
+}
+//----------------------------------------------------------------------------
+void Edit::TimeLine_DeletePoint()
+{
+	GetTimeLineEdit()->DeletePoint();
+}
+//----------------------------------------------------------------------------
+void Edit::TimeLine_SetInValue()
+{
+	GetTimeLineEdit()->SetInValue();
+}
+//----------------------------------------------------------------------------
+void Edit::TimeLine_SetOutValue()
+{
+	GetTimeLineEdit()->SetOutValue();
+}
+//----------------------------------------------------------------------------
 void Edit::FindSelectInProjTree()
 {
 	Object *obj = PX2_SELECTM_E->GetFirstObject();
@@ -662,7 +712,7 @@ void Edit::OnEvent(Event *event)
 //----------------------------------------------------------------------------
 void Edit::AddOpenedFile(const std::string &path)
 {
-	mOpenedFiles.push_back(path);
+	//mOpenedFiles.push_back(path);
 
 	std::string outPath;
 	std::string outBaseName;
@@ -752,6 +802,13 @@ void Edit::BroadCastEditorEventPlayInWindow()
 {
 	Event *ent = EditorEventSpace::CreateEventX(
 		EditorEventSpace::N_PlayInWindow);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::BroadCastEditorSaveText()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::SaveText);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

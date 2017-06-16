@@ -2,6 +2,9 @@
 
 #include "PX2Serial.hpp"
 #include "PX2Log.hpp"
+#include "PX2ScopedCS.hpp"
+#include "PX2Assert.hpp"
+#include "PX2System.hpp"
 using namespace PX2;
 
 #if defined(__LINUX__)
@@ -18,7 +21,9 @@ struct termios oldtio, newtio;
 //---------------------------------------------------------------------------
 Serial::Serial() :
 flag_opened(0),
-baudrate(9600)
+baudrate(9600),
+mIsThreadRunning(false),
+mIsUseEventt(false)
 {
 #ifdef WIN32
 	hcom = 0;
@@ -28,6 +33,7 @@ baudrate(9600)
 //---------------------------------------------------------------------------
 Serial::~Serial()
 {
+	EndThread();
 }
 //---------------------------------------------------------------------------
 bool Serial::Init(const std::string &comport_in, int baudrate)
@@ -35,6 +41,8 @@ bool Serial::Init(const std::string &comport_in, int baudrate)
 	bool flag = false;
 
 #ifdef WIN32
+	flag = true;
+
 	DCB dcb1;
 
 	sprintf(comport, comport_in.c_str());
@@ -87,44 +95,47 @@ bool Serial::Init(const std::string &comport_in, int baudrate)
 		PURGE_RXCLEAR);
 	flag_opened = 1;
 
-	flag = true;
 #endif
 
 
 #if defined(__LINUX__)
+	flag = true;
+
 	fd = open(comport_in.c_str(), O_RDWR | O_NOCTTY ); 
 	//fd = open("/dev/ttyS0", O_RDWR | O_NOCTTY);
 	if (fd < 0) 
 	{
 		perror(comport_in.c_str());
-		PX2_LOG_ERROR("init() error. %s is not opend. fd=%d\n", comport_in.c_str(), fd);
+		PX2_LOG_ERROR("init() error. %s is not opend. fd=%d", comport_in.c_str(), fd);
 
-		return false;
+		flag = false;
 	}
 
-	flag_opened = 1;
-	PX2_LOG_INFO("init() com opened flag %d\n", flag_opened);
+	if (flag)
+	{
+		flag_opened = 1;
+		PX2_LOG_INFO("init() com opened flag %d", flag_opened);
 
-	tcgetattr(fd, &oldtio);
+		tcgetattr(fd, &oldtio);
 
-	bzero(&newtio, sizeof(newtio));
+		bzero(&newtio, sizeof(newtio));
 
-	tcflag_t baud;
-	if (baudrate == 9600) baud = B9600;
-	if (baudrate == 38400) baud = B38400;
-	if (baudrate == 57600) baud = B57600;
+		tcflag_t baud;
+		if (baudrate == 9600) baud = B9600;
+		if (baudrate == 38400) baud = B38400;
+		if (baudrate == 57600) baud = B57600;
 
-    //newtio.c_cflag = baud | CRTSCTS | CS8 | CLOCAL | CREAD;
-	newtio.c_cflag = baud | IGNPAR | CS8 | CLOCAL | CREAD;
-	newtio.c_iflag = IGNPAR;
-	newtio.c_oflag = 0;
+		//newtio.c_cflag = baud | CRTSCTS | CS8 | CLOCAL | CREAD;
+		newtio.c_cflag = baud | IGNPAR | CS8 | CLOCAL | CREAD;
+		newtio.c_iflag = IGNPAR;
+		newtio.c_oflag = 0;
 
-	/* set input mode (non-canonical, no echo,...) */
-	newtio.c_lflag = 0;
+		/* set input mode (non-canonical, no echo,...) */
+		newtio.c_lflag = 0;
 
-	tcsetattr(fd, TCSAFLUSH, &newtio);
+		tcsetattr(fd, TCSAFLUSH, &newtio);
+	}
 
-	flag = true;
 #endif
 
 	return(flag);
@@ -159,6 +170,33 @@ bool Serial::Close()
 #endif
 }
 //---------------------------------------------------------------------------
+void Serial::StartThread(bool isUseEventt)
+{
+	EndThread();
+
+	mIsUseEventt = isUseEventt;
+	mIsThreadRunning = true;
+
+	mThread = new0 Thread("SerailThread");
+	mThread->Start(*this);
+}
+//---------------------------------------------------------------------------
+void Serial::EndThread()
+{
+	if (mThread)
+	{
+		mIsThreadRunning = false;
+		
+		if (mIsUseEventt)
+		{
+			mEnt.Set();
+		}
+
+		mThread->Join();
+		mThread = 0;
+	}
+}
+//---------------------------------------------------------------------------
 int Serial::Receive(char *buf_ptr, int size)
 {
 	unsigned long byte, event;
@@ -188,27 +226,13 @@ int Serial::Receive(char *buf_ptr, int size)
 	return byte;
 }
 //---------------------------------------------------------------------------
-bool Serial::Receive2(char *buf_ptr, int size)
-{
-	unsigned long byte;
-	bool flag = false;
-
-#ifdef WIN32
-	//WaitCommEvent(hcom,&event,NULL);
-	if (ReadFile(hcom, buf_ptr, size, &byte, NULL))
-		flag = true;
-#endif
-
-	return flag;
-}
-//---------------------------------------------------------------------------
 int Serial::Send(const char *buf_ptr, int size)
 {
 	unsigned long byte;
 	if (flag_opened != 1)
 	{
-		PX2_LOG_ERROR("send() error. port Not opend\n");
-		PX2_LOG_ERROR("flag_opened=%d\n", flag_opened);//debug
+		PX2_LOG_ERROR("send() error. port Not opend");
+		PX2_LOG_ERROR("flag_opened=%d", flag_opened);//debug
 		return -1;
 	}
 
@@ -224,11 +248,11 @@ int Serial::Send(const char *buf_ptr, int size)
 	byte = write(fd, buf_ptr, size);
 	if (byte == 0)
 	{
-		PX2_LOG_ERROR("write error byte 0\n");
+		PX2_LOG_ERROR("write error byte 0");
 		return -1;
 	}
 
-	PX2_LOG_INFO("write byte=%d\n",byte);
+	PX2_LOG_INFO("write byte=%d",byte);
 
 	return (byte);
 #endif
@@ -245,8 +269,37 @@ int Serial::Receive(std::string &buffer)
 	return Receive((char*)buffer.c_str(), (int)buffer.size());
 }
 //---------------------------------------------------------------------------
-bool Serial::Receive2(std::string &buffer)
+void Serial::SendWithCallback(const std::string &buffer)
 {
-	return Receive2((char*)buffer.c_str(), (int)buffer.size());
+	Send(buffer);
+	mEnt.Set();
+	mEntWaitCallback.Wait(1000);
+	System::SleepSeconds(1.0f);
+}
+//---------------------------------------------------------------------------
+void Serial::Run()
+{
+	while (mIsThreadRunning)
+	{
+		if (mIsUseEventt)
+			mEnt.Wait();
+
+		if (!mIsThreadRunning)
+			break;
+
+		// recv
+		std::string buf;
+		int recvedBytes = Receive(buf);
+		if (recvedBytes > 0)
+		{
+			if (mIsUseEventt)
+				mEntWaitCallback.Set();
+
+			if (!buf.empty())
+			{
+				PX2_LOG_INFO("Serial Recv %d", buf.c_str());
+			}
+		}
+	}
 }
 //---------------------------------------------------------------------------

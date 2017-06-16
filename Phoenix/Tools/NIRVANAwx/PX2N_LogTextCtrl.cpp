@@ -1,6 +1,7 @@
 // PX2N_LogTextCtrl.cpp
 
 #include "PX2N_LogTextCtrl.hpp"
+#include "PX2EventWorld.hpp"
 using namespace NA;
 using namespace PX2;
 
@@ -15,11 +16,13 @@ LogHandler(LT_INFO | LT_ERROR | LT_USER)
 {
 	Clear();
 	SetBackgroundColour(wxColour(255, 255, 255));
+
+	Logger::GetSingleton().AddHandler(this);
 }
 //-----------------------------------------------------------------------------
 LogTextCtrl::~LogTextCtrl()
 {
-
+	Logger::GetSingleton().RemoveHandler(this);
 }
 //-----------------------------------------------------------------------------
 void LogTextCtrl::Handle(const LogBuffer *logBuffer,

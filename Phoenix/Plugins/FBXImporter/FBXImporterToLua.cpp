@@ -1,6 +1,6 @@
 /*
 ** Lua binding: FBXImporter
-** Generated automatically by tolua++-1.0.92 on 04/18/17 12:38:59.
+** Generated automatically by tolua++-1.0.92 on 05/23/17 20:22:59.
 */
 
 #ifndef __cplusplus
@@ -120,6 +120,63 @@ static int tolua_FBXImporter_FBXImporter_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: New of class  FBXImporter */
+#ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_New00
+static int tolua_FBXImporter_FBXImporter_New00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"FBXImporter",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   FBXImporter* tolua_ret = (FBXImporter*)  FBXImporter::New();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"FBXImporter");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'New'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Delete of class  FBXImporter */
+#ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_Delete00
+static int tolua_FBXImporter_FBXImporter_Delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"FBXImporter",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"FBXImporter",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  FBXImporter* importer = ((FBXImporter*)  tolua_tousertype(tolua_S,2,0));
+  {
+   FBXImporter::Delete(importer);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: Import of class  FBXImporter */
 #ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_Import00
 static int tolua_FBXImporter_FBXImporter_Import00(lua_State* tolua_S)
@@ -155,9 +212,9 @@ static int tolua_FBXImporter_FBXImporter_Import00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: GetScene of class  FBXImporter */
-#ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_GetScene00
-static int tolua_FBXImporter_FBXImporter_GetScene00(lua_State* tolua_S)
+/* method: Clear of class  FBXImporter */
+#ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_Clear00
+static int tolua_FBXImporter_FBXImporter_Clear00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -171,48 +228,48 @@ static int tolua_FBXImporter_FBXImporter_GetScene00(lua_State* tolua_S)
  {
   FBXImporter* self = (FBXImporter*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetScene'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Clear'", NULL);
 #endif
   {
-   Node* tolua_ret = (Node*)  self->GetScene();
+   self->Clear();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Clear'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetPX2Node of class  FBXImporter */
+#ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_GetPX2Node00
+static int tolua_FBXImporter_FBXImporter_GetPX2Node00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"FBXImporter",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  FBXImporter* self = (FBXImporter*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetPX2Node'", NULL);
+#endif
+  {
+   Node* tolua_ret = (Node*)  self->GetPX2Node();
     tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
   }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetScene'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: ClearScene of class  FBXImporter */
-#ifndef TOLUA_DISABLE_tolua_FBXImporter_FBXImporter_ClearScene00
-static int tolua_FBXImporter_FBXImporter_ClearScene00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"FBXImporter",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  FBXImporter* self = (FBXImporter*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ClearScene'", NULL);
-#endif
-  {
-   self->ClearScene();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ClearScene'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'GetPX2Node'.",&tolua_err);
  return 0;
 #endif
 }
@@ -235,9 +292,11 @@ TOLUA_API int tolua_FBXImporter_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_FBXImporter_FBXImporter_new00_local);
    tolua_function(tolua_S,".call",tolua_FBXImporter_FBXImporter_new00_local);
    tolua_function(tolua_S,"delete",tolua_FBXImporter_FBXImporter_delete00);
+   tolua_function(tolua_S,"New",tolua_FBXImporter_FBXImporter_New00);
+   tolua_function(tolua_S,"Delete",tolua_FBXImporter_FBXImporter_Delete00);
    tolua_function(tolua_S,"Import",tolua_FBXImporter_FBXImporter_Import00);
-   tolua_function(tolua_S,"GetScene",tolua_FBXImporter_FBXImporter_GetScene00);
-   tolua_function(tolua_S,"ClearScene",tolua_FBXImporter_FBXImporter_ClearScene00);
+   tolua_function(tolua_S,"Clear",tolua_FBXImporter_FBXImporter_Clear00);
+   tolua_function(tolua_S,"GetPX2Node",tolua_FBXImporter_FBXImporter_GetPX2Node00);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;

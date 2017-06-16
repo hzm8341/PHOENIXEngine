@@ -22,7 +22,7 @@ if [ $APPPLAY_MYAPP_BIN_ROOT"xyz" != "xyz" ]; then
 fi
 
 #project params
-PROJECT_NAME=Block
+PROJECT_NAME=PhoenixFrame
 PROJECT_ROOT=$ENGINE_ROOT_LOCAL/Projects/Client/$PROJECT_NAME
 
 #appplay params
@@ -42,8 +42,7 @@ mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PROJECT_NAME
 
 # boost.lua boost.xml version.xml versionList.dat
 cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.xml $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
-# cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/version.xml $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
-# cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/versionList.dat $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
+cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.lua $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
 
 # engine
 for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/engine/*
@@ -97,6 +96,7 @@ echo "end build"
 
 echo "begin copy so"
 
+# vlc
 for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/vlc/libandroid/armeabi/*
 do
 if [ -d $file ]; then
@@ -107,7 +107,29 @@ cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
 fi
 done
 
-for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/Voice/BaiDu/speech/libs/armeabi/*
+# BaiDu
+#for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/AI/BaiDu/speech/libs/armeabi/*
+#do
+#if [ -d $file ]; then
+#cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
+#fi
+#if [ -f $file ]; then
+#cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
+#fi
+#done
+
+#for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/AI/BaiDu/tts/libs/armeabi/*
+#do
+#if [ -d $file ]; then
+#cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
+#fi
+#if [ -f $file ]; then
+#cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
+#fi
+#done
+
+# Tuling
+for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/AI/Tuling/libs/armeabi/*
 do
 if [ -d $file ]; then
 cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
@@ -117,22 +139,6 @@ cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
 fi
 done
 
-for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/Voice/BaiDu/tts/libs/armeabi/*
-do
-if [ -d $file ]; then
-cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
-fi
-if [ -f $file ]; then
-cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
-fi
-done
+chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
 
 echo "end copy so"
-
-#PROJECT_SO_FILENAME=$APPPLAY_MYAPP_ANDROID_ROOT
-#PROJECT_SO_FILENAME=$APPPLAY_MYAPP_ANDROID_ROOT/"libs/armeabi/lib"$PROJECT_NAME".so"
-#PROJECT_SO_FILEPATH_DST0=$APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$PROJECT_NAME
-#PROJECT_SO_FILEPATH_DST1=$APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/
-
-#cp $PROJECT_SO_FILENAME $PROJECT_SO_FILEPATH_DST0
-#cp $PROJECT_SO_FILENAME $PROJECT_SO_FILEPATH_DST1

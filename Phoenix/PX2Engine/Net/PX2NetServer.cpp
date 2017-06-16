@@ -98,7 +98,7 @@ bool Server::Start()
 {
 	if (!mServerImp->Start())
 	{
-		PX2_LOG_ERROR("iocp server start failed");
+		PX2_LOG_ERROR("server start failed");
 		return false;
 	}
 

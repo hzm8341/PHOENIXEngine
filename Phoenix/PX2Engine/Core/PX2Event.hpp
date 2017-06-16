@@ -61,6 +61,11 @@ namespace PX2
 		const std::string &GetDataStr1() const;
 		const std::string &GetDataStr2() const;
 
+		void SetDataPointer0(void *ptr);
+		void *GetDataPointer0();
+		void SetDataPointer1(void *ptr);
+		void *GetDataPointer1();
+
 		// 发送/接收者
 		void SetSender (EventHandler *handler);
 		EventHandler* GetSender ();
@@ -85,6 +90,8 @@ public_internal:
 		std::string mDataStr0;
 		std::string mDataStr1;
 		std::string mDataStr2;
+		void *mDataPointer0;
+		void *mDataPointer1;
 		
 		EventHandler* mSender;
 		EventHandler* mReceiver;

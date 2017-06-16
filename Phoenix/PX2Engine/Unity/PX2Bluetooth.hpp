@@ -28,6 +28,10 @@ namespace PX2
 		bool IsConnected() const;
 
 		std::vector<std::string> GetPairedDevices();
+
+		int GetNumPairedDevices() const;
+		const std::string &GetPairedDevice(int i) const;
+
 		void DisConnect();
 		void Connect(const std::string &addr);
 		void Send(const std::string &str, bool isAppendCRLF);
@@ -39,6 +43,10 @@ namespace PX2
 		void OnConnected();
 		void OnConnectFailed();
 		void OnDisConnected();
+		void OnReceive(const std::string &recvBuffer);
+
+	protected:
+		std::vector<std::string> mPairedDevices;
 	};
 
 #define PX2_BLUETOOTH Bluetooth::GetSingleton()

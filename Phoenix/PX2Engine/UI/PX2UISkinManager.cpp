@@ -9,7 +9,7 @@ UISkinManager::UISkinManager()
 	Color_ViewBackground = Float3::MakeColor(30, 30, 30);
 	Color_ViewBackground4 = Float4::MakeColor(30, 30, 30, 255);
 
-	Size_ToolBar = 25.0f;
+	Size_ToolBar = 30.0f;
 	Size_ToolBarBut = Size_ToolBar - 2.0f;
 
 	Color_ToolBar = Float3::MakeColor(100, 100, 100);

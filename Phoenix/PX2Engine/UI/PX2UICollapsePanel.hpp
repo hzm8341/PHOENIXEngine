@@ -20,6 +20,9 @@ namespace PX2
 		UICollapsePanel();
 		virtual ~UICollapsePanel();
 
+		void SetExpandBarHeight(float height);
+		float GetExpandBarHeight() const;
+
 		void RemoveAllItems();
 		UICollapseItem *AddItem(const std::string &name);
 
@@ -37,6 +40,7 @@ namespace PX2
 
 		bool mIsNeedUpdateContentPos;
 
+		float mExpandBarHeight;
 		UIFramePtr mContentFrame;
 		std::vector<UICollapseItemPtr> mCollpaseFrames;
 		std::map<std::string, UICollapseItemPtr> mCollpaseFrameMap;

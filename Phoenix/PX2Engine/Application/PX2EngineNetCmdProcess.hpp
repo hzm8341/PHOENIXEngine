@@ -14,7 +14,7 @@ namespace PX2
 		EngineNetCmdProcess();
 		~EngineNetCmdProcess();
 
-		static void OnCmd(const std::string &cmdStr,
+		static void OnCmd(const std::string &fromip, const std::string &cmdStr,
 			const std::string &paramStr0, const std::string &paramStr1);
 	};
 

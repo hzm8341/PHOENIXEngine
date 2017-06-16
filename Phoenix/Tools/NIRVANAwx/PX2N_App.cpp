@@ -12,6 +12,7 @@
 #include "PX2Application.hpp"
 #include "PX2EditorEventType.hpp"
 #include "PX2Application.hpp"
+#include "PX2N_Man.hpp"
 using namespace PX2;
 using namespace NA;
 
@@ -36,8 +37,10 @@ bool N_App::OnInit()
 
 	PX2_APP.Play(Application::PT_NONE);
 
-	wxLog::SetLogLevel(0);
+	NirMan *nirMan = new0 NirMan();
+	nirMan->Initlize();
 
+	wxLog::SetLogLevel(0);
 	wxImage::AddHandler(new wxBMPHandler());
 	wxImage::AddHandler(new wxPNGHandler());
 	wxImage::AddHandler(new wxGIFHandler());
@@ -61,6 +64,8 @@ bool N_App::OnInit()
 
 	edit->Initlize1("wx");
 
+	frame->InitMainFrameItems();
+
 	frame->Show(true);
 
 	return true;
@@ -68,6 +73,23 @@ bool N_App::OnInit()
 //-----------------------------------------------------------------------------
 int N_App::OnExit()
 {
+	wxApp::OnExit();
+
+	return 0;
+}
+//-----------------------------------------------------------------------------
+void N_App::CleanUp()
+{
+	wxApp::CleanUp();
+
+	NirMan *nirMan = NirMan::GetSingletonPtr();
+	if (nirMan)
+	{
+		nirMan->Ternamate();
+		delete0(nirMan);
+		NirMan::Set(0);
+	}
+
 	PX2_EW.Shutdown(true);
 
 	Edit *edit = Edit::GetSingletonPtr();
@@ -85,8 +107,6 @@ int N_App::OnExit()
 	Application *app = Application::GetSingletonPtr();
 	delete app;
 	Application::Set(0);
-
-	return 0;
 }
 //-----------------------------------------------------------------------------
 void N_App::OnEvent(Event *event)

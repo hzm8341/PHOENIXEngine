@@ -282,16 +282,16 @@ void EU_Manager::CreateEditMenu(const std::string &whereStr, const APoint &pos, 
 
 		for (int i = 0; i < (int)namesEA.size(); i++)
 		{
-			std::string createStr = "n_CreateEffectableControllerModule('" + namesEA[i] + "')";
-			PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffectMoudle", namesEA[i], namesEA[i], createStr);
+			std::string createStr = "n_CreateEffectableControllerModule";
+			PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffectMoudle", namesEA[i], namesEA[i], createStr, namesEA[i]);
 		}
 
 		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreateEffectMoudle");
 
 		for (int i = 0; i < (int)namesEO.size(); i++)
 		{
-			std::string createStr = "n_CreateEffectableControllerModule('" + namesEO[i] + "')";
-			PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffectMoudle", namesEO[i], namesEO[i], createStr);
+			std::string createStr = "n_CreateEffectableControllerModule";
+			PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateEffectMoudle", namesEO[i], namesEO[i], createStr, namesEO[i]);
 		}
 	}
 
@@ -1013,6 +1013,22 @@ bool EU_Manager::IsWindowUserLeaveUpShow() const
 	return 0 != mUserLeaveUpWindow;
 }
 //----------------------------------------------------------------------------
+void EU_Manager::SetInspectorView(int val)
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::SetInspectorView);
+	ent->SetData(val);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void EU_Manager::SetProjectTreeLevel(int level)
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::SetProjectTreeLevel);
+	ent->SetData(level);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
 void EU_Manager::Visit(Object *obj, int info)
 {
 	Application::PlayType pt = PX2_APP.GetPlayType();
@@ -1107,48 +1123,5 @@ void EU_Manager::OnEvent(Event *event)
 
 		PX2_SELECTM_E->Clear();
 	}
-}
-//----------------------------------------------------------------------------
-bool EU_Manager::AddOpenCombo(UIComboBox *comboBox)
-{
-	if (IsHasOpenCombo(comboBox))
-		return false;
-
-	mOpenCombos.push_back(comboBox);
-	return true;
-}
-//----------------------------------------------------------------------------
-bool EU_Manager::IsHasOpenCombo(UIComboBox *comboBox) const
-{
-	for (int i = 0; i < (int)mOpenCombos.size(); i++)
-	{
-		if (comboBox == mOpenCombos[i])
-			return true;
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-bool EU_Manager::RemoveOpenCombo(UIComboBox *comboBox)
-{
-	if (!IsHasOpenCombo(comboBox))
-		return false;
-
-	auto it = mOpenCombos.begin();
-	for (; it != mOpenCombos.end(); it++)
-	{
-		if (comboBox == *it)
-		{
-			mOpenCombos.erase(it);
-			return true;
-		}
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-int EU_Manager::GetNumCombos() const
-{
-	return (int)mOpenCombos.size();
 }
 //----------------------------------------------------------------------------

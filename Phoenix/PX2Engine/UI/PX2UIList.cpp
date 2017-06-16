@@ -134,7 +134,7 @@ void UIList::SetItemHeight(float height)
 //----------------------------------------------------------------------------
 UIItem *UIList::AddItem(const std::string &text)
 {
-	if (GetNumItems() >= GetNumMaxItems())
+	if (mNumMaxItems > 0 && GetNumItems() >= GetNumMaxItems())
 	{
 		RemoveItem(GetItemByIndex(0));
 	}

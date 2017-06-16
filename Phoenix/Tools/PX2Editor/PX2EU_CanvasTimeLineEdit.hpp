@@ -33,12 +33,14 @@ namespace PX2
 		void _RefreshGrid(bool doScale);
 		void _TrySelectCurveCtrlPoint(float posSizePercentWidth, 
 			float posSizePercentHeight);
+		void _RightAddPoint();
 
 		virtual void OnSizeChanged();
 		virtual void OnSizeNodePicked(const CanvasInputData &inputData);
 		virtual void OnSizeNodeNotPicked(const CanvasInputData &inputData);
 
-		void CreateEditMenu(const APoint &pos);
+		void CreateEditMenuLeft(const APoint &pos);
+		void CreateEditMenuRight(const APoint &pos);
 
 		enum MoveMode
 		{
@@ -80,6 +82,7 @@ namespace PX2
 		// pick
 		bool mIsLeftDown;
 		bool mIsMiddleDown;
+		APoint mRightPressedPoint;
 	};
 
 	PX2_REGISTER_STREAM(EU_CanvasTimeLineEdit);

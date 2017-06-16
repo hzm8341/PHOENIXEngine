@@ -5,6 +5,7 @@
 #include "PX2Project.hpp"
 #include "PX2GraphicsRoot.hpp"
 #include "PX2UIFPicBox.hpp"
+#include "PX2ScriptManager.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Canvas, EngineUICanvas);
@@ -20,6 +21,8 @@ EngineUICanvas::EngineUICanvas()
 
 	EnableUICameraAutoAdjust(true);
 	SetRenderNodeUpdate(true);
+
+	PX2_SC_LUA->SetUserTypePointer("PX2_ENGINEUICANVAS", "EngineUICanvas", this);
 }
 //----------------------------------------------------------------------------
 EngineUICanvas::~EngineUICanvas()
@@ -137,9 +140,13 @@ void EngineUICanvas::_DoPick(const CanvasInputData &inputData)
 	if (inRangeWidget && inRangeWidget->IsEnable())
 	{
 		inRangeWidget->OnWidgetPicked(inputData);
-	}
 
-	mPickedWidget = inRangeWidget;
+		mPickedWidget = inRangeWidget;
+	}
+	else
+	{
+		mPickedWidget = 0;
+	}
 }
 //----------------------------------------------------------------------------
 void EngineUICanvas::Draw(Renderer *renderer)

@@ -52,6 +52,7 @@ namespace PX2
 		Node *CreateNode();
 		CameraNode *CreateNode_Camera(bool createCamera = true);
 		Node *CreateNode_Model(const std::string &filename);
+		Node *CreateNode_Model(Movable *movable);
 		Movable *CreateMovable_FromRes(const std::string &filename);
 		ScriptController *CreateScriptController_FromRes(const std::string &filename);
 		ScriptController *CreateScriptController_FromBuffer(const std::string &bufStr, 

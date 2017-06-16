@@ -17,7 +17,7 @@ using namespace PX2;
 #endif
 
 struct lua_State;
-extern int tolua_FBXImporter_open (lua_State* tolua_S);
+extern int tolua_FBXImporter_open(lua_State* tolua_S);
 
 #endif
 

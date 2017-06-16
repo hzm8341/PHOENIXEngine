@@ -111,13 +111,6 @@ void SizeNode::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsDoPick())
 		return;
 
-	if (!IsEnable())
-		return;
-
-	if (!IsActivated())
-		return;
-
-
 	bool isPosInSizeRange = _IsInRect(inputData.CameraLogicPos);
 
 	if (isPosInSizeRange)
@@ -284,6 +277,11 @@ void SizeNode::OnSizeChanged()
 	{
 		(mSizeChangeTellToObject->*mSizeChangeCallback)(this);
 	}
+
+	if (!mScriptHandlerSizeChanged.empty())
+	{
+		PX2_SC_LUA->CallFunction(mScriptHandlerSizeChanged, this);
+	}
 }
 //----------------------------------------------------------------------------
 void SizeNode::SetWidth(float width)
@@ -294,6 +292,16 @@ void SizeNode::SetWidth(float width)
 void SizeNode::SetHeight(float height)
 {
 	SetSize(Sizef(mSize.Width, height));
+}
+//----------------------------------------------------------------------------
+void SizeNode::SetScriptHandlerSizeChanged(const std::string &scriptHandler)
+{
+	mScriptHandlerSizeChanged = scriptHandler;
+}
+//----------------------------------------------------------------------------
+const std::string &SizeNode::GetScriptSizeChanged() const
+{
+	return mScriptHandlerSizeChanged;
 }
 //----------------------------------------------------------------------------
 Rectf SizeNode::GetLocalRect() const
@@ -571,6 +579,8 @@ void SizeNode::UpdateScreenRect(Movable *parent)
 	if (!par) return;
 
 	SizeNode *parNode = DynamicCast<SizeNode>(par);
+	if (!parNode)
+		return;
 
 	const Rectf &parScreenRect = parNode->GetScreenRect();
 

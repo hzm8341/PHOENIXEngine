@@ -241,9 +241,6 @@ void UIFrame::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsDoPick())
 		return;
 
-	if (!IsEnable())
-		return;
-
 	const Rectf &rect = GetWorldRect();
 	bool isPosInSizeRange = _IsInRect(inputData.CameraLogicPos);
 

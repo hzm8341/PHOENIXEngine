@@ -46,6 +46,8 @@ void EffectableController::AddModule (EffectModule *moule)
 
 	Event *ent = GraphicsES::CreateEventX(GraphicsES::AddObject,
 		"GraphicsES::AddObject");
+	ent->SetDataPointer0(moule);
+	ent->SetDataPointer1(this);
 	ent->SetData<AddObjectData>(data);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
@@ -65,6 +67,7 @@ void EffectableController::RemoveModule (EffectModule *moule)
 			Event *ent = GraphicsES::CreateEventX(GraphicsES::RemoveObject,
 				"GraphicsES::RemoveObject");
 			ent->SetData<Object*>(moule);
+			ent->SetDataPointer0((Object*)moule);
 			PX2_EW.BroadcastingLocalEvent(ent);
 
 			return;

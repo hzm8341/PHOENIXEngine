@@ -5,6 +5,7 @@
 
 #include "PX2N_Pre.hpp"
 #include "PX2N_LogTextCtrl.hpp"
+#include "PX2EventHandler.hpp"
 
 namespace NA
 {
@@ -28,6 +29,7 @@ namespace NA
 		PX2wxAuiToolBar *mToolBar;
 		wxTextCtrl *mCommondTextCtrl;
 		LogTextCtrl *mTextCtrl;
+		int mToolbarClearID;
 	};
 
 }

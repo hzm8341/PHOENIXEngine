@@ -137,9 +137,6 @@ void UITabFrame::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsDoPick())
 		return;
 
-	if (!IsEnable())
-		return;
-
 	if (mIsWidget)
 	{
 		bool isPosInSizeRange = _IsInRect(inputData.LogicPos);

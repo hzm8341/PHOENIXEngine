@@ -5,6 +5,7 @@
 #include "PX2Edit.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2EditEventType.hpp"
+#include "PX2EditorEventType.hpp"
 #include "PX2Selection.hpp"
 #include "PX2LanguageManager.hpp"
 #include "PX2ResourceManager.hpp"
@@ -13,6 +14,9 @@
 #include "PX2SelectionManager.hpp"
 #include "PX2EditorEventType.hpp"
 #include "PX2EU_Manager.hpp"
+#include "PX2N_Man.hpp"
+#include "PX2ScriptManager.hpp"
+
 using namespace NA;
 using namespace PX2;
 
@@ -61,7 +65,9 @@ ResTree::ResTree()
 //----------------------------------------------------------------------------
 ResTree::~ResTree()
 {
-	PX2_EW.GoOut(this);
+	EventWorld *ew = EventWorld::GetSingletonPtr();
+	if (ew)
+		PX2_EW.GoOut(this);
 
 	if (mEditMenu)
 	{
@@ -92,27 +98,16 @@ void ResTree::OnRightUp(wxMouseEvent& e)
 	}
 
 	mEditMenu = new wxMenu();
+	NirMan::GetSingleton().SetCurMenu(mEditMenu);
 
-	//
+	PX2_SC_LUA->CallString("n_CreateResMenu()");
 
 	if (mEditMenu) PopupMenu(mEditMenu, mousePos.x, mousePos.y);
 }
 //-----------------------------------------------------------------------------
 void ResTree::OnItemActivated(wxTreeEvent& event)
 {
-	wxTreeItemId id = event.GetItem();
-
-	ResTreeItemPtr item = GetItem(id);
-
-	if (!item) return;
-
-#if defined(_WIN32) || defined(WIN32)
-	WCHAR wszPath[MAX_PATH];
-	GetCurrentDirectoryW(sizeof(wszPath), wszPath);
-	std::wstring fullPath = wszPath + std::wstring(_T("\\")) + item->GetPathName();
-
-	//ShellExecute(0, _T("open"), fullPath.c_str(), 0, 0, SW_SHOW);
-#endif
+	PX2_UNUSED(event);
 }
 //-----------------------------------------------------------------------------
 void ResTree::OnSelChanged(wxTreeEvent& event)
@@ -262,6 +257,43 @@ void ResTree::CloudRefresh()
 //----------------------------------------------------------------------------
 void ResTree::OnEvent(PX2::Event *event)
 {
-	PX2_UNUSED(event);
+	if (EditorEventSpace::IsEqual(event, EditorEventSpace::RefreshRes))
+	{
+		ResRefresh();
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::UpRes))
+	{
+		wxTreeItemId select = GetSelection();
+		ResTreeItem *item = GetItem(select);
+		if (item)
+		{
+			ResTreeItem *parentItem = (item->GetParent());
+			if (parentItem)
+			{
+				SelectItem(parentItem->GetItemID());
+			}
+		}
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::DownRes))
+	{
+
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::ChangeResDir))
+	{
+		Edit::ChangeDirType type = event->GetData<Edit::ChangeDirType>();
+		if (Edit::CDT_GRID_REFRESH == type)
+		{
+			const std::string &selectedResDir = PX2_EDIT.GetSelectedResDir();
+			if (!selectedResDir.empty())
+			{
+				ResTreeItem *item = GetItem(selectedResDir);
+				if (item)
+				{
+					SelectItem(item->GetItemID());
+					Expand(item->GetItemID());
+				}
+			}
+		}
+	}
 }
 //----------------------------------------------------------------------------

@@ -2,6 +2,12 @@ package org.appplay.bluetooth;
 
 import java.util.ArrayList;
 import java.util.Set;
+
+import org.appplay.bluetooth.BluetoothListener.AutoConnectionListener;
+import org.appplay.bluetooth.BluetoothListener.BluetoothConnectionListener;
+import org.appplay.lib.AppPlayBaseActivity;
+import org.appplay.lib.AppPlayNatives;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -18,10 +24,10 @@ public class BluetoothSPP
     private Context mContext;    
     private BluetoothAdapter mBluetoothAdapter = null;
 	
-    private BluetoothStateListener mBluetoothStateListener = null;
-    private OnDataReceivedListener mDataReceivedListener = null;
-    private BluetoothConnectionListener mBluetoothConnectionListener = null;
-    private AutoConnectionListener mAutoConnectionListener = null;
+    private BluetoothListener.BluetoothStateListener mBluetoothStateListener = null;
+    private BluetoothListener.OnDataReceivedListener mDataReceivedListener = null;
+    private BluetoothListener.BluetoothConnectionListener mBluetoothConnectionListener = null;
+    private BluetoothListener.AutoConnectionListener mAutoConnectionListener = null;
     
     private BluetoothService mChatService = null;
 
@@ -37,36 +43,45 @@ public class BluetoothSPP
     private String Keyword = "";
     private boolean mIsAndroidSelf = BluetoothState.IS_DEVICE_SELF;
     
-    private BluetoothConnectionListener bcl;
+    private BluetoothListener.BluetoothConnectionListener bcl;
     private int c = 0;
     
     public BluetoothSPP(Context context)
     {
         mContext = context;
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    }
-    
-    public interface BluetoothStateListener
-    {
-        public void onServiceStateChanged(int state);
-    }
-    
-    public interface OnDataReceivedListener 
-    {
-        public void onDataReceived(byte[] data, String message);
-    }
-    
-    public interface BluetoothConnectionListener 
-    {
-        public void onDeviceConnected(String name, String address);
-        public void onDeviceDisconnected();
-        public void onDeviceConnectionFailed();
-    }
-    
-    public interface AutoConnectionListener 
-    {
-        public void onAutoConnectionStarted();
-        public void onNewConnection(String name, String address);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();        
+
+		SetBluetoothConnectionListener(new BluetoothConnectionListener() {
+			public void onDeviceConnected(String name, String address) {
+				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(),
+						"Connected to " + name, Toast.LENGTH_SHORT).show();
+
+				AppPlayNatives.nativeBluetoothOnConnected();
+			}
+
+			public void onDeviceDisconnected() {
+				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(), "Connection lost",
+						Toast.LENGTH_SHORT).show();
+
+				AppPlayNatives.nativeBluetoothOnDisConnected();
+			}
+
+			public void onDeviceConnectionFailed() {
+				Log.i("Check", "Unable to connect");
+
+				AppPlayNatives.nativeBluetoothOnConnectFailed();
+			}
+		});
+
+		SetAutoConnectionListener(new AutoConnectionListener() {
+			public void onNewConnection(String name, String address) {
+				Log.i("Check", "New Connection - " + name + " - " + address);
+			}
+
+			public void onAutoConnectionStarted() {
+				Log.i("Check", "Auto menu_connection started");
+			}
+		});
     }
     
     public boolean IsBluetoothAvailable() 
@@ -113,12 +128,6 @@ public class BluetoothSPP
         return mBluetoothAdapter.cancelDiscovery();
     }
     
-    public void SetupService() 
-    {
-        mChatService = new BluetoothService(mContext, mHandler);        
-		Log.d("appplay.ap", "BluetoothSPP SetupService");
-    }
-    
     public BluetoothAdapter GetBluetoothAdapter() 
     {
         return mBluetoothAdapter;
@@ -132,8 +141,11 @@ public class BluetoothSPP
             return -1;
     }
     
-    public void StartService(boolean isAndroidSelf) 
+    public void Start(boolean isAndroidSelf) 
     {
+        mChatService = new BluetoothService(mContext, mHandler);        
+		Log.d("appplay.ap", "BluetoothSPP SetupService");
+    	
         if (mChatService != null) 
         {
             if (mChatService.GetState() == BluetoothState.STATE_NONE) 
@@ -145,7 +157,7 @@ public class BluetoothSPP
         }
     }
     
-    public void StopService() 
+    public void Shutdown() 
     {
         if (mChatService != null) 
         {
@@ -168,8 +180,8 @@ public class BluetoothSPP
     
     public void SetDeviceTarget(boolean isAndroidSelf)
     {
-        StopService();
-        StartService(isAndroidSelf);
+    	Shutdown();
+    	Start(isAndroidSelf);
         BluetoothSPP.this.mIsAndroidSelf = isAndroidSelf;
     }
     
@@ -219,7 +231,8 @@ public class BluetoothSPP
                 if(!mIsConnecting && msg.arg1 == BluetoothState.STATE_CONNECTING)
                 {
                 	mIsConnecting = true;
-                } else if(mIsConnecting) 
+                } 
+                else if(mIsConnecting) 
                 {
                     if(msg.arg1 != BluetoothState.STATE_CONNECTED) 
                     {
@@ -233,6 +246,11 @@ public class BluetoothSPP
             }
         }
     };
+    
+    public Set<BluetoothDevice> GetBondedDevices()
+    {
+    	return mBluetoothAdapter.getBondedDevices();
+    }
     
     public void StopAutoConnect() 
     {
@@ -267,22 +285,22 @@ public class BluetoothSPP
         }
     }
     
-    public void SetBluetoothStateListener (BluetoothStateListener listener) 
+    public void SetBluetoothStateListener (BluetoothListener.BluetoothStateListener listener) 
     {
         mBluetoothStateListener = listener;
     }
     
-    public void setOnDataReceivedListener (OnDataReceivedListener listener) 
+    public void setOnDataReceivedListener (BluetoothListener.OnDataReceivedListener listener) 
     {
         mDataReceivedListener = listener;
     }
     
-    public void SetBluetoothConnectionListener (BluetoothConnectionListener listener)
+    public void SetBluetoothConnectionListener (BluetoothListener.BluetoothConnectionListener listener)
     {
         mBluetoothConnectionListener = listener;
     }
     
-    public void SetAutoConnectionListener(AutoConnectionListener listener)
+    public void SetAutoConnectionListener(BluetoothListener.AutoConnectionListener listener)
     {
         mAutoConnectionListener = listener;
     }
@@ -385,7 +403,7 @@ public class BluetoothSPP
                 }
             }
     
-            bcl = new BluetoothConnectionListener() 
+            bcl = new BluetoothListener.BluetoothConnectionListener() 
             {
                 public void onDeviceConnected(String name, String address) 
                 {

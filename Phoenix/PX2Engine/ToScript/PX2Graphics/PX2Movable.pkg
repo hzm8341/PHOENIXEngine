@@ -26,6 +26,8 @@
 		void Show (bool show);
 		bool IsShow () const;
 		
+		void DetachFromParent();
+		
 		// Color Alpha Brightness
 	public:
 		void SetColorSelfCtrled(bool selfCtrled);

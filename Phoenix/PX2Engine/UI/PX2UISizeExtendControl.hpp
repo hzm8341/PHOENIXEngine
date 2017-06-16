@@ -17,6 +17,7 @@ namespace PX2
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_STREAM(UISizeExtendControl);
+		PX2_NEW(UISizeExtendControl);
 
 	public:
 		UISizeExtendControl();

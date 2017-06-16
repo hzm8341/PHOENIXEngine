@@ -16,6 +16,9 @@ namespace PkgParse
 		PkgClassInfo();
 		~PkgClassInfo();
 
+		std::string SingletonName;
+		bool IsSingleton() const;
+
 		bool IsRefObject;
 		bool IsUseRefIncrease;
 

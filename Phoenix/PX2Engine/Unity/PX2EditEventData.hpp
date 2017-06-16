@@ -49,6 +49,7 @@ namespace PX2
 		std::string Name;
 		std::string Title;
 		std::string Script;
+		std::string ScriptParam;
 		std::string Tag;
 
 		APoint PopUpPos;

@@ -8,6 +8,7 @@
 #include "PX2UITabFrame.hpp"
 #include "PX2EU_CanvasStage.hpp"
 #include "PX2EU_CanvasStageUI.hpp"
+#include "PX2UIFPicBox.hpp"
 
 namespace PX2
 {
@@ -22,14 +23,16 @@ namespace PX2
 		EU_StageFrame();
 		virtual ~EU_StageFrame();
 
+		virtual void OnEvent(Event *ent);
 		virtual void Visit(Object *obj, int info);
 
 	protected:
-		void AddStage();
+		void _AddStage();
 
 		UIFramePtr mToolFrame;
 		EU_CanvasStagePtr mCanvasStage;
 		EU_CanvasStageUIPtr mCanvasStageUI;
+		UIFPicBoxPtr mLogoPicBox;
 	};
 
 	PX2_REGISTER_STREAM(EU_StageFrame);

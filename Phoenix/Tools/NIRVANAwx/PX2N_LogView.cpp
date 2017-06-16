@@ -9,6 +9,11 @@
 #include "PX2Edit.hpp"
 #include "PX2N_Define.hpp"
 #include "PX2EU_Manager.hpp"
+#include "PX2EventWorld.hpp"
+#include "PX2EditorEventType.hpp"
+#include "PX2N_Frame.hpp"
+#include "PX2ScriptManager.hpp"
+#include "PX2Edit.hpp"
 using namespace NA;
 using namespace PX2;
 
@@ -16,14 +21,15 @@ using namespace PX2;
 #define ID_LOGPANEL_COMMOND (wxID_HIGHEST+8002)
 
 BEGIN_EVENT_TABLE(LogView, wxWindow)
-EVT_MENU(ID_LOGPANEL_CLEAR, LogView::OnClear)
+EVT_TOOL(ID_LOGPANEL_CLEAR, LogView::OnClear)
 EVT_TEXT_ENTER(ID_LOGPANEL_COMMOND, LogView::OnTextEnter)
 END_EVENT_TABLE()
 
 //-----------------------------------------------------------------------------
 LogView::LogView(wxWindow *parent) :
 wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER),
-mToolBar(0)
+mToolBar(0),
+mToolbarClearID(0)
 {
 	SetBackgroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()->GetCurTheme()->Color_Page_Background));
 	SetForegroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()->GetCurTheme()->Color_Page_Foreground));
@@ -39,7 +45,14 @@ mToolBar(0)
 		wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORIZONTAL);
 	mToolBar->SetArtProvider(new PX2wxAuiToolBarArt(1));
 
-	//
+	mToolbarClearID = PX2_EDIT_GETID;
+	mToolBar->AddTool(mToolbarClearID, "",
+		wxBitmap("DataNIRVANAwx/images/icons/console/clear.png", wxBITMAP_TYPE_PNG), "Clear",
+		wxITEM_NORMAL);
+
+	Connect(mToolbarClearID, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(LogView::OnClear));
+
 
 	mToolBar->Realize();
 
@@ -91,7 +104,7 @@ void LogView::OnTextEnter(wxCommandEvent& event)
 	{
 		std::string commondStr = mCommondTextCtrl->GetValue().ToStdString();
 
-		//PX2_SM.CallString(commondStr.c_str());
+		PX2_SC_LUA->CallString(commondStr.c_str());
 
 		mTextCtrl->SetDefaultStyle(wxTextAttr(*wxBLUE, wxColour(240, 240, 240)));
 		mTextCtrl->AppendText(commondStr + "\n");

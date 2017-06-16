@@ -16,40 +16,45 @@ void FBXImporter::AssociateMaterialToMesh(FbxNode* inNode, FbxMesh *fbxMesh)
 	FbxLayerElementArrayTemplate<int>* mtlIndices;
 	FbxGeometryElement::EMappingMode mtlMapMode = FbxGeometryElement::eNone;
 
-	if (fbxMesh->GetElementMaterial())
+	int numMtls = fbxMesh->GetElementMaterialCount();
+	for (int i = 0; i < numMtls; i++)
 	{
-		mtlIndices = &(fbxMesh->GetElementMaterial()->GetIndexArray());
-		mtlMapMode = fbxMesh->GetElementMaterial()->GetMappingMode();
-
-		if (mtlIndices)
+		const FbxGeometryElementMaterial *fbxEleMtl = fbxMesh->GetElementMaterial(i);
+		if (fbxEleMtl)
 		{
-			switch (mtlMapMode)
+			mtlIndices = &(fbxEleMtl->GetIndexArray());
+			mtlMapMode = fbxEleMtl->GetMappingMode();
+
+			if (mtlIndices)
 			{
-			case FbxGeometryElement::eByPolygon:
-			{
-												   if (mtlIndices->GetCount() == mesh->mFbxMeshTriangleCount)
-												   {
-													   for (int i = 0; i < mesh->mFbxMeshTriangleCount; ++i)
-													   {
-														   unsigned int materialIndex = mtlIndices->GetAt(i);
-														   mesh->mTriangles[i].mMaterialIndex = materialIndex;
-													   }
-												   }
-			}
+				switch (mtlMapMode)
+				{
+				case FbxGeometryElement::eByPolygon:
+				{
+					if (mtlIndices->GetCount() == mesh->mFbxMeshTriangleCount)
+					{
+						for (int i = 0; i < mesh->mFbxMeshTriangleCount; ++i)
+						{
+							unsigned int materialIndex = mtlIndices->GetAt(i);
+							mesh->mTriangles[i].mMaterialIndex = materialIndex;
+						}
+					}
+				}
 				break;
 
-			case FbxGeometryElement::eAllSame:
-			{
-												 unsigned int materialIndex = mtlIndices->GetAt(0);
-												 for (int i = 0; i < mesh->mFbxMeshTriangleCount; ++i)
-												 {
-													 mesh->mTriangles[i].mMaterialIndex = materialIndex;
-												 }
-			}
+				case FbxGeometryElement::eAllSame:
+				{
+					unsigned int materialIndex = mtlIndices->GetAt(0);
+					for (int i = 0; i < mesh->mFbxMeshTriangleCount; ++i)
+					{
+						mesh->mTriangles[i].mMaterialIndex = materialIndex;
+					}
+				}
 				break;
 
-			default:
-				throw std::exception("Invalid mapping mode for material\n");
+				default:
+					throw std::exception("Invalid mapping mode for material\n");
+				}
 			}
 		}
 	}
@@ -196,17 +201,19 @@ void FBXImporter::ProcessMaterialTexture(FbxSurfaceMaterial* inMaterial,
 
 						if (fileTexture)
 						{
+							std::string filename = fileTexture->GetFileName();
+
 							if (textureType == "DiffuseColor")
-							{
-								ioMaterial->mDiffuseMapName = fileTexture->GetFileName();
+							{	
+								ioMaterial->mDiffuseMapName = filename;
 							}
 							else if (textureType == "SpecularColor")
 							{
-								ioMaterial->mSpecularMapName = fileTexture->GetFileName();
+								ioMaterial->mSpecularMapName = filename;
 							}
 							else if (textureType == "Bump")
 							{
-								ioMaterial->mNormalMapName = fileTexture->GetFileName();
+								ioMaterial->mNormalMapName = filename;
 							}
 						}
 					}

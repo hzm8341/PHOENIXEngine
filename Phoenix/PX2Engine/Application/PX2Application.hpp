@@ -7,6 +7,7 @@
 #include "PX2Project.hpp"
 #include "PX2LanguageManager.hpp"
 #include "PX2Bluetooth.hpp"
+#include "PX2HardCamera.hpp"
 #include "PX2GraphicsRoot.hpp"
 #include "PX2DynLibManager.hpp"
 #include "PX2PluginManager.hpp"
@@ -30,7 +31,6 @@
 #include "PX2RendererInput.hpp"
 #include "PX2TimerManager.hpp"
 #include "PX2LogicManager.hpp"
-#include "PX2EngineEventHandler.hpp"
 #include "PX2EngineCanvas.hpp"
 #include "PX2UISizeExtendControl.hpp"
 #include "PX2AppBoostInfo.hpp"
@@ -38,11 +38,16 @@
 #include "PX2GeneralClientConnector.hpp"
 #include "PX2EngineServer.hpp"
 #include "PX2EngineClientConnector.hpp"
+#include "PX2UDPServer.hpp"
+#include "PX2ApplicationUDPNetInfo.hpp"
 
 namespace PX2
 {
 
-	class PX2_ENGINE_ITEM Application : public Singleton<Application>
+	class Arduino;
+	class VoiceSDK;
+
+	class PX2_ENGINE_ITEM Application : public Singleton<Application>, public EventHandler
 	{
 	public:
 		Application();
@@ -51,6 +56,7 @@ namespace PX2
 		enum PlatformType
 		{
 			PLT_WINDOWS,
+			PLT_LINUX,
 			PLT_ANDROID,
 			PLT_IOS,
 			PLT_MAX_TYPE
@@ -85,8 +91,22 @@ namespace PX2
 		RendererInput *GetRendererInput(const std::string &name);
 		Renderer *GetRenderer(const std::string &name);
 
+		const std::string &GetHostName() const;
+
+		void SetInEditor(bool isInEditor);
+		bool IsInEditor() const;
+
+		void SetQuit(bool quit);
+		bool IsQuit() const;
+
 		EngineServer *GetEngineServer();
 		EngineClientConnector *GetEngineClientConnector();
+
+		UDPServer *CreateEngineUDPServerClient();
+		UDPServer *GetEngineUDPServerClient();
+
+		UDPServer *CreateEngineUDPServerEditor();
+		UDPServer *GetEngineUDPServerEditor();
 
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
@@ -102,6 +122,8 @@ namespace PX2
 	private:
 		std::map<std::string, RendererInput *> mRendererInputMap;
 		std::map<std::string, Renderer*> mRenderersMap;
+		bool mIsInEditor;
+		std::string mHostName;
 
 		DynLibManager *mDynLibMan;
 		PluginManager *mPluginMan;
@@ -110,6 +132,7 @@ namespace PX2
 		LanguageManager *mLanguageMan;
 		ScriptManager *mScriptMan;
 		Bluetooth *mBluetooth;
+		HardCamera *mHardCamera;
 		GraphicsRoot *mRoot;
 		InputManager *mInputMan;
 		IMEDispatcher *mIMEDisp;
@@ -126,16 +149,22 @@ namespace PX2
 		UISkinManager *mUISkinManager;
 		LogicManager *mLogicManager;
 		Creater *mCreater;
-		EngineEventHandler *mEngineEventHandler;
+		Arduino *mArduino;
+		VoiceSDK *mVoiceSDK;
 
 		EngineServerPtr mEngineServer;
-		EngineClientConnectorPtr mEngineClientConnector;
+		EngineClientConnectorPtr mEngineClient;
+		UDPServerPtr mEngineUDPServerClient;
+		UDPServerPtr mEngineDUPServerEditor;
+
 		GeneralServerPtr mGeneralServer;
 		GeneralClientConnectorPtr mGeneralClientConnector;
 
 		bool mIsInBackground;
 		bool mBeforeInBackgroundMusicEnable;
 		bool mBeforeInBackgroundSoundEnable;
+
+		bool mIsQuit;
 
 		// Update
 	public:
@@ -209,6 +238,8 @@ namespace PX2
 
 		bool LoadUI(const std::string &pathname);
 		void CloseUI();
+
+		void GenerateProjectFileList(const std::string &projName);
 
 		Canvas *GetEngineCanvas();
 
@@ -296,7 +327,7 @@ namespace PX2
 		void Menu_Main_AddSubItem(const std::string &parentName, const std::string &name,
 			const std::string &title);
 		void Menu_Main_AddItem(const std::string &parentName, const std::string &name,
-			const std::string &title, const std::string &script,
+			const std::string &title, const std::string &script, const std::string &scriptParam="",
 			const std::string &tag = "");
 		void Menu_Main_AddItemSeparater(const std::string &parentName);
 
@@ -308,7 +339,8 @@ namespace PX2
 			const std::string &parentName, const std::string &name,
 			const std::string &title,
 			const std::string &script,
-			const std::string &tag = "");
+			const std::string &scriptParam="",
+			const std::string &tag="");
 		void Menu_Edit_AddItemSeparater(const std::string &whe,
 			const std::string &parentName);
 		void Menu_Edit_EndPopUp(const std::string &whe,
@@ -317,6 +349,24 @@ namespace PX2
 	public:
 		RenderWindow *CreateUIWindow(RenderWindow *parent, const std::string &name,
 			const std::string &title, const APoint &pos, const Sizef &size, bool isFloat);
+
+		// Event
+	public:
+		virtual void OnEvent(Event *ent);
+		void BroadcastGeneralString(const std::string &generalStr);
+
+		// NetInfo
+	public:
+		UDPNetInfo *GetUDPNetInfo(const std::string &ip);
+		bool AddUDPNetInfo(const std::string &ip, const std::string &name);
+		int GetNumUDPNetInfo() const;
+		UDPNetInfo *GetUDPNetInfo(int i);
+		void ClearUDPNetInfo();
+
+	protected:
+		void _UpdateUDPNetInfos(float elapsedTime);
+
+		std::vector<UDPNetInfoPtr> mUDPNetInfos;
 	};
 #include "PX2Application.inl"
 

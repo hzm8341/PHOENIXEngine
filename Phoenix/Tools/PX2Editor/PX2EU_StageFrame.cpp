@@ -8,6 +8,7 @@
 #include "PX2Project.hpp"
 #include "PX2Edit.hpp"
 #include "PX2UIFPicBox.hpp"
+#include "PX2ProjectEvent.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, EU_StageFrame);
@@ -52,14 +53,6 @@ void _ComboBoxCallback(UIFrame *frame, UICallType type)
 				}
 			}
 		}
-		else if (UICT_COMBOBOX_OPEN == type)
-		{
-			PX2EU_MAN.AddOpenCombo(comboBox);
-		}
-		else if (UICT_COMBOBOX_CLOSE == type)
-		{
-			PX2EU_MAN.RemoveOpenCombo(comboBox);
-		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -95,9 +88,9 @@ EU_StageFrame::EU_StageFrame()
 	butET_SCENE->SetSize(butSize);
 	butET_SCENE->SetName("ButET_Scene");
 	butET_SCENE->AddVisitor(this);
-	butET_SCENE->CreateAddText("Sce");
-	butET_SCENE->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butET_SCENE->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butET_SCENE->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/sceneedit.png");
+	butET_SCENE->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butET_SCENE->AutoMakeSizeFixable();
 
 	addButPos += butSpace + butSize.Width;
 	UIButton *butET_UI = new0 UIButton();
@@ -109,9 +102,9 @@ EU_StageFrame::EU_StageFrame()
 	butET_UI->SetSize(butSize);
 	butET_UI->SetName("ButET_UI");
 	butET_UI->AddVisitor(this);
-	butET_UI->CreateAddText("UI");
-	butET_UI->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butET_UI->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butET_UI->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/uiedit.png");
+	butET_UI->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butET_UI->AutoMakeSizeFixable();
 
 	addButPos += butSpace + butSize.Width;
 	UIButton *butET_Terrain = new0 UIButton();
@@ -123,9 +116,9 @@ EU_StageFrame::EU_StageFrame()
 	butET_Terrain->SetSize(butSize);
 	butET_Terrain->SetName("ButET_Terain");
 	butET_Terrain->AddVisitor(this);
-	butET_Terrain->CreateAddText("Ter");
-	butET_Terrain->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butET_Terrain->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butET_Terrain->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/terrainedit.png");
+	butET_Terrain->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butET_Terrain->AutoMakeSizeFixable();
 
 	addButPos += (butSize.Width / 2.0f + butSpace + spliterSize.Width / 2.0f);
 	UIFPicBox *spliter = new0 UIFPicBox();
@@ -168,9 +161,9 @@ EU_StageFrame::EU_StageFrame()
 	butEM_Select->SetSize(butSize);
 	butEM_Select->SetName("ButEM_Select");
 	butEM_Select->AddVisitor(this);
-	butEM_Select->CreateAddText("Sel");
-	butEM_Select->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butEM_Select->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butEM_Select->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/select.png");
+	butEM_Select->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butEM_Select->AutoMakeSizeFixable();
 
 	addButPos += butSize.Width + butSpace;
 	UIButton *butEM_Trans = new0 UIButton();
@@ -182,9 +175,9 @@ EU_StageFrame::EU_StageFrame()
 	butEM_Trans->SetSize(butSize);
 	butEM_Trans->SetName("ButEM_Trans");
 	butEM_Trans->AddVisitor(this);
-	butEM_Trans->CreateAddText("Tra");
-	butEM_Trans->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butEM_Trans->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butEM_Trans->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/translate.png");
+	butEM_Trans->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butEM_Trans->AutoMakeSizeFixable();
 
 	addButPos += butSize.Width + butSpace;
 	UIButton *butEM_Rotate = new0 UIButton();
@@ -196,9 +189,9 @@ EU_StageFrame::EU_StageFrame()
 	butEM_Rotate->SetSize(butSize);
 	butEM_Rotate->SetName("ButEM_Rotate");
 	butEM_Rotate->AddVisitor(this);
-	butEM_Rotate->CreateAddText("Rot");
-	butEM_Rotate->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butEM_Rotate->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butEM_Rotate->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/rotate.png");
+	butEM_Rotate->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butEM_Rotate->AutoMakeSizeFixable();
 
 	addButPos += butSize.Width + butSpace;
 	UIButton *butEM_Scale = new0 UIButton();
@@ -210,9 +203,9 @@ EU_StageFrame::EU_StageFrame()
 	butEM_Scale->SetSize(butSize);
 	butEM_Scale->SetName("ButEM_Scale");
 	butEM_Scale->AddVisitor(this);
-	butEM_Scale->CreateAddText("Sle");
-	butEM_Scale->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-	butEM_Scale->GetText()->SetFontScale(PX2_UISM.Size_PropertyFontScale);
+	butEM_Scale->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/icons/scale.png");
+	butEM_Scale->SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	butEM_Scale->AutoMakeSizeFixable();
 
 	addButPos = 0.0f;
 	addButPos -= comboWidth / 2.0f;
@@ -232,7 +225,7 @@ EU_StageFrame::EU_StageFrame()
 	renderModeComboBox->Choose(0);
 	renderModeComboBox->AddUICallback(_ComboBoxCallback);
 
-	AddStage();
+	_AddStage();
 	PX2_EDIT.SetEditType(Edit::ET_SCENE);
 
 	ComeInEventWorld();
@@ -243,6 +236,19 @@ EU_StageFrame::EU_StageFrame()
 EU_StageFrame::~EU_StageFrame()
 {
 	GoOutEventWorld();
+}
+//----------------------------------------------------------------------------
+void EU_StageFrame::OnEvent(Event *ent)
+{
+	if (ProjectES::IsEqual(ent, ProjectES::NewProject) ||
+		ProjectES::IsEqual(ent, ProjectES::LoadedProject))
+	{
+		mLogoPicBox->Show(false);
+	}
+	else if (ProjectES::IsEqual(ent, ProjectES::CloseProject))
+	{
+		mLogoPicBox->Show(true);
+	}
 }
 //----------------------------------------------------------------------------
 void EU_StageFrame::Visit(Object *obj, int info)
@@ -287,7 +293,7 @@ void EU_StageFrame::Visit(Object *obj, int info)
 	}
 }
 //----------------------------------------------------------------------------
-void EU_StageFrame::AddStage()
+void EU_StageFrame::_AddStage()
 {
 	float minus = 1.5f;
 
@@ -295,13 +301,20 @@ void EU_StageFrame::AddStage()
 	mCanvasStage->LocalTransform.SetTranslateY(-1.0f);
 	AttachChild(mCanvasStage);
 	mCanvasStage->SetAnchorParamHor(minus, -minus);
-	mCanvasStage->SetAnchorParamVer(minus+1, -PX2_UISM.Size_ToolBar - minus);
+	mCanvasStage->SetAnchorParamVer(minus + 1, -PX2_UISM.Size_ToolBar - minus);
 
 	mCanvasStageUI = new0 EU_CanvasStageUI();
 	mCanvasStageUI->LocalTransform.SetTranslateY(-10.0f);
 	AttachChild(mCanvasStageUI);
 	mCanvasStageUI->SetAnchorParamHor(minus, -minus);
-	mCanvasStageUI->SetAnchorParamVer(minus+1, -PX2_UISM.Size_ToolBar);
+	mCanvasStageUI->SetAnchorParamVer(minus + 1, -PX2_UISM.Size_ToolBar - minus);
+
+	mLogoPicBox = new0 UIFPicBox();
+	AttachChild(mLogoPicBox);
+	mLogoPicBox->LocalTransform.SetTranslateY(-15.0f);
+	mLogoPicBox->GetUIPicBox()->SetTexture(
+		"DataNIRVANAwx/images/logo/phoenixblack.png");
+	mLogoPicBox->AutoMakeSizeFixable();
 }
 //----------------------------------------------------------------------------
 

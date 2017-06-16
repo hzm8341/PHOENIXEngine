@@ -116,12 +116,6 @@ void RenderWindow::SetPosition(const APoint &pos)
 //----------------------------------------------------------------------------
 void RenderWindow::SetScreenSize(const Sizef &size)
 {
-	const std::string &name = GetName();
-	if ("ResGridRenderWindow" == name)
-	{
-		int a = 0;
-	}
-
 	mScreenSize = size;
 
 	if (mMainCanvas)
@@ -422,6 +416,13 @@ void RenderWindow::_UpdateDragType()
 //----------------------------------------------------------------------------
 void RenderWindow::Update(double appSeconds, double elapsedSeconds)
 {
+	if (mRenderer)
+	{
+#if defined PX2_USE_OPENGL
+		mRenderer->PreDraw();
+#endif
+	}
+
 	if (IsMain())
 	{
 		Float2 curCursorPos = GetCursorPos();

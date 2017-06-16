@@ -328,6 +328,23 @@ void EU_CanvasTimeLineEdit::OnEvent(Event *ent)
 	}
 	else if (GraphicsES::IsEqual(ent, GraphicsES::RemoveObject))
 	{
+		Object *obj = ent->GetData<Object*>();
+
+		EffectModule *module = DynamicCast<EffectModule>(obj);
+		Effectable *ea = DynamicCast<Effectable>(obj);
+
+		if (module)
+		{
+			PX2_EDIT.GetTimeLineEdit()->RemoveGroup(module);
+		}
+		else if (ea)
+		{
+			PX2_EDIT.GetTimeLineEdit()->RemoveGroup(ea);
+		}
+	}
+	else if (EditorEventSpace::IsEqual(ent, EditorEventSpace::TimeLine_AddPoint))
+	{
+		_RightAddPoint();
 	}
 }
 //----------------------------------------------------------------------------
@@ -604,6 +621,26 @@ void EU_CanvasTimeLineEdit::OnSizeChanged()
 	_RefreshGrid(true);
 }
 //----------------------------------------------------------------------------
+void EU_CanvasTimeLineEdit::_RightAddPoint()
+{
+	UICurveGroup *uiCurveGroup = PX2_EDIT.GetTimeLineEdit()->GetSelectedUICurveGroup();
+	if (!uiCurveGroup) return;
+
+	const Rectf &canvasWorldRect = mCanvasGrid->GetWorldRect();
+
+	APoint camPos = mCanvasOverCamera->GetPosition();
+	Vector2f camScreenPos = mCanvasOverCamera->WorldPos3DTo2D(canvasWorldRect, camPos);
+	float xDissCam = mRightPressedPoint.X() - camScreenPos.X();
+	float zDissCam = mRightPressedPoint.Z() - camScreenPos.Y();
+	float xDissCamReal = xDissCam / mPixelOverCamIn;
+	float zDissCamReal = zDissCam / mPixelOverCamOut;
+	APoint pointPos = camPos + AVector(xDissCamReal, 0.0f, zDissCamReal);
+	pointPos.Y() = 0.0f;
+
+	CurveGroup *curveGroup = uiCurveGroup->GetCurveGroup();
+	curveGroup->AddPoint(pointPos);
+}
+//----------------------------------------------------------------------------
 void EU_CanvasTimeLineEdit::OnSizeNodePicked(const CanvasInputData &inputData)
 {
 	const APoint &worldPos = inputData.LogicPos;
@@ -613,15 +650,14 @@ void EU_CanvasTimeLineEdit::OnSizeNodePicked(const CanvasInputData &inputData)
 	if (!canvasWorldRect.IsInsize(wPos))
 	{
 		// left
-
-		if (CanvasInputData::MT_RIGHT == inputData.TheMouseTag)
+		if (CanvasInputData::MT_RIGHT == inputData.TheMouseTag &&
+			UIPT_RELEASED == inputData.PickType)
 		{
-			CreateEditMenu(worldPos);
+			CreateEditMenuLeft(worldPos);
 		}
 	}
 	else
 	{
-
 		float posSizePercentWdith = (wPos[0] - canvasWorldRect.Left) /
 			canvasWorldRect.Width();
 		float posSizePercentHeight = (wPos[1] - canvasWorldRect.Bottom) /
@@ -638,34 +674,28 @@ void EU_CanvasTimeLineEdit::OnSizeNodePicked(const CanvasInputData &inputData)
 			{
 				mIsMiddleDown = true;
 			}
+			else if (CanvasInputData::MT_RIGHT == inputData.TheMouseTag)
+			{
+				mRightPressedPoint = worldPos;
+			}
 		}
 		else if (UIPT_RELEASED == inputData.PickType)
 		{
 			mIsLeftDown = false;
 			mIsMiddleDown = false;
+
+			if (CanvasInputData::MT_RIGHT == inputData.TheMouseTag)
+			{
+				CreateEditMenuRight(worldPos);
+			}
 		}
 		else if (UIPT_DOUBLE_PRESSED == inputData.PickType)
 		{
 			mIsLeftDown = false;
 			mIsMiddleDown = false;
+			mRightPressedPoint = worldPos;
 
-			bool isCtrlDown = PX2_EDIT.IsCtrlDown;
-			PX2_UNUSED(isCtrlDown);
-
-			UICurveGroup *uiCurveGroup = PX2_EDIT.GetTimeLineEdit()->GetSelectedUICurveGroup();
-			if (!uiCurveGroup) return;
-
-			APoint camPos = mCanvasOverCamera->GetPosition();
-			Vector2f camScreenPos = mCanvasOverCamera->WorldPos3DTo2D(canvasWorldRect, camPos);
-			float xDissCam = worldPos.X() - camScreenPos.X();
-			float zDissCam = worldPos.Z() - camScreenPos.Y();
-			float xDissCamReal = xDissCam / mPixelOverCamIn;
-			float zDissCamReal = zDissCam / mPixelOverCamOut;
-			APoint pointPos = camPos + AVector(xDissCamReal, 0.0f, zDissCamReal);
-			pointPos.Y() = 0.0f;
-
-			CurveGroup *curveGroup = uiCurveGroup->GetCurveGroup();
-			curveGroup->AddPoint(pointPos);
+			_RightAddPoint();
 		}
 		else if (UIPT_WHELLED == inputData.PickType)
 		{
@@ -763,6 +793,35 @@ void EU_CanvasTimeLineEdit::OnSizeNodePicked(const CanvasInputData &inputData)
 			}
 			else if (MM_ZOOM == mMoveMode)
 			{
+				float xDetal = inputData.MoveDelta.X();
+				float zDetal = inputData.MoveDelta.Z();
+
+				float rightDownRMax = 10.0f;
+				float rightDownUMax = 10.0f;
+
+				float rTo = rightDownRMax;
+				float uTo = rightDownUMax;
+
+				if (xDetal > 0.0f)
+				{
+					rTo = rightDownRMax * (1.0f + xDetal / 100.0f);
+				}
+				else
+				{
+					rTo = rightDownRMax / (1.0f - xDetal / 100.0f);
+				}
+
+				if (zDetal < 0.0f)
+				{
+					uTo = rightDownUMax * (1.0f - zDetal / 100.0f);
+				}
+				else
+				{
+					uTo = rightDownUMax / (1.0f + zDetal / 100.0f);
+				}
+
+				ZoomCameraTo(rTo, uTo);
+				_RefreshGrid(true);
 			}
 		}
 	}
@@ -776,16 +835,44 @@ void EU_CanvasTimeLineEdit::OnSizeNodeNotPicked(const CanvasInputData &inputData
 	mIsMiddleDown = false;
 }
 //----------------------------------------------------------------------------
-void EU_CanvasTimeLineEdit::CreateEditMenu(const APoint &pos)
+void EU_CanvasTimeLineEdit::CreateEditMenuLeft(const APoint &pos)
 {
-	PX2_APP.Menu_Edit_Begin("Stage", "TimeLineEdit");
+	PX2_APP.Menu_Edit_Begin("TIMELINE", "TimeLineEdit");
 
-	PX2_APP.Menu_Edit_AddItem("Stage", "TimeLineEdit", "Delete",
-		PX2_LM_EDITOR.V("n_Delete"), "n_TimeLine_Delete()");
-	PX2_APP.Menu_Edit_AddItem("Stage", "TimeLineEdit", "DeleteAll",
-		PX2_LM_EDITOR.V("n_DeleteAll"), "n_TimeLine_DeleteAll()");
+	PX2_APP.Menu_Edit_AddItem("TIMELINE", "TimeLineEdit", "Delete",
+		PX2_LM_EDITOR.V("n_Delete"), "n_TimeLine_Delete");
+	PX2_APP.Menu_Edit_AddItem("TIMELINE", "TimeLineEdit", "DeleteAll",
+		PX2_LM_EDITOR.V("n_DeleteAll"), "n_TimeLine_DeleteAll");
 
-	PX2_APP.Menu_Edit_EndPopUp("Stage", pos);
+	PX2_APP.Menu_Edit_EndPopUp("TIMELINE", pos);
+}
+//----------------------------------------------------------------------------
+void EU_CanvasTimeLineEdit::CreateEditMenuRight(const APoint &pos)
+{
+	UICurveGroup *curveGroup = PX2_EDIT.GetTimeLineEdit()->GetSelectedUICurveGroup();
+	if (!curveGroup)
+		return;
+
+	PX2_APP.Menu_Edit_Begin("TIMELINE", "TimeLineEditRight");
+
+	CurveCtrl *ctrl = PX2_EDIT.GetTimeLineEdit()->GetSelectedCurveCtrl();
+	if (!ctrl)
+	{
+		PX2_APP.Menu_Edit_AddItem("TIMELINE", "TimeLineEditRight", "AddPoint",
+			PX2_LM_EDITOR.V("n_AddPoint"), "n_TimeLine_AddPoint");
+	}
+	else
+	{
+		PX2_APP.Menu_Edit_AddItem("TIMELINE", "TimeLineEditRight", "n_SetInValue",
+			PX2_LM_EDITOR.V("n_SetInValue"), "n_TimeLine_SetInValue");
+		PX2_APP.Menu_Edit_AddItem("TIMELINE", "TimeLineEditRight", "n_SetOutValue",
+			PX2_LM_EDITOR.V("n_SetOutValue"), "n_TimeLine_SetOutValue");
+
+		PX2_APP.Menu_Edit_AddItem("TIMELINE", "TimeLineEditRight", "DeletePoint",
+			PX2_LM_EDITOR.V("n_DeletePoint"), "n_TimeLine_DeletePoint");
+	}
+
+	PX2_APP.Menu_Edit_EndPopUp("TIMELINE", pos);
 }
 //----------------------------------------------------------------------------
 

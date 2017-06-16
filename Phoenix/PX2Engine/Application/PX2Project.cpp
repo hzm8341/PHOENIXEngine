@@ -357,3 +357,24 @@ void Project::OnPropertyChanged(const PropertyObject &obj)
 	}
 }
 //----------------------------------------------------------------------------
+void Project::PoolClear()
+{
+	mPoolObjects.clear();
+}
+//----------------------------------------------------------------------------
+void Project::PoolSet(const std::string &name, Object *obj)
+{
+	mPoolObjects[name] = obj;
+}
+//----------------------------------------------------------------------------
+Object *Project::PoolGet(const std::string &name)
+{
+	auto it = mPoolObjects.find(name);
+	if (it != mPoolObjects.end())
+	{
+		return it->second;
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------

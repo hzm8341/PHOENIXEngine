@@ -38,7 +38,7 @@ namespace PX2
 		VLC *GetVLC();
 #endif
 
-		virtual void OnSizeChanged();
+		void SendToGetCameraView(std::string &url, int port);
 
 	protected:
 		void _UpdateOnMode(Mode m);

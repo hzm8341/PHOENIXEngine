@@ -46,9 +46,9 @@ namespace PX2
 		virtual MovablePtr DetachChildAt (int i);
 		virtual void DetachAllChildren ();
 		virtual MovablePtr SetChild (int i, Movable* child);
-		virtual MovablePtr GetChild (int i);
+		virtual Movable *GetChild (int i);
 		std::vector<MovablePtr> &GetChildren();
-		virtual MovablePtr GetChildByName (const std::string &name);
+		virtual Movable *GetChildByName (const std::string &name);
 		bool IsHasChild(const Movable *child) const;
 
 		virtual void Enable(bool enable);

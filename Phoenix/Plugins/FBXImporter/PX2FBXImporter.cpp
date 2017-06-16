@@ -18,8 +18,6 @@ mFbxIOSettings(0)
 	mFbxIOSettings = FbxIOSettings::Create(mFbxManager, IOSROOT);
 	mFbxManager->SetIOSettings(mFbxIOSettings);
 
-	mFbxScene = FbxScene::Create(mFbxManager, "myScene");
-
 	mFbxIOSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
 	mFbxIOSettings->SetBoolProp(IMP_FBX_TEXTURE, true);
 	mFbxIOSettings->SetBoolProp(IMP_FBX_LINK, true);
@@ -34,7 +32,7 @@ mFbxIOSettings(0)
 //----------------------------------------------------------------------------
 FBXImporter::~FBXImporter()
 {
-	ClearScene();
+	Clear();
 
 	if (mFbxManager)
 	{
@@ -43,12 +41,24 @@ FBXImporter::~FBXImporter()
 	}
 }
 //----------------------------------------------------------------------------
-void FBXImporter::ClearScene()
+FBXImporter* FBXImporter::New()
+{
+	return new0 FBXImporter();
+}
+//----------------------------------------------------------------------------
+void FBXImporter::Delete(FBXImporter *importer)
+{
+	delete0(importer);
+}
+//----------------------------------------------------------------------------
+void FBXImporter::Clear()
 {
 	for (auto it = mMeshes.begin(); it != mMeshes.end(); it++)
 	{
 		delete0(it->second);
 	}
+	mMeshes.clear();
+	mSkeleton.mJoints.clear();
 
 	if (mFbxImporter)
 	{
@@ -61,9 +71,14 @@ void FBXImporter::ClearScene()
 		mFbxScene->Destroy();
 		mFbxScene = 0;
 	}
+
+	mPX2Scene = 0;
+	mFbxNode2Nodes.clear();
+	mFbxMesh2Meshes.clear();
+	mTriMesh2Mtls.clear();
 }
 //----------------------------------------------------------------------------
-Node *FBXImporter::GetScene()
+Node *FBXImporter::GetPX2Node()
 {
 	return mPX2Scene;
 }
@@ -72,6 +87,10 @@ Node *FBXImporter::GetScene()
 //----------------------------------------------------------------------------
 bool FBXImporter::Import(const std::string &filename)
 {
+	Clear();
+
+	mFbxScene = FbxScene::Create(mFbxManager, "myScene");
+
 	mModelFilename = filename;
 	StringHelp::SplitFilename(mModelFilename, mOutPathFilename, mBaseFilename);
 
@@ -82,7 +101,9 @@ bool FBXImporter::Import(const std::string &filename)
 	if (!mFbxImporter->Initialize(filename.c_str(), -1, mFbxManager->GetIOSettings()))
 		return false;
 
-	if (!mFbxImporter->Import(mFbxScene)) return false;
+	if (!mFbxImporter->Import(mFbxScene)) 
+		return false;
+	
 	mFbxImporter->Destroy();
 	mFbxImporter = 0;
 

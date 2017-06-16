@@ -78,7 +78,8 @@ namespace NA
 		DECLARE_EVENT_TABLE()
 
 	protected:
-		void OnTabClicked(wxAuiNotebookEvent& evt);
+		virtual void OnTabClicked(wxAuiNotebookEvent& evt);
+		virtual int DoModifySelection(size_t n, bool events);
 
 		bool mIsCenter;
 	};

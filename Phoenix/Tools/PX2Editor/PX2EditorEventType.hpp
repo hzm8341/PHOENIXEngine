@@ -40,12 +40,19 @@ namespace PX2
 	PX2_EVENT(OpenRes)
 	PX2_EVENT(UpRes)
 	PX2_EVENT(DownRes)
+	PX2_EVENT(SaveText)
 
 	PX2_EVENT(OpenContentRes)
 	PX2_EVENT(OpenContentResTemp)
 	PX2_EVENT(RemoveContentRes)
 
 	PX2_EVENT(SetPreViewObject)
+
+	PX2_EVENT(SetInspectorView)
+
+	PX2_EVENT(SetProjectTreeLevel)
+
+	PX2_EVENT(SetCopyText)
 
 	PX2_EVENT(ObjectTransformChanged)
 	PX2_EVENT(ObjectSizeChanged)
@@ -73,6 +80,10 @@ namespace PX2
 	PX2_EVENT(TimeLine_Pan)
 	PX2_EVENT(TimeLine_Zoom)
 	PX2_EVENT(TimeLine_CurveMode)
+
+	PX2_EVENT(TimeLine_AddPoint)
+	PX2_EVENT(TimeLine_SetInValue)
+	PX2_EVENT(TimeLine_SetOutValue)
 
 	PX2_EVENT(CurveChangedByPropertyGrid)
 

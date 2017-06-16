@@ -20,10 +20,7 @@ namespace NA
 
 	protected:
 		DECLARE_EVENT_TABLE()
-
 		ResGridView();
-
-		PX2wxAuiToolBar *mProjTreeBar;
 	};
 }
 

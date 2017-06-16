@@ -15,6 +15,9 @@
 		float GetWidth() const;
 		void SetHeight(float height);
 		float GetHeight() const;
+		
+		void SetScriptHandlerSizeChanged(const std::string &scriptHandler);
+		const std::string &GetScriptSizeChanged() const;
 
 		// Pivot
 	public:

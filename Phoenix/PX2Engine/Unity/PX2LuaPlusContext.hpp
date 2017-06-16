@@ -55,6 +55,7 @@ namespace PX2
 		void ClearEventFunctions();
 		bool RegistEventFunction(const char *entName,
 			LuaPlus::LuaObject callFunObject);
+		void UnRegistAllEventFunctions(const char *entName);
 		virtual void OnEvent(Event *ent);
 
 	protected:

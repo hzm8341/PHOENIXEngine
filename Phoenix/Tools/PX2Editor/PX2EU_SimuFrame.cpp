@@ -35,14 +35,6 @@ void _SimuComboBoxCallback(UIFrame *frame, UICallType type)
 			}
 
 		}
-		else if (UICT_COMBOBOX_OPEN == type)
-		{
-			PX2EU_MAN.AddOpenCombo(comboBox);
-		}
-		else if (UICT_COMBOBOX_CLOSE == type)
-		{
-			PX2EU_MAN.RemoveOpenCombo(comboBox);
-		}
 	}
 }
 //----------------------------------------------------------------------------

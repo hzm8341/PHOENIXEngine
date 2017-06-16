@@ -791,7 +791,14 @@ void Canvas::_DoPick(const CanvasInputData &inputData)
 		inRangeWidget->OnWidgetPicked(inputData);
 	}
 
-	mPickedWidget = inRangeWidget;
+	if (inRangeWidget && inRangeWidget->IsEnable())
+	{
+		mPickedWidget = inRangeWidget;
+	}
+	else
+	{
+		mPickedWidget = 0;
+	}
 }
 //----------------------------------------------------------------------------
 SizeNode *Canvas::GetPickedWidget()
@@ -847,7 +854,7 @@ void Canvas::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsDoPick())
 		return;
 
-	if (!IsEnable())
+	if (!IsActivated())
 		return;
 
 	CanvasInputData data = inputData;
@@ -1009,10 +1016,7 @@ void Canvas::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 		OnLeave();
 	}
 
-	PX2_UNUSED(inputData);
-
-	// remove this to keep fast
-	//SizeNode::OnSizeNodeNotPicked(inputData);
+	SizeNode::OnSizeNodeNotPicked(inputData);
 }
 //----------------------------------------------------------------------------
 void Canvas::OnLeftDown(const PickInputData &data)

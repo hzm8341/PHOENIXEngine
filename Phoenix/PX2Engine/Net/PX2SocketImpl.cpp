@@ -874,6 +874,16 @@ void SocketImpl::Init(int af)
 	InitSocket(af, SOCK_STREAM);
 }
 //----------------------------------------------------------------------------
+SocketImpl::SocketImpl(const SocketImpl&imp)
+{
+	PX2_UNUSED(imp);
+}
+//----------------------------------------------------------------------------
+SocketImpl& SocketImpl::operator = (const SocketImpl&)
+{
+	return *this;
+}
+//----------------------------------------------------------------------------
 void SocketImpl::InitSocket(int af, int type, int proto)
 {
 	assertion(mSocket == PX2_INVALID_SOCKET, "invalid socket.\n");

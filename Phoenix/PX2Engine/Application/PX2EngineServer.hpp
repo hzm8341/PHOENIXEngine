@@ -18,6 +18,7 @@ namespace PX2
 		~_ConnectObj();
 
 		unsigned int ClientID;
+		std::string IP;
 		float HeartTiming;
 	};
 	typedef Pointer0<_ConnectObj> _ConnectObjPtr;

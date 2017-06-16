@@ -7,6 +7,7 @@
 #include "PX2N_ProjTree.hpp"
 #include "PX2EditParams.hpp"
 #include "PX2wxAui.hpp"
+#include "PX2EventHandler.hpp"
 using namespace PX2;
 
 namespace NA
@@ -14,13 +15,15 @@ namespace NA
 
 	class PX2wxAuiToolBar;
 
-	class TextView : public wxWindow
+	class TextView : public wxWindow, public PX2::EventHandler
 	{
 		DECLARE_DYNAMIC_CLASS(ProjView)
 
 	public:
 		TextView(wxWindow *parent);
 		virtual ~TextView();
+
+		virtual void OnEvent(PX2::Event *ent);
 
 		wxTextCtrl *GetTextCtrl();
 

@@ -8,7 +8,8 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 void Application::Play(PlayType type)
 {
-	if (mPlayType == type) return;
+	if (mPlayType == type) 
+		return;
 
 	std::string dirScirpt = "scripts";
 	if (BM_APP == mBoostMode)
@@ -18,7 +19,8 @@ void Application::Play(PlayType type)
 
 	if (PT_PLAY == type)
 	{
-		std::string callFilenameLua = "Data/" + mProjectName + dirScirpt + "/lua/play.lua";
+		std::string callFilenameLua = "Data/" + mProjectName + dirScirpt 
+			+ "/lua/play.lua";
 		PX2_SC_LUA->CallFileFunction(callFilenameLua.c_str(), "preplay");
 
 		PX2_GR.SetPlayType((GraphicsRoot::PlayType)type);
@@ -31,8 +33,11 @@ void Application::Play(PlayType type)
 	}
 	else if (PT_NONE == type)
 	{
-		std::string callFilename = "Data/" + mProjectName + dirScirpt + "/lua/stop.lua";
+		std::string callFilename = "Data/" + mProjectName + dirScirpt + 
+			"/lua/stop.lua";
 		PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "prestop");
+
+		PX2_TimerM.ClearTimers();
 
 		PX2_GR.SetPlayType((GraphicsRoot::PlayType)type);
 		mPlayType = type;

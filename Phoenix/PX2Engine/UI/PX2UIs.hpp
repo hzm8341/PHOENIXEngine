@@ -28,5 +28,6 @@
 #include "PX2UIGridFrame.hpp"
 #include "PX2UIColorSelect.hpp"
 #include "PX2UICollapsePanel.hpp"
+#include "PX2UIPicBoxListController.hpp"
 
 #endif

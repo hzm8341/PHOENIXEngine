@@ -6,6 +6,7 @@
 #include "PX2CorePre.hpp"
 #include "PX2NetClientConnector.hpp"
 #include "PX2EngineNetDefine.hpp"
+#include "PX2DatagramSocket.hpp"
 
 namespace PX2
 {
@@ -64,6 +65,16 @@ namespace PX2
 		std::vector<std::string> mOnConnectCallbacks;
 		std::vector<std::string> mOnDisconnectCallbacks;
 		std::vector<std::string> mOnRecvCallbacks;
+
+	public:
+		void SetBroadcastInfo(bool broadcast);
+		bool IsBroadcastInfo() const;
+
+		void BroadcastInfoToLocalNet(int port);
+
+	protected:
+		bool mIsBroadcastInfo;
+		float mBroadcastTiming;
 	};
 	typedef Pointer0<EngineClientConnector> EngineClientConnectorPtr;
 

@@ -166,6 +166,7 @@ bool PkgInfoManager::Save(const std::string &filename)
 
 		classNode.SetAttributeString("name", className.c_str());
 		classNode.SetAttributeString("parentname", classInfo->ParentClassName.c_str());
+		classNode.SetAttributeString("singletonname", classInfo->SingletonName.c_str());
 
 		for (int i = 0; i < (int)classInfo->GetFunctions().size(); i++)
 		{

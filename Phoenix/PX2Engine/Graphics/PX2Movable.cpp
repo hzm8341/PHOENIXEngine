@@ -3,6 +3,7 @@
 #include "PX2Movable.hpp"
 #include "PX2Culler.hpp"
 #include "PX2FunObject.hpp"
+#include "PX2Node.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Controlledable, Movable);
@@ -77,6 +78,9 @@ bool Movable::IsShow () const
 void Movable::Update(double applicationTime, double elapsedTime, 
 	bool initiator)
 {
+	if (!IsShow())
+		return;
+
 	bool doUpdateTrans = true;
 	if (mUpdateTime > 0.0f)
 	{
@@ -113,6 +117,15 @@ void Movable::OnBeAttached()
 //----------------------------------------------------------------------------
 void Movable::OnBeDetach()
 {
+}
+//----------------------------------------------------------------------------
+void Movable::DetachFromParent()
+{
+	Node *parentNode = DynamicCast<Node>(GetParent());
+	if (parentNode)
+	{
+		parentNode->DetachChild(this);
+	}
 }
 //----------------------------------------------------------------------------
 void Movable::SetParentTransformIngore (bool trans, bool rotate, bool scale)

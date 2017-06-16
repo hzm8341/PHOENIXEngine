@@ -302,7 +302,7 @@ MovablePtr Node::SetChild (int i, Movable* child)
     return 0;
 }
 //----------------------------------------------------------------------------
-MovablePtr Node::GetChild (int i)
+Movable *Node::GetChild (int i)
 {
     if (0 <= i && i < (int)mChild.size())
     {
@@ -328,6 +328,8 @@ void Node::OnChildAttached(Movable *child)
 	{
 		Event *ent = GraphicsES::CreateEventX(GraphicsES::AddObject, 
 			"GraphicsES::AddObject");
+		ent->SetDataPointer0(child);
+		ent->SetDataPointer1(this);
 		ent->SetData<AddObjectData>(data);
 		PX2_EW.BroadcastingLocalEvent(ent);
 	}
@@ -342,11 +344,12 @@ void Node::OnChildDetach(Movable *child)
 		Event *ent = GraphicsES::CreateEventX(GraphicsES::RemoveObject, 
 			"GraphicsES::RemoveObject");
 		ent->SetData<Object*>((Object*)child);
+		ent->SetDataPointer0((Object*)child);
 		PX2_EW.BroadcastingLocalEvent(ent);
 	}
 }
 //----------------------------------------------------------------------------
-MovablePtr Node::GetChildByName (const std::string &name)
+Movable *Node::GetChildByName (const std::string &name)
 {
 	for (int i=0; i<(int)mChild.size(); i++)
 	{

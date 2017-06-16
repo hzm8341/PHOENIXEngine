@@ -10,8 +10,7 @@ namespace NA
 
 	enum ProjTreeLevel
 	{
-		PTL_GENERAL,
-		PTL_CHILDREN,
+		PTL_CHILDREN = 0,
 		PTL_CONTROLS,
 		PTL_MATERIALS,
 		PTL_DETAIL,

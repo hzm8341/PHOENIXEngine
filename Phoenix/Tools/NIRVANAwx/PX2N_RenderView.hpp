@@ -53,6 +53,7 @@ namespace NA
 		int mTimerID;
 		wxTimer mTimer;
 		wxSize mSize;
+		wxMenu *mEditMenu;
 	};
 
 }

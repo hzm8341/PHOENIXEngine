@@ -8,7 +8,6 @@
 #endif
 using namespace PX2;
 
-
 //----------------------------------------------------------------------------
 VoiceSDK::VoiceSDK()
 {
@@ -42,14 +41,51 @@ void VoiceSDK::EndVoiceListening()
 #endif
 }
 //----------------------------------------------------------------------------
+void VoiceSDK::OnSpeakStart()
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, SpeakStart);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::OnSpeakPause()
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, SpeakPause);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::OnSpeakCancel()
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, SpeakCancel);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::OnSpeakFinish()
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, SpeakFinish);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::OnVoiceRecordStart()
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, RecordStart);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::OnVoiceRecordEnd()
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, RecordEnd);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
 void VoiceSDK::OnVoiceRecognizeResults(const std::string &strRet,
 	const std::string &strJSON)
 {
 	VoiceData vData;
 	vData.StrRet = strRet;
 	vData.StrJSON = strJSON;
-
-	Event *ent = VoiceSDKSpace::CreateEventX(VoiceSDKSpace::Results);
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, RecognizeResults);
+	ent->SetDataStr0(strRet);
+	ent->SetDataStr1(strJSON);
 	ent->SetData<VoiceData>(vData);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }

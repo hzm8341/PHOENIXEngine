@@ -88,6 +88,7 @@ namespace PX2
 		virtual void OnBeAttached();
 		virtual void OnBeDetach();
 		Movable* GetParent ();
+		void DetachFromParent();
 		void SetParentTransformIngore (bool trans, bool rotate, bool scale);
 		void GetParentTransformIngore (bool &trans, bool &rotate, bool &scale);
 

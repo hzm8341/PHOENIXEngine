@@ -12,15 +12,14 @@ OPTION ARB_fragment_program_shadow;
 #semantic p_std_lightshadow.FogColorDist
 #semantic SampleBase
 #semantic SampleShadowDepth
-#var float4 vertexColor : $vin.COLOR :  : 0 : 0
-#var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 1 : 1
-#var float2 vertexTCoord1 : $vin.TEXCOORD1 : TEX1 : 2 : 1
-#var float4 vertexTCoord2 : $vin.TEXCOORD2 : TEX2 : 3 : 1
-#var float4 vertexTCoord3 : $vin.TEXCOORD3 : TEX3 : 4 : 1
-#var float4 pixelColor : $vout.COLOR : COL : 5 : 1
-#var float4 UVOffset :  : c[0] : 6 : 1
-#var float4 FogColorHeight :  : c[1] : 7 : 1
-#var float4 FogColorDist :  : c[2] : 8 : 1
+#var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 0 : 1
+#var float2 vertexTCoord1 : $vin.TEXCOORD1 : TEX1 : 1 : 1
+#var float4 vertexTCoord2 : $vin.TEXCOORD2 : TEX2 : 2 : 1
+#var float4 vertexTCoord3 : $vin.TEXCOORD3 : TEX3 : 3 : 1
+#var float4 pixelColor : $vout.COLOR : COL : 4 : 1
+#var float4 UVOffset :  : c[0] : 5 : 1
+#var float4 FogColorHeight :  : c[1] : 6 : 1
+#var float4 FogColorDist :  : c[2] : 7 : 1
 #var sampler2D SampleBase :  : texunit 0 : -1 : 1
 #var sampler2D SampleShadowDepth :  : texunit 1 : -1 : 1
 #var <none>4 $kill_0000 : $vout.$kill : $kill : -1 : 0

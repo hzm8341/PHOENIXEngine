@@ -21,6 +21,8 @@
 		virtual int DetachChild (Movable* child);
 		virtual bool DetachChildByName (const std::string &name);
 		virtual void DetachAllChildren ();
+		virtual Movable *GetChild (int i);
+		virtual Movable *GetChildByName (const std::string &name);
 
 		virtual void Enable(bool enable);
 

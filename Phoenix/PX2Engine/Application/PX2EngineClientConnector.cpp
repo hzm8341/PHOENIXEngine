@@ -8,6 +8,9 @@
 #include "PX2ResourceManager.hpp"
 #include "PX2EngineCanvas.hpp"
 #include "PX2Log.hpp"
+#include "PX2HostEntry.hpp"
+#include "PX2DNS.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -17,8 +20,11 @@ mIsAutoConnect(false),
 mAutoConnectTime(5.0f),
 mAutoConnectTiming(0.0f),
 mIsServerConnected(false),
-mAutoConnectPort(7717),
-mHeartTiming(0.0f)
+mAutoConnectIP("127.0.0.1"),
+mAutoConnectPort(EngineServerPort),
+mHeartTiming(0.0f),
+mIsBroadcastInfo(true),
+mBroadcastTiming(0.0f)
 {
 	RegisterHandler(EngineServerMsgID,
 		(ServerMsgHandleFunc)&EngineClientConnector::OnStringMsg);
@@ -30,6 +36,9 @@ EngineClientConnector::~EngineClientConnector()
 //----------------------------------------------------------------------------
 int EngineClientConnector::Update(float elapsedSeconds)
 {
+	if (!IsEnable())
+		return -1;
+
 	int ret = ClientConnector::Update(elapsedSeconds);
 
 	if (!mIsServerConnected)
@@ -41,6 +50,20 @@ int EngineClientConnector::Update(float elapsedSeconds)
 
 			OnConnectedToServer();
 			mIsServerConnected = true;
+		}
+		else
+		{
+			if (mIsBroadcastInfo)
+			{
+				mBroadcastTiming += elapsedSeconds;
+				if (mBroadcastTiming > EngineUDPSendInfoTime)
+				{
+					BroadcastInfoToLocalNet(EngineUDPPortClient);
+					BroadcastInfoToLocalNet(EngineUDPPortServerEditor);
+
+					mBroadcastTiming = 0.0f;
+				}
+			}
 		}
 	}
 	else
@@ -130,9 +153,6 @@ void EngineClientConnector::OnConnectedToServer()
 		}
 	}
 
-	std::string ipStr = "ftp://" + mAutoConnectIP + "/";
-	PX2_RM.SetResourceUpdateAddr(ipStr);
-
 	Event *ent = PX2_CREATEEVENTEX(EngineNetES, OnEngineClientConnected);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
@@ -147,8 +167,6 @@ void EngineClientConnector::OnDisConnectedToServer()
 			PX2_SC_LUA->CallFunction(strCallBack, this);
 		}
 	}
-
-	PX2_RM.SetResourceUpdateAddr("");
 
 	Event *ent = PX2_CREATEEVENTEX(EngineNetES, OnEngineClientDisConnected);
 	PX2_EW.BroadcastingLocalEvent(ent);
@@ -165,7 +183,7 @@ void EngineClientConnector::SendString(const std::string &str)
 //----------------------------------------------------------------------------
 void EngineClientConnector::SendPushProject()
 {
-	SendString("pushproject");
+	SendString(CMD_PushProject);
 }
 //----------------------------------------------------------------------------
 bool EngineClientConnector::IsHasOnConnectCallback(
@@ -290,7 +308,7 @@ int EngineClientConnector::OnStringMsg(const void *pbuffer, int buflen)
 	if (numTok >= 3)
 		paramStr1 = stk[2];
 
-	EngineNetCmdProcess::OnCmd(cmdStr, paramStr0, paramStr1);
+	EngineNetCmdProcess::OnCmd(mAutoConnectIP, cmdStr, paramStr0, paramStr1);
 
 	return 0;
 }
@@ -300,6 +318,32 @@ void EngineClientConnector::_SendHeart()
 	if (IsConnected())
 	{
 		SendString("heart");
+	}
+}
+//----------------------------------------------------------------------------
+void EngineClientConnector::SetBroadcastInfo(bool broadcast)
+{
+	mIsBroadcastInfo = broadcast;
+}
+//----------------------------------------------------------------------------
+bool EngineClientConnector::IsBroadcastInfo() const
+{
+	return mIsBroadcastInfo;
+}
+//----------------------------------------------------------------------------
+void EngineClientConnector::BroadcastInfoToLocalNet(int port)
+{
+	SocketAddress sktAddr("255.255.255.255", (int16_t)port);
+	std::string name = PX2_APP.GetHostName();
+	std::string bufStr = CMD_EngineUDPInfoTag + " " + name;
+
+	UDPServer *udpServer = PX2_APP.GetEngineUDPServerClient();
+	if (udpServer)
+	{
+		DatagramSocket &udpSocket = udpServer->GetSocket();
+		udpSocket.SetBroadcast(true);
+		udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
+		udpSocket.SetBroadcast(false);
 	}
 }
 //----------------------------------------------------------------------------

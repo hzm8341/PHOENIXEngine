@@ -183,9 +183,6 @@ void UIRound::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsDoPick())
 		return;
 
-	if (!IsEnable())
-		return;
-
 	if (!mIsDragable)
 	{
 		UIFrame::PreCanvasPick(inputData, canvas);

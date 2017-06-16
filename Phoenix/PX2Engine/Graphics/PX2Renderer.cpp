@@ -163,6 +163,10 @@ void Renderer::SetName(const std::string &name)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const VertexFormat* vformat)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mVertexFormats.find(vformat) == mVertexFormats.end())
 	{
 		PdrVertexFormat *pdrVFormat = new0 PdrVertexFormat(this, vformat);
@@ -191,6 +195,10 @@ void Renderer::BindAll (const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const VertexFormat* vformat)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	VertexFormatMap::iterator iter = mVertexFormats.find(vformat);
 	if (iter != mVertexFormats.end())
 	{
@@ -221,6 +229,10 @@ void Renderer::UnbindAll (const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 void Renderer::Enable (const VertexFormat* vformat)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexFormat* pdrVFormat = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -255,6 +267,10 @@ void Renderer::Enable (const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 void Renderer::Disable (const VertexFormat* vformat)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexFormat* pdrVFormat = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -279,6 +295,10 @@ void Renderer::Disable (const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const VertexBuffer* vbuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mVertexBuffers.find(vbuffer) == mVertexBuffers.end())
 	{
 		PdrVertexBuffer *pdrVBuffer = new0 PdrVertexBuffer(this, vbuffer);
@@ -344,6 +364,10 @@ void Renderer::BindAll (const VertexBuffer* vbuffer)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const VertexBuffer* vbuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	VertexBufferMap::iterator iter = mVertexBuffers.find(vbuffer);
 	if (iter != mVertexBuffers.end())
 	{
@@ -375,6 +399,10 @@ void Renderer::UnbindAll (const VertexBuffer* vbuffer)
 void Renderer::Enable (const VertexBuffer* vbuffer,
 					   unsigned int streamIndex, unsigned int offset)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexBuffer* pdrVBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -409,6 +437,10 @@ void Renderer::Enable (const VertexBuffer* vbuffer,
 //----------------------------------------------------------------------------
 void Renderer::Disable (const VertexBuffer* vbuffer, unsigned int streamIndex)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexBuffer* pdrVBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -429,6 +461,10 @@ void Renderer::Disable (const VertexBuffer* vbuffer, unsigned int streamIndex)
 //----------------------------------------------------------------------------
 void* Renderer::Lock (const VertexBuffer* vbuffer, Buffer::Locking mode)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexBuffer* pdrVBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -463,6 +499,10 @@ void* Renderer::Lock (const VertexBuffer* vbuffer, Buffer::Locking mode)
 //----------------------------------------------------------------------------
 void Renderer::Unlock (const VertexBuffer* vbuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexBuffer* pdrVBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -489,7 +529,8 @@ void Renderer::Update (const VertexBuffer* vbuffer)
 	int numBytes = vbuffer->GetNumBytes();
 	char* srcData = vbuffer->GetData();
 	void* trgData = Lock(vbuffer, Buffer::BL_WRITE_ONLY);
-	memcpy(trgData, srcData, numBytes);
+	if (trgData)
+		memcpy(trgData, srcData, numBytes);
 	Unlock(vbuffer);
 #endif
 
@@ -519,6 +560,10 @@ void Renderer::UpdateAll (const VertexBuffer* vbuffer)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const IndexBuffer* ibuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mIndexBuffers.find(ibuffer) == mIndexBuffers.end())
 	{
 		PdrIndexBuffer *pdrIBuffer = new0 PdrIndexBuffer(this, ibuffer);
@@ -584,6 +629,10 @@ void Renderer::BindAll (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const IndexBuffer* ibuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	IndexBufferMap::iterator iter = mIndexBuffers.find(ibuffer);
 	if (iter != mIndexBuffers.end())
 	{
@@ -614,6 +663,10 @@ void Renderer::UnbindAll (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::Enable (const IndexBuffer* ibuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrIndexBuffer* pdrIBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -648,6 +701,10 @@ void Renderer::Enable (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::Disable (const IndexBuffer* ibuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrIndexBuffer* pdrIBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -668,6 +725,10 @@ void Renderer::Disable (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void* Renderer::Lock (const IndexBuffer* ibuffer, Buffer::Locking mode)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrIndexBuffer* pdrIBuffer = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -702,6 +763,10 @@ void* Renderer::Lock (const IndexBuffer* ibuffer, Buffer::Locking mode)
 //----------------------------------------------------------------------------
 void Renderer::Unlock (const IndexBuffer* ibuffer)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (1 == (int)msRenderers.size())
 	{
 		PdrIndexBuffer* pdrIBuffer = (PdrIndexBuffer*)ibuffer->PdrPointer;
@@ -720,14 +785,14 @@ void Renderer::Unlock (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::Update (const IndexBuffer* ibuffer)
 {
-
 #ifdef PX2_USE_OPENGLES
 	Lock(ibuffer, Buffer::BL_WRITE_ONLY); // lock is updated
 #else
 	int numBytes = ibuffer->GetNumBytes();
 	char* srcData = ibuffer->GetData();
 	void* trgData = Lock(ibuffer, Buffer::BL_WRITE_ONLY);
-	memcpy(trgData, srcData, numBytes);
+	if (trgData)
+		memcpy(trgData, srcData, numBytes);
 	Unlock(ibuffer);
 #endif
 }
@@ -756,6 +821,10 @@ void Renderer::UpdateAll (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const Texture1D* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mTexture1Ds.find(texture) == mTexture1Ds.end())
 	{
 		mTexture1Ds[texture] = new0 PdrTexture1D(this, texture);
@@ -782,6 +851,10 @@ void Renderer::BindAll (const Texture1D* texture)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const Texture1D* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture1DMap::iterator iter = mTexture1Ds.find(texture);
 	if (iter != mTexture1Ds.end())
 	{
@@ -811,6 +884,10 @@ void Renderer::UnbindAll (const Texture1D* texture)
 //----------------------------------------------------------------------------
 void Renderer::Enable (const Texture1D* texture, int textureUnit)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture1DMap::iterator iter = mTexture1Ds.find(texture);
 	PdrTexture1D* pdrTexture;
 	if (iter != mTexture1Ds.end())
@@ -828,6 +905,10 @@ void Renderer::Enable (const Texture1D* texture, int textureUnit)
 //----------------------------------------------------------------------------
 void Renderer::Disable (const Texture1D* texture, int textureUnit)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture1DMap::iterator iter = mTexture1Ds.find(texture);
 	if (iter != mTexture1Ds.end())
 	{
@@ -839,6 +920,10 @@ void Renderer::Disable (const Texture1D* texture, int textureUnit)
 void* Renderer::Lock (const Texture1D* texture, int level,
 					  Buffer::Locking mode)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture1DMap::iterator iter = mTexture1Ds.find(texture);
 	PdrTexture1D* pdrTexture;
 	if (iter != mTexture1Ds.end())
@@ -856,6 +941,10 @@ void* Renderer::Lock (const Texture1D* texture, int level,
 //----------------------------------------------------------------------------
 void Renderer::Unlock (const Texture1D* texture, int level)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture1DMap::iterator iter = mTexture1Ds.find(texture);
 	if (iter != mTexture1Ds.end())
 	{
@@ -869,7 +958,8 @@ void Renderer::Update (const Texture1D* texture, int level)
 	int numBytes = texture->GetNumLevelBytes(level);
 	char* srcData = texture->GetData(level);
 	void* trgData = Lock(texture, level, Buffer::BL_WRITE_ONLY);
-	memcpy(trgData, srcData, numBytes);
+	if (trgData)
+		memcpy(trgData, srcData, numBytes);
 	Unlock(texture, level);
 }
 //----------------------------------------------------------------------------
@@ -897,6 +987,10 @@ void Renderer::UpdateAll (const Texture1D* texture, int level)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const Texture2D* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mTexture2Ds.find(texture) == mTexture2Ds.end())
 	{
 		PdrTexture2D *pdrTexture = new0 PdrTexture2D(this, texture);
@@ -922,6 +1016,10 @@ void Renderer::BindAll (const Texture2D* texture)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const Texture2D* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture2DMap::iterator iter = mTexture2Ds.find(texture);
 	if (iter != mTexture2Ds.end())
 	{
@@ -954,6 +1052,10 @@ void Renderer::Enable (const Texture2D* texture, int textureUnit)
 {
 	if (!texture)
 		return;
+
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
 
 	PdrTexture2D* pdrTexture = 0;
 
@@ -992,6 +1094,10 @@ void Renderer::Enable (const Texture2D* texture, int textureUnit, int loc)
 	if (!texture)
 		return;
 
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrTexture2D* pdrTexture = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -1029,6 +1135,10 @@ void Renderer::Disable (const Texture2D* texture, int textureUnit)
 	if (!texture)
 		return;
 
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (1 == (int)msRenderers.size())
 	{
 		PdrTexture2D* pdrTexture = (PdrTexture2D*)texture->PdrPointer;
@@ -1050,6 +1160,10 @@ void* Renderer::Lock (const Texture2D* texture, int level,
 {
 	if (!texture)
 		return 0;
+
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
 
 	PdrTexture2D* pdrTexture = 0;
 
@@ -1088,6 +1202,10 @@ void Renderer::Unlock (const Texture2D* texture, int level)
 	if (!texture)
 		return;
 
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (1 == (int)msRenderers.size())
 	{
 		PdrTexture2D* pdrTexture = (PdrTexture2D*)texture->PdrPointer;
@@ -1115,10 +1233,12 @@ void Renderer::Update (const Texture2D* texture, int level)
 #ifdef PX2_USE_OPENGLES
 	Lock(texture, level, Buffer::BL_WRITE_ONLY); // lock is updated
 #else
+
 	int numBytes = texture->GetNumLevelBytes(level);
 	char* srcData = texture->GetData(level);
 	void* trgData = Lock(texture, level, Buffer::BL_WRITE_ONLY);
-	memcpy(trgData, srcData, numBytes);
+	if (trgData)
+		memcpy(trgData, srcData, numBytes);
 	Unlock(texture, level);
 #endif
 }
@@ -1150,6 +1270,10 @@ void Renderer::UpdateAll (const Texture2D* texture, int level)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const Texture3D* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mTexture3Ds.find(texture) == mTexture3Ds.end())
 	{
 		mTexture3Ds[texture] = new0 PdrTexture3D(this, texture);
@@ -1173,6 +1297,10 @@ void Renderer::BindAll (const Texture3D* texture)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const Texture3D* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture3DMap::iterator iter = mTexture3Ds.find(texture);
 	if (iter != mTexture3Ds.end())
 	{
@@ -1199,6 +1327,10 @@ void Renderer::UnbindAll (const Texture3D* texture)
 //----------------------------------------------------------------------------
 void Renderer::Enable (const Texture3D* texture, int textureUnit)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture3DMap::iterator iter = mTexture3Ds.find(texture);
 	PdrTexture3D* pdrTexture;
 	if (iter != mTexture3Ds.end())
@@ -1216,6 +1348,10 @@ void Renderer::Enable (const Texture3D* texture, int textureUnit)
 //----------------------------------------------------------------------------
 void Renderer::Disable (const Texture3D* texture, int textureUnit)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture3DMap::iterator iter = mTexture3Ds.find(texture);
 	if (iter != mTexture3Ds.end())
 	{
@@ -1227,6 +1363,10 @@ void Renderer::Disable (const Texture3D* texture, int textureUnit)
 void* Renderer::Lock (const Texture3D* texture, int level,
 					  Buffer::Locking mode)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Texture3DMap::iterator iter = mTexture3Ds.find(texture);
 	PdrTexture3D* pdrTexture;
 	if (iter != mTexture3Ds.end())
@@ -1257,7 +1397,8 @@ void Renderer::Update (const Texture3D* texture, int level)
 	int numBytes = texture->GetNumLevelBytes(level);
 	char* srcData = texture->GetData(level);
 	void* trgData = Lock(texture, level, Buffer::BL_WRITE_ONLY);
-	memcpy(trgData, srcData, numBytes);
+	if (trgData)
+		memcpy(trgData, srcData, numBytes);
 	Unlock(texture, level);
 }
 //----------------------------------------------------------------------------
@@ -1282,6 +1423,10 @@ void Renderer::UpdateAll (const Texture3D* texture, int level)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const TextureCube* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mTextureCubes.find(texture) == mTextureCubes.end())
 	{
 		mTextureCubes[texture] = new0 PdrTextureCube(this, texture);
@@ -1305,6 +1450,10 @@ void Renderer::BindAll (const TextureCube* texture)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const TextureCube* texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	TextureCubeMap::iterator iter = mTextureCubes.find(texture);
 	if (iter != mTextureCubes.end())
 	{
@@ -1331,6 +1480,10 @@ void Renderer::UnbindAll (const TextureCube* texture)
 //----------------------------------------------------------------------------
 void Renderer::Enable (const TextureCube* texture, int textureUnit)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	TextureCubeMap::iterator iter = mTextureCubes.find(texture);
 	PdrTextureCube* pdrTexture;
 	if (iter != mTextureCubes.end())
@@ -1348,6 +1501,10 @@ void Renderer::Enable (const TextureCube* texture, int textureUnit)
 //----------------------------------------------------------------------------
 void Renderer::Disable (const TextureCube* texture, int textureUnit)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	TextureCubeMap::iterator iter = mTextureCubes.find(texture);
 	if (iter != mTextureCubes.end())
 	{
@@ -1359,6 +1516,10 @@ void Renderer::Disable (const TextureCube* texture, int textureUnit)
 void* Renderer::Lock (const TextureCube* texture, int face, int level,
 					  Buffer::Locking mode)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	TextureCubeMap::iterator iter = mTextureCubes.find(texture);
 	PdrTextureCube* pdrTexture;
 	if (iter != mTextureCubes.end())
@@ -1376,6 +1537,10 @@ void* Renderer::Lock (const TextureCube* texture, int face, int level,
 //----------------------------------------------------------------------------
 void Renderer::Unlock (const TextureCube* texture, int face, int level)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	TextureCubeMap::iterator iter = mTextureCubes.find(texture);
 	if (iter != mTextureCubes.end())
 	{
@@ -1389,7 +1554,8 @@ void Renderer::Update (const TextureCube* texture, int face, int level)
 	int numBytes = texture->GetNumLevelBytes(level);
 	char* srcData = texture->GetData(face, level);
 	void* trgData = Lock(texture, face, level, Buffer::BL_WRITE_ONLY);
-	memcpy(trgData, srcData, numBytes);
+	if (trgData)
+		memcpy(trgData, srcData, numBytes);
 	Unlock(texture, face, level);
 }
 //----------------------------------------------------------------------------
@@ -1414,6 +1580,10 @@ void Renderer::UpdateAll (const TextureCube* texture, int face, int level)
 //----------------------------------------------------------------------------
 void Renderer::Bind (const RenderTarget* renderTarget)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mRenderTargets.find(renderTarget) == mRenderTargets.end())
 	{
 		PdrRenderTarget *pdrRenderTarget = new0 PdrRenderTarget(this,
@@ -1440,6 +1610,10 @@ void Renderer::BindAll (const RenderTarget* renderTarget)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const RenderTarget* renderTarget)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	RenderTargetMap::iterator iter = mRenderTargets.find(renderTarget);
 	if (iter != mRenderTargets.end())
 	{
@@ -1467,6 +1641,10 @@ void Renderer::UnbindAll (const RenderTarget* renderTarget)
 //----------------------------------------------------------------------------
 void Renderer::Enable (const RenderTarget* renderTarget)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrRenderTarget* pdrRenderTarget = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -1501,6 +1679,10 @@ void Renderer::Enable (const RenderTarget* renderTarget)
 //----------------------------------------------------------------------------
 void Renderer::Disable (const RenderTarget* renderTarget)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrRenderTarget* pdrRenderTarget = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -1522,6 +1704,10 @@ void Renderer::Disable (const RenderTarget* renderTarget)
 void Renderer::ReadColor (int i, const RenderTarget* renderTarget,
 						  Texture2D*& texture)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	RenderTargetMap::iterator iter = mRenderTargets.find(renderTarget);
 	if (iter != mRenderTargets.end())
 	{
@@ -1537,6 +1723,10 @@ void Renderer::ReadColor (int i, const RenderTarget* renderTarget,
 //----------------------------------------------------------------------------
 void Renderer::Bind (const VertexShader* vshader)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mVertexShaders.find(vshader) == mVertexShaders.end())
 	{
 		PdrVertexShader *pdrVShader = new0 PdrVertexShader(this, vshader);
@@ -1562,6 +1752,10 @@ void Renderer::BindAll (const VertexShader* vshader)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const VertexShader* vshader)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	VertexShaderMap::iterator iter = mVertexShaders.find(vshader);
 	if (iter != mVertexShaders.end())
 	{
@@ -1593,6 +1787,10 @@ void Renderer::UnbindAll (const VertexShader* vshader)
 void Renderer::Enable (const VertexShader* vshader,
 					   const ShaderParameters* parameters)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrVertexShader* pdrVShader = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -1628,6 +1826,10 @@ void Renderer::Enable (const VertexShader* vshader,
 void Renderer::Disable (const VertexShader* vshader,
 						const ShaderParameters* parameters)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (1 == (int)msRenderers.size())
 	{
 		PdrVertexShader* pdrVShader = (PdrVertexShader*)vshader->PdrPointer;
@@ -1650,6 +1852,10 @@ void Renderer::Disable (const VertexShader* vshader,
 //----------------------------------------------------------------------------
 void Renderer::Bind (const PixelShader* pshader)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (mPixelShaders.find(pshader) == mPixelShaders.end())
 	{
 		PdrPixelShader *pdrPShader = new0 PdrPixelShader(this, pshader);
@@ -1678,6 +1884,10 @@ void Renderer::BindAll (const PixelShader* pshader)
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const PixelShader* pshader)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PixelShaderMap::iterator iter = mPixelShaders.find(pshader);
 	if (iter != mPixelShaders.end())
 	{
@@ -1709,6 +1919,10 @@ void Renderer::UnbindAll (const PixelShader* pshader)
 void Renderer::Enable (const PixelShader* pshader,
 					   const ShaderParameters* parameters)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PdrPixelShader* pdrPShader = 0;
 
 	if (1 == (int)msRenderers.size())
@@ -1744,6 +1958,10 @@ void Renderer::Enable (const PixelShader* pshader,
 void Renderer::Disable (const PixelShader* pshader,
 						const ShaderParameters* parameters)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (1 == (int)msRenderers.size())
 	{
 		PdrPixelShader *pdrPShader = (PdrPixelShader*)pshader->PdrPointer;
@@ -1768,6 +1986,10 @@ void Renderer::ForceBind (Renderable *renderable)
 {
 	if (!renderable)
 		return;
+
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
 
 	renderable->OnForceBind();
 
@@ -1810,6 +2032,10 @@ void Renderer::ForceBind (Movable *mov)
 {
 	if (!mov)
 		return;
+
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
 
 	mov->Update(0.0f);
 

@@ -40,8 +40,6 @@ mProjTree(0)
 	N_Frame::MainFrame->AddTool(mProjTreeBar, "DataNIRVANAwx/images/icons/project/control.png", "n_Project_Control", "Control", 2);
 	N_Frame::MainFrame->AddTool(mProjTreeBar, "DataNIRVANAwx/images/icons/project/material.png", "n_Project_Material", "Material", 2);
 	N_Frame::MainFrame->AddTool(mProjTreeBar, "DataNIRVANAwx/images/icons/project/detail.png", "n_Project_Detail", "Detail", 2);
-	N_Frame::MainFrame->AddToolStretch(mProjTreeBar);
-	N_Frame::MainFrame->AddTool(mProjTreeBar, "DataNIRVANAwx/images/icons/project/synchronize.png", "n_Project_Synchronize()", "Synchronize", 0);
 
 	mProjTreeBar->Realize();
 

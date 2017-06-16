@@ -1,6 +1,6 @@
 package org.appplay.lib;
 
-import org.appplay.voice.VoiceSDK;
+import org.appplay.ai.VoiceSDK;
 
 public class AppPlayNatives
 {
@@ -30,6 +30,17 @@ public class AppPlayNatives
     public static native void nativeBluetoothDiscoveryNewDevice(String strDevice);
     public static native void nativeBluetoothDiscoveryFinished();
 	
-	public static native void nativeVoiceSetSDK (String sdkName);	
-    public static native void nativeVoiceRecognizeResults(String strRet, String strJSON);
+	public static native void nativeVoiceSetSDK (String sdkName);
+	
+	public static native void nativeOnSpeechStart();
+	public static native void nativeOnSpeechPause();
+	public static native void nativeOnSpeechFinish();
+	public static native void nativeOnSpeechCancel();
+	
+	public static native void nativeOnVoiceRecordStart();
+	public static native void nativeOnVoiceRecordEnd();
+	
+    public static native void nativeOnVoiceRecognizeResults(String strRet, String strJSON);
+    
+	public static native void nativeCameraSendFrame (int width, int height, String data, int dataSize);	
 }

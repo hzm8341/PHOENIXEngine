@@ -1,10 +1,10 @@
 attribute mediump vec3 modelPosition;
 attribute mediump vec3 modelNormal;
 attribute mediump vec2 modelTCoord0;
-varying mediump vec4 vertexColor;
 varying mediump vec2 vertexTCoord0;
 varying mediump vec2 vertexTCoord1;
 varying mediump vec4 vertexTCoord2;
+varying mediump vec4 vertexTCoord3;
 uniform mat4 PVWMatrix;
 uniform mat4 WMatrix;
 uniform mat4 ProjectPVBSMatrix_Dir;
@@ -45,13 +45,13 @@ void main()
 	vec3 halfVector = normalize((viewVector - LightWorldDVector_Dir.xyz)/2.0);
 	float dotH = dot(worldNormal, halfVector);
 	
-	vertexColor.rgb = ShineEmissive.rgb + LightAmbient_Dir.a *(ShineAmbient.rgb * LightAmbient_Dir.rgb + ShineDiffuse.rgb * LightDiffuse_Dir.rgb * max(dot(worldNormal, -LightWorldDVector_Dir.xyz), 0.0) + ShineSpecular.rgb * LightSpecular_Dir.rgb * pow(max(dotH, 0.0), ShineSpecular.a*LightSpecular_Dir.a));
-	vertexColor.a = ShineEmissive.a;
+	vertexTCoord3.rgb = ShineEmissive.rgb + LightAmbient_Dir.a *(ShineAmbient.rgb * LightAmbient_Dir.rgb + ShineDiffuse.rgb * LightDiffuse_Dir.rgb * max(dot(worldNormal, -LightWorldDVector_Dir.xyz), 0.0) + ShineSpecular.rgb * LightSpecular_Dir.rgb * pow(max(dotH, 0.0), ShineSpecular.a*LightSpecular_Dir.a));
+	vertexTCoord3.a = ShineEmissive.a;
 	
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[0].xyz, LightGroup[0].w, LightGroup[1].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[2].xyz, LightGroup[2].w, LightGroup[3].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[4].xyz, LightGroup[4].w, LightGroup[5].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[6].xyz, LightGroup[6].w, LightGroup[7].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord3.rgb += DoLight_Point_Diffuse(LightGroup[0].xyz, LightGroup[0].w, LightGroup[1].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord3.rgb += DoLight_Point_Diffuse(LightGroup[2].xyz, LightGroup[2].w, LightGroup[3].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord3.rgb += DoLight_Point_Diffuse(LightGroup[4].xyz, LightGroup[4].w, LightGroup[5].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord3.rgb += DoLight_Point_Diffuse(LightGroup[6].xyz, LightGroup[6].w, LightGroup[7].rgb, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
 	
 	float fogValueHeight = (-FogParam.x + worldPosition.z)/(FogParam.y - FogParam.x);
 	fogValueHeight = clamp(fogValueHeight, 0.0, 1.0);

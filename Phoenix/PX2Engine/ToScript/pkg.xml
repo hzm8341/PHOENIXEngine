@@ -1,5 +1,5 @@
 <rootnode>
-	<enums num="68">
+	<enums num="73">
 		<enum name="FunParamType">
 			<enum_item itemstr="FPT_NONE"/>
 			<enum_item itemstr="FPT_CHAR"/>
@@ -231,7 +231,7 @@
 			<enum_item itemstr="UILPT_MAX_TYPE"/>
 		</enum>
 	</enums>
-	<classes num="136">
+	<classes num="147">
 		<class name="Rtti" parentname="" singletonname="">
 			<function name="Rtti" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
 			<function name="GetName" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="true" is_const="true">
@@ -837,6 +837,21 @@
 			</function>
 			<function name="Count" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="System" parentname="" singletonname="">
+			<function name="SleepSeconds" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float seconds" is_retrun="false" type_str="float" valuename_str="seconds" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetNumCPUs" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetCurrentThreadID" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUniqueID" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="std::string " is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 		</class>
 		<class name="HPoint" parentname="" singletonname="">
@@ -2080,6 +2095,9 @@
 			<function name="IsShow" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="DetachFromParent" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
 			<function name="SetColorSelfCtrled" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="bool selfCtrled" is_retrun="false" type_str="bool" valuename_str="selfCtrled" is_pointer="false" is_ref="false" is_const="false"/>
@@ -2222,6 +2240,14 @@
 			<function name="DetachAllChildren" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="GetChild" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
+				<param paramstr="Movable *" is_retrun="true" type_str="Movable" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="int i" is_retrun="false" type_str="int" valuename_str="i" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetChildByName" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
+				<param paramstr="Movable *" is_retrun="true" type_str="Movable" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
 			<function name="Enable" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="bool enable" is_retrun="false" type_str="bool" valuename_str="enable" is_pointer="false" is_ref="false" is_const="false"/>
@@ -2288,6 +2314,13 @@
 			</function>
 			<function name="GetHeight" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetScriptHandlerSizeChanged" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;scriptHandler" is_retrun="false" type_str="std::string" valuename_str="scriptHandler" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetScriptSizeChanged" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="SetPivot" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -2868,19 +2901,24 @@
 			<function name="IsShareVI" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="SetSkinAnimationConfig" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetSkinAnimationConfig" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
 			<function name="SetMovable" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="Movable *mov" is_retrun="false" type_str="Movable" valuename_str="mov" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 			<function name="GetMovable" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="Movable *" is_retrun="true" type_str="Movable" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetSkinAnimationConfig" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetSkinAnimationConfig" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="Movable *animMovable" is_retrun="false" type_str="Movable" valuename_str="animMovable" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetSkinAnimationConfig" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="SetHeading" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -3570,6 +3608,10 @@
 				<param paramstr="int &amp;val" is_retrun="false" type_str="int" valuename_str="val" is_pointer="false" is_ref="true" is_const="false"/>
 			</function>
 		</class>
+		<class name="Serial" parentname="" singletonname="">
+			<function name="Serial" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="Serial" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+		</class>
 		<class name="Bluetooth" parentname="" singletonname="">
 			<function name="IsAvailable" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -3579,6 +3621,13 @@
 			</function>
 			<function name="GetPairedDevices" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="std::vector&lt;std::string&gt; " is_retrun="true" type_str="std::vector&lt;std::string&gt;" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetNumPairedDevices" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetPairedDevice" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="int i" is_retrun="false" type_str="int" valuename_str="i" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 			<function name="DisConnect" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -3698,6 +3747,120 @@
 				<param paramstr="const char *filename" is_retrun="false" type_str="char" valuename_str="filename" is_pointer="true" is_ref="false" is_const="true"/>
 			</function>
 		</class>
+		<class name="Arduino" parentname="Object" singletonname="">
+			<enum name="Mode">
+				<enum_item itemstr="M_SERIAL"/>
+				<enum_item itemstr="M_BLUETOOTH"/>
+				<enum_item itemstr="M_MAX_TYPE"/>
+			</enum>
+			<enum name="Pin">
+				<enum_item itemstr="PIN_0"/>
+				<enum_item itemstr="PIN_1"/>
+				<enum_item itemstr="PIN_2"/>
+				<enum_item itemstr="PIN_3"/>
+				<enum_item itemstr="PIN_4"/>
+				<enum_item itemstr="PIN_5"/>
+				<enum_item itemstr="PIN_6"/>
+				<enum_item itemstr="PIN_7"/>
+				<enum_item itemstr="PIN_8"/>
+				<enum_item itemstr="PIN_9"/>
+				<enum_item itemstr="PIN_10"/>
+				<enum_item itemstr="PIN_11"/>
+				<enum_item itemstr="PIN_12"/>
+				<enum_item itemstr="PIN_13"/>
+				<enum_item itemstr="A_0"/>
+				<enum_item itemstr="A_1"/>
+				<enum_item itemstr="A_2"/>
+				<enum_item itemstr="A_3"/>
+				<enum_item itemstr="A_4"/>
+				<enum_item itemstr="A_5"/>
+				<enum_item itemstr="PIN_MAX_TYPE"/>
+			</enum>
+			<enum name="PinMode">
+				<enum_item itemstr="INPUT"/>
+				<enum_item itemstr="OUTPUT"/>
+			</enum>
+			<enum name="PinState">
+				<enum_item itemstr="LOW"/>
+				<enum_item itemstr="HIGH"/>
+			</enum>
+			<function name="Arduino" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="Arduino" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="SetMode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Mode mode" is_retrun="false" type_str="Mode" valuename_str="mode" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetMode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="Mode " is_retrun="true" type_str="Mode" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="init" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;port" is_retrun="false" type_str="std::string" valuename_str="port" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="int baudrate=9600" is_retrun="false" type_str="int" valuename_str="baudrate" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="terminate" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="pinMode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Pin pin" is_retrun="false" type_str="Pin" valuename_str="pin" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="PinMode mode" is_retrun="false" type_str="PinMode" valuename_str="mode" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="digitalRead" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Pin pin" is_retrun="false" type_str="Pin" valuename_str="pin" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="digitalWrite" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Pin pin" is_retrun="false" type_str="Pin" valuename_str="pin" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="PinState state" is_retrun="false" type_str="PinState" valuename_str="state" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="analogRead" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Pin pin" is_retrun="false" type_str="Pin" valuename_str="pin" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="analogWrite" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Pin pin" is_retrun="false" type_str="Pin" valuename_str="pin" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int val" is_retrun="false" type_str="int" valuename_str="val" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="HardCamera" parentname="" singletonname="">
+			<function name="HardCamera" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="HardCamera" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="OpenCamera" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int type" is_retrun="false" type_str="int" valuename_str="type" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="IsCameraOpened" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="CloseCamera" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="OnSetCameraFrame" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int width" is_retrun="false" type_str="int" valuename_str="width" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int height" is_retrun="false" type_str="int" valuename_str="height" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const char *data" is_retrun="false" type_str="char" valuename_str="data" is_pointer="true" is_ref="false" is_const="true"/>
+				<param paramstr="int size" is_retrun="false" type_str="int" valuename_str="size" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="VoiceSDK" parentname="" singletonname="">
+			<function name="GetVoiceSDK" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="StartVoiceListening" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="EndVoiceListening" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="Speak" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;text" is_retrun="false" type_str="std::string" valuename_str="text" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
 		<class name="Server" parentname="Object" singletonname="">
 			<enum name="ServerType">
 				<enum_item itemstr="ST_IOCP"/>
@@ -3766,6 +3929,20 @@
 			<function name="SetConnectState" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="int state" is_retrun="false" type_str="int" valuename_str="state" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="UDPServer" parentname="Object" singletonname="">
+			<function name="IsHasOnRecvCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="AddOnRecvCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="RemoveOnRecvCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 		</class>
 		<class name="Effectable" parentname="TriMesh" singletonname="">
@@ -4851,6 +5028,137 @@
 		<class name="RawTerrain" parentname="Terrain" singletonname="">
 			<function name="RawTerrain" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="RawTerrain" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+		</class>
+		<class name="RawTerrainPage" parentname="TerrainPage" singletonname="">
+			<function name="RawTerrainPage" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VertexFormat* vformat" is_retrun="false" type_str="VertexFormat" valuename_str="vformat" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="int numVertexPage" is_retrun="false" type_str="int" valuename_str="numVertexPage" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float* heights" is_retrun="false" type_str="float" valuename_str="heights" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const Float2&amp; origin" is_retrun="false" type_str="Float2" valuename_str="origin" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="float spacing" is_retrun="false" type_str="float" valuename_str="spacing" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="RawTerrainPage" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="UpdateToHighField" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="UpdateHoles" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int index" is_retrun="false" type_str="int" valuename_str="index" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture0" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture0" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;texture0Filename" is_retrun="false" type_str="std::string" valuename_str="texture0Filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetTextureAlpha" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture1" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture1" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;texture1Filename" is_retrun="false" type_str="std::string" valuename_str="texture1Filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetTexture2" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture2" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;texture2Filename" is_retrun="false" type_str="std::string" valuename_str="texture2Filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetTexture3" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture3" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;texture3Filename" is_retrun="false" type_str="std::string" valuename_str="texture3Filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetTexture4" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Texture2D *texture" is_retrun="false" type_str="Texture2D" valuename_str="texture" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture4" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;texture4Filename" is_retrun="false" type_str="std::string" valuename_str="texture4Filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetTexture" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="int index" is_retrun="false" type_str="int" valuename_str="index" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTexture0" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTextureAlpha" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTexture1" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTexture2" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTexture3" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTexture4" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Texture2D *" is_retrun="true" type_str="Texture2D" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetUV" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int index" is_retrun="false" type_str="int" valuename_str="index" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Float2 uv" is_retrun="false" type_str="Float2" valuename_str="uv" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetUV0" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Float2 uv" is_retrun="false" type_str="Float2" valuename_str="uv" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetUV1" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Float2 uv" is_retrun="false" type_str="Float2" valuename_str="uv" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetUV2" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Float2 uv" is_retrun="false" type_str="Float2" valuename_str="uv" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetUV3" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Float2 uv" is_retrun="false" type_str="Float2" valuename_str="uv" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetUV4" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Float2 uv" is_retrun="false" type_str="Float2" valuename_str="uv" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUV" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Float2 " is_retrun="true" type_str="Float2" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int index" is_retrun="false" type_str="int" valuename_str="index" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUV0" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Float2 " is_retrun="true" type_str="Float2" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUV1" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Float2 " is_retrun="true" type_str="Float2" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUV2" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Float2 " is_retrun="true" type_str="Float2" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUV3" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Float2 " is_retrun="true" type_str="Float2" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUV4" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Float2 " is_retrun="true" type_str="Float2" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
 		</class>
 		<class name="LODTerrain" parentname="Terrain" singletonname="">
 			<function name="LODTerrain" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
@@ -6252,6 +6560,9 @@
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="float percent" is_retrun="false" type_str="float" valuename_str="percent" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="GetContentFrame" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIFrame *" is_retrun="true" type_str="UIFrame" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
 		</class>
 		<class name="UIColorSelector" parentname="UIFrame" singletonname="">
 			<function name="UIColorSelector" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
@@ -6432,6 +6743,66 @@
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 		</class>
+		<class name="UISizeExtendControl" parentname="Controller" singletonname="">
+			<enum name="Mode">
+				<enum_item itemstr="M_SIZEEXTEND"/>
+				<enum_item itemstr="M_SIZEEXTEND_ONLY_ON_BIGGER"/>
+				<enum_item itemstr="M_SIZEEXTEND_OVER"/>
+				<enum_item itemstr="M_MAX_TYPE"/>
+			</enum>
+			<function name="UISizeExtendControl" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="UISizeExtendControl" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UISizeExtendControl *" is_retrun="true" type_str="UISizeExtendControl" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UISizeExtendControl *" is_retrun="true" type_str="UISizeExtendControl" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetWidthOverHeightPercent" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float percent" is_retrun="false" type_str="float" valuename_str="percent" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetWidthOverHeightPercent" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetOriginHeight" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float height" is_retrun="false" type_str="float" valuename_str="height" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetOriginHeight" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetMode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Mode m" is_retrun="false" type_str="Mode" valuename_str="m" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetMode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="Mode " is_retrun="true" type_str="Mode" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="UIPicBoxListController" parentname="Controller" singletonname="">
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIPicBoxListController *" is_retrun="true" type_str="UIPicBoxListController" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIPicBoxListController *" is_retrun="true" type_str="UIPicBoxListController" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="UIPicBoxListController" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="UIPicBoxListController" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="SetInterval" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float seconds" is_retrun="false" type_str="float" valuename_str="seconds" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetInterval" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="AddPicBox" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIFPicBox *" is_retrun="true" type_str="UIFPicBox" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
 		<class name="LogicManager" parentname="" singletonname="">
 			<function name="SetSelectLogicObject" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -6543,6 +6914,18 @@
 			<function name="GetUIFilename" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
+			<function name="PoolClear" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="PoolSet" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="Object *obj" is_retrun="false" type_str="Object" valuename_str="obj" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="PoolGet" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Object *" is_retrun="true" type_str="Object" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
 		</class>
 		<class name="Scene" parentname="Node" singletonname="">
 			<function name="Scene" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
@@ -6585,6 +6968,7 @@
 		<class name="Application" parentname="" singletonname="Application">
 			<enum name="PlatformType">
 				<enum_item itemstr="PLT_WINDOWS"/>
+				<enum_item itemstr="PLT_LINUX"/>
 				<enum_item itemstr="PLT_ANDROID"/>
 				<enum_item itemstr="PLT_IOS"/>
 				<enum_item itemstr="PLT_MAX_TYPE"/>
@@ -6603,11 +6987,27 @@
 			<function name="GetPlatformType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="PlatformType " is_retrun="true" type_str="PlatformType" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="SetQuit" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="bool quit" is_retrun="false" type_str="bool" valuename_str="quit" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="IsQuit" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetHostName" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
 			<function name="GetEngineServer" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="EngineServer *" is_retrun="true" type_str="EngineServer" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 			<function name="GetEngineClientConnector" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="EngineClientConnector *" is_retrun="true" type_str="EngineClientConnector" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="CreateEngineUDPServerClient" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UDPServer *" is_retrun="true" type_str="UDPServer" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetEngineUDPServerClient" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UDPServer *" is_retrun="true" type_str="UDPServer" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 			<function name="CreateGeneralServer" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="GeneralServer *" is_retrun="true" type_str="GeneralServer" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
@@ -6791,6 +7191,10 @@
 				<param paramstr="Node *" is_retrun="true" type_str="Node" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
 				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
+			<function name="CreateNode_Model" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Node *" is_retrun="true" type_str="Node" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="Movable *movable" is_retrun="false" type_str="Movable" valuename_str="movable" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
 			<function name="CreateMovable_FromRes" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="Movable *" is_retrun="true" type_str="Movable" valuename_str="" is_pointer="true" is_ref="false" is_const="false"/>
 				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" is_pointer="false" is_ref="true" is_const="true"/>
@@ -6972,14 +7376,6 @@
 			</enum>
 			<function name="AppBoostInfo" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="AppBoostInfo" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
-		</class>
-		<class name="EngineEventHandler" parentname="" singletonname="">
-			<function name="AddEventCall" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp;className" is_retrun="false" type_str="std::string" valuename_str="className" is_pointer="false" is_ref="true" is_const="true"/>
-				<param paramstr="const std::string &amp;eventName" is_retrun="false" type_str="std::string" valuename_str="eventName" is_pointer="false" is_ref="true" is_const="true"/>
-				<param paramstr="const std::string &amp;callFun" is_retrun="false" type_str="std::string" valuename_str="callFun" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
 		</class>
 		<class name="TriggerController" parentname="Controller" singletonname="">
 			<enum name="AreaType">
@@ -7266,6 +7662,18 @@
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
+		</class>
+		<class name="EngineCanvas" parentname="Canvas" singletonname="">
+			<function name="EngineCanvas" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="EngineCanvas" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+		</class>
+		<class name="EngineUICanvas" parentname="Canvas" singletonname="">
+			<function name="EngineUICanvas" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="EngineUICanvas" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+		</class>
+		<class name="EngineSceneCanvas" parentname="Canvas" singletonname="">
+			<function name="EngineSceneCanvas" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="EngineSceneCanvas" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
 		</class>
 	</classes>
 </rootnode>

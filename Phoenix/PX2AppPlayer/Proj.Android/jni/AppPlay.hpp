@@ -65,7 +65,17 @@ namespace appplay
 		// voice
 	public:
 		static void SetVoiceSDK(std::string strSDK);
+		static void OnSpeakStart();
+		static void OnSpeakPause();
+		static void OnSpeakCancel();
+		static void OnSpeakFinish();		
+		static void OnVoiceRecordStart();
+		static void OnVoiceRecordEnd();
 		static void OnVoiceRecognizeResults(std::string strRet, std::string strJSON);
+		
+		// Camera
+	public:
+		static void SetCameraFrame(int width, int height, const char *data, int size);
 	};
 	
 }

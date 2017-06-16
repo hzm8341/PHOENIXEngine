@@ -215,6 +215,6 @@ typedef unsigned __int64    uint64_t;
 #define PX2_BUFFERIO_VALIDATE_OPERATION		// 检测内存操作的正确性
 #endif
 
-//#define SMART_POINTER_USEMUTEX
+#define SMART_POINTER_USEMUTEX
 
 #endif

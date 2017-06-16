@@ -10,6 +10,8 @@
 #include "PX2SelectionManager.hpp"
 #include "PX2SoundSystem.hpp"
 #include "PX2Log.hpp"
+#include "PX2Dir.hpp"
+#include "PX2MD5.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -84,8 +86,11 @@ void Application::_ProcessReWrite(const std::string &projName)
 	PX2_RM.CreateFloder(writeDataPath, projNamePath);
 
 	std::string filesPath = "Data/" + projName + "/" + "filelist.xml";
-	PX2_RM.ReWriteFileToWriteablePath(filesPath,
-		updateWritePath + projName + "/" + "filelist.xml");
+	if (PX2_RM.IsFileFloderExist(filesPath))
+	{
+		PX2_RM.ReWriteFileToWriteablePath(filesPath,
+			updateWritePath + projName + "/" + "filelist.xml");
+	}
 
 	int bufSize = 0;
 	char *buf = 0;
@@ -118,25 +123,43 @@ bool Application::LoadProject(const std::string &name)
 		}
 	}
 
-	std::string writeDataFilelistPath = projWriteDataPath + "filelist.xml";
-	if (!PX2_RM.LoadFileTableXML(PX2_RM.GetDataUpdateFileTable(), writeDataFilelistPath))
+	if (mBoostInfo.IsDataReWriteToDataUpdate)
 	{
-		PX2_LOG_INFO("LoadFileTableXML %s failed", writeDataFilelistPath.c_str());
+		std::string writeDataFilelistPath = projWriteDataPath + "filelist.xml";
+		if (PX2_RM.IsFileFloderExist(writeDataFilelistPath))
+		{
+			if (!PX2_RM.LoadFileTableXML(PX2_RM.GetDataUpdateFileTable(), writeDataFilelistPath))
+			{
+				PX2_LOG_INFO("LoadFileTableXML %s failed", writeDataFilelistPath.c_str());
 
-		PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), "Data/" + name + "/filelist.xml");
+				PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), "Data/" + name + "/filelist.xml");
+			}
+			else
+			{
+				PX2_LOG_INFO("LoadFileTableXML %s suc", writeDataFilelistPath.c_str());
+			}
+		}
 	}
 	else
 	{
-		PX2_LOG_INFO("LoadFileTableXML %s suc", writeDataFilelistPath.c_str());
+		std::string fileListName = "Data/" + name + "/filelist.xml";
+		if (PX2_RM.IsFileFloderExist(fileListName))
+		{
+			PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), fileListName);
+		}
 	}
 
-	std::string addrPath = "ftp://127.0.0.1/";
-	const std::string &resUpdateAddr = PX2_RM.GetResourceUpdateAddr();
-	if (!resUpdateAddr.empty())
-		addrPath = resUpdateAddr;
+	if (mBoostInfo.IsDataReWriteToDataUpdate)
+	{
+		std::string addrPath = "ftp://127.0.0.1/";
+		const std::string &resUpdateAddr = PX2_RM.GetResourceUpdateAddr();
+		if (!resUpdateAddr.empty())
+			addrPath = resUpdateAddr;
 
-	PX2_RM.DoResourceUpdateStuffs(addrPath, name);
+		PX2_RM.DoResourceUpdateStuffs(addrPath, name);
+	}
 
+	mProjectName = name;
 	std::string path = "Data/" + name + "/" + name + ".px2proj";
 	return PX2_APP.LoadProjectByPath(path);
 }
@@ -197,8 +220,6 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 	std::string projDllFilename = GetDllFileName(projName);
 	std::string dllFullpathFilename = projDllFolder + projDllFilename;
 
-	PX2_LOG_INFO("Project dll filename:%s", dllFullpathFilename.c_str());
-
 	if (PX2_RM.IsFileFloderExist(dllFullpathFilename))
 	{
 		PX2_LOG_INFO("Begin load project dll: %s", dllFullpathFilename.c_str());
@@ -212,8 +233,6 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 	std::string projDllFolder = GetProjDataFolderPath(projName);
 	std::string projDllFilename = GetDllFileName(projName);
 	std::string dllFullpathFilename = projDllFolder + projDllFilename;
-
-	PX2_LOG_INFO("Project dll filename:%s", dllFullpathFilename.c_str());
 
 	if (PX2_RM.IsFileFloderExist(dllFullpathFilename))
 	{
@@ -317,6 +336,9 @@ bool Application::SaveProject()
 		{
 			if (proj->Save(mProjectFilePath))
 			{
+				const std::string &projName = proj->GetName();
+				GenerateProjectFileList(projName);
+
 				Event *ent = PX2_CREATEEVENTEX(ProjectES, SavedProject);
 				PX2_EW.BroadcastingLocalEvent(ent);
 
@@ -343,6 +365,9 @@ bool Application::SaveProjectAs(const std::string &pathname)
 		{
 			if (proj->Save(pathname))
 			{
+				const std::string &projName = proj->GetName();
+				GenerateProjectFileList(projName);
+
 				Event *ent = PX2_CREATEEVENTEX(ProjectES, SavedProject);
 				PX2_EW.BroadcastingLocalEvent(ent);
 
@@ -536,6 +561,81 @@ std::string Application::_CalSavePath(const std::string &pathname)
 	}
 
 	return toPath;
+}
+//----------------------------------------------------------------------------
+std::string _GetMD5(const std::string &strBuffer)
+{
+	char buffer[17], out[33];
+	memset(buffer, 0, sizeof(buffer));
+	memset(out, 0, sizeof(out));
+
+	Md5HashBuffer(buffer, strBuffer.c_str(), (int)strBuffer.length());
+	Md5HexString(buffer, out);
+
+	return std::string(out);
+}
+//----------------------------------------------------------------------------
+void _RefreshDir(XMLNode node, const std::string &pathName)
+{
+	std::string eachFilename;
+	Dir d;
+	if (d.Open(pathName))
+	{
+		if (!d.HasFiles() && !d.HasSubDirs())
+			return;
+
+		int flags = Dir::DIR_DIRS | Dir::DIR_FILES;
+
+		if (d.GetFirst(&eachFilename, "", flags))
+		{
+			do
+			{
+				if ((eachFilename != ".") && (eachFilename != ".."))
+				{
+					_RefreshDir(node, pathName + "/" + eachFilename);
+				}
+
+			} while (d.GetNext(&eachFilename));
+		}
+	}
+	else
+	{
+		if (pathName.find("filelist") == std::string::npos)
+		{
+			XMLNode childNode = node.NewChild("file");
+			childNode.SetAttributeString("filename", pathName);
+
+			char *buffer = 0;
+			int bufferSize = 0;
+			if (FileIO::Load(pathName, true, bufferSize, buffer))
+			{
+				std::string strBuf = _GetMD5(std::string(buffer, bufferSize));
+				delete1(buffer);
+				bufferSize = 0;
+
+				childNode.SetAttributeString("md5", strBuf);
+			}
+			else
+			{
+				childNode.SetAttributeString("md5", "");
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Application::GenerateProjectFileList(const std::string &projName)
+{
+	std::string projDataPath = "Data/" + projName;
+
+	XMLData data;
+	data.Create();
+
+	XMLNode rootNode = data.NewChild("filelist");
+	rootNode.SetAttributeString("version", "1.0.0");
+	_RefreshDir(rootNode, projDataPath);
+
+	std::string savePath = projDataPath + "/filelist.xml";
+	data.SaveFile(savePath);
 }
 //----------------------------------------------------------------------------
 bool Application::_SaveSceneInternal(const std::string &pathname)

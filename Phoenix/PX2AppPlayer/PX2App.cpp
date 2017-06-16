@@ -292,15 +292,14 @@ int App::Main (int numArguments, char** arguments)
 	UpdateWindow(mhWnd);
 
 	// ��Ϣѭ��
-	bool applicationRunning = true;
-	while (applicationRunning)
+	while (!PX2_APP.IsQuit())
 	{
 		MSG msg;
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
 			{
-				applicationRunning = false;
+				PX2_APP.SetQuit(true);
 				continue;
 			}
 
@@ -347,8 +346,7 @@ int App::Main (int numArguments, char** arguments)
 
 	Initlize();
 
-	bool applicationRunning = true;
-	while (applicationRunning)
+	while (!PX2_APP.IsQuit())
 	{
 		if (!XPending(mDisplay))
 		{
@@ -428,7 +426,7 @@ int App::Main (int numArguments, char** arguments)
 				PX2_LOG_INFO("ClientMessage 0x1B");
 
 				XDestroyWindow(mDisplay, mWindow);
-				applicationRunning = false;
+				PX2_APP.SetQuit(true);
 				XFree(pKeySym);
 				continue;
 			}
@@ -462,7 +460,7 @@ int App::Main (int numArguments, char** arguments)
 			&&  evt.xclient.data.l[0] == mPX2DeleteWindow)
 		{
 			XDestroyWindow(mDisplay, mWindow);
-			applicationRunning = false;
+			PX2_APP.SetQuit(true);
 
 			continue;
 		}
@@ -572,7 +570,7 @@ bool App::Initlize()
 	mYPosition = offsetY; 
 
 	PX2_APP.InitlizeRenderer();
-	PX2_GR.SetInEditor(false);
+	PX2_APP.SetInEditor(false);
 	PX2_APP.SetScreenSize(boostSize);	
 
 #elif defined(__LINUX__)
@@ -718,14 +716,14 @@ bool App::Initlize()
 	PX2_APP.SetPt_Size(Sizef(width, height));
 	Renderer *renderer = PX2_APP.InitlizeRenderer();
 	PX2_APP.SetScreenSize(boostSize);	
-	PX2_GR.SetInEditor(false);
+	PX2_APP.SetInEditor(false);
 
 	XMapWindow(mDisplay, window);
 
 #else
 	PX2_APP.InitlizeRenderer();
 	PX2_APP.SetScreenSize(boostSize);
-	PX2_GR.SetInEditor(false);
+	PX2_APP.SetInEditor(false);
 #endif
 
 	msIsInitlized = true;

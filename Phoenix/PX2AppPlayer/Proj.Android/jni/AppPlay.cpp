@@ -18,6 +18,7 @@ using namespace appplay;
 #include "PX2Bluetooth.hpp"
 #include "PX2VoiceSDK.hpp"
 #include "PX2HostEntry.hpp"
+#include "PX2HardCamera.hpp"
 using namespace PX2;
 #endif
 
@@ -305,14 +306,86 @@ void NativeCall::SetVoiceSDK(std::string strSDK)
 #endif
 }
 //----------------------------------------------------------------------------
+void NativeCall::OnSpeakStart()
+{
+#if defined (__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnSpeakStart");
+#endif
+	
+#ifdef APPPLAY_PX2
+	PX2_VOICESDK.OnSpeakStart();
+#endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::OnSpeakPause()
+{
+#if defined (__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnSpeakPause");
+#endif
+	
+#ifdef APPPLAY_PX2
+	PX2_VOICESDK.OnSpeakPause();
+#endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::OnSpeakCancel()
+{
+#if defined (__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnSpeakCancel");
+#endif
+	
+#ifdef APPPLAY_PX2
+	PX2_VOICESDK.OnSpeakCancel();
+#endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::OnSpeakFinish()
+{
+#if defined (__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnSpeakFinish");
+#endif
+	
+#ifdef APPPLAY_PX2
+	PX2_VOICESDK.OnSpeakFinish();
+#endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::OnVoiceRecordStart()
+{
+#if defined (__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnVoiceRecordStart");
+#endif
+	
+#ifdef APPPLAY_PX2
+	PX2_VOICESDK.OnVoiceRecordStart();
+#endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::OnVoiceRecordEnd()
+{
+#if defined (__ANDROID__)
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnVoiceRecordEnd");
+#endif
+	
+#ifdef APPPLAY_PX2
+	PX2_VOICESDK.OnVoiceRecordEnd();
+#endif
+}
+//----------------------------------------------------------------------------
 void NativeCall::OnVoiceRecognizeResults(std::string strRet, std::string strJSON)
 {
 #if defined (__ANDROID__)
-		__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnVoiceRecognizeResults");
+	__android_log_print(ANDROID_LOG_INFO, "appplay.lib", "OnVoiceRecognizeResults");
 #endif
 	
 #ifdef APPPLAY_PX2
 	PX2_VOICESDK.OnVoiceRecognizeResults(strRet, strJSON);
 #endif
+}
+//----------------------------------------------------------------------------
+void NativeCall::SetCameraFrame(int width, int height, const char *data,
+int size)
+{	
+	PX2_HARDCAMERA.OnSetCameraFrame(width, height, data, size);
 }
 //----------------------------------------------------------------------------

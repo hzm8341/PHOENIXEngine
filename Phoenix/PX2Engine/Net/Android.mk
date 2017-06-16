@@ -32,8 +32,11 @@ PX2ClientContext.cpp\
 PX2NetServerImp.cpp \
 PX2ServerSocket.cpp \
 PX2ServerSocketImpl.cpp \
+PX2DatagramSocket.cpp \
+PX2DatagramSocketImpl.cpp \
 PX2NetServer.cpp \
-PX2NetServerBuffer.cpp
+PX2NetServerBuffer.cpp \
+PX2UDPServer.cpp
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 

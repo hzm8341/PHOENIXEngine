@@ -33,6 +33,10 @@
 		void SetLogicCanvas(Canvas *logicCanvas);
 		Canvas *GetLogicCanvas();
 		
+		void SetInspectorView(int val);
+		
+		void SetProjectTreeLevel(int level);
+		
 		// tool bar
 	public:
 		void AddTool(const std::string &whereStr, const std::string &icon, std::string &script, const std::string &helpStr = "", int type = 0);

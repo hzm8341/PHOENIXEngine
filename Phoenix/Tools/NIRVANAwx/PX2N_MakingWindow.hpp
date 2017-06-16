@@ -6,11 +6,12 @@
 #include "PX2EditorPre.hpp"
 #include "PX2Object.hpp"
 #include "PX2N_Pre.hpp"
+#include "PX2EventHandler.hpp"
 
 namespace NA
 {
 
-	class MakingWindow : public wxScrolled<wxWindow>
+	class MakingWindow : public wxScrolled<wxWindow>, public PX2::EventHandler
 	{
 	public:
 		MakingWindow(wxWindow *parent);
@@ -19,6 +20,8 @@ namespace NA
 		void OnSize(wxSizeEvent& e);
 
 		void SetObject(PX2::Object *object);
+
+		virtual void OnEvent(PX2::Event *ent);
 
 	protected:
 		DECLARE_EVENT_TABLE()

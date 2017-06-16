@@ -4,9 +4,12 @@
 	{
 	public:
 		FBXImporter();
-		~FBXImporter();
+		~FBXImporter();		
+		
+		static FBXImporter* New();
+		static void Delete(FBXImporter *importer);
 
 		bool Import(const std::string &filename);
-		Node *GetScene();
-		void ClearScene();
+		void Clear();
+		Node *GetPX2Node();
 	};

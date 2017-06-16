@@ -97,6 +97,15 @@ namespace PX2
 
 	protected:
 		float mEdit_UICameraPercent;
+
+		// ObjectPool
+	public:
+		void PoolClear();
+		void PoolSet(const std::string &name, Object *obj);
+		Object *PoolGet(const std::string &name);
+
+	protected:
+		std::map<const std::string, ObjectPtr> mPoolObjects;
 	};
 
 #define PX2_PROJ Project::GetSingleton()

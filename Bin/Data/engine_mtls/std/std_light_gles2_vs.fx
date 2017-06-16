@@ -4,6 +4,7 @@ attribute mediump vec2 modelTCoord0;
 varying mediump vec4 vertexColor;
 varying mediump vec2 vertexTCoord0;
 varying mediump vec2 vertexTCoord1;
+varying mediump vec4 vertexTCoord2;
 uniform mat4 PVWMatrix;
 uniform mat4 WMatrix;
 uniform vec4 CameraWorldPosition;

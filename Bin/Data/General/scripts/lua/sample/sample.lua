@@ -55,14 +55,30 @@ function s_SampleCata()
 	model1:ResetPlay()
 	
 	if nil~=FBXImporter then
-		local importer = FBXImporter()
-		importer:Import("Data/General/models/actors/swk/model.FBX")
-		local model2 = importer:GetScene()
-		scene:AttachChild(model2)
-		model2.LocalTransform:SetUniformScale(0.05)
-		model2.LocalTransform:SetRotateDegree(0.0, 0.0, 180.0)
-		model2.LocalTransform:SetTranslate(5, 0.0, 0.0)
-		model2:ResetPlay()
+		-- general model
+		local importer = FBXImporter:New()
+		importer:Import("Data/General/models/actors/liuxing/model.FBX")		
+		local modelFBX = importer:GetPX2Node()		
+	
+		local modelLiuxing = PX2_CREATER:CreateNode_Model(modelFBX)
+		scene:AttachChild(modelLiuxing)
+		modelLiuxing.LocalTransform:SetUniformScale(5)
+		modelLiuxing.LocalTransform:SetTranslate(5, 0.0, 0.0)		
+		FBXImporter:Delete(importer)
+		
+		local importer1 = FBXImporter:New()
+		importer1:Import("Data/General/models/actors/liuxing/model.fbx")
+		local modelAnim = importer1:GetPX2Node()
+		
+		local animCtrl = modelLiuxing:GetControllerByName("ModelController")
+		animCtrl:SetSkinAnimationConfig("Data/General/models/actors/liuxing/anim.xml", modelAnim)
+		local anim = animCtrl:GetAnimByName("show0")	
+		anim:SetPlayOnce(false)
+		anim:SetFrequency(1.0)
+		animCtrl:PlayAnim(anim)
+		
+		
+		FBXImporter:Delete(importer1)		
 	end
 	
 	-- ui
@@ -143,7 +159,6 @@ function s_SampleCata()
 	g_s_MsgList:AddItem("msglist")
 		
 	g_s_UIFrame:Show(false)	
-	
 		
 	-- anim buts
 	local animBut0 = UIButton:New()
@@ -197,17 +212,6 @@ function s_SampleCata()
 	textInfo:SetWidth(700.0)
 	textInfo:GetText():SetFontColor(Float3.WHITE)
 	textInfo:GetText():SetAligns(TEXTALIGN_LEFT+TEXTALIGN_TOP)
-	
-	--[[
-	local scaleCtrl = InterpCurveUniformScaleController:New()
-	scaleCtrl:Clear()
-	scaleCtrl:AddPoint(0.0, 1.0, ICM_CURVE_AUTO)
-	scaleCtrl:AddPoint(1.0, 1.0, ICM_CURVE_AUTO)
-	scaleCtrl.MaxTime = 1.0
-	scaleCtrl.Repeat = Controller.RT_CYCLE
-	logo:AttachController(scaleCtrl)
-	scaleCtrl:ResetPlay()
-	--]]
 end
 -- PrintMsg
 function s_PrintMsg(str)

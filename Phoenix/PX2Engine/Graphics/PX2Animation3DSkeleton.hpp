@@ -24,6 +24,7 @@ namespace PX2
 		virtual ~Animation3DSkeleton();
 
 		virtual void SetFilename(const std::string &filename);
+		virtual void SetMovable(Movable *movable);
 
 		virtual void SetFrequency(float frequency);
 

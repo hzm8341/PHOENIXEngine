@@ -1,6 +1,6 @@
 -- add_math.lua
 
-function b_Addblocks_Math()
+function bb_add_math()
 	PX2_LOGICM:BeginAddFunObj("+")
 	PX2_LOGICM:AddInput("a", FPT_FLOAT)
 	PX2_LOGICM:AddInput("b", FPT_FLOAT)

@@ -1,6 +1,6 @@
 -- add_test.lua
 
-function b_Addblocks_Tests()
+function bb_add_test()
 	-- float
 	PX2_LOGICM:BeginAddFunObj(">_float")
 	PX2_LOGICM:AddInput("a", FPT_FLOAT)

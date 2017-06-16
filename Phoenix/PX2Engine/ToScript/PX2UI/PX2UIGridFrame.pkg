@@ -13,4 +13,6 @@
 		void RemoveAllItems();
 
 		void SetSliderPercent(float percent);
+		
+		UIFrame *GetContentFrame();
 	};

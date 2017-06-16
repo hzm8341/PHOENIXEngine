@@ -223,8 +223,45 @@ extern "C"
 		appplay::NativeCall::SetVoiceSDK(pszText);
 		env->ReleaseStringUTFChars(strPlat, pszText);
 	}
+	
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechStart
+	(JNIEnv *env, jclass)
+	{
+		appplay::NativeCall::OnSpeakStart();	
+	}
 
-	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeVoiceRecognizeResults
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechPause
+	(JNIEnv *env, jclass)
+	{
+		appplay::NativeCall::OnSpeakPause();	
+	}
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechFinish
+	(JNIEnv *env, jclass)
+	{
+		appplay::NativeCall::OnSpeakFinish();	
+	}
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechCancel
+	(JNIEnv *env, jclass)
+	{
+		appplay::NativeCall::OnSpeakCancel();	
+	}
+	
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecordStart
+	(JNIEnv *env, jclass)
+	{
+	  	appplay::NativeCall::OnVoiceRecordStart();	
+	}
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecordEnd
+	(JNIEnv *env, jclass)
+	{
+		appplay::NativeCall::OnVoiceRecordEnd();	
+	}
+
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecognizeResults
 	(JNIEnv *env, jclass, jstring strRet, jstring strJSON)
 	{
 		const char* pszText = env->GetStringUTFChars(strRet, NULL);
@@ -232,6 +269,14 @@ extern "C"
 		appplay::NativeCall::OnVoiceRecognizeResults(pszText, pszText1);
 		env->ReleaseStringUTFChars(strRet, pszText);
 		env->ReleaseStringUTFChars(strJSON, pszText1);
+	}
+	
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeCameraSendFrame
+  (JNIEnv *env, jclass, jint width, jint height, jstring data, jint size)
+	{
+		const char* pszData = env->GetStringUTFChars(data, NULL);
+		appplay::NativeCall::SetCameraFrame(width, height, pszData, size);
+		env->ReleaseStringUTFChars(data, pszData);
 	}
 
 #ifdef __cplusplus

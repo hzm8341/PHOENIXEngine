@@ -1,0 +1,10 @@
+// PX2System.pkg
+
+	class System
+	{
+	public:
+		static void SleepSeconds (float seconds);
+		static int GetNumCPUs ();
+		static int GetCurrentThreadID ();
+		static std::string GetUniqueID ();
+	};

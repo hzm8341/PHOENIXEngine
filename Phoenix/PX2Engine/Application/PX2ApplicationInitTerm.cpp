@@ -17,6 +17,10 @@
 #include "PX2Bluetooth.hpp"
 #include "PX2ErrorHandler.hpp"
 #include "PX2ThreadPool.hpp"
+#include "PX2StringTokenizer.hpp"
+#include "PX2DNS.hpp"
+#include "PX2Arduino.hpp"
+#include "PX2VoiceSDK.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -78,11 +82,14 @@ bool Application::Initlize()
 	mResMan = new0 ResourceManager();
 
 	mEventWorld = new0 EventWorld();
+	mEventWorld->ComeIn(this);
 
 	mScriptMan = new0 ScriptManager();
 	mScriptMan->AddContext(new0 LuaPlusContext());
 
 	mBluetooth = new0 Bluetooth();
+
+	mHardCamera = new0 HardCamera();
 
 	mRoot = new0 GraphicsRoot();
 	mRoot->Initlize();
@@ -119,11 +126,12 @@ bool Application::Initlize()
 
 	mCreater = new0 Creater();
 
-	mEngineEventHandler = new0 EngineEventHandler();
-	PX2_EW.ComeIn(mEngineEventHandler);
+	mArduino = new0 Arduino();
 
-	mEngineServer = new0 EngineServer(Server::ST_POLL, 7717);
-	mEngineClientConnector = new0 EngineClientConnector();
+	mVoiceSDK = new0 VoiceSDK();
+
+	mEngineServer = new0 EngineServer(Server::ST_POLL, EngineServerPort);
+	mEngineClient = new0 EngineClientConnector();
 
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
 
@@ -146,11 +154,13 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_SELECTM", "SelectionManager", SelectionManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SELECTM_D", "Selection", SelectionManager::GetSingleton().GetSelecton("Default"));
 	PX2_SC_LUA->SetUserTypePointer("PX2_SELECTM_E", "Selection", SelectionManager::GetSingleton().GetSelecton("Editor"));
-	PX2_SC_LUA->SetUserTypePointer("PX2_EEH", "EngineEventHandler", EngineEventHandler::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_URDOM", "URDoManager", URDoManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LOGICM", "LogicManager", LogicManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_BLUETOOTH", "Bluetooth", Bluetooth::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SS", "SoundSystem", SoundSystem::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_ARDUINO", "Arduino", Arduino::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_HARDCAMERA", "HardCamera", HardCamera::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_VOICESDK", "VoiceSDK", VoiceSDK::GetSingletonPtr());
 	// end Lua
 
 	Canvas *mainCanvas = new0 Canvas();
@@ -176,6 +186,8 @@ bool Application::Initlize()
 	LoadBoost("Data/boost.xml");
 
 	PX2_SC_LUA->CallFile("Data/boost.lua");
+
+	mHostName = DNS::GetHostName();
 
 	return true;
 }
@@ -235,6 +247,33 @@ Renderer *Application::GetRenderer(const std::string &name)
 	return 0;
 }
 //----------------------------------------------------------------------------
+void Application::SetInEditor(bool isInEditor)
+{
+	mIsInEditor = isInEditor;
+	PX2_GR.SetInEditor(isInEditor);
+
+	if (!mIsInEditor)
+	{
+		GetEngineClientConnector()->Enable(true);
+		CreateEngineUDPServerClient();
+	}
+	else
+	{
+		GetEngineClientConnector()->Enable(false);
+		CreateEngineUDPServerEditor();
+	}
+}
+//----------------------------------------------------------------------------
+void Application::SetQuit(bool quit)
+{
+	mIsQuit = quit;
+}
+//----------------------------------------------------------------------------
+bool Application::IsQuit() const
+{
+	return mIsQuit;
+}
+//----------------------------------------------------------------------------
 EngineServer *Application::GetEngineServer()
 {
 	return mEngineServer;
@@ -242,7 +281,39 @@ EngineServer *Application::GetEngineServer()
 //----------------------------------------------------------------------------
 EngineClientConnector *Application::GetEngineClientConnector()
 {
-	return mEngineClientConnector;
+	return mEngineClient;
+}
+//----------------------------------------------------------------------------
+UDPServer *Application::CreateEngineUDPServerClient()
+{
+	mEngineUDPServerClient = 0;
+
+	SocketAddress udpAddr(EngineUDPPortClient);
+
+	mEngineUDPServerClient = new0 UDPServer(udpAddr);
+
+	mEngineUDPServerClient->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
+	return mEngineUDPServerClient;
+}
+//----------------------------------------------------------------------------
+UDPServer *Application::GetEngineUDPServerClient()
+{
+	return mEngineUDPServerClient;
+}
+//----------------------------------------------------------------------------
+UDPServer *Application::CreateEngineUDPServerEditor()
+{
+	mEngineDUPServerEditor = 0;
+
+	SocketAddress udpAddr(EngineUDPPortServerEditor);
+	mEngineDUPServerEditor = new0 UDPServer(udpAddr);
+	mEngineDUPServerEditor->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
+	return mEngineDUPServerEditor;
+}
+//----------------------------------------------------------------------------
+UDPServer *Application::GetEngineUDPServerEditor()
+{
+	return mEngineDUPServerEditor;
 }
 //----------------------------------------------------------------------------
 GeneralServer *Application::CreateGeneralServer(int port,
@@ -336,6 +407,8 @@ bool Application::Terminate()
 
 	mEngineCanvas = 0;
 
+	mUDPNetInfos.clear();
+
 	PX2_EW.Shutdown(true);
 
 	ErrorHandler *eh = ErrorHandler::GetSingletonPtr();
@@ -360,11 +433,6 @@ bool Application::Terminate()
 		ScriptManager::Set(0);
 	}
 
-	if (mEngineEventHandler)
-	{
-		delete0(mEngineEventHandler);
-	}
-
 	if (mGeneralServer)
 	{
 		mGeneralServer->Shutdown();
@@ -383,16 +451,38 @@ bool Application::Terminate()
 		mEngineServer = 0;
 	}
 
-	if (mEngineClientConnector)
+	if (mEngineUDPServerClient)
 	{
-		mEngineClientConnector->Disconnect();
-		mEngineClientConnector = 0;
+		mEngineUDPServerClient = 0;
+	}
+
+	if (mEngineDUPServerEditor)
+	{
+		mEngineDUPServerEditor = 0;
+	}
+
+	if (mEngineClient)
+	{
+		mEngineClient->Disconnect();
+		mEngineClient = 0;
 	}
 
 	if (mCreater)
 	{
 		delete0(mCreater);
 		Creater::Set(0);
+	}
+
+	if (mArduino)
+	{
+		delete0(mArduino);
+		Arduino::Set(0);
+	}
+
+	if (mVoiceSDK)
+	{
+		delete0(mVoiceSDK);
+		VoiceSDK::Set(0);
 	}
 
 	if (mLogicManager)
@@ -479,6 +569,7 @@ bool Application::Terminate()
 	{
 		delete0(mInputMan);
 		mInputMan = 0;
+		InputManager::Set(0);
 	}
 
 	if (mResMan)
@@ -492,6 +583,12 @@ bool Application::Terminate()
 	{
 		delete0(mBluetooth);
 		Bluetooth::Set(0);
+	}
+
+	if (mHardCamera)
+	{
+		delete0(mHardCamera);
+		HardCamera::Set(0);
 	}
 
 	if (mLanguageMan)
@@ -508,6 +605,7 @@ bool Application::Terminate()
 
 	if (mEventWorld)
 	{
+		mEventWorld->GoOut(this);
 		delete0(mEventWorld);
 		EventWorld::Set(0);
 	}
@@ -634,7 +732,8 @@ bool Application::LoadBoost(const std::string &filename)
 						{
 							std::string path = "PluginsCommon/" + pluginName + "/" +
 								GetDllFileName(pluginName);
-							PX2_PLUGINMAN.Load(path);
+							if (PX2_RM.IsFileFloderExist(path))
+								PX2_PLUGINMAN.Load(path);
 						}
 					}
 				}
@@ -669,7 +768,8 @@ bool Application::LoadBoost(const std::string &filename)
 						{
 							std::string path = "PluginsCommon/" + pluginName + "/" +
 								GetDllFileName(pluginName);
-							PX2_PLUGINMAN.Load(path);
+							if (PX2_RM.IsFileFloderExist(path))
+								PX2_PLUGINMAN.Load(path);
 						}
 					}
 				}

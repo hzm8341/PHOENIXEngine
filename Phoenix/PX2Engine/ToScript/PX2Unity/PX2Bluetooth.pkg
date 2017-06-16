@@ -7,6 +7,10 @@
 		bool IsConnected() const;
 
 		std::vector<std::string> GetPairedDevices();
+
+		int GetNumPairedDevices() const;
+		const std::string &GetPairedDevice(int i) const;
+		
 		void DisConnect();
 		void Connect(const std::string &addr);
 		void Send(const std::string &str, bool isAppendCRLF);

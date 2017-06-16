@@ -1,23 +1,21 @@
 <boost name="boost">
 	<app>
 		<config>
-			<var width="1136" height="640"/>
+			<var width="500" height="900"/>
 		</config>
 		<play>
-			<var projectname="General" playlogicmode="logic" isshowinfo="false" datawrite="true"/>
+			<var projectname="WhatIf" playlogicmode="logic" isshowinfo="true" datawrite="true"/>
 		</play>
 		<plugins>
-			<var name=""/>
-			<var name=""/>
+			<var name="BlueBlock"/>
 		</plugins>
 	</app>
 	<server>
 		<play>
-			<var projectname="General" port="18180" nummaxconnection="4000"/>
+			<var projectname="WhatIf" port="18180" nummaxconnection="400"/>
 		</play>
 		<plugins>
-			<var name=""/>
-			<var name=""/>
+			<var name="BlueBlock"/>
 		</plugins>
 	</server>
 </boost>

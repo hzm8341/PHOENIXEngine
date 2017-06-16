@@ -8,6 +8,8 @@
 #include "PX2ServerInfoManager.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2StringTokenizer.hpp"
+//#include "PX2DataBase_MySQL.hpp"
+#include "PX2DataBaseManager.hpp"
 using namespace PX2;
 
 Mutex sServerMutex;
@@ -44,7 +46,7 @@ int _ProcessInputString(const std::string &buf)
 	int ret = 0;
 	std::string cmd;
 	StringTokenizer tokenizer(buf, " ");
-	int count = tokenizer.Count();
+	int count = (int)tokenizer.Count();
 	if (count > 0)
 	{
 		cmd = tokenizer[0];
@@ -72,6 +74,8 @@ int main(int numArguments, char* arguments[])
 
 	if (app->Initlize())
 	{
+		app->SetInEditor(false);
+
 		Logger *logger = Logger::GetSingletonPtr();
 		logger->CloseLogger();
 
@@ -97,11 +101,13 @@ int main(int numArguments, char* arguments[])
 			isShutdownServer = true;
 		}
 
-		std::string projectPath = "Data/" + projName + "/" + projName + ".px2proj";
-		app->LoadProject(projectPath);
-		app->Play(Application::PT_PLAY);
+		if (!projName.empty())
+		{
+			app->LoadProject(projName);
+			app->Play(Application::PT_PLAY);
 
-		PX2_LOG_INFO("ServerPlayer Start OK, Pojrect:%s", projName.c_str());
+			PX2_LOG_INFO("ServerPlayer Start OK, Pojrect:%s", projName.c_str());
+		}
 
 		ThreadPtr inputThread = new0 Thread();
 		inputThread->Start(InputThreadProc);

@@ -285,11 +285,15 @@ void PX2wxDockArt::DrawSash(wxDC& dc, wxWindow *window, int orientation, const w
 	wxUnusedVar(orientation);
 	dc.SetPen(*wxTRANSPARENT_PEN);
 
-	Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
-	if (theme)
+	EU_Manager *euMan = EU_Manager::GetSingletonPtr();
+	if (euMan)
 	{
-		wxColor color = Float3TowxColour(theme->Color_Aui_Border);
-		dc.SetBrush(wxBrush(color));
+		Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
+		if (theme)
+		{
+			wxColor color = Float3TowxColour(theme->Color_Aui_Border);
+			dc.SetBrush(wxBrush(color));
+		}
 	}
 
 	dc.DrawRectangle(rect.x, rect.y, rect.width, rect.height);
@@ -298,12 +302,19 @@ void PX2wxDockArt::DrawSash(wxDC& dc, wxWindow *window, int orientation, const w
 void PX2wxDockArt::DrawBackground(wxDC& dc, wxWindow *WXUNUSED(window), int, const wxRect& rect)
 {
 	dc.SetPen(*wxTRANSPARENT_PEN);
-	Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
-	if (theme)
+
+	EU_Manager *euMan = EU_Manager::GetSingletonPtr();
+	if (euMan)
 	{
-		wxColor color = Float3TowxColour(theme->Color_Aui_Background);
-		dc.SetBrush(wxBrush(color));
+
+		Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
+		if (theme)
+		{
+			wxColor color = Float3TowxColour(theme->Color_Aui_Background);
+			dc.SetBrush(wxBrush(color));
+		}
 	}
+
 	dc.DrawRectangle(rect.x, rect.y, rect.width, rect.height);
 }
 //----------------------------------------------------------------------------
@@ -316,7 +327,13 @@ void PX2wxDockArt::DrawBorder(wxDC& dc, wxWindow* window, const wxRect& _rect,
 	wxRect rect = _rect;
 	int i, border_width = GetMetric(wxAUI_DOCKART_PANE_BORDER_SIZE);
 
-	Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
+	Theme *theme = 0;
+	EU_Manager *euMan = EU_Manager::GetSingletonPtr();
+	if (euMan)
+	{
+		theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
+	}
+
 	if (pane.IsToolbar())
 	{
 		if (theme)
@@ -390,16 +407,20 @@ void PX2wxDockArt::DrawBorder(wxDC& dc, wxWindow* window, const wxRect& _rect,
 //----------------------------------------------------------------------------
 void PX2wxDockArt::DrawCaptionBackground(wxDC& dc, const wxRect& rect, bool active)
 {
-	Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
-	if (theme)
+	EU_Manager *euMan = EU_Manager::GetSingletonPtr();
+	if (euMan)
 	{
-		if (active)
+		Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
+		if (theme)
 		{
-			dc.SetBrush(wxBrush(Float3TowxColour(theme->Color_Aui_CaptionBackground_Active)));
-		}
-		else
-		{
-			dc.SetBrush(wxBrush(Float3TowxColour(theme->Color_Aui_CaptionBackground)));
+			if (active)
+			{
+				dc.SetBrush(wxBrush(Float3TowxColour(theme->Color_Aui_CaptionBackground_Active)));
+			}
+			else
+			{
+				dc.SetBrush(wxBrush(Float3TowxColour(theme->Color_Aui_CaptionBackground)));
+			}
 		}
 	}
 
@@ -428,17 +449,21 @@ void PX2wxDockArt::DrawCaption(wxDC& dc, wxWindow *window,
 		caption_offset += pane.icon.GetWidth() + 3;
 	}
 
-	Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
-	if (theme)
+	EU_Manager *euMan = EU_Manager::GetSingletonPtr();
+	if (euMan)
 	{
-		if (pane.state & wxAuiPaneInfo::optionActive)
+		Theme *theme = PX2EU_MAN.GetEditParams()->GetCurTheme();
+		if (theme)
 		{
-			dc.SetTextForeground(Float3TowxColour(theme->Color_Aui_CaptionText_Active));
-		}		
-		else
-		{
-			dc.SetTextForeground(Float3TowxColour(theme->Color_Aui_CaptionText));
-		}	
+			if (pane.state & wxAuiPaneInfo::optionActive)
+			{
+				dc.SetTextForeground(Float3TowxColour(theme->Color_Aui_CaptionText_Active));
+			}
+			else
+			{
+				dc.SetTextForeground(Float3TowxColour(theme->Color_Aui_CaptionText));
+			}
+		}
 	}
 
 	wxCoord w, h;

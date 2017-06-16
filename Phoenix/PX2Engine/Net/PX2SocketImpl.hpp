@@ -14,10 +14,7 @@ namespace PX2
 	class SocketImpl
 	{
 	public:
-		SocketImpl (const SocketImpl&);
 		virtual ~SocketImpl ();
-
-		SocketImpl& operator = (const SocketImpl&);
 
 		// Socket  «∑Ò”––ß
 		bool IsInitialized() const;
@@ -133,6 +130,9 @@ namespace PX2
 		void Reset (px2_socket_t fd = PX2_INVALID_SOCKET);
 
 	private:
+		SocketImpl(const SocketImpl&);
+		SocketImpl& operator = (const SocketImpl&);
+
 		px2_socket_t mSocket;
 		bool mIsBlocking;
 

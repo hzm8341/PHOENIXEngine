@@ -1,6 +1,6 @@
 -- add_param.lua
 
-function b_Addblocks_Params()
+function bb_add_param()
 	PX2_LOGICM:BeginAddFunObj("setInt")
 	PX2_LOGICM:AddInput("variable", FPT_INT)
 	PX2_LOGICM:AddInput("val", FPT_INT)
@@ -32,21 +32,19 @@ function b_Addblocks_Params()
 	PX2_LOGICM:EndAddFun_General("Param")
 	
 	-- const
-	PX2_LOGICM:BeginAddParam("HIGH", FunObject.PT_CONST)
-	PX2_LOGICM:AddInputInt("val", 1)
-	PX2_LOGICM:EndAddFun_Param("Param")
-	
-	PX2_LOGICM:BeginAddParam("LOW", FunObject.PT_CONST)
-	PX2_LOGICM:AddInputInt("val", 0)
-	PX2_LOGICM:EndAddFun_Param("Param")
-	
 	PX2_LOGICM:BeginAddParam("TRUE", FunObject.PT_CONST)
 	PX2_LOGICM:AddInputBool("val", true)
 	PX2_LOGICM:EndAddFun_Param("Param")
 	
 	PX2_LOGICM:BeginAddParam("FALSE", FunObject.PT_CONST)
 	PX2_LOGICM:AddInputBool("val", false)
-	PX2_LOGICM:EndAddFun_Param("Param")	
+	PX2_LOGICM:EndAddFun_Param("Param")
+	
+	PX2_LOGICM:BeginAddParam("BoolSelect", FunObject.PT_VALUESELECT)
+	PX2_LOGICM:AddInputBool("true", true)
+	PX2_LOGICM:AddInputBool("false", false)
+	PX2_LOGICM:AddOutput("val", FPT_BOOL)
+	PX2_LOGICM:EndAddFun_Param("Param")
 	
 	PX2_LOGICM:BeginAddParam("iValue", FunObject.PT_VALUE)
 	PX2_LOGICM:AddInputInt("val", 0)
@@ -77,7 +75,7 @@ function b_Addblocks_Params()
 	PX2_LOGICM:EndAddFun_Param("Param")
 	
 	PX2_LOGICM:BeginAddParam("ParamsBool", FunObject.PT_VARIABLESELECT)
-	PX2_LOGICM:AddOutput("val", FPT_CHAR)
+	PX2_LOGICM:AddOutput("val", FPT_BOOL)
 	PX2_LOGICM:EndAddFun_Param("Param")
 	
 	PX2_LOGICM:BeginAddParam("ParamsString", FunObject.PT_VARIABLESELECT)

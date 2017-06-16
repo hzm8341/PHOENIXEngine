@@ -42,6 +42,9 @@ namespace PX2
 		void SetHeight(float height);
 		float GetHeight() const;
 
+		void SetScriptHandlerSizeChanged(const std::string &scriptHandler);
+		const std::string &GetScriptSizeChanged() const;
+
 		virtual void OnSizeChanged();
 
 		Rectf GetLocalRect() const;
@@ -58,6 +61,7 @@ namespace PX2
 
 		SizeChangeCallback mSizeChangeCallback;
 		SizeNode *mSizeChangeTellToObject;
+		std::string mScriptHandlerSizeChanged;
 
 		// Pvoit
 	public:

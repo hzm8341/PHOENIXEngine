@@ -3,6 +3,7 @@
 #include "PX2UIVlc.hpp"
 #include "PX2Renderer.hpp"
 #include "PX2Log.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, UIVlc);
@@ -82,9 +83,15 @@ UIVlc::Mode UIVlc::GetMode() const
 	return mMode;
 }
 //----------------------------------------------------------------------------
-void UIVlc::OnSizeChanged()
+void UIVlc::SendToGetCameraView(std::string &url, int port)
 {
-	UIFrame::OnSizeChanged();
+	SocketAddress skAddr(url, (int16_t)port);
+
+	std::string strBuf = "getcameraview";
+
+	UDPServer *udpServer = PX2_APP.GetEngineUDPServerClient();
+	udpServer->GetSocket().SendTo(strBuf.c_str(),
+		(int)strBuf.length(), skAddr);
 }
 //----------------------------------------------------------------------------
 void UIVlc::_UpdateOnMode(Mode m)

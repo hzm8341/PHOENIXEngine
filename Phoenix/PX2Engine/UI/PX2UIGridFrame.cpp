@@ -135,6 +135,11 @@ void UIGridFrame::SetSliderPercent(float percent)
 	mSlider->SetPercent(percent);
 }
 //----------------------------------------------------------------------------
+UIFrame *UIGridFrame::GetContentFrame()
+{
+	return mContentFrame;
+}
+//----------------------------------------------------------------------------
 void UIGridFrame::OnSizeChanged()
 {
 	UIFrame::OnSizeChanged();

@@ -12,9 +12,9 @@ void v_std_light
 	in float3 modelNormal : NORMAL,
     in float2 modelTCoord0 : TEXCOORD0,
     out float4 clipPosition : POSITION,
-	out float4 vertexColor : COLOR,
     out float2 vertexTCoord0 : TEXCOORD0,
 	out float2 vertexTCoord1 : TEXCOORD1,
+	out float4 vertexTCoord2 : TEXCOORD2,
     uniform float4x4 PVWMatrix,
 	uniform float4x4 WMatrix,
 	uniform float4 CameraWorldPosition,
@@ -47,16 +47,16 @@ void v_std_light
 	float3 halfVector = normalize((viewVector - LightWorldDVector_Dir.xyz)/2.0);
 	float dotH = dot(worldNormal, halfVector);
 	
-	vertexColor.rgb = ShineEmissive.rgb + LightAmbient_Dir.a * (ShineAmbient.rgb * LightAmbient_Dir.rgb +
+	vertexTCoord2.rgb = ShineEmissive.rgb + LightAmbient_Dir.a * (ShineAmbient.rgb * LightAmbient_Dir.rgb +
 		ShineDiffuse.rgb * LightDiffuse_Dir.rgb * max(dot(worldNormal, -LightWorldDVector_Dir.rgb), 0) +
 							ShineSpecular.rgb * LightSpecular_Dir.rgb * pow(max(dotH, 0), ShineSpecular.a*LightSpecular_Dir.a));		
-	vertexColor.a = ShineEmissive.a;
+	vertexTCoord2.a = ShineEmissive.a;
 	
 	// point lights
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[0].xyz, LightGroup[0].w, LightGroup[1].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[2].xyz, LightGroup[2].w, LightGroup[3].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[4].xyz, LightGroup[4].w, LightGroup[5].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
-	vertexColor.rgb += DoLight_Point_Diffuse(LightGroup[6].xyz, LightGroup[6].w, LightGroup[7].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord2.rgb += DoLight_Point_Diffuse(LightGroup[0].xyz, LightGroup[0].w, LightGroup[1].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord2.rgb += DoLight_Point_Diffuse(LightGroup[2].xyz, LightGroup[2].w, LightGroup[3].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord2.rgb += DoLight_Point_Diffuse(LightGroup[4].xyz, LightGroup[4].w, LightGroup[5].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
+	vertexTCoord2.rgb += DoLight_Point_Diffuse(LightGroup[6].xyz, LightGroup[6].w, LightGroup[7].xyz, ShineDiffuse.rgb, worldPosition.xyz, worldNormal.xyz);
 	
 	// fog
 	float fogValueHeight = (-FogParam.x + worldPosition.z)/(FogParam.y - FogParam.x);
@@ -72,9 +72,9 @@ sampler2D SampleBase;
 
 void p_std_light
 (
-	in float4 vertexColor : COLOR,
     in float2 vertexTCoord0 : TEXCOORD0,
 	in float2 vertexTCoord1 : TEXCOORD1,
+	in float4 vertexTCoord2 : TEXCOORD2,
     out float4 pixelColor : COLOR,
 	uniform float4 UVOffset,
 	uniform float4 FogColorHeight,
@@ -92,7 +92,7 @@ void p_std_light
 	}
 	else
 	{
-		lastColor *= vertexColor;
+		lastColor *= vertexTCoord2;
 	
 		lastColor.rgb = lerp(FogColorHeight.rgb, lastColor.rgb, vertexTCoord1.x);
 		lastColor.rgb = lerp(FogColorDist.rgb, lastColor.rgb, vertexTCoord1.y);

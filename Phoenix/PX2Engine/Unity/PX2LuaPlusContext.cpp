@@ -100,6 +100,10 @@ mLuaPlusState(0)
 		&LuaPlusContext::CallString1);
 	mLuaPlusState->GetGlobals().RegisterDirect("RegistEventFunction", (*this),
 		&LuaPlusContext::RegistEventFunction);
+	mLuaPlusState->GetGlobals().RegisterDirect("UnRegistAllEventFunctions", (*this),
+		&LuaPlusContext::UnRegistAllEventFunctions);
+	mLuaPlusState->GetGlobals().RegisterDirect("ClearEventFunctions", (*this),
+		&LuaPlusContext::ClearEventFunctions);
 
 	lua_pushcfunction(state, sleep);
 	lua_setglobal(state, "sleep");
@@ -427,12 +431,23 @@ bool LuaPlusContext::RegistEventFunction(const char *entName,
 	return false;
 }
 //----------------------------------------------------------------------------
+void LuaPlusContext::UnRegistAllEventFunctions(const char *entName)
+{
+	auto it = mEventFunObjects.find(std::string(entName));
+	if (it != mEventFunObjects.end())
+	{
+		mEventFunObjects.erase(it);
+	}
+}
+//----------------------------------------------------------------------------
 void LuaPlusContext::OnEvent(Event *ent)
 {
 	const std::string &entTypeStr = ent->GetEventTypeStr();
 	const std::string &dataStr0 = ent->GetDataStr0();
 	const std::string &dataStr1 = ent->GetDataStr1();
 	const std::string &dataStr2 = ent->GetDataStr2();
+	void *dataPointer0 = ent->GetDataPointer0();
+	void *dataPointer1 = ent->GetDataPointer1();
 
 	auto it = mEventFunObjects.begin();
 	for (; it != mEventFunObjects.end(); it++)
@@ -465,6 +480,20 @@ void LuaPlusContext::OnEvent(Event *ent)
 						LuaObject luaObj2;
 						luaObj2.AssignString(mLuaPlusState, dataStr2.c_str(), dataStr2.length());
 						call << luaObj2;
+					}
+
+					if (dataPointer0)
+					{
+						LuaObject luaPointer0;
+						luaPointer0.AssignLightUserdata(mLuaPlusState, dataPointer0);
+						call << luaPointer0;
+					}
+
+					if (dataPointer1)
+					{
+						LuaObject luaPointer1;
+						luaPointer1.AssignLightUserdata(mLuaPlusState, dataPointer1);
+						call << luaPointer1;
 					}
 
 					call << LuaRun();

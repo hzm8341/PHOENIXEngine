@@ -34,6 +34,7 @@ namespace PX2
 		UIFramePtr mToolFrame;
 		CanvasPtr mTreeCanvas;
 		EU_ResTreePtr mTreeDirs;
+
 		UIFramePtr mRightFrame;
 		EU_ResListPtr mResList;
 		EU_GridFramePtr mResGrid;

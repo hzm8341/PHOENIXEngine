@@ -18,6 +18,7 @@ namespace NA
 	class ResView;
 	class LogView;
 	class TextView;
+	class ConnectView;
 	
 	class N_Frame : public wxFrame, public PX2::EventHandler
 	{
@@ -27,6 +28,7 @@ namespace NA
 
 		void CreateRenderView(bool isCreateToolBar);
 		RenderView *GerRenderView();
+		void SetTableSelect(bool select);
 
 		void OnTimer(wxTimerEvent& e);
 		void OnSize(wxSizeEvent& e);
@@ -70,26 +72,33 @@ namespace NA
 
 		wxAuiToolBar *mRenderViewBar;
 		PX2::RenderWindow *mNUIWindow;
+		bool mIsTableSelect;
 
 		// main emnu
 	public:
 		wxMenu *AddMainMenuItem(const std::string &title);
+
 		wxMenu *AddSubMenuItem(wxMenu *menu, const std::string &title);
 		wxMenuItem *AddMenuItem(wxMenu *menu, 
 			const std::string &title, 
 			const std::string &script, 
+			const std::string &param,
 			const std::string &tag = "");
 		void AddSeparater(wxMenu *menu);
+
 		void EnableMenusTag(const std::string &tag, bool enable);
 
-	protected:
-		void _CreateMenu();
+		std::map<int, std::string> mIDScripts;
+		std::map<int, std::string> mIDScriptParams;
+
 		void OnCommondItem(wxCommandEvent &e);
 		void OnChooseItem(wxCommandEvent &e);
 
+	protected:
+		void _CreateMenu();
+
 		wxMenuBar *mMainMenuBar;
 		std::map<std::string, wxMenu*> mMenuMap;
-		std::map<int, std::string> mIDScripts;
 		std::map<std::string, std::vector<wxMenuItem*> > mTagMenuItems;
 
 		// edit menu
@@ -121,6 +130,9 @@ namespace NA
 		// event
 	public:
 		virtual void OnEvent(PX2::Event *event);
+
+	protected:
+			void OnResCopyResPath(const std::string &text);
 
 		// renderview
 	public:
@@ -154,6 +166,7 @@ namespace NA
 		// aui
 	public:
 		void InitlizeAUI();
+		void InitMainFrameItems();
 
 	protected:
 		PX2wxAuiNotebook *_CreateView(wxWindow *window0,
@@ -189,7 +202,13 @@ namespace NA
 		TextView *mTextView;
 		ResView *mResView;
 		LogView *mLogView;
+		ConnectView *mConnectView;
 		N_Frame *mTimeLineView;
+
+		// timeline
+	public:
+		void TimeLine_SelectCtrl_InValue();
+		void TimeLine_SelectCtrl_OutValue();
 	};
 
 }

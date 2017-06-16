@@ -15,6 +15,9 @@
 #include "PX2Float3.hpp"
 #include "PX2GraphicsEventType.hpp"
 #include "PX2EngineNetEvent.hpp"
+#include "PX2ScriptManager.hpp"
+#include "PX2Bluetooth.hpp"
+#include "PX2StringTokenizer.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Canvas, EngineCanvas);
@@ -22,6 +25,25 @@ PX2_IMPLEMENT_STREAM(EngineCanvas);
 PX2_IMPLEMENT_FACTORY(EngineCanvas);
 PX2_IMPLEMENT_DEFAULT_NAMES(Canvas, EngineCanvas);
 
+//----------------------------------------------------------------------------
+void _InitEngineFrameShow(UIFrame *engineFrame)
+{
+	UIEditBox *editBoxIP = DynamicCast<UIEditBox>(
+		engineFrame->GetObjectByName("EditBoxIP"));
+	UIEditBox *editBoxPort = DynamicCast<UIEditBox>(
+		engineFrame->GetObjectByName("EditBoxPort"));
+	UICheckButton *checkBut = DynamicCast<UICheckButton>(
+		engineFrame->GetObjectByName("CheckAutoConnect"));
+
+	EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
+	bool isAutoCnt = cnt->IsAutoConnect();
+	std::string ip = cnt->GetAutoConnectIP();
+	int port = cnt->GetAutoConnectPort();
+
+	editBoxIP->SetText(ip);
+	editBoxPort->SetText(StringHelp::IntToString(port));
+	checkBut->Check(isAutoCnt, false);
+}
 //----------------------------------------------------------------------------
 void _EngineUICallback (UIFrame *frame, UICallType type)
 {
@@ -38,6 +60,10 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 			if ("ButEngine" == name)
 			{
 				engineFrame->Show(!engineFrame->IsShow());
+				if (engineFrame->IsShow())
+				{
+					_InitEngineFrameShow(engineFrame);
+				}
 			}
 			else if ("ButClose" == name)
 			{
@@ -72,16 +98,19 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 #if defined (__ANDROID__)
 							ipStr = HostEntry::GetAndroidIP(); 
 #else
+							// get last ip
 							HostEntry hostEntry = DNS::GetThisHost();
 							HostEntry::AddressList addressList = hostEntry.GetAddresses();
 							if (addressList.size() > 0)
 							{
-								IPAddress ipAddress = addressList[0];
-								ipStr = ipAddress.ToString();
+								for (int i = 0; i < (int)addressList.size(); i++)
+								{
+									IPAddress ipAddress = addressList[i];
+									ipStr = ipAddress.ToString();
+								}
 							}
 #endif
-							std::string ipPortStr = ipStr + ":" + 
-								StringHelp::IntToString(port);
+							std::string ipPortStr = ipStr + ":" + StringHelp::IntToString(port);
 							text->GetText()->SetText(ipPortStr);
 						}
 					}
@@ -128,28 +157,72 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 					editBoxPort->Enable(true);
 				}
 			}
+			else if ("ButBluetoothScan" == name)
+			{
+				engineCanvas->GetEngineBluetoothList()->RemoveAllItems();
+				PX2_BLUETOOTH.DoDiscovery();
+			}
+			else if ("ButBluetoothConnect" == name)
+			{
+				if (PX2_BLUETOOTH.IsConnected())
+				{
+					PX2_BLUETOOTH.DisConnect();
+				}
+				else
+				{
+					UIList *list = engineCanvas->GetEngineBluetoothList();
+					UIItem *selectItem = list->GetSelectedItem();
+					if (selectItem)
+					{
+						const std::string &label = selectItem->GetLabel();
+						StringTokenizer stkenizer(label, "_");
+						if (stkenizer.Count() > 0)
+						{
+							std::string address = stkenizer.GetAt(1);
+							if (!address.empty())
+							{
+								PX2_BLUETOOTH.Connect(address);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	else if (UICT_CHECKED == type)
 	{
-		if (checkBut)
+		if (checkBut && "CheckAutoConnect" == name)
 		{
-			if ("CheckAutoConnect" == name)
-			{
-				UIEditBox *editBoxIP = DynamicCast<UIEditBox>(
-					engineCanvas->GetEngineFrame()->GetObjectByName("EditBoxIP"));
-				UIEditBox *editBoxPort = DynamicCast<UIEditBox>(
-					engineCanvas->GetEngineFrame()->GetObjectByName("EditBoxPort"));
-				const std::string &textIP = editBoxIP->GetText();
-				const std::string &textPort = editBoxPort->GetText();
-				int port = StringHelp::StringToInt(textPort);
+			UIEditBox *editBoxIP = DynamicCast<UIEditBox>(
+				engineCanvas->GetEngineFrame()->GetObjectByName("EditBoxIP"));
+			UIEditBox *editBoxPort = DynamicCast<UIEditBox>(
+				engineCanvas->GetEngineFrame()->GetObjectByName("EditBoxPort"));
+			const std::string &textIP = editBoxIP->GetText();
+			const std::string &textPort = editBoxPort->GetText();
+			int port = StringHelp::StringToInt(textPort);
 
-				bool isCheck = checkBut->IsCheck();
-				EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
-				cnt->SetAutoConnectIP(textIP);
-				cnt->SetAutoConnectPort(port);
-				cnt->SetAutoConnect(isCheck);
-			}
+			EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
+			cnt->SetAutoConnectIP(textIP);
+			cnt->SetAutoConnectPort(port);
+			cnt->SetAutoConnect(true);
+		}
+	}
+	else if (UICT_DISCHECKED == type)
+	{
+		if (checkBut && "CheckAutoConnect" == name)
+		{
+			UIEditBox *editBoxIP = DynamicCast<UIEditBox>(
+				engineCanvas->GetEngineFrame()->GetObjectByName("EditBoxIP"));
+			UIEditBox *editBoxPort = DynamicCast<UIEditBox>(
+				engineCanvas->GetEngineFrame()->GetObjectByName("EditBoxPort"));
+			const std::string &textIP = editBoxIP->GetText();
+			const std::string &textPort = editBoxPort->GetText();
+			int port = StringHelp::StringToInt(textPort);
+
+			EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
+			cnt->SetAutoConnectIP(textIP);
+			cnt->SetAutoConnectPort(port);
+			cnt->SetAutoConnect(false);
 		}
 	}
 }
@@ -248,6 +321,8 @@ EngineCanvas::EngineCanvas()
 	EnableScreenRectLayout(false);
 
 	ComeInEventWorld();
+
+	PX2_SC_LUA->SetUserTypePointer("PX2_ENGINECANVAS", "EngineCanvas", this);
 }
 //----------------------------------------------------------------------------
 EngineCanvas::~EngineCanvas()
@@ -265,7 +340,7 @@ void EngineCanvas::_CreateEngineFrame()
 	picBox->SetAlpha(0.6f);
 	mEngineFrame->LocalTransform.SetTranslateY(-50.0f);
 	mEngineFrame->SetAnchorHor(0.0f, 1.0f);
-	mEngineFrame->SetAnchorParamHor(200.0f, -200.0f);
+	mEngineFrame->SetAnchorParamHor(50.0f, -50.0f);
 	mEngineFrame->SetAnchorVer(0.0f, 1.0f);
 	mEngineFrame->SetAnchorParamVer(60.0f, -60.0f);
 	mEngineFrame->Show(false);
@@ -301,8 +376,12 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineCollapsePanel->SetAnchorHor(0.0, 1.0f);
 	mEngineCollapsePanel->SetAnchorVer(0.0, 1.0f);
 
+	float butHeight = 30.0f;
+	float textHeight = 20.0f;
+
 	// Engine Server
-	UICollapseItem *itemEngineServer = mEngineCollapsePanel->AddItem("EngineServer");
+	UICollapseItem *itemEngineServer = mEngineCollapsePanel->AddItem("TCP_EngineServer");
+	itemEngineServer->Expand(false);
 
 	UIFrame *frameInfo = new0 UIFrame();
 	itemEngineServer->GetContentFrame()->AttachChild(frameInfo);
@@ -311,8 +390,7 @@ void EngineCanvas::_CreateEngineFrame()
 	frameInfo->SetPivot(0.5f, 1.0f);
 
 	float spaceHeight = 5.0f;
-	float textIPHeight = 20.0f;
-	float posVer = -textIPHeight*0.5f;
+	float posVer = -textHeight*0.5f;
 	posVer -= spaceHeight;
 
 	UIFText *textIP = new0 UIFText();
@@ -328,7 +406,7 @@ void EngineCanvas::_CreateEngineFrame()
 	textIP->SetAnchorVer(1.0f, 1.0f);
 	textIP->SetAnchorParamVer(posVer, posVer);
 	textIP->GetText()->SetText("");
-	textIP->SetHeight(textIPHeight);
+	textIP->SetHeight(textHeight);
 
 	UIButton *butSpeakIP = new0 UIButton();
 	frameInfo->AttachChild(butSpeakIP);
@@ -343,7 +421,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butSpeakIP->CreateAddText("Say");
 	butSpeakIP->AddUICallback(_EngineUICallback);
 
-	posVer -= textIPHeight*0.5f;
+	posVer -= textHeight*0.5f;
 	posVer -= spaceHeight;
 
 	float progBarHeight = 30.0f;
@@ -378,6 +456,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butStartEngineServer->CreateAddText("StartEngineServer");
 	butStartEngineServer->GetText()->SetFontColor(Float3::WHITE);
 	butStartEngineServer->AddUICallback(_EngineUICallback);
+	butStartEngineServer->SetHeight(butHeight);
 
 	posVer -= butStartEngineHeight*0.5f;
 	posVer -= spaceHeight;
@@ -385,14 +464,14 @@ void EngineCanvas::_CreateEngineFrame()
 	itemEngineServer->SetContentHeight(-posVer);
 
 	// Engine Client Connector
-	UICollapseItem *itemClientConnector = mEngineCollapsePanel->AddItem("EngineClientConnector");
+	UICollapseItem *itemClientConnector = mEngineCollapsePanel->AddItem("TCP_EngineClientConnector");
+	itemClientConnector->Expand(false);
 	UIFrame *frameClientConnector = new0 UIFrame();
 	itemClientConnector->GetContentFrame()->AttachChild(frameClientConnector);
 	frameClientConnector->SetAnchorHor(0.0f, 1.0f);
 	frameClientConnector->SetAnchorVer(0.0f, 1.0f);
 
-	float textConnectIPHeight = 20.0f;
-	posVer = -textConnectIPHeight*0.5f;
+	posVer = -textHeight*0.5f;
 	posVer -= spaceHeight;
 
 	UIEditBox *editBoxIP = new0 UIEditBox();
@@ -404,7 +483,7 @@ void EngineCanvas::_CreateEngineFrame()
 	editBoxIP->SetAnchorParamHor(100.0f, 0.0f);
 	editBoxIP->SetAnchorVer(1.0f, 1.0f);
 	editBoxIP->SetAnchorParamVer(posVer, posVer);
-	editBoxIP->SetHeight(textConnectIPHeight);
+	editBoxIP->SetHeight(textHeight);
 	editBoxIP->SetText("127.0.0.1");
 	UIFText *textCntIP = new0 UIFText();
 	frameClientConnector->AttachChild(textCntIP);
@@ -414,7 +493,7 @@ void EngineCanvas::_CreateEngineFrame()
 	textCntIP->SetAnchorHor(0.0f, 0.0f);
 	textCntIP->SetAnchorVer(1.0f, 1.0f);
 	textCntIP->SetAnchorParamVer(posVer, posVer);
-	textCntIP->SetHeight(textConnectIPHeight);
+	textCntIP->SetHeight(textHeight);
 	textCntIP->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
 	textCntIP->GetText()->SetText("IP:");
 	textCntIP->GetText()->SetFontScale(0.8f);
@@ -428,8 +507,8 @@ void EngineCanvas::_CreateEngineFrame()
 	editBoxPort->SetAnchorParamHor(50.0f, -100.0f);
 	editBoxPort->SetAnchorVer(1.0f, 1.0f);
 	editBoxPort->SetAnchorParamVer(posVer, posVer);
-	editBoxPort->SetHeight(textConnectIPHeight);
-	editBoxPort->SetText("7717");
+	editBoxPort->SetHeight(textHeight);
+	editBoxPort->SetText(StringHelp::IntToString(EngineServerPort));
 	UIFText *textCntPort = new0 UIFText();
 	frameClientConnector->AttachChild(textCntPort);
 	textCntPort->SetName("EditBoxPort");
@@ -438,26 +517,25 @@ void EngineCanvas::_CreateEngineFrame()
 	textCntPort->SetAnchorHor(0.5f, 0.5f);
 	textCntPort->SetAnchorVer(1.0f, 1.0f);
 	textCntPort->SetAnchorParamVer(posVer, posVer);
-	textCntPort->SetHeight(textConnectIPHeight);
+	textCntPort->SetHeight(textHeight);
 	textCntPort->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
 	textCntPort->GetText()->SetText("Port:");
 	textCntPort->GetText()->SetFontScale(0.8f);
 
-	posVer -= textConnectIPHeight*0.5f;
+	posVer -= textHeight*0.5f;
 	posVer -= spaceHeight;
 
-	float butConnectHeight = 30.0f;
-	posVer -= butConnectHeight*0.5f;
+	posVer -= butHeight*0.5f;
 
 	UIButton *butConnect = new0 UIButton();
 	frameClientConnector->AttachChild(butConnect);
-	butConnect->SetHeight(butConnectHeight);
+	butConnect->SetHeight(butHeight);
 	butConnect->SetName("ButClientConnect");
 	butConnect->LocalTransform.SetTranslateY(-1.0f);
 	butConnect->SetAnchorVer(1.0f, 1.0f);
 	butConnect->SetAnchorParamVer(posVer, posVer);
 	butConnect->SetAnchorHor(0.0f, 1.0f);
-	butConnect->SetAnchorParamHor(100.0f + butConnectHeight + 10.0f, -100.0f);
+	butConnect->SetAnchorParamHor(100.0f + butHeight + 10.0f, -100.0f);
 	butConnect->CreateAddText("ConnectToServer");
 	butConnect->GetText()->SetFontColor(Float3::WHITE);
 	butConnect->AddUICallback(_EngineUICallback);
@@ -471,7 +549,7 @@ void EngineCanvas::_CreateEngineFrame()
 	checkAutoCnt->SetAnchorParamHor(100.0f, 100.0f);
 	checkAutoCnt->SetAnchorParamVer(posVer, posVer);
 	checkAutoCnt->SetAnchorHor(0.0f, 0.0f);
-	checkAutoCnt->SetSize(butConnectHeight, butConnectHeight);
+	checkAutoCnt->SetSize(butHeight, butHeight);
 	checkAutoCnt->AddUICallback(_EngineUICallback);
 	checkAutoCnt->Check(false, false);
 
@@ -483,15 +561,81 @@ void EngineCanvas::_CreateEngineFrame()
 	textAutoCnt->SetAnchorHor(0.0f, 0.0f);
 	textAutoCnt->SetAnchorVer(1.0f, 1.0f);
 	textAutoCnt->SetAnchorParamVer(posVer, posVer);
-	textAutoCnt->SetHeight(textConnectIPHeight);
+	textAutoCnt->SetHeight(butHeight);
 	textAutoCnt->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
 	textAutoCnt->GetText()->SetText("IsAutoConnect");
 	textAutoCnt->GetText()->SetFontScale(0.8f);
 
-	posVer -= butConnectHeight*0.5f;
+	posVer -= butHeight*0.5f;
 	posVer -= spaceHeight;
 
 	itemClientConnector->SetContentHeight(-posVer);
+
+	// udpNeighbors
+	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem("UDP_Neighbors");
+	itemNeightbors->Expand(false);
+	mEngineUDPNeighbors = new0 UIList();
+	mEngineUDPNeighbors->SetNumMaxItems(20);
+	UIPicBox *udpNeighborList = mEngineUDPNeighbors->CreateAddBackgroundPicBox(true);
+	udpNeighborList->UseAlphaBlend(true);
+	itemNeightbors->GetContentFrame()->AttachChild(mEngineUDPNeighbors);
+	mEngineUDPNeighbors->LocalTransform.SetTranslateY(-2.0f);
+	mEngineUDPNeighbors->SetAnchorHor(0.0f, 1.0f);
+	mEngineUDPNeighbors->SetAnchorVer(0.0f, 1.0f);
+	itemNeightbors->SetContentHeight(100.0f);
+
+	// bluetooth
+	UICollapseItem *itemBluetooth= mEngineCollapsePanel->AddItem("Bluetooth");
+	itemBluetooth->Expand(false);
+	itemBluetooth->SetContentHeight(200.0f);
+
+	UIFrame *bluetoothFrame = new0 UIFrame();
+	itemBluetooth->GetContentFrame()->AttachChild(bluetoothFrame);
+	bluetoothFrame->LocalTransform.SetTranslateY(-1.0f);
+	bluetoothFrame->SetAnchorHor(0.0f, 1.0f);
+	bluetoothFrame->SetAnchorVer(0.0f, 1.0f);
+
+	posVer = -butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIButton *butBluetoothScan = new0 UIButton();
+	bluetoothFrame->AttachChild(butBluetoothScan);
+	butBluetoothScan->SetName("ButBluetoothScan");
+	butBluetoothScan->SetAnchorHor(0.0f, 0.5f);
+	butBluetoothScan->SetAnchorVer(1.0f, 1.0f);
+	butBluetoothScan->SetAnchorParamHor(5.0f, -5.0f);
+	butBluetoothScan->SetAnchorParamVer(posVer, posVer);
+	butBluetoothScan->LocalTransform.SetTranslateY(-1.0f);
+	butBluetoothScan->SetHeight(butHeight);
+	butBluetoothScan->CreateAddText("Scan");
+	butBluetoothScan->AddUICallback(_EngineUICallback);
+
+	UIButton *butBluetoothConnect = new0 UIButton();
+	mEngineBluetoothButConnect = butBluetoothConnect;
+	bluetoothFrame->AttachChild(butBluetoothConnect);
+	butBluetoothConnect->SetName("ButBluetoothConnect");
+	butBluetoothConnect->SetAnchorHor(0.5f, 1.0f);
+	butBluetoothConnect->SetAnchorVer(1.0f, 1.0f);
+	butBluetoothConnect->SetAnchorParamHor(5.0f, -5.0f);
+	butBluetoothConnect->SetAnchorParamVer(posVer, posVer);
+	butBluetoothConnect->LocalTransform.SetTranslateY(-1.0f);
+	butBluetoothConnect->SetHeight(butHeight);
+	butBluetoothConnect->CreateAddText("Connect");
+	butBluetoothConnect->AddUICallback(_EngineUICallback);
+
+	posVer -= butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIList *list = new0 UIList();
+	mEngineBluetoothList = list;
+	list->SetName("ListBluetooth");
+	bluetoothFrame->AttachChild(list);
+	list->SetAnchorHor(0.0f, 1.0f);
+	list->SetAnchorVer(0.0f, 1.0f);
+	list->SetAnchorParamVer(spaceHeight, posVer);
+	std::vector<std::string> deviceList = PX2_BLUETOOTH.GetPairedDevices();
+	for (int i = 0; i < (int)deviceList.size(); i++)
+		list->AddItem(deviceList[i]);
 
 	// Infos
 	UICollapseItem *itemInfos = mEngineCollapsePanel->AddItem("Infos");
@@ -504,6 +648,7 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineInfoList->SetAnchorHor(0.0f, 1.0f);
 	mEngineInfoList->SetAnchorVer(0.0f, 1.0f);
 	itemInfos->SetContentHeight(300.0f);
+	itemInfos->Expand(false);
 }
 //----------------------------------------------------------------------------
 void EngineCanvas::SetScreenRect(const Rectf &rect)
@@ -563,6 +708,35 @@ void EngineCanvas::OnEvent(Event *event)
 		UIList *list = GetEngineInfoList();
 		list->AddItem("EngineServerBeDisConnected :" + cntStr);
 	}
+	else if (EngineNetES::IsEqual(event, EngineNetES::EngineClientUDPInfoChanged))
+	{
+		UIList *list = GetEngineUDPNeighborList();
+		list->RemoveAllItems();
+
+		int numUDPNetInfo = PX2_APP.GetNumUDPNetInfo();
+		for (int i = 0; i < numUDPNetInfo; i++)
+		{
+			UDPNetInfo *udpNetInfo = PX2_APP.GetUDPNetInfo(i);
+			if (udpNetInfo)
+			{
+				std::string textStr = udpNetInfo->Name + " " + udpNetInfo->IP;
+				list->AddItem(textStr);
+			}
+		}
+	}
+	else if (BluetoothES::IsEqual(event, BluetoothES::OnConnected))
+	{
+		mEngineBluetoothButConnect->GetText()->SetText("DisConnect");
+	}
+	else if (BluetoothES::IsEqual(event, BluetoothES::OnDisConnected))
+	{
+		mEngineBluetoothButConnect->GetText()->SetText("Connect");
+	}
+	else if (BluetoothES::IsEqual(event, BluetoothES::OnDisocveryNewDevice))
+	{
+		std::string devStr = event->GetDataStr0();
+		mEngineBluetoothList->AddItem(devStr);
+	}
 }
 //----------------------------------------------------------------------------
 void EngineCanvas::OnSizeChanged()
@@ -574,6 +748,11 @@ void EngineCanvas::_CalSize(const Sizef &projSize)
 {
 	SizeNode *parent = DynamicCast<SizeNode>(GetParent());
 	if (!parent) return;
+
+	// 重置，让reloadpojrect 可以激活重新计算大小
+	// 否则大小还是一样，不会触发OnSizeChanged
+	mEngineSceneCanvas->SetSize(0.0f, 0.0f);
+	mEngineUICanvas->SetSize(0.0f, 0.0f);
 
 	const Sizef &parentSize = parent->GetSize();
 
@@ -624,6 +803,16 @@ void EngineCanvas::SetDebugText(const std::string &debugText)
 UIFrame *EngineCanvas::GetEngineFrame()
 {
 	return mEngineFrame;
+}
+//----------------------------------------------------------------------------
+UIList *EngineCanvas::GetEngineUDPNeighborList()
+{
+	return mEngineUDPNeighbors;
+}
+//----------------------------------------------------------------------------
+UIList *EngineCanvas::GetEngineBluetoothList()
+{
+	return mEngineBluetoothList;
 }
 //----------------------------------------------------------------------------
 UIList *EngineCanvas::GetEngineInfoList()

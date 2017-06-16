@@ -132,9 +132,10 @@ void RawTerrainPage::UpdateHoles ()
 		}
 	}
 
-	if (Renderer::GetDefaultRenderer()->IsBind(GetIndexBuffer()))
+	Renderer *defRenderer = Renderer::GetDefaultRenderer();
+	if (defRenderer)
 	{
-		Renderer::GetDefaultRenderer()->Update(GetIndexBuffer());
+		defRenderer->Update(GetIndexBuffer());
 	}
 }
 //----------------------------------------------------------------------------

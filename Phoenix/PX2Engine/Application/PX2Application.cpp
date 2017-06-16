@@ -2,6 +2,9 @@
 
 #include "PX2Application.hpp"
 #include "PX2TimerManager.hpp"
+#include "PX2GraphicsEventType.hpp"
+#include "PX2EngineNetEvent.hpp"
+#include "PX2Arduino.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -16,6 +19,7 @@ mTimerMan(0),
 mEventWorld(0),
 mLanguageMan(0),
 mBluetooth(0),
+mHardCamera(0),
 mRoot(0),
 mIMEDisp(0),
 mInputMan(0),
@@ -32,12 +36,12 @@ mUIAuiManager(0),
 mUISkinManager(0),
 mLogicManager(0),
 mCreater(0),
-mEngineEventHandler(0),
-mGeneralServer(0),
+mArduino(0),
 
 mIsInBackground(false),
 mBeforeInBackgroundMusicEnable(true),
 mBeforeInBackgroundSoundEnable(true),
+mIsQuit(false),
 
 mBoostMode(BM_APP),
 mPlayType(PT_NONE),
@@ -96,6 +100,8 @@ Application::PlatformType Application::GetPlatformType() const
 {
 #if defined (_WIN32) || defined(WIN32)
 	return PLT_WINDOWS;
+#elif defined (__LINUX__)
+	return PLT_LINUX;
 #elif defined (__ANDROID__)
 	return PLT_ANDROID;
 #else
@@ -143,17 +149,58 @@ void Application::Update()
 	PX2_GR.Update(mAppTime, mElapsedTime);
 
 	if (mEngineServer)
-		mEngineServer->Run(mElapsedTime);
+		mEngineServer->Run((float)mElapsedTime);
 
-	if (mEngineClientConnector)
-		mEngineClientConnector->Update((float)mElapsedTime);
+	if (mEngineClient)
+		mEngineClient->Update((float)mElapsedTime);
+
+	if (mEngineUDPServerClient)
+		mEngineUDPServerClient->Update((float)mElapsedTime);
+
+	if (mEngineDUPServerEditor)
+		mEngineDUPServerEditor->Update((float)mElapsedTime);
 
 	if (mGeneralServer)
-		mGeneralServer->Run(mElapsedTime);
+		mGeneralServer->Run((float)mElapsedTime);
 
 	if (mGeneralClientConnector)
 		mGeneralClientConnector->Update((float)mElapsedTime);
 
+	if (mArduino)
+		mArduino->Update((float)mElapsedTime);
+
+	_UpdateUDPNetInfos((float)mElapsedTime);
+
 	PX2_GR.Draw();
+}
+//----------------------------------------------------------------------------
+void Application::OnEvent(Event *ent)
+{
+	if (EngineNetES::IsEqual(ent, EngineNetES::OnEngineServerBeConnected))
+	{
+		std::string ip = ent->GetDataStr1();
+		UDPNetInfo *info = GetUDPNetInfo(ip);
+		if (info)
+		{
+			info->IsConnected = true;
+		}
+	}
+	else if (EngineNetES::IsEqual(ent, EngineNetES::OnEngineServerBeDisConnected))
+	{
+		std::string ip = ent->GetDataStr1();
+		UDPNetInfo *info = GetUDPNetInfo(ip);
+		if (info)
+		{
+			info->IsConnected = false;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Application::BroadcastGeneralString(const std::string &generalStr)
+{
+	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
+	ent->SetDataStr0(generalStr);
+	ent->SetData<std::string>(generalStr);
+	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

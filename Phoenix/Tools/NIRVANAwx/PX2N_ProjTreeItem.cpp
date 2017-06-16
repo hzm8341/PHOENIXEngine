@@ -93,10 +93,7 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 	bool addNode = false;
 	bool addMaterial = false;
 
-	if (PTL_GENERAL == mTreeLevel)
-	{
-	}
-	else if (PTL_CHILDREN == mTreeLevel)
+	if (PTL_CHILDREN == mTreeLevel)
 	{
 		if (!scene && !proj && node)
 		{

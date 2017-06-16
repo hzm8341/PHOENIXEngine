@@ -12,7 +12,7 @@ PX2_IMPLEMENT_FACTORY(UICollapseItem);
 //----------------------------------------------------------------------------
 UICollapseItem::UICollapseItem():
 mIsExpand(true),
-mExpandButHeight(25.0f),
+mExpandBarHeight(25.0f),
 mContentHeight(100.0f),
 mUICollapsePanel(0)
 {
@@ -31,7 +31,7 @@ mUICollapsePanel(0)
 	mExpandBut->SetAnchorParamHor(0.0f, -1.0f);
 	mExpandBut->SetPivot(0.5f, 1.0f);
 	mExpandBut->SetStateColor(UIButtonBase::BS_NORMAL, Float3::MakeColor(100, 100, 100));
-	mExpandBut->SetSize(0.0f, mExpandButHeight-1.0f);
+	mExpandBut->SetSize(0.0f, mExpandBarHeight-1.0f);
 	mExpandBut->CreateAddText("-");
 	mExpandBut->SetMemUICallback(this,
 		(UIFrame::MemUICallback)(&UICollapseItem::_ButCallback));
@@ -43,7 +43,7 @@ mUICollapsePanel(0)
 	mContentFrame->SetName("FrameContent");
 	mContentFrame->SetAnchorHor(0.0f, 1.0f);
 	mContentFrame->SetAnchorVer(0.0f, 1.0f);
-	mContentFrame->SetAnchorParamVer(0.0f, -mExpandButHeight);
+	mContentFrame->SetAnchorParamVer(0.0f, -mExpandBarHeight);
 }
 //----------------------------------------------------------------------------
 UICollapseItem::~UICollapseItem()
@@ -116,11 +116,11 @@ void UICollapseItem::Expand(bool expand)
 
 	if (mIsExpand)
 	{
-		SetHeight(mExpandButHeight + mContentHeight);
+		SetHeight(mExpandBarHeight + mContentHeight);
 	}
 	else
 	{
-		SetHeight(mExpandButHeight);
+		SetHeight(mExpandBarHeight);
 	}
 
 	_UpdateButText();
@@ -132,13 +132,23 @@ bool UICollapseItem::IsExpand() const
 	return mIsExpand;
 }
 //----------------------------------------------------------------------------
+void UICollapseItem::SetExpandBarHeight(float height)
+{
+	mExpandBarHeight = height;
+}
+//----------------------------------------------------------------------------
+float UICollapseItem::GetExpandBarHeight() const
+{
+	return mExpandBarHeight;
+}
+//----------------------------------------------------------------------------
 void UICollapseItem::SetContentHeight(float cntHeight)
 {
 	if (mContentFrame)
 		mContentFrame->SetHeight(cntHeight);
 
 	mContentHeight = cntHeight;
-	SetHeight(mExpandButHeight + mContentHeight);
+	SetHeight(mExpandBarHeight + mContentHeight);
 
 	_MarkPanelRecal();
 }
@@ -146,9 +156,9 @@ void UICollapseItem::SetContentHeight(float cntHeight)
 float UICollapseItem::GetAllHeight() const
 {
 	if (mIsExpand)
-		return mContentHeight + mExpandButHeight;
+		return mContentHeight + mExpandBarHeight;
 	else
-		return mExpandButHeight;
+		return mExpandBarHeight;
 }
 //----------------------------------------------------------------------------
 UIFrame *UICollapseItem::GetContentFrame()

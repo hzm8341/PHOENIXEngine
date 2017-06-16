@@ -67,7 +67,11 @@ void FBXImporter::PX2ProcessMesh(FbxNode* fbxNode)
 
 	for (int i = 0; i < fbxNode->GetChildCount(); ++i)
 	{
-		PX2ProcessMesh(fbxNode->GetChild(i));
+		FbxNode *childNode = fbxNode->GetChild(i);
+		if (childNode)
+		{
+			PX2ProcessMesh(childNode);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -373,8 +377,8 @@ Movable *FBXImporter::PX2ConvertMeshs(FbxMesh* fbxMesh)
 	Mesh *mesh = (*it).second;
 
 	int numVertices = (int)mesh->mVertices.size();
-	VertexFormat *vf = _GetVF(fbxMesh);
-	VertexBuffer *vb = new0 VertexBuffer(numVertices, vf->GetStride());
+	VertexFormatPtr vf = _GetVF(fbxMesh);
+	VertexBufferPtr vb = new0 VertexBuffer(numVertices, vf->GetStride());
 	VertexBufferAccessor vba(vf, vb);
 
 	for (int i = 0; i < (int)mesh->mVertices.size(); i++)
@@ -432,27 +436,36 @@ Movable *FBXImporter::PX2ConvertMeshs(FbxMesh* fbxMesh)
 		unsigned int mtlIndex = (*it).first;
 		Mtl *mtl = (*it).second;
 
-		IndexBuffer *ib = new0 IndexBuffer((int)mtl->mNumTriangles * 3, 2);
-		for (int i = 0; i < (int)mesh->mTriangles.size(); i++)
+		if (mtl->mNumTriangles > 0)
 		{
-			if (mtlIndex == mesh->mTriangles[i].mMaterialIndex)
+			IndexBufferPtr ib = new0 IndexBuffer((int)mtl->mNumTriangles * 3, 2);
+			int tangleIndex = 0;
+
+			for (int i = 0; i < (int)mesh->mTriangles.size(); i++)
 			{
-				((unsigned short*)ib->GetData())[i * 3 + 0] = (unsigned short)mesh->mTriangles[i].mIndices[0];
-				((unsigned short*)ib->GetData())[i * 3 + 1] = (unsigned short)mesh->mTriangles[i].mIndices[1];
-				((unsigned short*)ib->GetData())[i * 3 + 2] = (unsigned short)mesh->mTriangles[i].mIndices[2];
+				if (mtlIndex == mesh->mTriangles[i].mMaterialIndex)
+				{
+					((unsigned short*)ib->GetData())[tangleIndex * 3 + 0] = (unsigned short)mesh->mTriangles[i].mIndices[0];
+					((unsigned short*)ib->GetData())[tangleIndex * 3 + 1] = (unsigned short)mesh->mTriangles[i].mIndices[1];
+					((unsigned short*)ib->GetData())[tangleIndex * 3 + 2] = (unsigned short)mesh->mTriangles[i].mIndices[2];
+
+					tangleIndex++;
+				}
 			}
-		}
 
-		TriMesh *triMesh = new0 TriMesh(vf, vb, ib);
-		triMesh->UpdateModelSpace(Renderable::GU_MODEL_BOUND_ONLY);
-		mFbxMesh2Meshes[fbxMesh].push_back(triMesh);
-		mTriMesh2Mtls[triMesh] = mtl;
+			PX2::TriMesh *triMesh = new0 PX2::TriMesh(vf, vb, ib);
+			triMesh->UpdateModelSpace(Renderable::GU_MODEL_BOUND_ONLY);
+			mFbxMesh2Meshes[fbxMesh].push_back(triMesh);
+			mTriMesh2Mtls[triMesh] = mtl;
 
-		if (1 == numMeshes)
-			mov = triMesh;
-		else
-		{
-			((Node*)mov)->AttachChild(triMesh);
+			if (1 == numMeshes)
+			{
+				mov = triMesh;
+			}
+			else
+			{
+				((Node*)mov)->AttachChild(triMesh);
+			}
 		}
 	}
 
@@ -464,12 +477,14 @@ void FBXImporter::PX2ProcessMtl(FbxMesh *fbxmesh)
 	auto it = mFbxMesh2Meshes.find(fbxmesh);
 	if (it == mFbxMesh2Meshes.end()) return;
 
-	for (int i = 0; i < (int)(*it).second.size(); i++)
+	std::vector<TriMesh*> &meshVec = it->second;
+
+	for (int i = 0; i < (int)meshVec.size(); i++)
 	{
 		TriMesh *triMesh = (*it).second[i];
 
 		MaterialInstance *mi = 0;
-		if (HasSkeleton())
+		if (false)
 		{
 			int numVertices = triMesh->GetVertexBuffer()->GetNumElements();
 			int bQuantity = (int)mSkeleton.mJoints.size();
@@ -518,7 +533,13 @@ void FBXImporter::PX2ProcessMtl(FbxMesh *fbxmesh)
 			std::string outBaseFileName;
 			StringHelp::SplitFilename(mtl->mDiffuseMapName, outPath, outBaseFileName);
 
-			std::string texFilename = mOutPathFilename + outBaseFileName;
+			std::string beforeDirStr;
+			size_t pos = outPath.find(mOutPathFilename);
+			if (pos != std::string::npos)
+			{
+				beforeDirStr = outPath.substr(pos + mOutPathFilename.length(), outPath.length() - pos - outPath.length());
+			}
+			std::string texFilename = mOutPathFilename + beforeDirStr + outBaseFileName;
 			Texture *texture = DynamicCast<Texture>(PX2_RM.BlockLoad(texFilename));
 			if (texture)
 			{

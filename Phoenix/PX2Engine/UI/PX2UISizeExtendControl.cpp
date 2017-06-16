@@ -12,7 +12,7 @@ PX2_IMPLEMENT_FACTORY(UISizeExtendControl);
 //----------------------------------------------------------------------------
 UISizeExtendControl::UISizeExtendControl() :
 mWidthOverHeightPercent(1.0f),
-mMode(M_SIZEEXTEND_ONLY_ON_BIGGER),
+mMode(M_SIZEEXTEND),
 mOriginHeight(128.0f)
 {
 }

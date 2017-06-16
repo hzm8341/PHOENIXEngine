@@ -193,11 +193,67 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeVoiceSetSDK
 
 /*
  * Class:     org_appplay_lib_AppPlayNatives
- * Method:    nativeVoiceRecognizeResults
+ * Method:    nativeOnSpeechStart
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechStart
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnSpeechPause
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechPause
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnSpeechFinish
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechFinish
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnSpeechCancel
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechCancel
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnVoiceRecordStart
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecordStart
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnVoiceRecordEnd
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecordEnd
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnVoiceRecognizeResults
  * Signature: (Ljava/lang/String;Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeVoiceRecognizeResults
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecognizeResults
   (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeCameraSendFrame
+ * Signature: (IILjava/lang/String;I)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeCameraSendFrame
+  (JNIEnv *, jclass, jint, jint, jstring, jint);
 
 #ifdef __cplusplus
 }

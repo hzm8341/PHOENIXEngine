@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2Editor
-** Generated automatically by tolua++-1.0.92 on 05/21/17 20:12:52.
+** Generated automatically by tolua++-1.0.92 on 05/27/17 16:35:42.
 */
 
 #ifndef __cplusplus
@@ -115,24 +115,25 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Movable");
  tolua_usertype(tolua_S,"UIFrame");
  tolua_usertype(tolua_S,"APoint");
+ tolua_usertype(tolua_S,"Event");
  tolua_usertype(tolua_S,"UIGridFrame");
  tolua_usertype(tolua_S,"EU_InspectorFrame");
- tolua_usertype(tolua_S,"CanvasInputData");
  tolua_usertype(tolua_S,"Visitor");
  tolua_usertype(tolua_S,"EU_SimuFrame");
+ tolua_usertype(tolua_S,"CanvasInputData");
  tolua_usertype(tolua_S,"EU_ResGridFrame");
  tolua_usertype(tolua_S,"ShowType");
  tolua_usertype(tolua_S,"EU_TimeLineFrame");
- tolua_usertype(tolua_S,"Event");
+ tolua_usertype(tolua_S,"std::vector<std::string>");
  tolua_usertype(tolua_S,"SelectResData");
  tolua_usertype(tolua_S,"EU_ProjectTree");
- tolua_usertype(tolua_S,"EU_ResTree");
+ tolua_usertype(tolua_S,"UIItem");
  tolua_usertype(tolua_S,"Object");
  tolua_usertype(tolua_S,"Edit");
  tolua_usertype(tolua_S,"TimeLineEdit");
  tolua_usertype(tolua_S,"EU_Manager");
  tolua_usertype(tolua_S,"EU_ConcoleFrame");
- tolua_usertype(tolua_S,"UIItem");
+ tolua_usertype(tolua_S,"EU_ResTree");
 }
 
 /* method: SetEditType of class  Edit */
@@ -471,6 +472,37 @@ static int tolua_PX2Editor_Edit_GetPickLocalPos00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: FocusOnSelection of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_FocusOnSelection00
+static int tolua_PX2Editor_Edit_FocusOnSelection00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'FocusOnSelection'", NULL);
+#endif
+  {
+   self->FocusOnSelection();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'FocusOnSelection'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: DeleteSelection of class  Edit */
 #ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_DeleteSelection00
 static int tolua_PX2Editor_Edit_DeleteSelection00(lua_State* tolua_S)
@@ -498,6 +530,42 @@ static int tolua_PX2Editor_Edit_DeleteSelection00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'DeleteSelection'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ChangeSelectResDir of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_ChangeSelectResDir00
+static int tolua_PX2Editor_Edit_ChangeSelectResDir00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+  const std::string path = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  Edit::ChangeDirType cdt = ((Edit::ChangeDirType) (int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ChangeSelectResDir'", NULL);
+#endif
+  {
+   self->ChangeSelectResDir(path,cdt);
+   tolua_pushcppstring(tolua_S,(const char*)path);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ChangeSelectResDir'.",&tolua_err);
  return 0;
 #endif
 }
@@ -535,6 +603,169 @@ static int tolua_PX2Editor_Edit_GetSelectedResDir00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetSelectPath_ChildFilenames of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_SetSelectPath_ChildFilenames00
+static int tolua_PX2Editor_Edit_SetSelectPath_ChildFilenames00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const std::vector<std::string>",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+  const std::vector<std::string>* filenamess = ((const std::vector<std::string>*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetSelectPath_ChildFilenames'", NULL);
+#endif
+  {
+   self->SetSelectPath_ChildFilenames(*filenamess);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetSelectPath_ChildFilenames'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetSelectPath_ChildPaths of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_SetSelectPath_ChildPaths00
+static int tolua_PX2Editor_Edit_SetSelectPath_ChildPaths00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const std::vector<std::string>",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+  const std::vector<std::string>* paths = ((const std::vector<std::string>*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetSelectPath_ChildPaths'", NULL);
+#endif
+  {
+   self->SetSelectPath_ChildPaths(*paths);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetSelectPath_ChildPaths'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetSelectPath_ChildFilenames of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_GetSelectPath_ChildFilenames00
+static int tolua_PX2Editor_Edit_GetSelectPath_ChildFilenames00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Edit* self = (const Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetSelectPath_ChildFilenames'", NULL);
+#endif
+  {
+   const std::vector<std::string>& tolua_ret = (const std::vector<std::string>&)  self->GetSelectPath_ChildFilenames();
+    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const std::vector<std::string>");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetSelectPath_ChildFilenames'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetSelectPath_ChildPaths of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_GetSelectPath_ChildPaths00
+static int tolua_PX2Editor_Edit_GetSelectPath_ChildPaths00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Edit* self = (const Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetSelectPath_ChildPaths'", NULL);
+#endif
+  {
+   const std::vector<std::string>& tolua_ret = (const std::vector<std::string>&)  self->GetSelectPath_ChildPaths();
+    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const std::vector<std::string>");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetSelectPath_ChildPaths'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetSelectedResource of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_SetSelectedResource00
+static int tolua_PX2Editor_Edit_SetSelectedResource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const SelectResData",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+  const SelectResData* data = ((const SelectResData*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetSelectedResource'", NULL);
+#endif
+  {
+   self->SetSelectedResource(*data);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetSelectedResource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: GetSelectedResource of class  Edit */
 #ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_GetSelectedResource00
 static int tolua_PX2Editor_Edit_GetSelectedResource00(lua_State* tolua_S)
@@ -562,6 +793,37 @@ static int tolua_PX2Editor_Edit_GetSelectedResource00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetSelectedResource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: CopySelectResourcePath of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_CopySelectResourcePath00
+static int tolua_PX2Editor_Edit_CopySelectResourcePath00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CopySelectResourcePath'", NULL);
+#endif
+  {
+   self->CopySelectResourcePath();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'CopySelectResourcePath'.",&tolua_err);
  return 0;
 #endif
 }
@@ -849,6 +1111,72 @@ static int tolua_PX2Editor_Edit_CloneSelectedObject00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetCopyText of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_SetCopyText00
+static int tolua_PX2Editor_Edit_SetCopyText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+  const std::string copyText = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetCopyText'", NULL);
+#endif
+  {
+   self->SetCopyText(copyText);
+   tolua_pushcppstring(tolua_S,(const char*)copyText);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetCopyText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetCopyText of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_GetCopyText00
+static int tolua_PX2Editor_Edit_GetCopyText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Edit* self = (const Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCopyText'", NULL);
+#endif
+  {
+   const std::string tolua_ret = (const std::string)  self->GetCopyText();
+   tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetCopyText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: AnimResetPlay of class  Edit */
 #ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_AnimResetPlay00
 static int tolua_PX2Editor_Edit_AnimResetPlay00(lua_State* tolua_S)
@@ -1124,6 +1452,130 @@ static int tolua_PX2Editor_Edit_TimeLine_UIGroup_DeleteAll00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'TimeLine_UIGroup_DeleteAll'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: TimeLine_AddPoint of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_TimeLine_AddPoint00
+static int tolua_PX2Editor_Edit_TimeLine_AddPoint00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'TimeLine_AddPoint'", NULL);
+#endif
+  {
+   self->TimeLine_AddPoint();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'TimeLine_AddPoint'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: TimeLine_DeletePoint of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_TimeLine_DeletePoint00
+static int tolua_PX2Editor_Edit_TimeLine_DeletePoint00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'TimeLine_DeletePoint'", NULL);
+#endif
+  {
+   self->TimeLine_DeletePoint();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'TimeLine_DeletePoint'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: TimeLine_SetInValue of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_TimeLine_SetInValue00
+static int tolua_PX2Editor_Edit_TimeLine_SetInValue00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'TimeLine_SetInValue'", NULL);
+#endif
+  {
+   self->TimeLine_SetInValue();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'TimeLine_SetInValue'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: TimeLine_SetOutValue of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_TimeLine_SetOutValue00
+static int tolua_PX2Editor_Edit_TimeLine_SetOutValue00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'TimeLine_SetOutValue'", NULL);
+#endif
+  {
+   self->TimeLine_SetOutValue();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'TimeLine_SetOutValue'.",&tolua_err);
  return 0;
 #endif
 }
@@ -1418,6 +1870,37 @@ static int tolua_PX2Editor_Edit_BroadCastEditorEventPlayInWindow00(lua_State* to
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'BroadCastEditorEventPlayInWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: BroadCastEditorSaveText of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_BroadCastEditorSaveText00
+static int tolua_PX2Editor_Edit_BroadCastEditorSaveText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'BroadCastEditorSaveText'", NULL);
+#endif
+  {
+   self->BroadCastEditorSaveText();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'BroadCastEditorSaveText'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2159,6 +2642,72 @@ static int tolua_PX2Editor_EU_Manager_GetLogicCanvas00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetLogicCanvas'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetInspectorView of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_SetInspectorView00
+static int tolua_PX2Editor_EU_Manager_SetInspectorView00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  int val = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetInspectorView'", NULL);
+#endif
+  {
+   self->SetInspectorView(val);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetInspectorView'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetProjectTreeLevel of class  EU_Manager */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_EU_Manager_SetProjectTreeLevel00
+static int tolua_PX2Editor_EU_Manager_SetProjectTreeLevel00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"EU_Manager",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  EU_Manager* self = (EU_Manager*)  tolua_tousertype(tolua_S,1,0);
+  int level = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetProjectTreeLevel'", NULL);
+#endif
+  {
+   self->SetProjectTreeLevel(level);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetProjectTreeLevel'.",&tolua_err);
  return 0;
 #endif
 }
@@ -4483,9 +5032,21 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_function(tolua_S,"SetPickPos",tolua_PX2Editor_Edit_SetPickPos00);
    tolua_function(tolua_S,"GetPickPos",tolua_PX2Editor_Edit_GetPickPos00);
    tolua_function(tolua_S,"GetPickLocalPos",tolua_PX2Editor_Edit_GetPickLocalPos00);
+   tolua_function(tolua_S,"FocusOnSelection",tolua_PX2Editor_Edit_FocusOnSelection00);
    tolua_function(tolua_S,"DeleteSelection",tolua_PX2Editor_Edit_DeleteSelection00);
+   tolua_constant(tolua_S,"CDT_ONLYSELECT",Edit::CDT_ONLYSELECT);
+   tolua_constant(tolua_S,"CDT_TREE_REFRESH",Edit::CDT_TREE_REFRESH);
+   tolua_constant(tolua_S,"CDT_GRID_REFRESH",Edit::CDT_GRID_REFRESH);
+   tolua_constant(tolua_S,"CDT_MAX_TYPE",Edit::CDT_MAX_TYPE);
+   tolua_function(tolua_S,"ChangeSelectResDir",tolua_PX2Editor_Edit_ChangeSelectResDir00);
    tolua_function(tolua_S,"GetSelectedResDir",tolua_PX2Editor_Edit_GetSelectedResDir00);
+   tolua_function(tolua_S,"SetSelectPath_ChildFilenames",tolua_PX2Editor_Edit_SetSelectPath_ChildFilenames00);
+   tolua_function(tolua_S,"SetSelectPath_ChildPaths",tolua_PX2Editor_Edit_SetSelectPath_ChildPaths00);
+   tolua_function(tolua_S,"GetSelectPath_ChildFilenames",tolua_PX2Editor_Edit_GetSelectPath_ChildFilenames00);
+   tolua_function(tolua_S,"GetSelectPath_ChildPaths",tolua_PX2Editor_Edit_GetSelectPath_ChildPaths00);
+   tolua_function(tolua_S,"SetSelectedResource",tolua_PX2Editor_Edit_SetSelectedResource00);
    tolua_function(tolua_S,"GetSelectedResource",tolua_PX2Editor_Edit_GetSelectedResource00);
+   tolua_function(tolua_S,"CopySelectResourcePath",tolua_PX2Editor_Edit_CopySelectResourcePath00);
    tolua_function(tolua_S,"FindSelectInProjTree",tolua_PX2Editor_Edit_FindSelectInProjTree00);
    tolua_function(tolua_S,"FindSelectInResTree",tolua_PX2Editor_Edit_FindSelectInResTree00);
    tolua_function(tolua_S,"Undo",tolua_PX2Editor_Edit_Undo00);
@@ -4495,6 +5056,8 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_function(tolua_S,"CopyObject",tolua_PX2Editor_Edit_CopyObject00);
    tolua_function(tolua_S,"PasteCopyedObject",tolua_PX2Editor_Edit_PasteCopyedObject00);
    tolua_function(tolua_S,"CloneSelectedObject",tolua_PX2Editor_Edit_CloneSelectedObject00);
+   tolua_function(tolua_S,"SetCopyText",tolua_PX2Editor_Edit_SetCopyText00);
+   tolua_function(tolua_S,"GetCopyText",tolua_PX2Editor_Edit_GetCopyText00);
    tolua_function(tolua_S,"AnimResetPlay",tolua_PX2Editor_Edit_AnimResetPlay00);
    tolua_function(tolua_S,"AnimPlay",tolua_PX2Editor_Edit_AnimPlay00);
    tolua_function(tolua_S,"AnimStop",tolua_PX2Editor_Edit_AnimStop00);
@@ -4504,6 +5067,10 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_function(tolua_S,"MakeSelectTimeLineEdit",tolua_PX2Editor_Edit_MakeSelectTimeLineEdit00);
    tolua_function(tolua_S,"TimeLine_UIGroup_Delete",tolua_PX2Editor_Edit_TimeLine_UIGroup_Delete00);
    tolua_function(tolua_S,"TimeLine_UIGroup_DeleteAll",tolua_PX2Editor_Edit_TimeLine_UIGroup_DeleteAll00);
+   tolua_function(tolua_S,"TimeLine_AddPoint",tolua_PX2Editor_Edit_TimeLine_AddPoint00);
+   tolua_function(tolua_S,"TimeLine_DeletePoint",tolua_PX2Editor_Edit_TimeLine_DeletePoint00);
+   tolua_function(tolua_S,"TimeLine_SetInValue",tolua_PX2Editor_Edit_TimeLine_SetInValue00);
+   tolua_function(tolua_S,"TimeLine_SetOutValue",tolua_PX2Editor_Edit_TimeLine_SetOutValue00);
    tolua_function(tolua_S,"AddOpenedFile",tolua_PX2Editor_Edit_AddOpenedFile00);
    tolua_function(tolua_S,"IsAddedOpenedFile",tolua_PX2Editor_Edit_IsAddedOpenedFile00);
    tolua_function(tolua_S,"RemoveOpenedFile",tolua_PX2Editor_Edit_RemoveOpenedFile00);
@@ -4513,6 +5080,7 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_function(tolua_S,"BroadCastEditorEventUp",tolua_PX2Editor_Edit_BroadCastEditorEventUp00);
    tolua_function(tolua_S,"BroadCastEditorEventDown",tolua_PX2Editor_Edit_BroadCastEditorEventDown00);
    tolua_function(tolua_S,"BroadCastEditorEventPlayInWindow",tolua_PX2Editor_Edit_BroadCastEditorEventPlayInWindow00);
+   tolua_function(tolua_S,"BroadCastEditorSaveText",tolua_PX2Editor_Edit_BroadCastEditorSaveText00);
    tolua_function(tolua_S,"OpenResIn",tolua_PX2Editor_Edit_OpenResIn00);
    tolua_function(tolua_S,"OpenResOut",tolua_PX2Editor_Edit_OpenResOut00);
   tolua_endmodule(tolua_S);
@@ -4563,6 +5131,8 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_function(tolua_S,"GetEidtMenuType",tolua_PX2Editor_EU_Manager_GetEidtMenuType00);
    tolua_function(tolua_S,"SetLogicCanvas",tolua_PX2Editor_EU_Manager_SetLogicCanvas00);
    tolua_function(tolua_S,"GetLogicCanvas",tolua_PX2Editor_EU_Manager_GetLogicCanvas00);
+   tolua_function(tolua_S,"SetInspectorView",tolua_PX2Editor_EU_Manager_SetInspectorView00);
+   tolua_function(tolua_S,"SetProjectTreeLevel",tolua_PX2Editor_EU_Manager_SetProjectTreeLevel00);
    tolua_function(tolua_S,"AddTool",tolua_PX2Editor_EU_Manager_AddTool00);
    tolua_function(tolua_S,"AddTool",tolua_PX2Editor_EU_Manager_AddTool01);
    tolua_function(tolua_S,"AddToolChoose",tolua_PX2Editor_EU_Manager_AddToolChoose00);

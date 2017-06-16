@@ -59,8 +59,25 @@ bool PkgParser::ParseFile(const std::string &filename)
 void PkgParser::ParseLine(const std::string &lineStr)
 {
 	std::string line = lineStr;
-	std::string::size_type st = lineStr.find("//");
-	if (st != std::string::npos)
+	if (line.empty())
+		return;
+
+	PkgStringTokenizer token(line, " ",
+		PkgStringTokenizer::TOK_IGNORE_EMPTY | PkgStringTokenizer::TOK_TRIM);
+
+	int count = token.Count();
+	if (0 == count) return;
+
+	const std::string tokenStr0 = token[0];
+	std::string tokenStr1;
+	std::string tokenStr2;
+	if (count > 1) tokenStr1 = token[1];
+	if (count > 2) tokenStr2 = token[2];
+
+	const PkgToken::TokenType tt = PkgToken::DetermineTokenType(tokenStr0);
+
+	// ×¢ÊÍ£¬ºöÂÔ
+	if (tt == PkgToken::Comment)
 	{
 		if (lineStr.find("VALUE") != std::string::npos)
 		{
@@ -76,33 +93,11 @@ void PkgParser::ParseLine(const std::string &lineStr)
 				mCurPkgClassInfo->IsUseRefIncrease = false;
 			}
 		}
-
-		line = lineStr.substr(0, st);
-	}
-
-	if (line.empty())
-		return;
-
-	PkgStringTokenizer token(line, " ",
-		PkgStringTokenizer::TOK_IGNORE_EMPTY | PkgStringTokenizer::TOK_TRIM);
-
-	int count = token.Count();
-	if (0 == count) return;
-
-	const std::string tokenStr0 = token[0];
-	std::string tokenStr1;
-	if (count > 1) tokenStr1 = token[1];
-
-	const PkgToken::TokenType tt = PkgToken::DetermineTokenType(tokenStr0);
-
-	// ×¢ÊÍ£¬ºöÂÔ
-	if (tt == PkgToken::Comment)
-	{
-		if (lineStr.find("VALUE") != std::string::npos)
+		if (lineStr.find("SINGLETON") != std::string::npos)
 		{
 			if (mCurPkgClassInfo)
 			{
-				mCurPkgClassInfo->IsValueType = true;
+				mCurPkgClassInfo->SingletonName = tokenStr2;
 			}
 		}
 
@@ -277,6 +272,11 @@ void PkgParser::PraseFunction(const std::string &functionStrWithSemicolon)
 		PkgStringTokenizer::TOK_IGNORE_EMPTY | PkgStringTokenizer::TOK_TRIM);
 
 	std::string strToken0 = tokenFun[0];
+	if (1 == tokenFun.Count())
+	{
+		delete(funInfo);
+		return;
+	}
 	std::string strToken1 = tokenFun[1];
 
 	funInfo->FunStr = strToken0 + "(" + strToken1;

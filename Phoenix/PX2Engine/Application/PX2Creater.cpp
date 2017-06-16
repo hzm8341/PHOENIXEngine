@@ -123,6 +123,21 @@ Node *Creater::CreateNode_Model(const std::string &filename)
 	return node;
 }
 //----------------------------------------------------------------------------
+Node *Creater::CreateNode_Model(Movable *movable)
+{
+	Node *node = new0 Node();
+	node->SetName("NodeModel");
+
+	ModelController *mc = new0 ModelController();
+	node->AttachController(mc);
+	mc->SetAnimType(ModelController::AT_SKELETON);
+	mc->SetMovable(movable);
+	mc->RegistToScriptSystem();
+	mc->ResetPlay();
+
+	return node;
+}
+//----------------------------------------------------------------------------
 Movable *Creater::CreateMovable_FromRes(const std::string &filename)
 {
 	std::string outPath;

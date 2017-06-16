@@ -1386,6 +1386,8 @@ const std::string &ResourceManager::GetResourceUpdateAddr() const
 void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr, 
 	const std::string &projName)
 {
+	PX2_LOG_INFO("%s DoResourceUpdateStuffs from %s", projName.c_str(), wwwAddr.c_str());
+
 	std::string filelist_www = wwwAddr + mDataUpdateFromPath + projName + "/filelist.xml";
 
 	std::string writeablePath = PX2_RM.GetWriteablePath();
@@ -1396,12 +1398,18 @@ void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr,
 	if (!PX2_RM.Download(filelistPrepare, filelist_www)) // ‘§±∏œ¬‘ÿ
 		return;
 
+	PX2_LOG_INFO("Downloaded filelist_prepare %s", filelistPrepare.c_str());
+
 	if (!PX2_RM.Download(filelistToUpdate, filelist_www)) // œ¬‘ÿ
 		return;
+
+	PX2_LOG_INFO("Downloaded filelist_toupdate %s", filelistToUpdate.c_str());
 
 	ResourceFileTable tableToUpdate;
 	PX2_RM.LoadFileTableXML(tableToUpdate, filelistToUpdate);
 	int numUpdateFiles = (int)tableToUpdate.size();
+
+	PX2_LOG_INFO("num %d files to update", numUpdateFiles);
 
 	if (0 == numUpdateFiles)
 	{
@@ -1449,7 +1457,12 @@ void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr,
 					downloadFilename.length() - dataKey.length());
 				std::string downloadPath = writeablePath + mDataUpdateWritePath + dstDownloadFilename;
 
+
+				PX2_LOG_INFO("begin download %s", downloadPath.c_str());
+
 				PX2_RM.Download(downloadPath, wwwURL);
+
+				PX2_LOG_INFO("end download %s", downloadPath.c_str());
 			}
 		}
 
@@ -1457,8 +1470,13 @@ void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr,
 		mDataUpdateFileTable = newTable;
 
 		// down last
+
+		PX2_LOG_INFO("begin download last %s", filelist.c_str());
+
 		if (!PX2_RM.Download(filelist, filelist_www))
 			return;
+
+		PX2_LOG_INFO("end download last %s", filelist.c_str());
 
 		if (mResourceUpdateCallback)
 			mResourceUpdateCallback(1.0f);

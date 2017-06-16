@@ -14,6 +14,7 @@ namespace PX2
 	PX2_EVENT(OnEngineClientDisConnected)
 	PX2_EVENT(OnEngineServerBeConnected)
 	PX2_EVENT(OnEngineServerBeDisConnected)
+	PX2_EVENT(EngineClientUDPInfoChanged)
 	PX2_DECLARE_EVENT_END(EngineNetES)
 
 }

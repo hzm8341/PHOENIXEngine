@@ -181,12 +181,18 @@ int ClientConnector::_InternalConnectNB()
 //----------------------------------------------------------------------------
 int ClientConnector::ConnectB(const std::string &ip, int port)
 {
+	if (!IsEnable())
+		return -1;
+
 	SocketAddress sa(ip, (int16_t)port);
 	return ConnectB(sa);
 }
 //----------------------------------------------------------------------------
 int ClientConnector::ConnectB(const SocketAddress &addr)
 {
+	if (!IsEnable())
+		return -1;
+
 	mConnectToAddr = addr;
 
 	return _InternalConnectB();
@@ -194,12 +200,18 @@ int ClientConnector::ConnectB(const SocketAddress &addr)
 //----------------------------------------------------------------------------
 int ClientConnector::ConnectNB(const std::string &ip, int port)
 {
+	if (!IsEnable())
+		return -1;
+
 	SocketAddress sa(ip, (int16_t)port);
 	return ConnectNB(sa);
 }
 //----------------------------------------------------------------------------
 int ClientConnector::ConnectNB(const SocketAddress &addr)
 {
+	if (!IsEnable())
+		return -1;
+
 	mConnectToAddr = addr;
 	
 	return _InternalConnectNB();
@@ -216,6 +228,9 @@ void ClientConnector::_InternalDisconnect()
 //----------------------------------------------------------------------------
 void ClientConnector::Disconnect()
 {
+	if (!IsEnable())
+		return;
+
 	if (CONNSTATE_CONNECTED == GetConnectState())
 	{
 		_InternalDisconnect();
@@ -225,6 +240,9 @@ void ClientConnector::Disconnect()
 //----------------------------------------------------------------------------
 int ClientConnector::Reconnect(BufferEvent *ent)
 {
+	if (!IsEnable())
+		return -1;
+	
 	assert(mConnectState == CONNSTATE_CONN_ERROR);
 
 	_InternalDisconnect();

@@ -63,18 +63,27 @@ void Animation3DSkeleton::SetFilename(const std::string &filename)
 	NodePtr animObject = DynamicCast<Node>(olf(filename.c_str(), false, false, false));
 	if (!animObject) return;
 
-	for (int i = 0; i<animObject->GetNumChildren(); i++)
+	SetMovable(animObject);
+}
+//----------------------------------------------------------------------------
+void Animation3DSkeleton::SetMovable(Movable *animObject)
+{
+	Node *animNode = DynamicCast<Node>(animObject);
+	if (!animNode)
+		return;
+
+	for (int i = 0; i < animNode->GetNumChildren(); i++)
 	{
-		Movable *mov = animObject->GetChild(i);
+		Movable *mov = animNode->GetChild(i);
 		Node *node = DynamicCast<Node>(mov);
 		Renderable *renderable = DynamicCast<Renderable>(mov);
-		if (node && !renderable && !_IsNodeHasMesh(node) && 
+		if (node && !renderable && !_IsNodeHasMesh(node) &&
 			node->GetNumValidChildren()>0)
 		{
 			mAnimNode = node;
 		}
 	}
-	animObject->DetachChild(mAnimNode);
+	animNode->DetachChild(mAnimNode);
 
 	mKeyframeCtrlMap.clear();
 	mAnimNormalTime = 0.0f;

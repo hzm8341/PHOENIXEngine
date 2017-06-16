@@ -270,6 +270,10 @@ void Renderer::DisplayColorBuffer()
 //----------------------------------------------------------------------------
 void Renderer::SetAlphaProperty(const AlphaProperty* alphaState)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!mOverrideAlphaProperty)
 	{
 		mAlphaProperty = alphaState;
@@ -346,6 +350,10 @@ void Renderer::SetAlphaProperty(const AlphaProperty* alphaState)
 //----------------------------------------------------------------------------
 void Renderer::SetCullProperty(const CullProperty* cullState)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!mOverrideCullProperty)
 	{
 		mCullProperty = cullState;
@@ -395,6 +403,10 @@ void Renderer::SetCullProperty(const CullProperty* cullState)
 //----------------------------------------------------------------------------
 void Renderer::SetDepthProperty(const DepthProperty* depthState)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!mOverrideDepthProperty)
 	{
 		mDepthProperty = depthState;
@@ -448,6 +460,10 @@ void Renderer::SetDepthProperty(const DepthProperty* depthState)
 //----------------------------------------------------------------------------
 void Renderer::SetOffsetProperty(const OffsetProperty* offsetState)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!mOverrideOffsetProperty)
 	{
 		mOffsetProperty = offsetState;
@@ -522,6 +538,10 @@ void Renderer::SetOffsetProperty(const OffsetProperty* offsetState)
 //----------------------------------------------------------------------------
 void Renderer::SetStencilProperty(const StencilProperty* stencilState)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!mOverrideStencilProperty)
 	{
 		mStencilProperty = stencilState;
@@ -582,6 +602,10 @@ void Renderer::SetStencilProperty(const StencilProperty* stencilState)
 //----------------------------------------------------------------------------
 void Renderer::SetWireProperty(const WireProperty* wireState)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!mOverrideWireProperty)
 	{
 		mWireProperty = wireState;
@@ -636,6 +660,10 @@ void Renderer::UnbindAll(const MaterialPass *pass)
 void Renderer::Enable(const Renderable* renderable,
 	const MaterialInstance* instance, int index)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	const MaterialPass* pass = instance->GetPass(index);
 	ShaderParameters* vparams = instance->GetVertexParameters(index);
 	ShaderParameters* pparams = instance->GetPixelParameters(index);
@@ -687,12 +715,20 @@ void Renderer::Disable(const Renderable* renderable,
 void Renderer::SetViewport(int xPosition, int yPosition, int width,
 	int height)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glViewport(xPosition, yPosition, width, height);
 }
 //----------------------------------------------------------------------------
 void Renderer::GetViewport(int& xPosition, int& yPosition,
 	int& width, int& height) const
 {
+#if defined PX2_USE_OPENGL && (defined WIN32||defined _WIN32)
+	bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+#endif
+
 	int param[4];
 	glGetIntegerv(GL_VIEWPORT, param);
 
@@ -704,11 +740,19 @@ void Renderer::GetViewport(int& xPosition, int& yPosition,
 //----------------------------------------------------------------------------
 void Renderer::SetDepthRange(float zMin, float zMax)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glDepthRange((GLclampd)zMin, (GLclampd)zMax);
 }
 //----------------------------------------------------------------------------
 void Renderer::GetDepthRange(float& zMin, float& zMax) const
 {
+#if defined PX2_USE_OPENGL && (defined WIN32||defined _WIN32)
+	bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+#endif
+
 	GLclampd param[2];
 	glGetDoublev(GL_DEPTH_RANGE, param);
 
@@ -718,6 +762,10 @@ void Renderer::GetDepthRange(float& zMin, float& zMax) const
 //----------------------------------------------------------------------------
 void Renderer::Resize(int width, int height)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	mWidth = width;
 	mHeight = height;
 
@@ -728,6 +776,10 @@ void Renderer::Resize(int width, int height)
 //----------------------------------------------------------------------------
 void Renderer::ResizeWindow(int width, int height)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	PX2_UNUSED(width);
 	PX2_UNUSED(height);
 
@@ -743,6 +795,10 @@ std::string Renderer::GetRenderTag()
 //----------------------------------------------------------------------------
 void Renderer::InitRenderStates()
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	mData->mCurrentRS.Initialize(mDefaultAlphaProperty, mDefaultCullProperty,
 		mDefaultDepthProperty, mDefaultOffsetProperty, mDefaultStencilProperty,
 		mDefaultWireProperty);
@@ -759,6 +815,10 @@ void Renderer::InitRenderStates()
 //----------------------------------------------------------------------------
 void Renderer::ClearColorBuffer()
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearColor(mClearColor[0], mClearColor[1], mClearColor[2],
 		mClearColor[3]);
 
@@ -767,6 +827,10 @@ void Renderer::ClearColorBuffer()
 //----------------------------------------------------------------------------
 void Renderer::ClearDepthBuffer()
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearDepth((GLclampd)mClearDepth);
 
 	glClear(GL_DEPTH_BUFFER_BIT);
@@ -774,6 +838,10 @@ void Renderer::ClearDepthBuffer()
 //----------------------------------------------------------------------------
 void Renderer::ClearStencilBuffer()
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearStencil((GLint)mClearStencil);
 
 	glClear(GL_STENCIL_BUFFER_BIT);
@@ -781,6 +849,10 @@ void Renderer::ClearStencilBuffer()
 //----------------------------------------------------------------------------
 void Renderer::ClearBuffers()
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearColor(mClearColor[0], mClearColor[1], mClearColor[2],
 		mClearColor[3]);
 
@@ -796,6 +868,10 @@ void Renderer::ClearBuffers()
 //----------------------------------------------------------------------------
 void Renderer::ClearColorBuffer(int x, int y, int w, int h)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearColor(mClearColor[0], mClearColor[1], mClearColor[2],
 		mClearColor[3]);
 
@@ -807,6 +883,10 @@ void Renderer::ClearColorBuffer(int x, int y, int w, int h)
 //----------------------------------------------------------------------------
 void Renderer::ClearDepthBuffer(int x, int y, int w, int h)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearDepth((GLclampd)mClearDepth);
 
 	glEnable(GL_SCISSOR_TEST);
@@ -817,6 +897,10 @@ void Renderer::ClearDepthBuffer(int x, int y, int w, int h)
 //----------------------------------------------------------------------------
 void Renderer::ClearStencilBuffer(int x, int y, int w, int h)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearStencil((GLint)mClearStencil);
 
 	glEnable(GL_SCISSOR_TEST);
@@ -827,6 +911,10 @@ void Renderer::ClearStencilBuffer(int x, int y, int w, int h)
 //----------------------------------------------------------------------------
 void Renderer::ClearBuffers(int x, int y, int w, int h)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	glClearColor(mClearColor[0], mClearColor[1], mClearColor[2],
 		mClearColor[3]);
 
@@ -850,6 +938,10 @@ void Renderer::ClearBuffers(int x, int y, int w, int h)
 void Renderer::SetColorMask(bool allowRed, bool allowGreen,
 	bool allowBlue, bool allowAlpha)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	mAllowRed = allowRed;
 	mAllowGreen = allowGreen;
 	mAllowBlue = allowBlue;
@@ -868,6 +960,15 @@ void Renderer::SetColorMask(bool allowRed, bool allowGreen,
 //----------------------------------------------------------------------------
 bool Renderer::PreDraw()
 {
+#if defined _WIN32 || defined WIN32
+
+	bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+	if (!success)
+	{
+		assertion(false, "");
+	}
+#endif
+
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -881,6 +982,10 @@ void Renderer::PostDraw()
 //----------------------------------------------------------------------------
 void Renderer::Draw(const unsigned char* screenBuffer, bool reflectY)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	if (!screenBuffer)
 	{
 		assertion(false, "Incoming screen buffer is null.\n");
@@ -927,6 +1032,10 @@ void Renderer::Draw(const unsigned char* screenBuffer, bool reflectY)
 void Renderer::Draw(int x, int y, const Float4& color,
 	const std::string& message)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	const char* text = message.c_str();
 	assertion(text != 0, "Invalid message\n");
 	int length = (int)strlen(text);
@@ -1027,6 +1136,10 @@ static GLuint EndQuery(GLuint query)
 //----------------------------------------------------------------------------
 void Renderer::DrawPrimitive(const Renderable* visual)
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	Renderable::PrimitiveType type = visual->GetPrimitiveType();
 	const VertexBuffer* vbuffer = visual->GetVertexBuffer();
 	const IndexBuffer* ibuffer = visual->GetIndexBuffer();
@@ -1111,6 +1224,10 @@ void Renderer::DrawPrimitive(const Renderable* visual)
 //----------------------------------------------------------------------------
 void Renderer::ClearSharePdrData()
 {
+#if defined PX2_USE_OPENGL
+	PreDraw();
+#endif
+
 	std::map<int, SharePdrData>::iterator it = mSharePdrVertexShaders.begin();
 	for (; it != mSharePdrVertexShaders.end(); it++)
 	{

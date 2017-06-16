@@ -43,9 +43,10 @@ INCPATH := \
 	-I ./ \
 	-I ./config/ \
 	-I ./config/android/ \
-	-I ./src/
+	-I ./src/ \
+	-I ../ZLib/
 	
-INCDIR := ../../../PX2SDK/Include
+INCDIR := ../../../PX2SDK/Include/
 	
 FTINC := $(wildcard *.h)
 FTINC := $(notdir $(INC))

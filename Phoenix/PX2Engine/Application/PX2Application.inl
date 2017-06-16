@@ -1,6 +1,16 @@
 // PX2Application.inl
 
 //----------------------------------------------------------------------------
+inline const std::string &Application::GetHostName() const
+{
+	return mHostName;
+}
+//----------------------------------------------------------------------------
+inline bool Application::IsInEditor() const
+{
+	return mIsInEditor;
+}
+//----------------------------------------------------------------------------
 inline const Sizef &Application::GetBoostSize() const
 {
 	return mBoostInfo.BoostSize;

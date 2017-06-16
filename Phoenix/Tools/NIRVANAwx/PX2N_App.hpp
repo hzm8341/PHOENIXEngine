@@ -22,6 +22,7 @@ namespace NA
 
 		virtual bool OnInit();
 		virtual int OnExit();
+		virtual void CleanUp();
 
 		virtual void OnEvent(PX2::Event *event);
 

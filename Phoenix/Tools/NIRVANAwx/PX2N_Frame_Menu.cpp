@@ -18,11 +18,23 @@ void N_Frame::OnCommondItem(wxCommandEvent &e)
 	int id = e.GetId();
 
 	std::map<int, std::string>::iterator it = mIDScripts.find(id);
+	std::map<int, std::string>::iterator itParam = mIDScriptParams.find(id);
 
 	if (it != mIDScripts.end())
 	{
 		std::string callStr = it->second;
-		callStr += "()";
+		std::string paramStr;
+		if (itParam != mIDScriptParams.end())
+		{
+			paramStr = itParam->second;
+			callStr += "(\"" + paramStr + "\")";
+		}
+		else
+		{
+			if (paramStr.empty())
+				callStr += "()";
+		}
+
 		PX2_SC_LUA->CallString(callStr);
 	}
 
@@ -68,6 +80,7 @@ wxMenu *N_Frame::AddSubMenuItem(wxMenu *menu, const std::string &title)
 wxMenuItem *N_Frame::AddMenuItem(wxMenu *menu,
 	const std::string &title,
 	const std::string &script,
+	const std::string &param,
 	const std::string &tag)
 {
 	int id = PX2_EDIT_GETID;
@@ -78,6 +91,8 @@ wxMenuItem *N_Frame::AddMenuItem(wxMenu *menu,
 		wxCommandEventHandler(N_Frame::OnCommondItem));
 
 	mIDScripts[id] = script;
+	if (!param.empty())
+		mIDScriptParams[id] = param;
 
 	if (!tag.empty())
 	{

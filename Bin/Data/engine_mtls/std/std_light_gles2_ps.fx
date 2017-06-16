@@ -1,6 +1,6 @@
-varying mediump vec4 vertexColor;
 varying mediump vec2 vertexTCoord0;
 varying mediump vec2 vertexTCoord1;
+varying mediump vec4 vertexTCoord2;
 uniform mediump vec4 UVOffset;
 uniform mediump vec4 FogColorHeight;
 uniform mediump vec4 FogColorDist;
@@ -18,7 +18,7 @@ void main()
 	}
 	else
 	{
-		lastColor *= vertexColor;	
+		lastColor *= vertexTCoord2;	
 	
 		lastColor.rgb = lastColor.rgb * vertexTCoord1.x + FogColorHeight.rgb * (1.0 - vertexTCoord1.x);
 		lastColor.rgb = lastColor.rgb * vertexTCoord1.y + FogColorDist.rgb * (1.0 - vertexTCoord1.y);

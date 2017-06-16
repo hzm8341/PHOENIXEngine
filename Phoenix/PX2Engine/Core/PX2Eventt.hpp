@@ -65,6 +65,7 @@ namespace PX2
 		void Wait ();
 
 		/// 在一段时间内等待事件被激活，如果激活了返回true，否则返回false
+		// 毫秒（0.001秒）
 		bool Wait (long milliseconds);
 
 	protected:

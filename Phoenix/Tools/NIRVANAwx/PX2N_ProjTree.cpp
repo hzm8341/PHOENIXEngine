@@ -5,6 +5,7 @@
 #include "PX2Project.hpp"
 #include "PX2Edit.hpp"
 #include "PX2EditEventType.hpp"
+#include "PX2EditEventData.hpp"
 #include "PX2Selection.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2LanguageManager.hpp"
@@ -17,6 +18,8 @@
 #include "PX2GraphicsEventType.hpp"
 #include "PX2EditorEventType.hpp"
 #include "PX2GraphicsEventData.hpp"
+#include "PX2N_Man.hpp"
+#include "PX2N_Frame.hpp"
 using namespace NA;
 using namespace PX2;
 
@@ -40,7 +43,7 @@ ProjTree::ProjTree(wxWindow *parent) :
 wxTreeCtrl(parent, sID_PROJVIEW, wxDefaultPosition, wxDefaultSize,
 wxTR_DEFAULT_STYLE | wxTR_FULL_ROW_HIGHLIGHT | wxTR_NO_LINES | wxNO_BORDER),
 mIsShowHelpNode(false),
-mTreeLevel(PTL_GENERAL),
+mTreeLevel(PTL_CHILDREN),
 mImageList(0),
 mItemProj(0),
 mItemScene(0),
@@ -78,6 +81,8 @@ mEditMenu(0)
 	Icons["effect"] = imageEffect;
 	Icons["control"] = imageControl;
 	Icons["mesh"] = imageMesh;
+
+	SetName("ProjectTree");
 }
 //----------------------------------------------------------------------------
 ProjTree::~ProjTree()
@@ -116,14 +121,7 @@ void ProjTree::SetTreeLevel(ProjTreeLevel level)
 	mItemProj->SetTreeLevel(level, mIsShowHelpNode);	
 	mItemScene->SetTreeLevel(level, mIsShowHelpNode);
 
-	if (PTL_GENERAL == level)
-	{
-		mItemUI->SetTreeLevel(PTL_CHILDREN, mIsShowHelpNode);
-	}
-	else
-	{
-		mItemUI->SetTreeLevel(level, mIsShowHelpNode);
-	}
+	mItemUI->SetTreeLevel(level, mIsShowHelpNode);
 
 	mTreeLevel = level;
 }
@@ -235,10 +233,6 @@ void ProjTree::_RefreshUI()
 	}
 	if (!ui) return;
 
-	ProjTreeLevel treeLevel = mTreeLevel;
-	if (treeLevel == PTL_GENERAL)
-		treeLevel = PTL_CHILDREN;
-
 	mItemUI->SetObject(ui);
 	mItemUI->SetName(ui->GetName());
 	_TravelRefreshChild(mItemUI, ui);
@@ -336,26 +330,16 @@ void ProjTree::OnRightUp(wxMouseEvent& e)
 {
 	wxPoint mousePos = e.GetPosition();
 
-	if (mEditMenu)
-	{
-		delete mEditMenu;
-		mEditMenu = 0;
-	}
-
-	mEditMenu = new wxMenu();
-
-	//
-
-	if (mEditMenu) PopupMenu(mEditMenu, mousePos.x, mousePos.y);
+	APoint pos;
+	pos.X() = mousePos.x;
+	pos.Z() = mousePos.y;
+	PX2EU_MAN.CreateEditMenu("ProjectTree", pos, EU_Manager::EMT_PROJTREE);
 }
 //----------------------------------------------------------------------------
 void ProjTree::OnItemActivated(wxTreeEvent& event)
 {
-	wxTreeItemId id = event.GetItem();
-	bool isExpanded = IsExpanded(id);
-
-	if (isExpanded) Collapse(id);
-	else Expand(id);
+	PX2_UNUSED(event);
+	PX2_EDIT.FocusOnSelection();
 }
 //----------------------------------------------------------------------------
 void ProjTree::OnSelChanged(wxTreeEvent& event)
@@ -368,9 +352,6 @@ void ProjTree::OnSelChanged(wxTreeEvent& event)
 	ProjTreeItem *item = GetItem(id);
 	if (item)
 	{
-		void *id = item->GetItemID().GetID();
-		const std::string &itemName = item->GetName();
-
 		Object *obj = item->GetObject();
 		if (obj)
 		{
@@ -386,6 +367,7 @@ void ProjTree::OnSelChanged(wxTreeEvent& event)
 //----------------------------------------------------------------------------
 void ProjTree::OnSelChanging(wxTreeEvent& event)
 {
+	PX2_UNUSED(event);
 }
 //----------------------------------------------------------------------------
 void ProjTree::OnSelDelete(wxTreeEvent& event)
@@ -450,6 +432,11 @@ void ProjTree::OnEvent(Event *event)
 		Object *object = event->GetData<Object*>();
 		_RemoveObject(object);
 	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::SetProjectTreeLevel))
+	{
+		int level = event->GetData<int>();
+		SetSelectItemLevel((ProjTreeLevel)level);
+	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::N_ObjectNameChanged))
 	{
 		Object *obj = event->GetData<Object*>();
@@ -466,6 +453,64 @@ void ProjTree::OnEvent(Event *event)
 			SetFocus();
 		}
 	}
+	else if (EditES::IsEqual(event, EditES::N_AddMenu))
+	{
+		std::string name = GetName();
+
+		EED_AddMenu data = event->GetData<EED_AddMenu>();
+		if (data.Where == name)
+		{
+			if (EED_AddMenu::IT_EDIT_MENU == data.TheItemType ||
+				EED_AddMenu::IT_EDIT_SUBMENU == data.TheItemType ||
+				EED_AddMenu::IT_EDIT_ITEM == data.TheItemType ||
+				EED_AddMenu::IT_EDIT_ITEMSPARATER == data.TheItemType ||
+				EED_AddMenu::IT_EDIT_POPUP == data.TheItemType)
+			{
+				if (EED_AddMenu::IT_EDIT_MENU == data.TheItemType)
+				{
+					wxMenu *menu = CreateEditMenu();
+					mMenuMap_Edit[data.Name] = menu;
+				}
+				else
+				{
+					std::map<std::string, wxMenu*>::iterator it =
+						mMenuMap_Edit.find(data.ParentName);
+					if (it != mMenuMap_Edit.end())
+					{
+						wxMenu *menu = it->second;
+
+						if (EED_AddMenu::IT_EDIT_SUBMENU == data.TheItemType)
+						{
+							if (menu)
+							{
+								wxMenu *subMenu = AddSubMenuItem(menu, data.Title);
+								mMenuMap_Edit[data.ParentName + data.Name] = subMenu;
+							}
+						}
+						else if (EED_AddMenu::IT_EDIT_ITEM == data.TheItemType)
+						{
+							if (menu)
+							{
+								AddMenuItem(menu, data.Title, data.Script, data.ScriptParam, data.Tag);
+							}
+						}
+						else if (EED_AddMenu::IT_EDIT_ITEMSPARATER == data.TheItemType)
+						{
+							if (menu)
+							{
+								AddSeparater(menu);
+							}
+						}
+					}
+
+					if (EED_AddMenu::IT_EDIT_POPUP == data.TheItemType)
+					{
+						PopUpRightMenu(data.PopUpPos.X(), data.PopUpPos.Z());
+					}
+				}
+			}
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void ProjTree::_RemoveObject(PX2::Object *obj)
@@ -478,6 +523,64 @@ void ProjTree::_RemoveObject(PX2::Object *obj)
 		{
 			parItem->RemoveChild(obj);
 		}
+	}
+}
+//----------------------------------------------------------------------------
+wxMenu *ProjTree::CreateEditMenu()
+{
+	if (mEditMenu)
+	{
+		delete mEditMenu;
+		mEditMenu = 0;
+	}
+	mMenuMap_Edit.clear();
+
+	mEditMenu = new wxMenu();
+
+	return mEditMenu;
+}
+//----------------------------------------------------------------------------
+wxMenu *ProjTree::AddSubMenuItem(wxMenu *menu, const std::string &title)
+{
+	wxMenu *subMenu = new wxMenu();
+	menu->AppendSubMenu(subMenu, title);
+
+	return subMenu;
+}
+//----------------------------------------------------------------------------
+wxMenuItem *ProjTree::AddMenuItem(wxMenu *menu,
+	const std::string &title,
+	const std::string &script,
+	const std::string &scriptParam,
+	const std::string &tag)
+{
+	PX2_UNUSED(tag);
+
+	int id = PX2_EDIT_GETID;
+	wxMenuItem *item = new wxMenuItem(menu, id, title);
+	menu->Append(item);
+
+	N_Frame::MainFrame->Connect(id, wxEVT_MENU,
+		wxCommandEventHandler(N_Frame::OnCommondItem));
+
+	N_Frame::MainFrame->mIDScripts[id] = script;
+	if (!scriptParam.empty())
+		N_Frame::MainFrame->mIDScriptParams[id] = scriptParam;
+
+	return item;
+}
+//----------------------------------------------------------------------------
+void ProjTree::AddSeparater(wxMenu *menu)
+{
+	wxMenuItem *item = new wxMenuItem(menu, wxID_SEPARATOR);
+	menu->Append(item);
+}
+//----------------------------------------------------------------------------
+void ProjTree::PopUpRightMenu(int x, int y)
+{
+	if (mEditMenu)
+	{
+		PopupMenu(mEditMenu, x, y);
 	}
 }
 //----------------------------------------------------------------------------

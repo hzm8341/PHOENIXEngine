@@ -1,4 +1,4 @@
-// PX2EU_CanvasStage.hpp
+ // PX2EU_CanvasStage.hpp
 
 #ifndef PX2EU_CANVASSTAGE_HPP
 #define PX2EU_CANVASSTATE_HPP

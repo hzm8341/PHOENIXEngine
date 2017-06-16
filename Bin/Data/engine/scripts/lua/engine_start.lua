@@ -204,6 +204,20 @@ TEXTALIGN_TOP		=	8
 TEXTALIGN_VCENTER	=	16
 TEXTALIGN_BOTTOM	=	32
 
+UIPT_NONE = 0
+UIPT_PRESSED = 1
+UIPT_RELEASED = 2
+UIPT_DOUBLE_PRESSED = 3
+UIPT_MOVED = 4
+UIPT_WHELLED = 5
+UIPT_MAX_TYPE = 6
+
+CMD_EngineUDPInfoTag = "myudpinfo"
+CMD_EngineUDPConnectMeStr = "connectme"
+CMD_PushProject = "pushproject"
+CMD_LoadProject = "loadproject"
+CMD_CloseProject = "closeproject"
+
 function engine_start()
 	PX2_LOGGER:LogInfo("script_lua", "engine_start")
 end

@@ -176,7 +176,10 @@ void TimeLineEdit::RemoveGroup(PX2::Object *obj)
 		{
 			float uiHeight = uiGroup->GetSize().Height;
 			float posZ = i*uiHeight;
-			uiGroup->LocalTransform.SetTranslate(APoint(0.0f, 0.0f, posZ));
+			uiGroup->SetAnchorHor(0.0f, 1.0f);
+			uiGroup->SetAnchorVer(0.0f, 0.0f);
+			uiGroup->SetPivot(0.5f, 0.0f);
+			uiGroup->SetAnchorParamVer(posZ, posZ);
 		}
 	}
 }
@@ -890,6 +893,46 @@ void TimeLineEdit::Constant()
 	int mode = ICM_CONSTANT;
 	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::TimeLine_CurveMode);
 	ent->SetData<int>(mode);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void TimeLineEdit::AddPoint()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::TimeLine_AddPoint);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void TimeLineEdit::DeletePoint()
+{
+	CurveCtrl *ctrl = GetSelectedCurveCtrl();
+	if (!ctrl) return;
+
+	CurveGroup *group = GetCurveGroup(
+		ctrl->GetCurve());
+
+	int numPoints = group->GetNumPoints();
+	if (numPoints <= 1)
+	{
+		/*_*/
+	}
+	else
+	{
+		group->DeletePoint(ctrl->GetIndex());
+	}
+}
+//----------------------------------------------------------------------------
+void TimeLineEdit::SetInValue()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::TimeLine_SetInValue);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void TimeLineEdit::SetOutValue()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::TimeLine_SetOutValue);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

@@ -26,6 +26,9 @@ namespace PX2
 		void Expand(bool expand);
 		bool IsExpand() const;
 
+		void SetExpandBarHeight(float height);
+		float GetExpandBarHeight() const;
+
 		void SetContentHeight(float cntHeight);
 		float GetAllHeight() const;
 
@@ -41,7 +44,7 @@ namespace PX2
 
 		UICollapsePanel *mUICollapsePanel;
 		bool mIsExpand;
-		float mExpandButHeight;
+		float mExpandBarHeight;
 		float mContentHeight;
 		UIButtonPtr mExpandBut;
 		UIFramePtr mContentFrame;

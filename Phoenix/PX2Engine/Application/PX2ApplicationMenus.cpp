@@ -146,7 +146,8 @@ void Application::Menu_Main_AddSubItem(const std::string &parentName,
 //----------------------------------------------------------------------------
 void Application::Menu_Main_AddItem(const std::string &parentName,
 	const std::string &name,
-	const std::string &title, const std::string &script,
+	const std::string &title, const std::string &script, 
+	const std::string &scriptParam,
 	const std::string &tag)
 {
 	EED_AddMenu data;
@@ -156,6 +157,7 @@ void Application::Menu_Main_AddItem(const std::string &parentName,
 	data.Name = name;
 	data.Title = title;
 	data.Script = script;
+	data.ScriptParam = scriptParam;
 	data.Tag = tag;
 
 	Event *ent = EditES::CreateEventX(EditES::N_AddMenu);
@@ -207,6 +209,7 @@ void Application::Menu_Edit_AddItem(const std::string &whe,
 	const std::string &parentName, const std::string &name,
 	const std::string &title,
 	const std::string &script,
+	const std::string &scriptParam,
 	const std::string &tag)
 {
 	EED_AddMenu data;
@@ -216,6 +219,7 @@ void Application::Menu_Edit_AddItem(const std::string &whe,
 	data.Name = name;
 	data.Title = title;
 	data.Script = script;
+	data.ScriptParam = scriptParam;
 	data.Tag = tag;
 
 	Event *ent = EditES::CreateEventX(EditES::N_AddMenu);

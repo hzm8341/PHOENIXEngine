@@ -713,11 +713,11 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
     <ClInclude Include="Application\PX2Application.hpp" />
     <ClInclude Include="Application\PX2Applications.hpp" />
+    <ClInclude Include="Application\PX2ApplicationUDPNetInfo.hpp" />
     <ClInclude Include="Application\PX2CameraController.hpp" />
     <ClInclude Include="Application\PX2Creater.hpp" />
     <ClInclude Include="Application\PX2EngineCanvas.hpp" />
     <ClInclude Include="Application\PX2EngineClientConnector.hpp" />
-    <ClInclude Include="Application\PX2EngineEventHandler.hpp" />
     <ClInclude Include="Application\PX2EngineNetCmdProcess.hpp" />
     <ClInclude Include="Application\PX2EngineNetDefine.hpp" />
     <ClInclude Include="Application\PX2EngineNetEvent.hpp" />
@@ -1206,6 +1206,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Net\PX2BufferedStreamBuf.hpp" />
     <ClInclude Include="Net\PX2ClientContext.hpp" />
     <ClInclude Include="Net\PX2CountingStream.hpp" />
+    <ClInclude Include="Net\PX2DatagramSocket.hpp" />
+    <ClInclude Include="Net\PX2DatagramSocketImpl.hpp" />
     <ClInclude Include="Net\PX2DNS.hpp" />
     <ClInclude Include="Net\PX2HostEntry.hpp" />
     <ClInclude Include="Net\PX2HTTPBasicStreamBuf.hpp" />
@@ -1274,6 +1276,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Net\PX2TCPServerConnectionFactory.hpp" />
     <ClInclude Include="Net\PX2TCPServerDispatcher.hpp" />
     <ClInclude Include="Net\PX2TCPServerParams.hpp" />
+    <ClInclude Include="Net\PX2UDPServer.hpp" />
     <ClInclude Include="Net\PX2UnbufferedStreamBuf.hpp" />
     <ClInclude Include="Net\PX2URI.hpp" />
     <ClInclude Include="Terrains\PX2Jungler.hpp" />
@@ -1313,6 +1316,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="UI\PX2UIMenu.hpp" />
     <ClInclude Include="UI\PX2UIMenuItem.hpp" />
     <ClInclude Include="UI\PX2UIPicBox.hpp" />
+    <ClInclude Include="UI\PX2UIPicBoxListController.hpp" />
     <ClInclude Include="UI\PX2UIPre.hpp" />
     <ClInclude Include="UI\PX2UIProgressBar.hpp" />
     <ClInclude Include="UI\PX2UIProgressBarCtrl.hpp" />
@@ -1575,6 +1579,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\ModelImporter\Obj\ObjLoader.h" />
     <ClInclude Include="Unity\PX2AccoutManager.hpp" />
     <ClInclude Include="Unity\PX2AddDeleteManager.hpp" />
+    <ClInclude Include="Unity\PX2Arduino.hpp" />
+    <ClInclude Include="Unity\PX2ArduinoMsg.hpp" />
     <ClInclude Include="Unity\PX2Bluetooth.hpp" />
     <ClInclude Include="Unity\PX2CharCoding.hpp" />
     <ClInclude Include="Unity\PX2CharCodingGBK.hpp" />
@@ -1600,6 +1606,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2FontGlyphMapTrueType.hpp" />
     <ClInclude Include="Unity\PX2FontManager.hpp" />
     <ClInclude Include="Unity\PX2GPIO.hpp" />
+    <ClInclude Include="Unity\PX2HardCamera.hpp" />
     <ClInclude Include="Unity\PX2IMEDelegate.hpp" />
     <ClInclude Include="Unity\PX2IMEDispatcher.hpp" />
     <ClInclude Include="Unity\PX2Importer.hpp" />
@@ -1656,11 +1663,11 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2ApplicationInitTerm.cpp" />
     <ClCompile Include="Application\PX2ApplicationMap.cpp" />
     <ClCompile Include="Application\PX2ApplicationMenus.cpp" />
+    <ClCompile Include="Application\PX2ApplicationUDPNetInfo.cpp" />
     <ClCompile Include="Application\PX2CameraController.cpp" />
     <ClCompile Include="Application\PX2Creater.cpp" />
     <ClCompile Include="Application\PX2EngineCanvas.cpp" />
     <ClCompile Include="Application\PX2EngineClientConnector.cpp" />
-    <ClCompile Include="Application\PX2EngineEventHandler.cpp" />
     <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp" />
     <ClCompile Include="Application\PX2EngineNetEvent.cpp" />
     <ClCompile Include="Application\PX2EngineSceneCanvas.cpp" />
@@ -2047,6 +2054,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Mathematics\PX2Vector4.cpp" />
     <ClCompile Include="Net\PX2ClientContext.cpp" />
     <ClCompile Include="Net\PX2CountingStream.cpp" />
+    <ClCompile Include="Net\PX2DatagramSocket.cpp" />
+    <ClCompile Include="Net\PX2DatagramSocketImpl.cpp" />
     <ClCompile Include="Net\PX2DNS.cpp" />
     <ClCompile Include="Net\PX2HostEntry.cpp" />
     <ClCompile Include="Net\PX2HTTPBufferAllocator.cpp" />
@@ -2109,6 +2118,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Net\PX2TCPServerConnectionFactory.cpp" />
     <ClCompile Include="Net\PX2TCPServerDispatcher.cpp" />
     <ClCompile Include="Net\PX2TCPServerParams.cpp" />
+    <ClCompile Include="Net\PX2UDPServer.cpp" />
     <ClCompile Include="Net\PX2URI.cpp" />
     <ClCompile Include="Terrains\PX2Jungler.cpp" />
     <ClCompile Include="Terrains\PX2LODTerrain.cpp" />
@@ -2145,6 +2155,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="UI\PX2UIMenu.cpp" />
     <ClCompile Include="UI\PX2UIMenuItem.cpp" />
     <ClCompile Include="UI\PX2UIPicBox.cpp" />
+    <ClCompile Include="UI\PX2UIPicBoxListController.cpp" />
     <ClCompile Include="UI\PX2UIProgressBar.cpp" />
     <ClCompile Include="UI\PX2UIProgressBarCtrl.cpp" />
     <ClCompile Include="UI\PX2UIPropertyGrid.cpp" />
@@ -2420,6 +2431,9 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\ModelImporter\Obj\ObjLoaderCodes.cpp" />
     <ClCompile Include="Unity\PX2AccoutManager.cpp" />
     <ClCompile Include="Unity\PX2AddDeleteManager.cpp" />
+    <ClCompile Include="Unity\PX2Arduino.cpp" />
+    <ClCompile Include="Unity\PX2ArduinoMsg.cpp" />
+    <ClCompile Include="Unity\PX2ArduinoMsgCreate.cpp" />
     <ClCompile Include="Unity\PX2Bluetooth.cpp" />
     <ClCompile Include="Unity\PX2CharCodingGBK.cpp" />
     <ClCompile Include="Unity\PX2CharCodingUTF8.cpp" />
@@ -2442,6 +2456,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2FontGlyphMapTrueType.cpp" />
     <ClCompile Include="Unity\PX2FontManager.cpp" />
     <ClCompile Include="Unity\PX2GPIO.cpp" />
+    <ClCompile Include="Unity\PX2HardCamera.cpp" />
     <ClCompile Include="Unity\PX2IMEDelegate.cpp" />
     <ClCompile Include="Unity\PX2IMEDispatcher.cpp" />
     <ClCompile Include="Unity\PX2Importer.cpp" />

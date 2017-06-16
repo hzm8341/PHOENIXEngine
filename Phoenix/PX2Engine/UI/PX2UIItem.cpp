@@ -364,9 +364,6 @@ void UIItem::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 	if (!IsDoPick())
 		return;
 
-	if (!IsEnable())
-		return;
-
 	for (int i = 0; i < GetNumChildren(); i++)
 	{
 		UIFrame *childFrame = DynamicCast<UIFrame>(GetChild(i));

@@ -5,6 +5,7 @@
 #include "PX2N_Define.hpp"
 #include "PX2EU_Manager.hpp"
 #include "PX2TerrainMakingPanel.hpp"
+#include "PX2ProjectEvent.hpp"
 using namespace NA;
 using namespace PX2;
 
@@ -22,10 +23,13 @@ mCurWindow(0)
 
 	SetBackgroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()->GetCurTheme()->Color_Page_Background));
 	SetForegroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()->GetCurTheme()->Color_Page_Foreground));
+
+	PX2_EW.ComeIn(this);
 }
 //-----------------------------------------------------------------------------
 MakingWindow::~MakingWindow()
 {
+	PX2_EW.GoOut(this);
 }
 //-----------------------------------------------------------------------------
 void MakingWindow::OnSize(wxSizeEvent& e)
@@ -38,6 +42,18 @@ void MakingWindow::OnSize(wxSizeEvent& e)
 		mCurWindow->SetSize(clentSize.GetWidth(), mCurWindowOriginSize.GetHeight());
 
 		SetVirtualSize(clentSize.GetWidth(), mCurWindowOriginSize.GetHeight());
+	}
+}
+//----------------------------------------------------------------------------
+void MakingWindow::OnEvent(PX2::Event *ent)
+{
+	if (ProjectES::IsEqual(ent, ProjectES::CloseProject))
+	{
+		Project *proj = Project::GetSingletonPtr();
+		if (mObject == proj)
+		{
+			mObject = 0;
+		}
 	}
 }
 //----------------------------------------------------------------------------

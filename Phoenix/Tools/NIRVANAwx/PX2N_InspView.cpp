@@ -10,6 +10,8 @@
 #include "PX2EU_Manager.hpp"
 #include "PX2GraphicsEventType.hpp"
 #include "PX2N_Frame.hpp"
+#include "PX2ProjectEvent.hpp"
+#include "PX2EditorEventType.hpp"
 using namespace NA;
 using namespace PX2;
 
@@ -75,6 +77,15 @@ void InspView::OnEvent(PX2::Event *ent)
 	{
 		_SetObject(0);
 	}
+	else if (ProjectES::IsEqual(ent, ProjectES::CloseProject))
+	{
+		_SetObject(0);
+	}
+	else if (EditorEventSpace::IsEqual(ent, EditorEventSpace::SetInspectorView))
+	{
+		int viewType = ent->GetData<int>();
+		ChangeShowWindow(viewType);
+	}
 }
 //----------------------------------------------------------------------------
 void InspView::_SetObject(PX2::Object *obj)
@@ -105,6 +116,11 @@ void InspView::_ChangeToWindow(std::string str, int userData)
 	{
 		mCurWindow->SetObject(mObject);
 		mCurWindow->Show(true);
+	}
+	else
+	{
+		mCurWindow->SetObject(0);
+		mCurWindow->Show(false);
 	}
 }
 //----------------------------------------------------------------------------

@@ -27,10 +27,28 @@ void ModelController::SetMovableFilename(const std::string &filename,
 	}
 
 	Movable *mov = DynamicCast<Movable>(obj);
-	if (mov)
+	SetMovable(mov);
+}
+//----------------------------------------------------------------------------
+void ModelController::SetMovable(Movable *mov)
+{
+	Node *node = DynamicCast<Node>(GetControlledable());
+
+	if (mMovable && node)
+		node->DetachChild(mMovable);
+
+	mMovable = mov;
+
+	if (mMovable)
 	{
-		SetMovable(mov);
+		mMovable->SetSaveWriteIngore(true);
+		mMovable->SetReceiveShadow(true);
 	}
+
+	if (mMovable && node)
+		node->AttachChild(mMovable);
+
+	CollectAnchors();
 
 	if (AT_SKELETON == mAnimType)
 	{
@@ -128,27 +146,94 @@ void ModelController::SetSkinAnimationConfig(const std::string &filename)
 			}
 		}
 	}
+
 }
 //----------------------------------------------------------------------------
-void ModelController::SetMovable(Movable *mov)
+void ModelController::SetSkinAnimationConfig(const std::string &filename,
+	Movable *animMovable)
 {
-	Node *node = DynamicCast<Node>(GetControlledable());
+	mSkinAnimationConfig = filename;
 
-	if (mMovable && node)
-		node->DetachChild(mMovable);
+	if (mModelAnimMovable)
+		_DetachKeyframeCtrl(mModelAnimMovable);
 
-	mMovable = mov;
+	int bufSize = 0;
+	char *buf = 0;
 
-	if (mMovable)
+	BufferLoadFun loadFun = PX2_GR.msBufferLoadFun;
+	if (loadFun(filename.c_str(), bufSize, buf))
 	{
-		mMovable->SetSaveWriteIngore(true);
-		mMovable->SetReceiveShadow(true);
+		XMLData xd;
+		if (xd.LoadBuffer(buf, bufSize))
+		{
+			XMLNode rootNode = xd.GetRootNode();
+
+			std::string resStr = rootNode.AttributeToString("res");
+			std::string outPath;
+			std::string outBaseFilename;
+			StringHelp::SplitFilename(filename, outPath, outBaseFilename);
+
+			std::string animResFilename = outPath + resStr;
+
+			XMLNode childNode = rootNode.IterateChild();
+			while (!childNode.IsNull())
+			{
+				std::string nStr = childNode.AttributeToString("n");
+				std::string vStr = childNode.AttributeToString("v");
+				bool isLoop = childNode.AttributeToBool("loop");
+				int key0 = -1;
+				if (childNode.HasAttribute("key0"))
+					key0 = childNode.AttributeToInt("key0");
+				int key1 = -1;
+				if (childNode.HasAttribute("key1"))
+					key1 = childNode.AttributeToInt("key1");
+				int actKey = -1;
+				if (childNode.HasAttribute("act"))
+					actKey = childNode.AttributeToInt("act");
+				int val0 = 0;
+				int val1 = 0;
+				StringHelp::StringToVal01(vStr, val0, val1);
+
+				float timeVal = 1.0f / 30.0f;
+
+				float fromTime = val0*timeVal;
+				float toTime = val1*timeVal;
+
+				Animation3DSkeleton *anim = new0 Animation3DSkeleton();
+				anim->SetName(nStr);
+				anim->SetMovable(animMovable);
+				anim->SetKeyframeRangeTime(fromTime, toTime);
+				anim->SetPlayOnce(!isLoop);
+
+				anim->AddAnimationCall("begin", 0.0f, 0);
+
+				if (key0 > 0)
+				{
+					float time = key0 * timeVal - fromTime;
+					anim->AddAnimationCall("key0", time, 0);
+				}
+
+				if (key1 > 0)
+				{
+					float time = key1 * timeVal - fromTime;
+					anim->AddAnimationCall("key1", time, 0);
+				}
+
+				if (actKey > 0)
+				{
+					float time = actKey * timeVal - fromTime;
+					anim->AddAnimationCall("act", time, 0);
+				}
+
+				float endTime = toTime - fromTime;
+				anim->AddAnimationCall("end", endTime, 0);
+
+				AddAnim(anim);
+
+				childNode = childNode.IterateChild(childNode);
+			}
+		}
 	}
-
-	if (mMovable && node)
-		node->AttachChild(mMovable);
-
-	CollectAnchors();
 }
 //----------------------------------------------------------------------------
 void ModelController::SetHeading(const AVector &heading)

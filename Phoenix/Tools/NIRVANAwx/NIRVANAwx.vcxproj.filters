@@ -10,9 +10,6 @@
     <Filter Include="Dlgs">
       <UniqueIdentifier>{8ed675b3-adb5-42ea-9b3e-a0603571048d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Log">
-      <UniqueIdentifier>{7f7b6f8a-b3e9-4bd0-9499-7a9b3d24e948}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Inspector">
       <UniqueIdentifier>{ce6f42f3-dd44-4e02-b389-9c9948917892}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,21 @@
     </Filter>
     <Filter Include="TextEditor">
       <UniqueIdentifier>{4f7e6b4a-84ce-4840-b716-c281c00feeed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Man">
+      <UniqueIdentifier>{a7b84b7b-150c-469d-a873-8eac6204319a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ToScript">
+      <UniqueIdentifier>{5f81c7d0-723d-49aa-ac67-dcb337eec00e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Console">
+      <UniqueIdentifier>{7f7b6f8a-b3e9-4bd0-9499-7a9b3d24e948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Connections">
+      <UniqueIdentifier>{e95c8c1b-37fb-4f00-838a-d5aa55406617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TimeLine">
+      <UniqueIdentifier>{ab0e07cd-56e4-49d9-a4c8-8eb5b466f9f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,16 +132,28 @@
       <Filter>Inspector</Filter>
     </ClInclude>
     <ClInclude Include="PX2N_LogView.hpp">
-      <Filter>Log</Filter>
+      <Filter>Console</Filter>
     </ClInclude>
     <ClInclude Include="PX2N_LogTextCtrl.hpp">
-      <Filter>Log</Filter>
+      <Filter>Console</Filter>
     </ClInclude>
     <ClInclude Include="PX2N_TextView.hpp">
       <Filter>TextEditor</Filter>
     </ClInclude>
     <ClInclude Include="PX2N_ResGridView.hpp">
       <Filter>Res</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2N_Man.hpp">
+      <Filter>Man</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2NirvanaToLua.hpp">
+      <Filter>ToScript</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2N_CntView.hpp">
+      <Filter>Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2N_DlgSetCurveVal.hpp">
+      <Filter>TimeLine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,10 +251,10 @@
       <Filter>Inspector</Filter>
     </ClCompile>
     <ClCompile Include="PX2N_LogView.cpp">
-      <Filter>Log</Filter>
+      <Filter>Console</Filter>
     </ClCompile>
     <ClCompile Include="PX2N_LogTextCtrl.cpp">
-      <Filter>Log</Filter>
+      <Filter>Console</Filter>
     </ClCompile>
     <ClCompile Include="PX2N_Frame_Tool.cpp">
       <Filter>FrameView</Filter>
@@ -240,6 +264,21 @@
     </ClCompile>
     <ClCompile Include="PX2N_ResGridView.cpp">
       <Filter>Res</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2N_Man.cpp">
+      <Filter>Man</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2NirvanaToLua.cpp">
+      <Filter>ToScript</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2N_CntView.cpp">
+      <Filter>Connections</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2N_DlgSetCurveVal.cpp">
+      <Filter>TimeLine</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2N_Frame_TimeLine.cpp">
+      <Filter>FrameView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

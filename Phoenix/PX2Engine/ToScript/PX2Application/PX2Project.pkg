@@ -13,4 +13,10 @@
 		void SetUI(UI *ui);
 		UI *GetUI();
 		const std::string &GetUIFilename() const;
+		
+		// ObjectPool
+	public:
+		void PoolClear();
+		void PoolSet(const std::string &name, Object *obj);
+		Object *PoolGet(const std::string &name);
 	};
