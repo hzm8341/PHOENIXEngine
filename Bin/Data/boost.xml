@@ -7,7 +7,7 @@
 			<var projectname="WhatIf" playlogicmode="logic" isshowinfo="true" datawrite="true"/>
 		</play>
 		<plugins>
-			<var name="BlueBlock"/>
+			<var name=""/>
 		</plugins>
 	</app>
 	<server>
@@ -15,7 +15,7 @@
 			<var projectname="WhatIf" port="18180" nummaxconnection="400"/>
 		</play>
 		<plugins>
-			<var name="BlueBlock"/>
+			<var name=""/>
 		</plugins>
 	</server>
 </boost>
