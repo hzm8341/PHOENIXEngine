@@ -15,13 +15,13 @@ open soruce cross platform system for Games/AR/VR/AI/IOT
 
 - 首先Clone项目到你想要运行的目标机器人的目录，
 
-	下载ThirdPartiesLibs.zip https://share.weiyun.com/fcdf4d57fad2d266faea280d974c8ebe
+	下载ThirdPartiesLibs.zip [https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0](https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0)
 	
 	将其放在Phoenix/Phoenix 目录下进行解压
 	
 	如果需要编译编辑器，需要预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
 	
-	如果需要使用FBX导出插件，需要下载FBX.zip https://share.weiyun.com/f658ffc5112bb8f8b7b4258753655abd
+	如果需要使用FBX导出插件，需要下载FBX.zip [https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0](https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0)
 
 - Bin/Dat/General 是一个空项目
 
