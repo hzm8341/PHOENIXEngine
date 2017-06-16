@@ -1,7 +1,7 @@
-#PHOENIX IoT
+# PHOENIX IoT
 open soruce cross platform system for Games/AR/VR/AI/IOT
 
-##简述
+## 简述
 
 	欢迎来到PhoenixIOT，这是一个可以用来开发游戏，开发机器人的引擎。
 	经过作者的努力，引擎可以运行字Windows上，ARM，Linux，LinuxARM上。
@@ -10,30 +10,30 @@ open soruce cross platform system for Games/AR/VR/AI/IOT
 	PhoniexIOT的目的是为了解决机器人开发中的大难题，众所周知，开发机器人大多用ROS系统，但是因为其Linux环境的限制（虽然支	
 	Windows桌面系统，但没有开发板可以装Windows），开发难度很大。我们希望借助游戏开发中的先进技术，通过脚本编程，让机器人开发更加快速。
 
-##使用方法
-下面是一些简单使用说明，我会逐步更新：
+## 使用方法
 
-下载ThirdPartiesLibs.zip http://url.cn/47RBPDi 
 
-将其放在Phoenix/Phoenix 目录下进行解压
+- 首先Clone项目到你想要运行的目标机器人的目录，
 
-如果需要编译编辑器，需要预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
+	下载ThirdPartiesLibs.zip https://share.weiyun.com/fcdf4d57fad2d266faea280d974c8ebe
+	
+	将其放在Phoenix/Phoenix 目录下进行解压
+	
+	如果需要编译编辑器，需要预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
+	
+	如果需要使用FBX导出插件，需要下载FBX.zip https://share.weiyun.com/f658ffc5112bb8f8b7b4258753655abd
 
-如果需要使用FBX导出插件，需要下载FBX.zip http://url.cn/47borsx
+- Bin/Dat/General 是一个空项目
 
-将其解压到ThirdPartiesLibs中
+	Data下的boost.xml决定从哪个项目启动
+	boost.lua可以对启动项二次修改
+	
+	项目运行前，执行，General/lua/start.lua中的prestart
+	紧接着运行，执行，General/lua/start.lua中的start
 
-Bin/Dat/General 是一个空项目
+## 编译
 
-Data下的boost.xml决定从哪个项目启动
-boost.lua可以对启动项二次修改
-
-项目运行前，执行，General/lua/start.lua中的prestart
-紧接着运行，执行，General/lua/start.lua中的start
-
-##编译
-
-###依赖库
+### 依赖库
 
 ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
@@ -41,11 +41,11 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 如需编译编辑器NIRVANA2，预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
 
-###windows
+### windows
 
 使用visualstudio打开Phoenix/Phoenix.sln编译
 
-###Linux
+### Linux
 
 1.安装依赖库
 
@@ -77,7 +77,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseDynamic -f makefile.px2
 	
-####Linux Raspberry
+#### Linux Raspberry
 
 1.安装依赖库
 
@@ -110,7 +110,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
-###Android
+### Android
 
 目前我们使用的还是旧的Android编译方法，使用Crygwin进行编译。编译环境配置方法，我还在写。
 
