@@ -15,13 +15,13 @@ open soruce cross platform system for Games/AR/VR/AI/IOT
 
 - 首先Clone项目到你想要运行的目标机器人的目录，
 
-	下载ThirdPartiesLibs.zip [https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0](https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0)
+	下载ThirdPartiesLibs.zip [http://pan.baidu.com/s/1o86u2QQ](http://pan.baidu.com/s/1o86u2QQ)
 	
 	将其放在Phoenix/Phoenix 目录下进行解压
 	
 	如果需要编译编辑器，需要预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
 	
-	如果需要使用FBX导出插件，需要下载FBX.zip [https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0](https://share.weiyun.com/ac0f483ed3e141b3bc07590c60ed30f0)
+	如果需要使用FBX导出插件，需要下载FBX.zip 
 
 - Bin/Dat/General 是一个空项目
 
@@ -76,6 +76,10 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 4.编译项目库General.so:
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseDynamic -f makefile.px2
+
+5.执行
+	
+	在Phoenix/Phoenix/Bin目录执行 AppPlayer.ReleaseDynamic
 	
 #### Linux Raspberry
 
@@ -109,6 +113,11 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 4.编译项目库General.so:
 
 	在目录Phoenix/Phoenix/Projects/Client/General中执行:make CFG=ReleaseARMDynamic -f makefile.px2
+
+
+5.执行
+	
+	在Phoenix/Phoenix/Bin目录执行 AppPlayer.ReleaseARMDynamic
 
 ### Android
 
