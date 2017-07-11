@@ -203,7 +203,7 @@ function s_SampleCata()
 	
 	local textInfo = UIFText:New()
 	frame:AttachChild(textInfo)
-	textInfo:GetText():SetText("使用PhoenixIoT 开发你的机器人，APP，VR/AR应用，服务器程序")
+	textInfo:GetText():SetText("使用PhoenixCreate 开发你的机器人，APP，VR/AR应用，服务器程序")
 	textInfo:SetAnchorHor(0.0, 0.0)
 	textInfo:SetAnchorParamHor(270.0, 270.0)
 	textInfo:SetPivot(0.0, 0.5)
@@ -282,7 +282,7 @@ function s_CreateUIFrameAbout()
 	frame:AttachChild(fText)
 	fText:SetAnchorHor(0.0, 1.0)
 	fText:SetAnchorVer(0.0, 1.0)
-	fText:GetText():SetText("欢迎使用#RPhoenixIoT#K进行开发! :-D ");
+	fText:GetText():SetText("欢迎使用#RPhoenixCreate#K进行开发! :-D ");
 	
 	return frame
 end
@@ -665,7 +665,7 @@ function s_CreateUIWebFrame()
 	webFrame:SetAnchorHor(0.0, 1.0)
 	webFrame:SetAnchorVer(0.0, 1.0)
 	webFrame:SetUpdateToTex(true)
-	webFrame:LoadURL("https://github.com/PhoenixIoT")
+	webFrame:LoadURL("https://github.com/PhoenixCreate")
 	
 	return frame
 end
