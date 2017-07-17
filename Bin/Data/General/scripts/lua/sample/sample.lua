@@ -139,7 +139,7 @@ function s_SampleCata()
 	g_s_TableFrame:AddTab("UISplitter", PX2_LM_APP:GetValue("UISplitter"), s_CreateUISplitter())
 	g_s_TableFrame:AddTab("UISlider", PX2_LM_APP:GetValue("UISlider"), s_CreateUISlider())
 	g_s_TableFrame:AddTab("UIRound", PX2_LM_APP:GetValue("UIRound"), s_CreateUIRound())
-	--g_s_TableFrame:AddTab("UIWebFrame", PX2_LM_APP:GetValue("UIWebFrame"), s_CreateUIWebFrame())
+	g_s_TableFrame:AddTab("UIWebFrame", PX2_LM_APP:GetValue("UIWebFrame"), s_CreateUIWebFrame())
 	g_s_TableFrame:AddTab("Server", PX2_LM_APP:GetValue("Server"), s_CreateUIServer())
 	g_s_TableFrame:SetActiveTab("About")
 	
@@ -666,6 +666,7 @@ function s_CreateUIWebFrame()
 	webFrame:SetAnchorVer(0.0, 1.0)
 	webFrame:SetUpdateToTex(true)
 	webFrame:LoadURL("https://github.com/PhoenixCreate")
+	webFrame:SetAcceptKeyboardInput(true)
 	
 	return frame
 end
