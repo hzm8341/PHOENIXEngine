@@ -12,6 +12,8 @@
 namespace PX2
 {
 
+	class BlueBlockPlugin;
+
 	class PX2_ENGINE_ITEM LogicManager : public Singleton<LogicManager>
 	{
 	public:
@@ -40,13 +42,18 @@ namespace PX2
 		void SetPlatformType(PlatformType pt);
 		PlatformType GetPlatformType() const;
 
+		void SetCurLogicObject(Object *obj);
+		Object *GetCurLogicObject() const;
+
 	protected:
 		void _InitCtrls();
 		void _InitFuns();
 
+		BlueBlockPlugin *mBlueBlockPlugin;
 		ObjectPtr mSelectObject;
 		PlatformType mPlatformType;
 		std::string mCurGeneratedScript;
+		ObjectPtr mCurLogicObject;
 
 		// add funs
 	public:

@@ -307,7 +307,8 @@ const wchar_t *StringHelp::UTF8ToUnicode( const char *src, int numSrcChar)
 //----------------------------------------------------------------------------
 std::string StringHelp::IntToString (int val)
 {
-	static char c[10];
+	char c[10];
+	memset(c, 0, 10*sizeof(char));
 	string str;
 	sprintf(c, "%d", val);
 	str = c;

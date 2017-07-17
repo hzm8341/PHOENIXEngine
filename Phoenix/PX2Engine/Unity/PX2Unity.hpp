@@ -40,4 +40,7 @@
 // VoiceSDK
 #include "PX2VoiceSDK.hpp"
 
+// base64
+#include "PX2Base64.hpp"
+
 #endif

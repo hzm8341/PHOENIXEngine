@@ -23,6 +23,8 @@ namespace PX2
 		void SetExpandBarHeight(float height);
 		float GetExpandBarHeight() const;
 
+		void SetSliderWidth(float size);
+
 		void RemoveAllItems();
 		UICollapseItem *AddItem(const std::string &name);
 

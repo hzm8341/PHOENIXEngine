@@ -198,6 +198,11 @@ namespace PX2
 		APoint MTPos;
 
 		std::vector<APoint> TPoses;
+
+		// Win32 Raw
+		int64_t Msg;
+		int64_t WParam;
+		int64_t LParam;
 	};
 
 	enum CanvasPickType

@@ -85,7 +85,7 @@ void EU_ResList::RefreshItems(const std::string &path)
 			path.length() - compareStr.length() - 1);
 	}
 
-	Dir d;
+	DirP d;
 	std::string eachFilename;
 	if (d.Open(path))
 	{
@@ -93,7 +93,7 @@ void EU_ResList::RefreshItems(const std::string &path)
 			return;
 
 		int flags = 0;
-		flags = Dir::DIR_DIRS | Dir::DIR_FILES;
+		flags = DirP::DIR_DIRS | DirP::DIR_FILES;
 
 		if (d.GetFirst(&eachFilename, "", flags))
 		{

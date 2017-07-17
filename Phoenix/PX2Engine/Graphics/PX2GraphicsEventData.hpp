@@ -20,6 +20,28 @@ namespace PX2
 		Pointer0<Object> Obj;
 	};
 
+	class PX2_ENGINE_ITEM AddMenuData
+	{
+	public:
+		AddMenuData();
+		~AddMenuData();
+
+		int ParentID;
+		int ID;
+		std::string Title;
+		std::string Callback;
+	};
+
+	class PX2_ENGINE_ITEM OpenSaveFileDlgData
+	{
+	public:
+		OpenSaveFileDlgData();
+		~OpenSaveFileDlgData();
+
+		std::string ExtStr;
+		std::string Callback;
+	};
+
 }
 
 #endif

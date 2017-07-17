@@ -111,7 +111,7 @@ void ModelController::SetSkinAnimationConfig(const std::string &filename)
 				float fromTime = val0*timeVal;
 				float toTime = val1*timeVal;
 
-				Animation3DSkeleton *anim = new0 Animation3DSkeleton();
+				Animation3DSkeletonPtr anim = new0 Animation3DSkeleton();
 				anim->SetName(nStr);
 				anim->SetFilename(animResFilename);
 				anim->SetKeyframeRangeTime(fromTime, toTime);

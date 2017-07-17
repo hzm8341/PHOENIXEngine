@@ -34,7 +34,7 @@ namespace PX2
 
 		void DisConnect();
 		void Connect(const std::string &addr);
-		void Send(const std::string &str, bool isAppendCRLF);
+		void Send(const std::string &str);
 		
 		void DoDiscovery();
 		void CancelDiscovery();

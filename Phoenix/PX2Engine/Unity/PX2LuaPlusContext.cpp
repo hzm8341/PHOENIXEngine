@@ -21,6 +21,21 @@ extern "C"
 using namespace PX2;
 using namespace LuaPlus;
 
+namespace PX2
+{
+	//----------------------------------------------------------------------------
+	class LuaPlusCallObject
+	{
+	public:
+		LuaPlusCallObject() {}
+		~LuaPlusCallObject() {}
+
+		LuaPlus::LuaObject TheLuaObject;
+		LuaPlus::LuaObject ObjectReset;
+	};
+}
+//----------------------------------------------------------------------------
+
 //----------------------------------------------------------------------------
 class SleepTimer : public Timer
 {
@@ -100,6 +115,8 @@ mLuaPlusState(0)
 		&LuaPlusContext::CallString1);
 	mLuaPlusState->GetGlobals().RegisterDirect("RegistEventFunction", (*this),
 		&LuaPlusContext::RegistEventFunction);
+	mLuaPlusState->GetGlobals().RegisterDirect("RegistEventObjectFunction", (*this),
+		&LuaPlusContext::RegistEventObjectFunction);
 	mLuaPlusState->GetGlobals().RegisterDirect("UnRegistAllEventFunctions", (*this),
 		&LuaPlusContext::UnRegistAllEventFunctions);
 	mLuaPlusState->GetGlobals().RegisterDirect("ClearEventFunctions", (*this),
@@ -415,6 +432,19 @@ bool LuaPlusContext::CallObjectFuntionValist(const std::string &funName,
 //----------------------------------------------------------------------------
 void LuaPlusContext::ClearEventFunctions()
 {
+	auto it = mEventFunObjects.begin();
+	for (; it != mEventFunObjects.end(); it++)
+	{
+		std::vector<LuaPlusCallObject*> &objs = it->second;
+		for (int i = 0; i < (int)objs.size(); i++)
+		{
+			LuaPlusCallObject *caller = objs[i];
+			if (caller)
+			{
+				delete(caller);
+			}
+		}
+	}
 	mEventFunObjects.clear();
 }
 //----------------------------------------------------------------------------
@@ -424,7 +454,27 @@ bool LuaPlusContext::RegistEventFunction(const char *entName,
 	std::string entNameStr(entName);
 	if (!entNameStr.empty())
 	{
-		mEventFunObjects[entNameStr].push_back(callFunObject);
+		LuaPlusCallObject *callObj = new LuaPlusCallObject();
+		callObj->TheLuaObject = callFunObject;
+
+		mEventFunObjects[entNameStr].push_back(callObj);
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool LuaPlusContext::RegistEventObjectFunction(const char *entName, 
+	LuaPlus::LuaObject objReset, LuaPlus::LuaObject callFunObject)
+{
+	std::string entNameStr(entName);
+	if (!entNameStr.empty())
+	{
+		LuaPlusCallObject *callObj = new LuaPlusCallObject();
+		callObj->TheLuaObject = callFunObject;
+		callObj->ObjectReset = objReset;
+
+		mEventFunObjects[entNameStr].push_back(callObj);
 		return true;
 	}
 
@@ -436,6 +486,16 @@ void LuaPlusContext::UnRegistAllEventFunctions(const char *entName)
 	auto it = mEventFunObjects.find(std::string(entName));
 	if (it != mEventFunObjects.end())
 	{
+		std::vector<LuaPlusCallObject*> &objs = it->second;
+		for (int i = 0; i < (int)objs.size(); i++)
+		{
+			LuaPlusCallObject *caller = objs[i];
+			if (caller)
+			{
+				delete(caller);
+			}
+		}
+
 		mEventFunObjects.erase(it);
 	}
 }
@@ -455,10 +515,12 @@ void LuaPlusContext::OnEvent(Event *ent)
 		const std::string &entName = it->first;
 		if (entName == entTypeStr)
 		{
-			std::vector<LuaPlus::LuaObject> &vecs = it->second;
+			std::vector<LuaPlusCallObject*> &vecs = it->second;
 			for (int i = 0; i < (int)vecs.size(); i++)
 			{
-				LuaPlus::LuaObject &luaObj = vecs[i];
+				LuaPlus::LuaObject luaObj = vecs[i]->TheLuaObject;
+				LuaPlus::LuaObject resetObj = vecs[i]->ObjectReset;
+
 				if (!luaObj.IsNil())
 				{
 					LuaCall call = luaObj;
@@ -480,6 +542,11 @@ void LuaPlusContext::OnEvent(Event *ent)
 						LuaObject luaObj2;
 						luaObj2.AssignString(mLuaPlusState, dataStr2.c_str(), dataStr2.length());
 						call << luaObj2;
+					}
+
+					if (!resetObj.IsNil())
+					{
+						call << resetObj;
 					}
 
 					if (dataPointer0)

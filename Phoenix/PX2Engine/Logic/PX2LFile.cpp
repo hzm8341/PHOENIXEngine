@@ -55,6 +55,11 @@ const std::string &LFile::Compile()
 	PreCompiledParams.clear();
 	mCompiledString.clear();
 
+	if (PT_ENGINE == mPlatformType)
+	{
+		mCompiledString += "-- " + GetName() + ".lua";
+	}
+
 	mCompiledString += "\n";
 
 	mBlockProgram->PreCompile(mCompiledString, this, true);

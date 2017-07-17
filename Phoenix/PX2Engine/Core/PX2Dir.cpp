@@ -10,23 +10,23 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-Dir::Dir() :
+DirP::DirP() :
 mData(0)
 {
 }
 //----------------------------------------------------------------------------
-Dir::Dir(const std::string& dirname) :
+DirP::DirP(const std::string& dirname) :
 mData(0)
 {
 	Open(dirname);
 }
 //----------------------------------------------------------------------------
-Dir::~Dir()
+DirP::~DirP()
 {
 	delete0(mData);
 }
 //----------------------------------------------------------------------------
-bool Dir::Open(const std::string& dirname)
+bool DirP::Open(const std::string& dirname)
 {
 	delete0(mData);
 
@@ -44,12 +44,12 @@ bool Dir::Open(const std::string& dirname)
 	}
 }
 //----------------------------------------------------------------------------
-bool Dir::IsOpened() const
+bool DirP::IsOpened() const
 {
 	return 0 != mData;
 }
 //----------------------------------------------------------------------------
-std::string Dir::GetName() const
+std::string DirP::GetName() const
 {
 	std::string name;
 
@@ -61,7 +61,7 @@ std::string Dir::GetName() const
 	return name;
 }
 //----------------------------------------------------------------------------
-std::string Dir::GetNameWithSep() const
+std::string DirP::GetNameWithSep() const
 {
 	std::string name = GetName();
 	if (!name.empty())
@@ -73,13 +73,13 @@ std::string Dir::GetNameWithSep() const
 	return name;
 }
 //----------------------------------------------------------------------------
-void Dir::Close()
+void DirP::Close()
 {
 	if (mData)
 		delete0(mData);
 }
 //----------------------------------------------------------------------------
-bool Dir::GetFirst(std::string *filename,
+bool DirP::GetFirst(std::string *filename,
 	const std::string &filespec, int flags) const
 {
 	assertion(IsOpened(), "must openedd first.");
@@ -92,26 +92,26 @@ bool Dir::GetFirst(std::string *filename,
 	return GetNext(filename);
 }
 //----------------------------------------------------------------------------
-bool Dir::GetNext(std::string *filename) const
+bool DirP::GetNext(std::string *filename) const
 {
-	assertion(IsOpened(), "must Dir::Open() first");
+	assertion(IsOpened(), "must DirP::Open() first");
 
 	return mData->Read(filename);
 }
 //----------------------------------------------------------------------------
-bool Dir::HasFiles(const std::string& spec) const
+bool DirP::HasFiles(const std::string& spec) const
 {
 	std::string s;
 	return GetFirst(&s, spec, DIR_FILES|DIR_HIDDEN);
 }
 //----------------------------------------------------------------------------
-bool Dir::HasSubDirs(const std::string& spec) const
+bool DirP::HasSubDirs(const std::string& spec) const
 {
 	std::string s;
 	return GetFirst(&s, spec, DIR_DIRS|DIR_HIDDEN);
 }
 //----------------------------------------------------------------------------
-size_t Dir::Traverse(DirTraverser& sink, const std::string &filespec,
+size_t DirP::Traverse(DirTraverser& sink, const std::string &filespec,
 	int flags) const
 {
 	size_t nFiles = 0;
@@ -135,7 +135,7 @@ size_t Dir::Traverse(DirTraverser& sink, const std::string &filespec,
 
 			case DIR_CONTINUE:
 			{
-								   Dir subdir;
+								   DirP subdir;
 
 								   bool ok;
 								   do
@@ -227,13 +227,13 @@ private:
 	std::vector<std::string> & mFiles;
 };
 //----------------------------------------------------------------------------
-size_t Dir::GetAllFiles(const std::string& dirname,
+size_t DirP::GetAllFiles(const std::string& dirname,
 	std::vector<std::string> *files, const std::string& filespec, 
 	int flags)
 {
 	size_t nFiles = 0;
 
-	Dir dir(dirname);
+	DirP dir(dirname);
 	if (dir.IsOpened())
 	{
 		DirTraverserSimple traverser(*files);

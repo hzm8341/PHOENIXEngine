@@ -1,5 +1,6 @@
 package org.appplay.ai;
 
+import org.appplay.lib.AppPlayBaseActivity;
 import org.appplay.lib.AppPlayNatives;
 import org.appplay.platformsdk.PlatformSDK;
 import android.app.Activity;
@@ -29,22 +30,26 @@ abstract public class VoiceSDK {
 	
 	public void OnSpeechStart()
 	{
-		AppPlayNatives.nativeOnSpeechStart();		
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnSpeechStart();		
 	}
 	
 	public void OnSpeechPause()
 	{
-		AppPlayNatives.nativeOnSpeechPause();
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnSpeechPause();
 	}
 	
 	public void OnSpeechFinish()
 	{
-		AppPlayNatives.nativeOnSpeechFinish();
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnSpeechFinish();
 	}
 	
 	public void OnSpeechCancel()
 	{
-		AppPlayNatives.nativeOnSpeechCancel();
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnSpeechCancel();
 	}
 	
 	public abstract void StartVoiceListening();
@@ -52,17 +57,20 @@ abstract public class VoiceSDK {
 	
 	public void OnVoiceRecordStart()
 	{
-		AppPlayNatives.nativeOnVoiceRecordStart();		
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnVoiceRecordStart();		
 	}
 	
 	public void OnVoiceRecordEnd()
 	{
-		AppPlayNatives.nativeOnVoiceRecordEnd();		
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnVoiceRecordEnd();		
 	}
 	
 	public void OnVoiceRecognizeResults(String strRet, String strJSON)
 	{
-		AppPlayNatives.nativeOnVoiceRecognizeResults(strRet, strJSON);
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnVoiceRecognizeResults(strRet, strJSON);
 	}
 
 	public abstract void speak(String text);
@@ -71,4 +79,5 @@ abstract public class VoiceSDK {
 	public abstract void speakStop();
 	public abstract void destory();
 	
+	public abstract void enableAutoSpeach(boolean enable);	
 }

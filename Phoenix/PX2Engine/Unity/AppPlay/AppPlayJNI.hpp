@@ -62,12 +62,13 @@ extern "C"
 	extern std::string BluetoothGetPairedDevices();
 	extern void BluetoothDisConnect();
 	extern void BluetoothConnect(const char *addr);
-	extern void BluetoothSend(const char *buf, int length, bool isAppendCRLF);
+	extern void BluetoothSend(const char *buf, int length);
 	extern void BluetoothDoDiscovery();
 	extern void BluetoothCancelDiscovery();
 	
 	extern void VoiceStartVoiceListening();
 	extern void VoiceEndVoiceListening();
+	extern void VoiceEnableAutoSpeak(bool isEnable);
 	extern void VoiceSpeak(const char *text);
 
 	extern void CameraOpenStream(int type); // 0 back, 1 front

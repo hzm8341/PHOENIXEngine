@@ -46,7 +46,10 @@ class AppPlayRenderer implements GLSurfaceView.Renderer
     public void onDrawFrame(GL10 gl)
     {
     	// draw
-    	AppPlayNatives.nativeOdle();   	
+    	AppPlayNatives.nativeOdle();
+    	
+    	// update blue
+    	
     }
     
     // -- funcions implemented ourself -- 

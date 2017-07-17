@@ -90,6 +90,9 @@ import android.widget.Toast;
 
 public class AppPlayBaseActivity extends Activity implements Runnable
 {
+	// Init
+	public static boolean sIsInitlized = false;
+	
 	// Activtiy
 	public static AppPlayBaseActivity sTheActivity;
 
@@ -182,38 +185,45 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		// bluetooth2.0
 		if (AppPlayMetaData.sIsBluetoothable)
 		{
-			//mBt = new BluetoothSPP(this);
-			
-			if (null != mBt)
+			BluetoothAdapter bleAdapter = BluetoothAdapter.getDefaultAdapter();
+			if (null != bleAdapter)
 			{
-				if (!mBt.IsBluetoothAvailable()) 
+				//mBt = new BluetoothSPP(this);
+				
+				if (null != mBt)
 				{
-					Toast.makeText(getApplicationContext(),
-							"Bluetooth is not available", Toast.LENGTH_SHORT)
-							.show();
-				}
+					if (!mBt.IsBluetoothAvailable()) 
+					{
+						Toast.makeText(getApplicationContext(),
+								"Bluetooth is not available", Toast.LENGTH_SHORT)
+								.show();
+					}
 
-				_BtGetPairedDevices();
+					_BtGetPairedDevices();
 
-				IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-				this.registerReceiver(mReceiver, filter);
-				filter = new IntentFilter(
-						BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-				this.registerReceiver(mReceiver, filter);	
-			}
-			
-			mBLE = new BluetoothLE(this);
-			
-			if (null != mBLE)
-			{
-				if (!mBLE.IsBluetoothAvailable()) 
-				{
-					Toast.makeText(getApplicationContext(),
-							"Bluetooth is not available", Toast.LENGTH_SHORT)
-							.show();
+					IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+					this.registerReceiver(mReceiver, filter);
+					filter = new IntentFilter(
+							BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+					this.registerReceiver(mReceiver, filter);	
 				}
 				
-				_BtGetPairedDevices();	
+				mBLE = new BluetoothLE(this);
+				
+				if (null != mBLE)
+				{
+					if (!mBLE.IsBluetoothAvailable()) 
+					{
+						Toast.makeText(getApplicationContext(),
+								"Bluetooth is not available", Toast.LENGTH_SHORT)
+								.show();
+					}
+					else
+					{
+						mBLE.Initlize();						
+						_BtGetPairedDevices();		
+					}
+				}
 			}
 		}
 
@@ -223,24 +233,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		
 		// usb
 		mUsbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
-		
-		// Location
-		mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!mlocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) 
-        {  
-            Toast.makeText(this, "请开启GPS导航...", Toast.LENGTH_SHORT).show();  
-            // 返回开启GPS导航设置界面  
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
-            startActivityForResult(intent, 0);  
-        }
-        String bestProvider = mlocationManager.getBestProvider(_GetCriteria(), true); 
-        Location location = mlocationManager.getLastKnownLocation(bestProvider);  
-        mlocationManager.addGpsStatusListener(mGpsStatusListener);
-        mlocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
-        
-        // Sensor
-        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         
 		// camera
 		DisplayMetrics dm = new DisplayMetrics();
@@ -259,13 +251,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		
 		sFrame = framelayout;
 		setContentView(sFrame);
-
-		if (AppPlayMetaData.sIsNettable)
-			PlatformSDK.sThePlatformSDK = PlatformSDKCreater.Create(this);
-		else
-			Show_GLView();
-
-		Log.d("appplay.ap", "end - AppPlayActivity::onCreate");
 		
 		if (null == savedInstanceState)
 		{
@@ -279,6 +264,13 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			 
 			 savedInstanceState.clear();
 		}
+
+		if (AppPlayMetaData.sIsNettable)
+			PlatformSDK.sThePlatformSDK = PlatformSDKCreater.Create(this);
+		else
+			Show_GLView();
+
+		Log.d("appplay.ap", "end - AppPlayActivity::onCreate");
 	}
 	
 	@Override
@@ -409,9 +401,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		
 		if (null != mWebViewNatives)
 			mWebViewNatives.pauseAll();
-		
-		if (null !=mSensorManager)
-			mSensorManager.unregisterListener(mSensorEventListener);
 	}
 
 	@Override
@@ -450,8 +439,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
             	setUsbDevice(null);
             }
         }
-        
-        mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 	}
 	
 	private void setUsbDevice(UsbDevice device) 
@@ -768,6 +755,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 				// hide soupdateview
 				if (null != mUpdateView)
 					mUpdateView.setVisibility(View.GONE);
+				
+				AppPlayBaseActivity.sIsInitlized = true;
 			}
 		});
 	}
@@ -832,14 +821,26 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		});
 
 	}
+	
+	public void _SetScreenOrientation(final int or)
+	{
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				if (0 == or)
+					((AppPlayBaseActivity) (sTheActivity))
+							.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				else if (1 == or)
+					((AppPlayBaseActivity) (sTheActivity))
+							.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);	
+			}
+		});
+	}
 
 	public static void SetScreenOrientation(int or) {
-		if (0 == or)
-			((AppPlayBaseActivity) (sTheActivity))
-					.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		else if (1 == or)
-			((AppPlayBaseActivity) (sTheActivity))
-					.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		((AppPlayBaseActivity) (sTheActivity))._SetScreenOrientation(or);
 	}
 
 	public static String GetPackageName() {
@@ -851,8 +852,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
         String ipaddress = "";
         try
         {
-            Enumeration<NetworkInterface> en = NetworkInterface
-                    .getNetworkInterfaces();
+            Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
+            
             // 遍历所用的网络接口
             while (en.hasMoreElements())
             {
@@ -869,7 +870,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
                         return ipaddress = ip.getHostAddress();
                     }
                 }
-
             }
         }
         catch (SocketException e)
@@ -877,16 +877,19 @@ public class AppPlayBaseActivity extends Activity implements Runnable
             Log.e("feige", "获取本地ip地址失败");
             e.printStackTrace();
         }
+        
         return ipaddress;
-
     }
    
    public String getLocalMac()
    {
        String mac = "";
        WifiManager wifiMng = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-       WifiInfo wifiInfor = wifiMng.getConnectionInfo();
-       mac = wifiInfor.getMacAddress();
+       if (null !=wifiMng)
+       {
+           WifiInfo wifiInfor = wifiMng.getConnectionInfo();
+           mac = wifiInfor.getMacAddress();   
+       }
        return mac;
    }
 
@@ -1033,24 +1036,24 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		}
 	}	
 
-	public static void BluetoothSend(String str, boolean isAppendCRLF) {
+	public static void BluetoothSend(byte[] bytes) {
 		if (null != sTheActivity) {
-				sTheActivity._BluetoothSend(str, isAppendCRLF);
+				sTheActivity._BluetoothSend(bytes);
 		}
 	}
 	
-	private void _BluetoothSend(final String str, final boolean isAppendCRLF) {
+	private void _BluetoothSend(final byte[] bytes) {
 		if (null != sTheActivity) {
 			sTheActivity.runOnUiThread(new Runnable() {
 				public void run() {
 					if (null != mBt) {
 						if (mBt.IsBluetoothAvailable()) {
-							mBt.Send(str, isAppendCRLF);
+							mBt.Send(bytes);
 						}
 					}
-					if (null != mBLE) {
+					if (null != mBLE && mBLE.IsBluetoothAvailable()) {
 						if (mBLE.IsBluetoothAvailable()) {
-							mBLE.Send(str, isAppendCRLF);
+							mBLE.Send(bytes);
 						}
 					}	
 				}
@@ -1097,7 +1100,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 							sTheActivity._BtDoDiscovery();
 						}
 					}
-					if (null != sTheActivity.mBLE) {
+					if (null != sTheActivity.mBLE && sTheActivity.mBLE.IsBluetoothAvailable()) {
 						if (sTheActivity.mBLE.IsBluetoothAvailable()) {
 							sTheActivity._BtDoDiscovery();
 						}
@@ -1116,7 +1119,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 							sTheActivity.mBt.CancelDiscovery();
 						}
 					}
-					if (null != sTheActivity.mBLE) {
+					if (null != sTheActivity.mBLE && sTheActivity.mBLE.IsBluetoothAvailable()) {
 						if (sTheActivity.mBLE.IsBluetoothAvailable()) {
 							sTheActivity.mBLE.CancelDiscovery();
 						}
@@ -1138,7 +1141,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			}
 		}
 		
-		if (null != mBLE)
+		if (null != mBLE && mBLE.IsBluetoothAvailable())
 		{
 			Set<BluetoothDevice> devices = mBLE.GetBondedDevices();
 			for (BluetoothDevice device : devices) 
@@ -1156,8 +1159,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			mBt.CancelDiscovery();			
 			mBt.StartDiscovery();	
 		}
-		if (null != mBLE)
-		{
+		if (null != mBLE && mBLE.IsBluetoothAvailable())
+		{			
 			mBLE.CancelDiscovery();
 			mBLE.StartDiscovery();
 		}
@@ -1229,6 +1232,24 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			public void run() {
 				if (null != VoiceSDK.sTheVoiceSDK)
 					VoiceSDK.sTheVoiceSDK.speak(text);
+			}
+		});
+	}
+	
+	public static void EnableAutoSpeak(boolean autoSpeak)
+	{
+		if (null != sTheActivity)
+		{
+			sTheActivity._EnableAutoSpeak(autoSpeak);
+		}
+	}
+	
+	private void _EnableAutoSpeak(final boolean autoSpeak)
+	{
+		this.runOnUiThread(new Runnable() {
+			public void run() {
+				if (null != VoiceSDK.sTheVoiceSDK)
+					VoiceSDK.sTheVoiceSDK.enableAutoSpeach(autoSpeak);
 			}
 		});
 	}
@@ -1368,6 +1389,23 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 	}  
 	
 	// Location
+	void StartGPS()
+	{
+		// Location
+		mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!mlocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) 
+        {  
+            Toast.makeText(this, "请开启GPS导航...", Toast.LENGTH_SHORT).show();  
+            // 返回开启GPS导航设置界面  
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
+            startActivityForResult(intent, 0);  
+        }
+        String bestProvider = mlocationManager.getBestProvider(_GetCriteria(), true); 
+        Location location = mlocationManager.getLastKnownLocation(bestProvider);  
+        mlocationManager.addGpsStatusListener(mGpsStatusListener);
+        mlocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
+	}
+	
     private Criteria _GetCriteria() 
     {  
         Criteria criteria = new Criteria();  
@@ -1384,8 +1422,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
         // 设置对电源的需求  
         criteria.setPowerRequirement(Criteria.POWER_LOW);  
         return criteria;  
-    }
-    
+    }    
+        
     // 位置监听  
     private LocationListener mLocationListener = new LocationListener() {  
   
@@ -1393,10 +1431,11 @@ public class AppPlayBaseActivity extends Activity implements Runnable
          * 位置信息变化时触发 
          */  
         public void onLocationChanged(Location location) {
-        	Log.d("appplay.lib", "时间：" + location.getTime());  
-            Log.d("appplay.lib", "经度：" + location.getLongitude());  
-            Log.d("appplay.lib", "纬度：" + location.getLatitude());  
-            Log.d("appplay.lib", "海拔：" + location.getAltitude());        }  
+        	//Log.d("appplay.lib", "时间：" + location.getTime());  
+           // Log.d("appplay.lib", "经度：" + location.getLongitude());  
+           // Log.d("appplay.lib", "纬度：" + location.getLatitude());  
+           // Log.d("appplay.lib", "海拔：" + location.getAltitude());   
+        }  
   
         /** 
          * GPS状态变化时触发 
@@ -1404,15 +1443,15 @@ public class AppPlayBaseActivity extends Activity implements Runnable
         public void onStatusChanged(String provider, int status, Bundle extras) {  
             switch (status) {  
             case LocationProvider.AVAILABLE:  
-                Log.d("appplay.lib", "当前GPS状态为可见状态");  
+               // Log.d("appplay.lib", "当前GPS状态为可见状态");  
                 break;  
             // GPS状态为服务区外时  
             case LocationProvider.OUT_OF_SERVICE:  
-                Log.d("appplay.lib", "当前GPS状态为服务区外状态");  
+               // Log.d("appplay.lib", "当前GPS状态为服务区外状态");  
                 break;  
             // GPS状态为暂停服务时  
             case LocationProvider.TEMPORARILY_UNAVAILABLE:  
-                Log.d("appplay.lib", "当前GPS状态为暂停服务状态");  
+               // Log.d("appplay.lib", "当前GPS状态为暂停服务状态");  
                 break;  
             }  
         }  
@@ -1438,12 +1477,12 @@ public class AppPlayBaseActivity extends Activity implements Runnable
             switch (event) {  
             // 第一次定位  
             case GpsStatus.GPS_EVENT_FIRST_FIX:  
-                Log.i("appplay.lib", "第一次定位");  
+              //  Log.i("appplay.lib", "第一次定位");  
                 break;  
                 
             // 卫星状态改变  
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:  
-                Log.i("appplay.lib", "卫星状态改变");  
+               // Log.i("appplay.lib", "卫星状态改变");  
                 // 获取当前状态  
                 GpsStatus gpsStatus = mlocationManager.getGpsStatus(null);  
                 // 获取卫星颗数的默认最大值  
@@ -1456,19 +1495,36 @@ public class AppPlayBaseActivity extends Activity implements Runnable
                     GpsSatellite s = iters.next();  
                     count++;  
                 }  
-                System.out.println("搜索到：" + count + "颗卫星");  
+              //  System.out.println("搜索到：" + count + "颗卫星");  
                 break;  
             // 定位启动  
             case GpsStatus.GPS_EVENT_STARTED:  
-                Log.i("appplay.lib", "定位启动");  
+               // Log.i("appplay.lib", "定位启动");  
                 break;  
             // 定位结束  
             case GpsStatus.GPS_EVENT_STOPPED:  
-                Log.i("appplay.lib", "定位结束");  
+               // Log.i("appplay.lib", "定位结束");  
                 break;  
             }  
         };  
     };  
+    
+    void StartSensor()
+    {
+        // Sensor
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    }
+    
+    void RegistSensor()
+    {
+        mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+    void UnRegistSensor()
+    {
+		if (null !=mSensorManager)
+			mSensorManager.unregisterListener(mSensorEventListener);
+    }
     
     SensorEventListener  mSensorEventListener  = new SensorEventListener()
     {
@@ -1483,8 +1539,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 
 		@Override
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-			// TODO Auto-generated method stub
-			
+			// TODO Auto-generated method stub	
 
 		}
     	

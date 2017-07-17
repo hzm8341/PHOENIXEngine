@@ -196,7 +196,7 @@ void EU_ResTree::RefreshItems(UIItem *parent, RefreshType type, bool isExpand)
 			path.length() - compareStr.length() - 1);
 	}
 
-	Dir d;
+	DirP d;
 	std::string eachFilename;
 	if (d.Open(path))
 	{
@@ -205,11 +205,11 @@ void EU_ResTree::RefreshItems(UIItem *parent, RefreshType type, bool isExpand)
 
 		int flags = 0;
 		if (type == RT_DIR)
-			flags = Dir::DIR_DIRS;
+			flags = DirP::DIR_DIRS;
 		else if (type == RT_DIR_FILES)
-			flags = Dir::DIR_FILES;
+			flags = DirP::DIR_FILES;
 		else if (type == RT_DIR_ALL || RT_DIR_ALL_NOCHILDREN)
-			flags = Dir::DIR_DIRS | Dir::DIR_FILES;
+			flags = DirP::DIR_DIRS | DirP::DIR_FILES;
 
 		if (d.GetFirst(&eachFilename, "", flags))
 		{

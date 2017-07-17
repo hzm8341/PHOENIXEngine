@@ -247,9 +247,6 @@
     <Filter Include="0.Base\Unity\Tools">
       <UniqueIdentifier>{20f8dcf6-179d-438b-b9f7-80d32426528c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial">
-      <UniqueIdentifier>{a101a4f9-4c8a-451c-b7a7-0d5348c1e483}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Unity\Language">
       <UniqueIdentifier>{7a353a88-7698-4e0f-a614-6286a174ba30}</UniqueIdentifier>
     </Filter>
@@ -625,8 +622,11 @@
     <Filter Include="0.Base\Unity\HardCamera">
       <UniqueIdentifier>{92e289e0-f1db-41ee-a7b3-b56ebf1f9f51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\GPS">
-      <UniqueIdentifier>{e5a37d1c-5552-4e18-b3c1-18553c7b740b}</UniqueIdentifier>
+    <Filter Include="0.Base\Unity\Serial">
+      <UniqueIdentifier>{edbc34e0-3779-4723-8979-b97df57fc5fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Base\Unity\Base64">
+      <UniqueIdentifier>{63a35402-ca19-4833-89bf-58f210b34616}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3450,12 +3450,6 @@
     <ClInclude Include="Unity\PX2Arduino.hpp">
       <Filter>0.Base\Unity\Arduino</Filter>
     </ClInclude>
-    <ClInclude Include="Unity\PX2ArduinoMsg.hpp">
-      <Filter>0.Base\Unity\Arduino</Filter>
-    </ClInclude>
-    <ClInclude Include="Unity\PX2Serial.hpp">
-      <Filter>0.Base\Unity\Sound</Filter>
-    </ClInclude>
     <ClInclude Include="UI\PX2UIPicBoxListController.hpp">
       <Filter>1.Ext\UI\Frames\PicBoxList</Filter>
     </ClInclude>
@@ -3464,6 +3458,15 @@
     </ClInclude>
     <ClInclude Include="Unity\PX2VoiceEventType.hpp">
       <Filter>0.Base\Unity\Voice</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2Serial.hpp">
+      <Filter>0.Base\Unity\Serial</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\PX2Logics.hpp">
+      <Filter>1.Ext\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Unity\PX2Base64.hpp">
+      <Filter>0.Base\Unity\Base64</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5798,9 +5801,6 @@
     <ClCompile Include="UI\PX2UICollapseItem.cpp">
       <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
     </ClCompile>
-    <ClCompile Include="Application\PX2AppBoostInfo.cpp">
-      <Filter>2.Application</Filter>
-    </ClCompile>
     <ClCompile Include="Application\PX2GeneralServer.cpp">
       <Filter>2.Application\Net</Filter>
     </ClCompile>
@@ -6002,15 +6002,6 @@
     <ClCompile Include="Unity\PX2Arduino.cpp">
       <Filter>0.Base\Unity\Arduino</Filter>
     </ClCompile>
-    <ClCompile Include="Unity\PX2ArduinoMsg.cpp">
-      <Filter>0.Base\Unity\Arduino</Filter>
-    </ClCompile>
-    <ClCompile Include="Unity\PX2ArduinoMsgCreate.cpp">
-      <Filter>0.Base\Unity\Arduino</Filter>
-    </ClCompile>
-    <ClCompile Include="Unity\PX2Serial.cpp">
-      <Filter>0.Base\Unity\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="UI\PX2UIPicBoxListController.cpp">
       <Filter>1.Ext\UI\Frames\PicBoxList</Filter>
     </ClCompile>
@@ -6019,6 +6010,15 @@
     </ClCompile>
     <ClCompile Include="Unity\PX2VoiceEventType.cpp">
       <Filter>0.Base\Unity\Voice</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2Serial.cpp">
+      <Filter>0.Base\Unity\Serial</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2AppBoostInfo.cpp">
+      <Filter>2.Application\Redo</Filter>
+    </ClCompile>
+    <ClCompile Include="Unity\PX2Base64.cpp">
+      <Filter>0.Base\Unity\Base64</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

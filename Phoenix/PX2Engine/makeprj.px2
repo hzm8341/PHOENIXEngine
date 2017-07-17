@@ -64,6 +64,7 @@ INCPATH := \
 	-I ../Terrains/ \
 	-I ../UI/ \
 	-I ../Logic/ \
+	-I ../Logic/BlueBlock/ \
 	-I ../Application/ \
 	-I ../ToScript/ \
 	-I ../../ThirdPartiesLibs/FMOD/linux/inc/

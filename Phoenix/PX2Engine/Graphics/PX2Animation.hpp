@@ -28,7 +28,7 @@ namespace PX2
 			AT_3DSKELETON,
 			AT_MAX_TYPE
 		};
-		~Animation();
+		virtual ~Animation();
 
 		AnimType GetAnimType() const;
 

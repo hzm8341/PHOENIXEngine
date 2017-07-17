@@ -34,7 +34,7 @@ public class AppPlayActivity extends AppPlayBaseActivity
 	protected void onPause() 
     {  
     	Log.d("appplay.ap", "AppPlayActivity::onPause");
-		 
+    	
 	    super.onPause();
     }
 

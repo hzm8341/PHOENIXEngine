@@ -26,6 +26,7 @@ namespace PX2
 	private:
 		HTTPRequestHandlerFactoryPtr mFactory;
 	};
+	typedef Pointer0<HTTPServer> HTTPServerPtr;
 
 }
 

@@ -49,39 +49,41 @@ public class BluetoothSPP
     public BluetoothSPP(Context context)
     {
         mContext = context;
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();        
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (null != mBluetoothAdapter)
+        {
+    		SetBluetoothConnectionListener(new BluetoothConnectionListener() {
+    			public void onDeviceConnected(String name, String address) {
+    				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(),
+    						"Connected to " + name, Toast.LENGTH_SHORT).show();
 
-		SetBluetoothConnectionListener(new BluetoothConnectionListener() {
-			public void onDeviceConnected(String name, String address) {
-				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(),
-						"Connected to " + name, Toast.LENGTH_SHORT).show();
+    				AppPlayNatives.nativeBluetoothOnConnected();
+    			}
 
-				AppPlayNatives.nativeBluetoothOnConnected();
-			}
+    			public void onDeviceDisconnected() {
+    				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(), "Connection lost",
+    						Toast.LENGTH_SHORT).show();
 
-			public void onDeviceDisconnected() {
-				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(), "Connection lost",
-						Toast.LENGTH_SHORT).show();
+    				AppPlayNatives.nativeBluetoothOnDisConnected();
+    			}
 
-				AppPlayNatives.nativeBluetoothOnDisConnected();
-			}
+    			public void onDeviceConnectionFailed() {
+    				Log.i("Check", "Unable to connect");
 
-			public void onDeviceConnectionFailed() {
-				Log.i("Check", "Unable to connect");
+    				AppPlayNatives.nativeBluetoothOnConnectFailed();
+    			}
+    		});
 
-				AppPlayNatives.nativeBluetoothOnConnectFailed();
-			}
-		});
+    		SetAutoConnectionListener(new AutoConnectionListener() {
+    			public void onNewConnection(String name, String address) {
+    				Log.i("Check", "New Connection - " + name + " - " + address);
+    			}
 
-		SetAutoConnectionListener(new AutoConnectionListener() {
-			public void onNewConnection(String name, String address) {
-				Log.i("Check", "New Connection - " + name + " - " + address);
-			}
-
-			public void onAutoConnectionStarted() {
-				Log.i("Check", "Auto menu_connection started");
-			}
-		});
+    			public void onAutoConnectionStarted() {
+    				Log.i("Check", "Auto menu_connection started");
+    			}
+    		});	
+        }
     }
     
     public boolean IsBluetoothAvailable() 
@@ -189,7 +191,7 @@ public class BluetoothSPP
     {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case BluetoothState.MESSAGE_WRITE:
+			case BluetoothState.MESSAGE_WRITE:
                 break;
             case BluetoothState.MESSAGE_READ:
                 byte[] readBuf = (byte[]) msg.obj;
@@ -310,35 +312,13 @@ public class BluetoothSPP
         mBluetoothAdapter.enable();
     }
     
-    public void Send(byte[] data, boolean CRLF) 
+    public void Send(byte[] data) 
     {
         if(mChatService.GetState() == BluetoothState.STATE_CONNECTED) 
         {
-            if(CRLF) 
-            {
-                byte[] data2 = new byte[data.length + 2];
-                for(int i = 0 ; i < data.length ; i++)
-                    data2[i] = data[i];
-                data2[data2.length - 2] = 0x0A;
-                data2[data2.length - 1] = 0x0D;
-                mChatService.Write(data2);
-            } 
-            else
-            {
-                mChatService.Write(data);
-            }
+        	mChatService.Write(data);
         }
-    }
-    
-    public void Send(String data, boolean isAppendCRLF) 
-    {
-        if(mChatService.GetState() == BluetoothState.STATE_CONNECTED)
-        {
-            if(isAppendCRLF) 
-                data += "\r\n"; 
-            mChatService.Write(data.getBytes());
-        }
-    }
+    }   
     
     public String GetConnectedDeviceName() 
     {

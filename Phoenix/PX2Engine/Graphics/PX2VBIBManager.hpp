@@ -35,7 +35,7 @@ namespace PX2
 		VBIBObj &GetVBID(const std::string &texPackFilename);
 
 	protected:
-		typedef HashTable<FString, VBIBObj, FixedStringHashCoder> UBIBTable;
+		typedef std::map<FString, VBIBObj> UBIBTable;
 		UBIBTable mUBIBTable;
 		VBIBObj mNotValied;
 	};

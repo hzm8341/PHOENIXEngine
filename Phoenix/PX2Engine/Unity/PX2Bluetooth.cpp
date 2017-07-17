@@ -89,14 +89,17 @@ void Bluetooth::Connect(const std::string &addr)
 #endif
 }
 //----------------------------------------------------------------------------
-void Bluetooth::Send(const std::string &str, bool isAppendCRLF)
+void Bluetooth::Send(const std::string &str)
 {
-	PX2_UNUSED(str);
-	PX2_UNUSED(isAppendCRLF);
-	PX2_LOG_INFO("Bluetooth Send %d Str %s", (int)str.length(), str.c_str());
+	int length = (int)str.length();
+	PX2_LOG_INFO("Bluetooth Send:%d Str:%s", (int)str.length(), str.c_str());
+	if (str.length() >= 64)
+	{
+		PX2_LOG_INFO("bluetooth size bigger%d", length);
+	}
 
 #if defined(__ANDROID__)
-	BluetoothSend(str.c_str(), (int)str.length(), isAppendCRLF);
+	BluetoothSend(str.c_str(), (int)str.length());
 #endif
 }
 //----------------------------------------------------------------------------

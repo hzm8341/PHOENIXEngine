@@ -25,7 +25,6 @@ mNumMaxItems(-1)
 	mMaskFrame->SetAnchorHor(0.0f, 1.0f);
 	mMaskFrame->SetAnchorParamHor(0.0f, -mSliderSize);
 	mMaskFrame->SetAnchorVer(0.0f, 1.0f);
-	mMaskFrame->CreateAddMask();
 
 	mContentFrame = new0 UIFrame();
 	mMaskFrame->AttachChild(mContentFrame);
@@ -142,6 +141,9 @@ UIItem *UIList::AddItem(const std::string &text)
 	mMaskFrame->SetNeedAdjustChildrenMask(true);
 
 	UIItem *item = new0 UIItem();
+	item->GetButBack()->SetStateColor(UIButtonBase::BS_NORMAL, mItemBackColor);
+	item->GetButBack()->SetStateColor(UIButtonBase::BS_HOVERED, mItemBackColor);
+	item->GetButBack()->SetStateColor(UIButtonBase::BS_PRESSED, mItemBackColor);
 	mContentFrame->AttachChild(item);
 	mItems.push_back(item);
 
@@ -302,6 +304,22 @@ void UIList::SetTextColor(const Float3 &textColor)
 			item->GetFText()->GetText()->SetColor(textColor);
 		}
 	}
+}
+//----------------------------------------------------------------------------
+void UIList::SetItemBackColor(const Float3 &backColor)
+{
+	mItemBackColor = backColor;
+
+	UIPicBox *background = GetBackgroundPicBox();
+	if (background)
+	{
+		background->SetColor(mItemBackColor);
+	}
+}
+//----------------------------------------------------------------------------
+const Float3 &UIList::GetItemBackColor() const
+{
+	return mItemBackColor;
 }
 //----------------------------------------------------------------------------
 void UIList::OnSizeChanged()

@@ -66,10 +66,19 @@ namespace PX2
 
 		virtual void OnEvent(Event *ent);
 		virtual void SetTitle(const std::string &title);
+		void MaxSizeWindow(bool maxSize);
 
 #if defined(_WIN32) || defined(WIN32)
-		// ´°¿Ú
+		void _CreateMyMenu();
+		void _OnMenuCMD(int cmd);
+		void _OnOpenFile(std::string fileExt, const std::string &callback);
+		void _OnSaveFile(std::string fileExt, const std::string &callback);
+
+		HMENU mhMenu;
+		std::map<int, HMENU> mMenus;
+		std::map<int, std::string> mMenuCallbacks;
 		HWND mhWnd;
+
 #elif defined (__LINUX__)
 		Display *mDisplay;
 		Window mWindow;

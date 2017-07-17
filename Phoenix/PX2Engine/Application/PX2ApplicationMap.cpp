@@ -143,10 +143,14 @@ bool Application::LoadProject(const std::string &name)
 	else
 	{
 		std::string fileListName = "Data/" + name + "/filelist.xml";
+#if defined (_WIN32) || defined (WIN32)
 		if (PX2_RM.IsFileFloderExist(fileListName))
 		{
+#endif
 			PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), fileListName);
+#if defined (_WIN32) || defined (WIN32)
 		}
+#endif
 	}
 
 	if (mBoostInfo.IsDataReWriteToDataUpdate)
@@ -178,6 +182,12 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 	if (TheProject->Load(pathname))
 	{
 		PX2_SC_LUA->SetUserTypePointer("PX2_PROJ", "Project", Project::GetSingletonPtr());
+
+		const std::vector<std::string> &plugins = TheProject->GetPlugins();
+		if (!plugins.empty())
+		{
+			LoadPlugins(plugins);
+		}
 
 		Event *ent = PX2_CREATEEVENTEX(ProjectES, LoadedProject);
 		PX2_EW.BroadcastingLocalEvent(ent);
@@ -389,6 +399,8 @@ void Application::CloseProject()
 	PX2_SELECTM.Clear();
 	URDoManager::GetSingleton().Clear();
 	URStateManager::GetSingleton().Clear();
+	PX2_RM.ClearRes(mProjectFilePath);
+	PX2_RM.Clear();
 
 	PX2_SS.PlayMusic(0, 0, true, 0.0f);
 
@@ -399,6 +411,7 @@ void Application::CloseProject()
 	std::string projDllFolder = GetProjDataFolderPath(projName);
 	std::string projDllFilename = GetDllFileName(projName);
 	std::string dllFullpathFilename = projDllFolder + projDllFilename;
+	std::vector<std::string> plugins = PX2_PROJ.GetPlugins();
 
 	Play(Application::PT_NONE);
 
@@ -408,30 +421,31 @@ void Application::CloseProject()
 	Event *ent = PX2_CREATEEVENTEX(ProjectES, CloseProject);
 	PX2_EW.BroadcastingLocalEvent(ent);
 
+	ClosePlugins(plugins);
+
 	std::string debugTag = "";
 #ifdef _DEBUG
 	debugTag = "D";
 #endif
 
-#if defined (WIN32) || defined (_WIN32)
+#if defined (WIN32) || defined (_WIN32) || defined (__LINUX__)
 	if (PX2_RM.IsFileFloderExist(dllFullpathFilename))
 	{
 		PX2_PLUGINMAN.Unload(dllFullpathFilename);
 	}
-
 #endif
 
 	Project::Destory();
-
-	PX2_RM.ClearRes(mProjectFilePath);
-	PX2_RM.Clear();
 	mProjectFilePath.clear();
 }
 //----------------------------------------------------------------------------
 void Application::NewScene()
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return;
+	}
 
 	CloseScene();
 
@@ -442,8 +456,11 @@ void Application::NewScene()
 //----------------------------------------------------------------------------
 bool Application::LoadScene(const std::string &pathname)
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return false;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return false;
+	}
 
 	if (!Project::GetSingletonPtr()) return false;
 
@@ -465,8 +482,11 @@ bool Application::LoadScene(const std::string &pathname)
 //----------------------------------------------------------------------------
 bool Application::SaveScene(const std::string &pathname)
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return false;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return false;
+	}
 
 	std::string toPath = _CalSavePath(pathname);
 
@@ -482,8 +502,11 @@ bool Application::SaveScene(const std::string &pathname)
 //----------------------------------------------------------------------------
 bool Application::SaveSceneAs(const std::string &pathname)
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return false;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return false;
+	}
 
 	std::string toPath = _CalSavePath(pathname);
 
@@ -492,8 +515,11 @@ bool Application::SaveSceneAs(const std::string &pathname)
 //----------------------------------------------------------------------------
 void Application::CloseScene()
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return;
+	}
 
 	Project *proj = Project::GetSingletonPtr();
 	if (!proj) return;
@@ -510,8 +536,11 @@ void Application::CloseScene()
 //----------------------------------------------------------------------------
 bool Application::LoadUI(const std::string &pathname)
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return false;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return false;
+	}
 
 	ObjectPtr uiObj = PX2_RM.BlockLoad(pathname);
 	UI *ui0 = DynamicCast<UI>(uiObj);
@@ -532,8 +561,11 @@ bool Application::LoadUI(const std::string &pathname)
 //----------------------------------------------------------------------------
 void Application::CloseUI()
 {
-	bool canDoChange = (Application::PT_NONE == GetPlayType());
-	if (!canDoChange) return;
+	if (IsInEditor())
+	{
+		bool canDoChange = (Application::PT_NONE == GetPlayType());
+		if (!canDoChange) return;
+	}
 
 	Project *proj = Project::GetSingletonPtr();
 	if (!proj) return;
@@ -545,6 +577,46 @@ void Application::CloseUI()
 	PX2_RM.ClearRes(mUIFilePath);
 	PX2_PROJ.SetUI(0);
 	mUIFilePath.clear();
+}
+//----------------------------------------------------------------------------
+bool Application::LoadPlugins(const std::vector<std::string> &plugins)
+{
+	for (int i = 0; i < (int)plugins.size(); i++)
+	{
+		const std::string &pluginName = plugins[i];
+
+#if defined (WIN32) || defined (_WIN32) || defined (__LINUX__)
+		if (!pluginName.empty())
+		{
+			std::string path = "PluginsCommon/" + pluginName + "/" +
+				GetDllFileName(pluginName);
+			if (PX2_RM.IsFileFloderExist(path))
+				PX2_PLUGINMAN.Load(path);
+		}
+#elif defined (__ANDROID__)
+#endif
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+void Application::ClosePlugins(const std::vector<std::string> &plugins)
+{
+	for (int i = 0; i < (int)plugins.size(); i++)
+	{
+		const std::string &pluginName = plugins[i];
+
+#if defined (WIN32) || defined (_WIN32) || defined (__LINUX__)
+		if (!pluginName.empty())
+		{
+			std::string path = "PluginsCommon/" + pluginName + "/" +
+				GetDllFileName(pluginName);
+			if (PX2_RM.IsFileFloderExist(path))
+				PX2_PLUGINMAN.Unload(path);
+		}
+#elif defined (__ANDROID__)
+#endif
+	}
 }
 //----------------------------------------------------------------------------
 std::string Application::_CalSavePath(const std::string &pathname)
@@ -578,13 +650,13 @@ std::string _GetMD5(const std::string &strBuffer)
 void _RefreshDir(XMLNode node, const std::string &pathName)
 {
 	std::string eachFilename;
-	Dir d;
+	DirP d;
 	if (d.Open(pathName))
 	{
 		if (!d.HasFiles() && !d.HasSubDirs())
 			return;
 
-		int flags = Dir::DIR_DIRS | Dir::DIR_FILES;
+		int flags = DirP::DIR_DIRS | DirP::DIR_FILES;
 
 		if (d.GetFirst(&eachFilename, "", flags))
 		{

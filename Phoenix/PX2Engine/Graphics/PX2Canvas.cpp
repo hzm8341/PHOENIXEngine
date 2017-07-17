@@ -82,8 +82,8 @@ mPickedWidget(0)
 	mMoveAdjugeParamSquare = mMoveAdjugeParam * mMoveAdjugeParam;
 
 	VertexFormat *vFormat = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
-	VertexBufferPtr vb = new0 VertexBuffer(1000, vFormat->GetStride(), Buffer::BU_DYNAMIC);
-	IndexBufferPtr ib = new0 IndexBuffer(1000, 2, Buffer::BU_DYNAMIC);
+	VertexBufferPtr vb = new0 VertexBuffer(5120, vFormat->GetStride(), Buffer::BU_DYNAMIC);
+	IndexBufferPtr ib = new0 IndexBuffer(10240, 2, Buffer::BU_DYNAMIC);
 
 	mUIShareMesh = new0 TriMesh(vFormat, vb, ib);
 	mUIShareMesh->SetColor(Float3::WHITE);
@@ -1027,11 +1027,10 @@ void Canvas::OnLeftDown(const PickInputData &data)
 	mMoveDelta = AVector::ZERO;
 
 	mPressedPos = data.LogicPos;
-
-	mLastPickPos = mCurPickPos;
-	mCurPickPos = mPressedPos;
-
 	mLeftPressedPos = data.LogicPos;
+
+	mCurPickPos = mPressedPos;
+	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
@@ -1048,10 +1047,11 @@ void Canvas::OnLeftUp(const PickInputData &data)
 	mIsLeftPressed = false;
 	mIsMoved = false;
 
-	mLastPickPos = mCurPickPos;
-	mCurPickPos = mReleasedPos;
-
+	mReleasedPos = data.LogicPos;
 	mLeftReleasedPos = data.LogicPos;
+
+	mCurPickPos = mReleasedPos;
+	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
@@ -1064,6 +1064,16 @@ void Canvas::OnLeftUp(const PickInputData &data)
 //----------------------------------------------------------------------------
 void Canvas::OnLeftDClick(const PickInputData &data)
 {
+	mIsPressed = false;
+	mIsLeftPressed = false;
+	mIsMoved = false;
+
+	mReleasedPos = data.LogicPos;
+	mLeftReleasedPos = data.LogicPos;
+
+	mCurPickPos = mReleasedPos;
+	mLastPickPos = mCurPickPos;
+
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
 	inputData.ScreenPos = data.ScreenPos;
@@ -1081,11 +1091,10 @@ void Canvas::OnMiddleDown(const PickInputData &data)
 	mMoveDelta = AVector::ZERO;
 
 	mPressedPos = data.LogicPos;
-
-	mLastPickPos = mCurPickPos;
-	mCurPickPos = data.LogicPos;
-
 	mMiddlePressedPos = data.LogicPos;
+
+	mCurPickPos = data.LogicPos;
+	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
@@ -1102,10 +1111,11 @@ void Canvas::OnMiddleUp(const PickInputData &data)
 	mIsMiddlePressed = false;
 	mIsMoved = false;
 
-	mLastPickPos = mCurPickPos;
-	mCurPickPos = data.LogicPos;
-
+	mReleasedPos = data.LogicPos;
 	mMiddleReleasedPos = data.LogicPos;
+
+	mCurPickPos = data.LogicPos;
+	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
@@ -1137,11 +1147,10 @@ void Canvas::OnRightDown(const PickInputData &data)
 	mMoveDelta = AVector::ZERO;
 
 	mPressedPos = data.LogicPos;
-
-	mLastPickPos = mCurPickPos;
-	mCurPickPos = data.LogicPos;
-
 	mRightPressedPos = data.LogicPos;
+
+	mCurPickPos = data.LogicPos;
+	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_RIGHT;
@@ -1158,10 +1167,11 @@ void Canvas::OnRightUp(const PickInputData &data)
 	mIsRightPressed = false;
 	mIsMoved = false;
 
-	mLastPickPos = mCurPickPos;
-	mCurPickPos = data.LogicPos;
-
+	mReleasedPos = data.LogicPos;
 	mRightReleasedPos = data.LogicPos;
+
+	mCurPickPos = data.LogicPos;
+	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
 	inputData.TheMouseTag = CanvasInputData::MT_RIGHT;
@@ -1176,7 +1186,6 @@ void Canvas::OnMotion(const PickInputData &data)
 {
 	mCurPickPos = data.LogicPos;
 	mMoveDelta = mCurPickPos - mLastPickPos;
-
 	mLastPickPos = mCurPickPos;
 
 	mIsMoved = true;

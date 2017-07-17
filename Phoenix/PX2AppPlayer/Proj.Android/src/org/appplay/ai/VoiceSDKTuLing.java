@@ -44,8 +44,6 @@ public class VoiceSDKTuLing extends VoiceSDK
         
         mTuringManager = new TuringManager(sTheActivtiy, TURING_APIKEY, TURING_SECRET);        
         mTuringManager.setHttpRequestListener(myHttpConnectionListener);
-        
-        mTtsManager.startTTS("开始");
 	}
 	
     private Handler mHandler = new Handler() {
@@ -55,7 +53,8 @@ public class VoiceSDKTuLing extends VoiceSDK
                 mTtsManager.startTTS((String) msg.obj);
                 break;
             case MSG_RECOGNIZE_RESULT:
-                mTuringManager.requestTuring((String) msg.obj);
+            	if (mIsEanableAutoSpeach)
+            		mTuringManager.requestTuring((String) msg.obj);
                 break;
             case MSG_RECOGNIZE_START:
                 mRecognizerManager.startRecognize();
@@ -201,25 +200,38 @@ public class VoiceSDKTuLing extends VoiceSDK
 
         @Override
         public void onSuccess(String result) {
-            if (result != null) {
-                try {
-                    Log.d(TAG, "result" + result);
-                    JSONObject result_obj = new JSONObject(result);
-                    if (result_obj.has("text")) {
-                        Log.d(TAG, result_obj.get("text").toString());
-                        mHandler.obtainMessage(MSG_SPEECH_START,
-                                result_obj.get("text")).sendToTarget();
+        	if (mIsEanableAutoSpeach)
+        	{
+                if (result != null) {
+                    try {
+                        Log.d(TAG, "result" + result);
+                        JSONObject result_obj = new JSONObject(result);
+                        if (result_obj.has("text")) {
+                            Log.d(TAG, result_obj.get("text").toString());
+                            mHandler.obtainMessage(MSG_SPEECH_START,
+                                    result_obj.get("text")).sendToTarget();
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, "JSONException:" + e.getMessage());
                     }
-                } catch (JSONException e) {
-                    Log.d(TAG, "JSONException:" + e.getMessage());
-                }
-            }
+                }	
+        	}
         }
 
         @Override
         public void onFail(int code, String error) {
-            Log.d(TAG, "onFail code:" + code + "|error:" + error);
-            mHandler.obtainMessage(MSG_SPEECH_START, "").sendToTarget();
+        	if (mIsEanableAutoSpeach)
+        	{
+                Log.d(TAG, "onFail code:" + code + "|error:" + error);
+                mHandler.obtainMessage(MSG_SPEECH_START, "").sendToTarget();	
+        	}
         }
     };
+
+    private boolean mIsEanableAutoSpeach = false;
+	@Override
+	public void enableAutoSpeach(boolean enable) {
+		// TODO Auto-generated method stub
+		mIsEanableAutoSpeach = enable;
+	}
 }

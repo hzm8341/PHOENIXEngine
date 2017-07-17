@@ -51,6 +51,8 @@ namespace PX2
 		virtual Movable *GetChildByName (const std::string &name);
 		bool IsHasChild(const Movable *child) const;
 
+		void ShowOnlyChild(const std::string &childName);
+
 		virtual void Enable(bool enable);
 		virtual void SetActivate(bool act);
 

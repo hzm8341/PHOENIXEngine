@@ -23,6 +23,8 @@
 		virtual void DetachAllChildren ();
 		virtual Movable *GetChild (int i);
 		virtual Movable *GetChildByName (const std::string &name);
+		
+		void ShowOnlyChild(const std::string &childName);
 
 		virtual void Enable(bool enable);
 

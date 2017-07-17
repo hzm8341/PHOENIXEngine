@@ -122,7 +122,6 @@ bool Application::Initlize()
 	mUISkinManager = new0 UISkinManager();
 
 	mLogicManager = new0 LogicManager();
-	mLogicManager->Initlize();
 
 	mCreater = new0 Creater();
 
@@ -180,6 +179,8 @@ bool Application::Initlize()
 	rw->SetMainCanvas(mainCanvas);
 
 	PX2_SC_LUA->CallFile("Data/engine/scripts/lua/engine_start.lua");
+
+	mLogicManager->Initlize();
 
 	PX2_LOG_INFO("End Application::Initlize.");
 

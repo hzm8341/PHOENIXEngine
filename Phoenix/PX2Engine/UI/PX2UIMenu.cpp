@@ -46,7 +46,6 @@ UIMenuItem *UIMenu::AddMainItem(const std::string &name,
 	item->SetBeMainItem(true);
 	item->LocalTransform.SetTranslateY(-1.0f);
 	item->GetText()->GetText()->SetFontWidthHeight(mItemFontSize, mItemFontSize);
-	item->GetText()->GetText()->SetFontScale(0.5f);
 	item->GetText()->LocalTransform.SetTranslateY(-1.0f);
 
 	mMainItemsMap[name] = item;

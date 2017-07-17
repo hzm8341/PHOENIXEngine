@@ -61,7 +61,7 @@ void LBlock::SetClassName(const std::string &className)
 	mClassName = className;
 }
 //----------------------------------------------------------------------------
-const std::string &LBlock::GetClassName() const
+const std::string &LBlock::GetClsName() const
 {
 	return mClassName;
 }
@@ -252,6 +252,12 @@ void LBlock::PreCompile(std::string &script, LFile *file,
 			if (paramUpdate)
 			{
 				paramUpdate->PreCompile(script, file);
+			}
+
+			LParam *paramFixUpdate = GetLParamByName("FixUpdate");
+			if (paramFixUpdate)
+			{
+				paramFixUpdate->PreCompile(script, file);
 			}
 		}
 		else if (CT_IF == ct)
@@ -496,6 +502,8 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 				{
 					script += "function " + fileName + ":OnInitUpdate()\n";
 
+					script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
+
 					paramStart->Compile(script, numTable + 1, file);
 
 					script += "end\n";
@@ -528,6 +536,8 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 				{
 					script += "function " + fileName + ":OnUpdate()\n";
 
+					script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
+
 					paramUpdate->Compile(script, numTable + 1, file);
 
 					script += "end\n";
@@ -548,6 +558,23 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 					paramUpdate->Compile(script, numTable + 1, file);
 
 					script += "}\n";
+				}
+			}
+
+			script += "\n";
+
+			LParam *paramFixUpdate = GetLParamByName("FixUpdate");
+			if (paramFixUpdate)
+			{
+				if (pt == PT_ENGINE)
+				{
+					script += "function " + fileName + ":OnFixUpdate()\n";
+
+					script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
+
+					paramFixUpdate->Compile(script, numTable + 1, file);
+
+					script += "end\n";
 				}
 			}
 		}
@@ -744,21 +771,32 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 	{
 		_WriteTables(script, numTable);
 
-		script += "RegistEventFunction(";
-
+		script += "RegistEventObjectFunction(";
 		LParam *paramEvent = GetLParamByName("Event");
 		if (paramEvent)
 		{
 			paramEvent->Compile(script, numTable + 1, file);
 		}
+		script += ", self._ctrlable, function(ptr)\n";
 
-		script += ", function() \n";
+		_WriteTables(script, numTable);
+		script += "    if nil~= ptr then\n";
+
+		_WriteTables(script, numTable);
+		script += "        local obj = Cast:ToO(ptr)\n";
+		_WriteTables(script, numTable);
+		script += "        PX2_LOGICM:SetCurLogicObject(obj)\n";
 
 		LParam *paramEventDo = GetLParamByName("EventDo");
 		if (paramEventDo)
 		{
+			_WriteTables(script, numTable);
 			paramEventDo->Compile(script, numTable + 1, file);
 		}
+
+		_WriteTables(script, numTable);
+		script += "    end\n";
+
 		_WriteTables(script, numTable);
 		script += "end)\n";
 	}
@@ -900,7 +938,7 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 
 			if (pt == PT_ENGINE || pt == PT_NODEMCU)
 			{
-				if ("!" == name)
+				if ("!" == useStr)
 				{
 					useStr = "not ";
 				}
@@ -925,15 +963,15 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 			useStr = name.substr(0, useStr.find_first_of("_"));
 			if (pt == PT_ENGINE || pt == PT_NODEMCU)
 			{
-				if ("!=" == name)
+				if ("!=" == useStr)
 				{
 					useStr = "~=";
 				}
-				else if ("&&" == name)
+				else if ("&&" == useStr)
 				{
 					useStr = "and";
 				}
-				else if ("||" == name)
+				else if ("||" == useStr)
 				{
 					useStr = "or";
 				}

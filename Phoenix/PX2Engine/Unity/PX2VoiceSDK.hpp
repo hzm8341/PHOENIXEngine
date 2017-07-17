@@ -32,10 +32,15 @@ namespace PX2
 		void OnVoiceRecognizeResults(const std::string &strRet, 
 			const std::string &strJSON);
 
+		// 是否允许自由对话
+		void EnableAutoSpeak(bool isAutoSpeakEnable);
+		bool IsAutoSpeakEnabled() const;
+
 		void Speak(const std::string &text);
 
 	private:
 		std::string mVoiceSDK;
+		bool mIsAutoSpeakEnabled;
 	};
 
 #define PX2_VOICESDK VoiceSDK::GetSingleton()

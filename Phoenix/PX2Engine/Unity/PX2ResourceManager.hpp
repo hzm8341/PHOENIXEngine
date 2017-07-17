@@ -71,6 +71,7 @@ namespace PX2
 		bool LoadBuffer(const std::string &filename, int &bufferSize,
 			char* &buffer);
 		bool LoadBuffer(const std::string &filename, std::string &buf);
+		std::string LoadBuffer(const std::string &filename, bool fromPathRaw);
 
 		bool IsTexPack(const std::string &texPackPath);
 		bool AddTexPack(const std::string &texPackPath);

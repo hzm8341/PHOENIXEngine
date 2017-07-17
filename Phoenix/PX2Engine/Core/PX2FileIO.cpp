@@ -284,7 +284,7 @@ bool FileIO::Load (const std::string& filename, bool binaryFile,
 	if (stat(filename.c_str(), &statistics) != 0)
 	{
 		// 文件不存在
-		//PX2_LOG_ERROR("Failed to open file %s.", filename.c_str());
+		PX2_LOG_ERROR("Failed to open file %s.", filename.c_str());
 		//assertion(false, "Failed to open file %s.\n", filename.c_str());
 		buffer = 0;
 		bufferSize = 0;
@@ -304,6 +304,7 @@ bool FileIO::Load (const std::string& filename, bool binaryFile,
 	{
 		// 文件不能以读取的方式打开
 		assertion(false, "Failed to open file %s\n", filename.c_str());
+		PX2_LOG_ERROR("Failed to open file %s\n", filename.c_str());
 		buffer = 0;
 		bufferSize = 0;
 		return false;
@@ -318,6 +319,8 @@ bool FileIO::Load (const std::string& filename, bool binaryFile,
 		{
 			assertion(false, "Failed to read or close file %s\n",
 				filename.c_str());
+			PX2_LOG_ERROR("Failed to read or close file %s\n",
+				filename.c_str());
 			delete1(buffer);
 			buffer = 0;
 			bufferSize = 0;
@@ -329,6 +332,8 @@ bool FileIO::Load (const std::string& filename, bool binaryFile,
 		if (fclose(inFile) != 0)
 		{
 			assertion(false, "Failed to read or close file %s\n",
+				filename.c_str());
+			PX2_LOG_ERROR("Failed to read or close file %s\n",
 				filename.c_str());
 			buffer = 0;
 			bufferSize = 0;

@@ -4,8 +4,7 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-VBIBManager::VBIBManager() :
-mUBIBTable(512)
+VBIBManager::VBIBManager()
 {
 }
 //----------------------------------------------------------------------------
@@ -15,7 +14,7 @@ VBIBManager::~VBIBManager()
 //----------------------------------------------------------------------------
 void VBIBManager::Clear()
 {
-	mUBIBTable.Clear();
+	mUBIBTable.clear();
 }
 //----------------------------------------------------------------------------
 void VBIBManager::AddVBIB(const std::string &texPackFilename, VertexBuffer *vb,
@@ -25,14 +24,14 @@ void VBIBManager::AddVBIB(const std::string &texPackFilename, VertexBuffer *vb,
 	obj.IsValued = true;
 	obj.mVB = vb;
 	obj.mIB = ib;
-	mUBIBTable.Insert(texPackFilename.c_str(), obj);
+	mUBIBTable[texPackFilename.c_str()] = obj;
 }
 //----------------------------------------------------------------------------
 VBIBObj &VBIBManager::GetVBID(const std::string &texPackFilename)
 {
-	UBIBTable::Element *ele = mUBIBTable.Find(texPackFilename.c_str());
-	if (ele)
-		return ele->value;
+	auto it = mUBIBTable.find(texPackFilename.c_str());
+	if (it != mUBIBTable.end())
+		return it->second;
 
 	return mNotValied;
 }

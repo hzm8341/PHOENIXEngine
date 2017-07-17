@@ -372,6 +372,27 @@ bool Node::IsHasChild(const Movable *child) const
 	return false;
 }
 //----------------------------------------------------------------------------
+void Node::ShowOnlyChild(const std::string &childName)
+{
+	for (int i = 0; i < GetNumChildren(); i++)
+	{
+		Movable *mov = GetChild(i);
+		if (mov)
+		{
+			mov->Show(false);
+		}
+	}
+
+	for (int i = 0; i < GetNumChildren(); i++)
+	{
+		Movable *mov = GetChild(i);
+		if (mov && childName == mov->GetName())
+		{
+			mov->Show(true);
+		}
+	}
+}
+//----------------------------------------------------------------------------
 void Node::Enable(bool enable)
 {
 	Movable::Enable(enable);
@@ -489,7 +510,8 @@ void Node::_UpdateWorldDataChild(double applicationTime, double elapsedTime)
 
 	for (int i = 0; i < (int)mUpdateChild.size(); i++)
 	{
-		mUpdateChild[i]->Update(applicationTime, elapsedTime, false);
+		if (mUpdateChild[i])
+			mUpdateChild[i]->Update(applicationTime, elapsedTime, false);
 	}
 }
 //----------------------------------------------------------------------------

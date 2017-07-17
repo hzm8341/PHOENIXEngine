@@ -27,6 +27,7 @@ const HMatrix Projector::BiasScaleMatrix[2] =
 Projector::Projector (bool isPerspective) :
 Camera(isPerspective)
 {
+	SetName("Projector");
 }
 //----------------------------------------------------------------------------
 Projector::~Projector ()

@@ -30,6 +30,7 @@ endif
 	cd Terrains							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd UI							 		&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Logic							 	&& make -f ../makeprj.px2 CFG=$(CFG)
+	cd Logic/BlueBlock						;  make -f makeblueblock.px2 CFG=$(CFG)
 	cd Application							&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd ToScript								&& make -f maketoscript.px2 CFG=$(CFG)
 	

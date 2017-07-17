@@ -37,11 +37,10 @@ mObject(0)
 
 	mFText = new0 UIFText();
 	AttachChild(mFText);
-	mFText->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
+	mFText->GetText()->SetAligns(TEXTALIGN_LEFT|TEXTALIGN_VCENTER);
 	mFText->SetAnchorHor(0.0f, 1.0f);
 	mFText->SetAnchorVer(0.0f, 1.0f);
 	mFText->LocalTransform.SetTranslateY(-2.0f);
-	mFText->GetText()->SetFontScale(0.7f);
 	mFText->GetText()->SetFontColor(Float3::MakeColor(120, 120, 120));
 
 	SetPivot(0.5f, 0.5f);

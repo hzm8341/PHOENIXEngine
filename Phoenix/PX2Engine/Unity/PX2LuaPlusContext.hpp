@@ -15,6 +15,8 @@ namespace LuaPlus
 namespace PX2
 {
 
+	class LuaPlusCallObject;
+
 	class PX2_ENGINE_ITEM LuaPlusContext : public ScriptContext
 	{
 	public:
@@ -55,6 +57,8 @@ namespace PX2
 		void ClearEventFunctions();
 		bool RegistEventFunction(const char *entName,
 			LuaPlus::LuaObject callFunObject);
+		bool RegistEventObjectFunction(const char *entName, LuaPlus::LuaObject objReset,
+			LuaPlus::LuaObject callFunObject);
 		void UnRegistAllEventFunctions(const char *entName);
 		virtual void OnEvent(Event *ent);
 
@@ -66,7 +70,7 @@ namespace PX2
 
 		LuaPlus::LuaState* mLuaPlusState;
 		std::string mLastError;
-		std::map<std::string, std::vector<LuaPlus::LuaObject> > mEventFunObjects;
+		std::map<std::string, std::vector<LuaPlusCallObject*> > mEventFunObjects;
 	};
 
 }

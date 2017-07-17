@@ -174,7 +174,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -239,7 +239,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/SQLite;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -304,7 +304,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -1136,6 +1136,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Logic\PX2LogicES.hpp" />
     <ClInclude Include="Logic\PX2LogicManager.hpp" />
     <ClInclude Include="Logic\PX2LogicPre.hpp" />
+    <ClInclude Include="Logic\PX2Logics.hpp" />
     <ClInclude Include="Logic\PX2LParam.hpp" />
     <ClInclude Include="Mathematics\PX2APoint.hpp" />
     <ClInclude Include="Mathematics\PX2AVector.hpp" />
@@ -1580,7 +1581,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2AccoutManager.hpp" />
     <ClInclude Include="Unity\PX2AddDeleteManager.hpp" />
     <ClInclude Include="Unity\PX2Arduino.hpp" />
-    <ClInclude Include="Unity\PX2ArduinoMsg.hpp" />
+    <ClInclude Include="Unity\PX2Base64.hpp" />
     <ClInclude Include="Unity\PX2Bluetooth.hpp" />
     <ClInclude Include="Unity\PX2CharCoding.hpp" />
     <ClInclude Include="Unity\PX2CharCodingGBK.hpp" />
@@ -2432,8 +2433,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2AccoutManager.cpp" />
     <ClCompile Include="Unity\PX2AddDeleteManager.cpp" />
     <ClCompile Include="Unity\PX2Arduino.cpp" />
-    <ClCompile Include="Unity\PX2ArduinoMsg.cpp" />
-    <ClCompile Include="Unity\PX2ArduinoMsgCreate.cpp" />
+    <ClCompile Include="Unity\PX2Base64.cpp" />
     <ClCompile Include="Unity\PX2Bluetooth.cpp" />
     <ClCompile Include="Unity\PX2CharCodingGBK.cpp" />
     <ClCompile Include="Unity\PX2CharCodingUTF8.cpp" />

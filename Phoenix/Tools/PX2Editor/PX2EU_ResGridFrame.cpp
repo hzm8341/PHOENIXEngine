@@ -57,8 +57,8 @@ void EU_ResGridFrame::_RefreshGridItems()
 		mSelectPath = selectResDir;
 
 		RemoveAllItems();
-		RefreshItems(selectResDir, Dir::DIR_DIRS);
-		RefreshItems(selectResDir, Dir::DIR_FILES);
+		RefreshItems(selectResDir, DirP::DIR_DIRS);
+		RefreshItems(selectResDir, DirP::DIR_FILES);
 	}
 }
 //----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void EU_ResGridFrame::RefreshItems(const std::string &path, int flag)
 			path.length() - compareStr.length() - 1);
 	}
 
-	Dir d;
+	DirP d;
 	std::string eachFilename;
 	if (d.Open(path))
 	{

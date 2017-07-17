@@ -13,23 +13,20 @@ bool LanguagePackage::Load(const std::string &filename)
 
 	if (csv.Load(filename))
 	{
-		mLanguages.Clear();
+		mLanguages.clear();
 
 		// language start form 2
 		for (int i = 2; i < csv.GetNumLines(); i++)
 		{
 			std::string key = csv[i][0].String();
 
-			LanguageTableIterator it = mLanguages.Insert(key.c_str());
-			if (it)
+			std::vector<std::string> vals;
+			for (int j = 1; j < csv.GetNumCols(); j++)
 			{
-				it->value.clear();
-
-				for (int j = 1; j < csv.GetNumCols(); j++)
-				{
-					it->value.push_back(csv[i][j].String());
-				}
+				vals.push_back(csv[i][j].String());
 			}
+
+			mLanguages[key.c_str()] = vals;
 		}
 
 		return true;
@@ -47,16 +44,14 @@ bool LanguagePackage::Add(const std::string &filename)
 		for (int i = 2; i < csv.GetNumLines(); i++)
 		{
 			std::string key = csv[i][0].String();
-			LanguageTableIterator it = mLanguages.Insert(key.c_str());
-			if (it)
-			{
-				it->value.clear();
 
-				for (int j = 1; j < csv.GetNumCols(); j++)
-				{
-					it->value.push_back(csv[i][j].String());
-				}
+			std::vector<std::string> vals;
+			for (int j = 1; j < csv.GetNumCols(); j++)
+			{
+				vals.push_back(csv[i][j].String());
 			}
+
+			mLanguages[key.c_str()] = vals;
 		}
 
 		return true;
@@ -68,25 +63,38 @@ bool LanguagePackage::Add(const std::string &filename)
 void LanguagePackage::AddItem(const std::string &key, const std::string &langauge0,
 	const std::string &langauge1)
 {
-	LanguageTableIterator it = mLanguages.Insert(key.c_str());
-	if (it)
+	auto it = mLanguages.find(key.c_str());
+	if (it != mLanguages.end())
 	{
-		it->value.clear();
-
-		it->value.push_back(langauge0);
-		it->value.push_back(langauge1);
+		it->second.clear();
+		it->second.push_back(langauge0);
+		it->second.push_back(langauge1);
+	}
+	else
+	{
+		std::vector<std::string> vals;
+		vals.push_back(langauge0);
+		vals.push_back(langauge1);
+		mLanguages[key.c_str()] = vals;
 	}
 }
 //----------------------------------------------------------------------------
-void LanguagePackage::AddItem1(const std::string &key, const std::string &langauge0)
+void LanguagePackage::AddItem1(const std::string &key,
+	const std::string &langauge0)
 {
-	LanguageTableIterator it = mLanguages.Insert(key.c_str());
-	if (it)
+	auto it = mLanguages.find(key.c_str());
+	if (it != mLanguages.end())
 	{
-		it->value.clear();
-
-		it->value.push_back(langauge0);
-		it->value.push_back(key);
+		it->second.clear();
+		it->second.push_back(langauge0);
+		it->second.push_back(key);
+	}
+	else
+	{
+		std::vector<std::string> vals;
+		vals.push_back(langauge0);
+		vals.push_back(key);
+		mLanguages[key.c_str()] = vals;
 	}
 }
 //----------------------------------------------------------------------------
@@ -97,18 +105,18 @@ void LanguagePackage::SetLanguage(int index)
 //----------------------------------------------------------------------------
 bool LanguagePackage::HasValue(const std::string &key) const
 {
-	LanguageTableIterator it = mLanguages.Find(key.c_str());
-	return 0 != it;
+	auto it = mLanguages.find(key.c_str());
+	return it != mLanguages.end();
 }
 //----------------------------------------------------------------------------
 const std::string &LanguagePackage::GetValue(const std::string &key)
 {
-	LanguageTableIterator it = mLanguages.Find(key.c_str());
-	if (it)
+	auto it = mLanguages.find(key.c_str());
+	if (it != mLanguages.end())
 	{
-		if (mLanguageIndex < (int)it->value.size())
+		if (0 <= mLanguageIndex && mLanguageIndex < (int)it->second.size())
 		{
-			return it->value[mLanguageIndex];
+			return it->second[mLanguageIndex];
 		}
 	}
 
@@ -120,12 +128,12 @@ const std::string &LanguagePackage::GetValue(const std::string &key)
 //----------------------------------------------------------------------------
 const std::string &LanguagePackage::GetValueNoAssert(const std::string &key)
 {
-	LanguageTableIterator it = mLanguages.Find(key.c_str());
-	if (it)
+	auto it = mLanguages.find(key.c_str());
+	if (it != mLanguages.end())
 	{
-		if (mLanguageIndex < (int)it->value.size())
+		if (0 <= mLanguageIndex && mLanguageIndex < (int)it->second.size())
 		{
-			return it->value[mLanguageIndex];
+			return it->second[mLanguageIndex];
 		}
 	}
 
@@ -134,12 +142,12 @@ const std::string &LanguagePackage::GetValueNoAssert(const std::string &key)
 //----------------------------------------------------------------------------
 const std::string &LanguagePackage::GetValue(const std::string &key, int index)
 {
-	LanguageTableIterator it = mLanguages.Find(key.c_str());
-	if (it)
+	auto it = mLanguages.find(key.c_str());
+	if (it != mLanguages.end())
 	{
-		if (mLanguageIndex < (int)it->value.size())
+		if (0 <= index && index < (int)it->second.size())
 		{
-			return it->value[index];
+			return it->second[index];
 		}
 	}
 
@@ -159,10 +167,8 @@ const std::string &LanguagePackage::V(const std::string &key, int index)
 	return GetValue(key, index);
 }
 //----------------------------------------------------------------------------
-LanguagePackage::LanguagePackage()
-	:
-	mLanguageIndex(0),
-	mLanguages(1023)
+LanguagePackage::LanguagePackage() :
+mLanguageIndex(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -173,6 +179,6 @@ LanguagePackage::~LanguagePackage()
 //----------------------------------------------------------------------------
 void LanguagePackage::Clear()
 {
-	mLanguages.Clear();
+	mLanguages.clear();
 }
 //----------------------------------------------------------------------------

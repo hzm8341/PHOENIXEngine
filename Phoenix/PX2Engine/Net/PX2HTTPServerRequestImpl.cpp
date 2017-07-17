@@ -29,15 +29,22 @@ mParams(params)
 	mServerAddress = session.GerverAddress();
 
 	if (GetChunkedTransferEncoding())
+	{
 		mStream = new HTTPChunkedInputStream(session);
+	}
 	else if (HasContentLength())
+	{
 		mStream = new HTTPFixedLengthInputStream(session, GetContentLength());
-
-	else if (GetMethod() == HTTPRequest::HTTP_GET || 
+	}
+	else if (GetMethod() == HTTPRequest::HTTP_GET ||
 		GetMethod() == HTTPRequest::HTTP_HEAD || GetMethod() == HTTPRequest::HTTP_DELETE)
+	{
 		mStream = new HTTPFixedLengthInputStream(session, 0);
+	}
 	else
+	{
 		mStream = new HTTPInputStream(session);
+	}
 }
 //----------------------------------------------------------------------------
 HTTPServerRequestImpl::~HTTPServerRequestImpl()

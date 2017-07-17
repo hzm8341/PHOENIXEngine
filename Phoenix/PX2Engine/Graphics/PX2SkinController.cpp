@@ -121,7 +121,7 @@ bool SkinController::Update(double applicationTime, double elapsedTime)
 				Canvas *canvas = mov->GetFirstParentDerivedFromType<Canvas>();
 				if (canvas)
 				{
-					canvas->AddDebugLine(parentPos, bonePos, Float4::WHITE);
+					//canvas->AddDebugLine(parentPos, bonePos, Float4::WHITE);
 				}
 			}
 		}

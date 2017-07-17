@@ -33,9 +33,7 @@ namespace PX2
 
 	protected:
 		int mLanguageIndex;
-		typedef HashTable<FString, std::vector<std::string>, FixedStringHashCoder> LanguageTable;
-		typedef LanguageTable::Element * LanguageTableIterator;
-
+		typedef std::map<FString, std::vector<std::string> > LanguageTable;
 		LanguageTable mLanguages;
 
 		std::string mEmptyStr;

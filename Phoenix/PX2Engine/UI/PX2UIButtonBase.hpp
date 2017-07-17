@@ -58,6 +58,8 @@ namespace PX2
 		void SetStateBrightness(ButtonState state, float brightness);
 		float GetStateBrightness(ButtonState state) const;
 
+		void SetStateColorDefaultWhite();
+
 		virtual void SetActivate(bool act);
 
 		UIFText *CreateAddText(const std::string &text="", 

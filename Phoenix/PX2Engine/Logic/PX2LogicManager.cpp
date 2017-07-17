@@ -9,16 +9,31 @@
 #include "PX2FunObject.hpp"
 #include "PX2ProjectEvent.hpp"
 #include "PX2LogicES.hpp"
+#include "PX2ScriptManager.hpp"
+#include "PX2LuaPlusContext.hpp"
+#if defined PX2_USE_BLOCKPLUGIN
+#include "BlueBlockPlugin.hpp"
+#endif
+#include "PX2PluginManager.hpp"
+#include "PX2StringHelp.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-LogicManager::LogicManager()
+LogicManager::LogicManager() :
+mBlueBlockPlugin(0)
 {
 	mPlatformType = PT_EDITOR;
+
+#if defined PX2_USE_BLOCKPLUGIN
+	mBlueBlockPlugin = new BlueBlockPlugin();
+#endif
 }
 //----------------------------------------------------------------------------
 LogicManager::~LogicManager()
 {
+#if defined PX2_USE_BLOCKPLUGIN
+	PX2_PLUGINMAN.UninstallPlugin(mBlueBlockPlugin);
+#endif
 }
 //----------------------------------------------------------------------------
 bool LogicManager::Initlize()
@@ -27,6 +42,10 @@ bool LogicManager::Initlize()
 
 	_InitCtrls();
 	_InitFuns();
+
+#if defined PX2_USE_BLOCKPLUGIN
+	PX2_PLUGINMAN.InstallPlugin(mBlueBlockPlugin);
+#endif
 
 	return true;
 }
@@ -44,7 +63,7 @@ void LogicManager::SetSelectLogicObject(Object *object)
 	mSelectObject = object;
 
 	Event *ent = PX2_CREATEEVENTEX(LogicES, SetSelectLogicObject);
-	ent->SetData<Object*>(mSelectObject);
+	ent->SetData<Object*>((Object*)mSelectObject);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
@@ -77,11 +96,22 @@ LogicManager::PlatformType LogicManager::GetPlatformType() const
 	return mPlatformType;
 }
 //----------------------------------------------------------------------------
+void LogicManager::SetCurLogicObject(Object *obj)
+{
+	mCurLogicObject = obj;
+}
+//----------------------------------------------------------------------------
+Object *LogicManager::GetCurLogicObject() const
+{
+	return mCurLogicObject;
+}
+//----------------------------------------------------------------------------
 void LogicManager::_InitCtrls()
 {
 	BeginAddFunObj("Program");
 	AddOutput("Start", FPT_LINK);
 	AddOutput("Update", FPT_LINK);
+	AddOutput("FixUpdate", FPT_LINK);
 	EndAddFun_Ctrl("Ctrl");
 
 	BeginAddFunObj("If");
@@ -103,6 +133,10 @@ void LogicManager::_InitCtrls()
 	BeginAddFunObj("Coroutine");
 	AddOutput("CorDo", FPT_LINK);
 	EndAddFun_Ctrl("Ctrl");
+
+	BeginAddFunObj("sleep");
+	AddInput("seconds", FPT_FLOAT);
+	EndAddFun_General("Ctrl");
 }
 //----------------------------------------------------------------------------
 void LogicManager::_InitFuns()
@@ -112,7 +146,7 @@ void LogicManager::_InitFuns()
 }
 //----------------------------------------------------------------------------
 FunParamType GetParamType(const std::string &typeStr,
-	Any &getAnyVal)
+	Any &getAnyVal, const std::string &valStr)
 {
 	// FPT_NONE,
 	// FPT_INT,
@@ -137,17 +171,26 @@ FunParamType GetParamType(const std::string &typeStr,
 	else if ("char" == typeStr)
 	{
 		fpt = FPT_CHAR;
-		anyVal = 0;
+		int iVal = 0;
+		if (!valStr.empty())	
+			iVal = StringHelp::StringToInt(valStr);
+		anyVal = (char)iVal;
 	}
 	else if ("int" == typeStr)
 	{
 		fpt = FPT_INT;
-		anyVal = 0;
+		int iVal = 0;
+		if (!valStr.empty())
+			iVal = StringHelp::StringToInt(valStr);
+		anyVal = iVal;
 	}
 	else if ("float" == typeStr || "double" == typeStr)
 	{
 		fpt = FPT_FLOAT;
-		anyVal = 1.0f;
+		float fVal = 0.0f;
+		if (!valStr.empty())
+			fVal = StringHelp::StringToFloat(valStr);
+		anyVal = fVal;
 	}
 	else if ("Float3" == typeStr)
 	{
@@ -167,12 +210,21 @@ FunParamType GetParamType(const std::string &typeStr,
 	else if ("bool" == typeStr)
 	{
 		fpt = FPT_BOOL;
-		anyVal = true;
+		bool bVal = valStr=="true"? true : false;
+		anyVal = bVal;
 	}
 	else if ("std::string" == typeStr || "string" == typeStr)
 	{
 		fpt = FPT_STRING;
-		anyVal = std::string();
+		std::string strValUse;
+		if (!valStr.empty())
+		{
+			if ('"' == valStr[0])
+				strValUse = valStr.substr(1, valStr.length() - 2);
+			else
+				strValUse = valStr;
+		}
+		anyVal = strValUse;
 	}
 
 	getAnyVal = anyVal;
@@ -245,14 +297,16 @@ bool LogicManager::AddPkgInfo(const std::string &filename)
 						while (!paramNode.IsNull())
 						{
 							std::string typestr = paramNode.AttributeToString("type_str");
-							Any anyData;
-							FunParamType fpt = GetParamType(typestr, anyData);
 
 							bool is_return = paramNode.AttributeToBool("is_retrun");
 							bool is_returnvoid = (std::string("void") == typestr);
 							std::string valuename_str = paramNode.AttributeToString("valuename_str");
+							std::string defaultStr = paramNode.AttributeToString("defaultvalue_Str");
 							bool is_pointer = paramNode.AttributeToBool("is_pointer");
 							bool is_ref = paramNode.AttributeToBool("is_ref");
+
+							Any anyData;
+							FunParamType fpt = GetParamType(typestr, anyData, defaultStr);
 
 							if (!is_return)
 							{
@@ -618,6 +672,11 @@ FunObject *LogicManager::GetClassFunObject(const std::string &className,
 			funObj = classFunObj->GetFunObject(className, funName);
 		}
 	}
+
+	if (funObj) return funObj;
+
+	funObj = GetEvent(funName);
+	if (funObj) return funObj;
 
 	return funObj;
 }

@@ -15,7 +15,7 @@ namespace PX2
 	{
 	public:
 		HTTPServerConnectionFactory(HTTPServerParams *params, HTTPRequestHandlerFactory *factory);
-		~HTTPServerConnectionFactory();
+		virtual ~HTTPServerConnectionFactory();
 
 		TCPServerConnection* CreateConnection(const StreamSocket& socket);
 

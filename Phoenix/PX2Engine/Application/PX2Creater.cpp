@@ -89,6 +89,35 @@ Movable *Creater::CreateMovable_Rectangle()
 	return mesh;
 }
 //----------------------------------------------------------------------------
+Node *Creater::CreateBlockFrame(int num, float halfExtend, 
+	const std::string &image)
+{
+	Node *node = Node::New("NodeFrame");
+
+	Texture2D *tex = DynamicCast<Texture2D>(PX2_RM.BlockLoad(image));
+	if (!tex) return 0;
+
+	VertexFormat *vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PNT1);
+
+	StandardMesh stdMesh(vf);
+	for (int i = 0; i < num; i++)
+	{
+		TriMesh *mesh = stdMesh.Box1(halfExtend, halfExtend, halfExtend);
+		node->AttachChild(mesh);
+		mesh->LocalTransform.SetTranslateX((0.5f + i) * halfExtend*2.0f);
+		mesh->LocalTransform.SetTranslateY(halfExtend);
+		mesh->LocalTransform.SetTranslateZ(halfExtend);
+		mesh->SetName("Mesh");
+
+		MaterialInstance *mi = new0 MaterialInstance(
+			"Data/engine_mtls/std/std.px2obj", "std_light", false);
+		mesh->SetMaterialInstance(mi);
+		mi->SetPixelTexture(0, "SampleBase", tex);
+	}
+
+	return node;
+}
+//----------------------------------------------------------------------------
 Node *Creater::CreateNode()
 {
 	return new0 Node();
@@ -103,6 +132,7 @@ CameraNode *Creater::CreateNode_Camera(bool createCamera)
 	{
 		Camera *camera = new0 Camera();
 		camNode->SetCamera(camera);
+		camera->SetFrustum(50.0f, 1.0f, 0.1f, 1000.0f);
 	}
 
 	return camNode;

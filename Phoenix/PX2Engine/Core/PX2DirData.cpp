@@ -4,20 +4,16 @@
 #include "PX2Memory.hpp"
 #include "PX2Log.hpp"
 #include "PX2Dir.hpp"
-using namespace PX2;
+#include "PX2Filename.hpp"
 
 #if defined (WIN32) || defined (_WIN32)
 #include <windows.h>
+using namespace PX2;
 
 //----------------------------------------------------------------------------
 typedef WIN32_FIND_DATA FIND_STRUCT;
 typedef HANDLE FIND_DATA;
 typedef DWORD FIND_ATTR;
-//----------------------------------------------------------------------------
-inline FIND_DATA InitFindData()
-{
-	return INVALID_HANDLE_VALUE;
-}
 //----------------------------------------------------------------------------
 inline bool IsFindDataOk(FIND_DATA fd)
 {
@@ -98,60 +94,71 @@ inline bool IsHidden(FIND_ATTR attr)
 	return (attr & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)) != 0;
 }
 //----------------------------------------------------------------------------
-#else
-inline void* InitFindData()
-{
-	return 0;
-}
+#elif defined (__LINUX__) || defined (__ANDROID__)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <dirent.h>
 //----------------------------------------------------------------------------
 inline bool IsFindDataOk(void* fd)
 {
 	return fd != 0;
 }
-//----------------------------------------------------------------------------
-inline void FreeFindData(void* fd)
-{
-}
 #endif
-
 //----------------------------------------------------------------------------
-DirData::DirData(const std::string& dirname) :
+PX2::DirData::DirData(const std::string& dirname) :
 mDirname(dirname)
 {
-	mFinddata = InitFindData();
+#if defined (_WIN32) || defined (WIN32)
+	mFinddata = INVALID_HANDLE_VALUE;
+#else
+	mFinddata = 0;
+	mFinddata = opendir(mDirname.c_str());
+#endif
 }
 //----------------------------------------------------------------------------
-DirData::~DirData()
+PX2::DirData::~DirData()
 {
 	Close();
 }
 //----------------------------------------------------------------------------
-void DirData::SetFileSpec(const std::string& filespec)
+void PX2::DirData::SetFileSpec(const std::string& filespec)
 {
 	mFilespec = filespec;
 }
 //----------------------------------------------------------------------------
-void DirData::SetFlags(int flags)
+void PX2::DirData::SetFlags(int flags)
 {
 	mFlags = flags;
 }
 //----------------------------------------------------------------------------
-void DirData::Close()
+void PX2::DirData::Close()
 {
+#if defined (WIN32) || defined (_WIN32)
 	if (IsFindDataOk(mFinddata))
 	{
 		FreeFindData(mFinddata);
 
-		mFinddata = InitFindData();
+		mFinddata = INVALID_HANDLE_VALUE;
 	}
+#elif defined (__LINUX__) || defined (__ANDROID__)
+	DIR *dir = (DIR*)mFinddata;
+	if (dir)
+	{
+		if (closedir(dir) != 0)
+		{
+		}
+		mFinddata = 0;
+	}
+#endif
 }
 //----------------------------------------------------------------------------
-void DirData::Rewind()
+void PX2::DirData::Rewind()
 {
 	Close();
 }
 //----------------------------------------------------------------------------
-bool DirData::Read(std::string *filename)
+bool PX2::DirData::Read(std::string *filename)
 {
 #if defined (WIN32) || defined (_WIN32)
 
@@ -164,7 +171,7 @@ bool DirData::Read(std::string *filename)
 	{
 		// open first
 		std::string filespec = mDirname;
-		//if (!wxEndsWithPathSeparator(filespec))
+		//if (!EndsWithPathSeparator(filespec))
 		{
 			filespec += '\\';
 		}
@@ -228,24 +235,24 @@ bool DirData::Read(std::string *filename)
 			((name[1] == ('.') && name[2] == ('\0')) ||
 			(name[1] == ('\0'))))
 		{
-			if (!(mFlags & Dir::DIR_DOTDOT))
+			if (!(mFlags & DirP::DIR_DOTDOT))
 				continue;
 		}
 
 		// check the type now
-		if (!(mFlags & Dir::DIR_FILES) && !IsDir(attr))
+		if (!(mFlags & DirP::DIR_FILES) && !IsDir(attr))
 		{
 			// it's a file, but we don't want them
 			continue;
 		}
-		else if (!(mFlags & Dir::DIR_DIRS) && IsDir(attr))
+		else if (!(mFlags & DirP::DIR_DIRS) && IsDir(attr))
 		{
 			// it's a dir, and we don't want it
 			continue;
 		}
 
 		// finally, check whether it's a hidden file
-		if (!(mFlags & Dir::DIR_HIDDEN))
+		if (!(mFlags & DirP::DIR_HIDDEN))
 		{
 			if (IsHidden(attr))
 			{
@@ -259,12 +266,80 @@ bool DirData::Read(std::string *filename)
 		break;
 	}
 
+#elif defined (__LINUX__) || defined (__ANDROID__)
+
+dirent *de = NULL;    // just to silence compiler warnings
+bool matches = false;
+
+// speed up string concatenation in the loop a bit
+std::string path = mDirname;
+path += "/";
+path.reserve(path.length() + 255);
+
+std::string de_d_name;
+
+while (!matches)
+{
+	de = readdir((DIR*)mFinddata);
+	if (!de)
+		return false;
+
+	de_d_name = de->d_name;
+
+	// don't return "." and ".." unless asked for
+	if (de->d_name[0] == '.' &&
+		((de->d_name[1] == '.' && de->d_name[2] == '\0') ||
+		(de->d_name[1] == '\0')))
+	{
+		if (!(mFlags & DirP::DIR_DOTDOT))
+			continue;
+
+		// we found a valid match
+		break;
+	}
+
+	std::string thePath = path + de_d_name;
+
+	//// check the type now: notice that we may want to check the type of
+	//// the path itself and not whatever it points to in case of a symlink
+	if (mFlags & DirP::DIR_NO_FOLLOW)
+	{
+		//fn.DontFollowLink();
+	}
+
+	if (!(mFlags & DirP::DIR_FILES) && !Filename::IsDirExists(thePath))
+	{
+		// it's a file, but we don't want them
+		continue;
+	}
+	else if (!(mFlags & DirP::DIR_DIRS) && Filename::IsDirExists(thePath))
+	{
+		// it's a dir, and we don't want it
+		continue;
+	}
+
+	// finally, check the name
+	if (mFilespec.empty())
+	{
+		matches = mFlags & DirP::DIR_HIDDEN ? true : de->d_name[0] != '.';
+	}
+	else
+	{
+		matches = true;
+		// test against the pattern
+		//matches = MatchWild(mFilespec, de_d_name,
+		//	!(mFlags & DirP::DIR_HIDDEN));
+	}
+}
+
+*filename = de_d_name;
+
 #endif
 
 	return true;
 }
 //----------------------------------------------------------------------------
-std::string DirData::GetName()
+std::string PX2::DirData::GetName()
 {
 	return mDirname;
 }

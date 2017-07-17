@@ -35,6 +35,7 @@ mIsDragingTab(false)
 	mFrame_TitleBar->LocalTransform.SetTranslateY(-1.0f);
 	UIPicBox *picBox = mFrame_TitleBar->CreateAddBackgroundPicBox();
 	picBox->SetColor(Float3::MakeColor(60, 60, 60));
+	picBox->UseAlphaBlend(true);
 	mFrame_TitleBar->SetSize(0.0f, mTabHeight);
 	mFrame_TitleBar->SetAnchorHor(Float2(0.0f, 1.0f));
 	mFrame_TitleBar->SetAnchorVer(Float2(1.0f, 1.0f));
@@ -71,6 +72,7 @@ void UITabFrame::SetTabBarHeight(float height)
 {
 	mTabBarHeight = height;
 	mFrame_Content->SetAnchorParamVer(0.0f, -mTabBarHeight);
+	mFrame_TitleBar->SetHeight(mTabBarHeight);
 
 	mIsTabsNeedReCal = true;
 }
@@ -228,7 +230,6 @@ void UITabFrame::AddTab(const std::string &name, const std::string &title,
 
 		UIFText *text = tabBut->CreateAddText();
 		text->GetText()->SetText(title);
-		text->GetText()->SetFontScale(0.8f);
 
 		UIPicBox *picBoxNormal = tabBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL);
 		if (mIsAui)
@@ -414,17 +415,6 @@ void UITabFrame::_SetActiveTab(const std::string &name)
 void UITabFrame::OnSetActive()
 {
 	_UICallbacksCalls(UICT_TABFRAME_SETACTIVE);
-
-	if (mMemObject && mMemUICallback)
-	{
-		(mMemObject->*mMemUICallback)(this, UICT_TABFRAME_SETACTIVE);
-	}
-
-	std::vector<Visitor *>::iterator it = mVisitors.begin();
-	for (; it != mVisitors.end(); it++)
-	{
-		(*it)->Visit(this, (int)UICT_TABFRAME_SETACTIVE);
-	}
 }
 //----------------------------------------------------------------------------
 std::string UITabFrame::GetActiveTab() const

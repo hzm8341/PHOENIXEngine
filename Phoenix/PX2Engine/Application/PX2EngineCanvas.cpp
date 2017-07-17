@@ -35,14 +35,17 @@ void _InitEngineFrameShow(UIFrame *engineFrame)
 	UICheckButton *checkBut = DynamicCast<UICheckButton>(
 		engineFrame->GetObjectByName("CheckAutoConnect"));
 
-	EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
-	bool isAutoCnt = cnt->IsAutoConnect();
-	std::string ip = cnt->GetAutoConnectIP();
-	int port = cnt->GetAutoConnectPort();
+	if (editBoxIP)
+	{
+		EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
+		bool isAutoCnt = cnt->IsAutoConnect();
+		std::string ip = cnt->GetAutoConnectIP();
+		int port = cnt->GetAutoConnectPort();
 
-	editBoxIP->SetText(ip);
-	editBoxPort->SetText(StringHelp::IntToString(port));
-	checkBut->Check(isAutoCnt, false);
+		editBoxIP->SetText(ip);
+		editBoxPort->SetText(StringHelp::IntToString(port));
+		checkBut->Check(isAutoCnt, false);
+	}
 }
 //----------------------------------------------------------------------------
 void _EngineUICallback (UIFrame *frame, UICallType type)
@@ -262,7 +265,8 @@ EngineCanvas::EngineCanvas()
 
 	UIFramePtr frame = new0 UIFrame();
 	AttachChild(frame);
-	UIPicBox *backPic = frame->CreateAddBackgroundPicBox();
+	UIPicBox *backPic = frame->CreateAddBackgroundPicBox(true,
+		Float3::MakeColor(200, 200, 200));
 	backPic->UseAlphaBlend(true);
 	backPic->SetAlpha(0.4f);
 	frame->SetAnchorHor(0.0f, 1.0f);
@@ -373,206 +377,207 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineCollapsePanel = new0 UICollapsePanel();
 	canvas->AttachChild(mEngineCollapsePanel);
 	mEngineCollapsePanel->LocalTransform.SetTranslateY(-1.0f);
+	mEngineCollapsePanel->SetSliderWidth(40.0f);
 	mEngineCollapsePanel->SetAnchorHor(0.0, 1.0f);
 	mEngineCollapsePanel->SetAnchorVer(0.0, 1.0f);
 
 	float butHeight = 30.0f;
 	float textHeight = 20.0f;
 
-	// Engine Server
-	UICollapseItem *itemEngineServer = mEngineCollapsePanel->AddItem("TCP_EngineServer");
-	itemEngineServer->Expand(false);
+	//// Engine Server
+	//UICollapseItem *itemEngineServer = mEngineCollapsePanel->AddItem("Net_TCP_EngineServer");
+	//itemEngineServer->Expand(false);
 
-	UIFrame *frameInfo = new0 UIFrame();
-	itemEngineServer->GetContentFrame()->AttachChild(frameInfo);
-	frameInfo->SetAnchorHor(0.0f, 1.0f);
-	frameInfo->SetAnchorVer(0.0f, 1.0f);
-	frameInfo->SetPivot(0.5f, 1.0f);
+	//UIFrame *frameInfo = new0 UIFrame();
+	//itemEngineServer->GetContentFrame()->AttachChild(frameInfo);
+	//frameInfo->SetAnchorHor(0.0f, 1.0f);
+	//frameInfo->SetAnchorVer(0.0f, 1.0f);
+	//frameInfo->SetPivot(0.5f, 1.0f);
 
 	float spaceHeight = 5.0f;
 	float posVer = -textHeight*0.5f;
 	posVer -= spaceHeight;
 
-	UIFText *textIP = new0 UIFText();
-	frameInfo->AttachChild(textIP);
-	textIP->SetName("TextIP");
-	UIPicBox *picBoxBack = textIP->CreateAddBackgroundPicBox();
-	picBoxBack->UseAlphaBlend(true);
-	picBoxBack->SetColor(Float3::MakeColor(200, 200, 200));
-	textIP->LocalTransform.SetTranslateY(-1.0f);
-	textIP->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
-	textIP->SetAnchorHor(0.0f, 1.0f);
-	textIP->SetAnchorParamHor(100.0f, -100.0f);
-	textIP->SetAnchorVer(1.0f, 1.0f);
-	textIP->SetAnchorParamVer(posVer, posVer);
-	textIP->GetText()->SetText("");
-	textIP->SetHeight(textHeight);
+	//UIFText *textIP = new0 UIFText();
+	//frameInfo->AttachChild(textIP);
+	//textIP->SetName("TextIP");
+	//UIPicBox *picBoxBack = textIP->CreateAddBackgroundPicBox();
+	//picBoxBack->UseAlphaBlend(true);
+	//picBoxBack->SetColor(Float3::MakeColor(200, 200, 200));
+	//textIP->LocalTransform.SetTranslateY(-1.0f);
+	//textIP->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
+	//textIP->SetAnchorHor(0.0f, 1.0f);
+	//textIP->SetAnchorParamHor(100.0f, -100.0f);
+	//textIP->SetAnchorVer(1.0f, 1.0f);
+	//textIP->SetAnchorParamVer(posVer, posVer);
+	//textIP->GetText()->SetText("");
+	//textIP->SetHeight(textHeight);
 
-	UIButton *butSpeakIP = new0 UIButton();
-	frameInfo->AttachChild(butSpeakIP);
-	butSpeakIP->LocalTransform.SetTranslateY(-2.0f);
-	butSpeakIP->SetName("ButSpeak");
-	butSpeakIP->SetPivot(0.0f, 0.5f);
-	butSpeakIP->SetAnchorHor(1.0f, 1.0f);
-	butSpeakIP->SetAnchorParamHor(-95.0f, -95.0f);
-	butSpeakIP->SetAnchorVer(1.0f, 1.0f);
-	butSpeakIP->SetAnchorParamVer(posVer, posVer);
-	butSpeakIP->SetSize(20.0f, 20.0f);
-	butSpeakIP->CreateAddText("Say");
-	butSpeakIP->AddUICallback(_EngineUICallback);
+	//UIButton *butSpeakIP = new0 UIButton();
+	//frameInfo->AttachChild(butSpeakIP);
+	//butSpeakIP->LocalTransform.SetTranslateY(-2.0f);
+	//butSpeakIP->SetName("ButSpeak");
+	//butSpeakIP->SetPivot(0.0f, 0.5f);
+	//butSpeakIP->SetAnchorHor(1.0f, 1.0f);
+	//butSpeakIP->SetAnchorParamHor(-95.0f, -95.0f);
+	//butSpeakIP->SetAnchorVer(1.0f, 1.0f);
+	//butSpeakIP->SetAnchorParamVer(posVer, posVer);
+	//butSpeakIP->SetSize(20.0f, 20.0f);
+	//butSpeakIP->CreateAddText("Say");
+	//butSpeakIP->AddUICallback(_EngineUICallback);
 
-	posVer -= textHeight*0.5f;
-	posVer -= spaceHeight;
+	//posVer -= textHeight*0.5f;
+	//posVer -= spaceHeight;
 
-	float progBarHeight = 30.0f;
-	posVer -= progBarHeight*0.5f;
+	//float progBarHeight = 30.0f;
+	//posVer -= progBarHeight*0.5f;
 
-	UIProgressBar *pbBar = new0 UIProgressBar();
-	frameInfo->AttachChild(pbBar);
-	pbBar->LocalTransform.SetTranslateY(-1.0f);
-	pbBar->SetHeight(25.0f);
-	pbBar->SetProgress(0.0f, false);
-	pbBar->CreateAddProgressText();
-	pbBar->SetAnchorHor(0.0f, 1.0f);
-	pbBar->SetAnchorParamHor(100.0f, -100.0f);
-	pbBar->SetAnchorVer(1.0f, 1.0f);
-	pbBar->SetAnchorParamVer(posVer, posVer);
+	//UIProgressBar *pbBar = new0 UIProgressBar();
+	//frameInfo->AttachChild(pbBar);
+	//pbBar->LocalTransform.SetTranslateY(-1.0f);
+	//pbBar->SetHeight(25.0f);
+	//pbBar->SetProgress(0.0f, false);
+	//pbBar->CreateAddProgressText();
+	//pbBar->SetAnchorHor(0.0f, 1.0f);
+	//pbBar->SetAnchorParamHor(100.0f, -100.0f);
+	//pbBar->SetAnchorVer(1.0f, 1.0f);
+	//pbBar->SetAnchorParamVer(posVer, posVer);
 
-	posVer -= progBarHeight*0.5f;
-	posVer -= spaceHeight;
+	//posVer -= progBarHeight*0.5f;
+	//posVer -= spaceHeight;
 
-	float butStartEngineHeight = 30.0f;
-	posVer -= butStartEngineHeight*0.5f;
+	//float butStartEngineHeight = 30.0f;
+	//posVer -= butStartEngineHeight*0.5f;
 
-	UIButton *butStartEngineServer = new0 UIButton();
-	frameInfo->AttachChild(butStartEngineServer);
-	butStartEngineServer->SetHeight(butStartEngineHeight);
-	butStartEngineServer->SetName("ButStartEngineServer");
-	butStartEngineServer->LocalTransform.SetTranslateY(-1.0f);
-	butStartEngineServer->SetAnchorVer(1.0f, 1.0f);
-	butStartEngineServer->SetAnchorParamVer(posVer, posVer);
-	butStartEngineServer->SetAnchorHor(0.0f, 1.0f);
-	butStartEngineServer->SetAnchorParamHor(100.0f, -100.0f);
-	butStartEngineServer->CreateAddText("StartEngineServer");
-	butStartEngineServer->GetText()->SetFontColor(Float3::WHITE);
-	butStartEngineServer->AddUICallback(_EngineUICallback);
-	butStartEngineServer->SetHeight(butHeight);
+	//UIButton *butStartEngineServer = new0 UIButton();
+	//frameInfo->AttachChild(butStartEngineServer);
+	//butStartEngineServer->SetHeight(butStartEngineHeight);
+	//butStartEngineServer->SetName("ButStartEngineServer");
+	//butStartEngineServer->LocalTransform.SetTranslateY(-1.0f);
+	//butStartEngineServer->SetAnchorVer(1.0f, 1.0f);
+	//butStartEngineServer->SetAnchorParamVer(posVer, posVer);
+	//butStartEngineServer->SetAnchorHor(0.0f, 1.0f);
+	//butStartEngineServer->SetAnchorParamHor(100.0f, -100.0f);
+	//butStartEngineServer->CreateAddText("StartEngineServer");
+	//butStartEngineServer->GetText()->SetFontColor(Float3::WHITE);
+	//butStartEngineServer->AddUICallback(_EngineUICallback);
+	//butStartEngineServer->SetHeight(butHeight);
 
-	posVer -= butStartEngineHeight*0.5f;
-	posVer -= spaceHeight;
+	//posVer -= butStartEngineHeight*0.5f;
+	//posVer -= spaceHeight;
 
-	itemEngineServer->SetContentHeight(-posVer);
+	//itemEngineServer->SetContentHeight(-posVer);
 
-	// Engine Client Connector
-	UICollapseItem *itemClientConnector = mEngineCollapsePanel->AddItem("TCP_EngineClientConnector");
-	itemClientConnector->Expand(false);
-	UIFrame *frameClientConnector = new0 UIFrame();
-	itemClientConnector->GetContentFrame()->AttachChild(frameClientConnector);
-	frameClientConnector->SetAnchorHor(0.0f, 1.0f);
-	frameClientConnector->SetAnchorVer(0.0f, 1.0f);
+	//// Engine Client Connector
+	//UICollapseItem *itemClientConnector = mEngineCollapsePanel->AddItem("Net_TCP_EngineClientConnector");
+	//itemClientConnector->Expand(false);
+	//UIFrame *frameClientConnector = new0 UIFrame();
+	//itemClientConnector->GetContentFrame()->AttachChild(frameClientConnector);
+	//frameClientConnector->SetAnchorHor(0.0f, 1.0f);
+	//frameClientConnector->SetAnchorVer(0.0f, 1.0f);
 
-	posVer = -textHeight*0.5f;
-	posVer -= spaceHeight;
+	//posVer = -textHeight*0.5f;
+	//posVer -= spaceHeight;
 
-	UIEditBox *editBoxIP = new0 UIEditBox();
-	frameClientConnector->AttachChild(editBoxIP);
-	editBoxIP->SetName("EditBoxIP");
-	editBoxIP->LocalTransform.SetTranslateY(-1.0f);
-	editBoxIP->GetBackPicBox()->SetColor(Float3::MakeColor(200, 200, 200));
-	editBoxIP->SetAnchorHor(0.0f, 0.5f);
-	editBoxIP->SetAnchorParamHor(100.0f, 0.0f);
-	editBoxIP->SetAnchorVer(1.0f, 1.0f);
-	editBoxIP->SetAnchorParamVer(posVer, posVer);
-	editBoxIP->SetHeight(textHeight);
-	editBoxIP->SetText("127.0.0.1");
-	UIFText *textCntIP = new0 UIFText();
-	frameClientConnector->AttachChild(textCntIP);
-	textCntIP->LocalTransform.SetTranslateY(-1.0f);
-	textCntIP->SetWidth(95.0f);
-	textCntIP->SetPivot(0.0f, 0.5f);
-	textCntIP->SetAnchorHor(0.0f, 0.0f);
-	textCntIP->SetAnchorVer(1.0f, 1.0f);
-	textCntIP->SetAnchorParamVer(posVer, posVer);
-	textCntIP->SetHeight(textHeight);
-	textCntIP->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
-	textCntIP->GetText()->SetText("IP:");
-	textCntIP->GetText()->SetFontScale(0.8f);
+	//UIEditBox *editBoxIP = new0 UIEditBox();
+	//frameClientConnector->AttachChild(editBoxIP);
+	//editBoxIP->SetName("EditBoxIP");
+	//editBoxIP->LocalTransform.SetTranslateY(-1.0f);
+	//editBoxIP->GetBackPicBox()->SetColor(Float3::MakeColor(200, 200, 200));
+	//editBoxIP->SetAnchorHor(0.0f, 0.5f);
+	//editBoxIP->SetAnchorParamHor(100.0f, 0.0f);
+	//editBoxIP->SetAnchorVer(1.0f, 1.0f);
+	//editBoxIP->SetAnchorParamVer(posVer, posVer);
+	//editBoxIP->SetHeight(textHeight);
+	//editBoxIP->SetText("127.0.0.1");
+	//UIFText *textCntIP = new0 UIFText();
+	//frameClientConnector->AttachChild(textCntIP);
+	//textCntIP->LocalTransform.SetTranslateY(-1.0f);
+	//textCntIP->SetWidth(95.0f);
+	//textCntIP->SetPivot(0.0f, 0.5f);
+	//textCntIP->SetAnchorHor(0.0f, 0.0f);
+	//textCntIP->SetAnchorVer(1.0f, 1.0f);
+	//textCntIP->SetAnchorParamVer(posVer, posVer);
+	//textCntIP->SetHeight(textHeight);
+	//textCntIP->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
+	//textCntIP->GetText()->SetText("IP:");
+	//textCntIP->GetText()->SetFontScale(0.8f);
 
-	UIEditBox *editBoxPort = new0 UIEditBox();
-	frameClientConnector->AttachChild(editBoxPort);
-	editBoxPort->SetName("EditBoxPort");
-	editBoxPort->LocalTransform.SetTranslateY(-1.0f);
-	editBoxPort->GetBackPicBox()->SetColor(Float3::MakeColor(200, 200, 200));
-	editBoxPort->SetAnchorHor(0.5f, 1.0f);
-	editBoxPort->SetAnchorParamHor(50.0f, -100.0f);
-	editBoxPort->SetAnchorVer(1.0f, 1.0f);
-	editBoxPort->SetAnchorParamVer(posVer, posVer);
-	editBoxPort->SetHeight(textHeight);
-	editBoxPort->SetText(StringHelp::IntToString(EngineServerPort));
-	UIFText *textCntPort = new0 UIFText();
-	frameClientConnector->AttachChild(textCntPort);
-	textCntPort->SetName("EditBoxPort");
-	textCntPort->SetWidth(45.0f);
-	textCntPort->SetPivot(0.0f, 0.5f);
-	textCntPort->SetAnchorHor(0.5f, 0.5f);
-	textCntPort->SetAnchorVer(1.0f, 1.0f);
-	textCntPort->SetAnchorParamVer(posVer, posVer);
-	textCntPort->SetHeight(textHeight);
-	textCntPort->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
-	textCntPort->GetText()->SetText("Port:");
-	textCntPort->GetText()->SetFontScale(0.8f);
+	//UIEditBox *editBoxPort = new0 UIEditBox();
+	//frameClientConnector->AttachChild(editBoxPort);
+	//editBoxPort->SetName("EditBoxPort");
+	//editBoxPort->LocalTransform.SetTranslateY(-1.0f);
+	//editBoxPort->GetBackPicBox()->SetColor(Float3::MakeColor(200, 200, 200));
+	//editBoxPort->SetAnchorHor(0.5f, 1.0f);
+	//editBoxPort->SetAnchorParamHor(50.0f, -100.0f);
+	//editBoxPort->SetAnchorVer(1.0f, 1.0f);
+	//editBoxPort->SetAnchorParamVer(posVer, posVer);
+	//editBoxPort->SetHeight(textHeight);
+	//editBoxPort->SetText(StringHelp::IntToString(EngineServerPort));
+	//UIFText *textCntPort = new0 UIFText();
+	//frameClientConnector->AttachChild(textCntPort);
+	//textCntPort->SetName("EditBoxPort");
+	//textCntPort->SetWidth(45.0f);
+	//textCntPort->SetPivot(0.0f, 0.5f);
+	//textCntPort->SetAnchorHor(0.5f, 0.5f);
+	//textCntPort->SetAnchorVer(1.0f, 1.0f);
+	//textCntPort->SetAnchorParamVer(posVer, posVer);
+	//textCntPort->SetHeight(textHeight);
+	//textCntPort->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
+	//textCntPort->GetText()->SetText("Port:");
+	//textCntPort->GetText()->SetFontScale(0.8f);
 
-	posVer -= textHeight*0.5f;
-	posVer -= spaceHeight;
+	//posVer -= textHeight*0.5f;
+	//posVer -= spaceHeight;
 
-	posVer -= butHeight*0.5f;
+	//posVer -= butHeight*0.5f;
 
-	UIButton *butConnect = new0 UIButton();
-	frameClientConnector->AttachChild(butConnect);
-	butConnect->SetHeight(butHeight);
-	butConnect->SetName("ButClientConnect");
-	butConnect->LocalTransform.SetTranslateY(-1.0f);
-	butConnect->SetAnchorVer(1.0f, 1.0f);
-	butConnect->SetAnchorParamVer(posVer, posVer);
-	butConnect->SetAnchorHor(0.0f, 1.0f);
-	butConnect->SetAnchorParamHor(100.0f + butHeight + 10.0f, -100.0f);
-	butConnect->CreateAddText("ConnectToServer");
-	butConnect->GetText()->SetFontColor(Float3::WHITE);
-	butConnect->AddUICallback(_EngineUICallback);
+	//UIButton *butConnect = new0 UIButton();
+	//frameClientConnector->AttachChild(butConnect);
+	//butConnect->SetHeight(butHeight);
+	//butConnect->SetName("ButClientConnect");
+	//butConnect->LocalTransform.SetTranslateY(-1.0f);
+	//butConnect->SetAnchorVer(1.0f, 1.0f);
+	//butConnect->SetAnchorParamVer(posVer, posVer);
+	//butConnect->SetAnchorHor(0.0f, 1.0f);
+	//butConnect->SetAnchorParamHor(100.0f + butHeight + 10.0f, -100.0f);
+	//butConnect->CreateAddText("ConnectToServer");
+	//butConnect->GetText()->SetFontColor(Float3::WHITE);
+	//butConnect->AddUICallback(_EngineUICallback);
 
-	UICheckButton *checkAutoCnt = new0 UICheckButton();
-	frameClientConnector->AttachChild(checkAutoCnt);
-	checkAutoCnt->SetName("CheckAutoConnect");
-	checkAutoCnt->LocalTransform.SetTranslateY(-1.0f);
-	checkAutoCnt->SetPivot(0.0f, 0.5f);
-	checkAutoCnt->SetAnchorVer(1.0f, 1.0f);
-	checkAutoCnt->SetAnchorParamHor(100.0f, 100.0f);
-	checkAutoCnt->SetAnchorParamVer(posVer, posVer);
-	checkAutoCnt->SetAnchorHor(0.0f, 0.0f);
-	checkAutoCnt->SetSize(butHeight, butHeight);
-	checkAutoCnt->AddUICallback(_EngineUICallback);
-	checkAutoCnt->Check(false, false);
+	//UICheckButton *checkAutoCnt = new0 UICheckButton();
+	//frameClientConnector->AttachChild(checkAutoCnt);
+	//checkAutoCnt->SetName("CheckAutoConnect");
+	//checkAutoCnt->LocalTransform.SetTranslateY(-1.0f);
+	//checkAutoCnt->SetPivot(0.0f, 0.5f);
+	//checkAutoCnt->SetAnchorVer(1.0f, 1.0f);
+	//checkAutoCnt->SetAnchorParamHor(100.0f, 100.0f);
+	//checkAutoCnt->SetAnchorParamVer(posVer, posVer);
+	//checkAutoCnt->SetAnchorHor(0.0f, 0.0f);
+	//checkAutoCnt->SetSize(butHeight, butHeight);
+	//checkAutoCnt->AddUICallback(_EngineUICallback);
+	//checkAutoCnt->Check(false, false);
 
-	UIFText *textAutoCnt = new0 UIFText();
-	frameClientConnector->AttachChild(textAutoCnt);
-	textAutoCnt->LocalTransform.SetTranslateY(-1.0f);
-	textAutoCnt->SetWidth(95.0f);
-	textAutoCnt->SetPivot(0.0f, 0.5f);
-	textAutoCnt->SetAnchorHor(0.0f, 0.0f);
-	textAutoCnt->SetAnchorVer(1.0f, 1.0f);
-	textAutoCnt->SetAnchorParamVer(posVer, posVer);
-	textAutoCnt->SetHeight(butHeight);
-	textAutoCnt->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
-	textAutoCnt->GetText()->SetText("IsAutoConnect");
-	textAutoCnt->GetText()->SetFontScale(0.8f);
+	//UIFText *textAutoCnt = new0 UIFText();
+	//frameClientConnector->AttachChild(textAutoCnt);
+	//textAutoCnt->LocalTransform.SetTranslateY(-1.0f);
+	//textAutoCnt->SetWidth(95.0f);
+	//textAutoCnt->SetPivot(0.0f, 0.5f);
+	//textAutoCnt->SetAnchorHor(0.0f, 0.0f);
+	//textAutoCnt->SetAnchorVer(1.0f, 1.0f);
+	//textAutoCnt->SetAnchorParamVer(posVer, posVer);
+	//textAutoCnt->SetHeight(butHeight);
+	//textAutoCnt->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
+	//textAutoCnt->GetText()->SetText("IsAutoConnect");
+	//textAutoCnt->GetText()->SetFontScale(0.8f);
 
-	posVer -= butHeight*0.5f;
-	posVer -= spaceHeight;
+	//posVer -= butHeight*0.5f;
+	//posVer -= spaceHeight;
 
-	itemClientConnector->SetContentHeight(-posVer);
+	//itemClientConnector->SetContentHeight(-posVer);
 
 	// udpNeighbors
-	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem("UDP_Neighbors");
+	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem("Net_UDP_Neighbors");
 	itemNeightbors->Expand(false);
 	mEngineUDPNeighbors = new0 UIList();
 	mEngineUDPNeighbors->SetNumMaxItems(20);
@@ -662,7 +667,8 @@ void EngineCanvas::OnEvent(Event *event)
 		ProjectES::IsEqual(event, ProjectES::LoadedProject))
 	{
 		const Sizef &projSize = PX2_PROJ.GetSize();
-		_CalSize(projSize);
+		if (!PX2_PROJ.IsSizeSameWithScreen())
+			_CalSize(projSize);
 	}
 	else if (GraphicsES::IsEqual(event, GraphicsES::WindowSizeChanged))
 	{
@@ -670,7 +676,8 @@ void EngineCanvas::OnEvent(Event *event)
 		if (proj)
 		{
 			const Sizef &projSize = proj->GetSize();
-			_CalSize(projSize);
+			if (!PX2_PROJ.IsSizeSameWithScreen())
+				_CalSize(projSize);
 		}
 	}
 	else if (EngineNetES::IsEqual(event, EngineNetES::OnEngineClientConnected))
@@ -737,6 +744,33 @@ void EngineCanvas::OnEvent(Event *event)
 		std::string devStr = event->GetDataStr0();
 		mEngineBluetoothList->AddItem(devStr);
 	}
+	else if (ProjectES_Internal::ProjectSizeSameWithScreenChanged)
+	{
+		Project *proj = Project::GetSingletonPtr();
+		if (proj)
+		{
+			bool isSame = proj->IsSizeSameWithScreen();
+			if (isSame)
+			{
+				EnableAnchorLayout(true);
+				EnableScreenRectLayout(true);
+				SetAnchorHor(0.0f, 1.0f);
+				SetAnchorVer(0.0f, 1.0f);
+			}
+			else
+			{
+				EnableAnchorLayout(true);
+				EnableScreenRectLayout(false);
+				SetSize(800.0f, 800.0f);
+				SetAnchorHor(0.5f, 0.5f);
+				SetAnchorVer(0.5f, 0.5f);
+
+				const Sizef &projSize = proj->GetSize();
+				if (!PX2_PROJ.IsSizeSameWithScreen())
+					_CalSize(projSize);
+			}
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void EngineCanvas::OnSizeChanged()
@@ -785,8 +819,11 @@ void EngineCanvas::UpdateLayout(Movable *parent)
 		Project *proj = Project::GetSingletonPtr();
 		if (proj)
 		{
-			const Sizef &projSize = proj->GetSize();
-			_CalSize(projSize);
+			if (!PX2_PROJ.IsSizeSameWithScreen())
+			{
+				const Sizef &projSize = proj->GetSize();
+				_CalSize(projSize);
+			}
 		}
 	}
 }
@@ -833,8 +870,16 @@ void EngineCanvas::UpdateWorldData(double applicationTime,
 	}
 	else
 	{
-		SetAnchorHor(0.5f, 0.5f);
-		SetAnchorVer(0.5f, 0.5f);
+		if (proj->IsSizeSameWithScreen())
+		{
+			SetAnchorHor(0.0f, 1.0f);
+			SetAnchorVer(0.0f, 1.0f);
+		}
+		else
+		{
+			SetAnchorHor(0.5f, 0.5f);
+			SetAnchorVer(0.5f, 0.5f);
+		}
 	}
 
 	SizeNode *parent = DynamicCast<SizeNode>(GetParent());

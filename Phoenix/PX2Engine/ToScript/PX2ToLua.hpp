@@ -11,6 +11,7 @@
 #include "PX2Terrains.hpp"
 #include "PX2Effect.hpp"
 #include "PX2UIs.hpp"
+#include "PX2Logics.hpp"
 #include "PX2Applications.hpp"
 #include "PX2LuaScriptController.hpp"
 using namespace PX2;

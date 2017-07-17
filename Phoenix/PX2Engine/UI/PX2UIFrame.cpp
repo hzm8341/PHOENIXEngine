@@ -116,7 +116,7 @@ UIPicBox *UIFrame::CreateAddBackgroundPicBox(bool setWhite,
 	mBackgroundPicBox->SetSize(mSize);
 	mBackgroundPicBox->SetPivot(mPivot);
 	mBackgroundPicBox->SetColor(color);
-	//mBackgroundPicBox->UseAlphaBlend(false);
+	mBackgroundPicBox->UseAlphaBlend(true);
 
 	if (setWhite)
 	{
@@ -182,6 +182,11 @@ Movable *UIFrame::GetPickRangeMovable()
 	return mPickRangeMovable;
 }
 //----------------------------------------------------------------------------
+void UIFrame::SetPickRangeMovables(std::vector<SizeNode*> nodes)
+{
+	mPickRangeSizeNodes = nodes;
+}
+//----------------------------------------------------------------------------
 void UIFrame::SetRangeAcceptFrame(UIFrame *frame)
 {
 	mRangeAcceptFrame = frame;
@@ -199,6 +204,8 @@ void UIFrame::AddUICallback(UICallback callback)
 //----------------------------------------------------------------------------
 void UIFrame::_UICallbacksCalls(UICallType callType)
 {
+	ObjectPtr ptrTshi = this;
+
 	for (int i = 0; i < (int)mUICallbacks.size(); i++)
 	{
 		UICallback uiCallback = mUICallbacks[i];
@@ -286,6 +293,26 @@ void UIFrame::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 				{
 					isPosInSizeRange = false;
 				}
+			}
+		}
+
+		if ((int)mPickRangeSizeNodes.size() > 0)
+		{
+			bool isInFrame = false;
+
+			for (int i = 0; i < (int)mPickRangeSizeNodes.size(); i++)
+			{
+				SizeNode *frame = mPickRangeSizeNodes[i];
+				const Rectf &rect = frame->GetWorldRect();
+				if (rect.IsInsize(inputData.CameraLogicPos.X(), inputData.CameraLogicPos.Z()))
+				{
+					isInFrame = true;
+				}
+			}
+
+			if (!isInFrame)
+			{
+				isPosInSizeRange = false;
 			}
 		}
 	}

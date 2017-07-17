@@ -99,4 +99,13 @@
 		static Float2 GetCurCursorPos();
 		static Float2 GetLastCursorPos();
 		static Float2 GetMoveDelta();
+		
+		// menu
+	public:
+		int AddMenuMain(const std::string &title);
+		int AddMenuSpearater(int parentID);
+		int AddMenuSub(int parentID, const std::string &title, 
+			const std::string &callback);
+		void OpenFileDlg(const std::string &ext, const std::string &callBack);
+		void SaveFileDlg(const std::string &ext, const std::string &callBack);
 	};

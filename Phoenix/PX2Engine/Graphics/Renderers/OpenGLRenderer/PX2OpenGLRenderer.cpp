@@ -726,7 +726,10 @@ void Renderer::GetViewport(int& xPosition, int& yPosition,
 	int& width, int& height) const
 {
 #if defined PX2_USE_OPENGL && (defined WIN32||defined _WIN32)
-	bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+	if (Renderer::msRenderers.size() > 1)
+	{
+		bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+	}
 #endif
 
 	int param[4];
@@ -750,7 +753,10 @@ void Renderer::SetDepthRange(float zMin, float zMax)
 void Renderer::GetDepthRange(float& zMin, float& zMax) const
 {
 #if defined PX2_USE_OPENGL && (defined WIN32||defined _WIN32)
-	bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+	if (Renderer::msRenderers.size() > 1)
+	{
+		bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+	}
 #endif
 
 	GLclampd param[2];
@@ -961,11 +967,13 @@ void Renderer::SetColorMask(bool allowRed, bool allowGreen,
 bool Renderer::PreDraw()
 {
 #if defined _WIN32 || defined WIN32
-
-	bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
-	if (!success)
+	if (Renderer::msRenderers.size() > 1)
 	{
-		assertion(false, "");
+		bool success = wglMakeCurrent(mData->mWindowDC, mData->mWindowRC);
+		if (!success)
+		{
+			assertion(false, "");
+		}
 	}
 #endif
 

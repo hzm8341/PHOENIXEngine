@@ -9,7 +9,8 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 bool ModelController::AddAnim(Animation *anim)
 {
-	if (HasAnim(anim)) return false;
+	if (HasAnim(anim)) 
+		return false;
 
 	const std::string &name = anim->GetName();
 	mAnimsMap[FString(name.c_str())] = anim;

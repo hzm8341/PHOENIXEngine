@@ -121,6 +121,11 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 ### Android
 
-目前我们使用的还是旧的Android编译方法，使用Crygwin进行编译。编译环境配置方法，我还在写。
+目前我们使用的还是旧的Android编译方法，使用Crygwin进行编译。
 
+如何将用C++编写Android的代码库：
+
+	[http://www.opengpu.org/forum.php?mod=viewthread&tid=17177](http://www.opengpu.org/forum.php?mod=viewthread&tid=17177)
+
+下载安装Cygwin：[http://pan.baidu.com/s/1i4BFJzZ](http://pan.baidu.com/s/1i4BFJzZ)
 

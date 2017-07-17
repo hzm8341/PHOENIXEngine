@@ -133,3 +133,8 @@ void ScriptContext::RegistOperators()
 {
 }
 //----------------------------------------------------------------------------
+void ScriptContext::UnRegistAllEventFunctions(const char *entName)
+{
+	PX2_UNUSED(entName);
+}
+//----------------------------------------------------------------------------

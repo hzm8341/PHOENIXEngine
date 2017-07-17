@@ -18,10 +18,15 @@
 #include "PX2InputManager.hpp"
 #include "PX2UISizeExtendControl.hpp"
 #include "PX2ProjectEvent.hpp"
+#include "PX2GraphicsEventType.hpp"
+#include "PX2GraphicsEventData.hpp"
+#include "PX2ScriptManager.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
 #if defined(_WIN32) || defined(WIN32)
+#include<Commdlg.h>
+#include<Shlobj.h>
 
 static std::queue<int> s_isUniChar;
 static BYTE s_lobyte;
@@ -77,15 +82,30 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 	static bool isCreated = false;
 	float wheeldelta = 0.0f;
 	KeyCode keyCode = KC_UNASSIGNED;
+	InputManager *im = InputManager::GetSingletonPtr();
+	InputEventData data;
+	Event *ent = 0;
+	int menuCMD = 0;
 
 	switch (message) 
 	{
+	case WM_COMMAND:
+	{
+		menuCMD = LOWORD(wParam);
+		((App*)AppBase::msApplication)->_OnMenuCMD(menuCMD);
+	}
+	return 0;
+		break;
+
 	case WM_CREATE:
 		isCreated = true;
 		break;
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+
+	case WM_PAINT:
 		break;
 
 	case WM_SIZE:
@@ -97,6 +117,7 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 
 		switch (wParam)
 		{
+		case SIZE_MAXIMIZED:
 		case SIZE_RESTORED:
 			if (AppBase::msApplication->IsInitlized())
 				AppBase::msApplication->WillEnterForeground(firsttime);
@@ -112,66 +133,103 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 		if (MK_LBUTTON == wParam)
 		{
 			POINT point = { (short)LOWORD(lParam), (short)HIWORD(lParam) };
-
-			PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, 
-				APoint((float)point.x, 0.0f,
-				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)point.y));
+			if (im)
+			{
+				im->GetDefaultListener()->MousePressed(MBID_LEFT,
+					APoint((float)point.x, 0.0f,
+					PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)point.y));
+			}
 		}
 		break;
 	case WM_LBUTTONUP:
-
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_LEFT,
-			APoint((float)LOWORD(lParam), 0.0f, 
-			PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
-
+		if (im)
+		{
+			im->GetDefaultListener()->MouseReleased(MBID_LEFT,
+				APoint((float)LOWORD(lParam), 0.0f,
+				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
+		}
 		break;
 	case WM_RBUTTONDOWN:
 		if (MK_RBUTTON == wParam)
 		{
 			POINT point = { (short)LOWORD(lParam), (short)HIWORD(lParam) };
 
-			PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_RIGHT,
-				APoint((float)point.x, 0.0f, 
-				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)point.y));
+			if (im)
+			{
+				im->GetDefaultListener()->MousePressed(MBID_RIGHT,
+					APoint((float)point.x, 0.0f,
+					PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)point.y));
+			}
 		}
 		break;
 	case WM_RBUTTONUP:
-
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT,
-			APoint((float)LOWORD(lParam), 0.0f, 
-			PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
-
+		if (im)
+		{
+			PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT,
+				APoint((float)LOWORD(lParam), 0.0f,
+				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
+		}		
 		break;
 	case WM_MBUTTONDOWN:
-		PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_MIDDLE,
-			APoint((float)LOWORD(lParam), 0.0f,
-			PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
+		if (im)
+		{
+			im->GetDefaultListener()->MousePressed(MBID_MIDDLE,
+				APoint((float)LOWORD(lParam), 0.0f,
+				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
+		}
 
 		break;
 	case WM_MBUTTONUP:
-		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE,
-			APoint((float)LOWORD(lParam), 0.0f,
-			PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
-
+		if (im)
+		{
+			im->GetDefaultListener()->MouseReleased(MBID_MIDDLE,
+				APoint((float)LOWORD(lParam), 0.0f,
+				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam)));
+		}
 		break;
 	case WM_MOUSEMOVE:
-		sMousePos = APoint((float)LOWORD(lParam), 0.0f,
-			PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam));
-		PX2_INPUTMAN.GetDefaultListener()->MouseMoved(sMousePos);
-
+		if (im)
+		{
+			sMousePos = APoint((float)LOWORD(lParam), 0.0f,
+				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height - (float)HIWORD(lParam));
+			im->GetDefaultListener()->MouseMoved(sMousePos);
+		}
 		break;
 	case WM_MOUSEWHEEL:
-		wheeldelta = (float)GET_WHEEL_DELTA_WPARAM(wParam);
-		PX2_INPUTMAN.GetDefaultListener()->MouseWheeled(wheeldelta, sMousePos);
+		if (im)
+		{
+			wheeldelta = (float)GET_WHEEL_DELTA_WPARAM(wParam);
+			im->GetDefaultListener()->MouseWheeled(wheeldelta, sMousePos);
+		}
 		break;
 	case WM_KEYDOWN:
-		keyCode = ConverKeyCode(wParam);
-		PX2_INPUTMAN.GetDefaultListener()->KeyPressed(keyCode);
+		if (im)
+		{
+			keyCode = ConverKeyCode(wParam);
+			im->GetDefaultListener()->KeyPressed(keyCode);
+
+			data.Msg = message;
+			data.WParam = wParam;
+			data.LParam = lParam;
+			ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+			ent->SetData(data);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
 
 		break;
 	case WM_KEYUP:
-		keyCode = ConverKeyCode(wParam);
-		PX2_INPUTMAN.GetDefaultListener()->KeyReleased(keyCode);
+		if (im)
+		{
+			keyCode = ConverKeyCode(wParam);
+			im->GetDefaultListener()->KeyReleased(keyCode);
+
+			data.Msg = message;
+			data.WParam = wParam;
+			data.LParam = lParam;
+			ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+			ent->SetData(data);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
 
 		break;
 	case WM_IME_CHAR:	
@@ -209,6 +267,13 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 			else if (wParam < 128)
 			{
 				IMEDispatcher::GetSingleton().DispathInsertText((const char*)&wParam, 1);
+
+				data.Msg = message;
+				data.WParam = wParam;
+				data.LParam = lParam;
+				ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+				ent->SetData(data);
+				PX2_EW.BroadcastingLocalEvent(ent);
 			}
 		}
 		else
@@ -245,12 +310,20 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 				int length = WideCharToMultiByte(CP_UTF8, 0, s_ch, nUTF16Size, szUtf8, u8Len, 0, 0);
 				PX2_UNUSED(length);
 				IMEDispatcher::GetSingleton().DispathInsertText(szUtf8, 3);
+
+				data.Msg = message;
+				data.WParam = s_ch[0];
+				data.LParam = lParam;
+				ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+				ent->SetData(data);
+				PX2_EW.BroadcastingLocalEvent(ent);
 			}
 			else 
 			{
 				s_isUniChar.pop();
 			}
 		}
+
 		break;
 	default:
 		break;
@@ -265,6 +338,7 @@ App::App ()
 {
 #if defined(_WIN32) || defined(WIN32)
 	mhWnd = 0;
+	mhMenu = 0;
 #elif defined(__LINUX__)
 	mDisplay = 0;
 #endif
@@ -287,11 +361,14 @@ int App::Main (int numArguments, char** arguments)
 
 	Initlize ();
 
-	// 锟斤拷示锟斤拷锟斤拷
-	ShowWindow(mhWnd, SW_SHOWNORMAL);
+	bool isMaxSized = PX2_GR.GetMainWindow()->IsMaxSize();
+	if (isMaxSized)
+		ShowWindow(mhWnd, SW_SHOWMAXIMIZED);
+	else
+		ShowWindow(mhWnd, SW_SHOWNORMAL);
+
 	UpdateWindow(mhWnd);
 
-	// 锟斤拷息循锟斤拷
 	while (!PX2_APP.IsQuit())
 	{
 		MSG msg;
@@ -484,6 +561,88 @@ int App::Main (int numArguments, char** arguments)
 }
 #endif
 //----------------------------------------------------------------------------
+#if defined(_WIN32) || defined(WIN32)
+void App::_CreateMyMenu()
+{
+	mhMenu = CreateMenu();
+	if (!mhMenu)
+		return;
+
+	SetMenu(mhWnd, mhMenu);
+}
+//----------------------------------------------------------------------------
+void App::_OnMenuCMD(int cmd)
+{
+	auto it = mMenuCallbacks.find(cmd);
+	if (it != mMenuCallbacks.end())
+	{
+		std::string &callback = it->second;
+		if (!callback.empty())
+		{
+			PX2_SC_LUA->CallString(callback + "()");
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void App::_OnOpenFile(std::string fileExt, const std::string &callback)
+{
+	OPENFILENAME ofn = { 0 };
+	TCHAR strFilename[MAX_PATH] = { 0 };//用于接收文件名  
+	ofn.lStructSize = sizeof(OPENFILENAME);//结构体大小  
+	ofn.hwndOwner = mhWnd;
+	if (".xml" == fileExt)
+		ofn.lpstrFilter = ofn.lpstrFilter = TEXT("xml\0*.xml\0\0");//设置过滤  
+	else
+		ofn.lpstrFilter = TEXT("ino\0*.ino\0\0");//设置过滤  
+	ofn.nFilterIndex = 1;//过滤器索引  
+	ofn.lpstrFile = strFilename;//接收返回的文件名，注意第一个字符需要为NULL  
+	ofn.nMaxFile = sizeof(strFilename);//缓冲区长度  
+	ofn.lpstrInitialDir = NULL;//初始目录为默认  
+	ofn.lpstrTitle = TEXT("请选择一个文件");//使用系统默认标题留空即可  
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;//文件、目录必须存在，隐藏只读选项  
+	if (GetOpenFileName(&ofn))
+	{
+		if (!callback.empty())
+		{
+			std::string path = StringHelp::StandardiseFilename(strFilename);
+			PX2_SC_LUA->CallFunction(callback, 0, path);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void App::_OnSaveFile(std::string fileExt, const std::string &callback)
+{
+	OPENFILENAME ofn = { 0 };
+	TCHAR strFilename[MAX_PATH] = { 0 };//用于接收文件名  
+	ofn.lStructSize = sizeof(OPENFILENAME);//结构体大小  
+	ofn.hwndOwner = mhWnd;
+	if (".xml" == fileExt)
+		ofn.lpstrFilter = ofn.lpstrFilter = TEXT("xml\0*.xml\0\0");//设置过滤  
+	else
+		ofn.lpstrFilter = TEXT("ino\0*.ino\0\0");//设置过滤  
+	ofn.nFilterIndex = 1;//过滤器索引  
+	ofn.lpstrFile = strFilename;//接收返回的文件名，注意第一个字符需要为NULL  
+	ofn.nMaxFile = sizeof(strFilename);//缓冲区长度  
+	ofn.lpstrInitialDir = NULL;//初始目录为默认  
+	ofn.lpstrTitle = TEXT("请选择一个文件");//使用系统默认标题留空即可  
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;//目录必须存在，覆盖文件前发出警告  
+	ofn.lpstrTitle = TEXT("保存到");//使用系统默认标题留空即可  
+	ofn.lpstrDefExt = TEXT("cpp");//默认追加的扩展名  
+	if (GetSaveFileName(&ofn))
+	{
+		std::string outPath;
+		std::string outBaseFileName;
+		StringHelp::SplitFilename(std::string(strFilename), outPath, outBaseFileName);
+
+		if (!callback.empty())
+		{
+			PX2_SC_LUA->CallFunction(callback, 0, outBaseFileName);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+#endif
+//----------------------------------------------------------------------------
 bool App::Initlize()
 {
 	if (msIsInitlized)
@@ -533,19 +692,18 @@ bool App::Initlize()
 		dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 	}
 
-	// 锟斤拷锟斤拷锟截讹拷锟酵伙拷锟斤拷锟斤拷小锟侥达拷锟节达拷小
 	RECT rect = { 0, 0, mWidth - 1, mHeight - 1 };
 	AdjustWindowRect(&rect, dwStyle, FALSE);
 
-	// 锟斤拷锟斤拷锟斤拷锟斤拷
 	mhWnd = CreateWindow(sWindowClass, mWindowTitle.c_str(),
 		dwStyle, mXPosition, mYPosition,
 		rect.right - rect.left + 1, rect.bottom - rect.top + 1, 0, 0, 0, 0);
 
+	_CreateMyMenu();
+
 	rw->SetWindowHandle(mhWnd);
 	PX2_APP.SetPt_Data(mhWnd);
 
-	// 锟斤拷锟斤拷
 	RECT rcDesktop, rcWindow;
 	GetWindowRect(GetDesktopWindow(), &rcDesktop);
 
@@ -571,7 +729,7 @@ bool App::Initlize()
 
 	PX2_APP.InitlizeRenderer();
 	PX2_APP.SetInEditor(false);
-	PX2_APP.SetScreenSize(boostSize);	
+	PX2_APP.SetScreenSize(boostSize);
 
 #elif defined(__LINUX__)
 
@@ -762,6 +920,65 @@ void App::OnEvent(Event *ent)
 	{
 		SetTitle(GetTitleProj(""));
 	}
+	else if (GraphicsES::IsEqual(ent, GraphicsES::WindowMaxSize))
+	{
+		RenderWindow *rw = ent->GetData<RenderWindow*>();
+		MaxSizeWindow(rw->IsMaxSize());
+	}
+	else if (GraphicsES::IsEqual(ent, GraphicsES::WindowAddMenu))
+	{
+		AddMenuData data = ent->GetData<AddMenuData>();
+
+#if defined _WIN32 || defined WIN32
+		if (0 == data.ParentID)
+		{
+			HMENU menu = CreatePopupMenu();
+			AppendMenu(mhMenu, MF_POPUP, (UINT_PTR)menu, data.Title.c_str());
+			mMenus[data.ID] = menu;
+		}
+		else if (0 == data.ID)
+		{
+			HMENU menu = mMenus[data.ParentID];
+			AppendMenu(menu, MF_SEPARATOR, 0, "");
+		}
+		else
+		{
+			HMENU menu = mMenus[data.ParentID];
+			AppendMenu(menu, MF_STRING, data.ID, data.Title.c_str());
+			mMenuCallbacks[data.ID] = data.Callback;
+		}
+
+#endif
+	}
+	else if (GraphicsES::IsEqual(ent, GraphicsES::WindowOpenFileDlg))
+	{
+		OpenSaveFileDlgData data = ent->GetData<OpenSaveFileDlgData>();
+#if defined _WIN32 || defined WIN32
+		_OnOpenFile(data.ExtStr, data.Callback);
+#endif
+	}
+	else if (GraphicsES::IsEqual(ent, GraphicsES::WindowSaveFileDlg))
+	{
+		OpenSaveFileDlgData data = ent->GetData<OpenSaveFileDlgData>();
+#if defined _WIN32 || defined WIN32
+		_OnSaveFile(data.ExtStr, data.Callback);
+#endif
+	}
+}
+//----------------------------------------------------------------------------
+void App::MaxSizeWindow(bool maxSize)
+{
+#if defined(_WIN32) || defined(WIN32)
+	if (maxSize)
+	{
+		ShowWindow(mhWnd, SW_SHOWMAXIMIZED);
+	}
+	else
+	{
+		ShowWindow(mhWnd, SW_SHOWNORMAL);
+	}
+#elif defined (__LINUX__)
+#endif
 }
 //----------------------------------------------------------------------------
 void App::SetTitle(const std::string &title)

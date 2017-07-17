@@ -5,6 +5,9 @@
 	public:				
 		void SetSelectLogicObject(Object *object);
 		Object *GetSelectLogicObject();
+		
+		void SetCurLogicObject(Object *obj);
+		Object *GetCurLogicObject() const;
 	
 		void BeginAddFunObj(const std::string &funName);
 		void BeginAddClassFunObj(const std::string &className, const std::string &funName,

@@ -9,7 +9,8 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-VoiceSDK::VoiceSDK()
+VoiceSDK::VoiceSDK() :
+mIsAutoSpeakEnabled(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -88,6 +89,20 @@ void VoiceSDK::OnVoiceRecognizeResults(const std::string &strRet,
 	ent->SetDataStr1(strJSON);
 	ent->SetData<VoiceData>(vData);
 	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::EnableAutoSpeak(bool isAutoSpeakEnable)
+{
+	mIsAutoSpeakEnabled = isAutoSpeakEnable;
+	
+#ifdef __ANDROID__
+	VoiceEnableAutoSpeak(isAutoSpeakEnable);
+#endif
+}
+//----------------------------------------------------------------------------
+bool VoiceSDK::IsAutoSpeakEnabled() const
+{
+	return mIsAutoSpeakEnabled;
 }
 //----------------------------------------------------------------------------
 void VoiceSDK::Speak(const std::string &text)

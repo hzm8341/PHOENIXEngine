@@ -56,14 +56,9 @@ mIsStopped(true)
 //----------------------------------------------------------------------------
 TCPServer::~TCPServer()
 {
-	try
-	{
-		Stop();
-		mDispatcher = 0;
-	}
-	catch (...)
-	{
-	}
+	Stop();
+	delete0(mDispatcher);
+	mDispatcher = 0;
 }
 //----------------------------------------------------------------------------
 const TCPServerParams& TCPServer::params() const

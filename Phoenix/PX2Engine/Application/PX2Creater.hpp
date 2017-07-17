@@ -48,6 +48,7 @@ namespace PX2
 		Movable *CreateMovable_Box();
 		Movable *CreateMovable_Sphere();
 		Movable *CreateMovable_Rectangle();
+		Node *CreateBlockFrame(int num, float halfExtend, const std::string &image);
 
 		Node *CreateNode();
 		CameraNode *CreateNode_Camera(bool createCamera = true);

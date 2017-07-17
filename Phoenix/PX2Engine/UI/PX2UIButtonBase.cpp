@@ -379,6 +379,16 @@ float UIButtonBase::GetStateBrightness(ButtonState state) const
 	return 1.0f;
 }
 //----------------------------------------------------------------------------
+void UIButtonBase::SetStateColorDefaultWhite()
+{
+	SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+	SetStateColor(UIButtonBase::BS_HOVERED, Float3::WHITE);
+	SetStateColor(UIButtonBase::BS_PRESSED, Float3::WHITE);
+	SetStateBrightness(UIButtonBase::BS_NORMAL, 1.0f);
+	SetStateBrightness(UIButtonBase::BS_HOVERED, 1.1f);
+	SetStateBrightness(UIButtonBase::BS_PRESSED, 1.2f);
+}
+//----------------------------------------------------------------------------
 const Float3 &UIButtonBase::_GetStateColorWithActivated(
 	ButtonState state) const
 {
@@ -421,7 +431,6 @@ UIFText *UIButtonBase::CreateAddText(const std::string &text,
 	mFText = new0 UIFText();
 	AttachChild(mFText);
 	mFText->LocalTransform.SetTranslateY(-5.0f);
-	mFText->GetText()->SetFontScale(0.8f);
 	mFText->GetText()->SetFontColor(color);
 	mFText->GetText()->SetText(text);
 	mFText->SetAnchorHor(0.0f, 1.0f);

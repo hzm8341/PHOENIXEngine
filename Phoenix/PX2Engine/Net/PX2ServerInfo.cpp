@@ -8,7 +8,7 @@ ServerInfo::ServerInfo() :
 ID(0),
 Status(0),
 Port(0),
-NumMaxConnect(0)
+NumMaxConnect(10)
 {
 }
 //----------------------------------------------------------------------------

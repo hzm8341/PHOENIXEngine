@@ -28,7 +28,7 @@ UICheckButton::UICheckButton()
 	picDown->SetName("Down");
 	picDown->SetPicBoxType(UIPicBox::PBT_NORMAL);
 
-	UIPicBox *picDis = new0 UIPicBox("Data/engine/common.xml", "button_dis");
+	UIPicBox *picDis = new0 UIPicBox("Data/engine/common.xml", "check_dis");
 	picDis->SetName("Dis");
 	picDis->SetPicBoxType(UIPicBox::PBT_NORMAL);
 

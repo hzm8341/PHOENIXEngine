@@ -202,7 +202,7 @@ public class BluetoothService
         private String mSocketType;
         boolean isRunning = true;
 
-        public AcceptThread(boolean isSelf) 
+        public AcceptThread(boolean isSelf)
         {
             BluetoothServerSocket tmp = null;
 
@@ -401,8 +401,8 @@ public class BluetoothService
                             buffer[i] = arr_byte.get(i).byteValue();
                         }
                         // Send the obtained bytes to the UI Activity
-                        mHandler.obtainMessage(BluetoothState.MESSAGE_READ
-                                , buffer.length, -1, buffer).sendToTarget();
+                        mHandler.obtainMessage(BluetoothState.MESSAGE_READ,
+                        		buffer.length, -1, buffer).sendToTarget();
                         arr_byte = new ArrayList<Integer>();
                     } 
                     else

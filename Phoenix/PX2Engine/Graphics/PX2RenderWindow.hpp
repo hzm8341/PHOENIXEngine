@@ -175,6 +175,19 @@ namespace PX2
 
 	public:
 		virtual void OnEvent(Event *ent);
+
+		// menu
+	public:
+		int AddMenuMain(const std::string &title);
+		int AddMenuSpearater(int parentID);
+		int AddMenuSub(int parentID, const std::string &title, 
+			const std::string &callback);
+		void OpenFileDlg(const std::string &ext, const std::string &callBack);
+		void SaveFileDlg(const std::string &ext, const std::string &callBack);
+	
+	protected:
+		int _GetNextMenuID();
+		static int sNextMenuID;
 	};
 
 #include "PX2RenderWindow.inl"

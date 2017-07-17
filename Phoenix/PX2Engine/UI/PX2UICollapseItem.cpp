@@ -36,7 +36,6 @@ mUICollapsePanel(0)
 	mExpandBut->SetMemUICallback(this,
 		(UIFrame::MemUICallback)(&UICollapseItem::_ButCallback));
 	mExpandBut->SetUserData("Item", this);
-	mExpandBut->GetText()->SetFontScale(0.7f);
 
 	mContentFrame = new0 UIFrame();
 	AttachChild(mContentFrame);
@@ -135,6 +134,12 @@ bool UICollapseItem::IsExpand() const
 void UICollapseItem::SetExpandBarHeight(float height)
 {
 	mExpandBarHeight = height;
+
+	if (mExpandBut)
+		mExpandBut->SetSize(0.0f, mExpandBarHeight - 1.0f);
+
+	if (mContentFrame)
+		mContentFrame->SetAnchorParamVer(0.0f, -mExpandBarHeight);
 }
 //----------------------------------------------------------------------------
 float UICollapseItem::GetExpandBarHeight() const

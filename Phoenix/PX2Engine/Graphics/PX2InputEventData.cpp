@@ -21,6 +21,10 @@ MWheel(0.0f)
 {
 	KCode = KC_UNASSIGNED;
 	MButtonID = MBID_MAX;
+
+	Msg = 0;
+	WParam = 0;
+	LParam = 0;
 }
 //----------------------------------------------------------------------------
 InputEventData::~InputEventData()

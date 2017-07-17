@@ -411,6 +411,41 @@ bool ResourceManager::LoadBuffer(const std::string &filename, int &bufferSize,
 	}
 }
 //----------------------------------------------------------------------------
+std::string ResourceManager::LoadBuffer(const std::string &filename, 
+	bool fromPathRaw)
+{
+	std::string buf;
+
+	if (!fromPathRaw)
+	{
+		int bufferSize = 0;
+		char *buffer = 0;
+		if (LoadBuffer(filename, bufferSize, buffer))
+		{
+			buf.resize(bufferSize);
+			char *dst = (char*)buf.c_str();
+			memcpy(dst, buffer, bufferSize);
+
+			return buf;
+		}
+	}
+	else
+	{
+		int bufferSize = 0;
+		char *buffer = 0;
+		FileIO::Load(filename, true, bufferSize, buffer);
+		if (bufferSize > 0)
+		{
+			buf.resize(bufferSize);
+			char *dst = (char*)buf.c_str();
+			memcpy(dst, buffer, bufferSize);
+			delete1(buffer);
+		}
+	}
+
+	return buf;
+}
+//----------------------------------------------------------------------------
 bool ResourceManager::LoadBuffer(const std::string &filename, std::string &buf)
 {
 	int bufferSize = 0;

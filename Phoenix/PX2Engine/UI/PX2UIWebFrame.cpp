@@ -6,6 +6,7 @@
 #include "PX2EngineUICanvas.hpp"
 #include "PX2Mutex.hpp"
 #include "PX2ScopedCS.hpp"
+#include "PX2GraphicsRoot.hpp"
 using namespace PX2;
 
 #if defined (__ANDROID__)
@@ -350,7 +351,6 @@ mIsAcceptKeyboardInput(true)
 	mImagePicBox->LocalTransform.SetTranslateY(-1.0f);
 	mImagePicBox->SetAnchorHor(0.0f, 1.0f);
 	mImagePicBox->SetAnchorVer(0.0, 1.0f);
-	mImagePicBox->GetUIPicBox()->SetTexture("Data/engine/block.png");
 	mImagePicBox->GetUIPicBox()->SetUserData("WebFrame", this);
 	Material *mtl = mImagePicBox->GetUIPicBox()->GetMaterialInstance()->GetMaterial();
 	mtl->GetPixelShader(0, 0)->SetFilter(0, Shader::SF_LINEAR);
@@ -381,6 +381,15 @@ mIsAcceptKeyboardInput(true)
 	mWebView = msWebCore->CreateWebView(512, 512);
 	mWebView->set_js_method_handler(handler);
 	mWebView->set_load_listener(handler);
+
+#if defined WIN32 || defined _WIN32
+
+	RenderWindow *rw = PX2_GR.GetMainWindow();
+	void *hwnd = rw->GetWindowHandle();
+	mWebView->set_parent_window((NativeWindow)hwnd);
+
+#endif
+
 	mBitmapSurface = 0;
 #endif
 
@@ -406,7 +415,7 @@ UIWebFrame::~UIWebFrame()
 
 	if (msWebCore && mNumberOfViews == 0)
 	{
-		msWebCore->Shutdown();
+	//	msWebCore->Shutdown();
 		msWebCore = 0;
 	}
 
@@ -571,6 +580,19 @@ void UIWebFrame::Paste()
 #endif
 }
 //----------------------------------------------------------------------------
+void UIWebFrame::CreateJSGlobalVaiable(const std::string &name, 
+	const std::string &val)
+{
+#if defined (__ANDROID__)
+#elif defined PX2_USE_AWESOMIUM
+	std::string strEmpty;
+	JSValue sjVal = mWebView->CreateGlobalJavascriptObject(
+		WebString::CreateFromUTF8(name.c_str(), 0));
+	sjVal = WebString::CreateFromUTF8(val.c_str(), 0);
+#else
+#endif
+}
+//----------------------------------------------------------------------------
 std::string UIWebFrame::EvaluateJS(const std::string &js)
 {
 #if defined (__ANDROID__)
@@ -602,23 +624,29 @@ void UIWebFrame::OnEvent(Event *ent)
 #if defined PX2_USE_AWESOMIUM
 	if (mIsAcceptKeyboardInput)
 	{
-		if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyPressed))
+		//if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyPressed))
+		//{
+		//	InputEventData ied = ent->GetData<InputEventData>();
+		//	OnKeyCodePressed(ied.KCode);
+		//}
+		//else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyReleased))
+		//{
+		//	InputEventData ied = ent->GetData<InputEventData>();
+		//	OnKeyCodeReleased(ied.KCode);
+		//}
+		//else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyChar))
+		//{
+		//	InputEventData ied = ent->GetData<InputEventData>();
+		//	OnKeyCodeChar(ied.KChar);
+		//}
+
+		if (InputEventSpace::IsEqual(ent, InputEventSpace::MsgRawWin32))
 		{
-			InputEventData ied = ent->GetData<InputEventData>();
-			OnKeyCodePressed(ied.KCode);
-		}
-		else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyReleased))
-		{
-			InputEventData ied = ent->GetData<InputEventData>();
-			OnKeyCodeReleased(ied.KCode);
-		}
-		else if (InputEventSpace::IsEqual(ent, InputEventSpace::KeyChar))
-		{
-			InputEventData ied = ent->GetData<InputEventData>();
-			OnKeyCodeChar(ied.KChar);
+			InputEventData data = ent->GetData<InputEventData>();
+			WebKeyboardEvent ent(data.Msg, data.WParam, data.LParam);
+			mWebView->InjectKeyboardEvent(ent);
 		}
 	}
-
 #endif
 }
 //----------------------------------------------------------------------------
@@ -693,7 +721,8 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	}
 
 #elif defined PX2_USE_AWESOMIUM
-	msWebCore->Update();
+	if (msWebCore)
+		msWebCore->Update();
 #endif
 
 	if (mIsUpdateToTex)

@@ -57,6 +57,7 @@ namespace PX2
 		void Copy();
 		void Paste();
 
+		void CreateJSGlobalVaiable(const std::string &name, const std::string &val);
 		std::string EvaluateJS(const std::string &js);
 
 		void SetScalesPageToFit(const bool scalesPageToFit);

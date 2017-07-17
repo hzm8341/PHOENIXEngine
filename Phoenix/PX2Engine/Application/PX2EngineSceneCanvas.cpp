@@ -20,6 +20,7 @@ mIsShadowMapConfigChanged(true),
 mIsBloomConfigChanged(true)
 {
 	mScreenCamera = new0 Camera(false);
+	mScreenCamera->SetName("ScreenCamera");
 	mScreenCamera->SetAxes(AVector::UNIT_Y, AVector::UNIT_Z, AVector::UNIT_X);
 
 	mPicBox_Shadow = new0 UIPicBox();

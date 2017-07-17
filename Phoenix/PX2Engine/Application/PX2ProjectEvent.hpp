@@ -26,6 +26,7 @@ namespace PX2
 	PX2_DECLARE_EVENT_END(ProjectES)
 
 	PX2_DECLARE_EVENT_BEGIN(PX2_ENGINE_ITEM ProjectES_Internal)
+	PX2_EVENT(ProjectSizeSameWithScreenChanged)
 	PX2_EVENT(SceneShadowChanged)
 	PX2_EVENT(SceneUICamerasChanged)
 	PX2_EVENT(UISizeChanged)

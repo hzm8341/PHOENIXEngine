@@ -550,3 +550,89 @@ void RenderWindow::OnEvent(Event *event)
 	}
 }
 //----------------------------------------------------------------------------
+int RenderWindow::sNextMenuID = 301;
+//----------------------------------------------------------------------------
+int RenderWindow::AddMenuMain(const std::string &title)
+{
+	if (mIsMain)
+	{
+		AddMenuData dt;
+		dt.ParentID = 0;
+		dt.ID = _GetNextMenuID();
+		dt.Title = title;
+		dt.Callback = "";
+
+		Event *ent = GraphicsES::CreateEventX(GraphicsES::WindowAddMenu);
+		ent->SetData(dt);
+		PX2_EW.BroadcastingLocalEvent(ent);
+		
+		return dt.ID;
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+int RenderWindow::AddMenuSpearater(int parentID)
+{
+	if (mIsMain)
+	{
+		AddMenuData dt;
+		dt.ParentID = parentID;
+		dt.ID = 0;
+
+		Event *ent = GraphicsES::CreateEventX(GraphicsES::WindowAddMenu);
+		ent->SetData(dt);
+		PX2_EW.BroadcastingLocalEvent(ent);
+
+		return dt.ID;
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+int RenderWindow::AddMenuSub(int parentID, const std::string &title,
+	const std::string &callback)
+{
+	if (mIsMain)
+	{
+		AddMenuData dt;
+		dt.ParentID = parentID;
+		dt.ID = _GetNextMenuID();
+		dt.Title = title;
+		dt.Callback = callback;
+
+		Event *ent = GraphicsES::CreateEventX(GraphicsES::WindowAddMenu);
+		ent->SetData(dt);
+		PX2_EW.BroadcastingLocalEvent(ent);
+
+		return dt.ID;
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+void RenderWindow::OpenFileDlg(const std::string &ext, const std::string &callBack)
+{
+	Event *ent = GraphicsES::CreateEventX(GraphicsES::WindowOpenFileDlg);
+	OpenSaveFileDlgData dt;
+	dt.ExtStr = ext;
+	dt.Callback = callBack;
+	ent->SetData<OpenSaveFileDlgData>(dt);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void RenderWindow::SaveFileDlg(const std::string &ext, const std::string &callBack)
+{
+	Event *ent = GraphicsES::CreateEventX(GraphicsES::WindowSaveFileDlg);
+	OpenSaveFileDlgData dt;
+	dt.ExtStr = ext;
+	dt.Callback = callBack;
+	ent->SetData<OpenSaveFileDlgData>(dt);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+int RenderWindow::_GetNextMenuID()
+{
+	return sNextMenuID++;
+}
+//----------------------------------------------------------------------------

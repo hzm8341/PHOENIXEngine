@@ -3,6 +3,20 @@
 	class Project
 	{
 		// SINGLETON Application
+		
+		// ScreenOrientation
+	public:
+		enum ScreenOrientation
+		{
+			SO_LANDSCAPE,
+			SO_PORTRAIT,
+			SO_MAX_TYPE
+		};
+		void SetScreenOrientation(ScreenOrientation so);
+		ScreenOrientation GetScreenOrientation() const;
+		
+		void SetSizeSameWithScreen(bool sizeWithScreen);
+		bool IsSizeSameWithScreen() const;
 	
 		// Scene
 	public:

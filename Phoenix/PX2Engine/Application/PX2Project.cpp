@@ -22,7 +22,8 @@ PX2_IMPLEMENT_RTTI(PX2, Object, Project);
 Project::Project() :
 mEdit_UICameraPercent(1.0f),
 mScreenOrientation(SO_LANDSCAPE),
-mIsPublish(false)
+mIsPublish(false),
+mIsSizeSameWithScreen(false)
 {
 	mUI = new0 UI();
 
@@ -55,15 +56,29 @@ void Project::SetScreenOrientation(ScreenOrientation so)
 	if (SO_LANDSCAPE == mScreenOrientation)
 	{
 #if defined __ANDROID__
-	//	SetScreenOrientate(1);
+		SetScreenOrientate(1);
 #endif
 	}
 	else
 	{
 #if defined __ANDROID__
-	//	SetScreenOrientate(0);
+		SetScreenOrientate(0);
 #endif
 	}
+}
+//----------------------------------------------------------------------------
+void Project::SetSizeSameWithScreen(bool sizeWithScreen)
+{
+	mIsSizeSameWithScreen = sizeWithScreen;
+
+	Event *ent = ProjectES_Internal::CreateEventX(
+		ProjectES_Internal::ProjectSizeSameWithScreenChanged);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+bool Project::IsSizeSameWithScreen() const
+{
+	return mIsSizeSameWithScreen;
 }
 //----------------------------------------------------------------------------
 Project::ScreenOrientation Project::_FromSOStr(const std::string &str)
@@ -136,6 +151,15 @@ bool Project::SaveConfig(const std::string &filename)
 	// setting
 	XMLNode settingNode = projNode.NewChild("edit_setting");
 	settingNode.SetAttributeFloat("uicamerapercent", mEdit_UICameraPercent);
+
+	// plugins
+	XMLNode nodePlugins = projNode.NewChild("plugins");
+	for (int i = 0; i < (int)mPlugins.size(); i++)
+	{
+		const std::string &pluginName = mPlugins[i];
+		XMLNode nodePlugin = nodePlugins.NewChild("var");
+		nodePlugin.SetAttributeString("name", pluginName);
+	}
 
 	if (data.SaveFile(filename))
 	{
@@ -226,6 +250,20 @@ bool Project::Load(const std::string &filename)
 
 			// ui
 			mUIFilename = outPath + outBaseName + "_ui.px2obj";
+
+			// plugins
+			XMLNode nodePlugins = rootNode.GetChild("plugins");
+			if (!nodePlugins.IsNull())
+			{
+				XMLNode nodePlugin = nodePlugins.IterateChild();
+				while (!nodePlugin.IsNull())
+				{
+					std::string name = nodePlugin.AttributeToString("name");
+					mPlugins.push_back(name);
+
+					nodePlugin = nodePlugins.IterateChild(nodePlugin);
+				}
+			}
 		}
 	}
 	else

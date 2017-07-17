@@ -316,9 +316,20 @@ void Renderable::OnShareDraw(Renderable *shareMesh)
 
 	for (int i = 0; i < numIB; i++)
 	{
-		unsigned short *shareIndexs = (unsigned short*)shareMesh->GetIndexBuffer()->GetData();
-		unsigned short *indexs = (unsigned short*)GetIndexBuffer()->GetData();
-		shareIndexs[shareNumIB + i] = (unsigned short)(shareNumVB + indexs[i]);
+		IndexBuffer *ib = shareMesh->GetIndexBuffer();
+		if (ib)
+		{
+			unsigned short *shareIndexs = (unsigned short*)shareMesh->GetIndexBuffer()->GetData();
+			if (shareIndexs)
+			{
+				IndexBuffer *myIB = GetIndexBuffer();
+				if (myIB)
+				{
+					unsigned short *indexs = (unsigned short*)myIB->GetData();
+					shareIndexs[shareNumIB + i] = (unsigned short)(shareNumVB + indexs[i]);
+				}
+			}
+		}
 	}
 
 	shareNumVB += numVB;

@@ -58,64 +58,64 @@ EU_TimeLineFrame::EU_TimeLineFrame()
 		if (0 == i)
 		{
 			but->SetName("Fit_Horz");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/fit_horz.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/fit_horz.png");
 		}
 		else if (1 == i)
 		{
 			but->SetName("Fit_Vert");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/fit_vert.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/fit_vert.png");
 		}
 		else if (2 == i)
 		{
 			but->SetName("Fit_All");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/fit_all.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/fit_all.png");
 		}
 		else if (3 == i)
 		{
 			but->SetName("Fit_Select");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/fit_select.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/fit_select.png");
 		}
 
 		else if (4 == i)
 		{
 			but->SetName("Pan");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/pan.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/pan.png");
 		}
 		else if (5 == i)
 		{
 			but->SetName("Zoom");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/zoom.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/zoom.png");
 		}
 
 		else if (6 == i)
 		{
 			but->SetName("Curve_Auto");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/curve_auto.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/curve_auto.png");
 		}
 		else if (7 == i)
 		{
 			but->SetName("Curve_Clamped");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/curve_clamped.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/curve_clamped.png");
 		}
 		else if (8 == i)
 		{
 			but->SetName("Curve_User");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/curve_user.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/curve_user.png");
 		}
 		else if (9 == i)
 		{
 			but->SetName("Curve_Break");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/curve_break.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/curve_break.png");
 		}
 		else if (10 == i)
 		{
 			but->SetName("Curve_Linear");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/curve_linear.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/curve_linear.png");
 		}
 		else if (11 == i)
 		{
 			but->SetName("Curve_Constant");
-			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/curve_constant.png");
+			fPicBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/curve_constant.png");
 		}
 
 		but->SetMemUICallback(this, (UIFrame::MemUICallback)(&EU_TimeLineFrame

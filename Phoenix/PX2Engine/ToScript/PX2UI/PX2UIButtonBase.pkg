@@ -36,6 +36,8 @@
 		float GetStateAlpha(ButtonState state) const;
 		void SetStateBrightness(ButtonState state, float brightness);
 		float GetStateBrightness(ButtonState state) const;
+		
+		void SetStateColorDefaultWhite();
 
 		virtual void SetActivate(bool act);
 

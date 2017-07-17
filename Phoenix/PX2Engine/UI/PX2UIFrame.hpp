@@ -71,6 +71,8 @@ namespace PX2
 		void SetPickRangeMovable(Movable *mov);
 		Movable *GetPickRangeMovable();
 
+		void SetPickRangeMovables(std::vector<SizeNode*> nodes);
+
 		virtual void SetRangeAcceptFrame(UIFrame *frame);
 		UIFrame *GetRangeAcceptFrame();
 
@@ -91,6 +93,7 @@ namespace PX2
 
 		float mRoundRadius;
 		MovablePtr mPickRangeMovable;
+		std::vector<SizeNode*> mPickRangeSizeNodes;
 		std::vector<UICallback> mUICallbacks;
 		UIFrame *mMemObject;
 		MemUICallback mMemUICallback;

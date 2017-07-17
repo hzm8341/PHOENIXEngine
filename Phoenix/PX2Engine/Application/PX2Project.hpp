@@ -40,11 +40,15 @@ namespace PX2
 		void SetScreenOrientation(ScreenOrientation so);
 		ScreenOrientation GetScreenOrientation() const;
 
+		void SetSizeSameWithScreen(bool sizeWithScreen);
+		bool IsSizeSameWithScreen() const;
+
 	protected:
 		ScreenOrientation _FromSOStr(const std::string &str);
 		std::string _ToSOStr(ScreenOrientation so);
 
 		ScreenOrientation mScreenOrientation;
+		bool mIsSizeSameWithScreen;
 
 		// Load Save
 	public:
@@ -89,6 +93,13 @@ namespace PX2
 	protected:
 		std::string mUIFilename;
 		UIPtr mUI;
+
+		// Plugins
+	public:
+		const std::vector<std::string> &GetPlugins() const;
+
+	protected:
+		std::vector<std::string> mPlugins;
 
 		// edit setting
 	public:

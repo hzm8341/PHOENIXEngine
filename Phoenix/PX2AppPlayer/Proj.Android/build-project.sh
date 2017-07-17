@@ -22,8 +22,10 @@ if [ $APPPLAY_MYAPP_BIN_ROOT"xyz" != "xyz" ]; then
 fi
 
 #project params
-PROJECT_NAME=PhoenixFrame
+PROJECT_NAME=WhatIf
 PROJECT_ROOT=$ENGINE_ROOT_LOCAL/Projects/Client/$PROJECT_NAME
+
+PLUGIN_NAME=BlueBlock
 
 #appplay params
 APPPLAY_MYAPP_ANDROID_ROOT=$ENGINE_ROOT_LOCAL/PX2AppPlayer/Proj.Android
@@ -37,6 +39,10 @@ mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
 mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine
 mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine_mtls
 mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PROJECT_NAME
+
+if [ $PLUGIN_NAME"xyz" != "Nonexyz" ]; then
+	mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PLUGIN_NAME
+fi
 
 # copy resources
 
@@ -76,6 +82,19 @@ if [ -f $file ]; then
 cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PROJECT_NAME
 fi
 done
+
+# blueblock
+if [ $PLUGIN_NAME"xyz" != "Nonexyz" ]; then
+	for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$PLUGIN_NAME/*
+	do
+		if [ -d $file ]; then
+		cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PLUGIN_NAME
+		fi
+		if [ -f $file ]; then
+		cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PLUGIN_NAME
+		fi
+	done
+fi
 
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/assets
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/obj/local/armeabi

@@ -239,6 +239,9 @@ namespace PX2
 		bool LoadUI(const std::string &pathname);
 		void CloseUI();
 
+		bool LoadPlugins(const std::vector<std::string> &plugins);
+		void ClosePlugins(const std::vector<std::string> &plugins);
+
 		void GenerateProjectFileList(const std::string &projName);
 
 		Canvas *GetEngineCanvas();

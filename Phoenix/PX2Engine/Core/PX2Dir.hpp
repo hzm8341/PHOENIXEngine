@@ -29,12 +29,12 @@ namespace PX2
 		}
 	};
 
-	class PX2_ENGINE_ITEM Dir
+	class PX2_ENGINE_ITEM DirP
 	{
 	public:
-		Dir();
-		Dir(const std::string& dir);
-		~Dir();
+		DirP();
+		DirP(const std::string& dir);
+		~DirP();
 
 		enum DirFlags
 		{

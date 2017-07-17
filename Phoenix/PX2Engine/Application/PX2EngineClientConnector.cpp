@@ -333,7 +333,7 @@ bool EngineClientConnector::IsBroadcastInfo() const
 //----------------------------------------------------------------------------
 void EngineClientConnector::BroadcastInfoToLocalNet(int port)
 {
-	SocketAddress sktAddr("255.255.255.255", (int16_t)port);
+	SocketAddress sktAddr("255.255.255.255", EngineUDPPortClient);
 	std::string name = PX2_APP.GetHostName();
 	std::string bufStr = CMD_EngineUDPInfoTag + " " + name;
 

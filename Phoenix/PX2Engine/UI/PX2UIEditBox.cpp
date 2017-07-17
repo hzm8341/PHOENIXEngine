@@ -128,6 +128,8 @@ mIsPressed(false)
 	SetWidget(true);
 
 	SetText("");
+
+	RegistToScriptSystem();
 }
 //----------------------------------------------------------------------------
 UIEditBox::~UIEditBox()
@@ -616,6 +618,8 @@ void UIEditBox::PostLink()
 	{
 		mSelectPicBox->PostLink();
 	}
+
+	RegistToScriptSystem();
 }
 //----------------------------------------------------------------------------
 bool UIEditBox::Register(OutStream& target) const

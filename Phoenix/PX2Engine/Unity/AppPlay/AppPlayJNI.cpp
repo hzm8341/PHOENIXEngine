@@ -381,31 +381,20 @@ extern "C"
 		}
 	}
 
-	jstring stoJstring(JNIEnv* env, const char* pat, int length)
-	{
-		jclass strClass = env->FindClass("java/lang/String");
-
-		jmethodID ctorID = env->GetMethodID(strClass, "<init>", "([BLjava/lang/String;)V");
-		jbyteArray bytes = env->NewByteArray(length);
-		env->SetByteArrayRegion(bytes, 0, length, (jbyte*)pat);
-
-		jstring encoding = env->NewStringUTF("utf-8");
-
-		return (jstring)env->NewObject(strClass, ctorID, bytes, encoding);
-	}
-
-	void BluetoothSend(const char *buf, int length, bool isAppendCRLF)
+	void BluetoothSend(const char *buf, int length)
 	{
 		JNIMethodInfo t;
 
-		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSend", "(Ljava/lang/String;Z)V"))
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSend", "([B)V"))
 		{
-			//jstring jBuf = t.env->NewStringUTF(buf);
+			jbyteArray bytes = t.env->NewByteArray(length);
+			t.env->SetByteArrayRegion(bytes, 0, length, (jbyte*)buf);
 
-			jstring jBuf = stoJstring(t.env, buf, length);
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, bytes);
+			
+			//t.env->ReleaseByteArrayElements(bytes, 0, 0);
+			t.env->DeleteLocalRef(bytes);
 
-			t.env->CallStaticVoidMethod(t.classID, t.methodID, jBuf, isAppendCRLF);
-			t.env->DeleteLocalRef(jBuf);
 			t.env->DeleteLocalRef(t.classID);
 		}
 	}
@@ -451,6 +440,16 @@ extern "C"
 		{
 			t.env->CallStaticVoidMethod(t.classID, t.methodID);
 			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void VoiceEnableAutoSpeak(bool isEnable)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "EnableAutoSpeak", "(Z)V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, isEnable);
 		}
 	}
 

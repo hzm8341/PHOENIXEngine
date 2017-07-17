@@ -19,6 +19,7 @@ namespace PX2
 	public:
 		TCPServerDispatcher(TCPServerConnectionFactory *factory, 
 			ThreadPool& threadPool, TCPServerParams *params);
+		virtual ~TCPServerDispatcher();
 
 		virtual void Run();
 
@@ -38,8 +39,6 @@ namespace PX2
 		const TCPServerParams *params() const;
 
 	protected:
-		~TCPServerDispatcher();
-
 		void BeginConnection();
 		void EndConnection();
 

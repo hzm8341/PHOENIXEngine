@@ -89,6 +89,7 @@ bool ScriptController::Update(double applicationTime, double elapsedTime)
 //---------------------------------------------------------------------------
 void ScriptController::FixUpdate()
 {
+	ScriptOnFixUpdate();
 }
 //---------------------------------------------------------------------------
 void ScriptController::Reset()

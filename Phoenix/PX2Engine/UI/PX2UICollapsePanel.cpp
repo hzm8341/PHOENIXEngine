@@ -23,7 +23,8 @@ mExpandBarHeight(40.0f)
 	mContentFrame->SetAnchorParamHor(1.0f, -sliderSize);
 	mContentFrame->SetAnchorVer(1.0f, 1.0f);
 	mContentFrame->SetPivot(0.5f, 1.0f);
-	mContentFrame->CreateAddBackgroundPicBox();
+	UIPicBox *picBack = mContentFrame->CreateAddBackgroundPicBox();
+	picBack->UseAlphaBlend(true);
 
 	mSlider = new0 UISlider();
 	mSlider->LocalTransform.SetTranslateY(-1.0f);
@@ -32,7 +33,7 @@ mExpandBarHeight(40.0f)
 	mSlider->SetAnchorHor(1.0f, 1.0f);
 	mSlider->SetAnchorParamHor(-sliderSize*0.5f, 0.0f);
 	mSlider->SetAnchorVer(0.0f, 1.0f);
-	mSlider->SetSize(sliderSize, 0.0f);
+	mSlider->SetWidth(sliderSize);
 	mSlider->SetPivot(0.5f, 0.5f);
 	AttachChild(mSlider);
 	mSlider->SetSliderLength(200.0f);
@@ -57,6 +58,13 @@ float UICollapsePanel::GetExpandBarHeight() const
 	return mExpandBarHeight;
 }
 //----------------------------------------------------------------------------
+void UICollapsePanel::SetSliderWidth(float size)
+{
+	mSlider->SetWidth(size);
+	mSlider->SetAnchorParamHor(-size*0.5f, 0.0f);
+	mContentFrame->SetAnchorParamHor(1.0f, -size);
+}
+//----------------------------------------------------------------------------
 void UICollapsePanel::RemoveAllItems()
 {
 	mContentFrame->DetachAllChildren();
@@ -68,6 +76,7 @@ UICollapseItem *UICollapsePanel::AddItem(const std::string &name)
 {
 	UICollapseItem *item = new0 UICollapseItem();
 	mContentFrame->AttachChild(item);
+	item->SetExpandBarHeight(mExpandBarHeight);
 	item->SetName(name);
 	item->SetCollapsedPanel(this);
 

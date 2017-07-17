@@ -52,6 +52,9 @@ namespace PX2
 		void SetTextColor(const Float3 &textColor);
 		const Float3 &GetTextColor() const;
 
+		void SetItemBackColor(const Float3 &backColor);
+		const Float3 &GetItemBackColor() const;
+
 		virtual void OnSizeChanged();
 
 	protected:
@@ -74,6 +77,7 @@ namespace PX2
 		std::vector<UIItemPtr> mItems;
 		UISliderPtr mSlider;
 		Float3 mTextColor;
+		Float3 mItemBackColor;
 
 		std::vector<UIItemPtr> mSelectedItems;
 		int mSelectedIndex;

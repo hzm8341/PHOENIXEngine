@@ -44,7 +44,7 @@ namespace PX2
 		bool IsUseThisPointer() const;
 
 		void SetClassName(const std::string &className);
-		const std::string &GetClassName() const;
+		const std::string &GetClsName() const;
 
 		// regist
 		void RegistFunObj(const FunObject &funObj);
