@@ -10,6 +10,29 @@ open soruce cross platform system for Games/AR/VR/AI/IOT
 	PhoniexIOT的目的是为了解决机器人开发中的大难题，众所周知，开发机器人大多用ROS系统，但是因为其Linux环境的限制（虽然支	
 	Windows桌面系统，但没有开发板可以装Windows），开发难度很大。我们希望借助游戏开发中的先进技术，通过脚本编程，让机器人开发更加快速。
 
+## 示例程序
+
+![](https://github.com/PhoenixCreate/PhoenixCreate/blob/master/Documentation/appplay.png?raw=true)
+
+## 编辑器
+
+![](https://raw.githubusercontent.com/PhoenixCreate/PhoenixCreate/master/Documentation/editor.png)
+
+## 机器人
+
+Arduino 入门机器人
+
+![](https://github.com/PhoenixCreate/PhoenixCreate/blob/master/Documentation/robot0.jpg?raw=true)
+
+借助PhoneixCreate和PhoenixFrame，可以在手机端对Arduino进行编程。
+
+Raspberry 树莓派LinuxARM机器人
+
+![](https://github.com/PhoenixCreate/PhoenixCreate/blob/master/Documentation/robot1.jpg?raw=true)
+
+借助PhoenixCreate系统，使用Lua你可以在树莓派上构建一个高级机器人系统。
+
+
 ## 引擎特性
 
   	内置EventSystem，通过发送/广播Event，通知EventHandler进行消息相应
@@ -67,14 +90,6 @@ open soruce cross platform system for Games/AR/VR/AI/IOT
   	脚本系统支持，支持面向对象的Lua开发
 
   	跨平台运行于Windows，Android，IOS，Linux/LinuxARM
-
-## 示例程序
-
-	
-
-## 编辑器
-
-![](https://raw.githubusercontent.com/PhoenixCreate/PhoenixCreate/master/Documentation/editor.png)
 
 
 ## 使用方法
