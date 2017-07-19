@@ -5,6 +5,7 @@
 #include "PX2Base64.hpp"
 #include "PX2StringTokenizer.hpp"
 #include "PX2FileIO.hpp"
+#include "PX2ResourceManager.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -61,8 +62,28 @@ void CSA_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				}
 				else if ("saveArduino" == valStrCMD)
 				{
-					FileIO::Save(valStrFilename, false,
-						contentStr.length(), contentStr.c_str());
+					std::string outPath;
+					std::string fileName;
+					std::string outBaseName;
+					std::string outExt;
+					StringHelp::SplitFullFilename(valStrFilename, outPath, 
+						outBaseName, outExt);
+					std::string adjugeStr = valStrFilename.substr(outPath.length() - outBaseName.length() - 1, outBaseName.length());
+					if (adjugeStr == outBaseName)
+					{
+						// not need create folder
+						std::string dstFilename = valStrFilename;
+						FileIO::Save(dstFilename, false,
+							contentStr.length(), contentStr.c_str());
+					}
+					else
+					{
+						PX2_RM.CreateFloder(outPath, outBaseName + "/");
+						std::string dstFilename = outPath + outBaseName + "/" +
+							outBaseName + "." + outExt;
+						FileIO::Save(dstFilename, false,
+							contentStr.length(), contentStr.c_str());
+					}
 				}
 			}
 		}

@@ -4,7 +4,7 @@ require("Data/BlocklyArduino/scripts/lua/language.lua")
 require("Data/BlocklyArduino/scripts/lua/language_ansi.lua")
 
 function preplay()
-	PX2_APP:SetShowInfo(false)
+	PX2_APP:SetShowInfo(true)
 	g_AddLanguage()
 	g_AddLanguage_ANSI()
 end

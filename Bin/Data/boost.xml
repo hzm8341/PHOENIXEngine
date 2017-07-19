@@ -4,7 +4,7 @@
 			<var width="500" height="900"/>
 		</config>
 		<play>
-			<var projectname="General" playlogicmode="logic" isshowinfo="true" datawrite="false"/>
+			<var projectname="BlocklyArduino" playlogicmode="logic" isshowinfo="true" datawrite="false"/>
 		</play>
 		<plugins>
 			<var name=""/>
@@ -12,7 +12,7 @@
 	</app>
 	<server>
 		<play>
-			<var projectname="General" port="18180" nummaxconnection="400"/>
+			<var projectname="BlocklyArduino" port="18180" nummaxconnection="400"/>
 		</play>
 		<plugins>
 			<var name=""/>

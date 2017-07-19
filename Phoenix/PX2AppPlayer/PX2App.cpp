@@ -599,7 +599,7 @@ void App::_OnOpenFile(std::string fileExt, const std::string &callback)
 	ofn.nMaxFile = sizeof(strFilename);//缓冲区长度  
 	ofn.lpstrInitialDir = NULL;//初始目录为默认  
 	ofn.lpstrTitle = TEXT("请选择一个文件");//使用系统默认标题留空即可  
-	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;//文件、目录必须存在，隐藏只读选项  
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;//文件、目录必须存在，隐藏只读选项  
 	if (GetOpenFileName(&ofn))
 	{
 		if (!callback.empty())
@@ -625,18 +625,16 @@ void App::_OnSaveFile(std::string fileExt, const std::string &callback)
 	ofn.nMaxFile = sizeof(strFilename);//缓冲区长度  
 	ofn.lpstrInitialDir = NULL;//初始目录为默认  
 	ofn.lpstrTitle = TEXT("请选择一个文件");//使用系统默认标题留空即可  
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;//目录必须存在，覆盖文件前发出警告  
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;//目录必须存在，覆盖文件前发出警告  
 	ofn.lpstrTitle = TEXT("保存到");//使用系统默认标题留空即可  
 	ofn.lpstrDefExt = TEXT("cpp");//默认追加的扩展名  
 	if (GetSaveFileName(&ofn))
 	{
-		std::string outPath;
-		std::string outBaseFileName;
-		StringHelp::SplitFilename(std::string(strFilename), outPath, outBaseFileName);
+		std::string fileName = StringHelp::StandardiseFilename(strFilename);
 
 		if (!callback.empty())
 		{
-			PX2_SC_LUA->CallFunction(callback, 0, outBaseFileName);
+			PX2_SC_LUA->CallFunction(callback, 0, fileName);
 		}
 	}
 }

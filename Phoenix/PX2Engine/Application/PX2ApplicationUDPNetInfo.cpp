@@ -68,6 +68,7 @@ UDPNetInfo::UDPNetInfo()
 {
 	ClientID = 0;
 	IsConnected = false;
+	UpdateTiming = 0.0f;
 }
 //----------------------------------------------------------------------------
 UDPNetInfo::~UDPNetInfo()
