@@ -117,7 +117,8 @@ Raspberry 树莓派LinuxARM机器人
 
 ### 依赖库
 
-ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
+ThirdPartiesLibs.zip：[http://pan.baidu.com/s/1gfjA2QZ](http://pan.baidu.com/s/1gfjA2QZ)
+密码：omz3
 
 下载放置Phoenix/Phoenix目录下，解压。
 
