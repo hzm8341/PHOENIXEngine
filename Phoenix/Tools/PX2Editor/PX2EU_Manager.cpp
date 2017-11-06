@@ -57,8 +57,8 @@ bool EU_Manager::Initlize(const std::string &tag)
 
 	if ("2" == tag)
 	{
-		PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naPreStart");
-		PX2_SC_LUA->CallFileFunction("DataNIRVANA2/scripts/start.lua", "naStart");
+		PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", "naPreStart");
+		PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", "naStart");
 	}
 	else if ("wx" == tag)
 	{

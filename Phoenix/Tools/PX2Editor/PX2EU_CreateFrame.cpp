@@ -19,7 +19,7 @@ EU_CreateFrame::EU_CreateFrame()
 	mTableFrame->SetTabWidth(50.0f);
 	mTableFrame->SetTabHeight(50.0f);
 	//mTableFrame->SetLayoutPos(UITabFrame::LPT_TOP);
-	mTableFrame->SetAui(false);
+	mTableFrame->SetUseSkin(false);
 	mTableFrame->SetAnchorHor(0.0f, 1.0f);
 	mTableFrame->SetAnchorVer(0.0f, 1.0f);
 

@@ -141,8 +141,6 @@ void EU_ConcoleFrame::_ProcessCmdStr(const std::string &cmdStr)
 	}
 	else if ("push" == strCmd)
 	{
-		std::string projName = strParam0;
-		ssc->BroadCastPushProject(projName);
 	}
 }
 //----------------------------------------------------------------------------

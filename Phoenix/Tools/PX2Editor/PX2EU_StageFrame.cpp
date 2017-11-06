@@ -1,7 +1,6 @@
 // PX2EU_StageFrame.cpp
 
 #include "PX2EU_StageFrame.hpp"
-#include "PX2EU_Manager.hpp"
 #include "PX2UISkinManager.hpp"
 #include "PX2Canvas.hpp"
 #include "PX2Creater.hpp"
@@ -243,11 +242,13 @@ void EU_StageFrame::OnEvent(Event *ent)
 	if (ProjectES::IsEqual(ent, ProjectES::NewProject) ||
 		ProjectES::IsEqual(ent, ProjectES::LoadedProject))
 	{
-		mLogoPicBox->Show(false);
+		if (mLogoPicBox)
+			mLogoPicBox->Show(false);
 	}
 	else if (ProjectES::IsEqual(ent, ProjectES::CloseProject))
 	{
-		mLogoPicBox->Show(true);
+		if (mLogoPicBox)
+			mLogoPicBox->Show(true);
 	}
 }
 //----------------------------------------------------------------------------

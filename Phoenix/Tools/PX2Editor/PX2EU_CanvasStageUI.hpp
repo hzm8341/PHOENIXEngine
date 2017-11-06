@@ -23,7 +23,7 @@ namespace PX2
 
 		virtual void Enable(bool enable);
 
-		void Draw(Renderer *renderer);
+		virtual void Draw(Renderer *renderer);
 
 	public:
 		virtual void OnEvent(Event *event);

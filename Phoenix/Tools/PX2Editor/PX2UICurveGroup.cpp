@@ -35,7 +35,7 @@ mCurveGroup(group)
 	mFBackground->SetColor(Float3(0.659f, 0.659f, 0.659f));
 	mFBackground->GetUIPicBox()->SetPicBoxType(UIPicBox::PBT_NINE);
 	mFBackground->GetUIPicBox()->SetTexCornerSize(Sizef(2.0f, 2.0f), Sizef(2.0f, 2.0f));
-	mFBackground->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic1.png");
+	mFBackground->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic1.png");
 	AttachChild(mFBackground);
 	mFBackground->LocalTransform.SetTranslateY(-0.5f);
 
@@ -45,7 +45,7 @@ mCurveGroup(group)
 	float boxXStart = 4.0f;
 	float boxZPos = 4.0f;
 	mBox0 = new0 UIFPicBox();
-	mBox0->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+	mBox0->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 	mBox0->SetColor(Float3::RED);
 	mBox0->SetSize(sizeBox);
 	mBox0->SetAnchorHor(0.0f, 0.0f);
@@ -58,7 +58,7 @@ mCurveGroup(group)
 	if (CurveGroup::CGT_FLOAT != cgType)
 	{
 		mBox1 = new0 UIFPicBox();
-		mBox1->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+		mBox1->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 		mBox1->SetColor(Float3::GREEN);
 		mBox1->SetSize(sizeBox);
 		mBox1->SetAnchorHor(0.0f, 0.0f);
@@ -73,7 +73,7 @@ mCurveGroup(group)
 	if (CurveGroup::CGT_FLOAT!=cgType && CurveGroup::CGT_FLOATRANGE!=cgType)
 	{
 		mBox2 = new0 UIFPicBox();
-		mBox2->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+		mBox2->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 		mBox2->SetColor(Float3::BLUE);
 		mBox2->SetSize(sizeBox);
 		mBox2->SetAnchorHor(0.0f, 0.0f);
@@ -88,7 +88,7 @@ mCurveGroup(group)
 	if (CurveGroup::CGT_FLOAT3RANGE == cgType)
 	{
 		mBox3 = new0 UIFPicBox();
-		mBox3->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+		mBox3->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 		mBox3->SetColor(Float3::RED / 2.0f);
 		mBox3->SetSize(sizeBox);
 		mBox3->SetAnchorHor(0.0f, 0.0f);
@@ -103,7 +103,7 @@ mCurveGroup(group)
 	if (CurveGroup::CGT_FLOAT3RANGE == cgType)
 	{
 		mBox4 = new0 UIFPicBox();
-		mBox4->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+		mBox4->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 		mBox4->SetColor(Float3::GREEN / 2.0f);
 		mBox4->SetSize(sizeBox);
 		mBox4->SetAnchorHor(0.0f, 0.0f);
@@ -118,7 +118,7 @@ mCurveGroup(group)
 	if (CurveGroup::CGT_FLOAT3RANGE == cgType)
 	{
 		mBox5 = new0 UIFPicBox();
-		mBox5->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+		mBox5->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 		mBox5->SetColor(Float3::BLUE / 2.0f);
 		mBox5->SetSize(sizeBox);
 		mBox5->SetAnchorHor(0.0f, 0.0f);
@@ -131,7 +131,7 @@ mCurveGroup(group)
 	}
 
 	mBox = new0 UIFPicBox();
-	mBox->GetUIPicBox()->SetTexture("DataNIRVANA2/images/icons/timeline/smallpic.png");
+	mBox->GetUIPicBox()->SetTexture("DataNIRVANAwx/images/icons/timeline/smallpic.png");
 	mBox->SetColor(Float3::YELLOW);
 	mBox->SetSize(sizeBox);
 	mBox->SetAnchorHor(0.0f, 0.0f);

@@ -100,7 +100,7 @@ void EU_ContentFrame::SetContString(const std::string &str)
 	std::string htmlContent;
 
 	std::string htmlExt = "index_lua.html";
-	std::string htmlPath = "DataNIRVANA2/codemirror/demo/";
+	std::string htmlPath = "DataNIRVANAwx/codemirror/demo/";
 
 	htmlPath += htmlExt;
 
@@ -114,12 +114,12 @@ void EU_ContentFrame::SetContString(const std::string &str)
 		{
 			htmlContent.replace(pos, findKey.length(), str);
 
-			bool ret = FileIO::Save("DataNIRVANA2/codemirror/demo/indexTemp.html", false, (int)htmlContent.length(),
+			bool ret = FileIO::Save("DataNIRVANAwx/codemirror/demo/indexTemp.html", false, (int)htmlContent.length(),
 				htmlContent.c_str());
 			PX2_UNUSED(ret);
 		}
 
-		webFrame->LoadURL("file:///DataNIRVANA2/codemirror/demo/indexTemp.html");
+		webFrame->LoadURL("file:///DataNIRVANAwx/codemirror/demo/indexTemp.html");
 	}
 
 	webFrame->SetUpdateToTex(true);
@@ -165,7 +165,7 @@ void EU_ContentFrame::SetCont(ContentType type, const std::string &filename)
 			std::string htmlContent;
 
 			std::string htmlExt = "index_lua.html";
-			std::string htmlPath = "DataNIRVANA2/codemirror/demo/";
+			std::string htmlPath = "DataNIRVANAwx/codemirror/demo/";
 
 			if ("txt" == extStr)
 				htmlExt = "index_txt.html";
@@ -184,12 +184,12 @@ void EU_ContentFrame::SetCont(ContentType type, const std::string &filename)
 				{
 					htmlContent.replace(pos, findKey.length(), str);
 
-					bool ret = FileIO::Save("DataNIRVANA2/codemirror/demo/indexTemp.html", true, (int)htmlContent.length(),
+					bool ret = FileIO::Save("DataNIRVANAwx/codemirror/demo/indexTemp.html", true, (int)htmlContent.length(),
 						htmlContent.c_str());
 					PX2_UNUSED(ret);
 				}
 
-				webFrame->LoadURL("file:///DataNIRVANA2/codemirror/demo/indexTemp.html");
+				webFrame->LoadURL("file:///DataNIRVANAwx/codemirror/demo/indexTemp.html");
 			}
 
 			webFrame->SetUpdateToTex(true);
