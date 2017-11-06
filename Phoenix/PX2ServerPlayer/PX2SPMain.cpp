@@ -87,8 +87,8 @@ int main(int numArguments, char* arguments[])
 		logger->SetLogFileInfo(false);
 		logger->StartLogger();
 
-		AppBoostInfo boostInfo = app->GetBoostServerInfo();
-		std::string projName = boostInfo.ProjectName;
+		AppBoostInfo boostInfo = app->GetBoostInfo();
+		std::string projName = boostInfo.ServerProjectName;
 		if (!cmdProjectName.empty())
 			projName = cmdProjectName;
 		int port = boostInfo.Port;
