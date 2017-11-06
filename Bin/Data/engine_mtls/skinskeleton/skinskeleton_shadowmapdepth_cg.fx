@@ -5,7 +5,6 @@ void v_skinskeleton_shadowmapdepth
 	in float4 modelTCoord1 : TEXCOORD1, // indeces
 	in float4 modelTCoord2 : TEXCOORD2, // wights
     out float4 clipPosition : POSITION,
-	out float4 vertexColor : COLOR,
     out float2 vertexTCoord0 : TEXCOORD0,
 	out float2 vertexTCoord1 : TEXCOORD1,
 	uniform float4x4 PVWMatrix,

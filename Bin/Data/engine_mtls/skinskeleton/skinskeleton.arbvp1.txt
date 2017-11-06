@@ -25,9 +25,9 @@
 #var float4 modelTCoord1 : $vin.TEXCOORD1 : TEXCOORD1 : 3 : 1
 #var float4 modelTCoord2 : $vin.TEXCOORD2 : TEXCOORD2 : 4 : 1
 #var float4 clipPosition : $vout.POSITION : HPOS : 5 : 1
-#var float4 vertexColor : $vout.COLOR : COL0 : 6 : 1
-#var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 7 : 1
-#var float2 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 8 : 1
+#var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 6 : 1
+#var float2 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 7 : 1
+#var float4 vertexTCoord2 : $vout.TEXCOORD2 : TEX2 : 8 : 1
 #var float4x4 PVWMatrix :  : c[1], 4 : 9 : 1
 #var float4 CameraWorldPosition :  : c[5] : 10 : 1
 #var float4 LightWorldDVector_Dir :  : c[6] : 11 : 1
@@ -255,7 +255,7 @@ MAD R2.xyz, R2, c[8], R3;
 MUL R0.xyz, R0, c[10];
 MAD R0.xyz, R0, R0.w, R2;
 MUL R0.xyz, R0, c[11].w;
-ADD result.color.xyz, R0, c[7];
+ADD result.texcoord[2].xyz, R0, c[7];
 RCP R0.x, R2.w;
 ADD R0.y, c[14].w, -c[14].z;
 ADD R0.z, c[14].y, -c[14].x;
@@ -274,6 +274,6 @@ DP4 result.position.x, R1, c[1];
 MAX result.texcoord[1].y, R0.x, c[0].z;
 MAX result.texcoord[1].x, R0.y, c[0].z;
 MOV result.texcoord[0].xy, vertex.texcoord[0];
-MOV result.color.w, c[7];
+MOV result.texcoord[2].w, c[7];
 END
 # 121 instructions, 5 R-regs

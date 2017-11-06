@@ -1,21 +1,16 @@
 <boost name="boost">
 	<app>
 		<config>
-			<var width="500" height="900"/>
+			<var width="1136" height="640"/>
 		</config>
 		<play>
-			<var projectname="BlocklyArduino" playlogicmode="logic" isshowinfo="true" datawrite="false"/>
+			<var playlogicmode="logic" isshowinfo="true" isdatawrite="false"/>
 		</play>
-		<plugins>
-			<var name=""/>
-		</plugins>
 	</app>
 	<server>
 		<play>
-			<var projectname="BlocklyArduino" port="18180" nummaxconnection="400"/>
+			<var port="18180" nummaxconnection="400"/>
 		</play>
-		<plugins>
-			<var name=""/>
-		</plugins>
 	</server>
 </boost>
+

@@ -6,7 +6,7 @@ varying mediump vec4 vertexColor0;
 varying mediump vec2 vertexTCoord0;
 void main()
 {
-	gl_Position = PVWMatrix; * vec4(modelPosition, 1.0);
+	gl_Position = PVWMatrix	* vec4(modelPosition, 1.0);
 	vertexColor0 = modelColor0;
 	vertexTCoord0 = modelTCoord0;
 }

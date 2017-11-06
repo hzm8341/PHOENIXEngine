@@ -6,9 +6,9 @@ void v_skinskeleton
 	in float4 modelTCoord1 : TEXCOORD1, // indeces
 	in float4 modelTCoord2 : TEXCOORD2, // wights
     out float4 clipPosition : POSITION,
-	out float4 vertexColor : COLOR,
     out float2 vertexTCoord0 : TEXCOORD0,
 	out float2 vertexTCoord1 : TEXCOORD1,
+	out float4 vertexTCoord2 : TEXCOORD2,
 	uniform float4x4 PVWMatrix,
 	uniform float4 CameraWorldPosition,
 	uniform float4 LightWorldDVector_Dir,
@@ -55,10 +55,10 @@ void v_skinskeleton
 	float3 halfVector = normalize((viewVector - LightWorldDVector_Dir.rgb)/2.0);
 	float dotH = dot(worldNormal, halfVector);
 	
-	vertexColor.rgb = ShineEmissive.rgb + LightAmbient_Dir.a * (ShineAmbient.rgb * LightAmbient_Dir.rgb +
+	vertexTCoord2.rgb = ShineEmissive.rgb + LightAmbient_Dir.a * (ShineAmbient.rgb * LightAmbient_Dir.rgb +
 		ShineDiffuse.rgb * LightDiffuse_Dir.rgb * max(dot(worldNormal, -LightWorldDVector_Dir.rgb), 0) +
 							ShineSpecular.rgb * LightSpecular_Dir.rgb * pow(max(dotH, 0), ShineSpecular.a*LightSpecular_Dir.a));		
-	vertexColor.a = ShineEmissive.a;
+	vertexTCoord2.a = ShineEmissive.a;
 	
 	// fog
 	float fogValueHeight = (-FogParam.x + worldPosition.z)/(FogParam.y - FogParam.x);
@@ -74,9 +74,9 @@ sampler2D SampleBase;
 
 void p_skinskeleton
 (
-	in float4 vertexColor : COLOR,
     in float2 vertexTCoord0 : TEXCOORD0,
 	in float2 vertexTCoord1 : TEXCOORD1,
+	in float4 vertexTCoord2 : TEXCOORD2,
     out float4 pixelColor : COLOR,
 	uniform float4 UVOffset,
 	uniform float4 FogColorHeight,
@@ -94,7 +94,7 @@ void p_skinskeleton
 	}
 	else
 	{
-		lastColor *= vertexColor;
+		lastColor *= vertexTCoord2;
 		
 		lastColor.rgb = lerp(FogColorHeight.rgb, lastColor.rgb, vertexTCoord1.x);
 		lastColor.rgb = lerp(FogColorDist.rgb, lastColor.rgb, vertexTCoord1.y);

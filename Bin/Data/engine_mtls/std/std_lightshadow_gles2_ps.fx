@@ -38,7 +38,7 @@ void main()
 	}
 	else
 	{	
-		lastColor *= vertexTCoord3;
+		lastColor *= vertexTCoord3;	
 		
 		lastColor.rgb = lastColor.rgb * vertexTCoord1.x + FogColorHeight.rgb * (1.0 - vertexTCoord1.x);
 		lastColor.rgb = lastColor.rgb * vertexTCoord1.y + FogColorDist.rgb * (1.0 - vertexTCoord1.y);

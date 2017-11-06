@@ -3,9 +3,9 @@ attribute mediump vec3 modelNormal;
 attribute mediump vec2 modelTCoord0;
 attribute mediump vec4 modelTCoord1;
 attribute mediump vec4 modelTCoord2;
-varying mediump vec4 vertexColor;
 varying mediump vec2 vertexTCoord0;
 varying mediump vec2 vertexTCoord1;
+varying mediump vec4 vertexTCoord2;
 uniform mat4 PVWMatrix;
 uniform vec4 BoneTM[108];
 uniform vec4 CameraWorldPosition;
@@ -48,8 +48,8 @@ void main()
 	vec3 halfVector = normalize((viewVector - LightWorldDVector_Dir.xyz)/2.0);
 	float dotH = dot(worldNormal, halfVector);
 	
-	vertexColor.rgb = ShineEmissive.rgb + LightAmbient_Dir.a * (ShineAmbient.rgb * LightAmbient_Dir.rgb + ShineDiffuse.rgb * LightDiffuse_Dir.rgb * max(dot(worldNormal, -LightWorldDVector_Dir.xyz), 0.0) + ShineSpecular.rgb * LightSpecular_Dir.rgb * pow(max(dotH, 0.0), ShineSpecular.a*LightSpecular_Dir.a));
-	vertexColor.a = ShineEmissive.a;
+	vertexTCoord2.rgb = ShineEmissive.rgb + LightAmbient_Dir.a * (ShineAmbient.rgb * LightAmbient_Dir.rgb + ShineDiffuse.rgb * LightDiffuse_Dir.rgb * max(dot(worldNormal, -LightWorldDVector_Dir.xyz), 0.0) + ShineSpecular.rgb * LightSpecular_Dir.rgb * pow(max(dotH, 0.0), ShineSpecular.a*LightSpecular_Dir.a));
+	vertexTCoord2.a = ShineEmissive.a;
 	
 	float fogValueHeight = (-FogParam.x + worldPosition.z)/(FogParam.y - FogParam.x);
 	fogValueHeight = clamp(fogValueHeight, 0.0, 1.0);

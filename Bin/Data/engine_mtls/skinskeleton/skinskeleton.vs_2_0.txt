@@ -25,9 +25,9 @@ vs_2_0
 //var float4 modelTCoord1 : $vin.TEXCOORD1 : ATTR3 : 3 : 1
 //var float4 modelTCoord2 : $vin.TEXCOORD2 : ATTR4 : 4 : 1
 //var float4 clipPosition : $vout.POSITION : HPOS : 5 : 1
-//var float4 vertexColor : $vout.COLOR0 : COL0 : 6 : 1
-//var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 7 : 1
-//var float2 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 8 : 1
+//var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 6 : 1
+//var float2 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 7 : 1
+//var float4 vertexTCoord2 : $vout.TEXCOORD2 : TEX2 : 8 : 1
 //var float4x4 PVWMatrix :  : c[0], 4 : 9 : 1
 //var float4 CameraWorldPosition :  : c[4] : 10 : 1
 //var float4 LightWorldDVector_Dir :  : c[5] : 11 : 1
@@ -268,7 +268,7 @@ mul r0.xyz, c12, r0
 mad r0.xyz, r0, r1.w, r2
 mov r1.w, c119.x
 mul r0.xyz, r0, c10.w
-add oD0.xyz, r0, c6
+add oT2.xyz, r0, c6
 rcp r0.x, r0.w
 add r0.y, c13.w, -c13.z
 add r0.z, c13.y, -c13.x
@@ -287,4 +287,4 @@ dp4 oPos.x, r1, c0
 max oT1.y, r0.x, c119.z
 max oT1.x, r0.y, c119.z
 mov oT0.xy, v2
-mov oD0.w, c6
+mov oT2.w, c6

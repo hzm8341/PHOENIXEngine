@@ -11,7 +11,7 @@ function class(baseClass, body)
 		ret.base = baseClass;
 	end
 	
-	-- Add the Create() function.  This will end up being added to each subclass which isn't ideal.  This 
+	-- Add the New() function.  This will end up being added to each subclass which isn't ideal.  This 
 	-- function should probably be stored in a single place so we only have to create it once.
 	-- 		-self: The self pointer that's calling this function.
 	--		-constructionData: The table sent in as construction data.  Think of it like a constructor.
@@ -62,17 +62,22 @@ end
 -- redefine require and print
 do
 	local OldRequire = require;  -- save the old require() function
-	local resourceIdMap = {};  -- map of resource id's we've already loaded
+	--local resourceIdMap = {};  -- map of resource id's we've already loaded
 	
 	require = function(script)
-		if (not resourceIdMap[script]) then
-			if (PX2_SC_LUA:CallFile(script)) then
-				resourceIdMap[script] = true;
-			else
-				-- failed to load file through the resource system so fall back to the old method
-				OldRequire(script);
-			end
+		if (PX2_SC_LUA:CallFile(script)) then
+			-- nothing to do
+		else
+			OldRequire(script);
 		end
+		--if (not resourceIdMap[script]) then
+		--	if (PX2_SC_LUA:CallFile(script)) then
+		--		resourceIdMap[script] = true;
+		--	else
+				-- failed to load file through the resource system so fall back to the old method
+		--		OldRequire(script);
+		--	end
+		--end
 	end
 end
 
@@ -189,6 +194,93 @@ function sleep(second)
 	wrap(_sleep, second)
 end
 
+local _sleepName = sleepName
+function sleepName(second, name)
+	wrap(_sleepName, second, name)
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+-- Vec3 class
+-----------------------------------------------------------------------------------------------------------------------
+Vec3 = class(nil, 
+{
+	x = 0,
+	y = 0,
+	z = 0,
+	__operators = {},
+});
+
+function Vec3:Length()
+	return math.sqrt((self.x * self.x) + (self.y * self.y) + (self.z * self.z));
+end
+
+function Vec3:Length2()
+	return ((self.x * self.x) + (self.y * self.y) + (self.z * self.z));
+end
+
+function Vec3:Normalize()
+	local len = self:Length();
+	self.x = self.x / len;
+	self.y = self.y / len;
+	self.z = self.z / len;
+end
+
+function Vec3.__operators.__add(left, right)
+	local temp = Vec3:New();
+	if (type(right) == "number") then
+		temp.x = left.x + right;
+		temp.y = left.y + right;
+		temp.z = left.z + right;
+	else
+		temp.x = left.x + right.x;
+		temp.y = left.y + right.y;
+		temp.z = left.z + right.z;
+	end
+	return temp;
+end
+
+function Vec3.__operators.__sub(left, right)
+	local temp = Vec3:New();
+	if (type(right) == "number") then
+		temp.x = left.x - right;
+		temp.y = left.y - right;
+		temp.z = left.z - right;
+	else
+		temp.x = left.x - right.x;
+		temp.y = left.y - right.y;
+		temp.z = left.z - right.z;
+	end
+	return temp;
+end
+
+function Vec3.__operators.__mul(left, right)
+	local temp = Vec3:New();
+	if (type(right) == "number") then
+		temp.x = left.x * right;
+		temp.y = left.y * right;
+		temp.z = left.z * right;
+	else
+		temp.x = left.x * right.x;
+		temp.y = left.y * right.y;
+		temp.z = left.z * right.z
+	end
+	return temp;
+end
+
+function Vec3.__operators.__div(left, right)
+	local temp = Vec3:New();
+	if (type(right) == "number") then
+		temp.x = left.x / right;
+		temp.y = left.y / right;
+		temp.z = left.z / right;
+	else
+		temp.x = left.x / right.x;
+		temp.y = left.y / right.y;
+		temp.z = left.z / right.z;
+	end
+	return temp;
+end
+
 FES_NORMAL = 0
 FES_ITALIC = 1
 FES_UNDERLINE = 2
@@ -204,6 +296,10 @@ TEXTALIGN_TOP		=	8
 TEXTALIGN_VCENTER	=	16
 TEXTALIGN_BOTTOM	=	32
 
+RU_NONE		= 0
+RU_ALIGNS	= 1
+RU_CLIPWARP = 2
+
 UIPT_NONE = 0
 UIPT_PRESSED = 1
 UIPT_RELEASED = 2
@@ -218,7 +314,27 @@ CMD_PushProject = "pushproject"
 CMD_LoadProject = "loadproject"
 CMD_CloseProject = "closeproject"
 
+function engine_AddLanguage()
+	PX2_LM_ENGINE:Clear()
+	PX2_LM_ENGINE:AddItem1("Phoenix", "PHOENIX")
+	PX2_LM_ENGINE:AddItem1("PhoenixCreate", "PHOENIXCreate")
+	PX2_LM_ENGINE:AddItem1("PhoenixFrame", "PHOENIXFrame")
+	PX2_LM_ENGINE:AddItem1("Engine", "引擎")
+	PX2_LM_ENGINE:AddItem1("Project", "项目")
+	PX2_LM_ENGINE:AddItem1("Device", "设备")
+	PX2_LM_ENGINE:AddItem1("Bluetooth", "蓝牙")
+	PX2_LM_ENGINE:AddItem1("Scan", "扫描")
+	PX2_LM_ENGINE:AddItem1("Connect", "连接")
+	PX2_LM_ENGINE:AddItem1("DisConnect", "断开")
+	PX2_LM_ENGINE:AddItem1("Infos", "信息")
+	PX2_LM_ENGINE:AddItem1("Open", "打开")
+	PX2_LM_ENGINE:AddItem1("Close", "关闭")
+	PX2_LM_ENGINE:AddItem1("Serial", "串口")
+	PX2_LM_ENGINE:AddItem1("Reload", "重载")
+end
+
 function engine_start()
+	engine_AddLanguage()
 	PX2_LOGGER:LogInfo("script_lua", "engine_start")
 end
 engine_start()
