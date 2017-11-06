@@ -739,6 +739,9 @@ PX2::Float3 SceneBuilder::GetVertexNormal (Mesh* maxMesh, int faceIndex,
 		}
 	}
 
-	return PX2::Float3(normal.x, normal.y, normal.z);
+	PX2::AVector nor = PX2::AVector(normal.x, normal.y, normal.z);
+	nor.Normalize();
+
+	return PX2::Float3(nor.X(), nor.Y(), nor.Z());
 }
 //----------------------------------------------------------------------------

@@ -20,6 +20,7 @@ ExportSettings::ExportSettings ()
 	NumTexCoords = 1;
 
 	MtlTypes.clear();
+	MtlTypes.push_back("materialcolor");
 	MtlTypes.push_back("std_light");
 	MtlTypes.push_back("std_lightnormal");
 	MtlTypes.push_back("skinskeleton");

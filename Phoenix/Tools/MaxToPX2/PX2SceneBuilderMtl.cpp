@@ -45,6 +45,7 @@ void SceneBuilder::CollectMaterials(INode *node)
 {
 	Mtl *mtl = node->GetMtl();
 	bool hasModifiers = IsNodeHasModifierSkin(node);
+	PX2_UNUSED(hasModifiers);
 
 	if (mtl)
 	{
@@ -275,6 +276,20 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 
 				px2MtlInst = new0 PX2::MaterialInstance(allMtlFileName, "std_light", false);
 			}
+			else if ("materialcolor" == mtlStr)
+			{
+				mtlFileName = "Data/engine_mtls/materialcolor/materialcolor.px2obj";
+				allMtlFileName = dstRootDirStr + mtlFileName;
+
+				px2MtlInst = new0 PX2::MaterialInstance(allMtlFileName, "materialcolor", false);
+			}
+			else if ("vertexcolor_light" == mtlStr)
+			{
+				mtlFileName = "Data/engine_mtls/vertexcolor/vertexcolor.px2obj";
+				allMtlFileName = dstRootDirStr + mtlFileName;
+
+				px2MtlInst = new0 PX2::MaterialInstance(allMtlFileName, "vertexcolor_light", false);
+			}
 			else if ("std_lightnormal" == mtlStr)
 			{
 				mtlFileName = "Data/engine_mtls/std/std.px2obj";
@@ -309,9 +324,13 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 
 			px2mlt = px2MtlInst->GetMaterial();
 
-			px2mlt->GetPixelShader(0, 0)->SetFilter(0, PX2::Shader::SF_LINEAR_LINEAR);
-			px2mlt->GetPixelShader(0, 0)->SetCoordinate(0, 0, uvCoord0);
-			px2mlt->GetPixelShader(0, 0)->SetCoordinate(0, 1, uvCoord1);
+			// tex
+			if ("materialcolor" != mtlStr)
+			{
+				px2mlt->GetPixelShader(0, 0)->SetFilter(0, PX2::Shader::SF_LINEAR_LINEAR);
+				px2mlt->GetPixelShader(0, 0)->SetCoordinate(0, 0, uvCoord0);
+				px2mlt->GetPixelShader(0, 0)->SetCoordinate(0, 1, uvCoord1);
+			}
 
 			px2mlt->GetCullProperty(0, 0)->Enabled = doubleSide;
 
@@ -328,10 +347,47 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		}
 		else
 		{
-			PX2::VertexColor4Material *vcMtl = new0 PX2::VertexColor4Material();
-			PX2::MaterialInstance *instance = vcMtl->CreateInstance();
-			instance->SetName("MI_VertexColor4");
-			mtlTree.SetMaterialInstance(instance);
+			const std::string &mtlStr = mSettings->GetMtlTypeStr();
+			if ("materialcolor" == mtlStr)
+			{
+				std::string mtlFileName;
+				std::string allMtlFileName;
+				std::string dstRootDirStr = std::string(mSettings->DstRootDir);
+				dstRootDirStr = PX2::StringHelp::StandardisePath(dstRootDirStr);
+
+				PX2::MaterialInstancePtr px2MtlInst;
+				PX2::MaterialPtr px2mlt;
+
+				const std::string &mtlStr = mSettings->GetMtlTypeStr();
+				mtlFileName = "Data/engine_mtls/materialcolor/materialcolor.px2obj";
+				allMtlFileName = dstRootDirStr + mtlFileName;
+
+				px2MtlInst = new0 PX2::MaterialInstance(allMtlFileName, "materialcolor", false);
+				px2MtlInst->_SetMaterialFilename(mtlFileName);
+
+				px2mlt = px2MtlInst->GetMaterial();
+
+
+				px2mlt->GetCullProperty(0, 0)->Enabled = doubleSide;
+
+				px2mlt->GetAlphaProperty(0, 0)->BlendEnabled = false;
+				px2mlt->GetAlphaProperty(0, 0)->CompareEnabled = false;
+
+				px2mlt->GetAlphaProperty(0, 0)->BlendEnabled = (opacity < 1.0f);
+
+				px2mlt->GetAlphaProperty(0, 0)->CompareEnabled = isEnableOP;
+				px2mlt->GetAlphaProperty(0, 0)->Compare = PX2::AlphaProperty::CM_GREATER;
+				px2mlt->GetAlphaProperty(0, 0)->Reference = 0.25f;
+
+				mtlTree.SetMaterialInstance(px2MtlInst);
+			}
+			else
+			{
+				PX2::VertexColor4Material *vcMtl = new0 PX2::VertexColor4Material();
+				PX2::MaterialInstance *instance = vcMtl->CreateInstance();
+				instance->SetName("MI_VertexColor4");
+				mtlTree.SetMaterialInstance(instance);
+			}
 		}
 	}
 	else if (mtl.ClassID() == Class_ID(MULTI_CLASS_ID, 0))
