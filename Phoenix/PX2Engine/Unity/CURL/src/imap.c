@@ -57,7 +57,7 @@
 #define in_addr_t unsigned long
 #endif
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "urldata.h"
 #include "sendf.h"
 #include "hostip.h"
@@ -81,7 +81,7 @@
 #include "warnless.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "curl_memory.h"
 /* The last #include file should be: */

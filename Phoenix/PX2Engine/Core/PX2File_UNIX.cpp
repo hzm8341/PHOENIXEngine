@@ -170,9 +170,10 @@ namespace PX2
 		assert(!_path.empty());
 
 #if defined(__APPLE__) && defined(st_birthtime) && !defined(PX2_NO_STAT64) // st_birthtime is available only on 10.5
-		struct stat64 st;
-		if (stat64(_path.c_str(), &st) == 0)
-			return Timestamp::fromEpochTime(st.st_birthtime);
+		//struct stat64 st;
+		//if (stat64(_path.c_str(), &st) == 0)
+		//	return Timestamp::fromEpochTime(st.st_birthtime);
+        handleLastErrorImpl(_path);
 #elif defined(__FreeBSD__)
 		struct stat st;
 		if (stat(_path.c_str(), &st) == 0)
@@ -182,8 +183,7 @@ namespace PX2
 		if (stat(_path.c_str(), &st) == 0)
 			return Timestamp::FromEpochTime(st.st_ctime);
 #endif 
-		else
-			handleLastErrorImpl(_path);
+
 		return 0;
 	}
 	//----------------------------------------------------------------------------

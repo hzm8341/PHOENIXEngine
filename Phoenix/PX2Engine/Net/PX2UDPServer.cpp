@@ -14,8 +14,6 @@ mThread("UDPServer"),
 mIsStop(false)
 {
 	mSocket.Bind(SocketAddress(), true);
-	mThread.Start(*this);
-	mReadEvent.Wait();
 }
 //----------------------------------------------------------------------------
 UDPServer::UDPServer(const SocketAddress& sa) :
@@ -23,11 +21,20 @@ mThread("UDPServer"),
 mIsStop(false)
 {
 	mSocket.Bind(sa, true);
+}
+//----------------------------------------------------------------------------
+UDPServer::~UDPServer()
+{
+	Stop();
+}
+//----------------------------------------------------------------------------
+void UDPServer::Start()
+{
 	mThread.Start(*this);
 	mReadEvent.Wait();
 }
 //----------------------------------------------------------------------------
-UDPServer::~UDPServer()
+void UDPServer::Stop()
 {
 	mUDPServerRecvCallbacks.clear();
 	mRecvBufs.clear();

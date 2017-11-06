@@ -6,9 +6,7 @@
 #include "PX2Log.hpp"
 
 #ifdef PX2_USE_FMOD
-#include <fmod.hpp>
-#endif
-
+#include "fmod.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -106,6 +104,7 @@ bool FMODSoundSystem::Initialize(const SoundSystemInitInfo &initInfo)
 //----------------------------------------------------------------------------
 bool FMODSoundSystem::Terminate()
 {
+	mSounds.clear();
 	mSoundResMap.clear();
 
 	if (mFMODSystem)
@@ -166,6 +165,21 @@ void FMODSoundSystem::Update(double appSeconds, double elapsedSeconds)
 			mMusicChannel[i].ChannelFadein = 0;
 			mMusicChannel[i].SoundFadein = 0;
 			mMusicChannel[i].FadeinTimeLeft = 0.0f;
+		}
+	}
+
+	auto it = mSounds.begin();
+	for (; it != mSounds.end();)
+	{
+		if (!(*it)->Update((float)elapsedSeconds))
+		{
+			Sound *sound = (*it);
+			_ResetNumPlaySameTime(sound->Filename.c_str());
+			it = mSounds.erase(it);
+		}
+		else
+		{
+			it++;
 		}
 	}
 
@@ -350,6 +364,43 @@ bool FMODSoundSystem::PlaySound3DControl(const char *filename,
 	return true;
 }
 //----------------------------------------------------------------------------
+bool FMODSoundSystem::PlayASound(const char *filename, float volume,
+	float life)
+{
+	Sound *sound;
+
+	if (!SoundSystem::PlaySound2DControl(filename, volume, false, sound))
+		return false;
+
+	FMODSoundSystem::FMODSoundRes *pres = GetSoundResource(filename, ST_2D);
+	if (!pres) return false;
+
+	FMOD::Sound* fSound = pres->TheFMODSound;
+	FMODSound *soundObj = 0;
+
+	if (fSound)
+	{
+		FMOD::Channel *channel = 0;
+		mFMODSystem->playSound(fSound, mChannelGroupSound, true, &channel);
+		if (channel)
+		{
+			channel->setChannelGroup(mChannelGroupSound);
+			channel->setVolume(volume);
+			channel->setLoopCount(false ? -1 : 0);
+			channel->setPaused(false);
+
+			soundObj = new0 FMODSound(channel);
+			soundObj->Filename = filename;
+		}
+	}
+
+	sound = soundObj;
+	sound->Life = life;
+	mSounds.push_back(sound);
+
+	return true;
+}
+//----------------------------------------------------------------------------
 void FMODSoundSystem::_PlayMusicInternal(int channel, FMOD::Sound *sound,
 	bool isLoop, float fadeTime, float volume,
 	const char *path)
@@ -485,3 +536,21 @@ void FMODSoundSystem::EnableSounds(bool enable)
 	mChannelGroupSound->setPaused(enable);
 }
 //----------------------------------------------------------------------------
+void FMODSoundSystem::ClearAllSounds()
+{
+	SoundSystem::ClearAllSounds();
+
+	for (int i = 0; i < (int)mSounds.size(); i++)
+	{
+		Sound *sound = mSounds[i];
+		if (sound)
+		{
+			sound->Stop();
+		}
+	}
+
+	mSounds.clear();
+}
+//----------------------------------------------------------------------------
+
+#endif

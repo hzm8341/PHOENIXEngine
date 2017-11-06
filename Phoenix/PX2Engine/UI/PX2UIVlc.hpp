@@ -22,6 +22,15 @@ namespace PX2
 		UIVlc();
 		virtual ~UIVlc();
 
+		enum Type
+		{
+			T_HARDCAMERA,
+			T_VLC,
+			T_MAX_TYPE
+		};
+		void SetType(Type type);
+		Type GetType() const;
+
 		enum Mode
 		{
 			M_NORMAL,
@@ -34,9 +43,8 @@ namespace PX2
 		void StartVLC(const std::string &filename);
 		void StopVLC();
 
-#if defined PX2_USE_VLC
 		VLC *GetVLC();
-#endif
+		VLCMemObj *GetVLCMemObj();
 
 		void SendToGetCameraView(std::string &url, int port);
 
@@ -45,10 +53,9 @@ namespace PX2
 		virtual void UpdateWorldData(double applicationTime,
 			double elapsedTime);
 
-#if defined PX2_USE_VLC
 		VLCPtr mVLC;
 		VLCMemObjPtr mVLCMemObj;
-#endif
+		Type mType;
 		Mode mMode;
 		UIFPicBoxPtr mFPicBox;
 		UIFPicBoxPtr mFPicBoxRight;

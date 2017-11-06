@@ -43,8 +43,8 @@ public:
 	SleepTimer()
 	{
 		StartState = 0;
-		RefNumCallState = 0;
-		RefNumSelf = 0;
+		RefNumCallState = LUA_NOREF;
+		RefNumSelf = LUA_NOREF;
 	}
 	~SleepTimer()
 	{
@@ -67,7 +67,25 @@ public:
 
 		lua_unref(StartState, RefNumSelf);
 
+		RefNumCallState = 0;
+		RefNumSelf = 0;
+
 		return true;
+	}
+
+	virtual void OnRemove()
+	{
+		if (LUA_NOREF != RefNumCallState)
+		{
+			lua_unref(StartState, RefNumCallState);
+			RefNumCallState = LUA_NOREF;
+		}
+
+		if (LUA_NOREF != RefNumSelf)
+		{
+			lua_unref(StartState, RefNumSelf);
+			RefNumSelf = LUA_NOREF;
+		}
 	}
 };
 //----------------------------------------------------------------------------
@@ -79,6 +97,27 @@ int sleep(lua_State *state)
 
 	SleepTimer *timer = TimerManager::GetSingleton().AddTimer<SleepTimer>(
 		0.0f, timVal);
+	timer->RefNumCallState = refState;
+
+	lua_getglobal(state, "_StartLuaState");
+	timer->StartState = (lua_State *)lua_touserdata(state, -1);
+	lua_pop(state, 1);
+
+	lua_getglobal(timer->StartState, "self");
+	int refthis = lua_ref(state, LUA_REGISTRYINDEX);
+	timer->RefNumSelf = refthis;
+
+	return 0;
+}
+int sleepName(lua_State *state)
+{
+	lua_settop(state, 3);
+	int refState = lua_ref(state, LUA_REGISTRYINDEX);
+	float timVal = luaL_checknumber(state, 1);
+	std::string strName = luaL_checkstring(state, 2);
+
+	SleepTimer *timer = TimerManager::GetSingleton().AddTimer<SleepTimer>(
+		strName, 0.0, timVal);
 	timer->RefNumCallState = refState;
 
 	lua_getglobal(state, "_StartLuaState");
@@ -122,8 +161,13 @@ mLuaPlusState(0)
 	mLuaPlusState->GetGlobals().RegisterDirect("ClearEventFunctions", (*this),
 		&LuaPlusContext::ClearEventFunctions);
 
-	lua_pushcfunction(state, sleep);
-	lua_setglobal(state, "sleep");
+	//lua_pushcfunction(state, sleep);
+	//lua_setglobal(state, "sleep");
+	//lua_pushcfunction(state, sleepName);
+	//lua_setglobal(state, "sleepName");
+
+	mLuaPlusState->GetGlobals().Register("sleep", &sleep);
+	mLuaPlusState->GetGlobals().Register("sleepName", &sleepName);
 
 	ComeInEventWorld();
 }
@@ -462,6 +506,29 @@ bool LuaPlusContext::RegistEventFunction(const char *entName,
 	}
 
 	return false;
+}
+//----------------------------------------------------------------------------
+void LuaPlusContext::ClearEventObjectFunctions()
+{
+	auto it = mEventFunObjects.begin();
+	for (; it != mEventFunObjects.end(); it++)
+	{
+		std::vector<LuaPlusCallObject*> &objs = it->second;
+		auto it = objs.begin();
+		for (; it != objs.end();)
+		{
+			LuaPlusCallObject *caller = *it;
+			if (caller && caller->ObjectReset.IsValid())
+			{
+				delete(caller);
+				it = objs.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+		}
+	}
 }
 //----------------------------------------------------------------------------
 bool LuaPlusContext::RegistEventObjectFunction(const char *entName, 

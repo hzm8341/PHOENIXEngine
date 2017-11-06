@@ -32,8 +32,8 @@
 #define GOOGLE_PROTOBUF_MAP_ENTRY_LITE_H__
 
 #include <assert.h>
-#include <google/protobuf/map_type_handler.h>
-#include <google/protobuf/wire_format_lite_inl.h>
+#include "google/protobuf/map_type_handler.h"
+#include "google/protobuf/wire_format_lite_inl.h"
 
 namespace google {
 namespace protobuf {

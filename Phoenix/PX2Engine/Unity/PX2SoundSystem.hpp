@@ -36,6 +36,7 @@ namespace PX2
 	class PX2_ENGINE_ITEM SoundSystem : public Singleton<SoundSystem>
 	{
 	public:
+        SoundSystem();
 		virtual ~SoundSystem();
 
 		enum SystemType
@@ -68,8 +69,8 @@ namespace PX2
 		* fadeSeconds : 淡入淡出时间，为0.0f表示立即最大音量播放
 		*/
 		virtual void PlayMusic(int channel, const char *filename,
-			bool isLoop, float fadeSeconds, float volume = 1.0f) = 0;
-		virtual void SetMusicVolume(int channel, float volume) = 0;
+			bool isLoop, float fadeSeconds, float volume = 1.0f);
+		virtual void SetMusicVolume(int channel, float volume);
 		virtual void EnableMusic(bool enable);
 		bool IsMusicEnable() const;
 
@@ -78,10 +79,13 @@ namespace PX2
 			float volume, bool isLoop, Sound *&sound);
 		virtual bool PlaySound3DControl(const char *filename,
 			const SoundCreateInfo3D &createInfo, Sound *&sound);
+		virtual bool PlayASound(const char *filename, float volume = 1.0f,
+			float life = 10.0f);
 		virtual void LoadSound(const char *filename);
 		virtual void UnloadSound(const char *filename);
 		virtual void EnableSounds(bool enable);
 		bool IsSoundEnable() const;
+		virtual void ClearAllSounds();
 
 		// same time
 		void SetMaxNumPlaySameTime(const char *filename, int num);
@@ -93,7 +97,6 @@ namespace PX2
 		void _MinusNumPlaySameTime(const char *filename);
 
 	protected:
-		SoundSystem();
 		SoundSystem(SystemType type);
 
 		bool _CanPlaySameTime(const char *filename, float playTime);

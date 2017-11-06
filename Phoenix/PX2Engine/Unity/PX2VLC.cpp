@@ -3,24 +3,26 @@
 #include "PX2VLC.hpp"
 #include "PX2VLCMem.hpp"
 #include "PX2Log.hpp"
-#include "PX2Application.hpp"
 using namespace PX2;
 
 #if defined PX2_USE_VLC
-
 #include "vlc/vlc.h"
+#endif
 
 //----------------------------------------------------------------------------
-VLC::VLC() :
-mInst(0),
-mMediaPlayer(0),
-mMedia(0)
+VLC::VLC()
 {
+#if defined PX2_USE_VLC
+	mInst = 0;
+	mMediaPlayer = 0;
+	mMedia = 0;
+
 	mInst = libvlc_new(0, 0);
 	if (!mInst)
 	{
 		PX2_LOG_ERROR("libvlc_new %s", libvlc_errmsg());
 	}
+#endif
 }
 //----------------------------------------------------------------------------
 unsigned video_format_stub(void**, char*, unsigned*, unsigned*, unsigned*, unsigned*)
@@ -35,6 +37,7 @@ void* video_fb_lock_stub(void*, void** planes)
 //----------------------------------------------------------------------------
 VLC::~VLC()
 {
+#if defined PX2_USE_VLC
 	if (mMediaPlayer)
 	{
 		libvlc_video_set_callbacks(mMediaPlayer, video_fb_lock_stub, 0, 0, 0);
@@ -46,12 +49,14 @@ VLC::~VLC()
 	}
 
 	libvlc_release(mInst);
+#endif
 }
 //----------------------------------------------------------------------------
 void VLC::Start(const std::string &filename)
 {
 	PX2_LOG_INFO("vlc start filename %s", filename.c_str());
 
+#if defined PX2_USE_VLC
 	mMedia = libvlc_media_new_path(mInst, filename.c_str());
 
 	mMediaPlayer = libvlc_media_player_new_from_media(mMedia);
@@ -73,6 +78,8 @@ void VLC::Start(const std::string &filename)
 
 	libvlc_media_player_play(mMediaPlayer);
 
+#endif
+
 	if (mVLCMem)
 	{
 		SetMem(mVLCMem);
@@ -85,12 +92,15 @@ void VLC::Pause(bool pause)
 	if (pause)
 		doPause = 1;
 	
+#if defined PX2_USE_VLC
 	if (mMedia)
 		libvlc_media_player_set_pause(mMediaPlayer, doPause);
+#endif
 }
 //----------------------------------------------------------------------------
 void VLC::Stop()
 {
+#if defined PX2_USE_VLC
 	if (mMediaPlayer)
 	{
 		libvlc_media_player_stop(mMediaPlayer);
@@ -98,11 +108,14 @@ void VLC::Stop()
 	}
 
 	mMediaPlayer = 0;
+#endif
 }
 //----------------------------------------------------------------------------
 VLC::State VLC::GetState() const
 {
 	State state = S_NONE;
+
+#if defined PX2_USE_VLC
 
 	if (mMediaPlayer)
 	{
@@ -132,6 +145,8 @@ VLC::State VLC::GetState() const
 			state = S_ENDED;
 		}
 	}
+
+#endif
 	
 	return state;
 }
@@ -139,8 +154,10 @@ VLC::State VLC::GetState() const
 int VLC::GetLengthMicroSeconds() const
 {
 	int length = 0;
+#if defined PX2_USE_VLC
 	if (mMediaPlayer)
 		length = (int)libvlc_media_player_get_length(mMediaPlayer);
+#endif
 
 	return length;
 }
@@ -148,22 +165,27 @@ int VLC::GetLengthMicroSeconds() const
 int VLC::GetPlayingMicroSeconds() const
 {
 	int curtime = 0;
+#if defined PX2_USE_VLC
 	if (mMediaPlayer)
 		curtime = (int)libvlc_media_player_get_time(mMediaPlayer);
+#endif
 
 	return curtime;
 }
 //----------------------------------------------------------------------------
 void VLC::SetPercent(float percent)
 {
+#if defined PX2_USE_VLC
 	if (mMediaPlayer)
 		libvlc_media_player_set_position(mMediaPlayer, percent);
+#endif
 }
 //----------------------------------------------------------------------------
 void VLC::SetMem(VLCMem *mem)
 {
 	mVLCMem = mem;
 
+#if defined PX2_USE_VLC
 	if (mMediaPlayer)
 	{
 		libvlc_video_set_callbacks(mMediaPlayer,
@@ -172,7 +194,6 @@ void VLC::SetMem(VLCMem *mem)
 		libvlc_video_set_format_callbacks(mMediaPlayer,
 			VLCMem::_FormatCallback, VLCMem::_CleanUpCallback);
 	}
+#endif
 }
 //----------------------------------------------------------------------------
-
-#endif

@@ -212,6 +212,8 @@ bool RenderWindow::IsShowCursor() const
 	return bIsVisible;
 
 #endif
+    
+    return false;
 }
 //----------------------------------------------------------------------------
 void RenderWindow::SetCursorPos(const Float2 &pos)

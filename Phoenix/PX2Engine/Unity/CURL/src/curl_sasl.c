@@ -29,7 +29,7 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include "curl.h"
 #include "urldata.h"
 
 #include "curl_base64.h"
@@ -46,7 +46,7 @@
 #endif
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "mprintf.h"
 
 /* The last #include file should be: */
 #include "memdebug.h"

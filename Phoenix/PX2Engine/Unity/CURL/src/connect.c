@@ -57,7 +57,7 @@
 #endif
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "urldata.h"
 #include "sendf.h"

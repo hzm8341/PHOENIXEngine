@@ -82,16 +82,6 @@ void EngineServer::BroadCastString(const std::string &str)
 	}
 }
 //----------------------------------------------------------------------------
-void EngineServer::BroadCastPushProject(const std::string &projName)
-{
-	auto it = mConnections.begin();
-	for (; it != mConnections.end(); it++)
-	{
-		unsigned int clientID = it->first;
-		SendString(clientID, CMD_PushProject + " " + projName);
-	}
-}
-//----------------------------------------------------------------------------
 int EngineServer::OnConnect(unsigned int clientid)
 {
 	ClientContext *clentContext = GetClientContext(clientid);

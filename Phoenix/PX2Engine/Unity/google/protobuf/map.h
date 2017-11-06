@@ -37,18 +37,18 @@
 #ifndef GOOGLE_PROTOBUF_MAP_H__
 #define GOOGLE_PROTOBUF_MAP_H__
 
-#include <google/protobuf/stubs/hash.h>
+#include "google/protobuf/stubs/hash.h"
 #include <iterator>
 #include <limits>  // To support Visual Studio 2008
 #include <set>
 #include <utility>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/arena.h>
-#include <google/protobuf/generated_enum_util.h>
-#include <google/protobuf/map_type_handler.h>
-#include <google/protobuf/message.h>
-#include <google/protobuf/descriptor.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/arena.h"
+#include "google/protobuf/generated_enum_util.h"
+#include "google/protobuf/map_type_handler.h"
+#include "google/protobuf/message.h"
+#include "google/protobuf/descriptor.h"
 #if __cpp_exceptions && LANG_CXX11
 #include <random>
 #endif

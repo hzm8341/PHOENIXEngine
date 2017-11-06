@@ -31,6 +31,7 @@ mIsActivateSelfCtrled(true),
 mUpdateTime(-1.0f),
 mUpdateTiming(0.0f),
 mUpdateTimingInit(-1.0f),
+mIsOnlyShowUpdate(false),
 mUpdatePriority(0),
 mIsDoPick(true),
 mIsPickIngoreCullingMode(false),
@@ -78,8 +79,11 @@ bool Movable::IsShow () const
 void Movable::Update(double applicationTime, double elapsedTime, 
 	bool initiator)
 {
-	if (!IsShow())
-		return;
+	if (IsOnlyShowUpdate())
+	{
+		if (!IsShow())
+			return;
+	}
 
 	bool doUpdateTrans = true;
 	if (mUpdateTime > 0.0f)
@@ -559,6 +563,7 @@ mIsActivateSelfCtrled(true),
 mUpdateTime(-1.0f),
 mUpdateTiming(0.0f),
 mUpdateTimingInit(-1.0f),
+mIsOnlyShowUpdate(false),
 mUpdatePriority(0),
 mIsDoPick(true),
 mIsPickIngoreCullingMode(false),

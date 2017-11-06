@@ -28,7 +28,7 @@ private:
 };
 //----------------------------------------------------------------------------
 TCPServerDispatcher::TCPServerDispatcher(TCPServerConnectionFactory *factory,
-	ThreadPool& threadPool, TCPServerParams *params) :
+	ThreadPool* threadPool, TCPServerParams *params) :
 _rc(1),
 mParams(params),
 mCurrentThreads(0),
@@ -43,11 +43,13 @@ mThreadPool(threadPool)
 		mParams = new0 TCPServerParams;
 
 	if (mParams->GetNumMaxThreads() == 0)
-		mParams->SetMaxThreads(threadPool.Capacity());
+		mParams->SetMaxThreads(threadPool->Capacity());
 }
 //----------------------------------------------------------------------------
 TCPServerDispatcher::~TCPServerDispatcher()
 {
+	mParams = 0;
+	mThreadPool = 0;
 }
 //----------------------------------------------------------------------------
 void TCPServerDispatcher::Run()
@@ -95,7 +97,7 @@ void TCPServerDispatcher::Enqueue(const StreamSocket& socket)
 		mQueue.EnqueueNotification(new0 TCPConnectionNotification(socket));
 		if (!mQueue.HasIdleThreads() && mCurrentThreads < mParams->GetNumMaxThreads())
 		{
-			mThreadPool.StartWithPriority(mParams->GetThreadPriority(), *this, threadName);
+			mThreadPool->StartWithPriority(mParams->GetThreadPriority(), *this, threadName);
 			++mCurrentThreads;
 		}
 	}
@@ -123,7 +125,7 @@ int TCPServerDispatcher::GetNumMaxThreads() const
 {
 	ScopedCS lock(&mMutex);
 
-	return mThreadPool.Capacity();
+	return mThreadPool->Capacity();
 }
 //----------------------------------------------------------------------------
 int TCPServerDispatcher::GetNumTotalConnections() const

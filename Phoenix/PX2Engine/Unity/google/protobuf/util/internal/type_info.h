@@ -31,12 +31,12 @@
 #ifndef GOOGLE_PROTOBUF_UTIL_CONVERTER_TYPE_INFO_H__
 #define GOOGLE_PROTOBUF_UTIL_CONVERTER_TYPE_INFO_H__
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/type.pb.h>
-#include <google/protobuf/util/type_resolver.h>
-#include <google/protobuf/stubs/stringpiece.h>
-#include <google/protobuf/stubs/status.h>
-#include <google/protobuf/stubs/statusor.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/type.pb.h"
+#include "google/protobuf/util/type_resolver.h"
+#include "google/protobuf/stubs/stringpiece.h"
+#include "google/protobuf/stubs/status.h"
+#include "google/protobuf/stubs/statusor.h"
 
 namespace google {
 namespace protobuf {

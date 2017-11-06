@@ -46,14 +46,14 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <string>
 #include <iosfwd>
-#include <google/protobuf/io/zero_copy_stream.h>
-#include <google/protobuf/stubs/callback.h>
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/stl_util.h>
+#include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/stubs/callback.h"
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/stl_util.h"
 
 
 namespace google {

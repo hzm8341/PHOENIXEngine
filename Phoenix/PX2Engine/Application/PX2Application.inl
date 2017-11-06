@@ -11,6 +11,11 @@ inline bool Application::IsInEditor() const
 	return mIsInEditor;
 }
 //----------------------------------------------------------------------------
+inline AppBoostInfo &Application::GetBoostInfo()
+{
+	return mBoostInfo;
+}
+//----------------------------------------------------------------------------
 inline const Sizef &Application::GetBoostSize() const
 {
 	return mBoostInfo.BoostSize;
@@ -19,6 +24,11 @@ inline const Sizef &Application::GetBoostSize() const
 inline const std::string &Application::GetBoostProjectName() const
 {
 	return mBoostInfo.ProjectName;
+}
+//----------------------------------------------------------------------------
+inline const std::string &Application::GetProjectName() const
+{
+	return mProjectName;
 }
 //----------------------------------------------------------------------------
 inline const std::string &Application::GetProjectFilePath() const

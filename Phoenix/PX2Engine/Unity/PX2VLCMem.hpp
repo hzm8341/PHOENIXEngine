@@ -6,8 +6,6 @@
 #include "PX2VLCPre.hpp"
 #include "PX2SmartPointer.hpp"
 
-#if defined PX2_USE_VLC
-
 namespace PX2
 {
 
@@ -29,6 +27,8 @@ namespace PX2
 
 		virtual void OnFormatSetup();
 		virtual void OnFrameReady(const std::vector<char>* frameBuf) = 0;
+		virtual void OnFrameReady(int width, int height, 
+			const char* buf, int size) = 0;
 		virtual void OnFrameCleanUp() = 0;
 
 	public_internal:
@@ -60,7 +60,5 @@ namespace PX2
 	typedef Pointer0<VLCMem> VLCMemPtr;
 
 }
-
-#endif
 
 #endif

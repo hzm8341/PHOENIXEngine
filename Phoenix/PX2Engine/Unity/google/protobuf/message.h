@@ -112,14 +112,14 @@
 
 #include <iosfwd>
 #include <string>
-#include <google/protobuf/stubs/type_traits.h>
+#include "google/protobuf/stubs/type_traits.h"
 #include <vector>
 
-#include <google/protobuf/arena.h>
-#include <google/protobuf/message_lite.h>
+#include "google/protobuf/arena.h"
+#include "google/protobuf/message_lite.h"
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/descriptor.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/descriptor.h"
 
 
 #define GOOGLE_PROTOBUF_HAS_ONEOF

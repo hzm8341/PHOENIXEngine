@@ -81,8 +81,6 @@ namespace PX2
 		*/
 		void Update (double applicationTime = -Mathd::MAX_REAL, double elapsedTime=0.0f,
 			bool initiator = true);
-		void SetUpdateOnce (bool once);
-		bool IsUpdateOnce () const;
 
 		/// 父亲
 		virtual void OnBeAttached();
@@ -157,6 +155,9 @@ namespace PX2
 		void SetUpdateTime (float time);
 		float GetUpdateTime () const;
 
+		void SetOnlyShowUpdate(bool onlyShowUpdate);
+		bool IsOnlyShowUpdate() const;
+
 		// 数值越大，更新优先级越高
 		void SetUpdatePriority (int updatePriority);
 		int GetUpdatePriority () const;
@@ -204,6 +205,7 @@ public_internal:
 		float mUpdateTime;
 		float mUpdateTiming;
 		float mUpdateTimingInit;
+		bool mIsOnlyShowUpdate;
 		int mUpdatePriority;
 
 		bool mIsDoPick;

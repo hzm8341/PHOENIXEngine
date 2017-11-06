@@ -17,16 +17,19 @@ namespace PX2
 		LanguageManager();
 		virtual ~LanguageManager();
 
+		LanguagePackage *GetPackageEngine();
 		LanguagePackage *GetPackageEditor();
 		LanguagePackage *GetPackageApp();
 		LanguagePackage *GetPackageApp1();
 
 	protected:
+		LanguagePackagePtr mPackageEngine;
 		LanguagePackagePtr mPackageEditor;
 		LanguagePackagePtr mPackageApp;
 		LanguagePackagePtr mPackageApp1;
 	};
 	
+#define PX2_LM_ENGINE (*LanguageManager::GetSingleton().GetPackageEngine())
 #define PX2_LM_EDITOR (*LanguageManager::GetSingleton().GetPackageEditor())
 #define PX2_LM_APP (*LanguageManager::GetSingleton().GetPackageApp())
 #define PX2_LM_APP1 (*LanguageManager::GetSingleton().GetPackageApp1())

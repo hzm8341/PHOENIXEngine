@@ -34,10 +34,23 @@ mIsBloomConfigChanged(true)
 	SetName("EngineSceneCanvas");
 
 	PX2_SC_LUA->SetUserTypePointer("PX2_ENGINESCENECANVAS", "EngineSceneCanvas", this);
+
+	ComeInEventWorld();
 }
 //----------------------------------------------------------------------------
 EngineSceneCanvas::~EngineSceneCanvas()
 {
+	GoOutEventWorld();
+}
+//----------------------------------------------------------------------------
+void EngineSceneCanvas::OnEvent(Event *ent)
+{
+	Canvas::OnEvent(ent);
+
+	if (ProjectES::IsEqual(ent, ProjectES::NewScene))
+	{
+		mIsShadowMapConfigChanged = true;
+	}
 }
 //----------------------------------------------------------------------------
 void EngineSceneCanvas::OnSizeChanged()
@@ -376,6 +389,12 @@ void _SetCameraF(Camera *camera, UIPicBox *uiPicBox)
 	camera->SetFrustum(0.1f, 1000.0f, uMin, uMax, rMin, rMax);
 }
 //----------------------------------------------------------------------------
+void EngineSceneCanvas::UpdateLayout(Movable *parent)
+{
+	Canvas::UpdateLayout(parent);
+	mIsShadowMapConfigChanged = true;
+}
+//----------------------------------------------------------------------------
 void EngineSceneCanvas::_DoClear(Renderer *renderer, Camera *camera)
 {
 	bool clearColor = false; bool clearDepth = false; bool clearStencil = false;
@@ -516,6 +535,7 @@ Canvas(value),
 mIsShadowMapConfigChanged(true),
 mIsBloomConfigChanged(true)
 {
+	ComeInEventWorld();
 }
 //----------------------------------------------------------------------------
 void EngineSceneCanvas::Load(InStream& source)

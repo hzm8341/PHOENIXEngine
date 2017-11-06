@@ -25,7 +25,7 @@
 #ifdef HAVE_LIBZ
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "sendf.h"
 #include "content_encoding.h"
 #include "curl_memory.h"

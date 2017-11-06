@@ -33,6 +33,8 @@ namespace PX2
 		UIFPicBox *GetOverPicBox();
 		UIFText *CreateAddProgressText();
 		UIFText *GetProgressText();
+		void SetProgressTextNumMax(int max);
+		int GetProgressTextNumMax() const;
 
 		virtual void AutoMakeSizeFixable();
 
@@ -64,6 +66,7 @@ namespace PX2
 		UIProgressBarCtrlPtr mPBCtrl;
 
 		UIFTextPtr mProgressText;
+		int mProgressNumMax;
 	};
 
 	PX2_REGISTER_STREAM(UIProgressBar);

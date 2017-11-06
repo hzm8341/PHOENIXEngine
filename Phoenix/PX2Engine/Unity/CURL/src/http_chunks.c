@@ -33,7 +33,7 @@
 #include "non-ascii.h" /* for Curl_convert_to_network prototype */
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 /* The last #include file should be: */
 #include "memdebug.h"

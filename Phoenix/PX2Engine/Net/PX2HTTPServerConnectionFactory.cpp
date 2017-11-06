@@ -15,6 +15,7 @@ mFactory(factory)
 //----------------------------------------------------------------------------
 HTTPServerConnectionFactory::~HTTPServerConnectionFactory()
 {
+	mParams = 0;
 }
 //----------------------------------------------------------------------------
 TCPServerConnection* HTTPServerConnectionFactory::CreateConnection(const StreamSocket& socket)

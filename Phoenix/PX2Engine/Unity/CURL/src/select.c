@@ -39,7 +39,7 @@
 #include <dos.h>  /* delay() */
 #endif
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 
 #include "urldata.h"
 #include "connect.h"

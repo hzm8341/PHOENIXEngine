@@ -9,7 +9,6 @@
 namespace PX2
 {
 
-
 	class PX2_ENGINE_ITEM HTTPServerParams : public TCPServerParams
 	{
 	public:

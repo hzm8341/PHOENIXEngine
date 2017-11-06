@@ -5,4 +5,28 @@
 	public:
 		UIVlc();
 		virtual ~UIVlc();
+		
+		static UIVlc *New();
+		static UIVlc *New(const std::string &name);
+		
+		enum Type
+		{
+			T_HARDCAMERA,
+			T_VLC,
+			T_MAX_TYPE
+		};
+		void SetType(Type type);
+		Type GetType() const;
+		
+		enum Mode
+		{
+			M_NORMAL,
+			M_VR,
+			M_MAX_TYPE
+		};
+		void SetMode(Mode m);
+		Mode GetMode() const;
+		
+		void StartVLC(const std::string &filename);
+		void StopVLC();
 	};

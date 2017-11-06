@@ -22,7 +22,7 @@
  *
  ***************************************************************************/
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 
 #define CURL_HOST_NOMATCH 0
 #define CURL_HOST_MATCH   1

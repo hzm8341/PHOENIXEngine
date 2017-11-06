@@ -172,7 +172,7 @@
 #endif
 #endif
 
-#include <curl/curl.h>
+#include "curl.h"
 
 #include "http_chunks.h" /* for the structs and enum stuff */
 #include "hostip.h"

@@ -77,6 +77,7 @@ namespace PX2
 		virtual void OnEvent(Event *ent);
 
 	protected:
+		void _Init();
 		virtual void OnSizeChanged();
 		virtual void OnPivotChanged();
 		virtual void UpdateWorldData(double applicationTime, double elapsedTime);
@@ -94,6 +95,7 @@ namespace PX2
 		bool mIsUpdateToTex;
 		bool mIsShowNativeView;
 		bool mIsAcceptKeyboardInput;
+		std::string mURL;
 
 		int mViewTag;
 

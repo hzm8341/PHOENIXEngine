@@ -9,7 +9,8 @@
 namespace PX2
 {
 
-	typedef void(*HardCameraCallback) (int width, int height, const char* buf, int size);
+	typedef void(*HardCameraCallback) (int width, int height, const char* buf,
+		int size);
 
 	class PX2_ENGINE_ITEM HardCamera : public Singleton<HardCamera>
 	{
@@ -28,9 +29,13 @@ namespace PX2
 		bool IsHasHardCameraCallback(HardCameraCallback callback) const;
 		void ClearHardCameraCallbacks();
 
+		void SetObj(void *object);
+		void *GetObj();
+
 	protected:
 		bool mIsCameraOpened;
 		std::vector<HardCameraCallback> mCallbacks;
+		void *mObject;
 	};
 
 #define PX2_HARDCAMERA HardCamera::GetSingleton()

@@ -23,9 +23,21 @@ InterpCurveAnchorParamCtrl::~InterpCurveAnchorParamCtrl()
 {
 }
 //----------------------------------------------------------------------------
+void InterpCurveAnchorParamCtrl::SetHor(bool isHor)
+{
+	mIsHor = isHor;
+}
+//----------------------------------------------------------------------------
 bool InterpCurveAnchorParamCtrl::IsHor() const
 {
 	return mIsHor;
+}
+//----------------------------------------------------------------------------
+void InterpCurveAnchorParamCtrl::AddPoint(float inVal, float anchorParam0, 
+	float anchorParam1,	InterpCurveMode mode)
+{
+	InterpCurveFloat3Controller::AddPoint(inVal,
+		Float3(anchorParam0, anchorParam1, 0.0f), mode);
 }
 //----------------------------------------------------------------------------
 void InterpCurveAnchorParamCtrl::_Update(double applicationTime,

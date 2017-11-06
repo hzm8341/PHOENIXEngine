@@ -12,7 +12,8 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 HardCamera::HardCamera() :
-mIsCameraOpened(false)
+mIsCameraOpened(false),
+mObject(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -46,7 +47,15 @@ void HardCamera::CloseCamera()
 void HardCamera::OnSetCameraFrame(int width, int height, const char *data,
 	int size)
 {
-	PX2_LOG_INFO("SetCameraFrame %d", size);
+	PX2_LOG_INFO("SetCameraFrame %d, width:%d, height:%d", size,
+		width, height);
+
+	for (int i = 0; i < (int)mCallbacks.size(); i++)
+	{
+		HardCameraCallback callback = mCallbacks[i];
+		if (callback)
+			callback(width, height, data, size);
+	}
 }
 //----------------------------------------------------------------------------
 bool HardCamera::AddHardCameraCallback(HardCameraCallback callback)
@@ -73,5 +82,15 @@ bool HardCamera::IsHasHardCameraCallback(HardCameraCallback callback) const
 void HardCamera::ClearHardCameraCallbacks()
 {
 	mCallbacks.clear();
+}
+//----------------------------------------------------------------------------
+void HardCamera::SetObj(void *object)
+{
+	mObject = object;
+}
+//----------------------------------------------------------------------------
+void *HardCamera::GetObj()
+{
+	return mObject;
 }
 //----------------------------------------------------------------------------

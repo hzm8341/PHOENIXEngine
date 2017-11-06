@@ -39,7 +39,7 @@ Movable *Creater::CreateMovable_Box()
 	mesh->SetName("Mesh");
 
 	MaterialInstance *mi = new0 MaterialInstance(
-		"Data/engine_mtls/std/std.px2obj", "std_light", false);
+		"Data/engine_mtls/std/std.px2obj", "std_lightshadow", false);
 	mesh->SetMaterialInstance(mi);
 
 	mi->SetPixelTexture(0, "SampleBase", tex);
@@ -60,7 +60,7 @@ Movable *Creater::CreateMovable_Sphere()
 	mesh->SetName("Mesh");
 
 	MaterialInstance *mi = new0 MaterialInstance(
-		"Data/engine_mtls/std/std.px2obj", "std_light", false);
+		"Data/engine_mtls/std/std.px2obj", "std_lightshadow", false);
 	mesh->SetMaterialInstance(mi);
 
 	mi->SetPixelTexture(0, "SampleBase", tex);

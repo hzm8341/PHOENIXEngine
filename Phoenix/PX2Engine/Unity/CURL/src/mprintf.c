@@ -41,7 +41,7 @@
 #undef _MPRINTF_REPLACE /* don't use x_was_used() here */
 #endif
 
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "curl_memory.h"
 /* The last #include file should be: */

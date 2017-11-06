@@ -33,12 +33,12 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 
-#include <google/protobuf/map.h>
-#include <google/protobuf/map_field.h>
-#include <google/protobuf/map_type_handler.h>
+#include "google/protobuf/map.h"
+#include "google/protobuf/map_field.h"
+#include "google/protobuf/map_type_handler.h"
 
 namespace google {
 namespace protobuf {

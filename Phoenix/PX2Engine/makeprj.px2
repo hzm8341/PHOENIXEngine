@@ -63,6 +63,7 @@ INCPATH := \
 	-I ../Effect/ \
 	-I ../Terrains/ \
 	-I ../UI/ \
+	-I ../Voxel/ \
 	-I ../Logic/ \
 	-I ../Logic/BlueBlock/ \
 	-I ../Application/ \

@@ -20,8 +20,10 @@ namespace PX2
 
 		// time_t 是日历时间
 		virtual bool OnTimer (float appTime) = 0;
+		virtual void OnRemove();
 
-public_internal:
+	public_internal:
+		std::string Name;
 		int mTimerID;
 		float StartTime;
 		double mInterval; // 秒

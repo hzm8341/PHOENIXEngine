@@ -41,8 +41,8 @@
 
 #include <string>
 
-#include <google/protobuf/stubs/template_util.h>
-#include <google/protobuf/generated_enum_util.h>
+#include "google/protobuf/stubs/template_util.h"
+#include "google/protobuf/generated_enum_util.h"
 
 namespace google {
 namespace protobuf {

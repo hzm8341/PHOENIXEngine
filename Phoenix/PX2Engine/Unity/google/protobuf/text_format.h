@@ -41,14 +41,14 @@
 #include <map>
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <string>
 #include <vector>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/message.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/message.h"
 
 namespace google {
 namespace protobuf {

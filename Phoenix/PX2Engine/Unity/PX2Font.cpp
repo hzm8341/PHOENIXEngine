@@ -15,8 +15,7 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 unsigned int Font::msCounts = 0;
 //----------------------------------------------------------------------------
-Font::Font (FontType type)
-	:
+Font::Font (FontType type):
 mFontPicSize(1024),
 mFontType(type),
 mIsNeedUpdate(true)

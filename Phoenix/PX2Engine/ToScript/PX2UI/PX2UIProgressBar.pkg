@@ -15,6 +15,12 @@
 		UIFPicBox *GetBackPicBox();
 		UIFPicBox *GetProgressPicBox();
 		UIFPicBox *GetOverPicBox();
+		UIFText *CreateAddProgressText();
+		UIFText *GetProgressText();		
+		void SetProgressTextNumMax(int max);
+		int GetProgressTextNumMax() const;
+
+		virtual void AutoMakeSizeFixable();
 
 		virtual void OnPivotChanged();
 		virtual void OnSizeChanged();
@@ -28,6 +34,4 @@
 
 		void SetProgressAnimSpeed(float speed);
 		float GetProgressAnimSpeed();
-
-		UIProgressBarCtrl *GetProgressBarCtrl();
 	};

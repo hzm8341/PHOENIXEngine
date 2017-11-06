@@ -42,11 +42,14 @@
 		virtual bool PlaySound2DControl(const char *filename,
 			float volume, bool isLoop, Sound *&sound);
 		virtual bool PlaySound3DControl(const char *filename,
-			const SoundCreateInfo3D &createInfo, Sound *&sound);
+			const SoundCreateInfo3D &createInfo, Sound *&sound);			
+		virtual bool PlayASound(const char *filename, float volume = 1.0f,
+			float life = 10.0f);			
 		virtual void LoadSound(const char *filename);
 		virtual void UnloadSound(const char *filename);
 		virtual void EnableSounds(bool enable);
 		bool IsSoundEnable() const;
+		virtual void ClearAllSounds();
 
 		// same time
 		void SetMaxNumPlaySameTime(const char *filename, int num);

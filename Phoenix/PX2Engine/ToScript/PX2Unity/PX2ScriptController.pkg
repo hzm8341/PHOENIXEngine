@@ -4,4 +4,6 @@
 	{	
 		ScriptController();
 		virtual ~ScriptController();
+		
+		virtual int SelfP() const;
 	};

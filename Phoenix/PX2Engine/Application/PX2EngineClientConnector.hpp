@@ -34,7 +34,6 @@ namespace PX2
 		void OnDisConnectedToServer();
 
 		void SendString(const std::string &str);
-		void SendPushProject();
 
 		bool IsHasOnConnectCallback(const std::string &callback) const;
 		void AddOnConnectCallback(const std::string &callback);
@@ -75,6 +74,8 @@ namespace PX2
 	protected:
 		bool mIsBroadcastInfo;
 		float mBroadcastTiming;
+		static bool sIsDownloadingFile;
+		std::string mCurDownLoadFilename;
 	};
 	typedef Pointer0<EngineClientConnector> EngineClientConnectorPtr;
 

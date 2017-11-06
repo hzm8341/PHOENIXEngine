@@ -33,8 +33,8 @@
 #include <iosfwd>
 #include <string>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/stringpiece.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/stringpiece.h"
 
 namespace google {
 namespace protobuf {

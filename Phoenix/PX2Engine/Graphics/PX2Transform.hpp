@@ -7,6 +7,7 @@
 #include "PX2HMatrix.hpp"
 #include "PX2Math.hpp"
 #include "PX2Function.hpp"
+#include "PX2APoint.hpp"
 
 namespace PX2
 {
@@ -58,6 +59,9 @@ namespace PX2
 		void SetRotate(float x, float y, float z);
 		void SetRotate(const APoint &rot);
 		void SetRotateDegree(float xDegree, float yDegree, float zDegree);
+		void SetRotateDegreeX(float degree);
+		void SetRotateDegreeY(float degree);
+		void SetRotateDegreeZ(float degree);
 		void SetMatrix (const HMatrix& matrix);
 		void SetTranslate (const APoint& translate);
 		void SetTranslate (float x, float y, float z);
@@ -70,6 +74,14 @@ namespace PX2
 		void SetUniformScale (float scale);
 		inline const HMatrix& GetRotate () const;
 		void GetRotate(float &x, float &y, float &z) const;
+		APoint GetRotateXYZ() const;
+		float GetRotateX() const;
+		float GetRotateY() const;
+		float GetRotateZ() const;
+		APoint GetRotateDegreeXYZ() const;
+		float GetRotateDegreeX() const;
+		float GetRotateDegreeY() const;
+		float GetRotateDegreeZ() const;
 		inline const HMatrix& GetMatrix () const;
 		inline const APoint& GetTranslate () const;
 		inline const APoint& GetScale () const;

@@ -1,6 +1,7 @@
 // PX2UIList.cpp
 
 #include "PX2UIList.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, UIList);
@@ -11,10 +12,12 @@ PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UIList);
 //----------------------------------------------------------------------------
 UIList::UIList() :
 mIsNeedRecal(false),
+mFontSize(16),
 mIsUpdateSliderVisible(true),
 mSliderSize(10),
 mItemHeight(20.0f),
 mIsUpdateContentPos(true),
+mIsReleasedDoSelect(false),
 mSelectedIndex(-1),
 mNumMaxItems(-1)
 {
@@ -48,6 +51,7 @@ mNumMaxItems(-1)
 	mSlider->SetContentFrame(mContentFrame);
 	mSlider->SetMemUICallback(this, (UIFrame::MemUICallback)(&UIList
 		::_SliderCallback));
+	mSlider->SetPercent(0.0f, false);
 
 	SetChildPickOnlyInSizeRange(true);
 
@@ -56,6 +60,11 @@ mNumMaxItems(-1)
 //----------------------------------------------------------------------------
 UIList::~UIList()
 {
+}
+//----------------------------------------------------------------------------
+UISlider *UIList::GetSlider()
+{
+	return mSlider;
 }
 //----------------------------------------------------------------------------
 void UIList::_SliderCallback(UIFrame *frame, UICallType type)
@@ -95,7 +104,8 @@ void UIList::_UpdateItemVisible()
 
 		if (item)
 		{
-			item->Show(IsIntersectSizeRange(item));
+			bool intersect = IsIntersectSizeRange(item);
+			item->Show(intersect);
 		}
 	}
 
@@ -108,20 +118,41 @@ void UIList::_SelectButCallback(UIFrame *frame, UICallType type)
 	if (button)
 	{
 		UIItem *uiItem = DynamicCast<UIItem>(button->GetParent());
-		if (uiItem && UICT_PRESSED == type)
+		if (uiItem)
 		{
-			ClearAllSelectItems();
-			AddSelectItem(uiItem);
-
-			OnSelected(uiItem);
+			if (!mIsReleasedDoSelect)
+			{
+				if (UICT_PRESSED == type)
+				{
+					_OnSelectProcess(uiItem);
+				}
+			}
+			else
+			{
+				if (UICT_RELEASED == type)
+				{
+					_OnSelectProcess(uiItem);
+				}
+			}
 		}
 	}
+}
+//----------------------------------------------------------------------------
+void UIList::_OnSelectProcess(UIItem *uiItem)
+{
+	ClearAllSelectItems();
+	AddSelectItem(uiItem);
+
+	OnSelected(uiItem);
 }
 //----------------------------------------------------------------------------
 void UIList::SetSliderSize(float size)
 {
 	mSliderSize = size;
 	mSlider->SetSize(mSliderSize, 0.0f);
+	mSlider->SetAnchorParamHor(-mSliderSize*0.5f, 0.0f);
+
+	mMaskFrame->SetAnchorParamHor(0.0f, -mSliderSize);
 }
 //----------------------------------------------------------------------------
 void UIList::SetItemHeight(float height)
@@ -129,6 +160,11 @@ void UIList::SetItemHeight(float height)
 	mItemHeight = height;
 
 	mIsNeedRecal = true;
+}
+//----------------------------------------------------------------------------
+void UIList::SetItemBackPicBox(const std::string &backPicBox)
+{
+	mItemBackPicBox = backPicBox;
 }
 //----------------------------------------------------------------------------
 UIItem *UIList::AddItem(const std::string &text)
@@ -147,15 +183,22 @@ UIItem *UIList::AddItem(const std::string &text)
 	mContentFrame->AttachChild(item);
 	mItems.push_back(item);
 
+	item->GetFText()->SetAnchorParamHor(20.0f, 20.0f);
 	item->GetFText()->GetText()->SetText(text);
 	item->GetFText()->GetText()->SetAutoWarp(true);
 	item->GetFText()->GetText()->SetFontColor(mTextColor);
+	item->GetFText()->GetText()->SetFontWidthHeight(mFontSize, mFontSize);
 
 	UIButton *butBack = item->GetButBack();
 	if (butBack)
 	{
 		butBack->SetMemUICallback(this,
 			(UIFrame::MemUICallback)(&UIList::_SelectButCallback));
+
+		if (!mItemBackPicBox.empty())
+		{
+			butBack->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture(mItemBackPicBox);
+		}
 	}
 
 	item->SetUserData("index", (int)(mItems.size() - 1));
@@ -206,6 +249,27 @@ void UIList::RemoveItem(UIItem *item)
 	}
 }
 //----------------------------------------------------------------------------
+UIItem *UIList::GetItemByUserDataString(const std::string &userDataName, 
+	const std::string &userDataString)
+{
+	for (int i = 0; i < (int)mItems.size(); i++)
+	{
+		UIItem *item = mItems[i];
+
+		bool isValied = false;
+		std::string userDataStr = item->GetUserDataString(userDataName, &isValied);
+		if (isValied)
+		{
+			if (userDataStr == userDataString)
+			{
+				return item;
+			}
+		}
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
 int UIList::GetNumItems() const
 {
 	return (int)mItems.size();
@@ -230,6 +294,15 @@ void UIList::RemoveAllItems()
 	}
 	mItems.clear();
 
+	for (int i = 0; i < (int)mSelectedItems.size(); i++)
+	{
+		if (mSelectedItems[i])
+		{
+			mSelectedItems[i]->Select(false);
+		}
+	}
+	mSelectedItems.clear();
+
 	mIsNeedRecal = true;
 }
 //----------------------------------------------------------------------------
@@ -241,6 +314,16 @@ float UIList::GetContentHeight() const
 void UIList::SetNumMaxItems(int numMax)
 {
 	mNumMaxItems = numMax;
+}
+//----------------------------------------------------------------------------
+void UIList::SetReleasedDoSelect(bool releasedDoSelect)
+{
+	mIsReleasedDoSelect = releasedDoSelect;
+}
+//----------------------------------------------------------------------------
+bool UIList::IsReleasedDoSelect() const
+{
+	return mIsReleasedDoSelect;
 }
 //----------------------------------------------------------------------------
 void UIList::SelectItem(int index)
@@ -285,6 +368,23 @@ UIItem *UIList::GetSelectedItem()
 	return 0;
 }
 //----------------------------------------------------------------------------
+std::string UIList::GetSelectedItemText()
+{
+	UIItem *item = GetSelectedItem();
+	if (item)
+	{
+		std::string text = item->GetFText()->GetText()->GetText();
+		PX2_LOG_INFO("SelectText:%s", text.c_str());
+		return text;
+	}
+	else
+	{
+		PX2_LOG_INFO("Select null");
+	}
+	
+	return "";
+}
+//----------------------------------------------------------------------------
 void UIList::OnSelected(UIItem *item)
 {
 	mSelectedIndex = item->GetUserData<int>("index");
@@ -302,6 +402,20 @@ void UIList::SetTextColor(const Float3 &textColor)
 		if (item)
 		{
 			item->GetFText()->GetText()->SetColor(textColor);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void UIList::SetFontSize(int size)
+{
+	mFontSize = size;
+
+	for (int i = 0; i < (int)mItems.size(); i++)
+	{
+		UIItem *item = mItems[i];
+		if (item)
+		{
+			item->GetFText()->GetText()->SetFontWidthHeight(mFontSize, mFontSize);
 		}
 	}
 }
@@ -387,6 +501,7 @@ mIsUpdateSliderVisible(true),
 mSliderSize(10),
 mItemHeight(20.0f),
 mIsUpdateContentPos(true),
+mIsReleasedDoSelect(false),
 mSelectedIndex(-1),
 mNumMaxItems(-1)
 {

@@ -14,6 +14,8 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
+bool EngineClientConnector::sIsDownloadingFile = false;
+//----------------------------------------------------------------------------
 EngineClientConnector::EngineClientConnector():
 ClientConnector(10),
 mIsAutoConnect(false),
@@ -51,20 +53,6 @@ int EngineClientConnector::Update(float elapsedSeconds)
 			OnConnectedToServer();
 			mIsServerConnected = true;
 		}
-		else
-		{
-			if (mIsBroadcastInfo)
-			{
-				mBroadcastTiming += elapsedSeconds;
-				if (mBroadcastTiming > EngineUDPSendInfoTime)
-				{
-					BroadcastInfoToLocalNet(EngineUDPPortClient);
-					BroadcastInfoToLocalNet(EngineUDPPortServerEditor);
-
-					mBroadcastTiming = 0.0f;
-				}
-			}
-		}
 	}
 	else
 	{
@@ -79,6 +67,18 @@ int EngineClientConnector::Update(float elapsedSeconds)
 		{
 			OnDisConnectedToServer();
 			mIsServerConnected = false;
+		}
+	}
+
+	if (mIsBroadcastInfo)
+	{
+		mBroadcastTiming += elapsedSeconds;
+		if (mBroadcastTiming > EngineUDPSendInfoTime)
+		{
+			BroadcastInfoToLocalNet(EngineUDPPortClient);
+			BroadcastInfoToLocalNet(EngineUDPPortServerEditor);
+
+			mBroadcastTiming = 0.0f;
 		}
 	}
 
@@ -179,11 +179,6 @@ void EngineClientConnector::SendString(const std::string &str)
 		SendMsgToServerBuffer(EngineServerMsgID, str.c_str(),
 			(int)str.length());
 	}
-}
-//----------------------------------------------------------------------------
-void EngineClientConnector::SendPushProject()
-{
-	SendString(CMD_PushProject);
 }
 //----------------------------------------------------------------------------
 bool EngineClientConnector::IsHasOnConnectCallback(
@@ -333,7 +328,11 @@ bool EngineClientConnector::IsBroadcastInfo() const
 //----------------------------------------------------------------------------
 void EngineClientConnector::BroadcastInfoToLocalNet(int port)
 {
-	SocketAddress sktAddr("255.255.255.255", EngineUDPPortClient);
+	PX2_UNUSED(port);
+    
+#if !defined (__IOS__)
+
+	SocketAddress sktAddr("255.255.255.255", EngineUDPPortServerEditor);
 	std::string name = PX2_APP.GetHostName();
 	std::string bufStr = CMD_EngineUDPInfoTag + " " + name;
 
@@ -345,5 +344,7 @@ void EngineClientConnector::BroadcastInfoToLocalNet(int port)
 		udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
 		udpSocket.SetBroadcast(false);
 	}
+    
+#endif
 }
 //----------------------------------------------------------------------------

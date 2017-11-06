@@ -16,6 +16,7 @@ namespace PX2
 		IMEDispatcher ();
 		virtual ~IMEDispatcher ();
 
+        void SetOpenStr(const std::string &openStr);
 		void SetKeyboardState (bool open);
 
 		void DispathInsertText (const char *text, int length);
@@ -57,6 +58,7 @@ namespace PX2
 
 		Impl *mImpl;
 		std::string mEmptyString;
+        std::string mOpenStr;
 	};
 
 }

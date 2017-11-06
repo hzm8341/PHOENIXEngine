@@ -26,3 +26,8 @@ inline const Float3 &UIList::GetTextColor() const
 	return mTextColor;
 }
 //----------------------------------------------------------------------------
+inline int UIList::GetFontSize() const
+{
+	return mFontSize;
+}
+//----------------------------------------------------------------------------

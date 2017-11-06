@@ -17,6 +17,7 @@
 #include "PX2EngineNetEvent.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2Bluetooth.hpp"
+#include "PX2Serial.hpp"
 #include "PX2StringTokenizer.hpp"
 using namespace PX2;
 
@@ -68,9 +69,34 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 					_InitEngineFrameShow(engineFrame);
 				}
 			}
+			else if ("ButReload" == name)
+			{
+				std::string projName = PX2_APP.GetProjectName();
+				PX2_APP.CloseProject();
+				PX2_APP.LoadProject(projName);
+				PX2_APP.Play(Application::PT_PLAY);
+			}
 			else if ("ButClose" == name)
 			{
 				engineFrame->Show(false);
+			}
+			else if ("ButProjectOpen" == name)
+			{
+				UIItem *item = engineCanvas->GetEngineProjectList()->GetSelectedItem();
+				if (item)
+				{
+					std::string projName = item->GetName();
+					if (!projName.empty())
+					{
+						PX2_APP.CloseProject();
+						PX2_APP.LoadProject(projName);
+						PX2_APP.Play(Application::PT_PLAY);
+					}
+				}
+			}
+			else if ("ButProjectClose" == name)
+			{
+				PX2_APP.CloseProject();
 			}
 			else if ("ButSpeak" == name)
 			{
@@ -178,7 +204,7 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 					if (selectItem)
 					{
 						const std::string &label = selectItem->GetLabel();
-						StringTokenizer stkenizer(label, "_");
+						StringTokenizer stkenizer(label, "$");
 						if (stkenizer.Count() > 0)
 						{
 							std::string address = stkenizer.GetAt(1);
@@ -188,6 +214,18 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 							}
 						}
 					}
+				}
+			}
+			else if ("ButSerialCan" == name)
+			{
+				UIList *list = engineCanvas->GetEngineSerialList();
+				list->RemoveAllItems();
+				Serial serial;
+				std::vector<std::string> serials = serial.GetPortList();
+				for (int i = 0; i < (int)serials.size(); i++)
+				{
+					std::string serialName = serials[i];
+					list->AddItem(serialName);
 				}
 			}
 		}
@@ -271,10 +309,11 @@ EngineCanvas::EngineCanvas()
 	backPic->SetAlpha(0.4f);
 	frame->SetAnchorHor(0.0f, 1.0f);
 	frame->SetAnchorVer(1.0f, 1.0f);
-	frame->SetSize(0.0f, 24.0f);
+	frame->SetSize(0.0f, 32.0f);
 	frame->SetPivot(0.5f, 1.0f);
 	mInfoFrame = frame;
 	mInfoFrame->LocalTransform.SetTranslateY(-50.0f);
+	mInfoFrame->SetOnlyShowUpdate(true);
 
 	UIFTextPtr infoText = new0 UIFText();
 	frame->AttachChild(infoText);
@@ -296,8 +335,20 @@ EngineCanvas::EngineCanvas()
 	mEngineBut->SetWidth(butWidth);
 	mEngineBut->LocalTransform.SetTranslateY(-1.0f);
 	mEngineBut->SetName("ButEngine");
-	mEngineBut->CreateAddText("Engine");
+	mEngineBut->CreateAddText(PX2_LM_ENGINE.V("Engine"));
 	mEngineBut->AddUICallback(_EngineUICallback);
+
+	mReloadBut = new0 UIButton();
+	frame->AttachChild(mReloadBut);
+	mReloadBut->SetAnchorHor(1.0f, 1.0f);
+	mReloadBut->SetAnchorVer(0.0f, 1.0f);
+	mReloadBut->SetPivot(1.0f, 0.5f);
+	mReloadBut->SetAnchorParamHor(-butWidth - 5.0f, -butWidth - 5.0f);
+	mReloadBut->SetWidth(butWidth);
+	mReloadBut->LocalTransform.SetTranslateY(-1.0f);
+	mReloadBut->SetName("ButReload");
+	mReloadBut->CreateAddText(PX2_LM_ENGINE.V("Reload"));
+	mReloadBut->AddUICallback(_EngineUICallback);
 
 	UIFTextPtr debugText = new0 UIFText();
 	frame->AttachChild(debugText);
@@ -356,7 +407,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butClose->SetAnchorHor(1.0f, 1.0f);
 	butClose->SetAnchorVer(1.0f, 1.0f);
 	butClose->SetPivot(1.0f, 1.0f);
-	butClose->SetSize(30.0f, 30.0f);
+	butClose->SetSize(40.0f, 40.0f);
 	butClose->CreateAddText("X");
 	butClose->GetText()->SetFontColor(Float3::WHITE);
 	butClose->AddUICallback(_EngineUICallback);
@@ -374,6 +425,8 @@ void EngineCanvas::_CreateEngineFrame()
 	canvas->CreateUICameraNode();
 	canvas->SetClearColor(clearColor);
 
+	float listItemHeight = 25.0f;
+
 	mEngineCollapsePanel = new0 UICollapsePanel();
 	canvas->AttachChild(mEngineCollapsePanel);
 	mEngineCollapsePanel->LocalTransform.SetTranslateY(-1.0f);
@@ -383,6 +436,66 @@ void EngineCanvas::_CreateEngineFrame()
 
 	float butHeight = 30.0f;
 	float textHeight = 20.0f;
+	float sliderWidth = 40.0f;
+
+	float spaceHeight = 5.0f;
+	float posVer = -textHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UICollapseItem *itemEngineProjects = 
+		mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Project"));
+	itemEngineProjects->Expand(false);
+	itemEngineProjects->SetContentHeight(200.0f);
+
+	UIFrame *projectFrame = new0 UIFrame();
+	itemEngineProjects->GetContentFrame()->AttachChild(projectFrame);
+	projectFrame->LocalTransform.SetTranslateY(-1.0f);
+	projectFrame->SetAnchorHor(0.0f, 1.0f);
+	projectFrame->SetAnchorVer(0.0f, 1.0f);
+
+	posVer = -butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIButton *butProjectOpen = new0 UIButton();
+	mEngineProjectButtonOpen = butProjectOpen;
+	projectFrame->AttachChild(butProjectOpen);
+	butProjectOpen->SetName("ButProjectOpen");
+	butProjectOpen->SetAnchorHor(0.0f, 0.5f);
+	butProjectOpen->SetAnchorVer(1.0f, 1.0f);
+	butProjectOpen->SetAnchorParamHor(5.0f, -5.0f);
+	butProjectOpen->SetAnchorParamVer(posVer, posVer);
+	butProjectOpen->LocalTransform.SetTranslateY(-1.0f);
+	butProjectOpen->SetHeight(butHeight);
+	butProjectOpen->CreateAddText(PX2_LM_ENGINE.V("Open"));
+	butProjectOpen->AddUICallback(_EngineUICallback);
+
+	UIButton *butProjectClose = new0 UIButton();
+	mEngineProjectButtonClose = butProjectClose;
+	projectFrame->AttachChild(butProjectClose);
+	butProjectClose->SetName("ButProjectClose");
+	butProjectClose->SetAnchorHor(0.5f, 1.0f);
+	butProjectClose->SetAnchorVer(1.0f, 1.0f);
+	butProjectClose->SetAnchorParamHor(5.0f, -5.0f);
+	butProjectClose->SetAnchorParamVer(posVer, posVer);
+	butProjectClose->LocalTransform.SetTranslateY(-1.0f);
+	butProjectClose->SetHeight(butHeight);
+	butProjectClose->CreateAddText(PX2_LM_ENGINE.V("Close"));
+	butProjectClose->AddUICallback(_EngineUICallback);
+
+	posVer -= butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIList *listProjects = new0 UIList();
+	mEngineProjectList = listProjects;
+	listProjects->SetName("ListProject");
+	projectFrame->AttachChild(listProjects);
+	listProjects->SetItemHeight(listItemHeight);
+	listProjects->SetSliderSize(sliderWidth);
+	listProjects->SetAnchorHor(0.0f, 1.0f);
+	listProjects->SetAnchorVer(0.0f, 1.0f);
+	listProjects->SetAnchorParamVer(spaceHeight, posVer);
+
+	_RefreshProjects();
 
 	//// Engine Server
 	//UICollapseItem *itemEngineServer = mEngineCollapsePanel->AddItem("Net_TCP_EngineServer");
@@ -393,10 +506,6 @@ void EngineCanvas::_CreateEngineFrame()
 	//frameInfo->SetAnchorHor(0.0f, 1.0f);
 	//frameInfo->SetAnchorVer(0.0f, 1.0f);
 	//frameInfo->SetPivot(0.5f, 1.0f);
-
-	float spaceHeight = 5.0f;
-	float posVer = -textHeight*0.5f;
-	posVer -= spaceHeight;
 
 	//UIFText *textIP = new0 UIFText();
 	//frameInfo->AttachChild(textIP);
@@ -577,7 +686,7 @@ void EngineCanvas::_CreateEngineFrame()
 	//itemClientConnector->SetContentHeight(-posVer);
 
 	// udpNeighbors
-	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem("Net_UDP_Neighbors");
+	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Device"));
 	itemNeightbors->Expand(false);
 	mEngineUDPNeighbors = new0 UIList();
 	mEngineUDPNeighbors->SetNumMaxItems(20);
@@ -590,7 +699,7 @@ void EngineCanvas::_CreateEngineFrame()
 	itemNeightbors->SetContentHeight(100.0f);
 
 	// bluetooth
-	UICollapseItem *itemBluetooth= mEngineCollapsePanel->AddItem("Bluetooth");
+	UICollapseItem *itemBluetooth = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Bluetooth"));
 	itemBluetooth->Expand(false);
 	itemBluetooth->SetContentHeight(200.0f);
 
@@ -612,7 +721,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butBluetoothScan->SetAnchorParamVer(posVer, posVer);
 	butBluetoothScan->LocalTransform.SetTranslateY(-1.0f);
 	butBluetoothScan->SetHeight(butHeight);
-	butBluetoothScan->CreateAddText("Scan");
+	butBluetoothScan->CreateAddText(PX2_LM_ENGINE.V("Scan"));
 	butBluetoothScan->AddUICallback(_EngineUICallback);
 
 	UIButton *butBluetoothConnect = new0 UIButton();
@@ -625,26 +734,68 @@ void EngineCanvas::_CreateEngineFrame()
 	butBluetoothConnect->SetAnchorParamVer(posVer, posVer);
 	butBluetoothConnect->LocalTransform.SetTranslateY(-1.0f);
 	butBluetoothConnect->SetHeight(butHeight);
-	butBluetoothConnect->CreateAddText("Connect");
+	butBluetoothConnect->CreateAddText(PX2_LM_ENGINE.V("Connect"));
 	butBluetoothConnect->AddUICallback(_EngineUICallback);
 
 	posVer -= butHeight*0.5f;
 	posVer -= spaceHeight;
 
-	UIList *list = new0 UIList();
-	mEngineBluetoothList = list;
-	list->SetName("ListBluetooth");
-	bluetoothFrame->AttachChild(list);
-	list->SetAnchorHor(0.0f, 1.0f);
-	list->SetAnchorVer(0.0f, 1.0f);
-	list->SetAnchorParamVer(spaceHeight, posVer);
+	UIList *listBle = new0 UIList();
+	mEngineBluetoothList = listBle;
+	listBle->SetItemHeight(listItemHeight);
+	listBle->SetName("ListBluetooth");
+	bluetoothFrame->AttachChild(listBle);
+	listBle->SetSliderSize(sliderWidth);
+	listBle->SetAnchorHor(0.0f, 1.0f);
+	listBle->SetAnchorVer(0.0f, 1.0f);
+	listBle->SetAnchorParamVer(spaceHeight, posVer);
 	std::vector<std::string> deviceList = PX2_BLUETOOTH.GetPairedDevices();
 	for (int i = 0; i < (int)deviceList.size(); i++)
-		list->AddItem(deviceList[i]);
+		listBle->AddItem(deviceList[i]);
+
+	// 串口
+	UICollapseItem *itemSerial = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Serial"));
+	itemSerial->Expand(false);
+	itemSerial->SetContentHeight(200.0f);
+
+	UIFrame *serialFrame = new0 UIFrame();
+	itemSerial->GetContentFrame()->AttachChild(serialFrame);
+	serialFrame->LocalTransform.SetTranslateY(-1.0f);
+	serialFrame->SetAnchorHor(0.0f, 1.0f);
+	serialFrame->SetAnchorVer(0.0f, 1.0f);
+
+	posVer = -butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIButton *butSerialScan = new0 UIButton();
+	serialFrame->AttachChild(butSerialScan);
+	butSerialScan->SetName("ButSerialCan");
+	butSerialScan->SetAnchorHor(0.0f, 0.5f);
+	butSerialScan->SetAnchorVer(1.0f, 1.0f);
+	butSerialScan->SetAnchorParamHor(5.0f, -5.0f);
+	butSerialScan->SetAnchorParamVer(posVer, posVer);
+	butSerialScan->LocalTransform.SetTranslateY(-1.0f);
+	butSerialScan->SetHeight(butHeight);
+	butSerialScan->CreateAddText(PX2_LM_ENGINE.V("Scan"));
+	butSerialScan->AddUICallback(_EngineUICallback);
+
+	posVer -= butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIList *listSerial = new0 UIList();
+	mEngineSerialList = listSerial;
+	listSerial->SetItemHeight(listItemHeight);
+	listSerial->SetName("ListBluetooth");
+	serialFrame->AttachChild(listSerial);
+	listSerial->SetSliderSize(sliderWidth);
+	listSerial->SetAnchorHor(0.0f, 1.0f);
+	listSerial->SetAnchorVer(0.0f, 1.0f);
+	listSerial->SetAnchorParamVer(spaceHeight, posVer);
 
 	// Infos
-	UICollapseItem *itemInfos = mEngineCollapsePanel->AddItem("Infos");
+	UICollapseItem *itemInfos = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Infos"));
 	mEngineInfoList = new0 UIList();
+	mEngineInfoList->SetItemHeight(listItemHeight);
 	mEngineInfoList->SetNumMaxItems(20);
 	UIPicBox *backInfoList = mEngineInfoList->CreateAddBackgroundPicBox(true);
 	backInfoList->UseAlphaBlend(true);
@@ -654,6 +805,32 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineInfoList->SetAnchorVer(0.0f, 1.0f);
 	itemInfos->SetContentHeight(300.0f);
 	itemInfos->Expand(false);
+}
+//----------------------------------------------------------------------------
+void EngineCanvas::_RefreshProjects()
+{
+	mEngineProjectList->RemoveAllItems();
+	std::set<std::string> allProjects = PX2_APP.GetAllProjects();
+	auto it = allProjects.begin();
+	for (; it != allProjects.end(); it++)
+	{
+		std::string projName = *it;
+		UIItem *item = mEngineProjectList->AddItem(projName);
+		item->SetName(projName);
+
+		if (PX2_APP.IsProjectUpdated(projName))
+		{
+			UIFText *textUpdated = UIFText::New();
+			item->AttachChild(textUpdated);
+			textUpdated->LocalTransform.SetTranslateY(-2.0f);
+			textUpdated->SetAnchorHor(0.0f, 1.0f);
+			textUpdated->SetAnchorVer(0.0f, 1.0f);
+			textUpdated->SetAnchorParamHor(0.0f , -10.0f);
+			textUpdated->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
+			textUpdated->GetText()->SetFontColor(Float3::WHITE);
+			textUpdated->GetText()->SetText("Updated");
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void EngineCanvas::SetScreenRect(const Rectf &rect)
@@ -684,41 +861,49 @@ void EngineCanvas::OnEvent(Event *event)
 	{
 		UIButton *butClientConnect = DynamicCast<UIButton>(
 			GetEngineFrame()->GetObjectByName("ButClientConnect"));
-		butClientConnect->GetText()->SetText("DisConnect");
+		if (butClientConnect)
+			butClientConnect->GetText()->SetText(PX2_LM_ENGINE.V("DisConnect"));
 
 		UIEditBox *editBoxIP = DynamicCast<UIEditBox>(
 			GetEngineFrame()->GetObjectByName("EditBoxIP"));
-		editBoxIP->Enable(false);
+		if (editBoxIP)
+			editBoxIP->Enable(false);
 		UIEditBox *editBoxPort = DynamicCast<UIEditBox>(
 			GetEngineFrame()->GetObjectByName("EditBoxPort"));
-		editBoxPort->Enable(false);
+		if (editBoxPort)
+			editBoxPort->Enable(false);
 
 		UIList *list = GetEngineInfoList();
-		list->AddItem("EngineClientConnectorConnected");
+		if (list)
+			list->AddItem("EngineClientConnectorConnected");
 	}
 	else if (EngineNetES::IsEqual(event, EngineNetES::OnEngineClientDisConnected))
 	{
 		UIList *list = GetEngineInfoList();
-		list->AddItem("EngineClientConnectorDisConnected");
+		if (list)
+			list->AddItem("EngineClientConnectorDisConnected");
 	}
 	else if (EngineNetES::IsEqual(event, EngineNetES::OnEngineServerBeConnected))
 	{
 		const std::string &cntStr = event->GetDataStr0();
 
 		UIList *list = GetEngineInfoList();
-		list->AddItem("EngineServerBeConnected :" + cntStr);
+		if (list)
+			list->AddItem("EngineServerBeConnected :" + cntStr);
 	}
 	else if (EngineNetES::IsEqual(event, EngineNetES::OnEngineServerBeDisConnected))
 	{
 		const std::string &cntStr = event->GetDataStr0();
 
 		UIList *list = GetEngineInfoList();
-		list->AddItem("EngineServerBeDisConnected :" + cntStr);
+		if (list)
+			list->AddItem("EngineServerBeDisConnected :" + cntStr);
 	}
 	else if (EngineNetES::IsEqual(event, EngineNetES::EngineClientUDPInfoChanged))
 	{
 		UIList *list = GetEngineUDPNeighborList();
-		list->RemoveAllItems();
+		if (list)
+			list->RemoveAllItems();
 
 		int numUDPNetInfo = PX2_APP.GetNumUDPNetInfo();
 		for (int i = 0; i < numUDPNetInfo; i++)
@@ -727,17 +912,18 @@ void EngineCanvas::OnEvent(Event *event)
 			if (udpNetInfo)
 			{
 				std::string textStr = udpNetInfo->Name + " " + udpNetInfo->IP;
-				list->AddItem(textStr);
+				if (list)
+					list->AddItem(textStr);
 			}
 		}
 	}
 	else if (BluetoothES::IsEqual(event, BluetoothES::OnConnected))
 	{
-		mEngineBluetoothButConnect->GetText()->SetText("DisConnect");
+		mEngineBluetoothButConnect->GetText()->SetText(PX2_LM_ENGINE.V("DisConnect"));
 	}
 	else if (BluetoothES::IsEqual(event, BluetoothES::OnDisConnected))
 	{
-		mEngineBluetoothButConnect->GetText()->SetText("Connect");
+		mEngineBluetoothButConnect->GetText()->SetText(PX2_LM_ENGINE.V("Connect"));
 	}
 	else if (BluetoothES::IsEqual(event, BluetoothES::OnDisocveryNewDevice))
 	{
@@ -770,6 +956,11 @@ void EngineCanvas::OnEvent(Event *event)
 					_CalSize(projSize);
 			}
 		}
+	}
+	else if (ProjectES_Internal::IsEqual(event,
+		ProjectES_Internal::AddUpdateProject))
+	{
+		_RefreshProjects();
 	}
 }
 //----------------------------------------------------------------------------
@@ -842,6 +1033,11 @@ UIFrame *EngineCanvas::GetEngineFrame()
 	return mEngineFrame;
 }
 //----------------------------------------------------------------------------
+UIList *EngineCanvas::GetEngineProjectList()
+{
+	return mEngineProjectList;
+}
+//----------------------------------------------------------------------------
 UIList *EngineCanvas::GetEngineUDPNeighborList()
 {
 	return mEngineUDPNeighbors;
@@ -850,6 +1046,11 @@ UIList *EngineCanvas::GetEngineUDPNeighborList()
 UIList *EngineCanvas::GetEngineBluetoothList()
 {
 	return mEngineBluetoothList;
+}
+//----------------------------------------------------------------------------
+UIList *EngineCanvas::GetEngineSerialList()
+{
+	return mEngineSerialList;
 }
 //----------------------------------------------------------------------------
 UIList *EngineCanvas::GetEngineInfoList()

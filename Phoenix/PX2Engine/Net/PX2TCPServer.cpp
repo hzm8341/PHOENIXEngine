@@ -13,17 +13,14 @@ mSocket(ServerSocket((int16_t)portNumber)),
 mThread(_ThreadName(mSocket)),
 mIsStopped(true)
 {
-	ThreadPool *pool = ThreadPool::GetSingletonPtr();
-	if (!pool)
-	{
-		pool = new0 ThreadPool();
-	}
+	mThreadPool = new0 ThreadPool();
+
 	if (params)
 	{
-		int toAdd = params->GetNumMaxThreads() - pool->Capacity();
-		if (toAdd > 0) pool->AddCapacity(toAdd);
+		int toAdd = params->GetNumMaxThreads() - mThreadPool->Capacity();
+		if (toAdd > 0) mThreadPool->AddCapacity(toAdd);
 	}
-	mDispatcher = new0 TCPServerDispatcher(factory, *pool, params);
+	mDispatcher = new0 TCPServerDispatcher(factory, mThreadPool, params);
 }
 //----------------------------------------------------------------------------
 TCPServer::TCPServer(TCPServerConnectionFactory *factory, 
@@ -32,20 +29,16 @@ mSocket(socket),
 mThread(_ThreadName(socket)),
 mIsStopped(true)
 {
-	ThreadPool *pool = ThreadPool::GetSingletonPtr();
-	if (!pool)
-	{
-		pool = new0 ThreadPool();
-	}
+	mThreadPool = new0 ThreadPool();
 	if (params)
 	{
-		int toAdd = params->GetNumMaxThreads() - pool->Capacity();
-		if (toAdd > 0) pool->AddCapacity(toAdd);
+		int toAdd = params->GetNumMaxThreads() - mThreadPool->Capacity();
+		if (toAdd > 0) mThreadPool->AddCapacity(toAdd);
 	}
-	mDispatcher = new0 TCPServerDispatcher(factory, *pool, params);
+	mDispatcher = new0 TCPServerDispatcher(factory, mThreadPool, params);
 }
 //----------------------------------------------------------------------------
-TCPServer::TCPServer(TCPServerConnectionFactory *factory, ThreadPool& threadPool, 
+TCPServer::TCPServer(TCPServerConnectionFactory *factory, ThreadPool *threadPool, 
 	const ServerSocket& socket, TCPServerParams *params) :
 mSocket(socket),
 mDispatcher(new0 TCPServerDispatcher(factory, threadPool, params)),
@@ -59,6 +52,7 @@ TCPServer::~TCPServer()
 	Stop();
 	delete0(mDispatcher);
 	mDispatcher = 0;
+	mThreadPool = 0;
 }
 //----------------------------------------------------------------------------
 const TCPServerParams& TCPServer::params() const
@@ -77,8 +71,11 @@ void TCPServer::Stop()
 	if (!mIsStopped)
 	{
 		mIsStopped = true;
+		System::SleepSeconds(0.2f);
 		mThread.Join();
 		mDispatcher->Stop();
+
+		mThreadPool->StopAll();
 	}
 }
 //----------------------------------------------------------------------------

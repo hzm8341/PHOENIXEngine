@@ -214,9 +214,11 @@ namespace PX2
 
 		void SetResourceUpdateAddr(const std::string &updateAddr);
 		const std::string &GetResourceUpdateAddr() const;
-		void DoResourceUpdateStuffs(const std::string &wwwAddr, const std::string &projName);
+		// 1ftp 2http
+		void DoResourceUpdateStuffs(const std::string &wwwAddr, const std::string &projName, int type);
 		void SetResourceUpdateCallback(ResourceUpdateStuffsCallback callback);
-		bool Download(const std::string &fullPath, const std::string &url);
+
+		bool Download(const std::string &fullPath, const std::string &url, int type);
 
 	protected:
 		void ReadVersionList(FileIO &in, ResourceFileTable &table);

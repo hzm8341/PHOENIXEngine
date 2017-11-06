@@ -14,6 +14,9 @@ PX2_IMPLEMENT_FACTORY(UITabFrame);
 
 //----------------------------------------------------------------------------
 UITabFrame::UITabFrame() :
+mFontSize(16),
+mFontScale(1.0f),
+mFontColor(Float3::MakeColor(50, 50, 50)),
 mLayoutPosType(LPT_TOP),
 mTabBarHeight(20.0f),
 mTabWidth(100.0f),
@@ -21,7 +24,6 @@ mTabHeight(20.0f),
 mAuiBlockFrame(0),
 mTabLayoutType(TLT_FIX),
 mIsTabsNeedReCal(true),
-mIsAui(true),
 mIsDragingTab(false)
 {
 	SetAnchorHor(0.0f, 1.0f);
@@ -63,11 +65,6 @@ void UITabFrame::SetLayoutPos(LayoutPosType posType)
 	mIsTabsNeedReCal = true;
 }
 //----------------------------------------------------------------------------
-void UITabFrame::SetAui(bool isAui)
-{
-	mIsAui = isAui;
-}
-//----------------------------------------------------------------------------
 void UITabFrame::SetTabBarHeight(float height)
 {
 	mTabBarHeight = height;
@@ -87,6 +84,36 @@ void UITabFrame::SetTabHeight(float height)
 {
 	mTabHeight = height;
 	mIsTabsNeedReCal = true;
+}
+//----------------------------------------------------------------------------
+void UITabFrame::SetFontSize(int size)
+{
+	mFontSize = size;
+}
+//----------------------------------------------------------------------------
+int UITabFrame::GetFontSize() const
+{
+	return mFontSize;
+}
+//----------------------------------------------------------------------------
+void UITabFrame::SetFontScale(float scale)
+{
+	mFontScale = scale;
+}
+//----------------------------------------------------------------------------
+float UITabFrame::GetFontScale() const
+{
+	return mFontScale;
+}
+//----------------------------------------------------------------------------
+void UITabFrame::SetFontColor(const Float3 &fontColor)
+{
+	mFontColor = fontColor;
+}
+//----------------------------------------------------------------------------
+const Float3 &UITabFrame::GetFontColor() const
+{
+	return mFontColor;
 }
 //----------------------------------------------------------------------------
 void UITabFrame::SetTabLayoutType(TabLayoutType tlt)
@@ -232,7 +259,7 @@ void UITabFrame::AddTab(const std::string &name, const std::string &title,
 		text->GetText()->SetText(title);
 
 		UIPicBox *picBoxNormal = tabBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL);
-		if (mIsAui)
+		if (IsUseSkin())
 		{
 			tabBut->SetStateColor(UIButtonBase::BS_NORMAL, PX2_UISM.Color_AuiButTab_Normal);
 			tabBut->SetStateColor(UIButtonBase::BS_HOVERED, PX2_UISM.Color_AuiButTab_Horvered);
@@ -242,7 +269,6 @@ void UITabFrame::AddTab(const std::string &name, const std::string &title,
 			tabBut->GetText()->SetColor(Float3::WHITE);
 			tabBut->GetText()->SetColorSelfCtrled(true);
 			tabBut->GetText()->SetFontColor(PX2_UISM.Color_ContentFont);
-			tabBut->GetText()->SetDrawStyle(FD_SHADOW);
 			tabBut->GetText()->SetBorderShadowAlpha(1.0f);
 		}
 		else
@@ -250,11 +276,14 @@ void UITabFrame::AddTab(const std::string &name, const std::string &title,
 			tabBut->SetStateColor(UIButtonBase::BS_NORMAL, PX2_UISM.Color_ButTab_Normal);
 			tabBut->SetStateColor(UIButtonBase::BS_HOVERED, PX2_UISM.Color_ButTab_Horvered);
 			tabBut->SetStateColor(UIButtonBase::BS_PRESSED, PX2_UISM.Color_ButTab_Pressed);
+
 			tabBut->SetActivateColor(PX2_UISM.Color_ButTab_Active);
 
+			tabBut->GetText()->SetFontScale(mFontScale);
+			tabBut->GetText()->SetFontWidthHeight(mFontSize, mFontSize);
+			tabBut->GetText()->SetFontColor(mFontColor);
 			tabBut->GetText()->SetColor(Float3::WHITE);
 			tabBut->GetText()->SetColorSelfCtrled(true);
-			tabBut->GetText()->SetFontColor(Float3::WHITE*0.7f);
 		}
 
 		mIsTabsNeedReCal = true;
@@ -515,7 +544,6 @@ mTabHeight(20.0f),
 mAuiBlockFrame(0),
 mTabLayoutType(TLT_FIX),
 mIsTabsNeedReCal(true),
-mIsAui(true),
 mIsDragingTab(false)
 {
 }

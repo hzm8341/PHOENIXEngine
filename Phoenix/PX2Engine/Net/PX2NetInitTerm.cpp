@@ -25,7 +25,7 @@ namespace PX2
 	//----------------------------------------------------------------------------
 	void TerminateNetwork()
 	{
-		//google::protobuf::ShutdownProtobufLibrary();
+		google::protobuf::ShutdownProtobufLibrary();
 
 #if defined(_WIN32) || defined(WIN32)
 		WSACleanup();

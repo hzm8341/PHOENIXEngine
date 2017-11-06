@@ -44,6 +44,7 @@ namespace PX2
 
 		bool Download(const std::string &filename, const std::string &url,
 			int size, int startFrom);
+		// 1 ftp; 2 http
 		bool Download(const std::string &filename, const std::string &url);
 		bool IsGettedOK() const;
 		float GetGettedProgress() const;

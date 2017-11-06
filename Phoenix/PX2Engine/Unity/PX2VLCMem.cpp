@@ -4,7 +4,6 @@
 #include "PX2Log.hpp"
 using namespace PX2;
 
-#if defined PX2_USE_VLC
 
 //----------------------------------------------------------------------------
 VLCMem::VLCMem()
@@ -135,5 +134,3 @@ void VLCMem::_DisplayCallback(void *opaque, void *picture)
 	reinterpret_cast<VLCMem*>(opaque)->DisplayCallback(picture);
 }
 //----------------------------------------------------------------------------
-
-#endif

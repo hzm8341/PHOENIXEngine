@@ -27,4 +27,7 @@
 		static void StringToXYZ(const std::string &val, float &x, float &y, float &z);
 		
 		static std::string FormatColor(int r, int g, int b);
+		
+		static std::string StrToHex(const std::string &str);
+		static int HexToInt(const std::string &str);
 	};

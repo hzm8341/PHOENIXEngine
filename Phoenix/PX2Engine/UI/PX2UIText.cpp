@@ -71,8 +71,6 @@ void UIText::_Init()
 
 	mIsNeedReCreateFont = true;
 	mIsNeedReCreate = true;
-
-	EnableShareDraw(true);
 }
 //----------------------------------------------------------------------------
 void UIText::SetFont(const std::string &fontFilename, int fontWidth,

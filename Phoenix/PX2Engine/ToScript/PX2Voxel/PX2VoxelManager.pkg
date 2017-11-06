@@ -1,0 +1,17 @@
+// PX2VoxelManager.pkg
+
+	class VoxelManager
+	{
+	public:
+		VoxelManager();
+		~VoxelManager();
+
+		bool Initlize();
+
+		bool LoadBlocksConfig(const std::string &filename);
+
+		VoxelBlockMtl *GetVoxelBlockMtlByType(int mtlType);
+		VoxelBlockMtl *GetVoxelBlockMtlByName(const std::string &name);
+
+		const TexPackElement &GetTexPackEle(const std::string &faceImageName) const;
+	};

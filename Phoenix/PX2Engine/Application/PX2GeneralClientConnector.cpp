@@ -5,6 +5,8 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
+bool GeneralClientConnector::sIsDownloadingFile = false;
+//----------------------------------------------------------------------------
 GeneralClientConnector::GeneralClientConnector() :
 ClientConnector(10),
 mIsServerConnected(false)

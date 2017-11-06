@@ -55,6 +55,9 @@ namespace PX2
 		void SetUserDataFloat (const std::string &name, float val);
 		float GetUserDataFloat (const std::string &name, bool *isValied=0) const;
 
+		void SetUserDataString(const std::string &name, const std::string &val);
+		std::string GetUserDataString(const std::string &name, bool *isValied = 0) const;
+
 		void SetUserData (const std::string &name, const Any &any);
 		Any GetUserDataAny (const std::string &name, bool *isValied=0) const;
 		template <typename T>
@@ -65,6 +68,7 @@ namespace PX2
 
 	private:
 		std::map<std::string, float> mUserDataFloats;
+		std::map<std::string, std::string> mUserDataStrings;
 		std::map<std::string, Any> mUserDatas;
 		std::map<std::string, void*> mUserDataPointers;
 

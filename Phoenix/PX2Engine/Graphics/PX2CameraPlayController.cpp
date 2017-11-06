@@ -2,8 +2,6 @@
 
 #include "PX2CameraPlayController.hpp"
 #include "PX2Time.hpp"
-#include "PX2ProjectEvent.hpp"
-#include "PX2EngineSceneCanvas.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Controller, CameraPlayController);

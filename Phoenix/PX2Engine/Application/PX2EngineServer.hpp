@@ -33,7 +33,6 @@ namespace PX2
 
 		void SendString(int clientid, const std::string &str);
 		void BroadCastString(const std::string &str);
-		void BroadCastPushProject(const std::string &projName);
 
 	protected:
 		virtual int OnConnect(unsigned int clientid);

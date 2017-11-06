@@ -8,8 +8,6 @@
 #include "PX2VLCMem.hpp"
 #include "PX2ScopedCS.hpp"
 
-#if defined PX2_USE_VLC
-
 namespace PX2
 {
 
@@ -19,8 +17,14 @@ namespace PX2
 		VLCMemObj();
 		virtual ~VLCMemObj();
 
+		void SetMediaWidthHeight(int width, int height);
+		int GetMediaWidth() const;
+		int GetMediaHeight() const;
+
 		virtual void OnFormatSetup();
 		virtual void OnFrameReady(const std::vector<char>* frameBuf);
+		virtual void OnFrameReady(int width, int height,
+			const char* buf, int size);
 		virtual void OnFrameCleanUp();
 
 		void SetTextureUpdated(bool updated);
@@ -28,6 +32,11 @@ namespace PX2
 		Texture2D *GetTex2D();
 
 	protected:
+		bool _CheckUpdateTime();
+
+		int mFPS;
+		int mLastReadyTime;
+
 		Texture2DPtr mTex2D;
 		Mutex mMutex;
 		bool mIsTextureUpdated;
@@ -35,7 +44,5 @@ namespace PX2
 	typedef Pointer0<VLCMemObj> VLCMemObjPtr;
 
 }
-
-#endif
 
 #endif

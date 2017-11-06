@@ -24,7 +24,6 @@ namespace PX2
 
 		// general
 		std::string ProjectName;
-		std::vector<std::string> Plugins;
 
 		// app
 		Sizef BoostSize;
@@ -33,8 +32,24 @@ namespace PX2
 		bool IsDataReWriteToDataUpdate;
 
 		// server
+		std::string ServerProjectName;
 		int Port;
 		int NumMaxConnection;
+
+		// projects
+		std::vector<std::string> Projects;
+		bool IsHasProject(const std::string &projectName) const;
+		void ClearProjects();
+		bool AddProject(const std::string &projectName);
+		bool RemoveProject(const std::string &projectName);
+
+		// plugins
+		std::vector<std::string> Plugins;
+		bool IsHasPlugin(const std::string &projectName) const;
+		void ClearPlugins();
+		bool AddPlugin(const std::string &projectName);
+		bool RemovePlugin(const std::string &projectName);
+
 	};
 
 }

@@ -47,6 +47,11 @@ const std::string &ScriptController::GetClassName() const
 	return mClassName;
 }
 //---------------------------------------------------------------------------
+int ScriptController::SelfP() const
+{
+	return 0;
+}
+//---------------------------------------------------------------------------
 void ScriptController::SetControlledable(Controlledable* object)
 {
 	if (!mObject)

@@ -45,6 +45,7 @@ namespace PX2
 		std::vector<std::string> mOnConnectCallbacks;
 		std::vector<std::string> mOnDisconnectCallbacks;
 		std::vector<std::string> mOnRecvCallbacks;
+		static bool sIsDownloadingFile;
 	};
 	typedef Pointer0<GeneralClientConnector> GeneralClientConnectorPtr;
 

@@ -45,7 +45,7 @@
 #endif
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "transfer.h"
 #include "sendf.h"
 #include "tftp.h"
@@ -59,7 +59,7 @@
 #include "speedcheck.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "curl_memory.h"
 #include "select.h"

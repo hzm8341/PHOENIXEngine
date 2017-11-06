@@ -2,6 +2,7 @@
 
 #include "PX2TimerManager.hpp"
 #include "PX2Memory.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -34,8 +35,34 @@ void TimerManager::RemoveTimer (int timerID)
 	{
 		if (timerID == (it->second)->mTimerID)
 		{
+			it->second->OnRemove();
+
 			delete0(it->second);
 			mMapTimers.erase(it);
+
+			PX2_LOG_INFO("Remvoed Timer %d", timerID);
+
+			return;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void TimerManager::RemoveTimer(const std::string &name)
+{
+	PX2_LOG_INFO("Try to remvoed Timer %s", name.c_str());
+
+	std::multimap<double, Timer*>::iterator it = mMapTimers.begin();
+	for (; it != mMapTimers.end(); it++)
+	{
+		if (name == (it->second)->Name)
+		{
+			it->second->OnRemove();
+
+			delete0(it->second);
+			mMapTimers.erase(it);
+
+			PX2_LOG_INFO("Remvoed Timer %s", name.c_str());
+
 			return;
 		}
 	}
@@ -46,6 +73,8 @@ void TimerManager::ClearTimers ()
 	std::multimap<double, Timer*>::iterator it = mMapTimers.begin();
 	for (; it!=mMapTimers.end(); it++)
 	{
+		it->second->OnRemove();
+
 		delete0(it->second);
 	}
 
@@ -97,12 +126,14 @@ void TimerManager::Update(float appTime)
 			}
 			else
 			{
+				timer->OnRemove();
 				delete0(timer);
 			}
 		}
 		else
 		{
 			timer->OnTimer(appTime);
+			timer->OnRemove();
 			delete0(timer);
 			mMapTimers.erase(it++);
 		}

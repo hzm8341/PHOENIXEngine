@@ -25,6 +25,7 @@ namespace PX2
 			const std::string &className);
 		void SetStringClass(const std::string &str,
 			const std::string &className);
+		virtual int SelfP() const;
 
 		virtual void ScriptOnAttached();
 		virtual void ScriptOnDetach();
@@ -36,8 +37,6 @@ namespace PX2
 		virtual void ScriptOnPlay();
 		virtual void ScriptOnStop();
 		virtual void ScriptOnPlayUpdate();
-
-		int SelfP() const;
 
 		void SetVal(const std::string &key, int val);
 		void SetVal(const std::string &key, bool val);

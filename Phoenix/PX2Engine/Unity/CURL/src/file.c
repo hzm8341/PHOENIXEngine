@@ -50,7 +50,7 @@
 
 #include "strtoofft.h"
 #include "urldata.h"
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "progress.h"
 #include "sendf.h"
 #include "escape.h"
@@ -64,7 +64,7 @@
 #include "warnless.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 /* The last #include file should be: */
 #include "memdebug.h"

@@ -262,7 +262,9 @@ void UI::PostLink()
 		mDefaultCameraNode->PostLink();
 
 	if (mEnvirParamController)
+	{
 		mEnvirParamController->PostLink();
+	}
 	else
 	{
 		_CreateAddEnvirController();

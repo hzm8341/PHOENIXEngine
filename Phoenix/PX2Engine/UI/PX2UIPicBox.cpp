@@ -42,8 +42,6 @@ mTexturePathname(filename)
 	SetUVRepeat(Float2::UNIT);
 
 	SetColor(Float3::WHITE);
-
-	EnableShareDraw(true);
 }
 //----------------------------------------------------------------------------
 UIPicBox::UIPicBox(const std::string &packName, const std::string &eleName,
@@ -760,7 +758,6 @@ mCornerSizeRT(10.0f, 10.0f),
 mIsBufferNeedUpdate(true),
 mPBTexMode(PBTM_TEX)
 {
-	EnableShareDraw(true);
 }
 //----------------------------------------------------------------------------
 void UIPicBox::Load(InStream& source)

@@ -22,7 +22,7 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 
 #ifdef HAVE_NETINET_IN_H
 #  include <netinet/in.h>
@@ -49,7 +49,7 @@
 #include "warnless.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "curl_memory.h"
 /* The last #include file should be: */

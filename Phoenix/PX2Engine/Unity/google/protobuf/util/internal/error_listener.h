@@ -34,16 +34,16 @@
 #include <algorithm>
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <string>
 #include <vector>
 
-#include <google/protobuf/stubs/callback.h>
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/logging.h>
-#include <google/protobuf/util/internal/location_tracker.h>
-#include <google/protobuf/stubs/stringpiece.h>
+#include "google/protobuf/stubs/callback.h"
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/logging.h"
+#include "google/protobuf/util/internal/location_tracker.h"
+#include "google/protobuf/stubs/stringpiece.h"
 
 namespace google {
 namespace protobuf {

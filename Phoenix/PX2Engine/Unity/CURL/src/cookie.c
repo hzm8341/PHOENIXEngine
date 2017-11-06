@@ -82,7 +82,7 @@ Example set of cookies:
 #if !defined(CURL_DISABLE_HTTP) && !defined(CURL_DISABLE_COOKIES)
 
 #define _MPRINTF_REPLACE
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "urldata.h"
 #include "cookie.h"

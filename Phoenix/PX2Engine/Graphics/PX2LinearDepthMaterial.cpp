@@ -61,6 +61,10 @@ void LinearDepth_Material::Draw(Renderer* renderer,
 			renderable->SetMaterialInstance(save);
 			save->Update(0.0f, 0.0f);
 		}
+		else if ("materialcolor" == mtlName)
+		{
+			renderer->Draw(renderable);
+		}
 		else if ("skinskeleton" == mtlName)
 		{
 			//mInstanceSkinSkeleton->SetPixelTexture(0, "SampleBase", save->GetPixelTexture(0, "SampleBase"));

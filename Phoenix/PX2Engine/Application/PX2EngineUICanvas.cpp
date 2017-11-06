@@ -45,7 +45,8 @@ void EngineUICanvas::OnSizeChanged()
 		UI *ui = proj->GetUI();
 		if (ui)
 		{
-			ui->SetSize(GetSize());
+            const Sizef &sz = GetSize();
+			ui->SetSize(sz);
 		}
 	}
 

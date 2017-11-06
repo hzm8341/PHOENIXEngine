@@ -3,8 +3,11 @@
 #include "PX2IMEDispatcher.hpp"
 #include "PX2StringHelp.hpp"
 using namespace PX2;
+
 #if defined(__ANDROID__)
 #include "AppPlayJNI.hpp"
+#elif defined (__IOS__)
+#include "AppPlayIOS.hpp"
 #endif
 
 //----------------------------------------------------------------------------
@@ -50,12 +53,17 @@ void IMEDispatcher::Update()
 {
 }
 //----------------------------------------------------------------------------
+void IMEDispatcher::SetOpenStr(const std::string &openStr)
+{
+    mOpenStr = openStr;
+}
+//----------------------------------------------------------------------------
 void IMEDispatcher::SetKeyboardState (bool open)
 {
 #if defined(__ANDROID__)
 	SetKeyboardStateJNI(open? 1 : 0);
-#else
-	PX2_UNUSED(open);
+#elif defined (__IOS__)
+    AppPlay::SetKeyboardStateIOS(open? 1:0, mOpenStr.c_str());
 #endif
 }
 //----------------------------------------------------------------------------

@@ -25,7 +25,7 @@
 #if !defined(CURL_DISABLE_PROXY) && !defined(CURL_DISABLE_HTTP)
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "http_proxy.h"
 #include "sendf.h"
 #include "http.h"
@@ -37,7 +37,7 @@
 #include "connect.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "curlx.h"
 

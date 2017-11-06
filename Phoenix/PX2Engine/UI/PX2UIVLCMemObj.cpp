@@ -2,19 +2,49 @@
 
 #include "PX2UIVLCMemObj.hpp"
 #include "PX2Log.hpp"
+#include "PX2Time.hpp"
 using namespace PX2;
-
-#if defined PX2_USE_VLC
 
 //----------------------------------------------------------------------------
 VLCMemObj::VLCMemObj() :
 mTex2D(0),
 mIsTextureUpdated(true)
 {
+	mFPS = 30;
+	mLastReadyTime = 0.0f;
 }
 //----------------------------------------------------------------------------
 VLCMemObj::~VLCMemObj()
 {
+}
+//----------------------------------------------------------------------------
+bool VLCMemObj::_CheckUpdateTime()
+{
+	float time = Time::GetTimeInSeconds();
+	float space = time - mLastReadyTime;
+	if (space > 1.0f / (float)mFPS)
+	{
+		mLastReadyTime = time;
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+void VLCMemObj::SetMediaWidthHeight(int width, int height)
+{
+	mMediaWidth = width;
+	mMediaHeight = height;
+}
+//----------------------------------------------------------------------------
+int VLCMemObj::GetMediaWidth() const
+{
+	return mMediaWidth;
+}
+//----------------------------------------------------------------------------
+int VLCMemObj::GetMediaHeight() const
+{
+	return mMediaHeight;
 }
 //----------------------------------------------------------------------------
 void VLCMemObj::OnFormatSetup()
@@ -31,6 +61,9 @@ void VLCMemObj::OnFormatSetup()
 //----------------------------------------------------------------------------
 void VLCMemObj::OnFrameReady(const std::vector<char>* frameBuf)
 {
+	if (!_CheckUpdateTime())
+		return;
+
 	if (mMediaWidth > 0 && mMediaHeight > 0)
 	{
 		const std::vector<char> &fromBufs = *frameBuf;
@@ -69,6 +102,49 @@ void VLCMemObj::OnFrameReady(const std::vector<char>* frameBuf)
 	}
 }
 //----------------------------------------------------------------------------
+void VLCMemObj::OnFrameReady(int width, int height,
+	const char* buf, int size)
+{
+	if (!_CheckUpdateTime())
+		return;
+
+	if (mMediaWidth > 0 && mMediaHeight > 0)
+	{
+		int width = mTex2D->GetWidth();
+		int height = mTex2D->GetHeight();
+		char* pDest = mTex2D->GetData(0);
+
+		int offsetSrc = 0;
+		int offsetDst = 0;
+
+		for (int row = 0; row < width; ++row)
+		{
+			for (int col = 0; col < height; ++col)
+			{
+#if defined (__ANDROID__)
+				pDest[offsetDst] = buf[offsetSrc + 0];			// b
+				pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
+				pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
+				pDest[offsetDst + 3] = buf[offsetSrc + 3];
+#else
+				pDest[offsetDst] = buf[offsetSrc + 0];			// b
+				pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
+				pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
+				pDest[offsetDst + 3] = buf[offsetSrc + 3];
+#endif
+
+				offsetSrc += 4;
+				offsetDst += 4;
+			}
+		}
+	}
+
+	ScopedCS cs(&mMutex);
+	{
+		mIsTextureUpdated = true;
+	}
+}
+//----------------------------------------------------------------------------
 void VLCMemObj::OnFrameCleanUp()
 {
 }
@@ -89,5 +165,3 @@ Texture2D *VLCMemObj::GetTex2D()
 	return mTex2D;
 }
 //----------------------------------------------------------------------------
-
-#endif

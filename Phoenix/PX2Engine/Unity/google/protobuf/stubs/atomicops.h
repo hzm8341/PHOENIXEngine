@@ -56,8 +56,8 @@
 // Don't include this file for people not concerned about thread safety.
 #ifndef GOOGLE_PROTOBUF_NO_THREAD_SAFETY
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/platform_macros.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/platform_macros.h"
 
 namespace google {
 namespace protobuf {
@@ -196,7 +196,7 @@ Atomic64 Release_Load(volatile const Atomic64* ptr);
 
 // Apple.
 #elif defined(GOOGLE_PROTOBUF_OS_APPLE)
-#include <google/protobuf/stubs/atomicops_internals_macosx.h>
+#include "google/protobuf/stubs/atomicops_internals_macosx.h"
 
 // GCC.
 #elif defined(__GNUC__)
@@ -236,7 +236,7 @@ Atomic64 Release_Load(volatile const Atomic64* ptr);
 // On some platforms we need additional declarations to make AtomicWord
 // compatible with our other Atomic* types.
 #if defined(GOOGLE_PROTOBUF_OS_APPLE)
-#include <google/protobuf/stubs/atomicops_internals_atomicword_compat.h>
+#include "google/protobuf/stubs/atomicops_internals_atomicword_compat.h"
 #endif
 
 #undef GOOGLE_PROTOBUF_ATOMICOPS_ERROR

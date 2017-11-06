@@ -102,13 +102,17 @@ void NetError::Error(int code, const std::string& arg)
 		assertion(false, "Address %s already in use:%d\n", arg.c_str(), code);
 		break;
 	case PX2_EADDRNOTAVAIL:
+#if !defined (__IOS__)
 		assertion(false, "Cannot assign requested address:%s,%d\n", arg.c_str(), code);
+#endif
 		break;
 	case PX2_ENETDOWN:
 		assertion(false, "Network is down:%d\n", code);
 		break;
 	case PX2_ENETUNREACH:
+#if !defined (__IOS__)
 		assertion(false, "Network is unreachable:%d\n", code);
+#endif
 		break;
 	case PX2_ENETRESET:
 		assertion(false, "Network dropped connection on reset:%d\n", code);
@@ -141,10 +145,10 @@ void NetError::Error(int code, const std::string& arg)
 		assertion(false, "Host is down:%s,%d", arg, code);
 		break;
 	case PX2_EHOSTUNREACH:
-		assertion(false, "No route to host:%s,%d", arg.c_str(), code);
+		//assertion(false, "No route to host:%s,%d", arg.c_str(), code);
 		break;
 	default:
-		assertion(false, "Error:%s,%d", arg.c_str(), code);
+		//assertion(false, "Error:%s,%d", arg.c_str(), code);
 		break;
 	}
 }

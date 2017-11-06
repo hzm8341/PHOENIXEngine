@@ -77,6 +77,12 @@ namespace PX2
 
 		static int StringToCharArray(char arr[], int lengthArr, const std::string &fromStr);
 
+		static std::string StrToHex(const std::string &str);
+		static int StrToHex(const char *str, int nLength, char *hex);
+		static int HexToStr(const char *hex, char *str, int &length);
+		static int HexToInt(const std::string &str);
+		static int HexToInt(const char *str);
+
 		// Hash
 		static unsigned int Hash(const std::string &str, unsigned int type);
 		static unsigned int Hash(const char *str, unsigned int type,

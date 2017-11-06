@@ -34,8 +34,8 @@ namespace PX2
 
 		void _AcceptRun();
 		void _ReadWriteRun();
-		int _OnRead(ClientContext *pcontext);
-		int _OnWrite(ClientContext *clientContext);
+		virtual int _OnRead(ClientContext *pcontext);
+		virtual int _OnWrite(ClientContext *clientContext);
 
 		Thread *mThreadListen;
 	};

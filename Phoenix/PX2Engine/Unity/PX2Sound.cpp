@@ -5,7 +5,9 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-Sound::Sound()
+Sound::Sound() :
+Life(10.0f),
+Age(0.0f)
 {
 }
 //----------------------------------------------------------------------------
@@ -20,5 +22,15 @@ void Sound::MinusNumPlaySameTime()
 	{
 		sys->_MinusNumPlaySameTime(Filename.c_str());
 	}
+}
+//----------------------------------------------------------------------------
+bool Sound::Update(float elapsedSeconds)
+{
+	Age += elapsedSeconds;
+
+	if (Age >= Life)
+		return false;
+
+	return true;
 }
 //----------------------------------------------------------------------------

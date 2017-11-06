@@ -35,6 +35,9 @@ namespace PX2
 			float volume, bool isLoop, Sound *&sound);
 		virtual bool PlaySound3DControl(const char *filename,
 			const SoundCreateInfo3D &createInfo, Sound *&sound);
+		virtual bool PlayASound(const char *filename, float volume = 1.0f,
+			float life = 10.0f);
+		virtual void ClearAllSounds();
 
 		virtual void EnableSounds(bool enable);
 
@@ -94,6 +97,8 @@ namespace PX2
 
 		FMODSoundRes *GetSoundResource(const char *fileName, SoundType type);
 		FMODSoundResMap mSoundResMap;
+
+		std::vector<SoundPtr> mSounds;
 	};
 
 }

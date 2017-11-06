@@ -22,13 +22,13 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "urldata.h"
 #include "sslgen.h"
 #include "http2.h"
 
 #define _MPRINTF_REPLACE /* use the internal *printf() functions */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #ifdef USE_ARES
 #  if defined(CURL_STATICLIB) && !defined(CARES_STATICLIB) && \

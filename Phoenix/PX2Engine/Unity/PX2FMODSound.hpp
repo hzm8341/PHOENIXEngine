@@ -7,7 +7,7 @@
 
 #include "PX2UnityPre.hpp"
 #include "PX2Sound.hpp"
-#include <fmod.hpp>
+#include "fmod.hpp"
 
 namespace PX2
 {

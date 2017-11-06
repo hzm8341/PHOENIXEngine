@@ -21,7 +21,7 @@ mFactory(factory)
 }
 //----------------------------------------------------------------------------
 HTTPServer::HTTPServer(HTTPRequestHandlerFactory *factory, 
-	ThreadPool& threadPool, const ServerSocket& socket, 
+	ThreadPool *threadPool, const ServerSocket& socket, 
 	HTTPServerParams *params) :
 TCPServer(new0 HTTPServerConnectionFactory(params, factory), threadPool, socket, params),
 mFactory(factory)

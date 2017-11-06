@@ -1,6 +1,7 @@
 // PX2UIInputText.cpp
 
 #include "PX2UIInputText.hpp"
+#include "PX2IMEDispatcher.hpp"
 #include "PX2Log.hpp"
 using namespace PX2;
 
@@ -231,10 +232,11 @@ void UIInputText::InsertArrow(int dirType)
 //----------------------------------------------------------------------------
 bool UIInputText::AttachWithIME(const APoint &screenPos)
 {
+    mInputString = GetRealText();
+    IMEDispatcher::GetSingleton().SetOpenStr(mInputString);
+    
 	if (IMEDelegate::AttachWithIME(screenPos))
 	{
-		mInputString = GetRealText();
-
 		if (mCallback)
 		{
 			mCallback(this, UIITCT_ATTACHWITHIME);

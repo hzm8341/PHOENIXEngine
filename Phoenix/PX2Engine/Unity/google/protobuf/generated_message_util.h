@@ -41,9 +41,9 @@
 #include <assert.h>
 #include <string>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/once.h>
-#include <google/protobuf/has_bits.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/once.h"
+#include "google/protobuf/has_bits.h"
 
 namespace google {
 

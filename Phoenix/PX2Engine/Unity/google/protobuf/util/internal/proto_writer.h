@@ -35,17 +35,17 @@
 #include <string>
 #include <vector>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/io/zero_copy_stream_impl.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/util/internal/type_info.h>
-#include <google/protobuf/util/internal/datapiece.h>
-#include <google/protobuf/util/internal/error_listener.h>
-#include <google/protobuf/util/internal/structured_objectwriter.h>
-#include <google/protobuf/util/type_resolver.h>
-#include <google/protobuf/stubs/bytestream.h>
-#include <google/protobuf/stubs/hash.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/io/zero_copy_stream_impl.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/util/internal/type_info.h"
+#include "google/protobuf/util/internal/datapiece.h"
+#include "google/protobuf/util/internal/error_listener.h"
+#include "google/protobuf/util/internal/structured_objectwriter.h"
+#include "google/protobuf/util/type_resolver.h"
+#include "google/protobuf/stubs/bytestream.h"
+#include "google/protobuf/stubs/hash.h"
 
 namespace google {
 namespace protobuf {

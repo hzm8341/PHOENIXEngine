@@ -22,6 +22,7 @@ namespace PX2
 		EngineSceneCanvas();
 		virtual ~EngineSceneCanvas();
 
+		virtual void OnEvent(Event *ent);
 		virtual void OnSizeChanged();
 
 		virtual void Draw(Renderer *renderer);
@@ -32,6 +33,7 @@ namespace PX2
 		void SetBloomConfigChanged(bool changed);
 
 	protected:
+		virtual void UpdateLayout(Movable *parent);
 		void _DoClear(Renderer *renderer, Camera *camera);
 		virtual void _Draw(Camera *camera, Renderer *renderer, Culler *culler);
 		virtual void UpdateWorldData(double applicationTime,

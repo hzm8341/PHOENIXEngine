@@ -17,7 +17,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UISlider);
 UISlider::UISlider() :
 mIsNeedReGenSliderLayout(true),
 mButSliderLength(20.0f),
-mPercent(0.5f),
+mPercent(0.0f),
 mIsNeededUpdate(true),
 mIsDraging(false)
 {
@@ -59,17 +59,6 @@ void UISlider::SetPercent(float percent, bool doCall)
 	if (doCall)
 	{
 		_UICallbacksCalls(UICT_SLIDERCHANGED);
-
-		if (mMemObject && mMemUICallback)
-		{
-			(mMemObject->*mMemUICallback)(this, UICT_SLIDERCHANGED);
-		}
-
-		std::vector<Visitor *>::iterator it = mVisitors.begin();
-		for (; it != mVisitors.end(); it++)
-		{
-			(*it)->Visit(this, (int)UICT_SLIDERCHANGED);
-		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -260,12 +249,20 @@ void UISlider::OnSizeNodePicked(const CanvasInputData &inputData)
 			float addPercent = 0.0f;
 
 			if (DT_HORIZONTAL == mDirectionType)
-				addPercent = moveDelta.X() / (size.Width - mButSliderLength);
+			{
+				float dist = size.Width - mButSliderLength;
+				if (0.0f != dist)
+					addPercent = moveDelta.X() / dist;
+			}
 			else
-				addPercent = -moveDelta.Z() / (size.Height - mButSliderLength);
+			{
+				float dist = size.Height - mButSliderLength;
+				if (0.0f != dist)
+					addPercent = -moveDelta.Z() / dist;
+			}
 
 			percent += addPercent;
-			
+
 			if (percent > 1.0f) percent = 1.0f;
 			if (percent < 0.0f) percent = 0.0f;
 
@@ -290,19 +287,17 @@ void UISlider::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 
 			if (DT_HORIZONTAL == mDirectionType)
 			{
-				if (size.Width > mButSliderLength)
-				{
-					addPercent = moveDelta.X() / (size.Width - mButSliderLength);
-				}
+				float dist = size.Width - mButSliderLength;
+				if (0.0f != dist)
+					addPercent = moveDelta.X() / dist;
 			}
 			else
 			{
-				if (size.Height > mButSliderLength)
-				{
-					addPercent = -moveDelta.Z() / (size.Height - mButSliderLength);
-				}
+				float dist = size.Height - mButSliderLength;
+				if (0.0f != dist)
+					addPercent = -moveDelta.Z() / dist;
 			}
-
+			
 			percent += addPercent;
 
 			if (percent > 1.0f) percent = 1.0f;
@@ -398,6 +393,9 @@ void UISlider::Link(InStream& source)
 	if (mButSlider)
 	{
 		source.ResolveLink(mButSlider);
+
+		mButSlider->SetMemUICallback(this, 
+			(UIFrame::MemUICallback)(&UISlider::_SliderDrag));
 	}
 
 	if (mContentFrame)

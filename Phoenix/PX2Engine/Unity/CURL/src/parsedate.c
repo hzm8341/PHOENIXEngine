@@ -79,7 +79,7 @@
 #include <limits.h>
 #endif
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "rawstr.h"
 #include "warnless.h"
 #include "parsedate.h"

@@ -119,57 +119,67 @@ void Application::Update()
 	mAppTime = Time::GetTimeInSeconds();
 	mElapsedTime = GetElapsedTime();
 	mLastAppTime = mAppTime;
+	if (mElapsedTime > 1.0f)
+		mElapsedTime = 0.1f;
 
 	Time::FrameElapsedSeconds = mElapsedTime;
 	Time::FrameRunnedSeconds += mElapsedTime;
 
-	if (mIsInBackground) return;
-
+	Update((float)mAppTime, (float)mElapsedTime);
+}
+//----------------------------------------------------------------------------
+void Application::Update(float appSeconds, float elapsedSeconds)
+{
 	// event
 	if (mEventWorld)
-		mEventWorld->Update((float)mElapsedTime);
+		mEventWorld->Update((float)elapsedSeconds);
 
 	// resource
-	PX2_RM.Update(mAppTime, mElapsedTime);
+	PX2_RM.Update(appSeconds, elapsedSeconds);
 
 	// font
 	PX2_FM.Update();
 
 	if (mSoundSys)
-		mSoundSys->Update(mAppTime, mElapsedTime);
+		mSoundSys->Update(appSeconds, elapsedSeconds);
 
 	// Plugin
 	PX2_PLUGINMAN.Update();
 
-	PX2_ADM.Update((float)mElapsedTime);
+	PX2_ADM.Update((float)elapsedSeconds);
 
-	PX2_TimerM.Update((float)mAppTime);
+	PX2_TIMERM.Update((float)appSeconds);
 
 	// graph
-	PX2_GR.Update(mAppTime, mElapsedTime);
+	PX2_GR.Update(appSeconds, elapsedSeconds);
 
 	if (mEngineServer)
-		mEngineServer->Run((float)mElapsedTime);
+		mEngineServer->Run((float)elapsedSeconds);
 
 	if (mEngineClient)
-		mEngineClient->Update((float)mElapsedTime);
+		mEngineClient->Update((float)elapsedSeconds);
 
 	if (mEngineUDPServerClient)
-		mEngineUDPServerClient->Update((float)mElapsedTime);
+		mEngineUDPServerClient->Update((float)elapsedSeconds);
 
 	if (mEngineDUPServerEditor)
-		mEngineDUPServerEditor->Update((float)mElapsedTime);
+		mEngineDUPServerEditor->Update((float)elapsedSeconds);
 
 	if (mGeneralServer)
-		mGeneralServer->Run((float)mElapsedTime);
+		mGeneralServer->Run((float)elapsedSeconds);
 
 	if (mGeneralClientConnector)
-		mGeneralClientConnector->Update((float)mElapsedTime);
+		mGeneralClientConnector->Update((float)elapsedSeconds);
 
 	if (mArduino)
-		mArduino->Update((float)mElapsedTime);
+		mArduino->Update((float)elapsedSeconds);
 
-	_UpdateUDPNetInfos((float)mElapsedTime);
+	PX2_BLUETOOTH.Update((float)elapsedSeconds);
+	PX2_WIFI.Update((float)elapsedSeconds);
+
+	_UpdateUDPNetInfos((float)elapsedSeconds);
+
+	if (mIsInBackground) return;
 
 	PX2_GR.Draw();
 }
@@ -196,7 +206,7 @@ void Application::OnEvent(Event *ent)
 	}
 }
 //----------------------------------------------------------------------------
-void Application::BroadcastGeneralString(const std::string &generalStr)
+void Application::SendGeneralEvent(const std::string &generalStr)
 {
 	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
 	ent->SetDataStr0(generalStr);

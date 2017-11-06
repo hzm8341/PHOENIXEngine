@@ -46,10 +46,10 @@
 #include <set>
 #include <string>
 #include <vector>
-#include <google/protobuf/descriptor.h>  // FieldDescriptor
-#include <google/protobuf/message.h>  // Message
-#include <google/protobuf/unknown_field_set.h>
-#include <google/protobuf/util/field_comparator.h>
+#include "google/protobuf/descriptor.h"  // FieldDescriptor
+#include "google/protobuf/message.h"  // Message
+#include "google/protobuf/unknown_field_set.h"
+#include "google/protobuf/util/field_comparator.h"
 
 namespace google {
 namespace protobuf {

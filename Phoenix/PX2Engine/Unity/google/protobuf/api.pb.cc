@@ -2,19 +2,19 @@
 // source: google/protobuf/api.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include <google/protobuf/api.pb.h>
+#include "google/protobuf/api.pb.h"
 
 #include <algorithm>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/port.h>
-#include <google/protobuf/stubs/once.h>
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/wire_format_lite_inl.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/port.h"
+#include "google/protobuf/stubs/once.h"
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/wire_format_lite_inl.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
 
 namespace google {
@@ -44,7 +44,7 @@ void protobuf_AssignDesc_google_2fprotobuf_2fapi_2eproto() {
   GOOGLE_CHECK(file != NULL);
   Api_descriptor_ = file->message_type(0);
   static const int Api_offsets_[7] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Api, name_),
+    static_cast<int>(0),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Api, methods_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Api, options_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Api, version_),
@@ -64,7 +64,7 @@ void protobuf_AssignDesc_google_2fprotobuf_2fapi_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Api, _internal_metadata_));
   Method_descriptor_ = file->message_type(1);
   static const int Method_offsets_[7] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Method, name_),
+    static_cast<int>(0),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Method, request_type_url_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Method, request_streaming_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Method, response_type_url_),

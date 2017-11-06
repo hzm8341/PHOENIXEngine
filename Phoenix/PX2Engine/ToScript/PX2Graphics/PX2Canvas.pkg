@@ -28,4 +28,21 @@
 
 		void SetOverWireframe(bool wireframe);
 		bool IsOverWireframe() const;
+		
+		// Renderer Camera Culler
+	public:
+		// 一个观看整个场景的相机
+		void SetOverCamera(Camera *overCamera);
+		Camera *GetOverCamera();
+
+		void AddCamera(Camera *camera);
+		void RemoveCamera(Camera *camera);
+		void RemoveAllCameras();
+
+		CameraNode *CreateUICameraNode();
+		CameraNode *GetUICameraNode();
+		void EnableUICameraAutoAdjust(bool autoAdjust);
+		bool IsUICameraAutoAdjust() const;
+
+		static float msUICameraY;
 	};

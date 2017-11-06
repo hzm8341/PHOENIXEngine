@@ -12,11 +12,9 @@ namespace PX2
 	class PX2_ENGINE_ITEM TCPServerConnectionFactory
 	{
 	public:
+		TCPServerConnectionFactory();
 		virtual ~TCPServerConnectionFactory();
 		virtual TCPServerConnection* CreateConnection(const StreamSocket& socket) = 0;
-
-	protected:
-		TCPServerConnectionFactory();
 
 	private:
 		TCPServerConnectionFactory(const TCPServerConnectionFactory&);
@@ -38,7 +36,7 @@ namespace PX2
 
 		TCPServerConnection* CreateConnection(const StreamSocket& socket)
 		{
-			return new S(socket);
+			return new0 S(socket);
 		}
 	};
 

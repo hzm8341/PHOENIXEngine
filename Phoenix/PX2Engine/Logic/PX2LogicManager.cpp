@@ -11,9 +11,7 @@
 #include "PX2LogicES.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2LuaPlusContext.hpp"
-#if defined PX2_USE_BLOCKPLUGIN
 #include "BlueBlockPlugin.hpp"
-#endif
 #include "PX2PluginManager.hpp"
 #include "PX2StringHelp.hpp"
 using namespace PX2;
@@ -24,16 +22,12 @@ mBlueBlockPlugin(0)
 {
 	mPlatformType = PT_EDITOR;
 
-#if defined PX2_USE_BLOCKPLUGIN
 	mBlueBlockPlugin = new BlueBlockPlugin();
-#endif
 }
 //----------------------------------------------------------------------------
 LogicManager::~LogicManager()
 {
-#if defined PX2_USE_BLOCKPLUGIN
 	PX2_PLUGINMAN.UninstallPlugin(mBlueBlockPlugin);
-#endif
 }
 //----------------------------------------------------------------------------
 bool LogicManager::Initlize()
@@ -43,9 +37,7 @@ bool LogicManager::Initlize()
 	_InitCtrls();
 	_InitFuns();
 
-#if defined PX2_USE_BLOCKPLUGIN
 	PX2_PLUGINMAN.InstallPlugin(mBlueBlockPlugin);
-#endif
 
 	return true;
 }

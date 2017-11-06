@@ -22,7 +22,7 @@
  *
  ***************************************************************************/
 
-#include <curl/curl.h>
+#include "curl.h"
 
 /* list of wildcard process states */
 typedef enum {

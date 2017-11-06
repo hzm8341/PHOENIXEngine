@@ -21,9 +21,6 @@ namespace PX2
 		UITabFrame();
 		virtual ~UITabFrame();
 
-		void SetAui(bool isAui);
-		bool IsAui() const;
-
 		enum LayoutPosType
 		{
 			LPT_TOP,
@@ -44,6 +41,17 @@ namespace PX2
 		void SetTabHeight(float height);
 		float GetTabHeight() const;
 
+		// font
+		void SetFontSize(int size);
+		int GetFontSize() const;
+
+		void SetFontScale(float scale);
+		float GetFontScale() const;
+
+		void SetFontColor(const Float3 &fontColor);
+		const Float3 &GetFontColor() const;		
+
+		// lay
 		enum TabLayoutType
 		{
 			TLT_FIX,
@@ -82,8 +90,11 @@ namespace PX2
 		virtual void UpdateWorldData(double applicationTime, double elapsedTime);
 		void _CalTabs();
 
-		bool mIsAui;
 		LayoutPosType mLayoutPosType;
+
+		int mFontSize;
+		float mFontScale;
+		Float3 mFontColor;
 
 		bool mIsTabsNeedReCal;
 		TabLayoutType mTabLayoutType;

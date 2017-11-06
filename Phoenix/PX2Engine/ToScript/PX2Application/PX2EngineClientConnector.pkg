@@ -13,7 +13,6 @@
 		void OnDisConnectedToServer();
 
 		void SendString(const std::string &str);
-		void SendPushProject();
 
 		bool IsHasOnConnectCallback(const std::string &callback) const;
 		void AddOnConnectCallback(const std::string &callback);

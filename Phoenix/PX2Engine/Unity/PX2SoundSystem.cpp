@@ -2,6 +2,7 @@
 
 #include "PX2SoundSystem.hpp"
 #include "PX2Time.hpp"
+#include "PX2Log.hpp"
 
 #ifdef PX2_USE_FMOD
 #include "PX2FMODSoundSystem.hpp"
@@ -83,8 +84,9 @@ SoundSystem *SoundSystem::Create(SystemType type,
 #else
 	PX2_UNUSED(initInfo);
 	PX2_LOG_INFO("No sound system config.");
-	assertion(false, "Not supported now.");
-	return 0;
+    
+    SoundSystem *ss = new0 SoundSystem();
+	return ss;
 #endif
 }
 //----------------------------------------------------------------------------
@@ -100,6 +102,22 @@ void SoundSystem::SetListener(const APoint *position,
 	PX2_UNUSED(velocity);
 	PX2_UNUSED(forward);
 	PX2_UNUSED(up);
+}
+//----------------------------------------------------------------------------
+void SoundSystem::PlayMusic(int channel, const char *filename,
+                       bool isLoop, float fadeSeconds, float volume)
+{
+    PX2_UNUSED(channel);
+    PX2_UNUSED(filename);
+    PX2_UNUSED(isLoop);
+    PX2_UNUSED(fadeSeconds);
+    PX2_UNUSED(volume);
+}
+//----------------------------------------------------------------------------
+void SoundSystem::SetMusicVolume(int channel, float volume)
+{
+    PX2_UNUSED(channel);
+    PX2_UNUSED(volume);
 }
 //----------------------------------------------------------------------------
 void SoundSystem::EnableMusic(bool enable)
@@ -130,6 +148,25 @@ bool SoundSystem::PlaySound2DControl(const char *filename,
 
 		return true;
 	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool SoundSystem::PlayASound(const char *filename, float volume, float life)
+{
+	if (!IsSoundEnable())
+		return false;
+
+	float curTime = (float)Time::GetTimeInSeconds();
+	if (_CanPlaySameTime(filename, curTime))
+	{
+		mPlaySameTimeObjMap[filename].CurTiming = curTime;
+		mPlaySameTimeObjMap[filename].CurNum++;
+
+		return true;
+	}
+
+	PX2_UNUSED(life);
 
 	return false;
 }
@@ -168,6 +205,11 @@ bool SoundSystem::PlaySound3DControl(const char *filename,
 void SoundSystem::EnableSounds(bool enable)
 {
 	mIsSoundEnable = enable;
+}
+//----------------------------------------------------------------------------
+void SoundSystem::ClearAllSounds()
+{
+	mPlaySameTimeObjMap.clear();
 }
 //----------------------------------------------------------------------------
 void SoundSystem::SetMaxNumPlaySameTime(const char *filename, int num)

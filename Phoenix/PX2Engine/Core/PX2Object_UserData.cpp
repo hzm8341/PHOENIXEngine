@@ -25,6 +25,29 @@ float Object::GetUserDataFloat(const std::string &name, bool *isValied) const
 	return 0.0f;
 }
 //----------------------------------------------------------------------------
+void Object::SetUserDataString(const std::string &name, const std::string &val)
+{
+	mUserDataStrings[name] = val;
+}
+//----------------------------------------------------------------------------
+std::string Object::GetUserDataString(const std::string &name, 
+	bool *isValied) const
+{
+	std::map<std::string, std::string>::const_iterator it =
+		mUserDataStrings.find(name);
+	if (it != mUserDataStrings.end())
+	{
+		if (isValied)
+		{
+			*isValied = true;
+		}
+		return it->second;
+	}
+
+	*isValied = false;
+	return "";
+}
+//----------------------------------------------------------------------------
 void Object::SetUserData(const std::string &name, const Any &any)
 {
 	mUserDatas[name] = any;

@@ -45,15 +45,15 @@
 #include <algorithm>
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 
-#include <google/protobuf/compiler/importer.h>
+#include "google/protobuf/compiler/importer.h"
 
-#include <google/protobuf/compiler/parser.h>
-#include <google/protobuf/io/tokenizer.h>
-#include <google/protobuf/io/zero_copy_stream_impl.h>
-#include <google/protobuf/stubs/strutil.h>
+#include "google/protobuf/compiler/parser.h"
+#include "google/protobuf/io/tokenizer.h"
+#include "google/protobuf/io/zero_copy_stream_impl.h"
+#include "google/protobuf/stubs/strutil.h"
 
 namespace google {
 namespace protobuf {

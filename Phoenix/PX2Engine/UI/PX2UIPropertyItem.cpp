@@ -374,9 +374,9 @@ void UIPropertyItem::OnAllocAll(const Any &userDat)
 		if (fText) fText->LocalTransform.SetTranslateY(-12.0f);
 
 		cb->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture(
-			"DataNIRVANA2/images/icons/tree/tree_expanded.png");
+			"DataNIRVANAwx/images/icons/tree/tree_expanded.png");
 		cb->GetPicBoxAtState(UIButtonBase::BS_PRESSED)->SetTexture(
-			"DataNIRVANA2/images/icons/tree/tree_collapsed.png");
+			"DataNIRVANAwx/images/icons/tree/tree_collapsed.png");
 
 		cb->AddUICallback(UIPropertyGridClassCBCallback);
 		cb->SetUserData("UIPropertyItem", (Object*)this);

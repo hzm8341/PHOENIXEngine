@@ -7,6 +7,7 @@
 #include "PX2Application.hpp"
 #include "PX2EngineNetDefine.hpp"
 #include "PX2Application.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 EngineNetCmdProcess::EngineNetCmdProcess()
@@ -41,11 +42,11 @@ void EngineNetCmdProcess::OnCmd(const std::string &fromip,
 {
 	PX2_UNUSED(paramStr1);
 
+	if (PX2_APP.IsInEditor())
+		return;
+
 	if (CMD_PushProject == cmdStr)
 	{
-		std::string ipStr = "ftp://" + fromip + "/";
-		PX2_RM.SetResourceUpdateAddr(ipStr);
-
 		Project *proj = Project::GetSingletonPtr();
 		if (proj)
 		{
@@ -53,12 +54,40 @@ void EngineNetCmdProcess::OnCmd(const std::string &fromip,
 		}
 
 		std::string projName = paramStr0;
+		std::string type = paramStr1;
+
+		if ("ftp" == paramStr1)
+		{
+			std::string ipStr = "ftp://" + fromip + "/";
+			PX2_RM.SetResourceUpdateAddr(ipStr);
+
+		}
+		else if ("http" == paramStr1)
+		{
+			std::string ipStr = "http://" + fromip + ":" 
+				+ StringHelp::IntToString(EngineUDPPortHttp) + "/";
+			PX2_RM.SetResourceUpdateAddr(ipStr);
+		}
+		else if ("tcp" == paramStr1)
+		{
+			EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
+			if (cnt && cnt->IsEnable())
+			{
+				PX2_LOG_INFO("Connect to %s:%d", fromip.c_str(), EngineServerPort);
+
+				cnt->Disconnect();
+				cnt->SetAutoConnectIP(fromip);
+				cnt->SetAutoConnectPort(EngineServerPort);
+				cnt->SetAutoConnect(true);
+				cnt->ConnectB(fromip, EngineServerPort);
+			}
+
+			PX2_RM.SetResourceUpdateAddr(fromip + "/");
+		}
+
 		if (!projName.empty())
 		{
-			std::string pathDir = "Data/";
-			pathDir += projName;
-
-			PX2_APP.LoadProject(projName);
+			PX2_APP.LoadProject(projName, true);
 			PX2_APP.Play(Application::PT_PLAY);
 		}
 	}

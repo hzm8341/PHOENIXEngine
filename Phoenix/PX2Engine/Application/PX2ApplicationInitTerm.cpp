@@ -14,13 +14,17 @@
 #include "PX2EngineUICanvas.hpp"
 #include "PX2ProjectEventController.hpp"
 #include "PX2ServerInfoManager.hpp"
+#include "PX2VoxelManager.hpp"
 #include "PX2Bluetooth.hpp"
+#include "PX2TimerManager.hpp"
 #include "PX2ErrorHandler.hpp"
 #include "PX2ThreadPool.hpp"
 #include "PX2StringTokenizer.hpp"
 #include "PX2DNS.hpp"
 #include "PX2Arduino.hpp"
 #include "PX2VoiceSDK.hpp"
+#include "PX2FileIO.hpp"
+#include "PX2StringTokenizer.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -88,6 +92,7 @@ bool Application::Initlize()
 	mScriptMan->AddContext(new0 LuaPlusContext());
 
 	mBluetooth = new0 Bluetooth();
+	mWifi = new0 Wifi();
 
 	mHardCamera = new0 HardCamera();
 
@@ -123,6 +128,8 @@ bool Application::Initlize()
 
 	mLogicManager = new0 LogicManager();
 
+	mVoxelManager = new0 VoxelManager();
+
 	mCreater = new0 Creater();
 
 	mArduino = new0 Arduino();
@@ -142,6 +149,7 @@ bool Application::Initlize()
 
 	PX2_SC_LUA->SetUserTypePointer("PX2_GR", "GraphicsRoot", GraphicsRoot::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_APP", "Application", Application::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_LM_ENGINE", "LanguagePackage", LanguageManager::GetSingletonPtr()->GetPackageEngine());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LM_EDITOR", "LanguagePackage", LanguageManager::GetSingletonPtr()->GetPackageEditor());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LM_APP", "LanguagePackage", LanguageManager::GetSingletonPtr()->GetPackageApp());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LM_APP1", "LanguagePackage", LanguageManager::GetSingletonPtr()->GetPackageApp1());
@@ -155,11 +163,14 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_SELECTM_E", "Selection", SelectionManager::GetSingleton().GetSelecton("Editor"));
 	PX2_SC_LUA->SetUserTypePointer("PX2_URDOM", "URDoManager", URDoManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LOGICM", "LogicManager", LogicManager::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_VOXELM", "VoxelManager", VoxelManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_BLUETOOTH", "Bluetooth", Bluetooth::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_WIFI", "Wifi", Wifi::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SS", "SoundSystem", SoundSystem::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_ARDUINO", "Arduino", Arduino::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_HARDCAMERA", "HardCamera", HardCamera::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_VOICESDK", "VoiceSDK", VoiceSDK::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_TIMERM", "TimerManager", TimerManager::GetSingletonPtr());
 	// end Lua
 
 	Canvas *mainCanvas = new0 Canvas();
@@ -253,6 +264,7 @@ void Application::SetInEditor(bool isInEditor)
 	mIsInEditor = isInEditor;
 	PX2_GR.SetInEditor(isInEditor);
 
+#if defined (_WIN32) || defined (WIN32) || defined (__ANDROID__)
 	if (!mIsInEditor)
 	{
 		GetEngineClientConnector()->Enable(true);
@@ -263,6 +275,7 @@ void Application::SetInEditor(bool isInEditor)
 		GetEngineClientConnector()->Enable(false);
 		CreateEngineUDPServerEditor();
 	}
+#endif
 }
 //----------------------------------------------------------------------------
 void Application::SetQuit(bool quit)
@@ -292,8 +305,9 @@ UDPServer *Application::CreateEngineUDPServerClient()
 	SocketAddress udpAddr(EngineUDPPortClient);
 
 	mEngineUDPServerClient = new0 UDPServer(udpAddr);
-
 	mEngineUDPServerClient->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
+	mEngineUDPServerClient->Start();
+
 	return mEngineUDPServerClient;
 }
 //----------------------------------------------------------------------------
@@ -309,6 +323,8 @@ UDPServer *Application::CreateEngineUDPServerEditor()
 	SocketAddress udpAddr(EngineUDPPortServerEditor);
 	mEngineDUPServerEditor = new0 UDPServer(udpAddr);
 	mEngineDUPServerEditor->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
+	mEngineDUPServerEditor->Start();
+
 	return mEngineDUPServerEditor;
 }
 //----------------------------------------------------------------------------
@@ -383,6 +399,11 @@ void Application::WillEnterForeground(bool isFirstTime)
 		PX2_FM.SetNeedUpdate();
 	}
 
+	PX2_BLUETOOTH.ClearSendReceives();
+
+	Event *ent = PX2_CREATEEVENTEX(ProjectES, WillEnterForeground);
+	PX2_EW.BroadcastingLocalEvent(ent);
+
 	mIsInBackground = false;
 }
 //----------------------------------------------------------------------------
@@ -391,6 +412,9 @@ void Application::DidEnterBackground()
 	PX2_LOG_INFO("DidEnterBackground");
 
 	Renderer::GetDefaultRenderer()->OnLostDevice();
+
+	Event *ent = PX2_CREATEEVENTEX(ProjectES, DidEnterBackground);
+	PX2_EW.BroadcastingLocalEvent(ent);
 
 	mIsInBackground = true;
 }
@@ -417,14 +441,6 @@ bool Application::Terminate()
 	{
 		delete0(eh);
 		ErrorHandler::Set(0);
-	}
-
-	ThreadPool *tp = ThreadPool::GetSingletonPtr();
-	if (tp)
-	{
-		tp->StopAll();
-		delete0(tp);
-		ThreadPool::Set(0);
 	}
 
 	mScriptMan->TernimateAll();
@@ -484,6 +500,12 @@ bool Application::Terminate()
 	{
 		delete0(mVoiceSDK);
 		VoiceSDK::Set(0);
+	}
+
+	if (mVoxelManager)
+	{
+		delete0(mVoxelManager);
+		VoxelManager::Set(0);
 	}
 
 	if (mLogicManager)
@@ -584,6 +606,12 @@ bool Application::Terminate()
 	{
 		delete0(mBluetooth);
 		Bluetooth::Set(0);
+	}
+
+	if (mWifi)
+	{
+		delete0(mWifi);
+		Wifi::Set(0);
 	}
 
 	if (mHardCamera)
@@ -709,74 +737,82 @@ bool Application::LoadBoost(const std::string &filename)
 			{
 				mBoostInfo.BoostSize.Width = data.GetNodeByPath("app.config.var").AttributeToFloat("width");
 				mBoostInfo.BoostSize.Height = data.GetNodeByPath("app.config.var").AttributeToFloat("height");
-				mBoostInfo.ProjectName = data.GetNodeByPath("app.play.var").AttributeToString("projectname");
 				mBoostInfo.ThePlayLogicMode = _StrToPlayLogicMode(data.GetNodeByPath("app.play.var").AttributeToString("playlogicmode"));
 				mBoostInfo.IsShowInfo = data.GetNodeByPath("app.play.var").AttributeToBool("isshowinfo");
-				mBoostInfo.IsDataReWriteToDataUpdate = data.GetNodeByPath("app.play.var").AttributeToBool("datawrite");
-
-				XMLNode nodePlugins = data.GetNodeByPath("app.plugins");
-				XMLNode nodePlugin = nodePlugins.IterateChild();
-				while (!nodePlugin.IsNull())
-				{
-					std::string name = nodePlugin.AttributeToString("name");
-					mBoostInfo.Plugins.push_back(name);
-
-					nodePlugin = nodePlugins.IterateChild(nodePlugin);
-				}
-
-				if (BM_APP == mBoostMode)
-				{
-					for (int i = 0; i < (int)mBoostInfo.Plugins.size(); i++)
-					{
-						const std::string &pluginName = mBoostInfo.Plugins[i];
-						if (!pluginName.empty())
-						{
-							std::string path = "PluginsCommon/" + pluginName + "/" +
-								GetDllFileName(pluginName);
-							if (PX2_RM.IsFileFloderExist(path))
-								PX2_PLUGINMAN.Load(path);
-						}
-					}
-				}
+				mBoostInfo.IsDataReWriteToDataUpdate = data.GetNodeByPath("app.play.var").AttributeToBool("isdatawrite");
 			}
 			else if ("server" == name)
 			{
-				AppBoostInfo info;
-
 				XMLNode nodePlay = nodeChild.GetChild("play");
-				info.ProjectName = nodePlay.GetChild("var").AttributeToString("projectname");
-				info.Port = nodePlay.GetChild("var").AttributeToInt("port");
-				info.NumMaxConnection = nodePlay.GetChild("var").AttributeToInt("nummaxconnection");
-
-				XMLNode nodePlugins = nodeChild.GetChild("plugins");
-				XMLNode nodePlugin = nodePlugins.IterateChild();
-				while (!nodePlugin.IsNull())
-				{
-					std::string name = nodePlugin.AttributeToString("name");
-					info.Plugins.push_back(name);
-
-					nodePlugin = nodePlugins.IterateChild(nodePlugin);
-				}
-
-				mBoostServerInfo = info;
-
-				if (BM_SERVER == mBoostMode)
-				{
-					for (int i = 0; i < (int)mBoostServerInfo.Plugins.size(); i++)
-					{
-						const std::string &pluginName = mBoostServerInfo.Plugins[i];
-						if (!pluginName.empty())
-						{
-							std::string path = "PluginsCommon/" + pluginName + "/" +
-								GetDllFileName(pluginName);
-							if (PX2_RM.IsFileFloderExist(path))
-								PX2_PLUGINMAN.Load(path);
-						}
-					}
-				}
+				mBoostInfo.Port = nodePlay.GetChild("var").AttributeToInt("port");
+				mBoostInfo.NumMaxConnection = nodePlay.GetChild("var").AttributeToInt("nummaxconnection");
 			}
 
 			nodeChild = rootNode.IterateChild(nodeChild);
+		}
+
+		// local projects
+		std::string strBuf;
+		PX2_RM.LoadBuffer("Data/project.list", strBuf);
+		PX2_RM.ClearRes("Data/project.list");
+		if (!strBuf.empty())
+		{
+			_ReadInfosFromCnt(strBuf, mBoostInfo.Projects);
+		}
+		// update projects
+		std::string writeablePath = PX2_RM.GetWriteablePath();
+		std::string writeDataPath = writeablePath + "DataUpdate/";
+		if (PX2_RM.IsFileFloderExist(writeDataPath))
+		{
+			std::string projectList = writeDataPath + "project.list";
+			char *buf = 0;
+			int bufSize = 0;
+			if (FileIO::Load(projectList, true, bufSize, buf))
+			{
+				std::string bufStr1(buf, bufSize);
+				_ReadInfosFromCnt(bufStr1, mBoostInfoUpdate.Projects);
+				delete1(buf);
+				bufSize = 0;
+			}
+		}
+
+		// local plugins
+		PX2_RM.LoadBuffer("Data/plugin.list", strBuf);
+		PX2_RM.ClearRes("Data/plugin.list");
+		if (!strBuf.empty())
+		{
+			_ReadInfosFromCnt(strBuf, mBoostInfo.Plugins);
+		}
+
+		// boost.list
+		std::string strBufBoost;
+		PX2_RM.LoadBuffer("Data/boost.list", strBufBoost);
+		PX2_RM.ClearRes("Data/boost.list");
+		if (!strBufBoost.empty())
+		{
+			std::string removeRStr;
+			for (int i = 0; i < (int)strBufBoost.size(); i++)
+			{
+				char ch = strBufBoost[i];
+				if ('\r' == ch)
+				{
+					/*_*/
+				}
+				else
+				{
+					removeRStr.push_back(ch);
+				}
+			}
+
+			StringTokenizer stk(removeRStr, "\n");
+			if (stk.Count() > 0)
+			{
+				mBoostInfo.ProjectName = stk[0];
+			}
+			if (stk.Count() > 1)
+			{
+				mBoostInfo.ServerProjectName = stk[1];
+			}
 		}
 
 		return true;
@@ -839,26 +875,109 @@ bool Application::WriteBoost()
 
 	data.Create();
 
-	//XMLNode boostNode = data.NewChild("boost");
-	//boostNode.SetAttributeString("name", "boost");
+	XMLNode boostNode = data.NewChild("boost");
+	boostNode.SetAttributeString("name", "boost");
 
-	//XMLNode configNode = boostNode.NewChild("config");
+	// app Node
+	XMLNode appNode = boostNode.NewChild("app");
 
-	//XMLNode varNode_config = configNode.NewChild("var");
-	//varNode_config.SetAttributeInt("width", (int)mBoostSize.Width);
-	//varNode_config.SetAttributeInt("height", (int)mBoostSize.Height);
+	// config
+	XMLNode configNode = appNode.NewChild("config");
 
-	//XMLNode playNode = boostNode.NewChild("play");
-	//XMLNode varNode_play = playNode.NewChild("var");
-	//varNode_play.SetAttributeString("projectname", mBoostProjectName);
-	//varNode_play.SetAttributeString("playlogicmode", GetPlayLogicModeStr());
+	XMLNode varNode_config = configNode.NewChild("var");
+	varNode_config.SetAttributeInt("width", (int)mBoostInfo.BoostSize.Width);
+	varNode_config.SetAttributeInt("height", (int)mBoostInfo.BoostSize.Height);
 
-	return data.SaveFile("Data/boost.xml");
+	// play
+	XMLNode playNode = appNode.NewChild("play");
+	XMLNode varNode_play = playNode.NewChild("var");
+	varNode_play.SetAttributeString("playlogicmode", GetPlayLogicModeStr());
+	varNode_play.SetAttributeBool("isshowinfo", mBoostInfo.IsShowInfo);
+	varNode_play.SetAttributeBool("isdatawrite", mBoostInfo.IsDataReWriteToDataUpdate);
+
+	// server Node
+	XMLNode serverNode = boostNode.NewChild("server");
+
+	XMLNode playNodeServer = serverNode.NewChild("play");
+	XMLNode varNodeServer_play = playNodeServer.NewChild("var");
+	varNodeServer_play.SetAttributeInt("port", mBoostInfo.Port);
+	varNodeServer_play.SetAttributeInt("nummaxconnection", mBoostInfo.NumMaxConnection);
+
+	data.SaveFile("Data/boost.xml");
+
+	_WriteInfos("Data/project.list", mBoostInfo.Projects);
+	_WriteInfos("Data/plugin.list", mBoostInfo.Plugins);
+
+	return true;
 }
 //----------------------------------------------------------------------------
-AppBoostInfo &Application::GetBoostServerInfo()
+std::set<std::string> Application::GetAllProjects()
 {
-	return mBoostServerInfo;
+	std::set<std::string> allProjects;
+
+	for (int i = 0; i < (int)mBoostInfo.Projects.size(); i++)
+	{
+		if (!mBoostInfo.Projects[i].empty())
+			allProjects.insert(mBoostInfo.Projects[i]);
+	}
+
+	for (int i = 0; i < (int)mBoostInfoUpdate.Projects.size(); i++)
+	{
+		if (!mBoostInfoUpdate.Projects[i].empty())
+			allProjects.insert(mBoostInfoUpdate.Projects[i]);
+	}
+
+	return allProjects;
+}
+//----------------------------------------------------------------------------
+bool Application::IsProjectUpdated(const std::string &name) const
+{
+	for (int i = 0; i < (int)mBoostInfoUpdate.Projects.size(); i++)
+	{
+		if (name == mBoostInfoUpdate.Projects[i])
+			return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+void Application::_ReadInfosFromCnt(const std::string &cntStr1,
+	std::vector<std::string> &projList)
+{
+	std::string cntStr;
+	for (int i = 0; i < (int)cntStr1.size(); i++)
+	{
+		if ('\r' != cntStr1[i])
+			cntStr += cntStr1[i];
+	}
+
+	StringTokenizer stk(cntStr, "\n");
+	for (int i = 0; i < stk.Count(); i++)
+	{
+		std::string str = stk[i];
+		if (!str.empty())
+		{
+			projList.push_back(str);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Application::_WriteInfos(const std::string &path,
+	const std::vector<std::string> &list)
+{
+	std::string bufStr;
+
+	for (int i = 0; i < (int)list.size(); i++)
+	{
+		std::string projName = list[i];
+		if (!projName.empty())
+			bufStr += projName + "\n";
+	}
+
+	if (bufStr.empty())
+		bufStr = "\n";
+
+	FileIO::Save(path, false, bufStr.length(), bufStr.c_str());
 }
 //----------------------------------------------------------------------------
 void Application::SetScreenSize(const Sizef &screenSize)

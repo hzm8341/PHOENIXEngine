@@ -42,6 +42,8 @@ bool IsWritable(const std::string &path)
 #if defined (WIN32) || defined(_WIN32)
 	return PX2CheckWin32Permission(path, GENERIC_WRITE);
 #endif
+    
+    return false;
 }
 //----------------------------------------------------------------------------
 bool IsReadable(const std::string &path)
@@ -49,6 +51,8 @@ bool IsReadable(const std::string &path)
 #if defined (WIN32) || defined(_WIN32)
 	return PX2CheckWin32Permission(path, GENERIC_READ);
 #endif
+    
+    return false;
 }
 //----------------------------------------------------------------------------
 bool IsExecutable(const std::string &path)
@@ -56,6 +60,8 @@ bool IsExecutable(const std::string &path)
 #if defined (WIN32) || defined(_WIN32)
 	return PX2CheckWin32Permission(path, GENERIC_EXECUTE);
 #endif
+    
+    return false;
 }
 //----------------------------------------------------------------------------
 inline bool IsCharSeparator(char c)

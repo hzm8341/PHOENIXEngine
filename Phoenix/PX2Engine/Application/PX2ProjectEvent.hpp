@@ -23,6 +23,8 @@ namespace PX2
 	PX2_EVENT(Stop)
 	PX2_EVENT(SceneCanvasSizeChanged)
 	PX2_EVENT(UICanvasSizeChanged)
+	PX2_EVENT(WillEnterForeground)
+	PX2_EVENT(DidEnterBackground)
 	PX2_DECLARE_EVENT_END(ProjectES)
 
 	PX2_DECLARE_EVENT_BEGIN(PX2_ENGINE_ITEM ProjectES_Internal)
@@ -30,6 +32,7 @@ namespace PX2
 	PX2_EVENT(SceneShadowChanged)
 	PX2_EVENT(SceneUICamerasChanged)
 	PX2_EVENT(UISizeChanged)
+	PX2_EVENT(AddUpdateProject)
 	PX2_DECLARE_EVENT_END(ProjectES_Internal)
 
 }

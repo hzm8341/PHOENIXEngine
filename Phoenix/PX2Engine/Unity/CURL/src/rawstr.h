@@ -22,7 +22,7 @@
  *
  ***************************************************************************/
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 
 /*
  * Curl_raw_equal() is for doing "raw" case insensitive strings. This is meant

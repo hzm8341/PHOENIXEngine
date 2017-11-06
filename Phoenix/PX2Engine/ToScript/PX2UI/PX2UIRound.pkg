@@ -15,8 +15,11 @@
 		bool IsDragable() const;
 
 		const Vector2f &GetDraggingDir() const;
+		AVector GetDraggingDirAvector() const;
 		float GetDraggingPercent() const;
+		float GetDraggingPercentPiece(int num) const;
 		const Vector2f &GetDraggedDir() const;
+		AVector GetDraggedDirAvector() const;
 		float GetDraggedPercent() const;
 		
 		int GetDragingDirSimple() const;

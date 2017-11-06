@@ -28,18 +28,18 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <google/protobuf/util/internal/utility.h>
+#include "google/protobuf/util/internal/utility.h"
 
-#include <google/protobuf/stubs/callback.h>
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/logging.h>
-#include <google/protobuf/wrappers.pb.h>
-#include <google/protobuf/descriptor.pb.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/util/internal/constants.h>
-#include <google/protobuf/stubs/strutil.h>
-#include <google/protobuf/stubs/map_util.h>
-#include <google/protobuf/stubs/mathlimits.h>
+#include "google/protobuf/stubs/callback.h"
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/logging.h"
+#include "google/protobuf/wrappers.pb.h"
+#include "google/protobuf/descriptor.pb.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/util/internal/constants.h"
+#include "google/protobuf/stubs/strutil.h"
+#include "google/protobuf/stubs/map_util.h"
+#include "google/protobuf/stubs/mathlimits.h"
 
 #include <algorithm>
 

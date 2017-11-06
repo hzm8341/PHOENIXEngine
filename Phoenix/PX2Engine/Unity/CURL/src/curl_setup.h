@@ -80,13 +80,13 @@
  * and might also include required system header files to define them.
  */
 
-#include <curl/curlbuild.h>
+#include "curlbuild.h"
 
 /*
  * Compile time sanity checks must also be done when building the library.
  */
 
-#include <curl/curlrules.h>
+#include "curlrules.h"
 
 /*
  * Ensure that no one is using the old SIZEOF_CURL_OFF_T macro

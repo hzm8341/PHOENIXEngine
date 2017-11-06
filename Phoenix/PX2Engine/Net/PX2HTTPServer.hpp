@@ -17,7 +17,7 @@ namespace PX2
 			HTTPServerParams *params = new0 HTTPServerParams);
 		HTTPServer(HTTPRequestHandlerFactory *factory,
 			const ServerSocket& socket, HTTPServerParams *params);
-		HTTPServer(HTTPRequestHandlerFactory *factory, ThreadPool& threadPool, 
+		HTTPServer(HTTPRequestHandlerFactory *factory, ThreadPool *threadPool, 
 			const ServerSocket& socket, HTTPServerParams *params);
 		virtual ~HTTPServer();
 

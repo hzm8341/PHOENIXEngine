@@ -23,7 +23,9 @@ mSizeChangeTellToObject(0),
 mSizeChangeCallback(0),
 mIsWidget(false),
 mIsChildPickOnlyInSizeRange(true),
-mIsNotPickRecursion(true)
+mIsNotPickRecursion(true),
+mMemObject(0),
+mMemPickCallback(0)
 {
 	mAnchorHor = Float2(0.5f, 0.5f);
 	mAnchorVer = Float2(0.5f, 0.5f);
@@ -146,6 +148,11 @@ void SizeNode::OnWidgetPicked(const CanvasInputData &inputData)
 {
 	mLastPickData = inputData;
 
+	if (mMemObject && mMemPickCallback)
+	{
+		(mMemObject->*mMemPickCallback)(this, SNPT_WIDGET_PICKED, inputData);
+	}
+
 	if (!mScriptHandlerWidgetPicked.empty())
 	{
 		PX2_SC_LUA->CallFunction(mScriptHandlerWidgetPicked, this);
@@ -155,6 +162,11 @@ void SizeNode::OnWidgetPicked(const CanvasInputData &inputData)
 void SizeNode::OnSizeNodePicked(const CanvasInputData &inputData)
 {
 	mLastPickData = inputData;
+
+	if (mMemObject && mMemPickCallback)
+	{
+		(mMemObject->*mMemPickCallback)(this, SNPT_SIZENODE_PICKED, inputData);
+	}
 
 	if (!mScriptHandlerNodePicked.empty())
 	{
@@ -166,12 +178,17 @@ void SizeNode::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 {
 	mLastPickData = inputData;
 
+	if (mMemObject && mMemPickCallback)
+	{
+		(mMemObject->*mMemPickCallback)(this, SNPT_SIZENODE_NOTPICKED, inputData);
+	}
+
 	if (!mScriptHandlerNodeNotPicked.empty())
 	{
 		PX2_SC_LUA->CallFunction(mScriptHandlerNodeNotPicked, this);
 	}
 
-	if (mIsNotPickRecursion)
+	if (mIsChildPickOnlyInSizeRange && mIsNotPickRecursion)
 	{
 		for (int i = 0; i < GetNumChildren(); i++)
 		{
@@ -182,6 +199,17 @@ void SizeNode::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 			}
 		}
 	}
+}
+//----------------------------------------------------------------------------
+void SizeNode::SetMemPickCallback(Object *object, MemPickCallback callback)
+{
+	mMemObject = object;
+	mMemPickCallback = callback;
+}
+//----------------------------------------------------------------------------
+SizeNode::MemPickCallback SizeNode::GetMemPickCallback() const
+{
+	return mMemPickCallback;
 }
 //----------------------------------------------------------------------------
 void SizeNode::SetScriptHandlerWidgetPicked(const std::string &scriptHandler)
@@ -352,7 +380,7 @@ bool SizeNode::IsIntersectSizeRange(const SizeNode *node) const
 	Rectf worldRect = GetWorldRect();
 	Rectf nodeWorldRect = node->GetWorldRect();
 
-	return  worldRect.IsIntersect(nodeWorldRect);
+	return worldRect.IsIntersect(nodeWorldRect);
 }
 //----------------------------------------------------------------------------
 void SizeNode::SetSizeChangeCallback(SizeNode *object, SizeChangeCallback callback)
@@ -683,7 +711,9 @@ mSizeChangeTellToObject(0),
 mSizeChangeCallback(0),
 mIsWidget(false),
 mIsChildPickOnlyInSizeRange(true),
-mIsNotPickRecursion(true)
+mIsNotPickRecursion(true),
+mMemObject(0),
+mMemPickCallback(0)
 {
 }
 //----------------------------------------------------------------------------

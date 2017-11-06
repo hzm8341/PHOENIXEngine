@@ -26,7 +26,7 @@
 #include <pwd.h>
 #endif
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "netrc.h"
 
 #include "strequal.h"
@@ -35,7 +35,7 @@
 #include "rawstr.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 /* The last #include file should be: */
 #include "memdebug.h"

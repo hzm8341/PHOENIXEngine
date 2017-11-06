@@ -4,6 +4,7 @@
 #include "PX2Renderer.hpp"
 #include "PX2Log.hpp"
 #include "PX2Application.hpp"
+#include "PX2HardCamera.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, UIVlc);
@@ -26,13 +27,12 @@ UIVlc::UIVlc()
 	mFPicBoxRight->GetUIPicBox()->SetTexture("Data/engine/white.png");
 	mFPicBoxRight->Show(false);
 
-#if defined PX2_USE_VLC
-	mVLC = new0 VLC();
 	mVLCMemObj = new0 VLCMemObj();
+	mVLC = new0 VLC();
 	mVLC->SetMem(mVLCMemObj);
-#endif
 
-	mMode = UIVlc::M_NORMAL;
+	mType = T_HARDCAMERA;
+	mMode = M_NORMAL;
 
 	SetWidget(true);
 
@@ -41,13 +41,58 @@ UIVlc::UIVlc()
 //----------------------------------------------------------------------------
 UIVlc::~UIVlc()
 {
+	PX2_HARDCAMERA.SetObj(0);
+	PX2_HARDCAMERA.ClearHardCameraCallbacks();
+
 	mFPicBox->GetUIPicBox()->SetTexture(0);
 	mFPicBoxRight->GetUIPicBox()->SetTexture(0);
 
-#if defined PX2_USE_VLC
 	mVLC = 0;
 	mVLCMemObj = 0;
-#endif
+}
+//----------------------------------------------------------------------------
+static void _HardCameraCallback(int width, int height, const char* buf, int size)
+{
+	PX2_LOG_INFO("_HardCameraCallback -1");
+
+	void *object = PX2_HARDCAMERA.GetObj();
+	if (object)
+	{
+		UIVlc *uiVLC = (UIVlc*)object;
+		VLCMemObj *vlcMemObj = uiVLC->GetVLCMemObj();
+		int mediaWidth = vlcMemObj->GetMediaWidth();
+		int mediaHeight = vlcMemObj->GetMediaHeight();
+		
+		if (mediaWidth != width || mediaHeight != height)
+		{
+			if (width > 0 && height > 0)
+			{
+				vlcMemObj->SetMediaWidthHeight(width, height);
+				vlcMemObj->OnFormatSetup();
+
+				PX2_LOG_INFO("_HardCameraCallback 0");
+			}
+		}
+
+		vlcMemObj->OnFrameReady(width, height, buf, size);
+	}
+}
+//----------------------------------------------------------------------------
+void UIVlc::SetType(Type type)
+{
+	mType = type;
+
+	if (T_HARDCAMERA == mType)
+	{
+		PX2_HARDCAMERA.SetObj(this);
+		PX2_HARDCAMERA.ClearHardCameraCallbacks();
+		PX2_HARDCAMERA.AddHardCameraCallback(_HardCameraCallback);
+	}
+}
+//----------------------------------------------------------------------------
+UIVlc::Type UIVlc::GetType() const
+{
+	return mType;
 }
 //----------------------------------------------------------------------------
 void UIVlc::SetMode(Mode m)
@@ -60,22 +105,18 @@ void UIVlc::StartVLC(const std::string &filename)
 {
 	PX2_UNUSED(filename);
 
-#if defined PX2_USE_VLC
 	if (mVLC)
 	{
 		mVLC->Start(filename);
 	}
-#endif
 }
 //----------------------------------------------------------------------------
 void UIVlc::StopVLC()
 {
-#if defined PX2_USE_VLC
 	if (mVLC)
 	{
 		mVLC->Stop();
 	}
-#endif
 }
 //----------------------------------------------------------------------------
 UIVlc::Mode UIVlc::GetMode() const
@@ -120,7 +161,6 @@ void UIVlc::UpdateWorldData(double applicationTime,
 {
 	UIFrame::UpdateWorldData(applicationTime, elapsedTime);
 
-#if defined PX2_USE_VLC
 	if (mVLCMemObj && mVLCMemObj->IsTextureUpdated())
 	{
 		Texture2D *tex2D = mVLCMemObj->GetTex2D();
@@ -137,7 +177,6 @@ void UIVlc::UpdateWorldData(double applicationTime,
 
 		mVLCMemObj->SetTextureUpdated(false);
 	}
-#endif
 }
 //----------------------------------------------------------------------------
 

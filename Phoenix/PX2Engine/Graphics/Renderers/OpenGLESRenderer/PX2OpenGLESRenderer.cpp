@@ -27,10 +27,10 @@ Renderer::Renderer (RendererInput *input, int width, int height,
 
 	PdrRendererInput *pdrRenderInput = (PdrRendererInput *)(input);
 
-	mData->mWindowHandle = pdrRenderInput->mWindowHandle;
-	mData->mDisplayType = pdrRenderInput->mRendererDC;
-
 #if defined(_WIN32) || defined(WIN32)  || defined (__LINUX__)
+    
+    mData->mWindowHandle = pdrRenderInput->mWindowHandle;
+    mData->mDisplayType = pdrRenderInput->mRendererDC;
     
 	EGLDisplay display = eglGetDisplay(pdrRenderInput->mRendererDC);
 	if (display == EGL_NO_DISPLAY)

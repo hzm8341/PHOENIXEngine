@@ -35,11 +35,11 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 
-#include <google/protobuf/message.h>
-#include <google/protobuf/generated_enum_util.h>
+#include "google/protobuf/message.h"
+#include "google/protobuf/generated_enum_util.h"
 
 namespace google {
 namespace protobuf {

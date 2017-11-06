@@ -354,11 +354,25 @@ mIsAcceptKeyboardInput(true)
 	mImagePicBox->GetUIPicBox()->SetUserData("WebFrame", this);
 	Material *mtl = mImagePicBox->GetUIPicBox()->GetMaterialInstance()->GetMaterial();
 	mtl->GetPixelShader(0, 0)->SetFilter(0, Shader::SF_LINEAR);
+#if defined (__ANDROID__)
+	mImagePicBox->GetUIPicBox()->SetOnDrawCallback(_OnDrawCallback);
+#endif
 
+	_Init();
+
+	ShowNativeView(true);
+	SetScalesPageToFit(true);
+
+	SetWidget(true);
+
+	ComeInEventWorld();
+}
+//----------------------------------------------------------------------------
+void UIWebFrame::_Init()
+{
 	mNumberOfViews++;
 
 #if defined (__ANDROID__)
-	mImagePicBox->GetUIPicBox()->SetOnDrawCallback(_OnDrawCallback);
 	mViewTag = createWebViewJNI();
 	sWebViews[mViewTag] = this;
 #elif defined PX2_USE_AWESOMIUM
@@ -392,13 +406,6 @@ mIsAcceptKeyboardInput(true)
 
 	mBitmapSurface = 0;
 #endif
-
-	ShowNativeView(true);
-	SetScalesPageToFit(true);
-
-	SetWidget(true);
-
-	ComeInEventWorld();
 }
 //----------------------------------------------------------------------------
 UIWebFrame::~UIWebFrame()
@@ -413,14 +420,13 @@ UIWebFrame::~UIWebFrame()
 
 	mWebView->Destroy();
 
-	if (msWebCore && mNumberOfViews == 0)
-	{
+	//if (msWebCore && mNumberOfViews == 0)
+	//{
 	//	msWebCore->Shutdown();
-		msWebCore = 0;
-	}
+	//	msWebCore = 0;
+	//}
 
 	mWebView = 0;
-	msWebCore = 0;
 	mBitmapSurface = 0;
 #endif
 }
@@ -480,6 +486,8 @@ void UIWebFrame::LoadURL(const std::string &url)
 #else
 	PX2_UNUSED(url);
 #endif
+
+	mURL = url;
 }
 //----------------------------------------------------------------------------
 void UIWebFrame::LoadFile(const std::string &fileName)
@@ -701,7 +709,9 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	if (isNeedReGenTex && rect.Width()>0 && rect.Height()>0)
 	{
 		mWebViewImageData.clear();
-		mTex2D = new0 Texture2D(Texture::TF_A8R8G8B8, (int)rect.Width(), (int)rect.Height(), 1);
+		int width = (int)rect.Width();
+		int height = (int)rect.Height();
+		mTex2D = new0 Texture2D(Texture::TF_A8R8G8B8, width, height, 1);
 		mImagePicBox->GetUIPicBox()->SetTexture(mTex2D);
 
 		isNeedReGenTex = false;
@@ -785,26 +795,33 @@ void UIWebFrame::_GetWebViewImage()
 	if (!mBitmapSurface)
 		return;
 
-	char* pSrc = reinterpret_cast<char*>(const_cast<unsigned char*>((
-		mBitmapSurface)->buffer()));
 	int iSrcWidth = mBitmapSurface->width();
 	int iSrcHeight = mBitmapSurface->height();
 	if (iSrcWidth != (int)mSize.Width || iSrcHeight != (int)mSize.Height)
-		return;
+	{
+		mWebView->Resize((int)mSize.Width, (int)mSize.Height);
+	}
+
+	char* pSrc = reinterpret_cast<char*>(const_cast<unsigned char*>((
+		mBitmapSurface)->buffer()));
 
 	char* pDest = mTex2D->GetData(0);
 
 	int offsetSrc = 0;
 	int offsetDst = 0;
 
-	for (int row = 0; row < (int)mSize.Height; ++row)
+	for (int row = 0; row < iSrcHeight; ++row)
 	{
-		for (int col = 0; col < (int)mSize.Width; ++col)
+		for (int col = 0; col < iSrcWidth; ++col)
 		{
-			pDest[offsetDst] = pSrc[offsetSrc];
-			pDest[offsetDst + 1] = pSrc[offsetSrc + 1];
-			pDest[offsetDst + 2] = pSrc[offsetSrc + 2];
-			pDest[offsetDst + 3] = pSrc[offsetSrc + 3];
+			char a = pSrc[offsetSrc];
+			char r = pSrc[offsetSrc + 1];
+			char g = pSrc[offsetSrc + 2];
+			char b = pSrc[offsetSrc + 3];
+			pDest[offsetDst] = a;
+			pDest[offsetDst + 1] = r;
+			pDest[offsetDst + 2] = g;
+			pDest[offsetDst + 3] = b;
 
 			offsetSrc += 4;
 			offsetDst += 4;
@@ -1179,10 +1196,11 @@ mIsUpdateToTex(false),
 mIsShowNativeView(false)
 {
 #if defined PX2_USE_AWESOMIUM
-	msWebCore = 0;
 	mWebView = 0;
 	mBitmapSurface = 0;
 #endif
+
+	_Init();
 
 	ComeInEventWorld();
 }
@@ -1195,6 +1213,10 @@ void UIWebFrame::Load(InStream& source)
 	PX2_VERSION_LOAD(source);
 
 	source.ReadPointer(mImagePicBox);
+	source.ReadBool(mIsUpdateToTex);
+	source.ReadBool(mIsShowNativeView);
+	source.ReadBool(mIsAcceptKeyboardInput);
+	source.ReadString(mURL);
 
 	PX2_END_DEBUG_STREAM_LOAD(UIWebFrame, source);
 }
@@ -1216,6 +1238,8 @@ void UIWebFrame::PostLink()
 		mImagePicBox->GetUIPicBox()->SetOnDrawCallback(_OnDrawCallback);
 		mImagePicBox->GetUIPicBox()->SetUserData("WebFrame", this);
 	}
+
+	LoadURL(mURL);
 }
 //----------------------------------------------------------------------------
 bool UIWebFrame::Register(OutStream& target) const
@@ -1239,6 +1263,11 @@ void UIWebFrame::Save(OutStream& target) const
 
 	target.WritePointer(mImagePicBox);
 
+	target.WriteBool(mIsUpdateToTex);
+	target.WriteBool(mIsShowNativeView);
+	target.WriteBool(mIsAcceptKeyboardInput);
+	target.WriteString(mURL);
+
 	PX2_END_DEBUG_STREAM_SAVE(UIWebFrame, target);
 }
 //----------------------------------------------------------------------------
@@ -1248,6 +1277,11 @@ int UIWebFrame::GetStreamingSize(Stream &stream) const
 	size += PX2_VERSION_SIZE(mVersion);
 
 	size += PX2_POINTERSIZE(mImagePicBox);
+
+	size += PX2_BOOLSIZE(mIsUpdateToTex);
+	size += PX2_BOOLSIZE(mIsShowNativeView);
+	size += PX2_BOOLSIZE(mIsAcceptKeyboardInput);
+	size += PX2_STRINGSIZE(mURL);
 
 	return size;
 }

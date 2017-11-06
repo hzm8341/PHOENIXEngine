@@ -24,6 +24,9 @@ namespace PX2
 		UDPServer(const SocketAddress& sa);
 		~UDPServer();
 
+		void Start();
+		void Stop();
+
 		DatagramSocket &GetSocket();
 		int GetPort() const;
 		SocketAddress GetAddress() const;

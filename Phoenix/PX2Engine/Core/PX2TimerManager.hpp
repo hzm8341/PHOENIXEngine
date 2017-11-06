@@ -53,7 +53,27 @@ namespace PX2
 
 			return timer;
 		}
+		
+		template <typename TIMER>
+		TIMER *AddTimer(const std::string &name, double interval, 
+			double delaySeconds = 0, void *act = 0,
+			void *userData = 0)
+		{
+			TIMER *timer = new0 TIMER;
+			timer->Name = name;
+			timer->mTimerID = GetNextID();
+			timer->mInterval = interval;
+			timer->Action = act;
+			timer->UserData = userData;
+			double startTime = Time::GetTimeInSeconds();
+			timer->StartTime = (float)startTime;
+			startTime += delaySeconds;
+			mMapTimers.insert(std::make_pair(startTime, timer));
 
+			return timer;
+		}
+		
+		void RemoveTimer(const std::string &name);
 		void RemoveTimer (int timerID);
 
 		void ClearTimers ();
@@ -68,7 +88,7 @@ namespace PX2
 		static int msCurTimerID;
 	};
 
-#define PX2_TimerM TimerManager::GetSingleton()
+#define PX2_TIMERM TimerManager::GetSingleton()
 
 }
 

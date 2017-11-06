@@ -32,8 +32,10 @@ namespace PX2
 
 		void SetDebugText(const std::string &debugText);
 		UIFrame *GetEngineFrame();
+		UIList *GetEngineProjectList();
 		UIList *GetEngineUDPNeighborList();
 		UIList *GetEngineBluetoothList();
+		UIList *GetEngineSerialList();
 		UIList *GetEngineInfoList();
 
 	protected:
@@ -42,6 +44,7 @@ namespace PX2
 			double elapsedTime);
 		void _CalSize(const Sizef &projSize);
 		void _CreateEngineFrame();
+		void _RefreshProjects();
 
 		EngineSceneCanvasPtr mEngineSceneCanvas;
 		EngineUICanvasPtr mEngineUICanvas;
@@ -49,15 +52,22 @@ namespace PX2
 		UIFramePtr mInfoFrame;
 		UIFTextPtr mInfoText;
 		UIFTextPtr mDebugText;
+		UIButtonPtr mReloadBut;
 		UIButtonPtr mEngineBut;
 
 		UIFramePtr mEngineFrame;
 		UICollapsePanelPtr mEngineCollapsePanel;
+		// Projects
+		UIButtonPtr mEngineProjectButtonOpen;
+		UIButtonPtr mEngineProjectButtonClose;
+		UIListPtr mEngineProjectList;
 		// UDP
 		UIListPtr mEngineUDPNeighbors;
 		// Bluetooth
 		UIButtonPtr mEngineBluetoothButConnect;
 		UIListPtr mEngineBluetoothList;
+		// Serial
+		UIListPtr mEngineSerialList;
 		// info
 		UIListPtr mEngineInfoList;
 

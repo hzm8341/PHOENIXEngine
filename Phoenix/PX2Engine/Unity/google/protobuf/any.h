@@ -33,10 +33,10 @@
 
 #include <string>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/message.h>
-#include <google/protobuf/arenastring.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/message.h"
+#include "google/protobuf/arenastring.h"
 
 namespace google {
 namespace protobuf {

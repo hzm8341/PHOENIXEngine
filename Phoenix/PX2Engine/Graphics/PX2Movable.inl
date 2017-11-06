@@ -106,6 +106,16 @@ inline float Movable::GetUpdateTime () const
 	return mUpdateTime;
 }
 //----------------------------------------------------------------------------
+inline void Movable::SetOnlyShowUpdate(bool onlyShowUpdate)
+{
+	mIsOnlyShowUpdate = onlyShowUpdate;
+}
+//----------------------------------------------------------------------------
+inline bool Movable::IsOnlyShowUpdate() const
+{
+	return mIsOnlyShowUpdate;
+}
+//----------------------------------------------------------------------------
 inline int Movable::GetUpdatePriority () const
 {
 	return mUpdatePriority;

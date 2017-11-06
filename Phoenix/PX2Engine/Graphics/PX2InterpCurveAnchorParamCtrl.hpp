@@ -20,7 +20,11 @@ namespace PX2
 		InterpCurveAnchorParamCtrl(bool isHor = true);
 		virtual ~InterpCurveAnchorParamCtrl();
 
+		void SetHor(bool isHor);
 		bool IsHor() const;
+
+		void AddPoint(float inVal, float anchorParam0, float anchorParam1, 
+			InterpCurveMode mode = ICM_LINEAR);
 
 	public_internal:
 		virtual void SetControlledable(Controlledable* object);

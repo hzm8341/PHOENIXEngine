@@ -27,6 +27,7 @@ namespace PX2
 
 		const std::string &GetFilename() const;
 		const std::string &GetClassName() const;
+		virtual int SelfP() const;
 
 		virtual void SetControlledable(Controlledable* object);
 

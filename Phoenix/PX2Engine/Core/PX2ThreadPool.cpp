@@ -112,10 +112,7 @@ void PooledThread::Release()
 	if (mThread.IsRunning())
 		mTargetReady.Set();
 
-	if (mThread.Join(JOIN_TIMEOUT))
-	{
-//		delete0(this);
-	}
+	mThread.Join(JOIN_TIMEOUT);
 }
 //----------------------------------------------------------------------------
 void PooledThread::Run()
@@ -210,6 +207,8 @@ ThreadPool::~ThreadPool()
 		delete0(mMutex);
 		mMutex = 0;
 	}
+
+	mThreads.clear();
 }
 //----------------------------------------------------------------------------
 void ThreadPool::AddCapacity(int n)

@@ -4,6 +4,10 @@
 	{
 		// SINGLETON Application
 		
+	public:
+		void SetVersion(const ResourceVersion &version);
+		const ResourceVersion &GetResourceVersion() const;
+		
 		// ScreenOrientation
 	public:
 		enum ScreenOrientation

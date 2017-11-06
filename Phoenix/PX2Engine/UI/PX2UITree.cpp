@@ -228,17 +228,6 @@ void UITree::OnSelected(UIItem *item, bool isDoubleSelect)
 	if (isDoubleSelect) callType = UICT_TREE_DOUBLE_SELECTED;
 	_UICallbacksCalls(callType);
 
-	if (mMemObject && mMemUICallback)
-	{
-		(mMemObject->*mMemUICallback)(this, callType);
-	}
-
-	std::vector<Visitor *>::iterator it = mVisitors.begin();
-	for (; it != mVisitors.end(); it++)
-	{
-		(*it)->Visit(this, (int)callType);
-	}
-
 	PX2_UNUSED(item);
 }
 //----------------------------------------------------------------------------

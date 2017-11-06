@@ -30,12 +30,12 @@
 
 // Author: kenton@google.com (Kenton Varda)
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/once.h>
-#include <google/protobuf/stubs/status.h>
-#include <google/protobuf/stubs/stringpiece.h>
-#include <google/protobuf/stubs/strutil.h>
-#include <google/protobuf/stubs/int128.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/once.h"
+#include "google/protobuf/stubs/status.h"
+#include "google/protobuf/stubs/stringpiece.h"
+#include "google/protobuf/stubs/strutil.h"
+#include "google/protobuf/stubs/int128.h"
 #include <errno.h>
 #include <sstream>
 #include <stdio.h>

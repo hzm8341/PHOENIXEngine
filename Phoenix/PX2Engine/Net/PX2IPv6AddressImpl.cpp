@@ -135,8 +135,8 @@ unsigned IPv6AddressImpl::PrefixLength() const
 		bitPos -= 16;
 	}
 	return 0;
-#elif defined __ANDROID__
-	for (int i = 3; i >= 0; --i)
+#elif defined __ANDROID__ 
+    for (int i = 3; i >= 0; --i)
 	{
 		unsigned addr = ntohl(mAddr.s6_addr32[i]);
 		if ((bits = MaskBits(addr, 32)) > 0)
@@ -145,6 +145,8 @@ unsigned IPv6AddressImpl::PrefixLength() const
 	}
 	return 0;
 #endif
+    
+    return 0;
 }
 //----------------------------------------------------------------------------
 int32_t IPv6AddressImpl::GetScope() const

@@ -23,11 +23,16 @@ typedef struct HINSTANCE__* hInstance;
 #define PLUGIN_GETSYM( a, b ) dlsym( a, b )
 #define PLUGIN_UNLOAD( a ) dlclose( a )
 
-#elif defined (__APPLE__)
-#    define PLUGIN_HANDLE CFBundleRef
-#    define PLUGIN_LOAD( a ) mac_loadExeBundle( a )
-#    define PLUGIN_GETSYM( a, b ) mac_getBundleSym( a, b )
-#    define PLUGIN_UNLOAD( a ) mac_unloadExeBundle( a )
+#elif defined (__APPLE__) && !defined(__IOS__)
+#define PLUGIN_HANDLE CFBundleRef
+#define PLUGIN_LOAD( a ) mac_loadExeBundle( a )
+#define PLUGIN_GETSYM( a, b ) mac_getBundleSym( a, b )
+#define PLUGIN_UNLOAD( a ) mac_unloadExeBundle( a )
+#else
+#define PLUGIN_HANDLE void*
+#define PLUGIN_LOAD( a ) void( a )
+#define PLUGIN_GETSYM( a, b ) void( a, b )
+#define PLUGIN_UNLOAD( a ) void( a )
 #endif
 
 namespace PX2

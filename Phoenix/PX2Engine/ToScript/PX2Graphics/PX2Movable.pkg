@@ -37,17 +37,44 @@
 
 		void SetAlphaSelfCtrled (bool selfCtrled);
 		bool IsAlphaSelfCtrled () const;
-		virtual void SetAlpha (float alpha);
+		virtual void SetAlpha(float alpha);
 		float GetAlpha () const;
 
 		void SetBrightnessSelfCtrled (bool selfCtrled);
 		bool IsBrightnessSelfCtrled () const;
-		virtual void SetBrightness (float brightness);
+		virtual void SetBrightness(float brightness);
 		float GetBrightness () const;
 
 		const Float3 &GetLastColor() const;
 		float GetLastAlpha() const;
 		float GetLastBrightness() const;
+
+		virtual void MarkAlphaColorBrightnessChanged();
+
+		virtual void SetCastShadow(bool castShadow);
+		bool IsCastShadow() const;
+		virtual void SetReceiveShadow(bool reciveShadow);
+		bool IsReceiveShadow() const;
+		
+		// enable active
+	public:
+		void SetEnableSelfCtrled(bool selfCtrled);
+		bool IsEnableSelfCtrled() const;
+
+		void SetActivateSelfCtrled(bool selfCtrled);
+		bool IsActivateSelfCtrled() const;
+		
+		// Update
+	public:
+		void SetUpdateTime (float time);
+		float GetUpdateTime () const;
+
+		void SetOnlyShowUpdate(bool onlyShowUpdate);
+		bool IsOnlyShowUpdate() const;
+
+		// 数值越大，更新优先级越高
+		void SetUpdatePriority (int updatePriority);
+		int GetUpdatePriority () const;
 
 		Movable* GetParent ();		
 	};

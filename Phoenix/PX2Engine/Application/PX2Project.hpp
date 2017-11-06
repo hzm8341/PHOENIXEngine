@@ -11,6 +11,7 @@
 #include "PX2Canvas.hpp"
 #include "PX2UIFrame.hpp"
 #include "PX2UI.hpp"
+#include "PX2ResourceUpdate.hpp"
 
 namespace PX2
 {
@@ -25,6 +26,9 @@ namespace PX2
 		virtual ~Project();
 
 		virtual void SetName(const std::string &name);
+
+		void SetVersion(const ResourceVersion &version);
+		const ResourceVersion &GetResourceVersion() const;
 
 		// 使用该接口删除Project
 		static void Destory();
@@ -47,6 +51,7 @@ namespace PX2
 		ScreenOrientation _FromSOStr(const std::string &str);
 		std::string _ToSOStr(ScreenOrientation so);
 
+		ResourceVersion mResourceVersion;
 		ScreenOrientation mScreenOrientation;
 		bool mIsSizeSameWithScreen;
 
@@ -55,6 +60,7 @@ namespace PX2
 		bool Save(const std::string &filename); //< only used in editor
 		bool SaveConfig(const std::string &filename); //< only used in editor	
 		bool Load(const std::string &filename);
+		static Sizef GetConfigSize(const std::string &filename);
 
 		// Config
 	public:

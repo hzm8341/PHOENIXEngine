@@ -71,11 +71,14 @@
 	public:
 		void NewProject(const std::string &pathname,
 			const std::string &projName, int so, int width, int height);
+		bool LoadProject(const std::string &name, bool doUpdate);
 		bool LoadProjectByPath(const std::string &pathname);
 		bool SaveProject();
 		bool SaveProjectAs(const std::string &pathname);
 		void CloseProject();
 		const std::string &GetProjectFilePath() const;
+		
+		std::string GetProjectVersionByPath(const std::string &projectName);
 
 		void NewScene();
 		bool LoadScene(const std::string &pathname);
@@ -167,4 +170,7 @@
 	public:
 		RenderWindow *CreateUIWindow(RenderWindow *parent, const std::string &name,
 			const std::string &title, const APoint &pos, const Sizef &size, bool isFloat);
+			
+	public:	
+		void SendGeneralEvent(const std::string &generalStr);
 	};

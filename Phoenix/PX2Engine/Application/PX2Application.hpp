@@ -34,6 +34,7 @@
 #include "PX2EngineCanvas.hpp"
 #include "PX2UISizeExtendControl.hpp"
 #include "PX2AppBoostInfo.hpp"
+#include "PX2Wifi.hpp"
 #include "PX2GeneralServer.hpp"
 #include "PX2GeneralClientConnector.hpp"
 #include "PX2EngineServer.hpp"
@@ -46,6 +47,7 @@ namespace PX2
 
 	class Arduino;
 	class VoiceSDK;
+	class VoxelManager;
 
 	class PX2_ENGINE_ITEM Application : public Singleton<Application>, public EventHandler
 	{
@@ -132,6 +134,7 @@ namespace PX2
 		LanguageManager *mLanguageMan;
 		ScriptManager *mScriptMan;
 		Bluetooth *mBluetooth;
+		Wifi *mWifi;
 		HardCamera *mHardCamera;
 		GraphicsRoot *mRoot;
 		InputManager *mInputMan;
@@ -148,6 +151,7 @@ namespace PX2
 		UIAuiManager *mUIAuiManager;
 		UISkinManager *mUISkinManager;
 		LogicManager *mLogicManager;
+		VoxelManager *mVoxelManager;
 		Creater *mCreater;
 		Arduino *mArduino;
 		VoiceSDK *mVoiceSDK;
@@ -169,6 +173,7 @@ namespace PX2
 		// Update
 	public:
 		void Update();
+		void Update(float appSeconds, float elapsedSeconds);
 		float GetElapsedTime();
 
 	private:
@@ -180,6 +185,7 @@ namespace PX2
 	public:
 		void SetScreenSize(const Sizef &screenSize);
 		const Sizef &GetScreenSize() const;
+
 	protected:
 		Sizef mScreenSize;
 
@@ -196,13 +202,12 @@ namespace PX2
 
 		bool LoadBoost(const std::string &filename);
 
+		AppBoostInfo &GetBoostInfo();
 		const Sizef &GetBoostSize() const;
 		const std::string &GetBoostProjectName() const;
 		AppBoostInfo::PlayLogicMode GetPlayLogicMode() const;
 		std::string GetPlayLogicModeStr() const;
 		bool IsShowInfo() const;
-
-		AppBoostInfo &GetBoostServerInfo();
 
 		void SetBoostProjectName(const std::string &boostProjectName);
 		void SetBoostSize(const Sizef &size);
@@ -212,23 +217,34 @@ namespace PX2
 
 		bool WriteBoost();
 
+		std::set<std::string> GetAllProjects();
+		bool IsProjectUpdated(const std::string &name) const;
+
 	protected:
+		void _ReadInfosFromCnt(const std::string &cntStr,
+			std::vector<std::string> &projList);
+		void _WriteInfos(const std::string &path,
+			const std::vector<std::string> &list);
+
 		AppBoostInfo::PlayLogicMode _StrToPlayLogicMode(const std::string &str);
 
 		BoostMode mBoostMode;
 		AppBoostInfo mBoostInfo;
-		AppBoostInfo mBoostServerInfo;
+		AppBoostInfo mBoostInfoUpdate;
 
 		// project
 	public:
 		void NewProject(const std::string &pathname,
 			const std::string &projName, int so, int width, int height);
-		bool LoadProject(const std::string &name);
+		bool LoadProject(const std::string &name, bool doUpdate=false);
 		bool LoadProjectByPath(const std::string &pathname);
 		bool SaveProject();
 		bool SaveProjectAs(const std::string &pathname);
 		void CloseProject();
+		const std::string &GetProjectName() const;
 		const std::string &GetProjectFilePath() const;
+
+		std::string GetProjectVersionByPath(const std::string &projectName);
 
 		void NewScene();
 		bool LoadScene(const std::string &pathname);
@@ -242,7 +258,8 @@ namespace PX2
 		bool LoadPlugins(const std::vector<std::string> &plugins);
 		void ClosePlugins(const std::vector<std::string> &plugins);
 
-		void GenerateProjectFileList(const std::string &projName);
+		void GenerateProjectFileList(const std::string &projName,
+			const std::string &versionText);
 
 		Canvas *GetEngineCanvas();
 
@@ -356,7 +373,7 @@ namespace PX2
 		// Event
 	public:
 		virtual void OnEvent(Event *ent);
-		void BroadcastGeneralString(const std::string &generalStr);
+		void SendGeneralEvent(const std::string &generalStr);
 
 		// NetInfo
 	public:

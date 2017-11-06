@@ -52,7 +52,7 @@ void Application::Play(PlayType type)
 			"/lua/stop.lua";
 		PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "prestop");
 
-		PX2_TimerM.ClearTimers();
+		PX2_TIMERM.ClearTimers();
 
 		PX2_GR.SetPlayType((GraphicsRoot::PlayType)type);
 		mPlayType = type;

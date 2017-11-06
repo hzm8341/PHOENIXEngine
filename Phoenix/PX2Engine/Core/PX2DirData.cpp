@@ -94,7 +94,7 @@ inline bool IsHidden(FIND_ATTR attr)
 	return (attr & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)) != 0;
 }
 //----------------------------------------------------------------------------
-#elif defined (__LINUX__) || defined (__ANDROID__)
+#elif defined (__LINUX__) || defined (__ANDROID__) || defined(__IOS__)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>

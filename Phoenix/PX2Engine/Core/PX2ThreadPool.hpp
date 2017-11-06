@@ -40,8 +40,9 @@ namespace PX2
 		Eventt mStarted;
 		Mutex *mMutex;
 	};
+	typedef Pointer0<PooledThread> PooledThreadPtr;
 	
-	class ThreadPool : public Singleton<ThreadPool>
+	class ThreadPool
 	{
 	public:
 		ThreadPool(int minCapacity = 2,	int maxCapacity = 16,
@@ -78,7 +79,7 @@ namespace PX2
 		ThreadPool(const ThreadPool& pool);
 		ThreadPool& operator = (const ThreadPool& pool);
 
-		typedef std::vector<PooledThread*> ThreadVec;
+		typedef std::vector<PooledThreadPtr > ThreadVec;
 
 		std::string mName;
 		int mMinCapacity;
@@ -90,7 +91,7 @@ namespace PX2
 		ThreadVec mThreads;
 		mutable Mutex *mMutex;
 	};
-
+	typedef Pointer0<ThreadPool> ThreadPoolPtr;
 
 }
 

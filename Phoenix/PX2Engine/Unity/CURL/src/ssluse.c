@@ -51,7 +51,7 @@
 #include "hostcheck.h"
 
 #define _MPRINTF_REPLACE /* use the internal *printf() functions */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #ifdef USE_SSLEAY
 

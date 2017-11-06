@@ -22,10 +22,10 @@ EnvirParamController::EnvirParamController()
 	mLight_Dir_Projector->SetClearDepth(1.0f);
 
 	mLight_Dir = new0 Light(Light::LT_DIRECTIONAL);
-	mLight_Dir->Ambient = Float4(0.5f, 0.5f, 0.5f, 1.0f);
-	mLight_Dir->Diffuse = Float4(0.5f, 0.5f, 0.5f, 1.0f);
-	mLight_Dir->Specular = Float4(0.5f, 0.5f, 0.5f, 1.0f);
-	AVector lightVec(-1.0f, -1.0f, -1.0f);
+	mLight_Dir->Ambient = Float4(0.7f, 0.7f, 0.7f, 1.0f);
+	mLight_Dir->Diffuse = Float4(0.3f, 0.3f, 0.3f, 1.0f);
+	mLight_Dir->Specular = Float4(0.3f, 0.3f, 0.3f, 1.0f);
+	AVector lightVec(1.0f, 1.0f, -1.0f);
 	lightVec.Normalize();
 	mLight_Dir->SetDirection(lightVec);
 
@@ -212,6 +212,13 @@ void EnvirParamController::PostLink()
 	if (mLight_Dir)
 	{
 		mLight_Dir->PostLink();
+
+		mLight_Dir->Ambient = Float4(1.0f, 1.0f, 1.0f, 1.0f);
+		mLight_Dir->Diffuse = Float4(0.8f, 0.8f, 0.8f, 1.0f);
+		mLight_Dir->Specular = Float4(1.9f, 1.9f, 1.9f, 1.0f);
+		AVector lightVec(1.0f, 1.0f, -1.0f);
+		lightVec.Normalize();
+		mLight_Dir->SetDirection(lightVec);
 	}
 
 	if (mLight_Dir_Projector)

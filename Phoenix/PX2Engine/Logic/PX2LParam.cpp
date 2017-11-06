@@ -271,11 +271,11 @@ std::string LParam::GetValueScriptStr(bool coverString)
 	}
 	else if (FPT_POINTER == mDataType)
 	{
-		str += "Pointer_" + StringHelp::IntToString((int)GetValuePointer());
+		str += "Pointer_" + StringHelp::IntToString((int)(int64_t)GetValuePointer());
 	}
 	else if (FPT_POINTER_THIS == mDataType)
 	{
-		str += "Pointer_" + StringHelp::IntToString((int)GetValuePointer());
+		str += "Pointer_" + StringHelp::IntToString((int)(int64_t)GetValuePointer());
 	}
 	else if (FPT_POINTER_THIS_STATIC == mDataType)
 	{

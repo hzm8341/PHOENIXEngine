@@ -18,11 +18,31 @@ namespace PX2
 	PX2_EVENT(OnDiscoveryFinished)
 	PX2_DECLARE_EVENT_END(BluetoothES)
 
+	typedef void(*BluetoothReceiveCallback) (std::string recvVal);
+
 	class PX2_ENGINE_ITEM Bluetooth : public Singleton<Bluetooth>
 	{
 	public:
 		Bluetooth();
 		~Bluetooth();
+
+		enum Type
+		{
+			T_2,
+			T_4,
+			T_MAX_TYPE
+		};
+		void SetType(Type t);
+		Type GetType() const;
+
+		// Hex–≠“È
+		void SetDataProtocolHex(bool isUseHex);
+		bool IsDataProtocolHex() const;
+
+		void Clear();
+		void Update(float elapsedSeconds);
+
+		void ClearSendReceives();
 
 		bool IsAvailable() const;
 		bool IsConnected() const;
@@ -30,11 +50,24 @@ namespace PX2
 		std::vector<std::string> GetPairedDevices();
 
 		int GetNumPairedDevices() const;
-		const std::string &GetPairedDevice(int i) const;
+		std::string GetPairedDevice(int i) const;
+
+		void SetWriteServiceID(const std::string &serviceID);
+		const std::string &GetWriteServiceID() const;
+		void SetWriteCharaID(const std::string &charaID);
+		const std::string &GetWriteCharaID() const;
+
+		void SetReadServiceID(const std::string &serviceID);
+		const std::string &GetReadServiceID() const;
+		void SetReadCharaID(const std::string &charaID);
+		const std::string &GetReadCharaID() const;
 
 		void DisConnect();
 		void Connect(const std::string &addr);
-		void Send(const std::string &str);
+		void ReConnect();
+
+		void Send(const std::string &str, bool withRead=false);
+		void SendHex(const std::string &hexStr, bool withRead=false);
 		
 		void DoDiscovery();
 		void CancelDiscovery();
@@ -45,8 +78,54 @@ namespace PX2
 		void OnDisConnected();
 		void OnReceive(const std::string &recvBuffer);
 
+		void ClearRecvCallbacks();
+		bool IsHasReceiveCallback(BluetoothReceiveCallback callBack);
+		void AddReceiveCallback(BluetoothReceiveCallback callBack);
+		void RemoveReceiveCallback(BluetoothReceiveCallback callback);
+		
+		void ClearScirptHandlers();
+		bool IsHasScriptHandler(const std::string &scriptHandler);
+		void AddScriptHandler(const std::string &scriptHandler);
+		void RemoveScriptHandler(const std::string &scriptHandler);
+
+		void ClearScriptHandlersHex();
+		bool IsHasScriptHandlerHex(const std::string &scriptHandler);
+		void AddScriptHandlerHex(const std::string &scriptHandler);
+		void RemoveScriptHandlerHex(const std::string &scriptHandler);
+
+		int Rssi100(int rssi);
+
 	protected:
+		void _OnReceive(const std::string &recvStr);
+
+		Type mType;
+		bool mIsDataProtocolHex;
+
+		std::string mTryConnectAddr;
+		std::string mLastConnecttedAddr;
+
+		float mSendUpdateSeconds;
+		std::vector<std::string> mSendBufs;
+
 		std::vector<std::string> mPairedDevices;
+		std::vector<std::string> mDiscoveryDevices;
+		std::string mWriteServiceID;
+		std::string mWriteCharaID;
+		std::string mReadServiceID;
+		std::string mReadCharaID;
+
+		Mutex mRecvMutex;
+		std::vector<std::string> mDiscoveryNewDevices;
+		std::vector<std::string> mRecvs;
+
+		int mConnectedSignal;
+		int mConnectFailedSignal;
+		int mDisconnectedSignal;
+		int mDiscoverFinishedSignal;
+
+		std::vector<BluetoothReceiveCallback> mCallbacks;
+		std::vector<std::string> mScriptHandlers;
+		std::vector<std::string> mScriptHandlersHex;
 	};
 
 #define PX2_BLUETOOTH Bluetooth::GetSingleton()

@@ -33,8 +33,12 @@ namespace PX2
 			const APoint &pickWorldPos);
 		
 		const Vector2f &GetDraggingDir() const;
-		float GetDraggingPercent() const;
+		AVector GetDraggingDirAvector() const;
+		float GetDraggingPercent() const;		
+		float GetDraggingPercentPiece(int num) const;
+
 		const Vector2f &GetDraggedDir() const;
+		AVector GetDraggedDirAvector() const;
 		float GetDraggedPercent() const;
 
 		// none 0

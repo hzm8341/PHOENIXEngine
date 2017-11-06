@@ -33,12 +33,12 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 
-#include <google/protobuf/stubs/casts.h>
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/util/internal/object_writer.h>
+#include "google/protobuf/stubs/casts.h"
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/util/internal/object_writer.h"
 
 namespace google {
 namespace protobuf {

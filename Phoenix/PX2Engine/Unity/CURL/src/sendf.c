@@ -22,7 +22,7 @@
 
 #include "curl_setup.h"
 
-#include <curl/curl.h>
+#include "curl/curl.h"
 
 #include "urldata.h"
 #include "sendf.h"
@@ -33,7 +33,7 @@
 #include "non-ascii.h"
 
 #define _MPRINTF_REPLACE /* use the internal *printf() functions */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #include "curl_memory.h"
 #include "strerror.h"

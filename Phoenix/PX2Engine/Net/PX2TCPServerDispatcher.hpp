@@ -14,11 +14,12 @@
 namespace PX2
 {
 	
-	class TCPServerDispatcher : public Runnable
+	class PX2_ENGINE_ITEM TCPServerDispatcher : public Runnable
 	{
 	public:
+		TCPServerDispatcher();
 		TCPServerDispatcher(TCPServerConnectionFactory *factory, 
-			ThreadPool& threadPool, TCPServerParams *params);
+			ThreadPool* threadPool, TCPServerParams *params);
 		virtual ~TCPServerDispatcher();
 
 		virtual void Run();
@@ -43,7 +44,6 @@ namespace PX2
 		void EndConnection();
 
 	private:
-		TCPServerDispatcher();
 		TCPServerDispatcher(const TCPServerDispatcher&);
 		TCPServerDispatcher& operator = (const TCPServerDispatcher&);
 
@@ -57,9 +57,10 @@ namespace PX2
 		bool mIsStopped;
 		NotificationQueue mQueue;
 		TCPServerConnectionFactoryPtr mConnectionFactory;
-		ThreadPool& mThreadPool;
+		ThreadPoolPtr mThreadPool;
 		mutable Mutex mMutex;
 	};
+	typedef Pointer0<TCPServerDispatcher> TCPServerDispatcherPtr;
 
 }
 

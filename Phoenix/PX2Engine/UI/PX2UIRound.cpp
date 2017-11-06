@@ -1,6 +1,7 @@
 // PX2UIRound.cpp
 
 #include "PX2UIRound.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, UIFrame, UIRound);
@@ -49,6 +50,8 @@ UIRound::UIRound()
 	mBut->SetAnchorVer(0.5f, 0.5f);
 
 	SetChildPickOnlyInSizeRange(false);
+
+	RegistToScriptSystem();
 }
 //----------------------------------------------------------------------------
 UIRound::~UIRound()
@@ -58,6 +61,28 @@ UIRound::~UIRound()
 void UIRound::SetDragable(bool dragable)
 {
 	mIsDragable = dragable;
+}
+//----------------------------------------------------------------------------
+AVector UIRound::GetDraggingDirAvector() const
+{
+	return AVector(mDraggingDir.X(), mDraggingDir.Y(), mDraggingDir.Y());
+}
+//----------------------------------------------------------------------------
+float UIRound::GetDraggingPercentPiece(int num) const
+{
+	if (num <= 0)
+		return 0.0;
+
+	float dragingPercent = GetDraggingPercent();
+	float piece = 1.0f / (float)num;
+	float fNum = (dragingPercent + 0.5f*piece) / piece;
+	float numStart = Mathf::Floor(fNum);
+	return (numStart/num);
+}
+//----------------------------------------------------------------------------
+AVector UIRound::GetDraggedDirAvector() const
+{
+	return AVector(mDraggedDir.X(), mDraggedDir.Y(), mDraggedDir.Y());
 }
 //----------------------------------------------------------------------------
 int UIRound::GetDragingDirSimple() const
@@ -138,6 +163,8 @@ void UIRound::OnReleasedNotPick()
 	mBut->SetAnchorHor(0.5f, 0.5f);
 	mBut->SetAnchorVer(0.5f, 0.5f);
 
+	PX2_LOG_INFO("UIRound::OnReleasedNotPick");
+
 	_UICallbacksCalls(UICT_ROUND_RELEASEDNOTPICK);
 }
 //----------------------------------------------------------------------------
@@ -152,17 +179,6 @@ void UIRound::OnDrag(const Vector2f &dir, float percent,
 	mDraggedPercent = percent;
 
 	_UICallbacksCalls(UICT_ROUND_DRAG);
-
-	if (mMemObject && mMemUICallback)
-	{
-		(mMemObject->*mMemUICallback)(this, UICT_ROUND_DRAG);
-	}
-
-	std::vector<Visitor *>::iterator it = mVisitors.begin();
-	for (; it != mVisitors.end(); it++)
-	{
-		(*it)->Visit(this, (int)UICT_ROUND_DRAG);
-	}
 }
 //----------------------------------------------------------------------------
 void UIRound::SetRangeAcceptFrame(UIFrame *frame)
@@ -304,6 +320,8 @@ void UIRound::Link(InStream& source)
 
 	source.ResolveLink(mBack);
 	source.ResolveLink(mBut);
+
+	RegistToScriptSystem();
 }
 //----------------------------------------------------------------------------
 void UIRound::PostLink()

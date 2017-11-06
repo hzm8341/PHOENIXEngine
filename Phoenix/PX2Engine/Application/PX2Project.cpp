@@ -40,6 +40,16 @@ void Project::SetName(const std::string &name)
 	Object::SetName(name);
 }
 //----------------------------------------------------------------------------
+void Project::SetVersion(const ResourceVersion &version)
+{
+	mResourceVersion = version;
+}
+//----------------------------------------------------------------------------
+const ResourceVersion &Project::GetResourceVersion() const
+{
+	return mResourceVersion;
+}
+//----------------------------------------------------------------------------
 void Project::Destory()
 {
 	if (PX2_APP.TheProject)
@@ -264,6 +274,12 @@ bool Project::Load(const std::string &filename)
 					nodePlugin = nodePlugins.IterateChild(nodePlugin);
 				}
 			}
+
+			// version
+			std::string versionFilename = outPath + "filelist.xml";
+			std::string resVersionStr =
+				PX2_APP.GetProjectVersionByPath(versionFilename);
+			mResourceVersion = ResourceVersion(resVersionStr);
 		}
 	}
 	else
@@ -272,6 +288,47 @@ bool Project::Load(const std::string &filename)
 	}
 
 	return true;
+}
+//----------------------------------------------------------------------------
+Sizef Project::GetConfigSize(const std::string &filename)
+{
+	Sizef sz;
+
+#if defined (_WIN32) || defined(WIN32)
+	if (!PX2_RM.IsFileFloderExist(filename))
+		return sz;
+#endif
+
+	std::string name;
+	int height = 0;
+	std::string sceneFilename;
+	int width = 0;
+	std::string uiFilename;
+	std::string languageFilename;
+
+	char *buffer = 0;
+	int bufferSize = 0;
+	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
+	{
+		XMLData data;
+		if (data.LoadBuffer(buffer, bufferSize))
+		{
+			XMLNode rootNode = data.GetRootNode();
+
+			// general
+			XMLNode generalNode = rootNode.GetChild("general");
+			if (!generalNode.IsNull())
+			{
+				name = generalNode.AttributeToString("name");
+				width = generalNode.AttributeToInt("width");
+				height = generalNode.AttributeToInt("height");
+
+				sz = Sizef((float)width, (float)height);
+			}
+		}
+	}
+
+	return sz;
 }
 //----------------------------------------------------------------------------
 void Project::SetScene(Scene *scene)

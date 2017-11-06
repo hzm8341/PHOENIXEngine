@@ -29,6 +29,7 @@ endif
 	cd Effect							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Terrains							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd UI							 		&& make -f ../makeprj.px2 CFG=$(CFG)
+	cd Voxel							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Logic							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Logic/BlueBlock						;  make -f makeblueblock.px2 CFG=$(CFG)
 	cd Application							&& make -f ../makeprj.px2 CFG=$(CFG)

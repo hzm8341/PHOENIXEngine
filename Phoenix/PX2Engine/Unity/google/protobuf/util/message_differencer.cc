@@ -36,27 +36,27 @@
 // Messages (see //google/protobuf/util/message_differencer.h for more
 // information).
 
-#include <google/protobuf/util/message_differencer.h>
+#include "google/protobuf/util/message_differencer.h"
 
 #include <algorithm>
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <utility>
 
-#include <google/protobuf/stubs/callback.h>
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/logging.h>
-#include <google/protobuf/stubs/stringprintf.h>
-#include <google/protobuf/any.h>
-#include <google/protobuf/io/printer.h>
-#include <google/protobuf/io/zero_copy_stream.h>
-#include <google/protobuf/io/zero_copy_stream_impl.h>
-#include <google/protobuf/dynamic_message.h>
-#include <google/protobuf/text_format.h>
-#include <google/protobuf/util/field_comparator.h>
-#include <google/protobuf/stubs/strutil.h>
+#include "google/protobuf/stubs/callback.h"
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/logging.h"
+#include "google/protobuf/stubs/stringprintf.h"
+#include "google/protobuf/any.h"
+#include "google/protobuf/io/printer.h"
+#include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/io/zero_copy_stream_impl.h"
+#include "google/protobuf/dynamic_message.h"
+#include "google/protobuf/text_format.h"
+#include "google/protobuf/util/field_comparator.h"
+#include "google/protobuf/stubs/strutil.h"
 
 namespace google {
 namespace protobuf {

@@ -33,6 +33,10 @@ namespace PX2
 		virtual void SetDistance(float minDistance, float maxDistance) = 0;
 
 		std::string Filename;
+		
+		virtual bool Update(float elapsedSeconds);
+		float Life;
+		float Age;
 	};
 	typedef Pointer0<Sound> SoundPtr;
 

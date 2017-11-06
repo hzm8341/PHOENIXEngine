@@ -53,7 +53,7 @@
 
 #include <cfloat>
 
-#include <google/protobuf/stubs/common.h>
+#include "google/protobuf/stubs/common.h"
 
 // ========================================================================= //
 

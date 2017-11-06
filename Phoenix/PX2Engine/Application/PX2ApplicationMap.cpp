@@ -105,10 +105,12 @@ void Application::_ProcessReWrite(const std::string &projName)
 	}
 }
 //----------------------------------------------------------------------------
-bool Application::LoadProject(const std::string &name)
+bool Application::LoadProject(const std::string &name, bool doUpdate)
 {
 	if (name.empty())
 		return false;
+
+	PX2_RM.Clear();
 
 	std::string writeablePath = PX2_RM.GetWriteablePath();
 	std::string writeDataPath = writeablePath + "DataUpdate/";
@@ -120,24 +122,27 @@ bool Application::LoadProject(const std::string &name)
 		{
 			PX2_RM.CreateFloder(writeablePath, "DataUpdate/");
 			_ProcessReWrite(name);
+
+			mBoostInfoUpdate.AddProject(name);
+			_WriteInfos(writeDataPath + "project.list", mBoostInfoUpdate.Projects);
+			_WriteInfos(writeDataPath + "plugin.list", mBoostInfoUpdate.Plugins);
+
 		}
 	}
 
-	if (mBoostInfo.IsDataReWriteToDataUpdate)
+	// write data path
+	std::string writeDataFilelistPath = projWriteDataPath + "filelist.xml";
+	if (PX2_RM.IsFileFloderExist(writeDataFilelistPath))
 	{
-		std::string writeDataFilelistPath = projWriteDataPath + "filelist.xml";
-		if (PX2_RM.IsFileFloderExist(writeDataFilelistPath))
+		if (!PX2_RM.LoadFileTableXML(PX2_RM.GetDataUpdateFileTable(), writeDataFilelistPath))
 		{
-			if (!PX2_RM.LoadFileTableXML(PX2_RM.GetDataUpdateFileTable(), writeDataFilelistPath))
-			{
-				PX2_LOG_INFO("LoadFileTableXML %s failed", writeDataFilelistPath.c_str());
+			PX2_LOG_INFO("LoadFileTableXML %s failed", writeDataFilelistPath.c_str());
 
-				PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), "Data/" + name + "/filelist.xml");
-			}
-			else
-			{
-				PX2_LOG_INFO("LoadFileTableXML %s suc", writeDataFilelistPath.c_str());
-			}
+			PX2_RM.LoadFileTableXML(PX2_RM.GetDataFiletable(), "Data/" + name + "/filelist.xml");
+		}
+		else
+		{
+			PX2_LOG_INFO("LoadFileTableXML %s suc", writeDataFilelistPath.c_str());
 		}
 	}
 	else
@@ -153,14 +158,39 @@ bool Application::LoadProject(const std::string &name)
 #endif
 	}
 
-	if (mBoostInfo.IsDataReWriteToDataUpdate)
+	if (doUpdate)
 	{
+		bool addRet = mBoostInfoUpdate.AddProject(name);
+		if (addRet)
+		{
+			if (!PX2_RM.IsFileFloderExist(projWriteDataPath))
+			{
+				PX2_RM.CreateFloder(writeablePath, "DataUpdate/");
+			}
+
+			_WriteInfos(writeDataPath + "project.list", mBoostInfoUpdate.Projects);
+
+			Event *ent = ProjectES_Internal::CreateEventX(ProjectES_Internal::AddUpdateProject);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
+
 		std::string addrPath = "ftp://127.0.0.1/";
 		const std::string &resUpdateAddr = PX2_RM.GetResourceUpdateAddr();
 		if (!resUpdateAddr.empty())
 			addrPath = resUpdateAddr;
 
-		PX2_RM.DoResourceUpdateStuffs(addrPath, name);
+		int typeFTPHTTP = 0;
+		auto itFTP = addrPath.find("ftp");
+		auto itHTTP = addrPath.find("http");
+		if (itFTP != std::string::npos)
+		{
+			typeFTPHTTP = 1;
+		}		
+		if (itHTTP != std::string::npos)
+		{
+			typeFTPHTTP = 2;
+		}
+		PX2_RM.DoResourceUpdateStuffs(addrPath, name, typeFTPHTTP);
 	}
 
 	mProjectName = name;
@@ -347,7 +377,10 @@ bool Application::SaveProject()
 			if (proj->Save(mProjectFilePath))
 			{
 				const std::string &projName = proj->GetName();
-				GenerateProjectFileList(projName);
+				const ResourceVersion &resVersion = proj->GetResourceVersion();
+				std::string strVersion = resVersion.GetAsString();
+
+				GenerateProjectFileList(projName, strVersion);
 
 				Event *ent = PX2_CREATEEVENTEX(ProjectES, SavedProject);
 				PX2_EW.BroadcastingLocalEvent(ent);
@@ -376,7 +409,10 @@ bool Application::SaveProjectAs(const std::string &pathname)
 			if (proj->Save(pathname))
 			{
 				const std::string &projName = proj->GetName();
-				GenerateProjectFileList(projName);
+				const ResourceVersion &resVersion = proj->GetResourceVersion();
+				std::string strVersion = resVersion.GetAsString();
+
+				GenerateProjectFileList(projName, strVersion);
 
 				Event *ent = PX2_CREATEEVENTEX(ProjectES, SavedProject);
 				PX2_EW.BroadcastingLocalEvent(ent);
@@ -401,6 +437,7 @@ void Application::CloseProject()
 	URStateManager::GetSingleton().Clear();
 	PX2_RM.ClearRes(mProjectFilePath);
 	PX2_RM.Clear();
+	PX2_BLUETOOTH.Clear();
 
 	PX2_SS.PlayMusic(0, 0, true, 0.0f);
 
@@ -437,6 +474,32 @@ void Application::CloseProject()
 
 	Project::Destory();
 	mProjectFilePath.clear();
+}
+//----------------------------------------------------------------------------
+std::string Application::GetProjectVersionByPath(const std::string &pathName)
+{
+	std::string verStr;
+	std::string filename = pathName;
+
+	if (PX2_RM.IsFileFloderExist(filename))
+	{
+		std::string bufStr;
+		if (PX2_RM.LoadBuffer(filename, bufStr))
+		{
+			XMLData xmlData;
+			bool loadedBuffer = xmlData.LoadBuffer(bufStr.c_str(),
+				(int)bufStr.length());
+			if (loadedBuffer)
+			{
+				XMLNode rootNode = xmlData.GetRootNode();
+				verStr = rootNode.AttributeToString("version");
+			}
+
+			PX2_RM.ClearRes(filename);
+		}
+	}
+
+	return verStr;
 }
 //----------------------------------------------------------------------------
 void Application::NewScene()
@@ -695,7 +758,8 @@ void _RefreshDir(XMLNode node, const std::string &pathName)
 	}
 }
 //----------------------------------------------------------------------------
-void Application::GenerateProjectFileList(const std::string &projName)
+void Application::GenerateProjectFileList(const std::string &projName,
+	const std::string &versionText)
 {
 	std::string projDataPath = "Data/" + projName;
 
@@ -703,7 +767,7 @@ void Application::GenerateProjectFileList(const std::string &projName)
 	data.Create();
 
 	XMLNode rootNode = data.NewChild("filelist");
-	rootNode.SetAttributeString("version", "1.0.0");
+	rootNode.SetAttributeString("version", versionText);
 	_RefreshDir(rootNode, projDataPath);
 
 	std::string savePath = projDataPath + "/filelist.xml";

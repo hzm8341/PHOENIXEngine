@@ -35,9 +35,9 @@
 
 #include <string>
 
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/field_mask.pb.h>
-#include <google/protobuf/stubs/stringpiece.h>
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/field_mask.pb.h"
+#include "google/protobuf/stubs/stringpiece.h"
 
 namespace google {
 namespace protobuf {

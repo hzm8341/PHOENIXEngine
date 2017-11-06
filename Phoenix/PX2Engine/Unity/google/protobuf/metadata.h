@@ -38,9 +38,9 @@
 #ifndef GOOGLE_PROTOBUF_METADATA_H__
 #define GOOGLE_PROTOBUF_METADATA_H__
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/arena.h>
-#include <google/protobuf/unknown_field_set.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/arena.h"
+#include "google/protobuf/unknown_field_set.h"
 
 namespace google {
 namespace protobuf {

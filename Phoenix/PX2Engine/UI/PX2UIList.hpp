@@ -25,13 +25,19 @@ namespace PX2
 		void SetSliderSize(float size);
 		float GetSliderSize() const;
 
+		UISlider *GetSlider();
+
 		void SetItemHeight(float height);
 		float GetItemHeight() const;
+
+		void SetItemBackPicBox(const std::string &backPicBox);
 
 		UIItem *AddItem(const std::string &text);
 		UIItem *GetItem(const std::string &text);
 		UIItem *GetItemByIndex(int index);
 		void RemoveItem(UIItem *item);
+		UIItem *GetItemByUserDataString(const std::string &userDataName,
+			const std::string &userDataString);
 
 		int GetNumItems() const;
 		int GetItemIndex(const std::string &text) const;
@@ -41,16 +47,23 @@ namespace PX2
 		void SetNumMaxItems(int numMax);
 		int GetNumMaxItems() const;
 
+		void SetReleasedDoSelect(bool releasedDoSelect);
+		bool IsReleasedDoSelect() const;
+
 		void SelectItem(int index);
 		void AddSelectItem(UIItem *item);
 		void ClearAllSelectItems();
 		UIItem *GetSelectedItem();
+		std::string GetSelectedItemText();
 
 		virtual void OnSelected(UIItem *item);
 		int GetSelectIndex() const;
 
 		void SetTextColor(const Float3 &textColor);
 		const Float3 &GetTextColor() const;
+
+		void SetFontSize(int size);
+		int GetFontSize() const;
 
 		void SetItemBackColor(const Float3 &backColor);
 		const Float3 &GetItemBackColor() const;
@@ -65,11 +78,13 @@ namespace PX2
 		void _UpdateContentPos();
 		void _UpdateItemVisible();
 		void _SelectButCallback(UIFrame *frame, UICallType type);
+		void _OnSelectProcess(UIItem *uiItem);
 
 		bool mIsNeedRecal;
 		bool mIsUpdateSliderVisible;
 		bool mIsUpdateContentPos;
 
+		std::string mItemBackPicBox;
 		float mSliderSize;
 		float mItemHeight;
 		UIFramePtr mMaskFrame;
@@ -77,8 +92,10 @@ namespace PX2
 		std::vector<UIItemPtr> mItems;
 		UISliderPtr mSlider;
 		Float3 mTextColor;
+		int mFontSize;
 		Float3 mItemBackColor;
 
+		bool mIsReleasedDoSelect;
 		std::vector<UIItemPtr> mSelectedItems;
 		int mSelectedIndex;
 

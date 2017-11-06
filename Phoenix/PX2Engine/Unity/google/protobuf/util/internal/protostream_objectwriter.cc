@@ -28,21 +28,21 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <google/protobuf/util/internal/protostream_objectwriter.h>
+#include "google/protobuf/util/internal/protostream_objectwriter.h"
 
 #include <functional>
 #include <stack>
 
-#include <google/protobuf/stubs/once.h>
-#include <google/protobuf/stubs/time.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/util/internal/field_mask_utility.h>
-#include <google/protobuf/util/internal/object_location_tracker.h>
-#include <google/protobuf/util/internal/constants.h>
-#include <google/protobuf/util/internal/utility.h>
-#include <google/protobuf/stubs/strutil.h>
-#include <google/protobuf/stubs/map_util.h>
-#include <google/protobuf/stubs/statusor.h>
+#include "google/protobuf/stubs/once.h"
+#include "google/protobuf/stubs/time.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/util/internal/field_mask_utility.h"
+#include "google/protobuf/util/internal/object_location_tracker.h"
+#include "google/protobuf/util/internal/constants.h"
+#include "google/protobuf/util/internal/utility.h"
+#include "google/protobuf/stubs/strutil.h"
+#include "google/protobuf/stubs/map_util.h"
+#include "google/protobuf/stubs/statusor.h"
 
 
 namespace google {

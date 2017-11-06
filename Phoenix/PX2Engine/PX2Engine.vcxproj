@@ -17,6 +17,14 @@
       <Configuration>OpenGLDebug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="OpenGLESDebug|Win32">
+      <Configuration>OpenGLESDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="OpenGLESDebug|x64">
+      <Configuration>OpenGLESDebug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="OpenGLRelease|Win32">
       <Configuration>OpenGLRelease</Configuration>
       <Platform>Win32</Platform>
@@ -53,6 +61,12 @@
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -66,6 +80,12 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
@@ -100,6 +120,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -107,6 +130,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|x64'" Label="PropertySheets">
@@ -131,6 +157,12 @@
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>PX2EngineOpenGLD</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>PX2EngineOpenGLESD</TargetName>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
@@ -144,6 +176,12 @@
     <TargetName>PX2Engine64D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>PX2EngineOpenGL64D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
@@ -174,13 +212,13 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial/include;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\vlc\libwin;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\DataBase\MySQL\lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -213,9 +251,17 @@ xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
 xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\AI\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\AI\*.inl ..\PX2SDK\Include
+
 xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Voxel\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Voxel\*.inl ..\PX2SDK\Include
 
 xcopy /DY .\Application\*.hpp ..\PX2SDK\Include
 
@@ -239,7 +285,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/OpenGLRenderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -297,6 +343,71 @@ xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Con
 xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGLES;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Voxel;./AI;./Physics;./Physics/Bullet;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/OGLES/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>fmod_vc.lib;ws2_32.lib;awesomium.lib;libEGL.lib;libGLES_CM.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\FMOD\win;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\OGLES\Windows\x86_32\Lib</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>mkdir ..\PX2SDK\Include
+
+xcopy /DY .\Core\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Core\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Mathematics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Mathematics\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Graphics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Graphics\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Unity\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Unity\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Net\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Net\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Effect\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Application\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Application\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\UI\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\UI\*.inl ..\PX2SDK\Include
+mkdir ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
+
+xcopy /DY "$(OutDir)$(TargetName).lib" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
+
+xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
+xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|Win32'">
     <ClCompile>
       <PrecompiledHeader>
@@ -304,7 +415,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Voxel;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -354,6 +465,10 @@ xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
 xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Voxel\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Voxel\*.inl ..\PX2SDK\Include
 
 xcopy /DY .\Application\*.hpp ..\PX2SDK\Include
 
@@ -504,6 +619,73 @@ xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Con
 xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;WIN32_LEAN_AND_MEAN;LUAPLUS_EXCEPTIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;fmod64_vc.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x64;..\ThirdPartiesLibs\FMOD\FMOD Studio API Windows\api\lowlevel\lib;..\ThirdPartiesLibs\FBX\lib\vs2013\x64\release</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>mkdir ..\PX2SDK\Include
+
+xcopy /DY .\Core\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Core\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Mathematics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Mathematics\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Graphics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Graphics\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Unity\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Unity\*.inl ..\PX2SDK\Include
+xcopy /DY .\Unity\PlatformSDK\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Net\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Net\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Effect\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\Application\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Application\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\UI\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\UI\*.inl ..\PX2SDK\Include
+mkdir ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
+
+xcopy /DY "$(OutDir)$(TargetName).lib" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
+
+xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
+xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|x64'">
     <ClCompile>
       <PrecompiledHeader>
@@ -580,7 +762,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/SQLite;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial/include;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -709,12 +891,54 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\AbstractVehicle.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Annotation.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Camera.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Clock.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Color.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\LocalSpace.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\lq.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Obstacle.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\OldPathway.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Path.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Pathway.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PlugIn.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPath.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySegmentRadii.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySingleRadius.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Proximity.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlike.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeBaseDataExtractionPolicies.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeMappings.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeUtilities.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPath.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathAlikeUtilities.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathway.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SharedPointer.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SimpleVehicle.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\StandardTypes.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SteerLibrary.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\UnusedParameter.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Utilities.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3.h" />
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3Utilities.h" />
+    <ClInclude Include="AI\OpenSteer\src\TerrainRayTest.h" />
+    <ClInclude Include="AI\PX2AIAgentObject.hpp" />
+    <ClInclude Include="AI\PX2AIAgentUtilities.hpp" />
+    <ClInclude Include="AI\PX2AIAgentGroup.hpp" />
+    <ClInclude Include="AI\PX2AIAgentPath.hpp" />
+    <ClInclude Include="AI\PX2AIAgent.hpp" />
+    <ClInclude Include="AI\PX2AIAgentWorld.hpp" />
+    <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp" />
+    <ClInclude Include="AI\PX2AIInfluenceMap.hpp" />
+    <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp" />
+    <ClInclude Include="AI\PX2AIWayMoveController.hpp" />
     <ClInclude Include="Application\PX2AmbientRegionController.hpp" />
     <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
     <ClInclude Include="Application\PX2Application.hpp" />
     <ClInclude Include="Application\PX2Applications.hpp" />
     <ClInclude Include="Application\PX2ApplicationUDPNetInfo.hpp" />
-    <ClInclude Include="Application\PX2CameraController.hpp" />
+    <ClInclude Include="Application\PX2CameraPlayController.hpp" />
     <ClInclude Include="Application\PX2Creater.hpp" />
     <ClInclude Include="Application\PX2EngineCanvas.hpp" />
     <ClInclude Include="Application\PX2EngineClientConnector.hpp" />
@@ -1016,7 +1240,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Graphics\PX2Picker.hpp" />
     <ClInclude Include="Graphics\PX2PickRecord.hpp" />
     <ClInclude Include="Graphics\PX2PixelShader.hpp" />
-    <ClInclude Include="Graphics\PX2CameraPlayController.hpp" />
     <ClInclude Include="Graphics\PX2PMatrixConstant.hpp" />
     <ClInclude Include="Graphics\PX2Polypoint.hpp" />
     <ClInclude Include="Graphics\PX2Polysegment.hpp" />
@@ -1130,6 +1353,29 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexFormat.hpp" />
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexShader.hpp" />
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2WglExtensions.hpp" />
+    <ClInclude Include="Logic\BlueBlock\BlueBlockPlugin.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlock.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockConnector.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvent.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvents.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockPre.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlocks.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockScriptGenController.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSprite.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSystem.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlueBlockToLua.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBManager.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BDefine.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCataFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEdit.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelCont.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelList.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanels.hpp" />
     <ClInclude Include="Logic\PX2LBlock.hpp" />
     <ClInclude Include="Logic\PX2LFile.hpp" />
     <ClInclude Include="Logic\PX2LogicDefine.hpp" />
@@ -1280,6 +1526,189 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Net\PX2UDPServer.hpp" />
     <ClInclude Include="Net\PX2UnbufferedStreamBuf.hpp" />
     <ClInclude Include="Net\PX2URI.hpp" />
+    <ClInclude Include="Physics\Bullet\btBulletCollisionCommon.h" />
+    <ClInclude Include="Physics\Bullet\btBulletDynamicsCommon.h" />
+    <ClInclude Include="Physics\Bullet\Bullet-C-Api.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btBroadphaseInterface.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btBroadphaseProxy.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvt.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvtBroadphase.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDispatcher.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCache.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCallback.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btQuantizedBvh.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btSimpleBroadphase.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxDetector.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionConfiguration.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionCreateFunc.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionDispatcher.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionObject.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionObjectWrapper.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionWorld.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btGhostObject.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btInternalEdgeUtility.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btManifoldResult.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSimulationIslandManager.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btUnionFind.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\SphereTriangleDetector.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btBox2dShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btBoxShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCapsuleShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCollisionMargin.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCollisionShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCompoundShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConcaveShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConeShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvex2dShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexHullShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexInternalShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPointCloudShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPolyhedron.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCylinderShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btEmptyShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMaterial.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMinkowskiSumShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultiSphereShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btOptimizedBvh.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btPolyhedralConvexShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btShapeHull.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btSphereShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btStaticPlaneShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btStridingMeshInterface.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTetrahedronShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleBuffer.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleCallback.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleInfoMap.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMesh.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMeshShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btUniformScalingShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btBoxCollision.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btClipPolygon.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btContactProcessing.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGenericPoolAllocator.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGeometryOperations.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactBvh.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactMassUtil.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactQuantizedBvh.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactShape.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btQuantization.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btTriangleShapeEx.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_array.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_basic_geometry_operations.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_bitset.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_box_collision.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_box_set.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_clip_polygon.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_contact.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_geometry.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_geom_types.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_hash_table.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_linear_math.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_math.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_memory.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_radixsort.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_tri_collision.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btConvexCast.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btConvexPenetrationDepthSolver.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btDiscreteCollisionDetectorInterface.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpa2.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btManifoldPoint.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPersistentManifold.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPointCollector.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btRaycastCallback.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btSimplexSolverInterface.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.h" />
+    <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Character\btCharacterControllerInterface.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Character\btKinematicCharacterController.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btConeTwistConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btConstraintSolver.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btContactConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btContactSolverInfo.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGearConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHinge2Constraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHingeConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btJacobianEntry.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSliderConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolverBody.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolverConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btTypedConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btUniversalConstraint.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btActionInterface.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btDynamicsWorld.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btRigidBody.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btSimpleDynamicsWorld.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Vehicle\btRaycastVehicle.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Vehicle\btVehicleRaycaster.h" />
+    <ClInclude Include="Physics\Bullet\BulletDynamics\Vehicle\btWheelInfo.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btAabbUtil2.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btAlignedAllocator.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btAlignedObjectArray.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btConvexHull.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btConvexHullComputer.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btDefaultMotionState.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btGeometryUtil.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btGrahamScan2dConvexHull.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btHashMap.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btIDebugDraw.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btList.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btMatrix3x3.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btMinMax.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btMotionState.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btPolarDecomposition.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btPoolAllocator.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btQuadWord.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btQuaternion.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btQuickprof.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btRandom.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btScalar.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btSerializer.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btStackAlloc.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btTransform.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btTransformUtil.h" />
+    <ClInclude Include="Physics\Bullet\LinearMath\btVector3.h" />
+    <ClInclude Include="Physics\PX2BtPhysicsDebugDraw.hpp" />
+    <ClInclude Include="Physics\PX2BtPhysicsUtilities.hpp" />
+    <ClInclude Include="Physics\PX2BtPhysicsWorld.hpp" />
+    <ClInclude Include="Physics\PX2BtPre.hpp" />
     <ClInclude Include="Terrains\PX2Jungler.hpp" />
     <ClInclude Include="Terrains\PX2LODTerrain.hpp" />
     <ClInclude Include="Terrains\PX2LODTerrainBlock.hpp" />
@@ -1628,6 +2057,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2Selection.hpp" />
     <ClInclude Include="Unity\PX2SelectionManager.hpp" />
     <ClInclude Include="Unity\PX2Serial.hpp" />
+    <ClInclude Include="Unity\PX2Serial1.hpp" />
+    <ClInclude Include="Unity\PX2Serial2.hpp" />
     <ClInclude Include="Unity\PX2Sound.hpp" />
     <ClInclude Include="Unity\PX2SoundSystem.hpp" />
     <ClInclude Include="Unity\PX2Unity.hpp" />
@@ -1639,6 +2070,10 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2VLCPre.hpp" />
     <ClInclude Include="Unity\PX2VoiceEventType.hpp" />
     <ClInclude Include="Unity\PX2VoiceSDK.hpp" />
+    <ClInclude Include="Unity\PX2Wifi.hpp" />
+    <ClInclude Include="Unity\serial\include\serial\impl\win.h" />
+    <ClInclude Include="Unity\serial\include\serial\serial.h" />
+    <ClInclude Include="Unity\serial\include\serial\v8stdint.h" />
     <ClInclude Include="Unity\SQLite\sqlite3.h" />
     <ClInclude Include="Unity\ToLua\tolua++.h" />
     <ClInclude Include="Unity\ToLua\tolua_event.h" />
@@ -1655,8 +2090,47 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\ZLib\zconf.h" />
     <ClInclude Include="Unity\ZLib\zlib.h" />
     <ClInclude Include="Unity\ZLib\zutil.h" />
+    <ClInclude Include="Voxel\PX2VoxelPre.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelBlock.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelBlockMtl.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelManager.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelDefine.hpp" />
+    <ClInclude Include="Voxel\PX2Voxels.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelSection.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelSetBlockGet.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelTitle.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelMapData.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI\OpenSteer\src\Camera.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\Clock.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\Color.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\lq.c" />
+    <ClCompile Include="AI\OpenSteer\src\Obstacle.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\OldPathway.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\Path.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\Pathway.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\PlugIn.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPath.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySegmentRadii.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySingleRadius.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\SegmentedPath.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\SegmentedPathway.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\SimpleVehicle.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\TerrainRayTest.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\Vec3.cpp" />
+    <ClCompile Include="AI\OpenSteer\src\Vec3Utilities.cpp" />
+    <ClCompile Include="AI\PX2AIAgent.cpp" />
+    <ClCompile Include="AI\PX2AIAgentFunctions.cpp" />
+    <ClCompile Include="AI\PX2AIAgentGroup.cpp" />
+    <ClCompile Include="AI\PX2AIAgentObject.cpp" />
+    <ClCompile Include="AI\PX2AIAgentPath.cpp" />
+    <ClCompile Include="AI\PX2AIAgentUtilities.cpp" />
+    <ClCompile Include="AI\PX2AIAgentWorld.cpp" />
+    <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp" />
+    <ClCompile Include="AI\PX2AIInfluenceMap.cpp" />
+    <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp" />
+    <ClCompile Include="AI\PX2AIWayMoveController.cpp" />
     <ClCompile Include="Application\PX2AmbientRegionController.cpp" />
     <ClCompile Include="Application\PX2AppBoostInfo.cpp" />
     <ClCompile Include="Application\PX2AppliactionPlay.cpp" />
@@ -1665,7 +2139,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2ApplicationMap.cpp" />
     <ClCompile Include="Application\PX2ApplicationMenus.cpp" />
     <ClCompile Include="Application\PX2ApplicationUDPNetInfo.cpp" />
-    <ClCompile Include="Application\PX2CameraController.cpp" />
+    <ClCompile Include="Application\PX2CameraPlayController.cpp" />
     <ClCompile Include="Application\PX2Creater.cpp" />
     <ClCompile Include="Application\PX2EngineCanvas.cpp" />
     <ClCompile Include="Application\PX2EngineClientConnector.cpp" />
@@ -1902,7 +2376,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Graphics\PX2Picker.cpp" />
     <ClCompile Include="Graphics\PX2PickRecord.cpp" />
     <ClCompile Include="Graphics\PX2PixelShader.cpp" />
-    <ClCompile Include="Graphics\PX2CameraPlayController.cpp" />
     <ClCompile Include="Graphics\PX2PMatrixConstant.cpp" />
     <ClCompile Include="Graphics\PX2Polypoint.cpp" />
     <ClCompile Include="Graphics\PX2Polysegment.cpp" />
@@ -2012,6 +2485,31 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexFormat.cpp" />
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexShader.cpp" />
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2WglExtensions.cpp" />
+    <ClCompile Include="Logic\BlueBlock\BlueBlockDll.cpp" />
+    <ClCompile Include="Logic\BlueBlock\BlueBlockPlugin.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlock.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockConnector.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvent.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvents.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockScriptGenController.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSprite.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteArduino.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteLooks.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteOperator.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystem.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlueBlockToLua.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBManager.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BDefine.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCataFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEdit.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelCont.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelList.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanels.cpp" />
     <ClCompile Include="Logic\PX2LBlock.cpp" />
     <ClCompile Include="Logic\PX2LBlockSaveLoad.cpp" />
     <ClCompile Include="Logic\PX2LFile.cpp" />
@@ -2121,6 +2619,129 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Net\PX2TCPServerParams.cpp" />
     <ClCompile Include="Net\PX2UDPServer.cpp" />
     <ClCompile Include="Net\PX2URI.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvt.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvtBroadphase.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDispatcher.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCache.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btQuantizedBvh.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btSimpleBroadphase.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxDetector.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionDispatcher.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionObject.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionWorld.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btGhostObject.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btInternalEdgeUtility.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btManifoldResult.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSimulationIslandManager.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btUnionFind.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\SphereTriangleDetector.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btBox2dShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btBoxShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCapsuleShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCollisionShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCompoundShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConcaveShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConeShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvex2dShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexHullShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexInternalShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPointCloudShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPolyhedron.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCylinderShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btEmptyShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btMinkowskiSumShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultiSphereShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btOptimizedBvh.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btPolyhedralConvexShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btShapeHull.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btSphereShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btStaticPlaneShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btStridingMeshInterface.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTetrahedronShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleBuffer.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleCallback.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMesh.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMeshShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btUniformScalingShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btContactProcessing.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGenericPoolAllocator.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactBvh.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactQuantizedBvh.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactShape.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btTriangleShapeEx.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_box_set.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_contact.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_memory.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_tri_collision.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btConvexCast.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpa2.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPersistentManifold.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btRaycastCallback.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Character\btKinematicCharacterController.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btContactConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGearConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHinge2Constraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHingeConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSliderConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btTypedConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btUniversalConstraint.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\btRigidBody.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\btSimpleDynamicsWorld.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\Bullet-C-API.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Vehicle\btRaycastVehicle.cpp" />
+    <ClCompile Include="Physics\Bullet\BulletDynamics\Vehicle\btWheelInfo.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btAlignedAllocator.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btConvexHull.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btConvexHullComputer.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btGeometryUtil.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btPolarDecomposition.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btQuickprof.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btSerializer.cpp" />
+    <ClCompile Include="Physics\Bullet\LinearMath\btVector3.cpp" />
+    <ClCompile Include="Physics\PX2BtPhysicsDebugDraw.cpp" />
+    <ClCompile Include="Physics\PX2BtPhysicsUtilities.cpp" />
+    <ClCompile Include="Physics\PX2BtPhysicsWorld.cpp" />
     <ClCompile Include="Terrains\PX2Jungler.cpp" />
     <ClCompile Include="Terrains\PX2LODTerrain.cpp" />
     <ClCompile Include="Terrains\PX2LODTerrainBlock.cpp" />
@@ -2476,6 +3097,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2Selection.cpp" />
     <ClCompile Include="Unity\PX2SelectionManager.cpp" />
     <ClCompile Include="Unity\PX2Serial.cpp" />
+    <ClCompile Include="Unity\PX2Serial1.cpp" />
+    <ClCompile Include="Unity\PX2Serial2.cpp" />
     <ClCompile Include="Unity\PX2Sound.cpp" />
     <ClCompile Include="Unity\PX2SoundSystem.cpp" />
     <ClCompile Include="Unity\PX2User.cpp" />
@@ -2484,6 +3107,10 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2VLCMem.cpp" />
     <ClCompile Include="Unity\PX2VoiceEventType.cpp" />
     <ClCompile Include="Unity\PX2VoiceSDK.cpp" />
+    <ClCompile Include="Unity\PX2Wifi.cpp" />
+    <ClCompile Include="Unity\serial\src\impl\list_ports\list_ports_win.cc" />
+    <ClCompile Include="Unity\serial\src\impl\win.cc" />
+    <ClCompile Include="Unity\serial\src\serial.cc" />
     <ClCompile Include="Unity\SQLite\sqlite3.c" />
     <ClCompile Include="Unity\ToLua\tolua_event.c" />
     <ClCompile Include="Unity\ToLua\tolua_is.c" />
@@ -2507,8 +3134,16 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\ZLib\trees.c" />
     <ClCompile Include="Unity\ZLib\uncompr.c" />
     <ClCompile Include="Unity\ZLib\zutil.c" />
+    <ClCompile Include="Voxel\PX2VoxelBlock.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelBlockMtl.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelManager.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelSection.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelSetBlockGet.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelTitle.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelMapData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AI\PX2AIAgent.inl" />
     <None Include="Application\PX2AmbientRegionController.inl" />
     <None Include="Application\PX2Application.inl" />
     <None Include="Application\PX2Project.inl" />
@@ -2643,6 +3278,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Graphics\PX2VertexShader.inl" />
     <None Include="Graphics\PX2VisibleSet.inl" />
     <None Include="Graphics\PX2RenderWindow.inl" />
+    <None Include="Logic\BlueBlock\PX2BBlock.inl" />
+    <None Include="Logic\BlueBlock\PX2BBlockSprite.inl" />
     <None Include="Logic\PX2LBlock.inl" />
     <None Include="Logic\PX2LogicManager.inl" />
     <None Include="Logic\PX2LParam.inl" />
@@ -2752,6 +3389,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Unity\PX2Selection.inl" />
     <None Include="Unity\PX2SoundSystem.inl" />
     <None Include="Unity\PX2UserActor.inl" />
+    <None Include="Voxel\PX2VoxelSection.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

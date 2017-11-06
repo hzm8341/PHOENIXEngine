@@ -45,7 +45,7 @@
 #endif
 
 #include "urldata.h"
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "transfer.h"
 #include "sendf.h"
 #include "telnet.h"
@@ -53,7 +53,7 @@
 #include "progress.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "curl/mprintf.h"
 
 #define  TELOPTS
 #define  TELCMDS

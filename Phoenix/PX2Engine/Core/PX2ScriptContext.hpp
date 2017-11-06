@@ -59,6 +59,8 @@ namespace PX2
 
 		virtual void RegistOperators();
 
+		virtual void ClearEventFunctions();
+		virtual void ClearEventObjectFunctions();
 		virtual void UnRegistAllEventFunctions(const char *entName);
 
 	protected:

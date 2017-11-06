@@ -33,17 +33,17 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <vector>
 
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/util/internal/default_value_objectwriter.h>
-#include <google/protobuf/util/internal/type_info.h>
-#include <google/protobuf/util/internal/protostream_objectsource.h>
-#include <google/protobuf/util/internal/protostream_objectwriter.h>
-#include <google/protobuf/util/type_resolver.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/util/internal/default_value_objectwriter.h"
+#include "google/protobuf/util/internal/type_info.h"
+#include "google/protobuf/util/internal/protostream_objectsource.h"
+#include "google/protobuf/util/internal/protostream_objectwriter.h"
+#include "google/protobuf/util/type_resolver.h"
 
 namespace google {
 namespace protobuf {

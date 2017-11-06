@@ -57,14 +57,25 @@ extern "C"
 		float productPrice, float productOriginPrice, int count,
 		const char *payDescription);
 		
+	extern void BluetoothSetWriteServiceID(const char *strID);
+	extern void BluetoothSetWriteCharaID(const char *strID);
+	extern void BluetoothSetReadServiceID(const char *strID);
+	extern void BluetoothSetReadCharaID(const char *strID);
+	extern void BluetoothSetBle(bool isBle);
+	extern void BluetoothSetDataProtocolHex(bool isBle);
 	extern bool BluetoothIsAvailable();
 	extern bool BluetoothIsConnected();
 	extern std::string BluetoothGetPairedDevices();
 	extern void BluetoothDisConnect();
 	extern void BluetoothConnect(const char *addr);
-	extern void BluetoothSend(const char *buf, int length);
+	extern void BluetoothSend(const char *buf, int length, bool withRead);
 	extern void BluetoothDoDiscovery();
 	extern void BluetoothCancelDiscovery();
+	
+	extern void WifiConnect(const char *addr, const char *password);
+	extern void WifiDisConnect();
+	extern void WifiDoDiscovery();
+	extern void WifiCancelDiscovery();
 	
 	extern void VoiceStartVoiceListening();
 	extern void VoiceEndVoiceListening();

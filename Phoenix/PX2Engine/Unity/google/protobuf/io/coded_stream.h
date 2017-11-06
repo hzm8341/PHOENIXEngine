@@ -130,7 +130,7 @@
     #define PROTOBUF_LITTLE_ENDIAN 1
   #endif
 #endif
-#include <google/protobuf/stubs/common.h>
+#include "google/protobuf/stubs/common.h"
 
 namespace google {
 

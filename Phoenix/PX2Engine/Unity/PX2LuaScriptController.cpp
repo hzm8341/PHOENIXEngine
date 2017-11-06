@@ -14,7 +14,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(ScriptController, LuaScriptController);
 PX2_IMPLEMENT_FACTORY(LuaScriptController);
 
 //---------------------------------------------------------------------------
-const char* LuaSCRIPCONTROLLER_NAME = "LSController";
+const char* LuaSCRIPCONTROLLER_NAME = "LuaScriptController";
 const char* gST_NAME = "gScriptTable";
 //---------------------------------------------------------------------------
 LuaScriptController::LuaScriptController() :
@@ -23,8 +23,6 @@ mSelfP(0)
 {
 	SetName("LuaScriptController");
 	_Init();
-
-	RegistToScriptSystem();
 }
 //---------------------------------------------------------------------------
 LuaScriptController::~LuaScriptController()
@@ -84,10 +82,7 @@ void LuaScriptController::SetFileClass(const std::string &filename,
 	luaContext->CallFile(filename);
 
 	LuaPlus::LuaObject subClass = mLuaState->GetGlobal(className.c_str());
-
 	LuaPlus::LuaObject constructionData = subClass;
-	
-	//constructionData.AssignNil(mLuaState);
 
 	mLO_Self.AssignNewTable(mLuaState);
 	if (BuildCppDataFromScript(subClass, constructionData))
@@ -120,10 +115,7 @@ void LuaScriptController::SetStringClass(const std::string &str,
 	luaContext->CallString(str);
 
 	LuaPlus::LuaObject subClass = mLuaState->GetGlobal(className.c_str());
-
 	LuaPlus::LuaObject constructionData = subClass;
-
-	//constructionData.AssignNil(mLuaState);
 
 	mLO_Self.AssignNewTable(mLuaState);
 	if (BuildCppDataFromScript(subClass, constructionData))
@@ -205,8 +197,7 @@ bool LuaScriptController::BuildCppDataFromScript(
 			const char* key = constructionDataIt.GetKey().GetString();
 			LuaPlus::LuaObject val = constructionDataIt.GetValue();
 
-			if (!val.IsFunction())
-				mLO_Self.SetObject(key, val);
+			mLO_Self.SetObject(key, val);
 		}
 	}
 
@@ -229,6 +220,8 @@ bool LuaScriptController::_Init()
 	mLO_OnPlayUpdate.AssignNil(mLuaState);
 
 	mLO_Self.AssignNil(mLuaState);
+
+	mLuaState->GetGlobals().RegisterDirect("SelfP", (*this), &LuaScriptController::SelfP);
 
 	return true;
 }

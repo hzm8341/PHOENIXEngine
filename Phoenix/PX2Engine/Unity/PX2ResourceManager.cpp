@@ -987,7 +987,11 @@ void ResourceManager::SetWriteablePath(const std::string &path)
 {
 	mWriteablePath = path;
 
-	PX2_LOG_INFO("WriteablePath:%s", mWriteablePath.c_str());
+    Logger *logger = Logger::GetSingletonPtr();
+    if (logger)
+    {
+        PX2_LOG_INFO("WriteablePath:%s", mWriteablePath.c_str());
+    }
 }
 //----------------------------------------------------------------------------
 void ResourceManager::GarbageCollect(double appSeconds, double elapsedSeconds)
@@ -1402,10 +1406,16 @@ bool ResourceManager::IsHasUpdate(const std::string &filename,
 }
 //----------------------------------------------------------------------------
 bool ResourceManager::Download(const std::string &fullPath,
-	const std::string &url)
+	const std::string &url, int type)
 {
 	CreateFloder("", fullPath);
-	return mCurl->Download(fullPath, url);
+
+	if (1 == type)
+		return mCurl->Download(fullPath, url);
+	else if (2 == type)
+		return mCurl->Download(fullPath, url);
+
+	return false;
 }
 //----------------------------------------------------------------------------
 void ResourceManager::SetResourceUpdateAddr(const std::string &updateAddr)
@@ -1419,7 +1429,7 @@ const std::string &ResourceManager::GetResourceUpdateAddr() const
 }
 //----------------------------------------------------------------------------
 void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr, 
-	const std::string &projName)
+	const std::string &projName, int type)
 {
 	PX2_LOG_INFO("%s DoResourceUpdateStuffs from %s", projName.c_str(), wwwAddr.c_str());
 
@@ -1430,12 +1440,12 @@ void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr,
 	std::string filelistToUpdate = writeablePath + mDataUpdateWritePath + projName + "/filelist_temp.xml";
 	std::string filelist = writeablePath + mDataUpdateWritePath + projName + "/filelist.xml";
 
-	if (!PX2_RM.Download(filelistPrepare, filelist_www)) // 预备下载
+	if (!PX2_RM.Download(filelistPrepare, filelist_www, type)) // 预备下载
 		return;
 
 	PX2_LOG_INFO("Downloaded filelist_prepare %s", filelistPrepare.c_str());
 
-	if (!PX2_RM.Download(filelistToUpdate, filelist_www)) // 下载
+	if (!PX2_RM.Download(filelistToUpdate, filelist_www, type)) // 下载
 		return;
 
 	PX2_LOG_INFO("Downloaded filelist_toupdate %s", filelistToUpdate.c_str());
@@ -1495,7 +1505,7 @@ void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr,
 
 				PX2_LOG_INFO("begin download %s", downloadPath.c_str());
 
-				PX2_RM.Download(downloadPath, wwwURL);
+				PX2_RM.Download(downloadPath, wwwURL, type);
 
 				PX2_LOG_INFO("end download %s", downloadPath.c_str());
 			}
@@ -1508,7 +1518,7 @@ void ResourceManager::DoResourceUpdateStuffs(const std::string &wwwAddr,
 
 		PX2_LOG_INFO("begin download last %s", filelist.c_str());
 
-		if (!PX2_RM.Download(filelist, filelist_www))
+		if (!PX2_RM.Download(filelist, filelist_www, type))
 			return;
 
 		PX2_LOG_INFO("end download last %s", filelist.c_str());

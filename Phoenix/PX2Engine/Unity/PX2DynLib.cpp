@@ -8,7 +8,7 @@ using namespace PX2;
 #include <windows.h>
 #endif
 
-#if defined __APPLE__
+#if defined __APPLE__ && !defined __IOS__
 #include "macPlugins.h"
 #endif
 
@@ -32,6 +32,7 @@ void DynLib::Load()
 {
 	PX2_LOG_INFO("Loading library: %s", mName.c_str());
 
+#if !defined __IOS__
 	mhInst = (PLUGIN_HANDLE)PLUGIN_LOAD(mName.c_str());
 
 	if (!mhInst)
@@ -40,22 +41,28 @@ void DynLib::Load()
 		PX2_LOG_ERROR("Could not load dynamic library %s . System Error: %s",
 			mName.c_str(), DynlibError().c_str());
 	}
+#endif
 }
 //----------------------------------------------------------------------------
 void DynLib::Unload()
 {
 	PX2_LOG_INFO("Unload library %s", mName.c_str());
 
+#if !defined __IOS__
 	if (PLUGIN_UNLOAD(mhInst))
 	{
 		PX2_LOG_ERROR("Could not unload dynamic library %s . System Error: %s", 
 			mName.c_str(), DynlibError().c_str());
 	}
+#endif
 }
 //----------------------------------------------------------------------------
 void* DynLib::GetSymbol(const std::string &strName)
 {
+#if !defined __IOS__
 	return (void*)PLUGIN_GETSYM(mhInst, strName.c_str());
+#endif
+    return 0;
 }
 //----------------------------------------------------------------------------
 std::string DynLib::DynlibError()
@@ -78,7 +85,7 @@ std::string DynLib::DynlibError()
 	return ret;
 #elif defined (__LINUX__) || defined(__ANDROID__)
 	return std::string(dlerror());
-#elif defined (__APPLE__)
+#elif defined (__APPLE__) && !defined(__IOS__)
 	return std::string(mac_errorBundle());
 #else
 	return std::string("");

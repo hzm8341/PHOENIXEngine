@@ -33,19 +33,19 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <string>
 #include <utility>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/logging.h>
-#include <google/protobuf/type.pb.h>
-#include <google/protobuf/repeated_field.h>
-#include <google/protobuf/stubs/stringpiece.h>
-#include <google/protobuf/stubs/strutil.h>
-#include <google/protobuf/stubs/status.h>
-#include <google/protobuf/stubs/statusor.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/logging.h"
+#include "google/protobuf/type.pb.h"
+#include "google/protobuf/repeated_field.h"
+#include "google/protobuf/stubs/stringpiece.h"
+#include "google/protobuf/stubs/strutil.h"
+#include "google/protobuf/stubs/status.h"
+#include "google/protobuf/stubs/statusor.h"
 
 
 namespace google {

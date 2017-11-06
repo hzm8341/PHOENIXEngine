@@ -12,6 +12,13 @@
 
 namespace PX2
 {
+	enum SizeNodePickType
+	{
+		SNPT_WIDGET_PICKED,
+		SNPT_SIZENODE_PICKED,
+		SNPT_SIZENODE_NOTPICKED,
+		SNPT_MAX_TYPE
+	};
 
 	class PX2_ENGINE_ITEM SizeNode : public Node
 	{
@@ -146,6 +153,11 @@ namespace PX2
 		virtual void OnSizeNodeNotPicked(const CanvasInputData &inputData);
 		const CanvasInputData &GetLastPickData() const;
 
+		typedef void (Object::*MemPickCallback)(SizeNode *sizeNode, SizeNodePickType type,
+			const CanvasInputData &inputData);
+		void SetMemPickCallback(Object *object, MemPickCallback callback);
+		MemPickCallback GetMemPickCallback() const;
+
 		void SetScriptHandlerWidgetPicked(const std::string &scriptHandler);
 		void SetScriptHandlerNodePicked(const std::string &scriptHandler);
 		void SetScriptHandlerNodeNotPicked(const std::string &scriptHandler);
@@ -165,6 +177,9 @@ namespace PX2
 		std::string mScriptHandlerWidgetPicked;
 		std::string mScriptHandlerNodePicked;
 		std::string mScriptHandlerNodeNotPicked;
+
+		Object *mMemObject;
+		MemPickCallback mMemPickCallback;
 	};
 
 	PX2_REGISTER_STREAM(SizeNode);

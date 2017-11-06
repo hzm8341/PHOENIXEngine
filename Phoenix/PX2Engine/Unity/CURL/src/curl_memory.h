@@ -80,7 +80,7 @@
 
 #ifndef CURLX_NO_MEMORY_CALLBACKS
 
-#include <curl/curl.h> /* for the callback typedefs */
+#include "curl.h" /* for the callback typedefs */
 
 extern curl_malloc_callback Curl_cmalloc;
 extern curl_free_callback Curl_cfree;

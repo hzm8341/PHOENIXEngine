@@ -12,7 +12,8 @@ PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UIProgressBar);
 //----------------------------------------------------------------------------
 UIProgressBar::UIProgressBar() :
 mProgress(1.0f),
-mIsNeedAdujst(true)
+mIsNeedAdujst(true),
+mProgressNumMax(100)
 {
 	SetName("UIProgressBar");
 
@@ -69,9 +70,22 @@ UIFText *UIProgressBar::CreateAddProgressText()
 	mProgressText->SetAnchorHor(0.0f, 1.0f);
 	mProgressText->SetAnchorVer(0.0, 1.0f);
 	mProgressText->GetText()->SetFontColor(Float3::WHITE);
-	mProgressText->GetText()->SetText("0/100");
+
+	int iPercent = (int)(0.0f * mProgressNumMax);
+	mProgressText->GetText()->SetText(StringHelp::IntToString(iPercent) + "/" +
+		StringHelp::IntToString(mProgressNumMax));
 
 	return mProgressText;
+}
+//----------------------------------------------------------------------------
+void UIProgressBar::SetProgressTextNumMax(int max)
+{
+	mProgressNumMax = max;
+}
+//----------------------------------------------------------------------------
+int UIProgressBar::GetProgressTextNumMax() const
+{
+	return mProgressNumMax;
 }
 //----------------------------------------------------------------------------
 void UIProgressBar::SetBackPicBox(UIFPicBox *picBox)
@@ -152,8 +166,9 @@ void UIProgressBar::SetProgress(float progress, bool callLogic)
 
 	if (mProgressText)
 	{
-		int iPercent = (int)(progress * 100.0f);
-		mProgressText->GetText()->SetText(StringHelp::IntToString(iPercent) + "/100");
+		int iPercent = (int)(progress * mProgressNumMax);
+		mProgressText->GetText()->SetText(StringHelp::IntToString(iPercent) + "/" +
+			StringHelp::IntToString(mProgressNumMax));
 	}
 
 	if (mProgressPicBox)
@@ -164,12 +179,6 @@ void UIProgressBar::SetProgress(float progress, bool callLogic)
 	if (callLogic)
 	{
 		_UICallbacksCalls(UICT_PROGRESSCHANGED);
-
-		std::vector<Visitor *>::iterator it = mVisitors.begin();
-		for (; it != mVisitors.end(); it++)
-		{
-			(*it)->Visit(this, (int)UICT_PROGRESSCHANGED);
-		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -265,7 +274,8 @@ void UIProgressBar::OnPropertyChanged(const PropertyObject &obj)
 UIProgressBar::UIProgressBar(LoadConstructor value) :
 UIFrame(value),
 mProgress(1.0f),
-mIsNeedAdujst(true)
+mIsNeedAdujst(true),
+mProgressNumMax(100)
 {
 }
 //----------------------------------------------------------------------------

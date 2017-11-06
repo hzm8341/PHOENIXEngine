@@ -56,12 +56,12 @@
 
 #include <memory>
 #ifndef _SHARED_PTR_H
-#include <google/protobuf/stubs/shared_ptr.h>
+#include "google/protobuf/stubs/shared_ptr.h"
 #endif
 #include <set>
 #include <string>
 #include <vector>
-#include <google/protobuf/stubs/common.h>
+#include "google/protobuf/stubs/common.h"
 
 // TYPE_BOOL is defined in the MacOS's ConditionalMacros.h.
 #ifdef TYPE_BOOL

@@ -33,9 +33,9 @@
 #ifndef GOOGLE_PROTOBUF_UTIL_JSON_UTIL_H__
 #define GOOGLE_PROTOBUF_UTIL_JSON_UTIL_H__
 
-#include <google/protobuf/message.h>
-#include <google/protobuf/util/type_resolver.h>
-#include <google/protobuf/stubs/bytestream.h>
+#include "google/protobuf/message.h"
+#include "google/protobuf/util/type_resolver.h"
+#include "google/protobuf/stubs/bytestream.h"
 
 namespace google {
 namespace protobuf {

@@ -26,10 +26,10 @@ mLightCameraLookDistance(50.0f)
 	mSpecularColor = Float3(1.0f, 1.0f, 1.0f);
 
 	mFogColorHeight = Float3::WHITE;
-	mFogParamHeight = Float2(-10.0f, 0.0f);
+	mFogParamHeight = Float2(-20.0f, -10.0f);
 
 	mFogColorDist = Float3::WHITE;
-	mFogParamDist = Float2(80.0f, 120.0f);
+	mFogParamDist = Float2(600.0f, 800.0f);
 }
 //----------------------------------------------------------------------------
 AmbientRegionController::~AmbientRegionController()

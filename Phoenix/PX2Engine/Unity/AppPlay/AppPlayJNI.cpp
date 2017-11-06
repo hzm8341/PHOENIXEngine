@@ -302,6 +302,78 @@ extern "C"
 		}
 	}
 
+	void BluetoothSetWriteServiceID(const char *strID)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSetWriteServiceID", "(Ljava/lang/String;)V"))
+		{
+			jstring jAddr = t.env->NewStringUTF(strID);
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, jAddr);
+			t.env->DeleteLocalRef(jAddr);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void BluetoothSetWriteCharaID(const char *strID)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSetWriteCharaID", "(Ljava/lang/String;)V"))
+		{
+			jstring jAddr = t.env->NewStringUTF(strID);
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, jAddr);
+			t.env->DeleteLocalRef(jAddr);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void BluetoothSetReadServiceID(const char *strID)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSetReadServiceID", "(Ljava/lang/String;)V"))
+		{
+			jstring jAddr = t.env->NewStringUTF(strID);
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, jAddr);
+			t.env->DeleteLocalRef(jAddr);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void BluetoothSetReadCharaID(const char *strID)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSetReadCharaID", "(Ljava/lang/String;)V"))
+		{
+			jstring jAddr = t.env->NewStringUTF(strID);
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, jAddr);
+			t.env->DeleteLocalRef(jAddr);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+	
+	void BluetoothSetBle(bool isBle)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSetBle", "(Z)V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, isBle);
+		}
+	}
+
+	void BluetoothSetDataProtocolHex(bool isBle)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSetDataProtocolHex", "(Z)V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, isBle);
+		}
+	}
+
 	bool BluetoothIsAvailable()
 	{
 		JNIMethodInfo t;
@@ -351,10 +423,10 @@ extern "C"
 
 			t.env->DeleteLocalRef(jstr);
 
-			return pairedDevicesStr.c_str();
+			return pairedDevicesStr;
 		}
 
-		return 0;
+		return "";
 	}
 
 	void BluetoothDisConnect()
@@ -381,16 +453,16 @@ extern "C"
 		}
 	}
 
-	void BluetoothSend(const char *buf, int length)
+	void BluetoothSend(const char *buf, int length, bool withRead)
 	{
 		JNIMethodInfo t;
 
-		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSend", "([B)V"))
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothSend", "([BZ)V"))
 		{
 			jbyteArray bytes = t.env->NewByteArray(length);
 			t.env->SetByteArrayRegion(bytes, 0, length, (jbyte*)buf);
 
-			t.env->CallStaticVoidMethod(t.classID, t.methodID, bytes);
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, bytes, withRead);
 			
 			//t.env->ReleaseByteArrayElements(bytes, 0, 0);
 			t.env->DeleteLocalRef(bytes);
@@ -415,6 +487,57 @@ extern "C"
 		JNIMethodInfo t;
 
 		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "BluetoothCancelDiscovery", "()V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+	
+	void WifiConnect(const char *addr, const char *password)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "WifiConnect", "(Ljava/lang/String;Ljava/lang/String;)V"))
+		{
+			jstring jAddr = t.env->NewStringUTF(addr);
+			jstring jpwd = t.env->NewStringUTF(password);
+			
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, jAddr, jpwd);
+			
+			t.env->DeleteLocalRef(jAddr);
+			t.env->DeleteLocalRef(jpwd);
+			
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+	
+	void WifiDisConnect()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "WifiDisconnect", "()V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+	
+	void WifiDoDiscovery()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "WifiDoDiscovery", "()V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+	
+	void WifiCancelDiscovery()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "WifiCancelDiscovery", "()V"))
 		{
 			t.env->CallStaticVoidMethod(t.classID, t.methodID);
 			t.env->DeleteLocalRef(t.classID);

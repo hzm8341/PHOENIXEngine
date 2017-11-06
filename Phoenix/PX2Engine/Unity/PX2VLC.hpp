@@ -12,6 +12,8 @@ struct libvlc_instance_t;
 struct libvlc_media_t;
 struct libvlc_media_player_t;
 
+#endif
+
 namespace PX2
 {
 
@@ -48,17 +50,18 @@ namespace PX2
 		void SetMem(VLCMem *mem);
 
 	private:
+
+#if defined PX2_USE_VLC
 		libvlc_instance_t * mInst;
 		libvlc_media_t *mMedia;
 		libvlc_media_player_t *mMediaPlayer;
-		State mState;
+#endif
 
+		State mState;
 		VLCMem *mVLCMem;
 	};
 	typedef Pointer0<VLC> VLCPtr;
 
 }
-
-#endif
 
 #endif

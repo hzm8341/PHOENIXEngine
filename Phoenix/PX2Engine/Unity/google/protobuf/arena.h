@@ -38,7 +38,7 @@
 #undef max  // Visual Studio defines this macro
 #endif
 #if __cplusplus >= 201103L
-#include <google/protobuf/stubs/type_traits.h>
+#include "google/protobuf/stubs/type_traits.h"
 #endif
 #if defined(_MSC_VER) && !_HAS_EXCEPTIONS
 // Work around bugs in MSVC <typeinfo> header when _HAS_EXCEPTIONS=0.
@@ -51,12 +51,12 @@ using type_info = ::type_info;
 #include <typeinfo>
 #endif
 
-#include <google/protobuf/stubs/atomic_sequence_num.h>
-#include <google/protobuf/stubs/atomicops.h>
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/logging.h>
-#include <google/protobuf/stubs/mutex.h>
-#include <google/protobuf/stubs/type_traits.h>
+#include "google/protobuf/stubs/atomic_sequence_num.h"
+#include "google/protobuf/stubs/atomicops.h"
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/logging.h"
+#include "google/protobuf/stubs/mutex.h"
+#include "google/protobuf/stubs/type_traits.h"
 
 
 namespace google {

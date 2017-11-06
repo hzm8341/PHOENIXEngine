@@ -35,7 +35,7 @@
 #include "curl_threads.h"
 
 #define _MPRINTF_REPLACE /* use our functions only */
-#include <curl/mprintf.h>
+#include "mprintf.h"
 
 #include "curl_memory.h"
 /* The last #include file should be: */

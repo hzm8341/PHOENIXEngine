@@ -19,7 +19,7 @@ namespace PX2
 	public:
 		TCPServer(TCPServerConnectionFactory *factory, int portNumber = 0, TCPServerParams *params = 0);
 		TCPServer(TCPServerConnectionFactory *factory, const ServerSocket& socket, TCPServerParams *params = 0);
-		TCPServer(TCPServerConnectionFactory *factory, ThreadPool &threadPool, const ServerSocket& socket, TCPServerParams *params = 0);
+		TCPServer(TCPServerConnectionFactory *factory, ThreadPool *threadPool, const ServerSocket& socket, TCPServerParams *params = 0);
 		virtual ~TCPServer();
 
 		const TCPServerParams& params() const;
@@ -52,6 +52,7 @@ namespace PX2
 		TCPServerDispatcher* mDispatcher;
 		Thread mThread;
 		bool mIsStopped;
+		ThreadPoolPtr mThreadPool;
 	};
 
 

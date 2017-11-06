@@ -455,7 +455,6 @@ UIPicBox *UIFrame::CreateAddMask()
 	mMaskPicBox = new0 UIPicBox();
 	AttachChild(mMaskPicBox);
 	mMaskPicBox->SetName("MaskPicBox");
-	mMaskPicBox->EnableShareDraw(false);
 	Material *mtl = mMaskPicBox->GetMaterialInstance()->GetMaterial();
 	OffsetProperty *op = mtl->GetOffsetProperty(0, 0);
 	op->AllowRed = false;

@@ -34,9 +34,9 @@
 #include <stack>
 #include <string>
 
-#include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/stringpiece.h>
-#include <google/protobuf/stubs/status.h>
+#include "google/protobuf/stubs/common.h"
+#include "google/protobuf/stubs/stringpiece.h"
+#include "google/protobuf/stubs/status.h"
 
 namespace google {
 namespace util {

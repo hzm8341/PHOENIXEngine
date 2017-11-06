@@ -69,6 +69,24 @@ void Transform::SetRotateDegree(float xDegree, float yDegree, float zDegree)
 		zDegree*Mathf::DEG_TO_RAD);
 }
 //----------------------------------------------------------------------------
+void Transform::SetRotateDegreeX(float degree)
+{
+	APoint rotate = GetRotateDegreeXYZ();
+	SetRotateDegree(degree, rotate.Y(), rotate.Z());
+}
+//----------------------------------------------------------------------------
+void Transform::SetRotateDegreeY(float degree)
+{
+	APoint rotate = GetRotateDegreeXYZ();
+	SetRotateDegree(rotate.X(), degree, rotate.Z());
+}
+//----------------------------------------------------------------------------
+void Transform::SetRotateDegreeZ(float degree)
+{
+	APoint rotate = GetRotateDegreeXYZ();
+	SetRotateDegree(rotate.X(), rotate.Y(), degree);
+}
+//----------------------------------------------------------------------------
 void Transform::SetMatrix (const HMatrix& matrix)
 {
 	mMatrix = matrix;
@@ -169,6 +187,75 @@ void Transform::GetRotate(float &x, float &y, float &z) const
 {
 	Matrix3f mat = GetRotate();
 	mat.ExtractEulerXYZ(x, y, z);
+}
+//----------------------------------------------------------------------------
+APoint Transform::GetRotateXYZ() const
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	Matrix3f mat = GetRotate();
+	mat.ExtractEulerXYZ(x, y, z);
+	return APoint(x, y, z);
+}
+//----------------------------------------------------------------------------
+float Transform::GetRotateX() const
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	Matrix3f mat = GetRotate();
+	mat.ExtractEulerXYZ(x, y, z);
+
+	return x;
+}
+//----------------------------------------------------------------------------
+float Transform::GetRotateY() const
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	Matrix3f mat = GetRotate();
+	mat.ExtractEulerXYZ(x, y, z);
+
+	return y;
+}
+//----------------------------------------------------------------------------
+float Transform::GetRotateZ() const
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	Matrix3f mat = GetRotate();
+	mat.ExtractEulerXYZ(x, y, z);
+
+	return z;
+}
+//----------------------------------------------------------------------------
+APoint Transform::GetRotateDegreeXYZ() const
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	Matrix3f mat = GetRotate();
+	mat.ExtractEulerXYZ(x, y, z);
+	return APoint(x*Mathf::RAD_TO_DEG, y*Mathf::RAD_TO_DEG,
+		z*Mathf::RAD_TO_DEG);
+}
+//----------------------------------------------------------------------------
+float Transform::GetRotateDegreeX() const
+{
+	return GetRotateDegreeXYZ().X();
+}
+//----------------------------------------------------------------------------
+float Transform::GetRotateDegreeY() const
+{
+	return GetRotateDegreeXYZ().Y();
+}
+//----------------------------------------------------------------------------
+float Transform::GetRotateDegreeZ() const
+{
+	return GetRotateDegreeXYZ().Z();
 }
 //----------------------------------------------------------------------------
 void Transform::SetDU(const AVector &dir, const AVector &uping)
