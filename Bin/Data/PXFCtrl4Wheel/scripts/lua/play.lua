@@ -9,9 +9,9 @@ function preplay()
 
     local pltType = PX2_APP:GetPlatformType()
     if Application.PLT_WINDOWS==pltType then
-        PX2_ARDUINO:Initlize(Arduino.M_SERIAL, "COM3")
+        --PX2_ARDUINO:Initlize(Arduino.M_SERIAL, "COM9")
     else
-        PX2_ARDUINO:Initlize(Arduino.M_BLUETOOTH)
+        --PX2_ARDUINO:Initlize(Arduino.M_BLUETOOTH)
     end
 
     initArduino()
