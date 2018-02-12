@@ -1,14 +1,22 @@
-# PHOENIX create
-open soruce cross platform system for Games/AR/VR/AI/IOT
+# PHOENIXEngine
+开源跨平台 游戏，智能玩具，机器人开发引擎
+
+open soruce cross platform system for Games/Toys/Robot
+
 
 ## 简述
+欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，开发机器人的引擎。
+引擎支持Windows，ARM，Linux，LinuxARM,iOS平台
 
-	欢迎来到PhoenixIOT，这是一个可以用来开发游戏，开发机器人的引擎。
-	经过作者的努力，引擎可以运行字Windows上，ARM，Linux，LinuxARM上。
-	IOS正在更新中。
+众所周知，开发机器人大多用ROS系统，但是因为其Linux环境的限制（虽然支Windows桌面系统，但没有开发板可以装Windows），开发难度很大。游戏领域的众多技术也和机器人领域非常接近，例如他们都广泛使用矩阵数学，A*导航算法，同时在游戏领域也有众多人工智能概念等。
 
-	PhoniexIOT的目的是为了解决机器人开发中的大难题，众所周知，开发机器人大多用ROS系统，但是因为其Linux环境的限制（虽然支	
-	Windows桌面系统，但没有开发板可以装Windows），开发难度很大。我们希望借助游戏开发中的先进技术，通过脚本编程，让机器人开发更加快速。
+**PHOENIXEngine的目的是为了成为一个便捷的全方位引擎，弥补游戏开发和机器人开发的鸿沟，让游戏开发者，能够平滑过度到机器人开发的领域中，从而缔造出和现实相互结合的智能娱乐体验。**
+
+为了成为一个完整有效的引擎，PHOENIXEngine集成了地形，天空，粒子，动画，UI等系统，并且以朴素经典的**NodeGraph**场景图展示给用户；同时提供一个可以**自动生成控制UI的编辑器**，例似Unity引擎的Inspector；粒子系统更包含了曲线编辑器。
+
+为了成为一个良好的机器人引擎，PHOENIXEngine主要支持最经典的**Arduino**和**Raspberry**，使用单片机和Linux结合，用户可以快速搭建起机器人环境，从而展开对机器人领域的探究。
+
+为了提高开发的效率，PHOENIXEngine使用**Lua**作为逻辑开发语言，支持Lua面向对象的开发方式；同时引擎支持远程空中一件部署，用户可以**通过Wifi一键部署自己的项目**到设备（手机，树莓派等）。
 
 ## 示例程序
 
@@ -214,3 +222,5 @@ ThirdPartiesLibs.zip：[http://pan.baidu.com/s/1gfjA2QZ](http://pan.baidu.com/s/
 
 ![](https://github.com/PhoenixCreate/PhoenixCreate/blob/master/Documentation/img/cygwin.png?raw=true)
 
+### iOS
+	打开PHOENIXEngine/Phoenix/Phoenix.xcworkspace使用XCode进行编译
