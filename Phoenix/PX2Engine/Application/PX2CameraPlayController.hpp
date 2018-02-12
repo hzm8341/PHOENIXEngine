@@ -66,7 +66,7 @@ namespace PX2
 	};
 
 	PX2_REGISTER_STREAM(CameraPlayController);
-	typedef Pointer0<CameraPlayController> PlayerControllerPtr;
+	typedef Pointer0<CameraPlayController> CameraPlayerControllerPtr;
 
 }
 

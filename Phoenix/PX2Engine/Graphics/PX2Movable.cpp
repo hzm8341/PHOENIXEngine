@@ -30,7 +30,6 @@ mIsEnableSelfCtrled(true),
 mIsActivateSelfCtrled(true),
 mUpdateTime(-1.0f),
 mUpdateTiming(0.0f),
-mUpdateTimingInit(-1.0f),
 mIsOnlyShowUpdate(false),
 mUpdatePriority(0),
 mIsDoPick(true),
@@ -88,17 +87,12 @@ void Movable::Update(double applicationTime, double elapsedTime,
 	bool doUpdateTrans = true;
 	if (mUpdateTime > 0.0f)
 	{
-		if (-1.0f == mUpdateTimingInit)
+		if (mUpdateTiming > 0.0f)
 		{
-			mUpdateTimingInit = (float)applicationTime;
-			mUpdateTiming = 0.0f;
+			doUpdateTrans = true;
+			mUpdateTiming -= (float)elapsedTime;
 		}
 		else
-		{
-			mUpdateTiming = ((float)applicationTime-mUpdateTimingInit);
-		}
-
-		if (mUpdateTiming > mUpdateTime)
 		{
 			doUpdateTrans = false;
 		}
@@ -117,6 +111,7 @@ void Movable::Update(double applicationTime, double elapsedTime,
 //----------------------------------------------------------------------------
 void Movable::OnBeAttached()
 {
+	ResetFixUpdateTiming();
 }
 //----------------------------------------------------------------------------
 void Movable::OnBeDetach()
@@ -465,7 +460,7 @@ void Movable::RegistProperties ()
 	AddProperty("IsCastShadow", Object::PT_BOOL, IsCastShadow());
 	AddProperty("IsReceiveShadow", Object::PT_BOOL, IsReceiveShadow());
 
-	AddProperty("UpdateTime", Object::PT_FLOAT, GetUpdateTime());
+	AddProperty("UpdateTime", Object::PT_FLOAT, GetFixUpdateTime());
 }
 //----------------------------------------------------------------------------
 void Movable::OnPropertyChanged (const PropertyObject &obj)
@@ -562,7 +557,6 @@ mIsEnableSelfCtrled(true),
 mIsActivateSelfCtrled(true),
 mUpdateTime(-1.0f),
 mUpdateTiming(0.0f),
-mUpdateTimingInit(-1.0f),
 mIsOnlyShowUpdate(false),
 mUpdatePriority(0),
 mIsDoPick(true),

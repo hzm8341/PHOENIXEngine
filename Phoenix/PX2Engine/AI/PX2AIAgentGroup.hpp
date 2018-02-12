@@ -5,6 +5,7 @@
 
 #include "PX2CorePre.hpp"
 #include "OpenSteer/AbstractVehicle.h"
+#include "PX2AIAgent.hpp"
 
 namespace PX2
 {

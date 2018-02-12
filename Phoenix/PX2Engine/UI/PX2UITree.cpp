@@ -147,7 +147,7 @@ void UITree::SetIconArrowSpace(float space)
 	mIconArrowSpace = space;
 }
 //----------------------------------------------------------------------------
-void UITree::SelectCallback(UIFrame *frame, UICallType type)
+void UITree::SelectCallback(Object *frame, UICallType type)
 {
 	if (type == UICT_PRESSED)
 	{

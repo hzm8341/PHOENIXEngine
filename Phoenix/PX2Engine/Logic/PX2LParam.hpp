@@ -36,11 +36,18 @@ namespace PX2
 		LParam(LParamType lpt = IPT_IN);
 		virtual ~LParam();
 
+		virtual void SetName(const std::string &name);
+
 		LParamType GetLParamType() const;
 
 		void SetDataType(FunParamType type);
 		FunParamType GetDataType() const;
+		void SetDataTypeName(const std::string &typeName);
+		const std::string &GetDataTypeName() const;
 		bool IsOwnObjectParam() const;
+
+		void SetEnum(bool isEnum);
+		bool IsEnum() const;
 
 		void SetValue(const Any &any);
 		void SetValueFromString(const std::string &valueStr);
@@ -71,7 +78,9 @@ namespace PX2
 	protected:
 		LParamType mLParamType;
 		FunParamType mDataType;
+		std::string mDataTypeName;
 		Any mData;
+		bool mIsEnum;
 		std::string mOutputScriptVarString;
 
 		LBlock *mModule;

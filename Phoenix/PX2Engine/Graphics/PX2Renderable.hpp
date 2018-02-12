@@ -110,6 +110,9 @@ namespace PX2
 		inline void SetMaterialInstance (MaterialInstance* material);
 		inline MaterialInstance* GetMaterialInstance () const;
 
+		void SetFakeTransparent(bool fakeTrasparent);
+		bool IsFakeTransparent() const;
+
 		// 灯光
 		/*
 		* 当前渲染体收到影响的灯光
@@ -224,7 +227,7 @@ public_internal:
 		void AdjustTransparent ();
 		void _SetTransparent (bool transparent);
 
-public_internal:
+	public_internal:
 		bool IsTransparent () const;
 		Float4 UpdateFogParam (const Float4 &envFogParam) const;
 
@@ -298,6 +301,8 @@ public_internal:
 
 		PhysicsType mPhysicsType;
 		Float3 mPhysicsParam;
+
+		bool mIsFakeTransparent;
 
 		bool mIsEnableShareDraw;
 		OnDrawCallback mOnDrawCallback;

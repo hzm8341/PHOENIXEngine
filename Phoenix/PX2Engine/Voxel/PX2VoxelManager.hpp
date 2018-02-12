@@ -17,7 +17,14 @@ namespace PX2
 		VoxelManager();
 		~VoxelManager();
 
-		bool Initlize();
+		enum Type
+		{
+			T_TEX,
+			T_COLOR,
+			T_MAX_TYPE
+		};
+		bool Initlize(Type t);
+		Type GetType() const;
 
 		bool LoadBlocksConfig(const std::string &filename);
 
@@ -29,6 +36,9 @@ namespace PX2
 	public:
 		std::map<int, VoxelBlockMtlPtr> mTypeBlockMtls;
 		std::map<std::string, VoxelBlockMtlPtr> mNameBlockMtls;
+
+	protected:
+		Type mType;
 	};
 
 #define PX2_VOXELM VoxelManager::GetSingleton()

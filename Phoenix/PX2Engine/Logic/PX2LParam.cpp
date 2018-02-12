@@ -15,7 +15,8 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Object, LParam);
 LParam::LParam(LParamType lpt):
 mLParamType(lpt),
 mDataType(FPT_NONE),
-mModule(0)
+mModule(0),
+mIsEnum(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -23,9 +24,44 @@ LParam::~LParam()
 {
 }
 //----------------------------------------------------------------------------
+void LParam::SetName(const std::string &name)
+{
+	Object::SetName(name);
+
+	if ("SDT_NONE" == name)
+	{
+		int a = 0;
+	}
+}
+//----------------------------------------------------------------------------
 void LParam::SetDataType(FunParamType type)
 {
 	mDataType = type;
+
+	if (FPT_NONE == type)
+	{
+		int a = 0;
+	}
+}
+//----------------------------------------------------------------------------
+void LParam::SetDataTypeName(const std::string &typeName)
+{
+	mDataTypeName = typeName;
+}
+//----------------------------------------------------------------------------
+const std::string &LParam::GetDataTypeName() const
+{
+	return mDataTypeName;
+}
+//----------------------------------------------------------------------------
+void LParam::SetEnum(bool isEnum)
+{
+	mIsEnum = isEnum;
+}
+//----------------------------------------------------------------------------
+bool LParam::IsEnum() const
+{
+	return mIsEnum;
 }
 //----------------------------------------------------------------------------
 void LParam::SetModule(LBlock *module)
@@ -297,7 +333,7 @@ void LParam::Compile(std::string &script, int numTable, LFile *file)
 {
 	if (mLinkBlock)
 	{
-		((LBlock*)((Object*)mLinkBlock))->Compile(script, numTable, file, false);
+		((LBlock*)((Object*)mLinkBlock))->CompileAll(script, numTable, file);
 	}
 }
 //----------------------------------------------------------------------------
@@ -322,6 +358,7 @@ void LParam::Load(InStream& source)
 	source.ReadEnum(mLParamType);
 
 	source.ReadEnum(mDataType);
+	source.ReadString(mDataTypeName);
 
 	if (FPT_CHAR == mDataType)
 	{
@@ -379,6 +416,7 @@ void LParam::Load(InStream& source)
 		mData = p;
 	}
 
+	source.ReadBool(mIsEnum);
 	source.ReadPointer(mLinkBlock);
 
 	PX2_END_DEBUG_STREAM_LOAD(LParam, source);
@@ -426,6 +464,7 @@ void LParam::Save(OutStream& target) const
 	target.WriteEnum(mLParamType);
 
 	target.WriteEnum(mDataType);
+	target.WriteString(mDataTypeName);
 
 	if (FPT_CHAR == mDataType)
 	{
@@ -474,6 +513,7 @@ void LParam::Save(OutStream& target) const
 		target.WritePointer(p);
 	}
 
+	target.WriteBool(mIsEnum);
 	target.WritePointer(mLinkBlock);
 
 	PX2_END_DEBUG_STREAM_SAVE(LParam, target);
@@ -487,6 +527,7 @@ int LParam::GetStreamingSize(Stream &stream) const
 	size += PX2_ENUMSIZE(mLParamType);
 
 	size += PX2_ENUMSIZE(mDataType);
+	size += PX2_STRINGSIZE(mDataTypeName);
 
 	if (FPT_CHAR == mDataType)
 	{
@@ -529,6 +570,7 @@ int LParam::GetStreamingSize(Stream &stream) const
 		size += PX2_POINTERSIZE(0);
 	}
 
+	size += PX2_BOOLSIZE(mIsEnum);
 	size += PX2_POINTERSIZE(mLinkBlock);
 
 	return size;

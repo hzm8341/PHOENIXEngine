@@ -576,6 +576,16 @@ extern "C"
 		}
 	}
 
+	void VoiceEnableAutoSpeakTTS(bool isEnable)
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "EnableAutoSpeakTTS", "(Z)V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID, isEnable);
+		}
+	}
+
 	void VoiceSpeak(const char *text)
 	{
 		JNIMethodInfo t;

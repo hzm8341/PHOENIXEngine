@@ -7,7 +7,9 @@ using namespace PX2;
 // FunParam
 //----------------------------------------------------------------------------
 FunParam::FunParam() :
-Type(FPT_INT)
+Type(FPT_INT),
+IsEnum(false),
+IsEnumItem(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -22,6 +24,7 @@ FunParam::~FunParam()
 FunObject::FunObject() :
 IsClassCatalogue(false),
 mParamType(PT_NONE),
+IsEnum(false),
 IsStatic(false),
 ParentFunObject(0)
 {
@@ -75,11 +78,15 @@ void FunObject::Clear()
 }
 //----------------------------------------------------------------------------
 void FunObject::AddInput(const std::string &paramName,
-	FunParamType type, const Any &paramValue)
+	FunParamType type, const std::string &tName, const Any &paramValue,
+	bool isEnumItem, bool isEnum)
 {
 	FunParam funParam;
 	funParam.Name = paramName;
 	funParam.Type = type;
+	funParam.TypeName = tName;
+	funParam.IsEnum = isEnum;
+	funParam.IsEnumItem = isEnumItem;
 	funParam.Value = paramValue;
 	mInParams.push_back(funParam);
 }
@@ -98,12 +105,15 @@ void FunObject::RemoveInput(const std::string &paramName)
 }
 //----------------------------------------------------------------------------
 void FunObject::AddOutput(const std::string &paramName, FunParamType type,
-	const Any &paramValue)
+	const std::string &tName,
+	const Any &paramValue, bool isEnum)
 {
 	FunParam funParam;
 	funParam.Name = paramName;
 	funParam.Type = type;
+	funParam.TypeName = tName;
 	funParam.Value = paramValue;
+	funParam.IsEnum = isEnum;
 	mOutParams.push_back(funParam);
 }
 //----------------------------------------------------------------------------
@@ -186,6 +196,35 @@ FunObject *FunObject::AddClass(const std::string &className)
 	return funObj;
 }
 //----------------------------------------------------------------------------
+FunObject *FunObject::GetEnum(const std::string &enumName)
+{
+	if (IsEnum && Name == enumName)
+		return this;
+
+	std::vector<Pointer0<FunObject> >::iterator it = mChildFunObjectVec_Enum.begin();
+	for (; it != mChildFunObjectVec_Enum.end(); it++)
+	{
+		FunObject *funObj = (*it)->GetEnum(enumName);
+		if (funObj)
+		{
+			return funObj;
+		}
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+FunObject *FunObject::AddEnum(const std::string &enumName)
+{
+	FunObjectPtr funObj = new0 FunObject();
+	funObj->IsEnum = true;
+	funObj->Name = enumName;
+
+	AddFunObject(funObj);
+
+	return funObj;
+}
+//----------------------------------------------------------------------------
 FunObject *FunObject::GetFunObject(const std::string &className,
 	const std::string &funName)
 {
@@ -196,6 +235,16 @@ FunObject *FunObject::GetFunObject(const std::string &className,
 	for (; it != mChildFunObjectVec.end(); it++)
 	{
 		FunObject *funObj = (*it)->GetFunObject(className, funName);
+		if (funObj)
+		{
+			return funObj;
+		}
+	}
+
+	std::vector<Pointer0<FunObject> >::iterator itEnum = mChildFunObjectVec_Enum.begin();
+	for (; itEnum != mChildFunObjectVec_Enum.end(); itEnum++)
+	{
+		FunObject *funObj = (*itEnum)->GetFunObject(className, funName);
 		if (funObj)
 		{
 			return funObj;
@@ -225,6 +274,11 @@ void FunObject::AddFunObject(FunObject *funObj)
 		mChildFunObjectVec_Class.push_back(funObj);
 		funObj->ParentFunObject = this;
 	}
+	else if (funObj->IsEnum)
+	{
+		mChildFunObjectVec_Enum.push_back(funObj);
+		funObj->ParentFunObject = this;
+	}
 	else
 	{
 		funObj->ClassName = ClassName;
@@ -237,6 +291,12 @@ bool FunObject::IsHasFunObject(FunObject *funObj)
 	for (int i = 0; i < (int)mChildFunObjectVec_Class.size(); i++)
 	{
 		if (funObj == mChildFunObjectVec_Class[i])
+			return true;
+	}
+
+	for (int i = 0; i < (int)mChildFunObjectVec_Enum.size(); i++)
+	{
+		if (funObj == mChildFunObjectVec_Enum[i])
 			return true;
 	}
 

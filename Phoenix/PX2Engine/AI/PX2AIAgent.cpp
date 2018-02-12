@@ -66,7 +66,7 @@ OpenSteer::Vec3 AIAgent::side(void) const
 //----------------------------------------------------------------------------
 OpenSteer::Vec3 AIAgent::setSide(OpenSteer::Vec3 s)
 {
-	(void)s;
+	PX2_UNUSED(s);
 	// not implemented
 	assert(false);
 

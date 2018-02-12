@@ -34,15 +34,22 @@
 		FunObject();
 		~FunObject();
 
+		std::string CateName;
+
 		bool IsClassCatalogue;
 		std::string ParentClassName;
 
+		bool IsStatic;
 		std::string ClassName;
 		std::string Name;
-		void AddInput(const std::string &paramName, FunParamType type,
-			const Any &paramValue);
-		void AddOutput(const std::string &paramName, FunParamType type,
-			const Any &paramValue);
+		std::string SigletonName;
+		std::string Tag;
+		
+		void AddInput(const std::string &paramName, FunParamType type, const std::string &tName,
+			const Any &paramValue, bool isEnumItem = false, bool isEnum = false);
+		void RemoveInput(const std::string &paramName);
+		void AddOutput(const std::string &paramName, FunParamType type, const std::string &tName,
+			const Any &paramValue, bool isEnum = false);
 
 		const std::vector<FunParam> &GetInParams() const;
 		int GetNumInParams() const;
@@ -60,6 +67,7 @@
 			PT_CONST,
 			PT_VARIABLE,
 			PT_VALUE,
+			PT_ENUM,
 			PT_ENUMSTRING,
 			PT_VALUESELECT,
 			PT_VARIABLESELECT,

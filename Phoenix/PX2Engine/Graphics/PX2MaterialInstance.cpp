@@ -463,8 +463,6 @@ void MaterialInstance::Update(double appTime, double elapsedTime)
 					newMaterial->GetPass(newTechIndex, i)->SetOffsetProperty(mMaterial->GetOffsetProperty(mTechniqueIndex, i));
 					newMaterial->GetPass(newTechIndex, i)->SetStencilProperty(mMaterial->GetStencilProperty(mTechniqueIndex, i));
 					newMaterial->GetPass(newTechIndex, i)->SetWireProperty(mMaterial->GetWireProperty(mTechniqueIndex, i));
-
-
 				}
 			}
 

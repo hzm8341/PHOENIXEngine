@@ -11,7 +11,8 @@ TCPServer::TCPServer(TCPServerConnectionFactory *factory, int portNumber,
 	TCPServerParams *params) :
 mSocket(ServerSocket((int16_t)portNumber)),
 mThread(_ThreadName(mSocket)),
-mIsStopped(true)
+mIsStopped(true),
+mIsSingleThread(false)
 {
 	mThreadPool = new0 ThreadPool();
 
@@ -27,7 +28,8 @@ TCPServer::TCPServer(TCPServerConnectionFactory *factory,
 	const ServerSocket &socket, TCPServerParams *params) :
 mSocket(socket),
 mThread(_ThreadName(socket)),
-mIsStopped(true)
+mIsStopped(true),
+mIsSingleThread(false)
 {
 	mThreadPool = new0 ThreadPool();
 	if (params)
@@ -43,7 +45,8 @@ TCPServer::TCPServer(TCPServerConnectionFactory *factory, ThreadPool *threadPool
 mSocket(socket),
 mDispatcher(new0 TCPServerDispatcher(factory, threadPool, params)),
 mThread(_ThreadName(socket)),
-mIsStopped(true)
+mIsStopped(true),
+mIsSingleThread(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -60,9 +63,19 @@ const TCPServerParams& TCPServer::params() const
 	return *mDispatcher->params();
 }
 //----------------------------------------------------------------------------
+void TCPServer::SetSingleThread(bool single)
+{
+	mIsSingleThread = single;
+}
+//----------------------------------------------------------------------------
+void TCPServer::SingleThreadUpdate()
+{
+
+}
+//----------------------------------------------------------------------------
 void TCPServer::Start()
 {
-	mIsStopped = false;
+	mIsStopped = false;	
 	mThread.Start(*this);
 }
 //----------------------------------------------------------------------------
@@ -71,6 +84,7 @@ void TCPServer::Stop()
 	if (!mIsStopped)
 	{
 		mIsStopped = true;
+
 		System::SleepSeconds(0.2f);
 		mThread.Join();
 		mDispatcher->Stop();

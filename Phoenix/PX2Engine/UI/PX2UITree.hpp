@@ -42,7 +42,7 @@ namespace PX2
 		UISlider *GetSlider();
 
 		virtual void OnSelected(UIItem *item, bool isDoubleSelect);
-		void SelectCallback(UIFrame *frame, UICallType type);
+		void SelectCallback(Object *frame, UICallType type);
 
 		virtual void OnSizeChanged();
 

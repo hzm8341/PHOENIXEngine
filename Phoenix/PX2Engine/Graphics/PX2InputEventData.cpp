@@ -4,7 +4,8 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-TouchState::TouchState()
+TouchState::TouchState() :
+ID(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -40,6 +41,7 @@ bool InputEventData::IsKeyEvent() const
 
 //-----------------------------------------------------------------------------
 CanvasInputData::CanvasInputData() :
+TouchID(0),
 TheMouseTag(MT_NONE),
 Wheel(0.0f),
 PickType(UIPT_NONE)
@@ -54,6 +56,7 @@ CanvasInputData::~CanvasInputData()
 //----------------------------------------------------------------------------
 PickInputData::PickInputData()
 {
+	TouchID = 0;
 	Wheel = 0.0f;
 }
 //----------------------------------------------------------------------------

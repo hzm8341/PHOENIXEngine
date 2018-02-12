@@ -12,7 +12,6 @@
 
 class btConvexHullShape;
 class btQuaternion;
-class btVector3;
 class btRigidBody;
 
 namespace PX2

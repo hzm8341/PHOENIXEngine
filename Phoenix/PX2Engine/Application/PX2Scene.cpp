@@ -205,28 +205,31 @@ void Scene::AdjustCameraFrustum(const Sizef &canvasSize)
 	for (int i = 0; i < (int)mCameras.size(); i++)
 	{
 		Camera *cam = mCameras[i];
-		Projector *projector = DynamicCast<Projector>(cam);
-
-		float upFovDegrees = 50.0f;
-		float aspectRation = 1.0f;
-		float dMin = 0.1f;
-		float dMax = 1000.0f;
-		if (cam->GetFrustum(upFovDegrees, aspectRation, dMin, dMax))
+		if (cam->IsPerspective())
 		{
-			aspectRation = canvasSize.Width / canvasSize.Height;
-			if (projector)
+			Projector *projector = DynamicCast<Projector>(cam);
+
+			float upFovDegrees = 50.0f;
+			float aspectRation = 1.0f;
+			float dMin = 0.1f;
+			float dMax = 1000.0f;
+			if (cam->GetFrustum(upFovDegrees, aspectRation, dMin, dMax))
 			{
-				if (!mEnvirParam->IsShadowRenderTargetSizeSameWithCanvas())
-					aspectRation = 1.0f;
+				aspectRation = canvasSize.Width / canvasSize.Height;
+				if (projector)
+				{
+					if (!mEnvirParam->IsShadowRenderTargetSizeSameWithCanvas())
+						aspectRation = 1.0f;
 
-				upFovDegrees = 50.0f;
+					upFovDegrees = 50.0f;
+				}
+
+				cam->SetFrustum(upFovDegrees, aspectRation, dMin, dMax);
 			}
-
-			cam->SetFrustum(upFovDegrees, aspectRation, dMin, dMax);
-		}
-		else
-		{
-			cam->SetFrustum(upFovDegrees, aspectRation, dMin, dMax);
+			else
+			{
+				cam->SetFrustum(upFovDegrees, aspectRation, dMin, dMax);
+			}
 		}
 	}
 }

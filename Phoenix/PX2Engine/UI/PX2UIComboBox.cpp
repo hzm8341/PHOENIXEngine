@@ -121,6 +121,11 @@ std::string UIComboBox::GetChooseStr() const
 	return GetChooseStrByIndex(mChoose);
 }
 //----------------------------------------------------------------------------
+UIItem *UIComboBox::GetChooseItem()
+{
+	return mChooseList->GetItemByIndex(mChoose);
+}
+//----------------------------------------------------------------------------
 void UIComboBox::OnChoosed()
 {
 	_UICallbacksCalls(UICT_COMBOBOX_CHOOSED);

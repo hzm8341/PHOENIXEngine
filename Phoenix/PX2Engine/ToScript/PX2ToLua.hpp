@@ -13,6 +13,7 @@
 #include "PX2UIs.hpp"
 #include "PX2Logics.hpp"
 #include "PX2Voxels.hpp"
+#include "PX2AIs.hpp"
 #include "PX2Applications.hpp"
 #include "PX2LuaScriptController.hpp"
 using namespace PX2;

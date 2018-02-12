@@ -21,7 +21,10 @@ namespace PX2
 		LFile();
 		virtual ~LFile();
 
-		LBlock * GetBlockProgram();
+		bool AddBlockPrograms(LBlock *block);
+		bool IsHasBlockProgram(LBlock *block);
+		void RemoveBlockProgram(LBlock *block);
+		std::vector<LBlockPtr> &GetBlockPrograms();
 
 		void SetPlatformType(LogicFilePlatformType pt);
 		LogicFilePlatformType GetPlatformType() const;
@@ -31,8 +34,10 @@ namespace PX2
 		bool IsPreCompiledParam(const std::string &paramName);
 
 	protected:
+		void _CompileFile(std::string &script);
+
 		LogicFilePlatformType mPlatformType;
-		LBlockPtr mBlockProgram;
+		std::vector<LBlockPtr> mBlockPrograms;
 		std::string mCompiledString;
 	};
 

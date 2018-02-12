@@ -37,6 +37,7 @@ mBakeSizeType(BST_NORMAL),
 mPhysicsType(PHYS_NONE),
 mFogIP_Height(1.0f),
 mFogIP_Distance(1.0f),
+mIsFakeTransparent(false),
 mIsEnableShareDraw(false),
 mOnDrawCallback(0)
 {
@@ -444,8 +445,19 @@ void Renderable::OnGetVisibleSet (Culler& culler, bool)
 	culler.Insert(this);
 }
 //----------------------------------------------------------------------------
+void Renderable::SetFakeTransparent(bool fakeTrasparent)
+{
+	mIsFakeTransparent = fakeTrasparent;
+}
+//----------------------------------------------------------------------------
 void Renderable::AdjustTransparent ()
 {
+	if (mIsFakeTransparent)
+	{
+		_SetTransparent(true);
+		return;
+	}
+
 	if (!mMaterialInstance)
 	{
 		_SetTransparent(false);
@@ -670,6 +682,7 @@ mBakeSizeType(BST_NORMAL),
 mPhysicsType(PHYS_NONE),
 mFogIP_Height(1.0f),
 mFogIP_Distance(1.0f),
+mIsFakeTransparent(false),
 mIsEnableShareDraw(false),
 mOnDrawCallback(0)
 {

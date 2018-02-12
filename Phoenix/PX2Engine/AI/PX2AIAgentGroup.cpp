@@ -55,7 +55,7 @@ bool AIAgentGroup::ContainsAgent(const AIAgent* agent) const
 //----------------------------------------------------------------------------
 bool AIAgentGroup::RemoveAgent(const AIAgent* agent)
 {
-	std::vector<OpenSteer::AbstractVehicle*>::const_iterator it;
+	auto it = begin();
 
 	for (it = begin(); it != end(); ++it)
 	{
@@ -70,6 +70,7 @@ bool AIAgentGroup::RemoveAgent(const AIAgent* agent)
 		erase(it);
 		return true;
 	}
+
 	return false;
 }
 //----------------------------------------------------------------------------

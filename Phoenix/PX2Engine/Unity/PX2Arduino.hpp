@@ -8,14 +8,10 @@
 #include "PX2Bluetooth.hpp"
 #include "PX2Singleton_NeedNew.hpp"
 #include "PX2Serial.hpp"
-#include "PX2Serial1.hpp"
-#include "PX2Serial2.hpp"
 
 namespace PX2
 {
 	
-	class Serial;
-
 	class PX2_ENGINE_ITEM Arduino : public Singleton<Arduino>
 	{
 	public:
@@ -26,109 +22,179 @@ namespace PX2
 		{
 			M_SERIAL,
 			M_BLUETOOTH,
+			M_WIFI_ROBOT,
 			M_MAX_TYPE
 		};
 
 		bool Initlize(Mode mode, const std::string &port="", int baudrate = 9600);
+		bool InitlizeForRobot(int targetRobotID, int udpPort);
 		bool IsInitlized();
 		void Terminate();
 		void Update(float elapsedSeconds);
 
 		Mode GetMode() const;
-		Serial2 &GetSerial();
+		Serial &GetSerial();
 
 		// arduino used -------------------------
 	public:
-		void Begin();
-		void End();
+		enum Pin
+		{
+			P_0 = 0,
+			P_1,
+			P_2,
+			P_3,
+			P_4,
+			P_5,
+			P_6,
+			P_7,
+			P_8,
+			P_9,
+			P_10,
+			P_11,
+			P_12,
+			P_13,
+			P_A0,
+			P_A1,
+			P_A2,
+			P_A3,
+			P_A4,
+			P_A5,
+			P_MAX_TYPE
+		};
 
-		// arduino
-		void PinMode(int pinVal, bool isOutput=true, bool isA=false);
-		void DigitalWrite(int pinVal, bool isHigh=true, bool isA=false);
-		void AnalogWrite(int pinVal, int val, bool isA=false);
-		int DigitalRead(int pinVal);
-		int AnalogRead(int pinVal);
+		enum PMode
+		{
+			PM_INPUT,
+			PM_OUTPUT,
+			PM_MAX_TYPE
+		};
+		static std::string PinStr[P_MAX_TYPE];
+		static std::string PModeStr[PM_MAX_TYPE];
+
+		void PinMode(Pin pin, PMode mode);
+		void DigitalWrite(Pin pin, bool isHigh = true);
+		void AnalogWrite(Pin pin, int val);
+		int DigitalRead(Pin pin);
+		int AnalogRead(Pin pin);
 
 		// server
-		void ServerInit(int pin = 10, bool isA = false);
-		void Server1Init(int pin = 11, bool isA = false);
-		void Server2Init(int pin = 12, bool isA = false);
-		void ServerWrite(int val);
-		void Server1Write(int val);
-		void Server2Write(int val);
+		void ServerInit(int i, Pin pin);
+		void ServerWrite(int i, int val);
 
 		// dist
-		void DistInit(int pinTrig, int pinEcho, bool isA);
+		void DistInit(Pin pinTrig, Pin pinEcho);
 		void DistTest();
 		float GetDist() const;
 
 		// ir
-		void IRRecvInit(int pin = 1, bool isAnalog = true);
-		void IRSendNEC(int val = 1);
+		void IRRecvInit(Pin pin);
 		void IRSendSony(int val = 1);
 		int GetIRReceive() const;
 
-		// mp3
-		void Mp3Init(int pin0 = 5, int pin1 = 6);
-		void Mp3Stop();
-		void Mp3Volume(int val = 25);
-		void Mp3Play(int index = 1);
-		void Mp3Next();
-
 		// vehicle
-		void VehicleInit(int pinL0 = 4, int pinL1 = 5, int speedL = 3,
-			int pinR0 = 7, int pinR1 = 8, int speedR = 9);
-		void VehicleInitSimple();
-		void Go(int speed);
-		void Back(int speed);
-		void Left(int speed);
-		void Right(int speed);
+		void VehicleInitMotoBoard();
+		enum DirectionType
+		{
+			DT_NONE,
+			DT_FORWARD,
+			DT_BACKWARD,
+			DT_MAX_TYPE
+		};
+		static std::string sDirectionTypeStr[DT_MAX_TYPE];
+
+		enum SimpleDirectionType
+		{
+			SDT_NONE,
+			SDT_FORWARD,
+			SDT_BACKWARD,
+			SDT_LEFT,
+			SDT_RIGHT,
+			SDT_MAX_TYPE
+		};
+		static std::string sSimpleDirectionTypeStr[SDT_MAX_TYPE];
+
+		void Run(int motoIndex, DirectionType type, int speed);
+		void Run(SimpleDirectionType dt, int speed);
+		int GetSpeed(int motoIndex) const;
 		void Stop();
 
-		void LeftRunType(int type);
-		void LeftSpeed(int speed);
-		void RightRunType(int type);
-		void RightSpeed(int speed);
+		void MP3Init(Pin pinR, Pin pinT);
+		void MP3Play();
+		void MP3PlayNext();
+		void MP3PlayAtIndex(int index);
+		void MP3SetVolume(int volume);
+		void MP3Stop();
 
-		// laser
-		void LaserInit(int pin, bool isAnalog);
-		void LaserTurn(bool isOn);
-
-		// lcds
-		void LEDInit(int din, int cs, int clk);
-		void LEDSetFace(const std::string &faceStr);
-
-		// RGBLight
-		void RGBLightInit(int pinR, int pinG, int pinB, bool isAnglog);
-		void RGBLight(int r, int g, int b);
+		void IRInit(Pin pinR);
+		void IRSend(int val);
 
 	public_internal:
 		void _Send(const std::string &str);
 		void _SetDist(float dist);
 		void _SetIRReceive(int irReceive);
-		void _SetDigital(int pin, int val);
-		void _SetAnalog(int pin, int val);
+		void _SetPinVal(Pin pin, int val);
+		void _SetSpeedLR(int left, int right);
 
-		static const int NumDR = 16;
-		static const int NumAR = 8;
+		enum OptionType
+		{
+			OT_PM,
+			OT_DW,
+			OT_AW,
+			OT_RETURN_DR,
+			OT_RETURN_AR,
+			OT_SVR_I,
+			OT_SVR_W,
+			OT_DST_I,
+			OT_DST_T,
+			OT_RETURN_DIST,
+			OT_MOTO_I,
+			OT_MOTO_RUN,
+			OT_MOTO_RUNSIMPLE,
+			OT_MOTO_STOP,
+			OT_MP3_INIT,
+			OT_MP3_PLAY,
+			OT_MP3_INDEX,
+			OT_MP3_NEXT,
+			OT_MP3_STOP,
+			OT_MP3_VOLUME,
+			OT_IR_INIT,
+			OT_IR_SEND,
+			OT_RETRUN_IR,
+			OT_MAX_TYPE
+		};
+		static std::string sOptTypeStr[OT_MAX_TYPE];
+
+		static std::string _Pin2Str(Pin pin);
+		static std::string _PinMode2Str(PMode pm);
+		static std::string _Bool2Str(bool bVal);
+		static std::string _Int2Str(int val);
+		static std::string _DirectionType2Str(DirectionType dt);
+		static std::string _SimpleDirectionType2Str(SimpleDirectionType dt);
+
+		static Pin _NetStr2Pin(const std::string &str);
+		static PMode _NetStr2PinMode(const std::string &str);
+		static bool _NetStr2Bool(const std::string &str);
+		static int _NetStr2Int(const std::string &str);
+		static float _NetStr2Float(const std::string &str);
+		static DirectionType _NetStr2Dir(const std::string &str);
+		static SimpleDirectionType _NetStr2SimpleDir(const std::string &str);
 
 	private:
 		void _Reset();
 
-		Mode mMode;		
-		bool mIsBeginArduino;
+		Mode mMode;
+		int mTargetRobotID;
+		int mRobotUDPPort;
 		std::string mArduinoString;
 		std::string mEndStr;
 
-		//Serial mSerial;
-		//Serial1 mSerial;
-		Serial2 mSerial;
+		Serial mSerial;
 
 		float mDist;
 		int mIRReceive;
 
-		int mDigitalRead[NumDR];
-		int mAnalogRead[NumAR];
+		int mPinValue[P_MAX_TYPE];
+		int mSpeed[4];
 	};
 
 #define PX2_ARDUINO Arduino::GetSingleton()

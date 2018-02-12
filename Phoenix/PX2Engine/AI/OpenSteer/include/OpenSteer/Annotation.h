@@ -349,21 +349,21 @@ OpenSteer::AnnotationMixin<Super>::drawTrail (const Color& trailColor,
                 if (j == 0)
                 {
                     // draw segment from current position to first trail point
-                    drawLineAlpha (curPosition,
-                                   trailVertices [index],
-                                   color,
-                                   1);
+                    //drawLineAlpha (curPosition,
+                    //               trailVertices [index],
+                    //               color,
+                    //               1);
                 }
                 else
                 {
                     // draw trail segments with opacity decreasing with age
-                    const float minO = 0.05f; // minimum opacity
-                    const float fraction = (float) j / trailVertexCount;
-                    const float opacity = (fraction * (1 - minO)) + minO;
-                    drawLineAlpha (trailVertices [index],
-                                   trailVertices [next],
-                                   color,
-                                   opacity);
+                    //const float minO = 0.05f; // minimum opacity
+                    //const float fraction = (float) j / trailVertexCount;
+                    //const float opacity = (fraction * (1 - minO)) + minO;
+                    //drawLineAlpha (trailVertices [index],
+                    //               trailVertices [next],
+                    //               color,
+                    //               opacity);
                 }
             }
             index = next;

@@ -62,10 +62,6 @@ void UIButtonBase::SetButType(ButType butType)
 
 	if (BT_PICBOXSWAP == mButType)
 	{
-		UIPicBox *picNormal = new0 UIPicBox("Data/engine/white.png");
-		picNormal->SetName("Normal");
-		SetPicBox(BS_NORMAL, picNormal);
-
 		UIPicBox *picOver = new0 UIPicBox("Data/engine/white.png");
 		picOver->SetName("Hovered");
 		SetPicBox(BS_HOVERED, picOver);
@@ -106,18 +102,26 @@ void UIButtonBase::SetButtonState(ButtonState state)
 		if (BS_NORMAL == mButtonState)
 		{
 			normalCull = Movable::CULL_DYNAMIC;
+			if (mPicBoxNormal)
+				mPicBoxNormal->SetColor(_GetStateColorWithActivated(mButtonState));
 		}
 		else if (BS_HOVERED == mButtonState)
 		{
 			overCull = Movable::CULL_DYNAMIC;
+			if (mPicBoxOver)
+				mPicBoxOver->SetColor(_GetStateColorWithActivated(mButtonState));
 		}
 		else if (BS_PRESSED == mButtonState)
 		{
 			downCull = Movable::CULL_DYNAMIC;
+			if (mPicBoxDown)
+				mPicBoxDown->SetColor(_GetStateColorWithActivated(mButtonState));
 		}
 		else if (BS_DISABLED == mButtonState)
 		{
 			disableCull = Movable::CULL_DYNAMIC;
+			if (mPicBoxDisabled)
+				mPicBoxDisabled->SetColor(_GetStateColorWithActivated(mButtonState));
 		}
 
 		if (mPicBoxNormal)

@@ -28,6 +28,8 @@ bool HardCamera::IsCameraOpened() const
 //----------------------------------------------------------------------------
 void HardCamera::OpenCamera(int type)
 {
+	PX2_UNUSED(type);
+
 #if defined(__ANDROID__)
 	CameraOpenStream(type);
 #endif

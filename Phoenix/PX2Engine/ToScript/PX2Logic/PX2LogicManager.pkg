@@ -20,7 +20,7 @@
 		void AddInputInt(const std::string &name, int val);
 		void AddInputFloat(const std::string &name, float val);
 		void AddInputBool(const std::string &name, bool val);
-		void AddInputString(const std::string &name, const std::string &val);
+		void AddInputString(const std::string &name, const std::string &val, bool isEnumItem=false);
 		void AddInputObj(const std::string &name);
 		void AddOutput(const std::string &name, FunParamType funParamType);
 

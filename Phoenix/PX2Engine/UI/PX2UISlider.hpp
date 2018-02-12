@@ -32,6 +32,7 @@ namespace PX2
 		DirectionType GetDirectionType();
 
 		UIFPicBox *GetFPicBoxBack();
+		UIButton *GetButSlider();
 
 		void SetSliderLength(float length);
 		float GetSliderLength() const;

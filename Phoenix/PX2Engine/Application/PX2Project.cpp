@@ -280,6 +280,8 @@ bool Project::Load(const std::string &filename)
 			std::string resVersionStr =
 				PX2_APP.GetProjectVersionByPath(versionFilename);
 			mResourceVersion = ResourceVersion(resVersionStr);
+
+			_LoadConfigs(GetName());
 		}
 	}
 	else
@@ -471,5 +473,91 @@ Object *Project::PoolGet(const std::string &name)
 	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+void Project::SetConfig(const std::string &name, const std::string &cfgStr)
+{
+	mCFGs[name] = cfgStr;
+	_WriteConfigs();
+}
+//----------------------------------------------------------------------------
+std::string Project::GetConfig(const std::string &name)
+{
+	auto it = mCFGs.find(name);
+	if (it != mCFGs.end())
+		return it->second;
+
+	return "";
+}
+//----------------------------------------------------------------------------
+std::string Project::_GetWritePath(const std::string &projName)
+{
+	return "Write_" + projName;
+}
+//----------------------------------------------------------------------------
+void Project::_WriteConfigs()
+{
+	std::string projName = GetName();
+
+	std::string wirteablePath = PX2_RM.GetWriteablePath();
+	std::string appPath = _GetWritePath(projName) + "/";
+
+	if (!PX2_RM.IsFileFloderExist(wirteablePath + appPath))
+	{
+		PX2_RM.CreateFloder(wirteablePath, appPath);
+	}
+
+	_CreateSaveConfigXML(projName);
+}
+//----------------------------------------------------------------------------
+void Project::_CreateSaveConfigXML(const std::string &projName)
+{
+	std::string wirteablePath = PX2_RM.GetWriteablePath();
+	std::string projectsXML = wirteablePath + _GetWritePath(projName) + "/"
+		+ "config.xml";
+
+	XMLData data;
+	data.Create();
+
+	XMLNode rootNode = data.NewChild("config");
+
+	auto it = mCFGs.begin();
+	for (; it != mCFGs.end(); it++)
+	{
+		const std::string &name = it->first;
+		const std::string &val = it->second;
+
+		XMLNode node = rootNode.NewChild(name);
+		node.SetAttributeString("name", name);
+		node.SetAttributeString("value", val);
+	}
+
+	data.SaveFile(projectsXML);
+}
+//----------------------------------------------------------------------------
+void Project::_LoadConfigs(const std::string &projName)
+{
+	mCFGs.clear();
+
+	std::string wirteablePath = PX2_RM.GetWriteablePath();
+	std::string projectsXML = wirteablePath + _GetWritePath(projName) + "/"
+		+ "config.xml";
+
+	XMLData data;
+	if (data.LoadFile(projectsXML))
+	{
+		XMLNode rootNode = data.GetRootNode();
+
+		XMLNode childNode = rootNode.IterateChild();
+		while (!childNode.IsNull())
+		{
+			std::string name = childNode.AttributeToString("name");
+			std::string value = childNode.AttributeToString("value");
+
+			mCFGs[name] = value;
+
+			childNode = childNode.IterateChild(childNode);
+		}
+	}
 }
 //----------------------------------------------------------------------------

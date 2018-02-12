@@ -96,14 +96,20 @@ inline Movable* Movable::GetParent ()
     return mParent;
 }
 //----------------------------------------------------------------------------
-inline void Movable::SetUpdateTime (float time)
+inline void Movable::SetFixUpdateTime (float time)
 {
 	mUpdateTime = time;
+	mUpdateTiming = mUpdateTime;
 }
 //----------------------------------------------------------------------------
-inline float Movable::GetUpdateTime () const
+inline float Movable::GetFixUpdateTime () const
 {
 	return mUpdateTime;
+}
+//----------------------------------------------------------------------------
+inline void Movable::ResetFixUpdateTiming()
+{
+	mUpdateTiming = mUpdateTime;
 }
 //----------------------------------------------------------------------------
 inline void Movable::SetOnlyShowUpdate(bool onlyShowUpdate)

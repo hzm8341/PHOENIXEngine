@@ -94,6 +94,10 @@ namespace PX2
 		void UseAlphaBlend(bool use);
 		bool IsUseAlphaBlend() const;
 
+		void UseAlphaBlendAdd(bool use);
+
+		void SetDoubleSide(bool doubleSide);
+
 		virtual void OnForceBind();
 
 	protected:

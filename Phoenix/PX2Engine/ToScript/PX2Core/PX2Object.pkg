@@ -49,6 +49,10 @@
 		void SetID(int id);
 		int GetID() const;
 		virtual Object* GetObjectByID(int id);
+		
+		// 持久化
+	public:
+		Object* Copy (const std::string& uniqueNameAppend);
 
 		// 事件
 	public:

@@ -398,6 +398,7 @@ void UIPropertyItem::OnAllocAll(const Any &userDat)
 	{
 		UIComboBox *comboBox = new0 UIComboBox();
 		AttachChild(comboBox);
+		comboBox->GetChooseList()->SetTextAlignLeftPos(0.0f);
 		comboBox->LocalTransform.SetTranslateY(-5.0f);
 		comboBox->GetChooseList()->GetBackgroundPicBox()->SetColor(
 			PX2_UISM.Color_ViewBackground);

@@ -4,5 +4,9 @@
 	{
 	public:
 		Serial();
-		~Serial(); 
+		~Serial();
+		
+		std::vector<std::string> GetPortList();
+		int GetNumPorts() const;
+		std::string GetPort(int i) const;
 	};

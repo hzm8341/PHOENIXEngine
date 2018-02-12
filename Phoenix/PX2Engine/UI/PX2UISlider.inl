@@ -11,6 +11,11 @@ inline UIFPicBox *UISlider::GetFPicBoxBack()
 	return mFPicBoxBack;
 }
 //----------------------------------------------------------------------------
+inline UIButton *UISlider::GetButSlider()
+{
+	return mButSlider;
+}
+//----------------------------------------------------------------------------
 inline UIFrame *UISlider::GetContentFrame()
 {
 	return mContentFrame;

@@ -3,10 +3,28 @@
 	class VoiceSDK
 	{
 	public:
+		void SetVoiceSDK(const std::string &thirdname);
 		const std::string &GetVoiceSDK() const;
 
 		void StartVoiceListening();
 		void EndVoiceListening();
+
+		void OnSpeakStart();
+		void OnSpeakPause();
+		void OnSpeakCancel();
+		void OnSpeakFinish();
+
+		void OnVoiceRecordStart();
+		void OnVoiceRecordEnd();
+		void OnVoiceRecognizeResults(const std::string &strRet, 
+			const std::string &strJSON);
+
+		// 是否允许自由对话
+		void EnableAutoSpeak(bool isAutoSpeakEnable);
+		bool IsAutoSpeakEnabled() const;
+		
+		void EnableAutoSpeakTTS(bool isAutoSpeakTTSEnable);
+		bool IsAutoSpeakTTSEnabled() const;
 
 		void Speak(const std::string &text);
 	};

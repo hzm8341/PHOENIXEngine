@@ -126,7 +126,6 @@ bool Application::LoadProject(const std::string &name, bool doUpdate)
 			mBoostInfoUpdate.AddProject(name);
 			_WriteInfos(writeDataPath + "project.list", mBoostInfoUpdate.Projects);
 			_WriteInfos(writeDataPath + "plugin.list", mBoostInfoUpdate.Plugins);
-
 		}
 	}
 

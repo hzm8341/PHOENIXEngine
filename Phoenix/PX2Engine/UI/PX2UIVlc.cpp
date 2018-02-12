@@ -53,8 +53,6 @@ UIVlc::~UIVlc()
 //----------------------------------------------------------------------------
 static void _HardCameraCallback(int width, int height, const char* buf, int size)
 {
-	PX2_LOG_INFO("_HardCameraCallback -1");
-
 	void *object = PX2_HARDCAMERA.GetObj();
 	if (object)
 	{
@@ -69,8 +67,6 @@ static void _HardCameraCallback(int width, int height, const char* buf, int size
 			{
 				vlcMemObj->SetMediaWidthHeight(width, height);
 				vlcMemObj->OnFormatSetup();
-
-				PX2_LOG_INFO("_HardCameraCallback 0");
 			}
 		}
 
@@ -99,6 +95,36 @@ void UIVlc::SetMode(Mode m)
 {
 	mMode = m;
 	_UpdateOnMode(mMode);
+}
+//----------------------------------------------------------------------------
+void UIVlc::SetHorSpaw(bool spaw)
+{
+	if (spaw)
+	{
+		if (mFPicBox)
+		{
+			mFPicBox->LocalTransform.SetScale(APoint(-1.0f, 1.0, 1.0));
+			mFPicBox->GetUIPicBox()->SetDoubleSide(spaw);
+		}
+
+		if (mFPicBoxRight)
+		{
+			mFPicBoxRight->LocalTransform.SetScale(APoint(-1.0f, 1.0, 1.0));
+			mFPicBoxRight->GetUIPicBox()->SetDoubleSide(spaw);
+		}
+	}
+	else
+	{
+		if (mFPicBox)
+		{
+			mFPicBox->LocalTransform.SetScale(APoint(1.0f, 1.0, 1.0));
+		}
+
+		if (mFPicBoxRight)
+		{
+			mFPicBoxRight->LocalTransform.SetScale(APoint(1.0f, 1.0, 1.0));
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void UIVlc::StartVLC(const std::string &filename)

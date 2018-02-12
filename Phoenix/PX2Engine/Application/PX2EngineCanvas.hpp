@@ -30,7 +30,9 @@ namespace PX2
 		virtual void OnEvent(Event *event);
 		virtual void OnSizeChanged();
 
-		void SetDebugText(const std::string &debugText);
+		void AddInfoText(const std::string &infoText);
+
+		UIFrame *GetEngineFrameBack();
 		UIFrame *GetEngineFrame();
 		UIList *GetEngineProjectList();
 		UIList *GetEngineUDPNeighborList();
@@ -40,8 +42,8 @@ namespace PX2
 
 	protected:
 		virtual void UpdateLayout(Movable *parent);
-		virtual void UpdateWorldData(double applicationTime,
-			double elapsedTime);
+		virtual void UpdateWorldData(double applicationTime, double elapsedTime);
+		virtual void OnLeftDown(const PickInputData &data);
 		void _CalSize(const Sizef &projSize);
 		void _CreateEngineFrame();
 		void _RefreshProjects();
@@ -51,10 +53,10 @@ namespace PX2
 
 		UIFramePtr mInfoFrame;
 		UIFTextPtr mInfoText;
-		UIFTextPtr mDebugText;
 		UIButtonPtr mReloadBut;
 		UIButtonPtr mEngineBut;
 
+		UIFramePtr mEngineFrameBack;
 		UIFramePtr mEngineFrame;
 		UICollapsePanelPtr mEngineCollapsePanel;
 		// Projects
@@ -74,6 +76,9 @@ namespace PX2
 		int mFPS;
 		int mFPSUpdate;
 		float mFPSUpdateTime;
+
+		int mNumInfoPick;
+		float mLastPickTime;
 	};
 	PX2_REGISTER_STREAM(EngineCanvas);
 	typedef Pointer0<EngineCanvas> EngineCanvasPtr;

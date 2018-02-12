@@ -37,4 +37,9 @@
 		void PoolClear();
 		void PoolSet(const std::string &name, Object *obj);
 		Object *PoolGet(const std::string &name);
+		
+		// config
+	public:
+		void SetConfig(const std::string &name, const std::string &cfgStr);
+		std::string GetConfig(const std::string &name);
 	};

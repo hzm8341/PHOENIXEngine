@@ -1,3 +1,4 @@
+
 // PX2LogicManager.hpp
 
 #ifndef PX2LOGICMANAGER_HPP
@@ -69,7 +70,7 @@ namespace PX2
 		void AddInputInt(const std::string &name, int val);
 		void AddInputFloat(const std::string &name, float val);
 		void AddInputBool(const std::string &name, bool val);
-		void AddInputString(const std::string &name, const std::string &val);
+		void AddInputString(const std::string &name, const std::string &val, bool isEnumItem=false);
 		void AddInputObj(const std::string &name);
 		void AddOutput(const std::string &name, FunParamType funParamType);
 
@@ -115,7 +116,6 @@ namespace PX2
 		const std::map<std::string, std::vector<std::string> > &GetOperators() const;
 		std::map<std::string, FunObjectPtr> &GetOperatorMap();
 		FunObject *GetOperator(const std::string &name);
-
 
 	protected:
 		void _AddGenFun(const std::string &catalogue, FunObject *funObj);

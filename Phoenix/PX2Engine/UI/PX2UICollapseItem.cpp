@@ -28,11 +28,12 @@ mUICollapsePanel(0)
 	mExpandBut->LocalTransform.SetTranslateY(-2.0f);
 	mExpandBut->SetAnchorHor(0.0f, 1.0f);
 	mExpandBut->SetAnchorVer(1.0f, 1.0f);
-	mExpandBut->SetAnchorParamHor(0.0f, -1.0f);
 	mExpandBut->SetPivot(0.5f, 1.0f);
 	mExpandBut->SetStateColor(UIButtonBase::BS_NORMAL, Float3::MakeColor(100, 100, 100));
 	mExpandBut->SetSize(0.0f, mExpandBarHeight-1.0f);
-	mExpandBut->CreateAddText("-");
+	UIFText *text = mExpandBut->CreateAddText("");
+	text->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
+	text->SetAnchorParamHor(40.0f, 40.0f);
 	mExpandBut->SetMemUICallback(this,
 		(UIFrame::MemUICallback)(&UICollapseItem::_ButCallback));
 	mExpandBut->SetUserData("Item", this);
@@ -43,16 +44,31 @@ mUICollapsePanel(0)
 	mContentFrame->SetAnchorHor(0.0f, 1.0f);
 	mContentFrame->SetAnchorVer(0.0f, 1.0f);
 	mContentFrame->SetAnchorParamVer(0.0f, -mExpandBarHeight);
+
+	mCheckBut = new0 UICheckButton();
+	mExpandBut->AttachChild(mCheckBut);
+	mCheckBut->LocalTransform.SetTranslateY(-4.0f);
+	mCheckBut->Check(false, false);
+	mCheckBut->SetAnchorHor(0.0, 0.0);
+	mCheckBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/triangle.png");
+	mCheckBut->GetPicBoxAtState(UIButtonBase::BS_PRESSED)->SetTexture("Data/engine/trianglea.png");
+	mCheckBut->AutoMakeSizeFixable();
+	mCheckBut->SetAnchorParamHor(10.0f, 10.0f);
 }
 //----------------------------------------------------------------------------
 UICollapseItem::~UICollapseItem()
 {
 }
 //----------------------------------------------------------------------------
-void UICollapseItem::SetName(const std::string &name)
+void UICollapseItem::SetFont(const std::string &font)
 {
-	UIFrame::SetName(name);
-
+	mFont = font;
+	_UpdateButText();
+}
+//----------------------------------------------------------------------------
+void UICollapseItem::SetTitle(const std::string &title)
+{
+	mTitle = title;
 	_UpdateButText();
 }
 //----------------------------------------------------------------------------
@@ -81,23 +97,31 @@ void UICollapseItem::_ButCallback(UIFrame *frame, UICallType type)
 //----------------------------------------------------------------------------
 void UICollapseItem::_UpdateButText()
 {
-	std::string name = GetName();
-
 	if (IsExpand())
 	{
 		if (mExpandBut)
-			mExpandBut->GetText()->SetText("-" + name);
+		{
+			UIText *text = mExpandBut->GetText();
+			text->SetText(mTitle);
+			if (!mFont.empty())
+				text->SetFont(mFont);
+		}
+
+		if (mCheckBut)
+			mCheckBut->Check(true, false);
 	}
 	else
 	{
 		if (mExpandBut)
-			mExpandBut->GetText()->SetText("+" + name);
-	}
+		{
+			UIText *text = mExpandBut->GetText();
+			text->SetText(mTitle);
+			if (!mFont.empty())
+				text->SetFont(mFont);
+		}
 
-	if (mExpandBut)
-	{
-		mExpandBut->GetFText()->SetAnchorParamHor(10.0f, 0.0f);
-		mExpandBut->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
+		if (mCheckBut)
+			mCheckBut->Check(false, false);
 	}
 }
 //----------------------------------------------------------------------------
@@ -136,7 +160,7 @@ void UICollapseItem::SetExpandBarHeight(float height)
 	mExpandBarHeight = height;
 
 	if (mExpandBut)
-		mExpandBut->SetSize(0.0f, mExpandBarHeight - 1.0f);
+		mExpandBut->SetSize(0.0f, mExpandBarHeight - 2.0f);
 
 	if (mContentFrame)
 		mContentFrame->SetAnchorParamVer(0.0f, -mExpandBarHeight);
@@ -164,6 +188,11 @@ float UICollapseItem::GetAllHeight() const
 		return mContentHeight + mExpandBarHeight;
 	else
 		return mExpandBarHeight;
+}
+//----------------------------------------------------------------------------
+UIButton *UICollapseItem::GetButton()
+{
+	return mExpandBut;
 }
 //----------------------------------------------------------------------------
 UIFrame *UICollapseItem::GetContentFrame()

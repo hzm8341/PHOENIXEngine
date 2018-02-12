@@ -10,7 +10,8 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 VoiceSDK::VoiceSDK() :
-mIsAutoSpeakEnabled(false)
+mIsAutoSpeakEnabled(false),
+mIsAutoTTSSpeakEnabled(true)
 {
 }
 //----------------------------------------------------------------------------
@@ -66,6 +67,13 @@ void VoiceSDK::OnSpeakFinish()
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
+void VoiceSDK::OnSpeakText(std::string &txt)
+{
+	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, SpeakText);
+	ent->SetDataStr0(txt);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
 void VoiceSDK::OnVoiceRecordStart()
 {
 	Event *ent = PX2_CREATEEVENTEX(VoiceSDKSpace, RecordStart);
@@ -103,6 +111,20 @@ void VoiceSDK::EnableAutoSpeak(bool isAutoSpeakEnable)
 bool VoiceSDK::IsAutoSpeakEnabled() const
 {
 	return mIsAutoSpeakEnabled;
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::EnableAutoSpeakTTS(bool isAutoSpeakTTSEnable)
+{
+	mIsAutoTTSSpeakEnabled = isAutoSpeakTTSEnable;
+
+#ifdef __ANDROID__
+	VoiceEnableAutoSpeakTTS(isAutoSpeakTTSEnable);
+#endif
+}
+//----------------------------------------------------------------------------
+bool VoiceSDK::IsAutoSpeakTTSEnabled() const
+{
+	return mIsAutoTTSSpeakEnabled;
 }
 //----------------------------------------------------------------------------
 void VoiceSDK::Speak(const std::string &text)

@@ -20,13 +20,19 @@ namespace PX2
 		UICollapsePanel();
 		virtual ~UICollapsePanel();
 
+		void SetBarPicBox(UIPicBox *picBox);
+
+		void SetFont(const std::string &font);
+
 		void SetExpandBarHeight(float height);
 		float GetExpandBarHeight() const;
 
 		void SetSliderWidth(float size);
+		UISlider *GetSlider();
 
 		void RemoveAllItems();
-		UICollapseItem *AddItem(const std::string &name);
+		UICollapseItem *AddItem(const std::string &name, const std::string &title);
+		void ShowItem(const std::string &name, bool show);
 
 		virtual void OnSizeChanged();
 
@@ -42,6 +48,8 @@ namespace PX2
 
 		bool mIsNeedUpdateContentPos;
 
+		std::string mFont;
+		UIPicBoxPtr mBarPicBox;
 		float mExpandBarHeight;
 		UIFramePtr mContentFrame;
 		std::vector<UICollapseItemPtr> mCollpaseFrames;

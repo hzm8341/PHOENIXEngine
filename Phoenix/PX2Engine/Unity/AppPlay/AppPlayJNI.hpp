@@ -80,6 +80,7 @@ extern "C"
 	extern void VoiceStartVoiceListening();
 	extern void VoiceEndVoiceListening();
 	extern void VoiceEnableAutoSpeak(bool isEnable);
+	extern void VoiceEnableAutoSpeakTTS(bool isEnable);
 	extern void VoiceSpeak(const char *text);
 
 	extern void CameraOpenStream(int type); // 0 back, 1 front

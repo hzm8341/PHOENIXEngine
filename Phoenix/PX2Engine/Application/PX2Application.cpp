@@ -179,9 +179,67 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 
 	_UpdateUDPNetInfos((float)elapsedSeconds);
 
+	if (!mUpdateScriptCallbacks.empty())
+	{
+		std::string strAppSeconds = StringHelp::FloatToString(appSeconds);
+		std::string strElapsedSeconds = StringHelp::FloatToString(elapsedSeconds);
+		auto it = mUpdateScriptCallbacks.begin();
+		for (; it != mUpdateScriptCallbacks.end(); it++)
+		{
+			std::string scriptCallback = *it;
+			PX2_SC_LUA->CallString(scriptCallback + "(\"" + strAppSeconds +
+				", " + strElapsedSeconds + "\")");
+		}
+	}
+
 	if (mIsInBackground) return;
 
 	PX2_GR.Draw();
+}
+//----------------------------------------------------------------------------
+bool Application::IsHasUpdateScriptCallback(const std::string &callback)
+{
+	for (int i = 0; i < (int)mUpdateScriptCallbacks.size(); i++)
+	{
+		if (callback == mUpdateScriptCallbacks[i])
+			return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool Application::AddUpdateScriptCallback(const std::string &callback)
+{
+	if (IsHasUpdateScriptCallback(callback))
+		return false;
+
+	mUpdateScriptCallbacks.push_back(callback);
+
+	return true;
+}
+//----------------------------------------------------------------------------
+bool Application::RemoveUpdateScriptCallback(const std::string &callback)
+{
+	auto it = mUpdateScriptCallbacks.begin();
+	for (; it != mUpdateScriptCallbacks.end();)
+	{
+		if (callback == *it)
+		{
+			it = mUpdateScriptCallbacks.erase(it);
+			return true;
+		}
+		else
+		{
+			it++;
+		}
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+void Application::ClearUpdateScriptCallback()
+{
+	mUpdateScriptCallbacks.clear();
 }
 //----------------------------------------------------------------------------
 void Application::OnEvent(Event *ent)
@@ -206,11 +264,21 @@ void Application::OnEvent(Event *ent)
 	}
 }
 //----------------------------------------------------------------------------
-void Application::SendGeneralEvent(const std::string &generalStr)
+void Application::SendGeneralEvent(const std::string &eventDataStr0)
 {
 	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
-	ent->SetDataStr0(generalStr);
-	ent->SetData<std::string>(generalStr);
+	ent->SetData<std::string>(eventDataStr0);
+	ent->SetDataStr0(eventDataStr0);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Application::SendGeneralEvent(const std::string &eventDataStr0, 
+	const std::string &eventDataStr1)
+{
+	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
+	ent->SetData<std::string>(eventDataStr0);
+	ent->SetDataStr0(eventDataStr0);
+	ent->SetDataStr1(eventDataStr1);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

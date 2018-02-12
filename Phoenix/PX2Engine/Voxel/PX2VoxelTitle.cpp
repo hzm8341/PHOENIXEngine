@@ -9,6 +9,7 @@
 #include "PX2Vector3.hpp"
 #include "PX2VoxelMapData.hpp"
 #include "PX2VertexColor4Material.hpp"
+#include "PX2VoxelManager.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Node, VoxelTitle);
@@ -45,31 +46,40 @@ void VoxelTitle::_Init()
 
 	mIsNeedReGenMesh = true;
 
-	//VertexFormat *vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PNT1TB);
-	VertexFormat *vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
+	VertexFormat *vf = 0;
+
+	VoxelManager::Type t = PX2_VOXELM.GetType();
+	if (VoxelManager::T_TEX == t)
+	{
+		vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PNT1TB);
+	}
+	else if (VoxelManager::T_COLOR == t)
+	{
+		vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
+	}
 	VertexBuffer *vb = new0 VertexBuffer(100, vf->GetStride(), Buffer::BU_DYNAMIC);
 	IndexBuffer *ib = new0 IndexBuffer(100, 2, Buffer::BU_STATIC);
 
 	mMesh = new0 TriMesh(vf, vb, ib);
 	AttachChild(mMesh);
 	mMesh->SetSaveWriteIngore(true);
-	mMesh->GetShine()->Ambient = Float4::MakeColor(255, 255, 255, 255);
-	mMesh->GetShine()->Diffuse = Float4::MakeColor(255, 255, 255, 255);
-	mMesh->GetShine()->Specular = Float4::MakeColor(255, 255, 255, 51);
 
-	//MaterialInstance *mi = new0 MaterialInstance(
-	//	"Data/engine_mtls/std/std.px2obj", "std_light", false);
+	MaterialInstance *mi = 0;
+	if (VoxelManager::T_TEX == t)
+	{
+		mi = new0 MaterialInstance(
+			"Data/engine_mtls/std/std.px2obj", "std_light", false);
 
-	//Texture2D *tex = DynamicCast<Texture2D>(PX2_RM.BlockLoad(
-	//	"Data/engine/voxel/blocks.png"));
-	//if (tex->CanGenMinmaps())
-	//{
-	////	tex->GenerateMipmaps();
-	//}
-	//mi->SetPixelTexture(0, "SampleBase", tex);
-	//mi->SetPixelTexture(0, "SampleNormal", tex);
-
-	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();
+		Texture2D *tex = DynamicCast<Texture2D>(PX2_RM.BlockLoad(
+			"Data/engine/voxel/blocks.png"));
+		//if (tex->CanGenMinmaps())
+			//tex->GenerateMipmaps();
+		mi->SetPixelTexture(0, "SampleBase", tex);
+	}
+	else
+	{
+		mi = VertexColor4Material::CreateUniqueInstance();
+	}
 	mMesh->SetMaterialInstance(mi);
 
 	for (int x = 0; x < VOXEL_TITLE_SIZE; x++)

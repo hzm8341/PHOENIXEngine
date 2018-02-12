@@ -19,6 +19,7 @@
 #include "PX2Bluetooth.hpp"
 #include "PX2Serial.hpp"
 #include "PX2StringTokenizer.hpp"
+#include "PX2GraphicsRoot.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Canvas, EngineCanvas);
@@ -52,25 +53,58 @@ void _InitEngineFrameShow(UIFrame *engineFrame)
 void _EngineUICallback (UIFrame *frame, UICallType type)
 {
 	EngineCanvas *engineCanvas = EngineCanvas::GetSingletonPtr();
+	UIFrame *engineFrameBack = engineCanvas->GetEngineFrameBack();
 	UIFrame *engineFrame = engineCanvas->GetEngineFrame();
 
 	const std::string &name = frame->GetName();
 	UIButton *but = DynamicCast<UIButton>(frame);
 	UICheckButton *checkBut = DynamicCast<UICheckButton>(frame);
-	if (UICT_RELEASED == type)
+	if (UICT_PRESSED == type)
 	{
 		if (but)
 		{
 			if ("ButEngine" == name)
 			{
-				engineFrame->Show(!engineFrame->IsShow());
-				if (engineFrame->IsShow())
-				{
-					_InitEngineFrameShow(engineFrame);
-				}
+				PX2_GR.PlayScale(frame);
 			}
 			else if ("ButReload" == name)
 			{
+				PX2_GR.PlayScale(frame);
+			}
+		}
+	}
+	else if (UICT_RELEASED_NOTPICK == type)
+	{
+		if (but)
+		{
+			if ("ButEngine" == name)
+			{
+				PX2_GR.PlayNormal(frame);
+			}
+			else if ("ButReload" == name)
+			{
+				PX2_GR.PlayNormal(frame);
+			}
+		}
+	}
+	else if (UICT_RELEASED == type)
+	{
+		if (but)
+		{
+			if ("ButEngine" == name)
+			{
+				engineFrameBack->Show(!engineFrameBack->IsShow());
+				if (engineFrameBack->IsShow())
+				{
+					_InitEngineFrameShow(engineFrame);
+				}
+
+				PX2_GR.PlayNormal(frame);
+			}
+			else if ("ButReload" == name)
+			{
+				PX2_GR.PlayNormal(frame);
+
 				std::string projName = PX2_APP.GetProjectName();
 				PX2_APP.CloseProject();
 				PX2_APP.LoadProject(projName);
@@ -78,7 +112,7 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 			}
 			else if ("ButClose" == name)
 			{
-				engineFrame->Show(false);
+				engineFrameBack->Show(false);
 			}
 			else if ("ButProjectOpen" == name)
 			{
@@ -189,6 +223,10 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 			else if ("ButBluetoothScan" == name)
 			{
 				engineCanvas->GetEngineBluetoothList()->RemoveAllItems();
+				std::vector<std::string> deviceList = PX2_BLUETOOTH.GetPairedDevices();
+				for (int i = 0; i < (int)deviceList.size(); i++)
+					engineCanvas->GetEngineBluetoothList()->AddItem(deviceList[i]);
+
 				PX2_BLUETOOTH.DoDiscovery();
 			}
 			else if ("ButBluetoothConnect" == name)
@@ -227,6 +265,10 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 					std::string serialName = serials[i];
 					list->AddItem(serialName);
 				}
+			}
+			else if ("ButInfoClear" == name)
+			{
+				engineCanvas->GetEngineInfoList()->RemoveAllItems();
 			}
 		}
 	}
@@ -268,7 +310,9 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 	}
 }
 //----------------------------------------------------------------------------
-EngineCanvas::EngineCanvas()
+EngineCanvas::EngineCanvas() :
+mNumInfoPick(0),
+mLastPickTime(0.0f)
 {
 	CreateUICameraNode();
 
@@ -303,10 +347,10 @@ EngineCanvas::EngineCanvas()
 
 	UIFramePtr frame = new0 UIFrame();
 	AttachChild(frame);
-	UIPicBox *backPic = frame->CreateAddBackgroundPicBox(true,
-		Float3::MakeColor(200, 200, 200));
-	backPic->UseAlphaBlend(true);
-	backPic->SetAlpha(0.4f);
+	//UIPicBox *backPic = frame->CreateAddBackgroundPicBox(true,
+	//	Float3::MakeColor(200, 200, 200));
+	//backPic->UseAlphaBlend(true);
+	//backPic->SetAlpha(0.4f);
 	frame->SetAnchorHor(0.0f, 1.0f);
 	frame->SetAnchorVer(1.0f, 1.0f);
 	frame->SetSize(0.0f, 32.0f);
@@ -314,6 +358,15 @@ EngineCanvas::EngineCanvas()
 	mInfoFrame = frame;
 	mInfoFrame->LocalTransform.SetTranslateY(-50.0f);
 	mInfoFrame->SetOnlyShowUpdate(true);
+
+	UIFPicBox *btnBackPic = new0 UIFPicBox();
+	mInfoFrame->AttachChild(btnBackPic);
+	btnBackPic->GetUIPicBox()->SetTexture("Data/engine/infoframeback.png");
+	btnBackPic->AutoMakeSizeFixable();
+	btnBackPic->SetAnchorHor(1.0, 1.0);
+	btnBackPic->SetAnchorVer(1.0, 1.0);
+	btnBackPic->SetPivot(1.0, 1.0);
+	mInfoFrame->SetHeight(btnBackPic->GetHeight());
 
 	UIFTextPtr infoText = new0 UIFText();
 	frame->AttachChild(infoText);
@@ -326,41 +379,39 @@ EngineCanvas::EngineCanvas()
 	infoText->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
 	mInfoText = infoText;
 
-	float butWidth = 140.0f;
 	mEngineBut = new0 UIButton();
-	frame->AttachChild(mEngineBut);
+	btnBackPic->AttachChild(mEngineBut);
 	mEngineBut->SetAnchorHor(1.0f, 1.0f);
-	mEngineBut->SetAnchorVer(0.0f, 1.0f);
-	mEngineBut->SetPivot(1.0f, 0.5f);
-	mEngineBut->SetWidth(butWidth);
+	mEngineBut->SetAnchorParamHor(-47.0f, -47.0f);
+	mEngineBut->SetAnchorVer(0.5f, 0.5f);
+	mEngineBut->SetPivot(0.5f, 0.5f);
 	mEngineBut->LocalTransform.SetTranslateY(-1.0f);
 	mEngineBut->SetName("ButEngine");
-	mEngineBut->CreateAddText(PX2_LM_ENGINE.V("Engine"));
+	auto text = mEngineBut->CreateAddText(PX2_LM_ENGINE.V("Engine"));
+	text->SetAnchorParamVer(-25.0f, -25.0f);
+	text->GetText()->SetFontScale(0.7f);
 	mEngineBut->AddUICallback(_EngineUICallback);
+	mEngineBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconengine.png");
+	mEngineBut->SetStateColorDefaultWhite();
+	mEngineBut->AutoMakeSizeFixable();
 
 	mReloadBut = new0 UIButton();
-	frame->AttachChild(mReloadBut);
+	btnBackPic->AttachChild(mReloadBut);
+	mReloadBut->SetAnchorParamHor(-47.0f*3.0f, -47.0f*3.0f);
 	mReloadBut->SetAnchorHor(1.0f, 1.0f);
-	mReloadBut->SetAnchorVer(0.0f, 1.0f);
-	mReloadBut->SetPivot(1.0f, 0.5f);
-	mReloadBut->SetAnchorParamHor(-butWidth - 5.0f, -butWidth - 5.0f);
-	mReloadBut->SetWidth(butWidth);
+	mReloadBut->SetAnchorVer(0.5f, 0.5f);
+	mReloadBut->SetPivot(0.5f, 0.5f);
+	mReloadBut->SetAnchorParamHor(-47.0f*3.0f, -47.0f*3.0f);
 	mReloadBut->LocalTransform.SetTranslateY(-1.0f);
 	mReloadBut->SetName("ButReload");
-	mReloadBut->CreateAddText(PX2_LM_ENGINE.V("Reload"));
+	auto textReload = mReloadBut->CreateAddText(PX2_LM_ENGINE.V("Reload"));
+	textReload->SetAnchorParamVer(-25.0f, -25.0f);
+	textReload->GetText()->SetFontScale(0.7f);
 	mReloadBut->AddUICallback(_EngineUICallback);
+	mReloadBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconprojectrefresh.png");
+	mReloadBut->SetStateColorDefaultWhite();
+	mReloadBut->SetSize(36.0f, 36.0f);
 
-	UIFTextPtr debugText = new0 UIFText();
-	frame->AttachChild(debugText);
-	debugText->SetAnchorHor(0.0f, 1.0f);
-	debugText->SetAnchorVer(0.0f, 1.0f);
-	debugText->SetAnchorParamHor(0.0f, -butWidth);
-	debugText->SetPivot(0.5f, 0.5f);
-	debugText->GetText()->SetText("");
-	debugText->GetText()->SetFontWidthHeight(16, 16);
-	debugText->GetText()->SetFontColor(Float3::WHITE);
-	debugText->GetText()->SetAligns(TEXTALIGN_RIGHT | TEXTALIGN_VCENTER);
-	mDebugText = debugText;
 	_CreateEngineFrame();
 
 	mFPS = 0;
@@ -386,31 +437,43 @@ EngineCanvas::~EngineCanvas()
 //----------------------------------------------------------------------------
 void EngineCanvas::_CreateEngineFrame()
 {
+	mEngineFrameBack = new0 UIFrame();
+	AttachChild(mEngineFrameBack);
+	mEngineFrameBack->SetAnchorHor(0.0f, 1.0f);
+	mEngineFrameBack->SetAnchorVer(0.0f, 1.0f);
+	mEngineFrameBack->LocalTransform.SetTranslateY(-60.0f);
+	mEngineFrameBack->Show(false);
+
 	mEngineFrame = new0 UIFrame();
-	AttachChild(mEngineFrame);
+	mEngineFrameBack->AttachChild(mEngineFrame);
 	mEngineFrame->SetWidget(true);
 	UIPicBox *picBox = mEngineFrame->CreateAddBackgroundPicBox();
 	picBox->UseAlphaBlend(true);
+	picBox->SetPicBoxType(UIPicBox::PBT_NINE);
+	picBox->SetTexture("Data/engine/whiteround.png");
+	picBox->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 	picBox->SetColor(Float3::MakeColor(180, 180, 180));
-	picBox->SetAlpha(0.6f);
-	mEngineFrame->LocalTransform.SetTranslateY(-50.0f);
 	mEngineFrame->SetAnchorHor(0.0f, 1.0f);
-	mEngineFrame->SetAnchorParamHor(50.0f, -50.0f);
+	mEngineFrame->SetAnchorParamHor(20.0f, -20.0f);
 	mEngineFrame->SetAnchorVer(0.0f, 1.0f);
-	mEngineFrame->SetAnchorParamVer(60.0f, -60.0f);
-	mEngineFrame->Show(false);
+	mEngineFrame->SetAnchorParamVer(20.0f, -20.0f);
 
 	UIButton *butClose = new0 UIButton();
 	mEngineFrame->AttachChild(butClose);
 	butClose->SetName("ButClose");
 	butClose->LocalTransform.SetTranslateY(-1.0f);
 	butClose->SetAnchorHor(1.0f, 1.0f);
+	butClose->SetAnchorParamHor(-5.0, -5.0);
 	butClose->SetAnchorVer(1.0f, 1.0f);
+	butClose->SetAnchorParamVer(-5.0, -5.0);
 	butClose->SetPivot(1.0f, 1.0f);
 	butClose->SetSize(40.0f, 40.0f);
 	butClose->CreateAddText("X");
 	butClose->GetText()->SetFontColor(Float3::WHITE);
 	butClose->AddUICallback(_EngineUICallback);
+	butClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/whiteround.png");
+	butClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
+	picBox->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	Float4 clearColor = Float4::MakeColor(150, 150, 150, 255);
 	Float3 clearColor3 = Float3::MakeColor(150, 150, 150);
@@ -420,12 +483,12 @@ void EngineCanvas::_CreateEngineFrame()
 	canvas->LocalTransform.SetTranslateY(-1.0f);
 	canvas->SetAnchorHor(0.0, 1.0f);
 	canvas->SetAnchorVer(0.0, 1.0f);
-	canvas->SetAnchorParamHor(10.0f, -10.0f);
-	canvas->SetAnchorParamVer(10.0f, -40.0f);
+	canvas->SetAnchorParamHor(20.0f, -20.0f);
+	canvas->SetAnchorParamVer(20.0f, -60.0f);
 	canvas->CreateUICameraNode();
 	canvas->SetClearColor(clearColor);
 
-	float listItemHeight = 25.0f;
+	float listItemHeight = 40.0f;
 
 	mEngineCollapsePanel = new0 UICollapsePanel();
 	canvas->AttachChild(mEngineCollapsePanel);
@@ -433,6 +496,26 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineCollapsePanel->SetSliderWidth(40.0f);
 	mEngineCollapsePanel->SetAnchorHor(0.0, 1.0f);
 	mEngineCollapsePanel->SetAnchorVer(0.0, 1.0f);
+	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetTexture("Data/engine/whiteround.png");
+	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetPicBoxType(UIPicBox::PBT_NINE);
+	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
+
+	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
+
+	//UIPicBox *picBoxCollapseItem = new0 UIPicBox();
+	//picBoxCollapseItem->SetPicBoxType(UIPicBox::PBT_NINE);
+	//picBoxCollapseItem->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
+	//picBoxCollapseItem->SetTexture("Data/engine/whiteround.png");
+	//mEngineCollapsePanel->SetBarPicBox(picBoxCollapseItem);
+	//picBoxCollapseItem->SetColor(Float3::MakeColor(150, 150, 150));
+
+	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
 
 	float butHeight = 30.0f;
 	float textHeight = 20.0f;
@@ -443,7 +526,8 @@ void EngineCanvas::_CreateEngineFrame()
 	posVer -= spaceHeight;
 
 	UICollapseItem *itemEngineProjects = 
-		mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Project"));
+		mEngineCollapsePanel->AddItem("Project", PX2_LM_ENGINE.V("Project"));
+
 	itemEngineProjects->Expand(false);
 	itemEngineProjects->SetContentHeight(200.0f);
 
@@ -468,6 +552,12 @@ void EngineCanvas::_CreateEngineFrame()
 	butProjectOpen->SetHeight(butHeight);
 	butProjectOpen->CreateAddText(PX2_LM_ENGINE.V("Open"));
 	butProjectOpen->AddUICallback(_EngineUICallback);
+	butProjectOpen->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	butProjectOpen->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	butProjectOpen->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	UIButton *butProjectClose = new0 UIButton();
 	mEngineProjectButtonClose = butProjectClose;
@@ -481,6 +571,12 @@ void EngineCanvas::_CreateEngineFrame()
 	butProjectClose->SetHeight(butHeight);
 	butProjectClose->CreateAddText(PX2_LM_ENGINE.V("Close"));
 	butProjectClose->AddUICallback(_EngineUICallback);
+	butProjectClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	butProjectClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	butProjectClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	posVer -= butHeight*0.5f;
 	posVer -= spaceHeight;
@@ -494,6 +590,12 @@ void EngineCanvas::_CreateEngineFrame()
 	listProjects->SetAnchorHor(0.0f, 1.0f);
 	listProjects->SetAnchorVer(0.0f, 1.0f);
 	listProjects->SetAnchorParamVer(spaceHeight, posVer);
+	listProjects->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	listProjects->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	listProjects->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	_RefreshProjects();
 
@@ -686,7 +788,8 @@ void EngineCanvas::_CreateEngineFrame()
 	//itemClientConnector->SetContentHeight(-posVer);
 
 	// udpNeighbors
-	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Device"));
+	UICollapseItem *itemNeightbors = mEngineCollapsePanel->AddItem("Device", 
+		PX2_LM_ENGINE.V("Device"));
 	itemNeightbors->Expand(false);
 	mEngineUDPNeighbors = new0 UIList();
 	mEngineUDPNeighbors->SetNumMaxItems(20);
@@ -697,9 +800,17 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineUDPNeighbors->SetAnchorHor(0.0f, 1.0f);
 	mEngineUDPNeighbors->SetAnchorVer(0.0f, 1.0f);
 	itemNeightbors->SetContentHeight(100.0f);
+	mEngineUDPNeighbors->SetSliderSize(sliderWidth);
+	mEngineUDPNeighbors->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	mEngineUDPNeighbors->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	mEngineUDPNeighbors->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	// bluetooth
-	UICollapseItem *itemBluetooth = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Bluetooth"));
+	UICollapseItem *itemBluetooth = mEngineCollapsePanel->AddItem("Bluetooth",
+		PX2_LM_ENGINE.V("Bluetooth"));
 	itemBluetooth->Expand(false);
 	itemBluetooth->SetContentHeight(200.0f);
 
@@ -723,6 +834,12 @@ void EngineCanvas::_CreateEngineFrame()
 	butBluetoothScan->SetHeight(butHeight);
 	butBluetoothScan->CreateAddText(PX2_LM_ENGINE.V("Scan"));
 	butBluetoothScan->AddUICallback(_EngineUICallback);
+	butBluetoothScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	butBluetoothScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	butBluetoothScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	UIButton *butBluetoothConnect = new0 UIButton();
 	mEngineBluetoothButConnect = butBluetoothConnect;
@@ -736,6 +853,12 @@ void EngineCanvas::_CreateEngineFrame()
 	butBluetoothConnect->SetHeight(butHeight);
 	butBluetoothConnect->CreateAddText(PX2_LM_ENGINE.V("Connect"));
 	butBluetoothConnect->AddUICallback(_EngineUICallback);
+	butBluetoothConnect->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	butBluetoothConnect->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	butBluetoothConnect->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	posVer -= butHeight*0.5f;
 	posVer -= spaceHeight;
@@ -752,9 +875,16 @@ void EngineCanvas::_CreateEngineFrame()
 	std::vector<std::string> deviceList = PX2_BLUETOOTH.GetPairedDevices();
 	for (int i = 0; i < (int)deviceList.size(); i++)
 		listBle->AddItem(deviceList[i]);
+	listBle->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	listBle->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	listBle->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	// 串口
-	UICollapseItem *itemSerial = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Serial"));
+	UICollapseItem *itemSerial = mEngineCollapsePanel->AddItem("Serial",
+		PX2_LM_ENGINE.V("Serial"));
 	itemSerial->Expand(false);
 	itemSerial->SetContentHeight(200.0f);
 
@@ -778,6 +908,12 @@ void EngineCanvas::_CreateEngineFrame()
 	butSerialScan->SetHeight(butHeight);
 	butSerialScan->CreateAddText(PX2_LM_ENGINE.V("Scan"));
 	butSerialScan->AddUICallback(_EngineUICallback);
+	butSerialScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	butSerialScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	butSerialScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	posVer -= butHeight*0.5f;
 	posVer -= spaceHeight;
@@ -791,20 +927,66 @@ void EngineCanvas::_CreateEngineFrame()
 	listSerial->SetAnchorHor(0.0f, 1.0f);
 	listSerial->SetAnchorVer(0.0f, 1.0f);
 	listSerial->SetAnchorParamVer(spaceHeight, posVer);
+	listSerial->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	listSerial->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	listSerial->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	// Infos
-	UICollapseItem *itemInfos = mEngineCollapsePanel->AddItem(PX2_LM_ENGINE.V("Infos"));
+	UICollapseItem *itemInfos = mEngineCollapsePanel->AddItem("Infos", 
+		PX2_LM_ENGINE.V("Infos"));
+
+	UIFrame *infoFrame = new0 UIFrame();
+	itemInfos->GetContentFrame()->AttachChild(infoFrame);
+	infoFrame->LocalTransform.SetTranslateY(-1.0f);
+	infoFrame->SetAnchorHor(0.0f, 1.0f);
+	infoFrame->SetAnchorVer(0.0f, 1.0f);
+
+	posVer = -butHeight*0.5f;
+	posVer -= spaceHeight;
+
+	UIButton *infoButClear = new0 UIButton();
+	infoFrame->AttachChild(infoButClear);
+	infoButClear->SetName("ButInfoClear");
+	infoButClear->SetAnchorHor(0.0f, 0.5f);
+	infoButClear->SetAnchorVer(1.0f, 1.0f);
+	infoButClear->SetAnchorParamHor(5.0f, -5.0f);
+	infoButClear->SetAnchorParamVer(posVer, posVer);
+	infoButClear->LocalTransform.SetTranslateY(-1.0f);
+	infoButClear->SetHeight(butHeight);
+	infoButClear->CreateAddText(PX2_LM_ENGINE.V("Clear"));
+	infoButClear->AddUICallback(_EngineUICallback);
+	infoButClear->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	infoButClear->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	infoButClear->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
+
+	posVer -= butHeight*0.5f;
+	posVer -= spaceHeight;
+
 	mEngineInfoList = new0 UIList();
 	mEngineInfoList->SetItemHeight(listItemHeight);
 	mEngineInfoList->SetNumMaxItems(20);
 	UIPicBox *backInfoList = mEngineInfoList->CreateAddBackgroundPicBox(true);
 	backInfoList->UseAlphaBlend(true);
-	itemInfos->GetContentFrame()->AttachChild(mEngineInfoList);
+	infoFrame->AttachChild(mEngineInfoList);
 	mEngineInfoList->LocalTransform.SetTranslateY(-2.0f);
 	mEngineInfoList->SetAnchorHor(0.0f, 1.0f);
 	mEngineInfoList->SetAnchorVer(0.0f, 1.0f);
+	mEngineInfoList->SetAnchorParamVer(spaceHeight, posVer);
 	itemInfos->SetContentHeight(300.0f);
 	itemInfos->Expand(false);
+	mEngineInfoList->SetSliderSize(sliderWidth);
+	mEngineInfoList->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexture("Data/engine/whiteround.png");
+	mEngineInfoList->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetPicBoxType(UIPicBox::PBT_NINE);
+	mEngineInfoList->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
+		->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 }
 //----------------------------------------------------------------------------
 void EngineCanvas::_RefreshProjects()
@@ -928,7 +1110,8 @@ void EngineCanvas::OnEvent(Event *event)
 	else if (BluetoothES::IsEqual(event, BluetoothES::OnDisocveryNewDevice))
 	{
 		std::string devStr = event->GetDataStr0();
-		mEngineBluetoothList->AddItem(devStr);
+		if (!mEngineBluetoothList->GetItem(devStr))
+			mEngineBluetoothList->AddItem(devStr);
 	}
 	else if (ProjectES_Internal::ProjectSizeSameWithScreenChanged)
 	{
@@ -961,6 +1144,11 @@ void EngineCanvas::OnEvent(Event *event)
 		ProjectES_Internal::AddUpdateProject))
 	{
 		_RefreshProjects();
+	}
+	else if (GraphicsES::IsEqual(event, GraphicsES::Info))
+	{
+		std::string infoStr = event->GetDataStr0();
+		AddInfoText(infoStr);
 	}
 }
 //----------------------------------------------------------------------------
@@ -1019,13 +1207,14 @@ void EngineCanvas::UpdateLayout(Movable *parent)
 	}
 }
 //----------------------------------------------------------------------------
-void EngineCanvas::SetDebugText(const std::string &debugText)
+void EngineCanvas::AddInfoText(const std::string &infoText)
 {
-	if (mDebugText)
-	{
-		mDebugText->GetText()->SetText(debugText);
-		mEngineInfoList->AddItem(debugText);
-	}
+	mEngineInfoList->AddItem(infoText);
+}
+//----------------------------------------------------------------------------
+UIFrame *EngineCanvas::GetEngineFrameBack()
+{
+	return mEngineFrameBack;
 }
 //----------------------------------------------------------------------------
 UIFrame *EngineCanvas::GetEngineFrame()
@@ -1114,6 +1303,39 @@ void EngineCanvas::UpdateWorldData(double applicationTime,
 	mInfoText->GetText()->SetText(infoStr);
 }
 //----------------------------------------------------------------------------
+void EngineCanvas::OnLeftDown(const PickInputData &data)
+{
+	Canvas::OnLeftDown(data);
+
+	float infoH = mInfoFrame->GetHeight();
+	Rectf screenRect = GetScreenRect();
+	APoint pos = data.ScreenPos;
+	if (pos.X() < 200.0f && pos.Z() > (screenRect.Height() - infoH))
+	{
+		float time = Time::GetTimeInSeconds();
+		float spaceTime = time - mLastPickTime;
+		if (spaceTime < 1.0f || 0.0f == mLastPickTime)
+		{
+			mNumInfoPick++;
+			if (mNumInfoPick > 7)
+			{
+				PX2_APP.SetShowInfo(!PX2_APP.IsShowInfo());
+				mNumInfoPick = 0;
+				mLastPickTime = 0.0f;
+			}
+			else
+			{
+				mLastPickTime = time;
+			}
+		}
+		else
+		{
+			mNumInfoPick = 0;
+			mLastPickTime = 0.0f;
+		}
+	}
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // EngineCanvas
@@ -1124,6 +1346,8 @@ Canvas(value)
 	mFPS = 0;
 	mFPSUpdate = 0;
 	mFPSUpdateTime = 0.0f;
+	mNumInfoPick = 0;
+	mLastPickTime = 0.0f;
 }
 //----------------------------------------------------------------------------
 void EngineCanvas::Load(InStream& source)

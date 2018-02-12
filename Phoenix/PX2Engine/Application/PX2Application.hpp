@@ -176,10 +176,16 @@ namespace PX2
 		void Update(float appSeconds, float elapsedSeconds);
 		float GetElapsedTime();
 
+		bool IsHasUpdateScriptCallback(const std::string &callback);
+		bool AddUpdateScriptCallback(const std::string &callback);
+		bool RemoveUpdateScriptCallback(const std::string &callback);
+		void ClearUpdateScriptCallback();
+
 	private:
 		double mAppTime;
 		double mLastAppTime;
 		double mElapsedTime;
+		std::vector<std::string> mUpdateScriptCallbacks;
 
 		// screen adjust
 	public:
@@ -373,7 +379,8 @@ namespace PX2
 		// Event
 	public:
 		virtual void OnEvent(Event *ent);
-		void SendGeneralEvent(const std::string &generalStr);
+		void SendGeneralEvent(const std::string &eventDataStr0);
+		void SendGeneralEvent(const std::string &eventDataStr0, const std::string &eventDataStr1);
 
 		// NetInfo
 	public:

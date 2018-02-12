@@ -9,8 +9,7 @@ const Timespan::TimeDiff Timespan::MINUTES      =   60*Timespan::SECONDS;
 const Timespan::TimeDiff Timespan::HOURS        =   60*Timespan::MINUTES;
 const Timespan::TimeDiff Timespan::DAYS         =   24*Timespan::HOURS;
 //----------------------------------------------------------------------------
-Timespan::Timespan()
-	:
+Timespan::Timespan() :
 mSpan(0)
 {
 }
@@ -28,8 +27,7 @@ mSpan(TimeDiff(seconds)*SECONDS + microseconds)
 }
 //----------------------------------------------------------------------------
 Timespan::Timespan(int days, int hours, int minutes, int seconds, 
-	int microseconds)
-	:
+	int microseconds) :
 mSpan(TimeDiff(microseconds) + TimeDiff(seconds)*SECONDS 
 	+ TimeDiff(minutes)*MINUTES + TimeDiff(hours)*HOURS + TimeDiff(days)*DAYS)
 {
