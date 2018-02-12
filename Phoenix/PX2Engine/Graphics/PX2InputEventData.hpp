@@ -175,6 +175,7 @@ namespace PX2
 		TouchState();
 		~TouchState();
 
+		int ID;
 		APoint Pos;
 	};
 
@@ -197,7 +198,7 @@ namespace PX2
 
 		APoint MTPos;
 
-		std::vector<APoint> TPoses;
+		std::vector<TouchState> TPoses;
 
 		// Win32 Raw
 		int64_t Msg;
@@ -221,6 +222,8 @@ namespace PX2
 	public:
 		CanvasInputData();
 		~CanvasInputData();
+
+		int TouchID;
 
 		enum MouseTag
 		{
@@ -247,6 +250,8 @@ namespace PX2
 	public:
 		PickInputData();
 		~PickInputData();
+
+		int TouchID;
 
 		APoint ScreenPos;
 		APoint LogicPos;

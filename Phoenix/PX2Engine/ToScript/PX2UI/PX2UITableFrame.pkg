@@ -27,6 +27,16 @@
 
 		void SetTabHeight(float height);
 		float GetTabHeight() const;
+		
+		// font
+		void SetFontSize(int size);
+		int GetFontSize() const;
+
+		void SetFontScale(float scale);
+		float GetFontScale() const;
+
+		void SetFontColor(const Float3 &fontColor);
+		const Float3 &GetFontColor() const;		
 
 		enum TabLayoutType
 		{

@@ -92,6 +92,7 @@ UIItem *UIItem::AddItem(const std::string &label, const std::string &name,
 	item->SetName(name);
 	item->SetSize(GetSize());
 	item->GetFText()->GetText()->SetText(label);
+	item->GetFText()->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
 	item->GetFText()->GetText()->SetFontColor(Float3::MakeColor(220, 220, 220));
 	item->mObject = obj;
 

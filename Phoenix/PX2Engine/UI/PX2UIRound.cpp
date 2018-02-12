@@ -36,8 +36,9 @@ UIRound::UIRound()
 	mBut->GetPicBoxAtState(UIButtonBase::BS_HOVERED)->SetPicBoxType(UIPicBox::PBT_NORMAL);
 	mBut->GetPicBoxAtState(UIButtonBase::BS_PRESSED)->SetPicBoxType(UIPicBox::PBT_NORMAL);
 	mBut->GetPicBoxAtState(UIButtonBase::BS_DISABLED)->SetPicBoxType(UIPicBox::PBT_NORMAL);
-
+	mBut->SetStateColorDefaultWhite();
 	mBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/round_center.png");
+	mBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetBrightness(1.0f);
 	mBut->GetPicBoxAtState(UIButtonBase::BS_HOVERED)->SetTexture("Data/engine/round_center.png");
 	mBut->GetPicBoxAtState(UIButtonBase::BS_HOVERED)->SetBrightness(1.1f);
 	mBut->GetPicBoxAtState(UIButtonBase::BS_PRESSED)->SetTexture("Data/engine/round_center.png");

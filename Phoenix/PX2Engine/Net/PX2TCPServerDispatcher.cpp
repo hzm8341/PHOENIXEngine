@@ -92,7 +92,9 @@ void TCPServerDispatcher::Enqueue(const StreamSocket& socket)
 {
 	ScopedCS lock(&mMutex);
 
-	if (mQueue.GetSize() < mParams->GetMaxQueued())
+	int queueSize = mQueue.GetSize();
+	int maxSize = mParams->GetMaxQueued();
+	if (queueSize < maxSize)
 	{
 		mQueue.EnqueueNotification(new0 TCPConnectionNotification(socket));
 		if (!mQueue.HasIdleThreads() && mCurrentThreads < mParams->GetNumMaxThreads())

@@ -24,6 +24,9 @@ namespace PX2
 
 		const TCPServerParams& params() const;
 
+		void SetSingleThread(bool single);
+		void SingleThreadUpdate();
+
 		void Start();
 		void Stop();
 
@@ -47,6 +50,8 @@ namespace PX2
 		TCPServer();
 		TCPServer(const TCPServer&);
 		TCPServer& operator = (const TCPServer&);
+
+		bool mIsSingleThread;
 
 		ServerSocket mSocket;
 		TCPServerDispatcher* mDispatcher;

@@ -212,8 +212,9 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial/include;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/SeetaFace/FaceDetection;./AI/SeetaFace/FaceDetection/include;./AI/SeetaFace/FaceDetection/src;./AI/SeetaFace/FaceAlignment;./AI/SeetaFace/FaceAlignment/include;./AI/SeetaFace/FaceAlignment/src;./AI/SeetaFace/FaceIdentification;./AI/SeetaFace/FaceIdentification/include;./AI/SeetaFace/FaceIdentification/src;./AI/iiiroboticslidar2;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -251,6 +252,10 @@ xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
 xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\Physics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Physics\*.inl ..\PX2SDK\Include
+
 xcopy /DY .\AI\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\AI\*.inl ..\PX2SDK\Include
@@ -415,7 +420,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/ToScript;./Logic/BlueBlock;./Voxel;./Application;./ToScript;../ThirdPartiesLibs/FBX/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/OpenGL;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/SeetaFace/FaceDetection;./AI/SeetaFace/FaceDetection/include;./AI/SeetaFace/FaceDetection/src;./AI/SeetaFace/FaceAlignment;./AI/SeetaFace/FaceAlignment/include;./AI/SeetaFace/FaceAlignment/src;./AI/SeetaFace/FaceIdentification;./AI/SeetaFace/FaceIdentification/include;./AI/SeetaFace/FaceIdentification/src;./AI/iiiroboticslidar2;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -429,7 +434,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;fmod_vc.lib;ws2_32.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;fmod_vc.lib;ws2_32.lib;Winmm.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -462,6 +467,14 @@ xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
 xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\Physics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Physics\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\AI\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\AI\*.inl ..\PX2SDK\Include
+
 xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
@@ -762,7 +775,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial/include;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/SeetaFace/FaceDetection;./AI/SeetaFace/FaceDetection/include;./AI/SeetaFace/FaceDetection/src;./AI/SeetaFace/FaceAlignment;./AI/SeetaFace/FaceAlignment/include;./AI/SeetaFace/FaceAlignment/src;./AI/SeetaFace/FaceIdentification;./AI/SeetaFace/FaceIdentification/include;./AI/SeetaFace/FaceIdentification/src;./AI/iiiroboticslidar2;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -770,7 +783,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\vlc\libwin;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;Winmm.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\PX2SDK\Include
@@ -891,6 +904,19 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidar.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidarProtocol.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CArcTime.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CCountDown.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CDeviceConnection.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CLidarPacket.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CLidarPacketReceiver.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CLidarUnpacket.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CLogUtitls.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CSimulateSerial.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CTime.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\CTypedef.h" />
+    <ClInclude Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.hpp" />
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\AbstractVehicle.h" />
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Annotation.h" />
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Camera.h" />
@@ -932,7 +958,51 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp" />
     <ClInclude Include="AI\PX2AIInfluenceMap.hpp" />
     <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp" />
+    <ClInclude Include="AI\PX2AILiDar.hpp" />
+    <ClInclude Include="AI\PX2AIs.hpp" />
     <ClInclude Include="AI\PX2AIWayMoveController.hpp" />
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\cfan.h" />
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\common.h" />
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\face_alignment.h" />
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\sift.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier\lab_boosted_classifier.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier\mlp.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier\surf_mlp.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\common.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\detector.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\face_detection.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\feature_map.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\feat\lab_feature_map.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\feat\surf_feature_map.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\fust.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\io\lab_boost_model_reader.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\io\surf_mlp_model_reader.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\model_reader.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\util\image_pyramid.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\util\math_func.h" />
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\util\nms.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\aligner.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\bias_adder_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\blob.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\bn_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\common.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\common_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\conv_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\eltwise_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\face_identification.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\hyper_param.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\inner_product_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\log.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\math_functions.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\max_pooling_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\net_factory.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\pad_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\recognizer.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\spatial_transform_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\tform_maker_net.h" />
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\viplnet.h" />
     <ClInclude Include="Application\PX2AmbientRegionController.hpp" />
     <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
     <ClInclude Include="Application\PX2Application.hpp" />
@@ -1353,6 +1423,30 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexFormat.hpp" />
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexShader.hpp" />
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2WglExtensions.hpp" />
+    <ClInclude Include="Logic\BlueBlock\BlueBlockPlugin.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlock.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockConnector.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvent.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvents.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockPre.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlocks.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockScriptGenController.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSprite.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSystem.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlueBlockToLua.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBManager.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BDefine.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BProject.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCataFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEdit.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelCont.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelList.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanels.hpp" />
     <ClInclude Include="Logic\PX2LBlock.hpp" />
     <ClInclude Include="Logic\PX2LFile.hpp" />
     <ClInclude Include="Logic\PX2LogicDefine.hpp" />
@@ -2034,8 +2128,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2Selection.hpp" />
     <ClInclude Include="Unity\PX2SelectionManager.hpp" />
     <ClInclude Include="Unity\PX2Serial.hpp" />
-    <ClInclude Include="Unity\PX2Serial1.hpp" />
-    <ClInclude Include="Unity\PX2Serial2.hpp" />
     <ClInclude Include="Unity\PX2Sound.hpp" />
     <ClInclude Include="Unity\PX2SoundSystem.hpp" />
     <ClInclude Include="Unity\PX2Unity.hpp" />
@@ -2048,9 +2140,9 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2VoiceEventType.hpp" />
     <ClInclude Include="Unity\PX2VoiceSDK.hpp" />
     <ClInclude Include="Unity\PX2Wifi.hpp" />
-    <ClInclude Include="Unity\serial\include\serial\impl\win.h" />
-    <ClInclude Include="Unity\serial\include\serial\serial.h" />
-    <ClInclude Include="Unity\serial\include\serial\v8stdint.h" />
+    <ClInclude Include="Unity\serial\serial.h" />
+    <ClInclude Include="Unity\serial\v8stdint.h" />
+    <ClInclude Include="Unity\serial\win.h" />
     <ClInclude Include="Unity\SQLite\sqlite3.h" />
     <ClInclude Include="Unity\ToLua\tolua++.h" />
     <ClInclude Include="Unity\ToLua\tolua_event.h" />
@@ -2079,6 +2171,16 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Voxel\PX2VoxelMapData.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI\iiiroboticslidar2\C3iroboticsLidar.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CArcTime.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CCountDown.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CDeviceConnection.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CLidarPacket.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CLidarPacketReceiver.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CLidarUnpacket.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CSimulateSerial.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\CTime.cpp" />
+    <ClCompile Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.cpp" />
     <ClCompile Include="AI\OpenSteer\src\Camera.cpp" />
     <ClCompile Include="AI\OpenSteer\src\Clock.cpp" />
     <ClCompile Include="AI\OpenSteer\src\Color.cpp" />
@@ -2107,7 +2209,36 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp" />
     <ClCompile Include="AI\PX2AIInfluenceMap.cpp" />
     <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp" />
+    <ClCompile Include="AI\PX2AILiDar.cpp" />
     <ClCompile Include="AI\PX2AIWayMoveController.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceAlignment\src\cfan.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceAlignment\src\face_alignment.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceAlignment\src\sift.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\classifier\lab_boosted_classifier.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\classifier\mlp.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\classifier\surf_mlp.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\face_detection.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\feat\lab_feature_map.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\feat\surf_feature_map.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\fust.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\io\lab_boost_model_reader.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\io\surf_mlp_model_reader.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\util\image_pyramid.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\util\nms.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\bias_adder_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\blob.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\bn_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\common_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\conv_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\eltwise_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\inner_product_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\log.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\math_functions.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\max_pooling_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\pad_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\spatial_transform_net.cpp" />
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\tform_maker_net.cpp" />
     <ClCompile Include="Application\PX2AmbientRegionController.cpp" />
     <ClCompile Include="Application\PX2AppBoostInfo.cpp" />
     <ClCompile Include="Application\PX2AppliactionPlay.cpp" />
@@ -2462,6 +2593,32 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexFormat.cpp" />
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexShader.cpp" />
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2WglExtensions.cpp" />
+    <ClCompile Include="Logic\BlueBlock\BlueBlockDll.cpp" />
+    <ClCompile Include="Logic\BlueBlock\BlueBlockPlugin.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlock.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockConnector.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvent.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvents.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockScriptGenController.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSprite.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteLooks.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteOperator.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystem.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystemArduino.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlueBlockToLua.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBManager.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BDefine.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BProject.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCataFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEdit.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelCont.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelList.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanels.cpp" />
     <ClCompile Include="Logic\PX2LBlock.cpp" />
     <ClCompile Include="Logic\PX2LBlockSaveLoad.cpp" />
     <ClCompile Include="Logic\PX2LFile.cpp" />
@@ -3049,8 +3206,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2Selection.cpp" />
     <ClCompile Include="Unity\PX2SelectionManager.cpp" />
     <ClCompile Include="Unity\PX2Serial.cpp" />
-    <ClCompile Include="Unity\PX2Serial1.cpp" />
-    <ClCompile Include="Unity\PX2Serial2.cpp" />
     <ClCompile Include="Unity\PX2Sound.cpp" />
     <ClCompile Include="Unity\PX2SoundSystem.cpp" />
     <ClCompile Include="Unity\PX2User.cpp" />
@@ -3060,9 +3215,9 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2VoiceEventType.cpp" />
     <ClCompile Include="Unity\PX2VoiceSDK.cpp" />
     <ClCompile Include="Unity\PX2Wifi.cpp" />
-    <ClCompile Include="Unity\serial\src\impl\list_ports\list_ports_win.cc" />
-    <ClCompile Include="Unity\serial\src\impl\win.cc" />
-    <ClCompile Include="Unity\serial\src\serial.cc" />
+    <ClCompile Include="Unity\serial\list_ports_win.cc" />
+    <ClCompile Include="Unity\serial\serial.cc" />
+    <ClCompile Include="Unity\serial\win.cc" />
     <ClCompile Include="Unity\SQLite\sqlite3.c" />
     <ClCompile Include="Unity\ToLua\tolua_event.c" />
     <ClCompile Include="Unity\ToLua\tolua_is.c" />
@@ -3230,6 +3385,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Graphics\PX2VertexShader.inl" />
     <None Include="Graphics\PX2VisibleSet.inl" />
     <None Include="Graphics\PX2RenderWindow.inl" />
+    <None Include="Logic\BlueBlock\PX2BBlock.inl" />
+    <None Include="Logic\BlueBlock\PX2BBlockSprite.inl" />
     <None Include="Logic\PX2LBlock.inl" />
     <None Include="Logic\PX2LogicManager.inl" />
     <None Include="Logic\PX2LParam.inl" />

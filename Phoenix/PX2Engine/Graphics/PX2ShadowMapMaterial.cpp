@@ -51,39 +51,42 @@ void ShadowMap_Material::Draw(Renderer* renderer,
 		if (renderable->IsCastShadow())
 		{
 			MaterialInstancePtr save = renderable->GetMaterialInstance();
-			const std::string &mtlName = save->GetMaterial()->GetName();
-
-			if ("std" == mtlName)
+			if (save)
 			{
-				mInstanceStd->SetPixelTexture(0, "SampleBase", save->GetPixelTexture(0, "SampleBase"));
+				const std::string &mtlName = save->GetMaterial()->GetName();
 
-				renderable->SetMaterialInstance(mInstanceStd);
-				renderer->Draw(renderable);
+				if ("std" == mtlName)
+				{
+					mInstanceStd->SetPixelTexture(0, "SampleBase", save->GetPixelTexture(0, "SampleBase"));
 
-				renderable->SetMaterialInstance(save);
-				save->Update(0.0f, 0.0f);
-			}
-			else if ("materialcolor" == mtlName)
-			{
-				renderer->Draw(renderable);
-			}
-			else if ("skinskeleton" == mtlName)
-			{
-				//mInstanceSkinSkeleton->SetPixelTexture(0, "SampleBase", save->GetPixelTexture(0, "SampleBase"));
+					renderable->SetMaterialInstance(mInstanceStd);
+					renderer->Draw(renderable);
 
-				//renderable->SetMaterialInstance(mInstanceSkinSkeleton);
-				renderer->Draw(renderable);
+					renderable->SetMaterialInstance(save);
+					save->Update(0.0f, 0.0f);
+				}
+				else if ("materialcolor" == mtlName)
+				{
+					renderer->Draw(renderable);
+				}
+				else if ("skinskeleton" == mtlName)
+				{
+					//mInstanceSkinSkeleton->SetPixelTexture(0, "SampleBase", save->GetPixelTexture(0, "SampleBase"));
 
-				//renderable->SetMaterialInstance(save);
-				//save->Update(0.0f, 0.0f);
-			}
-			else if ("terrain" == mtlName)
-			{
-				renderable->SetMaterialInstance(mInstanceTerrain);
-				renderer->Draw(renderable);
+					//renderable->SetMaterialInstance(mInstanceSkinSkeleton);
+					renderer->Draw(renderable);
 
-				renderable->SetMaterialInstance(save);
-				save->Update(0.0f, 0.0f);
+					//renderable->SetMaterialInstance(save);
+					//save->Update(0.0f, 0.0f);
+				}
+				else if ("terrain" == mtlName)
+				{
+					renderable->SetMaterialInstance(mInstanceTerrain);
+					renderer->Draw(renderable);
+
+					renderable->SetMaterialInstance(save);
+					save->Update(0.0f, 0.0f);
+				}
 			}
 		}
 	}

@@ -132,7 +132,7 @@ namespace PX2
 
 		Float4 mClearColor;
 		float mClearDepth;
-		unsigned int mClearStencil;
+		int mClearStencil;
 		bool mClearFlagColor;
 		bool mClearFlagDepth;
 		bool mClearFlagStencil;

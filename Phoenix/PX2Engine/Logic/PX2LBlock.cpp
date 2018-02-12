@@ -21,7 +21,8 @@ mIsUseThisPointer(false),
 mCtrlType(CT_NONE),
 mParamType(PT_NONE),
 mOwnObjectParam(0),
-mParent(0)
+mParent(0),
+mLFile(0)
 {
 	mBeforeParam = new0 LParam(LParam::IPT_IN_EXE);
 	mBeforeParam->SetName("Before");
@@ -86,6 +87,8 @@ void LBlock::RegistFunObj(const FunObject &funObj)
 			LParamPtr param = new0 LParam();
 			param->SetName(funParam.Name);
 			param->SetDataType(funParam.Type);
+			param->SetDataTypeName(funParam.TypeName);
+			param->SetEnum(funParam.IsEnum);
 			param->SetValue(funParam.Value);
 
 			mInputParams[funParam.Name] = param;
@@ -116,6 +119,8 @@ void LBlock::RegistFunObj(const FunObject &funObj)
 			LParamPtr param = new0 LParam(LParam::IPT_OUT);
 			param->SetName(funParam.Name);
 			param->SetDataType(funParam.Type);
+			param->SetDataTypeName(funParam.TypeName);
+			param->SetEnum(funParam.IsEnum);
 			param->SetValue(funParam.Value);
 			mOutputParams[funParam.Name] = param;
 			mOutputParamsVec.push_back(param);
@@ -135,6 +140,10 @@ void LBlock::RegistFunObj(const FunObject &funObj)
 	else if (pt == FunObject::PT_VARIABLE)
 	{
 		SetParamType(PT_VARIABLE);
+	}
+	else if (pt == FunObject::PT_ENUM)
+	{
+		SetParamType(PT_ENUM);
 	}
 	else if (pt == FunObject::PT_ENUMSTRING)
 	{
@@ -214,6 +223,17 @@ LParam *LBlock::GetParent()
 	return mParent;
 }
 //----------------------------------------------------------------------------
+void LBlock::SetAnchorParam(float hor, float ver)
+{
+	mAnchorParam.X() = hor;
+	mAnchorParam.Y() = ver;
+}
+//----------------------------------------------------------------------------
+const Vector3f &LBlock::GetAnchorParam() const
+{
+	return mAnchorParam;
+}
+//----------------------------------------------------------------------------
 const LParam *LBlock::GetOwnerObjectParam() const
 {
 	return mOwnObjectParam;
@@ -225,6 +245,16 @@ void LBlock::_WriteTables(std::string &script, int numTable)
 	{
 		script += "    ";
 	}
+}
+//----------------------------------------------------------------------------
+void LBlock::SetLFile(LFile *lfile)
+{
+	mLFile = lfile;
+}
+//----------------------------------------------------------------------------
+LFile *LBlock::GetLFile()
+{
+	return mLFile;
 }
 //----------------------------------------------------------------------------
 void LBlock::PreCompile(std::string &script, LFile *file,
@@ -248,16 +278,27 @@ void LBlock::PreCompile(std::string &script, LFile *file,
 				paramStart->PreCompile(script, file);
 			}
 
-			LParam *paramUpdate = GetLParamByName("Update");
-			if (paramUpdate)
-			{
-				paramUpdate->PreCompile(script, file);
-			}
 
 			LParam *paramFixUpdate = GetLParamByName("FixUpdate");
 			if (paramFixUpdate)
 			{
 				paramFixUpdate->PreCompile(script, file);
+			}
+		}
+		if (CT_PROGRAMSTART == ct)
+		{
+			LParam *paramStart = GetLParamByName("Start");
+			if (paramStart)
+			{
+				paramStart->PreCompile(script, file);
+			}
+		}
+		if (CT_PROGRAMFIXUPDATE == ct)
+		{
+			LParam *paramStart = GetLParamByName("FixUpdate");
+			if (paramStart)
+			{
+				paramStart->PreCompile(script, file);
 			}
 		}
 		else if (CT_IF == ct)
@@ -461,11 +502,8 @@ void LBlock::PreCompile(std::string &script, LFile *file,
 	}
 }
 //----------------------------------------------------------------------------
-void LBlock::Compile(std::string &script, int numTable, LFile *file,
-	bool isOriginalStart)
+void LBlock::CompileStart(std::string &script, int numTable, LFile *file)
 {
-	PX2_UNUSED(isOriginalStart);
-
 	LogicFilePlatformType pt = file->GetPlatformType();
 
 	const std::string &fileName = file->GetName();
@@ -477,108 +515,77 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 	{
 		if (CT_PROGRAM == ct)
 		{
-			if (pt == PT_ENGINE)
-			{
-				script += fileName + " = class(LSController, \n";
-				script += "{ \n";
-				script += "    _name = " + std::string("\"") + fileName + "\"" + ",\n";
-				script += "    _scriptControl = nil,\n";
-				script += "    _ctrlable = nil,\n";
-				script += "}); \n";
-				script += "\n";
-				script += "function " + fileName + ":OnAttached()\n";
-				script += std::string("    PX2_LOGGER:LogInfo(\"script_lua\", ") +
-					"\"\"..self._name..\" OnAttached\")\n";
-				script += "    self._scriptControl = Cast:ToSC(self.__object)\n";
-				script += "    self._ctrlable = self._scriptControl:GetControlledable()\n";
-				script += "end\n";
-				script += "\n";
-			}
-
 			LParam *paramStart = GetLParamByName("Start");
 			if (paramStart)
 			{
 				if (pt == PT_ENGINE)
 				{
-					script += "function " + fileName + ":OnInitUpdate()\n";
-
-					script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
-
 					paramStart->Compile(script, numTable + 1, file);
-
-					script += "end\n";
-				}
-				else if (pt == PT_NODEMCU)
-				{
-					script += "function setup()\n";
-
-					paramStart->Compile(script, numTable + 1, file);
-
-					script += "end\n";
-				}
-				else if (pt == PT_ARDUINO)
-				{
-					script += "void setup()\n";
-					script += "{\n";
-
-					paramStart->Compile(script, numTable + 1, file);
-
-					script += "}\n";
 				}
 			}
-
-			script += "\n";
-
-			LParam *paramUpdate = GetLParamByName("Update");
-			if (paramUpdate)
+		}
+		else if (CT_PROGRAMSTART == ct)
+		{
+			LParam *paramStart = GetLParamByName("Start");
+			if (paramStart)
 			{
 				if (pt == PT_ENGINE)
 				{
-					script += "function " + fileName + ":OnUpdate()\n";
-
-					script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
-
-					paramUpdate->Compile(script, numTable + 1, file);
-
-					script += "end\n";
-				}
-				else if (pt == PT_NODEMCU)
-				{
-					script += "function loop()\n";
-
-					paramUpdate->Compile(script, numTable + 1, file);
-
-					script += "end\n";
-				}
-				else if (pt == PT_ARDUINO)
-				{
-					script += "void loop()\n";
-					script += "{\n";
-
-					paramUpdate->Compile(script, numTable + 1, file);
-
-					script += "}\n";
+					paramStart->Compile(script, numTable + 1, file);
 				}
 			}
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void LBlock::CompileFixUpdate(std::string &script, int numTable, LFile *file)
+{
+	LogicFilePlatformType pt = file->GetPlatformType();
 
-			script += "\n";
+	const std::string &fileName = file->GetName();
+	const std::string &name = GetName();
+	BlockType bt = GetBlockType();
+	CtrlType ct = GetCtrlType();
 
+	if (MT_CONTROL == bt)
+	{
+		if (CT_PROGRAM == ct)
+		{
 			LParam *paramFixUpdate = GetLParamByName("FixUpdate");
 			if (paramFixUpdate)
 			{
 				if (pt == PT_ENGINE)
 				{
-					script += "function " + fileName + ":OnFixUpdate()\n";
-
-					script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
-
 					paramFixUpdate->Compile(script, numTable + 1, file);
-
-					script += "end\n";
 				}
 			}
 		}
-		else if (CT_IF == ct)
+		else if (CT_PROGRAMFIXUPDATE == ct)
+		{
+			LParam *paramFixUpdate = GetLParamByName("FixUpdate");
+			if (paramFixUpdate)
+			{
+				if (pt == PT_ENGINE)
+				{
+					paramFixUpdate->Compile(script, numTable + 1, file);
+				}
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void LBlock::CompileAll(std::string &script, int numTable, LFile *file)
+{
+	LogicFilePlatformType pt = file->GetPlatformType();
+
+	const std::string &fileName = file->GetName();
+	const std::string &name = GetName();
+	BlockType bt = GetBlockType();
+	CtrlType ct = GetCtrlType();
+
+	if (MT_CONTROL == bt)
+	{	
+		if (CT_IF == ct)
 		{
 			if (pt == PT_ENGINE)
 			{
@@ -757,6 +764,9 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 			_WriteTables(script, numTable);
 			script += "coroutine.wrap(function() \n";
 
+			_WriteTables(script, numTable + 1);
+			script += "PX2_LOGICM:SetCurLogicObject(self._ctrlable) \n";
+
 			LParam *paramCorDo = GetLParamByName("CorDo");
 			if (paramCorDo)
 			{
@@ -810,6 +820,7 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 
 		bool isSet = ("setInt" == name || "setFloat" == name ||
 			"setChar" == name || "setString" == name || "setObject" == name);
+		bool isSleep = ("sleep" == name);
 
 		if (isSet)
 		{
@@ -928,6 +939,12 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 				script += ")";
 			}
 		}
+
+		if (isSleep)
+		{
+			_WriteTables(script, numTable);
+			script += "PX2_LOGICM:SetCurLogicObject(self._ctrlable) \n";
+		}
 	}
 	else if (MT_FUNCTION_OPERATOR == bt)
 	{
@@ -1020,6 +1037,14 @@ void LBlock::Compile(std::string &script, int numTable, LFile *file,
 				script += lParam->GetValueScriptStr(true);
 			}
 		}
+		else if (PT_ENUM == pt)
+		{
+			LParam *lParam = GetLParamByName("val");
+			if (lParam)
+			{
+				script += lParam->GetValueScriptStr(false);
+			}
+		}
 		else if (PT_ENUMSTRING == pt)
 		{
 			LParam *lParam = GetLParamByName("val");
@@ -1064,7 +1089,8 @@ mCtrlType(CT_NONE),
 mIsFunOutputConvertToGeneral(false),
 mIsUseThisPointer(false),
 mParamType(PT_NONE),
-mParent(0)
+mParent(0),
+mLFile(0)
 {
 
 }
@@ -1103,6 +1129,8 @@ void LBlock::Load(InStream& source)
 
 	source.ReadPointer(mBeforeParam);
 	source.ReadPointer(mNextParam);
+
+	source.ReadAggregate(mAnchorParam);
 
 	PX2_END_DEBUG_STREAM_LOAD(LBlock, source);
 }
@@ -1262,6 +1290,8 @@ void LBlock::Save(OutStream& target) const
 	target.WritePointer(mBeforeParam);
 	target.WritePointer(mNextParam);
 
+	target.WriteAggregate(mAnchorParam);
+
 	PX2_END_DEBUG_STREAM_SAVE(LBlock, target);
 }
 //----------------------------------------------------------------------------
@@ -1291,6 +1321,8 @@ int LBlock::GetStreamingSize(Stream &stream) const
 
 	size += PX2_POINTERSIZE(mBeforeParam);
 	size += PX2_POINTERSIZE(mNextParam);
+
+	size += sizeof(mAnchorParam);
 
 	return size;
 }

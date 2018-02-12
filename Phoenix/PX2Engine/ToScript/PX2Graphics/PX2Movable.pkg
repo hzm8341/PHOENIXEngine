@@ -23,8 +23,14 @@
 
 		CullingMode Culling;
 		
+		void Update (double applicationTime = -Mathd::MAX_REAL, double elapsedTime=0.0f,
+			bool initiator = true);
+		
 		void Show (bool show);
 		bool IsShow () const;
+		
+		void SetDoPick (bool doPick);
+		bool IsDoPick () const;
 		
 		void DetachFromParent();
 		
@@ -66,8 +72,9 @@
 		
 		// Update
 	public:
-		void SetUpdateTime (float time);
-		float GetUpdateTime () const;
+		void SetFixUpdateTime (float time);
+		float GetFixUpdateTime () const;
+		void ResetFixUpdateTiming();
 
 		void SetOnlyShowUpdate(bool onlyShowUpdate);
 		bool IsOnlyShowUpdate() const;

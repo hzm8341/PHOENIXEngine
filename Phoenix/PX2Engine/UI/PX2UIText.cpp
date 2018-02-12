@@ -73,6 +73,11 @@ void UIText::_Init()
 	mIsNeedReCreate = true;
 }
 //----------------------------------------------------------------------------
+void UIText::SetFont(const std::string &fontFilename)
+{
+	SetFont(fontFilename, mFontWidth, mFontHeight, mFontStyle);
+}
+//----------------------------------------------------------------------------
 void UIText::SetFont(const std::string &fontFilename, int fontWidth,
 	int fontHeight, unsigned int fontStyle)
 {
@@ -287,6 +292,16 @@ void UIText::SetFontAlpha(float alpha)
 	mFontColor[3] = alpha;
 
 	mIsNeedReCreate = true;
+}
+//----------------------------------------------------------------------------
+void UIText::SetFontSize(int size)
+{
+	SetFontWidthHeight(size, size);
+}
+//----------------------------------------------------------------------------
+void UIText::SetFontSize(int width, int height)
+{
+	SetFontWidthHeight(width, height);
 }
 //----------------------------------------------------------------------------
 void UIText::SetFontWidthHeight(int width, int height)

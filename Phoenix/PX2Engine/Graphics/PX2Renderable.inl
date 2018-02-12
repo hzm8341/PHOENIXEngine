@@ -136,6 +136,11 @@ inline void Renderable::_SetTransparent (bool transparent)
 	mSortIndex = (mSortIndex&0xffff0000)|(transparent?1:0);
 }
 //----------------------------------------------------------------------------
+inline bool Renderable::IsFakeTransparent() const
+{
+	return mIsFakeTransparent;
+}
+//----------------------------------------------------------------------------
 inline bool Renderable::IsTransparent () const
 {
 	return (mSortIndex&1); 

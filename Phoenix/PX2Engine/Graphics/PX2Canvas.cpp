@@ -73,6 +73,16 @@ mPickedWidget(0)
 	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();
 	mDebugPoly->SetMaterialInstance(mi);
 
+	VertexFormat *vFormat = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
+	VertexBufferPtr vb = new0 VertexBuffer(5120, vFormat->GetStride(), Buffer::BU_DYNAMIC);
+	IndexBufferPtr ib = new0 IndexBuffer(10240, 2, Buffer::BU_DYNAMIC);
+	mUIShareMesh = new0 TriMesh(vFormat, vb, ib);
+	mUIShareMesh->SetColor(Float3::WHITE);
+	mUIShareMesh->Culling = Movable::CULL_NEVER;
+	mUIShareMesh->SetRenderLayer(Renderable::RL_UI);
+	mUIShareMesh->GetShine()->Emissive = Float4::WHITE;
+	mUIShareMesh->SetName("ShareMesh");
+
 	// ui
 #if defined(_WIN32) || defined(WIN32)
 	mMoveAdjugeParam = 5.0f;
@@ -80,17 +90,6 @@ mPickedWidget(0)
 	mMoveAdjugeParam = 64.0f;
 #endif
 	mMoveAdjugeParamSquare = mMoveAdjugeParam * mMoveAdjugeParam;
-
-	VertexFormat *vFormat = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
-	VertexBufferPtr vb = new0 VertexBuffer(5120, vFormat->GetStride(), Buffer::BU_DYNAMIC);
-	IndexBufferPtr ib = new0 IndexBuffer(10240, 2, Buffer::BU_DYNAMIC);
-
-	mUIShareMesh = new0 TriMesh(vFormat, vb, ib);
-	mUIShareMesh->SetColor(Float3::WHITE);
-	mUIShareMesh->Culling = Movable::CULL_NEVER;
-	mUIShareMesh->SetRenderLayer(Renderable::RL_UI);
-	mUIShareMesh->GetShine()->Emissive = Float4::WHITE;
-	mUIShareMesh->SetName("ShareMesh");
 
 	SetAnchorHor(0.0f, 1.0f);
 	SetAnchorVer(0.0f, 1.0f);
@@ -745,12 +744,14 @@ void Canvas::OnFirstInput(const InputEventData &data)
 {
 	for (int i = 0; i < (int)data.TPoses.size(); i++)
 	{
-		APoint screenPos = data.TPoses[i];
+		const TouchState &ts = data.TPoses[i];
+		const APoint &screenPos = ts.Pos;
 		const Rectf &worldRect = GetWorldRect();
 		if (worldRect.IsInsize(screenPos.X(), screenPos.Z()) || data.IsKeyEvent())
 		{
 			CanvasInputData cid = ConvertInputEventDataToCanvasInputData(
 				screenPos, screenPos, data.TheEventType, data.MButtonID, data.MWheel);
+			cid.TouchID = ts.ID;
 			OnWidgetPicked(cid);
 		}
 	}
@@ -946,6 +947,7 @@ void Canvas::OnWidgetPicked(const CanvasInputData &inputData)
 	camLogicPos.Z() = (float)((int)camLogicPos.Z());
 	
 	PickInputData data1;
+	data1.TouchID = inputData.TouchID;
 	data1.ScreenPos = screenPos;
 	data1.LogicPos = logicPos;
 	data1.CameraLogicPos = camLogicPos;
@@ -1033,6 +1035,7 @@ void Canvas::OnLeftDown(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1054,6 +1057,7 @@ void Canvas::OnLeftUp(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1075,6 +1079,7 @@ void Canvas::OnLeftDClick(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_LEFT;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1097,6 +1102,7 @@ void Canvas::OnMiddleDown(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1118,6 +1124,7 @@ void Canvas::OnMiddleUp(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1129,6 +1136,7 @@ void Canvas::OnMiddleUp(const PickInputData &data)
 void Canvas::OnMouseWheel(const PickInputData &data)
 {
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_MIDDLE;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1153,6 +1161,7 @@ void Canvas::OnRightDown(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_RIGHT;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1174,6 +1183,7 @@ void Canvas::OnRightUp(const PickInputData &data)
 	mLastPickPos = mCurPickPos;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.TheMouseTag = CanvasInputData::MT_RIGHT;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
@@ -1191,6 +1201,7 @@ void Canvas::OnMotion(const PickInputData &data)
 	mIsMoved = true;
 
 	CanvasInputData inputData;
+	inputData.TouchID = data.TouchID;
 	inputData.ScreenPos = data.ScreenPos;
 	inputData.LogicPos = data.LogicPos;
 	inputData.CameraLogicPos = data.CameraLogicPos;
@@ -1319,12 +1330,12 @@ void Canvas::AddDebugLine(const APoint &fromPos, const APoint &toPos,
 //----------------------------------------------------------------------------
 Canvas::Canvas(LoadConstructor value) :
 SizeNode(value),
-mIsRenderNodeUpdate(false),
-mIsMain(false),
 mRenderNode(0),
+mIsRenderNodeUpdate(false),
+mRenderWindow(0),
+mIsMain(false),
 mOverCamera(0),
 mIsUICameraAutoAdjust(true),
-mRenderWindow(0),
 mClearStencil(0),
 mClearFlagColor(false),
 mClearFlagDepth(false),
@@ -1337,8 +1348,27 @@ mIsLeftPressed(false),
 mIsRightPressed(false),
 mIsMiddlePressed(false),
 mIsMoved(false),
+mClearDepth(1.0f),
 mPickedWidget(0)
 {
+	SetColor(Float3::WHITE);
+	SetAlpha(1.0f);
+	SetBrightness(1.0f);
+	SetColorSelfCtrled(true);
+	SetAlphaSelfCtrled(true);
+	SetBrightnessSelfCtrled(true);
+
+	SetAnchorHor(0.0f, 1.0f);
+	SetAnchorVer(0.0f, 1.0f);
+	EnableAnchorLayout(true);
+
+	// ui
+#if defined(_WIN32) || defined(WIN32)
+	mMoveAdjugeParam = 5.0f;
+#else
+	mMoveAdjugeParam = 64.0f;
+#endif
+	mMoveAdjugeParamSquare = mMoveAdjugeParam * mMoveAdjugeParam;
 }
 //----------------------------------------------------------------------------
 void Canvas::Load(InStream& source)
@@ -1348,23 +1378,60 @@ void Canvas::Load(InStream& source)
 	SizeNode::Load(source);
 	PX2_VERSION_LOAD(source);
 
+	source.ReadPointer(mCanvasRenderBind);
+
+	source.ReadBool(mClearFlagColor);
+	source.ReadBool(mClearFlagDepth);
+	source.ReadBool(mClearFlagStencil);
+	source.ReadAggregate(mClearColor);
+	source.Read(mClearDepth);
+	source.Read(mClearStencil);
+
+	source.ReadBool(mIsOverWireframe);
+	source.ReadPointer(mOverrideWireProperty);
+
 	PX2_END_DEBUG_STREAM_LOAD(Canvas, source);
 }
 //----------------------------------------------------------------------------
 void Canvas::Link(InStream& source)
 {
 	SizeNode::Link(source);
+
+	source.ResolveLink(mCanvasRenderBind);
+	source.ResolveLink(mOverrideWireProperty);
 }
 //----------------------------------------------------------------------------
 void Canvas::PostLink()
 {
 	SizeNode::PostLink();
+
+	VertexFormat *vfPoly = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
+	mDebugPolyVB = new0 VertexBuffer(1000, vfPoly->GetStride(), Buffer::BU_DYNAMIC);
+	mDebugPoly = new0 Polysegment(vfPoly, mDebugPolyVB, false);
+	mDebugPoly->SetNumSegments(0);
+	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();
+	mDebugPoly->SetMaterialInstance(mi);
+
+	VertexFormat *vFormat = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
+	VertexBufferPtr vb = new0 VertexBuffer(5120, vFormat->GetStride(), Buffer::BU_DYNAMIC);
+	IndexBufferPtr ib = new0 IndexBuffer(10240, 2, Buffer::BU_DYNAMIC);
+	mUIShareMesh = new0 TriMesh(vFormat, vb, ib);
+	mUIShareMesh->SetColor(Float3::WHITE);
+	mUIShareMesh->Culling = Movable::CULL_NEVER;
+	mUIShareMesh->SetRenderLayer(Renderable::RL_UI);
+	mUIShareMesh->GetShine()->Emissive = Float4::WHITE;
+	mUIShareMesh->SetName("ShareMesh");
+
+	ComeInEventWorld();
 }
 //----------------------------------------------------------------------------
 bool Canvas::Register(OutStream& target) const
 {
 	if (SizeNode::Register(target))
 	{
+		target.Register(mCanvasRenderBind);
+		target.Register(mOverrideWireProperty);
+
 		return true;
 	}
 
@@ -1378,6 +1445,18 @@ void Canvas::Save(OutStream& target) const
 	SizeNode::Save(target);
 	PX2_VERSION_SAVE(target);
 
+	target.WritePointer(mCanvasRenderBind);
+
+	target.WriteBool(mClearFlagColor);
+	target.WriteBool(mClearFlagDepth);
+	target.WriteBool(mClearFlagStencil);
+	target.WriteAggregate(mClearColor);
+	target.Write(mClearDepth);
+	target.Write(mClearStencil);
+
+	target.WriteBool(mIsOverWireframe);
+	target.WritePointer(mOverrideWireProperty);
+
 	PX2_END_DEBUG_STREAM_SAVE(Canvas, target);
 }
 //----------------------------------------------------------------------------
@@ -1385,6 +1464,18 @@ int Canvas::GetStreamingSize(Stream &stream) const
 {
 	int size = SizeNode::GetStreamingSize(stream);
 	size += PX2_VERSION_SIZE(mVersion);
+
+	size += PX2_POINTERSIZE(mCanvasRenderBind);
+
+	size += PX2_BOOLSIZE(mClearFlagColor);
+	size += PX2_BOOLSIZE(mClearFlagDepth);
+	size += PX2_BOOLSIZE(mClearFlagStencil);
+	size += sizeof(mClearColor);
+	size += sizeof(mClearDepth);
+	size += sizeof(mClearStencil);
+
+	size += PX2_BOOLSIZE(mIsOverWireframe);
+	size += PX2_POINTERSIZE(mOverrideWireProperty);
 
 	return size;
 }

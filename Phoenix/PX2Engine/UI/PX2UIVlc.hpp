@@ -40,6 +40,8 @@ namespace PX2
 		void SetMode(Mode m);
 		Mode GetMode() const;
 
+		void SetHorSpaw(bool spaw);
+
 		void StartVLC(const std::string &filename);
 		void StopVLC();
 

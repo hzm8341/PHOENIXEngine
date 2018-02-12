@@ -24,6 +24,7 @@ endif
 	cd Unity/SQLite							;  make -f makesqlite.px2 CFG=$(CFG)
 	cd Unity/curl							;  make -f makecurl.px2 CFG=$(CFG)
 	cd Unity/google/protobuf				;  make -f makegooglepb.px2 CFG=$(CFG)
+	cd Unity/serial							;  make -f makeserial.px2 CFG=$(CFG)
 	cd Unity							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Net							 		&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Effect							 	&& make -f ../makeprj.px2 CFG=$(CFG)

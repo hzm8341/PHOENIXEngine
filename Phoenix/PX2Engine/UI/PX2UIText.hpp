@@ -30,6 +30,7 @@ namespace PX2
 		};
 		FontType GetFontType() const;
 
+		void SetFont(const std::string &fontFilename);
 		void SetFont(const std::string &fontFilename, int fontWidth,
 			int fontHeight, unsigned int fontStyle = FES_NORMAL);
 		void SetFontBimMap(const std::string &fontFilename);
@@ -110,6 +111,8 @@ namespace PX2
 		void SetFontScale(float scale);
 		float GetFontScale() const;
 
+		void SetFontSize(int size);
+		void SetFontSize(int width, int height);
 		void SetFontWidthHeight(int width, int height);
 		void SetFontWidth(int width);
 		int GetFontWidth();

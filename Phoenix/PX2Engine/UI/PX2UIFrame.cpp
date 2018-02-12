@@ -110,13 +110,12 @@ UIPicBox *UIFrame::CreateAddBackgroundPicBox(bool setWhite,
 	mBackgroundPicBox = new0 UIPicBox();
 	AttachChild(mBackgroundPicBox);
 	mBackgroundPicBox->SetName("BackPicBox");
-	mBackgroundPicBox->GetMaterialInstance()->GetMaterial()
-		->GetAlphaProperty(0, 0)->BlendEnabled = false;
+	mBackgroundPicBox->UseAlphaBlend(false);
+	mBackgroundPicBox->SetFakeTransparent(true);
 
 	mBackgroundPicBox->SetSize(mSize);
 	mBackgroundPicBox->SetPivot(mPivot);
 	mBackgroundPicBox->SetColor(color);
-	mBackgroundPicBox->UseAlphaBlend(true);
 
 	if (setWhite)
 	{

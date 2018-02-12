@@ -21,4 +21,7 @@
 		PrimitiveType GetPrimitiveType () const;
 		
 		MaterialInstance* GetMaterialInstance () const;
+		
+		void SetFakeTransparent(bool fakeTrasparent);
+		bool IsFakeTransparent() const;
 	};

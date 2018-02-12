@@ -152,8 +152,9 @@ namespace PX2
 
 		// Update
 	public:
-		void SetUpdateTime (float time);
-		float GetUpdateTime () const;
+		void SetFixUpdateTime (float time);
+		float GetFixUpdateTime () const;
+		void ResetFixUpdateTiming();
 
 		void SetOnlyShowUpdate(bool onlyShowUpdate);
 		bool IsOnlyShowUpdate() const;
@@ -204,7 +205,7 @@ public_internal:
 
 		float mUpdateTime;
 		float mUpdateTiming;
-		float mUpdateTimingInit;
+
 		bool mIsOnlyShowUpdate;
 		int mUpdatePriority;
 

@@ -281,6 +281,41 @@ function Vec3.__operators.__div(left, right)
 	return temp;
 end
 
+
+function playFrameScale(frame)
+	local ctrlPlay = frame:GetControllerByName("_ScaleCtrlPlay")
+	if nil==ctrlPlay then
+		ctrlPlay = InterpCurveUniformScaleController:New("_ScaleCtrlPlay")
+		frame:AttachController(ctrlPlay)
+		ctrlPlay:Clear()
+		ctrlPlay:AddPoint(0.0, 1.0, ICM_CURVE_AUTO)
+		ctrlPlay:AddPoint(0.1, 0.8, ICM_CURVE_AUTO)
+	end
+	ctrlPlay:ResetPlay()
+
+	local ctrlStop = frame:GetControllerByName("_ScaleCtrlStop")
+	if nil==ctrlStop then
+		ctrlStop = InterpCurveUniformScaleController:New("_ScaleCtrlStop")
+		frame:AttachController(ctrlStop)
+		ctrlStop:Clear()
+		ctrlStop:AddPoint(0.0, 0.8, ICM_CURVE_AUTO)
+		ctrlStop:AddPoint(0.1, 1.0, ICM_CURVE_AUTO)
+	end
+	ctrlStop:Stop()
+end
+
+function playFrameNormal(frame)
+	local ctrlPlay = frame:GetControllerByName("_ScaleCtrlPlay")
+	if nil~=ctrlPlay then
+		ctrlPlay:Stop()
+	end
+
+	local ctrlStop = frame:GetControllerByName("_ScaleCtrlStop")
+	if nil~=ctrlStop then
+		ctrlStop:ResetPlay()
+	end
+end
+
 FES_NORMAL = 0
 FES_ITALIC = 1
 FES_UNDERLINE = 2
@@ -308,6 +343,9 @@ UIPT_MOVED = 4
 UIPT_WHELLED = 5
 UIPT_MAX_TYPE = 6
 
+DEG_TO_RAD = 0.01745
+RAD_TO_DEG = 57.29578
+
 CMD_EngineUDPInfoTag = "myudpinfo"
 CMD_EngineUDPConnectMeStr = "connectme"
 CMD_PushProject = "pushproject"
@@ -331,6 +369,7 @@ function engine_AddLanguage()
 	PX2_LM_ENGINE:AddItem1("Close", "关闭")
 	PX2_LM_ENGINE:AddItem1("Serial", "串口")
 	PX2_LM_ENGINE:AddItem1("Reload", "重载")
+	PX2_LM_ENGINE:AddItem1("Clear", "清空")
 end
 
 function engine_start()

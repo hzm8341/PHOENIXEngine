@@ -54,4 +54,9 @@
 		TriMesh *GetXYPlane();
 		TriMesh *GetXZPlane();
 		TriMesh *GetYZPlane();
+		
+		// Untity
+	public:
+		void PlayScale(Controlledable *contrable);
+		void PlayNormal(Controlledable *contrable);
 	};

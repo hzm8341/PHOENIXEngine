@@ -123,8 +123,6 @@ void CameraPlayController::UpdateCameraRot()
 	AVector ctrlUp = AVector::UNIT_Z;
 	AVector ctrlRight = ctrlDir.Cross(ctrlUp);
 	ctrlRight.Normalize();
-
-	//V_GAMEMAN.SetCtrlDir(ctrlDir, ctrlRight, ctrlUp);
 }
 //----------------------------------------------------------------------------
 void CameraPlayController::UpdateCameraPos()
@@ -166,7 +164,6 @@ void CameraPlayController::_TouchCallback(SizeNode *object,
 		if (SizeNodePickType::SNPT_WIDGET_PICKED == ct)
 		{
 
-
 		}
 	}
 }
@@ -178,7 +175,6 @@ SizeNode *CameraPlayController::GetTouchSizeNode()
 //----------------------------------------------------------------------------
 void CameraPlayController::OnEvent(Event *ent)
 {
-
 	if (InputEventSpace::IsIn(ent))
 	{
 		// mouse
@@ -276,6 +272,7 @@ void CameraPlayController::OnEvent(Event *ent)
 //----------------------------------------------------------------------------
 CameraPlayController::CameraPlayController(LoadConstructor value) :
 Controller(value),
+mCameraNode(0),
 mTouchSizeNode(0)
 {
 }
@@ -287,6 +284,8 @@ void CameraPlayController::Load(InStream& source)
 	Controller::Load(source);
 	PX2_VERSION_LOAD(source);
 
+	source.ReadPointer(mCameraNode);
+
 	PX2_END_DEBUG_STREAM_LOAD(CameraPlayController, source);
 }
 //----------------------------------------------------------------------------
@@ -294,7 +293,7 @@ void CameraPlayController::Link(InStream& source)
 {
 	Controller::Link(source);
 
-	source.ResolveLink(mObject);
+	source.ResolveLink(mCameraNode);
 }
 //----------------------------------------------------------------------------
 void CameraPlayController::PostLink()
@@ -306,6 +305,8 @@ bool CameraPlayController::Register(OutStream& target) const
 {
 	if (Controller::Register(target))
 	{
+		target.Register(mCameraNode);
+
 		return true;
 	}
 	return false;
@@ -318,6 +319,8 @@ void CameraPlayController::Save(OutStream& target) const
 	Controller::Save(target);
 	PX2_VERSION_SAVE(target);
 
+	target.WritePointer(mCameraNode);
+
 	PX2_END_DEBUG_STREAM_SAVE(CameraPlayController, target);
 }
 //----------------------------------------------------------------------------
@@ -325,6 +328,8 @@ int CameraPlayController::GetStreamingSize(Stream &stream) const
 {
 	int size = Controller::GetStreamingSize(stream);
 	size += PX2_VERSION_SIZE(mVersion);
+
+	size += PX2_POINTERSIZE(mCameraNode);
 
 	return size;
 }

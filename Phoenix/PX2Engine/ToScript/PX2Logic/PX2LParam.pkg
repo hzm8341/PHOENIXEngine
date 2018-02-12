@@ -19,6 +19,9 @@
 		void SetDataType(FunParamType type);
 		FunParamType GetDataType() const;
 		bool IsOwnObjectParam() const;
+		
+		void SetEnum(bool isEnum);
+		bool IsEnum() const;
 
 		void SetValue(const Any &any);
 		void SetValueFromString(const std::string &valueStr);

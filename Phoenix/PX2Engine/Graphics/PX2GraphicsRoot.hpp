@@ -16,6 +16,7 @@
 #include "PX2Projector.hpp"
 #include "PX2TriMesh.hpp"
 #include "PX2RenderWindow.hpp"
+#include "PX2Controlledable.hpp"
 
 namespace PX2
 {
@@ -168,6 +169,15 @@ namespace PX2
 	
 	protected:
 		std::map<FString, std::string> mShadersMap;
+
+		// Info
+	public:
+		void LogInfo(const std::string &infoStr);
+
+		// Untity
+	public:
+		void PlayScale(Controlledable *contrable);
+		void PlayNormal(Controlledable *contrable);
 	};
 
 #include "PX2GraphicsRoot.inl"

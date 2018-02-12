@@ -5,6 +5,7 @@
 
 #include "PX2UIFrame.hpp"
 #include "PX2UIButton.hpp"
+#include "PX2UICheckButton.hpp"
 
 namespace PX2
 {
@@ -21,7 +22,8 @@ namespace PX2
 		UICollapseItem();
 		virtual ~UICollapseItem();
 
-		virtual void SetName(const std::string &name);
+		void SetFont(const std::string &font);
+		void SetTitle(const std::string &title);
 
 		void Expand(bool expand);
 		bool IsExpand() const;
@@ -32,6 +34,7 @@ namespace PX2
 		void SetContentHeight(float cntHeight);
 		float GetAllHeight() const;
 
+		UIButton *GetButton();
 		UIFrame *GetContentFrame();
 
 	public_internal:
@@ -43,11 +46,15 @@ namespace PX2
 		void _MarkPanelRecal();
 
 		UICollapsePanel *mUICollapsePanel;
+		std::string mFont;
+		std::string mTitle;
 		bool mIsExpand;
 		float mExpandBarHeight;
 		float mContentHeight;
 		UIButtonPtr mExpandBut;
 		UIFramePtr mContentFrame;
+
+		UICheckButtonPtr mCheckBut;
 	};
 
 	PX2_REGISTER_STREAM(UICollapseItem);

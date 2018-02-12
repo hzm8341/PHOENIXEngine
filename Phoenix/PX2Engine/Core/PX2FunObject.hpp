@@ -37,6 +37,9 @@ namespace PX2
 
 		std::string Name;
 		FunParamType Type;
+		std::string TypeName;
+		bool IsEnum;
+		bool IsEnumItem;
 		Any Value;
 	};
 
@@ -54,17 +57,18 @@ namespace PX2
 		bool IsClassCatalogue;
 		std::string ParentClassName;
 
+		bool IsEnum;
 		bool IsStatic;
 		std::string ClassName;
 		std::string Name;
 		std::string SigletonName;
 		std::string Tag;
 
-		void AddInput(const std::string &paramName, FunParamType type,
-			const Any &paramValue);
+		void AddInput(const std::string &paramName, FunParamType type, const std::string &tName,
+			const Any &paramValue, bool isEnumItem = false, bool isEnum = false);
 		void RemoveInput(const std::string &paramName);
-		void AddOutput(const std::string &paramName, FunParamType type,
-			const Any &paramValue);
+		void AddOutput(const std::string &paramName, FunParamType type, const std::string &tName,
+			const Any &paramValue, bool isEnum = false);
 
 		const std::vector<FunParam> &GetInParams() const;
 		int GetNumInParams() const;
@@ -82,6 +86,7 @@ namespace PX2
 			PT_CONST,
 			PT_VARIABLE,
 			PT_VALUE,
+			PT_ENUM,
 			PT_ENUMSTRING,
 			PT_VALUESELECT,
 			PT_VARIABLESELECT,
@@ -98,6 +103,10 @@ namespace PX2
 	public:
 		FunObject *GetClass (const std::string &className);
 		FunObject *AddClass(const std::string &className);
+
+		FunObject *GetEnum(const std::string &enumName);
+		FunObject *AddEnum(const std::string &enumName);
+
 		FunObject *GetFunObject(const std::string &className,
 			const std::string &funName);
 
@@ -108,6 +117,7 @@ namespace PX2
 
 	public:
 		std::vector<Pointer0<FunObject> > mChildFunObjectVec_Class;
+		std::vector<Pointer0<FunObject> > mChildFunObjectVec_Enum;
 		std::vector<Pointer0<FunObject> > mChildFunObjectVec;
 
 		FunObject *ParentFunObject;

@@ -14,6 +14,7 @@ namespace PX2
 	PX2_EVENT(SpeakPause)
 	PX2_EVENT(SpeakCancel)
 	PX2_EVENT(SpeakFinish)
+	PX2_EVENT(SpeakText)
 	PX2_EVENT(RecordStart)
 	PX2_EVENT(RecordEnd)
 	PX2_EVENT(RecognizeResults)

@@ -233,6 +233,20 @@ bool UIPicBox::IsUseAlphaBlend() const
 	return mi->GetMaterial()->GetAlphaProperty(0, 0)->BlendEnabled;
 }
 //----------------------------------------------------------------------------
+void UIPicBox::UseAlphaBlendAdd(bool use)
+{
+	MaterialInstance *mi = GetMaterialInstance();
+	mi->GetMaterial()->GetAlphaProperty(0, 0)->BlendEnabled = true;
+	mi->GetMaterial()->GetAlphaProperty(0, 0)->SrcBlend = AlphaProperty::SBM_ONE;
+	mi->GetMaterial()->GetAlphaProperty(0, 0)->DstBlend = AlphaProperty::DBM_ONE;
+}
+//----------------------------------------------------------------------------
+void UIPicBox::SetDoubleSide(bool doubleSide)
+{
+	MaterialInstance *mi = GetMaterialInstance();
+	mi->GetMaterial()->GetCullProperty(0, 0)->Enabled = !doubleSide;
+}
+//----------------------------------------------------------------------------
 void UIPicBox::SetTexCornerSize(float widthLB, float heightLB,
 	float widthRT, float heightRT)
 {

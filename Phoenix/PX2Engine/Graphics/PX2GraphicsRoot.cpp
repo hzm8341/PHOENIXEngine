@@ -18,6 +18,8 @@
 #include "PX2StandardMesh.hpp"
 #include "PX2Time.hpp"
 #include "PX2VBIBManager.hpp"
+#include "PX2GraphicsEventType.hpp"
+#include "PX2InterpCurveUniformScaleCtrl.hpp"
 using namespace PX2;
 
 const std::string GraphicsRoot::sEmptyResPath = "EmptyResPath";
@@ -398,5 +400,59 @@ const std::string *GraphicsRoot::GetShaderStr(const char *filename)
 	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+void GraphicsRoot::LogInfo(const std::string &infoStr)
+{
+	Event *ent = PX2_CREATEEVENTEX(GraphicsES, Info);
+	ent->SetDataStr0(infoStr);
+	ent->SetData(infoStr);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void GraphicsRoot::PlayScale(Controlledable *contrable)
+{
+	auto ctrlScalePlay = DynamicCast<InterpCurveUniformScaleController>(
+		contrable->GetControllerByName("CtrlScalePlay"));
+	if (0 == ctrlScalePlay)
+	{
+		ctrlScalePlay = InterpCurveUniformScaleController::New("CtrlScalePlay");
+		contrable->AttachController(ctrlScalePlay);
+		ctrlScalePlay->Clear();
+		ctrlScalePlay->AddPoint(0.0f, 1.0f, ICM_CURVE_AUTO);
+		ctrlScalePlay->AddPoint(0.1f, 0.8f, ICM_CURVE_AUTO);
+		contrable->AttachController(ctrlScalePlay);
+	}
+	ctrlScalePlay->ResetPlay();
+
+	auto ctrlScaleStop = DynamicCast<InterpCurveUniformScaleController>(
+		contrable->GetControllerByName("CtrlScaleStop"));
+	if (0 == ctrlScaleStop)
+	{
+		ctrlScaleStop = InterpCurveUniformScaleController::New("CtrlScaleStop");
+		contrable->AttachController(ctrlScaleStop);
+		ctrlScaleStop->Clear();
+		ctrlScaleStop->AddPoint(0.0f, 0.8f, ICM_CURVE_AUTO);
+		ctrlScaleStop->AddPoint(0.1f, 1.0f, ICM_CURVE_AUTO);
+		contrable->AttachController(ctrlScaleStop);
+	}
+	ctrlScaleStop->Stop();
+}
+//----------------------------------------------------------------------------
+void GraphicsRoot::PlayNormal(Controlledable *contrable)
+{
+	auto ctrlScalePlay = DynamicCast<InterpCurveUniformScaleController>(
+		contrable->GetControllerByName("CtrlScalePlay"));
+	if (0 != ctrlScalePlay)
+	{
+		ctrlScalePlay->Stop();
+	}
+
+	auto ctrlScaleStop = DynamicCast<InterpCurveUniformScaleController>(
+		contrable->GetControllerByName("CtrlScaleStop"));
+	if (0 != ctrlScaleStop)
+	{
+		ctrlScaleStop->ResetPlay();
+	}
 }
 //----------------------------------------------------------------------------

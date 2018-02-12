@@ -15,18 +15,64 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Object, LFile);
 LFile::LFile() :
 mPlatformType(PT_ENGINE)
 {
-	mBlockProgram = new0 LBlock(LBlock::MT_CONTROL);
-	mBlockProgram->SetCtrlType(LBlock::CT_PROGRAM);
-	mBlockProgram->RegistFunObj(*(PX2_LOGICM.GetCtrl("Program")));
+	LBlockPtr blockProgramStart = new0 LBlock(LBlock::MT_CONTROL);
+	blockProgramStart->SetCtrlType(LBlock::CT_PROGRAMSTART);
+	blockProgramStart->RegistFunObj(*(PX2_LOGICM.GetCtrl("ProgramStart")));
+	blockProgramStart->SetAnchorParam(40.0f, -40.0f);
+	AddBlockPrograms(blockProgramStart);
+
+	LBlockPtr blockProgramFixUpdate = new0 LBlock(LBlock::MT_CONTROL);
+	blockProgramFixUpdate->SetCtrlType(LBlock::CT_PROGRAMFIXUPDATE);
+	blockProgramFixUpdate->RegistFunObj(*(PX2_LOGICM.GetCtrl("ProgramFixUpdate")));
+	blockProgramFixUpdate->SetAnchorParam(480.0f, -40.0f);
+	AddBlockPrograms(blockProgramFixUpdate);
 }
 //----------------------------------------------------------------------------
 LFile::~LFile()
 {
 }
 //----------------------------------------------------------------------------
-LBlock * LFile::GetBlockProgram()
+bool LFile::AddBlockPrograms(LBlock *block)
 {
-	return mBlockProgram;
+	if (IsHasBlockProgram(block))
+		return false;
+
+	mBlockPrograms.push_back(block);
+	block->SetLFile(this);
+
+	return true;
+}
+//----------------------------------------------------------------------------
+bool LFile::IsHasBlockProgram(LBlock *block)
+{
+	for (int i = 0; i < (int)mBlockPrograms.size(); i++)
+	{
+		if (block == mBlockPrograms[i])
+			return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+void LFile::RemoveBlockProgram(LBlock *block)
+{
+	auto it = mBlockPrograms.begin();
+	for (; it != mBlockPrograms.end();)
+	{
+		if (block == *it)
+		{
+			it = mBlockPrograms.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+std::vector<LBlockPtr> &LFile::GetBlockPrograms()
+{
+	return mBlockPrograms;
 }
 //----------------------------------------------------------------------------
 void LFile::SetPlatformType(LogicFilePlatformType pt)
@@ -50,6 +96,66 @@ bool LFile::IsPreCompiledParam(const std::string &paramName)
 	return false;
 }
 //----------------------------------------------------------------------------
+void LFile::_CompileFile(std::string &script)
+{
+	LogicFilePlatformType pt = GetPlatformType();
+	const std::string &fileName = GetName();
+
+	if (pt == PT_ENGINE)
+	{
+		script += fileName + " = class(LSController, \n";
+		script += "{ \n";
+		script += "    _name = " + std::string("\"") + fileName + "\"" + ",\n";
+		script += "    _scriptControl = nil,\n";
+		script += "    _ctrlable = nil,\n";
+		script += "}); \n";
+		script += "\n";
+		script += "function " + fileName + ":OnAttached()\n";
+		script += std::string("    PX2_LOGGER:LogInfo(\"script_lua\", ") +
+			"\"\"..self._name..\" OnAttached\")\n";
+		script += "    self._scriptControl = Cast:ToSC(self.__object)\n";
+		script += "    self._ctrlable = self._scriptControl:GetControlledable()\n";
+		script += "end\n";
+		script += "\n";
+
+		// start
+		script += "function " + fileName + ":OnInitUpdate()\n";
+
+		script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
+
+		for (int i = 0; i < (int)mBlockPrograms.size(); i++)
+		{
+			LBlock *lBlock = mBlockPrograms[i];
+			if (lBlock)
+			{
+				lBlock->CompileStart(mCompiledString, 1, this);
+			}
+		}
+
+		script += "end\n";
+
+		script += "\n";
+
+		// update
+		script += "function " + fileName + ":OnFixUpdate()\n";
+
+		script += "    PX2_LOGICM:SetCurLogicObject(self._ctrlable)\n";
+
+		for (int i = 0; i < (int)mBlockPrograms.size(); i++)
+		{
+			LBlock *lBlock = mBlockPrograms[i];
+			if (lBlock)
+			{
+				lBlock->CompileFixUpdate(mCompiledString, 0, this);
+			}
+		}
+
+		script += "end\n";
+
+		script += "\n";
+	}
+}
+//----------------------------------------------------------------------------
 const std::string &LFile::Compile()
 {
 	PreCompiledParams.clear();
@@ -62,11 +168,18 @@ const std::string &LFile::Compile()
 
 	mCompiledString += "\n";
 
-	mBlockProgram->PreCompile(mCompiledString, this, true);
+	for (int i= 0; i < (int)mBlockPrograms.size(); i++)
+	{
+		LBlock *lBlock = mBlockPrograms[i];
+		if (lBlock)
+		{
+			lBlock->PreCompile(mCompiledString, this, true);
+		}
+	}
 
 	mCompiledString += "\n";
 
-	mBlockProgram->Compile(mCompiledString, 0, this, true);
+	_CompileFile(mCompiledString);
 
 	mCompiledString += "\n";
 
@@ -89,7 +202,13 @@ void LFile::Load(InStream& source)
 	PX2_VERSION_LOAD(source);
 
 	source.ReadEnum(mPlatformType);
-	source.ReadPointer(mBlockProgram);
+	int numProgram = 0;
+	source.Read(numProgram);
+	mBlockPrograms.resize(numProgram);
+	for (int i = 0; i < numProgram; i++)
+	{
+		source.ReadPointer(mBlockPrograms[i]);
+	}
 
 	PX2_END_DEBUG_STREAM_LOAD(LFile, source);
 }
@@ -98,9 +217,10 @@ void LFile::Link(InStream& source)
 {
 	Object::Link(source);
 
-	if (mBlockProgram)
+	int numProgram = (int)mBlockPrograms.size();
+	for (int i = 0; i < numProgram; i++)
 	{
-		source.ResolveLink(mBlockProgram);
+		source.ResolveLink(mBlockPrograms[i]);
 	}
 }
 //----------------------------------------------------------------------------
@@ -108,9 +228,14 @@ void LFile::PostLink()
 {
 	Object::PostLink();
 
-	if (mBlockProgram)
+	int numProgram = (int)mBlockPrograms.size();
+	for (int i = 0; i < numProgram; i++)
 	{
-		mBlockProgram->PostLink();
+		if (mBlockPrograms[i])
+		{
+			mBlockPrograms[i]->PostLink();
+			mBlockPrograms[i]->SetLFile(this);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -118,9 +243,11 @@ bool LFile::Register(OutStream& target) const
 {
 	if (Object::Register(target))
 	{
-		if (mBlockProgram)
+		int numProgram = (int)mBlockPrograms.size();
+		for (int i = 0; i < numProgram; i++)
 		{
-			target.Register(mBlockProgram);
+			if (mBlockPrograms[i])
+				target.Register(mBlockPrograms[i]);
 		}
 
 		return true;
@@ -136,7 +263,13 @@ void LFile::Save(OutStream& target) const
 	PX2_VERSION_SAVE(target);
 
 	target.WriteEnum(mPlatformType);
-	target.WritePointer(mBlockProgram);
+
+	int numPrograms = (int)mBlockPrograms.size();
+	target.Write(numPrograms);
+	for (int i = 0; i < numPrograms; i++)
+	{
+		target.WritePointer(mBlockPrograms[i]);
+	}
 
 	PX2_END_DEBUG_STREAM_SAVE(LFile, target);
 }
@@ -147,7 +280,13 @@ int LFile::GetStreamingSize(Stream &stream) const
 	size += PX2_VERSION_SIZE(mVersion);
 
 	size += PX2_ENUMSIZE(mPlatformType);
-	size += PX2_POINTERSIZE(mBlockProgram);
+
+	int numPrograms = (int)mBlockPrograms.size();
+	size += sizeof(numPrograms);
+	for (int i = 0; i < numPrograms; i++)
+	{
+		size += PX2_POINTERSIZE(mBlockPrograms[i]);
+	}
 
 	return size;
 }

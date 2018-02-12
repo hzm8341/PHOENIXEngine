@@ -59,6 +59,7 @@ INCPATH := \
 	-I ../Unity/FreeType/include/freetype/ \
 	-I ../Unity/FreeType/include/config/ \
 	-I ../Unity/FreeType/include/internal/ \
+	-I ../Unity/serial/ \
 	-I ../Net/ \
 	-I ../Effect/ \
 	-I ../Terrains/ \

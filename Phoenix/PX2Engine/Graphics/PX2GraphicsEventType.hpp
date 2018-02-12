@@ -10,6 +10,7 @@ namespace PX2
 {
 
 	PX2_DECLARE_EVENT_BEGIN(PX2_ENGINE_ITEM GraphicsES)
+	PX2_EVENT(Info)
 	PX2_EVENT(AddObject)
 	PX2_EVENT(RemoveObject)
 	PX2_EVENT(CanvasDestory)

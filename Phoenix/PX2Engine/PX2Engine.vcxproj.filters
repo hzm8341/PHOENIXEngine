@@ -283,9 +283,6 @@
     <Filter Include="0.Base\Graphics\Animation">
       <UniqueIdentifier>{51a476f4-e964-4479-9362-6eb7c8042d84}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3.ToScript">
-      <UniqueIdentifier>{13a27acf-ca27-4ad2-abea-e5891671c81b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1.Ext\Effect\Effects">
       <UniqueIdentifier>{8f6e91e8-976b-4059-951d-f036e9a053d4}</UniqueIdentifier>
     </Filter>
@@ -445,21 +442,6 @@
     <Filter Include="0.Base\Unity\GPIO">
       <UniqueIdentifier>{a3045b45-47f6-4130-b07b-b5f31bc1d504}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.Application">
-      <UniqueIdentifier>{e47b51cb-85c5-48bb-beca-e98ab5c50d76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Application\Controllers">
-      <UniqueIdentifier>{e42705d6-a53a-43ed-b508-87f621c208e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Application\Event">
-      <UniqueIdentifier>{623f5262-8396-476e-bca5-d672cee49130}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Application\Canvas">
-      <UniqueIdentifier>{0d7487e0-bb5a-46e2-9523-c9b4811c7883}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Application\Redo">
-      <UniqueIdentifier>{46305e11-c405-46c7-86c4-d83d71906157}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Unity\Bluetooth">
       <UniqueIdentifier>{f20569f5-d693-4f86-b8e6-60e977d8d502}</UniqueIdentifier>
     </Filter>
@@ -468,9 +450,6 @@
     </Filter>
     <Filter Include="1.Ext\UI\Frames\Text">
       <UniqueIdentifier>{19aa039c-3324-425d-a374-8207aa2122fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Application\Project">
-      <UniqueIdentifier>{b573ff0e-3d2a-4f34-a02b-817868204203}</UniqueIdentifier>
     </Filter>
     <Filter Include="1.Ext\UI\Frames\ColorSelect">
       <UniqueIdentifier>{1032ccd1-9409-4636-918a-65ecb169d1b6}</UniqueIdentifier>
@@ -508,9 +487,6 @@
     <Filter Include="0.Base\Unity\Voice">
       <UniqueIdentifier>{a25acd62-b1b1-4060-970c-a3958b256149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.Application\CameraCtrl">
-      <UniqueIdentifier>{3b059404-9747-4e80-8357-b9e8a8b46d13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1.Ext\UI\Frames\Web">
       <UniqueIdentifier>{ea5500b1-9b2c-4a5c-8aae-56cfc2d8c1cc}</UniqueIdentifier>
     </Filter>
@@ -522,9 +498,6 @@
     </Filter>
     <Filter Include="1.Ext\UI\Frames\CollapsePanel">
       <UniqueIdentifier>{43c74bdf-679d-41ad-9717-20e0deb93fc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.Application\Net">
-      <UniqueIdentifier>{a2269cf3-cd1b-4d27-bb5f-a48106143d1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Net\Sockets\ServerSocket">
       <UniqueIdentifier>{65bb203b-ce86-4492-881f-ea11020c70cc}</UniqueIdentifier>
@@ -580,9 +553,6 @@
     <Filter Include="0.Base\Net\ServerHTTP\Server">
       <UniqueIdentifier>{80bd4948-9d16-4247-a93d-8e1b48efb177}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.Application\CreateCast">
-      <UniqueIdentifier>{3f3addcd-c214-48a5-94e9-2e0100bd8826}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Net\Sockets\DatagramSocket">
       <UniqueIdentifier>{f340a2c4-f69c-4032-a307-55b4c4b63a01}</UniqueIdentifier>
     </Filter>
@@ -600,6 +570,33 @@
     </Filter>
     <Filter Include="0.Base\Unity\Serial">
       <UniqueIdentifier>{edbc34e0-3779-4723-8979-b97df57fc5fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock">
+      <UniqueIdentifier>{78b95b03-9ae5-40a6-951b-233bc24454e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\ToScript">
+      <UniqueIdentifier>{5748bb6f-3268-4333-90df-25f7c0cde221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\PluginExport">
+      <UniqueIdentifier>{8494093f-df59-4ec0-a091-595bb43fd6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\Events">
+      <UniqueIdentifier>{3891ef00-e5da-488c-ab4f-4a46b903a4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\Sprite">
+      <UniqueIdentifier>{0b46d7ae-95af-43d8-956a-619c454ee48c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\Block">
+      <UniqueIdentifier>{782cc8fb-a598-4d5d-8250-915cee7a35a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\UI">
+      <UniqueIdentifier>{48ae808a-98f6-47c3-92cf-b56093559d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\UI\Cata">
+      <UniqueIdentifier>{7876199f-dab1-4d9d-bfe1-9c6cd5fd405e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\UI\Editor">
+      <UniqueIdentifier>{ff43e401-6e3e-487c-9144-cac83c5867b6}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Unity\Base64">
       <UniqueIdentifier>{63a35402-ca19-4833-89bf-58f210b34616}</UniqueIdentifier>
@@ -628,26 +625,11 @@
     <Filter Include="0.Base\Net\GameServer\Client">
       <UniqueIdentifier>{bbac70b8-7c7f-4195-8fd3-7d2bf5130695}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\AI">
-      <UniqueIdentifier>{40217472-a495-4bae-b118-c733cd41f89e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1.Ext\Voxel">
       <UniqueIdentifier>{5ae5b4f9-aabe-406e-b8e7-5645d1e22411}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Unity\Wifi">
       <UniqueIdentifier>{4472b59f-4f8e-438c-9a20-cf94bcfda375}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\AI\Way">
-      <UniqueIdentifier>{8fe8c85c-c9b8-43ce-afd9-7600bcb6541a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\AI\OpenSteer">
-      <UniqueIdentifier>{acaf74e3-92e0-4a52-95e0-6b21fe41cf64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\AI\OpenSteer\include">
-      <UniqueIdentifier>{3f2390f9-5844-47b9-a393-ab40a0a2c79c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\AI\OpenSteer\src">
-      <UniqueIdentifier>{6fe48de0-6720-49b0-97c6-a425e310f9f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="1.Ext\Physics">
       <UniqueIdentifier>{fe40ce68-6bbe-449d-8146-73089d36fd89}</UniqueIdentifier>
@@ -691,29 +673,122 @@
     <Filter Include="1.Ext\Physics\Bullet\BulletDynamics\Vehicle">
       <UniqueIdentifier>{edcaf158-f88f-4a5f-a313-faca471b2a69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\AI\Agent">
-      <UniqueIdentifier>{9e89d000-80c9-4048-96fa-135152e765c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Unity\Serial\serial">
       <UniqueIdentifier>{58a4bc32-e6cb-4f96-acbc-4f9876adaa08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial\serial\include">
-      <UniqueIdentifier>{479c3a2e-4524-46f5-9380-d6e0ba84bc0a}</UniqueIdentifier>
+    <Filter Include="3.Application">
+      <UniqueIdentifier>{e47b51cb-85c5-48bb-beca-e98ab5c50d76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial\serial\include\serial">
-      <UniqueIdentifier>{218771a3-a761-4a07-a344-2efcf91f4567}</UniqueIdentifier>
+    <Filter Include="3.Application\Controllers">
+      <UniqueIdentifier>{e42705d6-a53a-43ed-b508-87f621c208e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial\serial\include\serial\impl">
-      <UniqueIdentifier>{fcfb9e58-eb6c-4427-ad66-4cf4af3aa24b}</UniqueIdentifier>
+    <Filter Include="3.Application\Event">
+      <UniqueIdentifier>{623f5262-8396-476e-bca5-d672cee49130}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial\serial\src">
-      <UniqueIdentifier>{6ccc4448-58bc-4f18-9a63-6b141506d4fb}</UniqueIdentifier>
+    <Filter Include="3.Application\Canvas">
+      <UniqueIdentifier>{0d7487e0-bb5a-46e2-9523-c9b4811c7883}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial\serial\src\impl">
-      <UniqueIdentifier>{d22ef6a5-b5f2-4e6d-be71-3ad8a1fe2e1d}</UniqueIdentifier>
+    <Filter Include="3.Application\Redo">
+      <UniqueIdentifier>{46305e11-c405-46c7-86c4-d83d71906157}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0.Base\Unity\Serial\serial\src\impl\list_ports">
-      <UniqueIdentifier>{3a520d41-0d2e-44ca-a47f-33cffd7e6b69}</UniqueIdentifier>
+    <Filter Include="3.Application\Project">
+      <UniqueIdentifier>{b573ff0e-3d2a-4f34-a02b-817868204203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\CameraCtrl">
+      <UniqueIdentifier>{3b059404-9747-4e80-8357-b9e8a8b46d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Net">
+      <UniqueIdentifier>{a2269cf3-cd1b-4d27-bb5f-a48106143d1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\CreateCast">
+      <UniqueIdentifier>{3f3addcd-c214-48a5-94e9-2e0100bd8826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4.ToScript">
+      <UniqueIdentifier>{13a27acf-ca27-4ad2-abea-e5891671c81b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI">
+      <UniqueIdentifier>{9bfa247e-74dc-48b8-bcc1-fcb92382591b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Agent">
+      <UniqueIdentifier>{9e89d000-80c9-4048-96fa-135152e765c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer">
+      <UniqueIdentifier>{acaf74e3-92e0-4a52-95e0-6b21fe41cf64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer\include">
+      <UniqueIdentifier>{3f2390f9-5844-47b9-a393-ab40a0a2c79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer\src">
+      <UniqueIdentifier>{6fe48de0-6720-49b0-97c6-a425e310f9f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Way">
+      <UniqueIdentifier>{8fe8c85c-c9b8-43ce-afd9-7600bcb6541a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace">
+      <UniqueIdentifier>{6896033d-3d99-42ca-b30d-98d4dce2be9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection">
+      <UniqueIdentifier>{56d6598d-a7a0-492f-8ddf-4423d47ae939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceAlignment">
+      <UniqueIdentifier>{2f0dfbaf-09b6-4fb8-917c-a607da9aae40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceIdentification">
+      <UniqueIdentifier>{07076537-49a8-498e-a517-7c6dce3ac434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceAlignment\include">
+      <UniqueIdentifier>{42545b12-7ff2-4485-86e6-d5c6802fa72e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceAlignment\src">
+      <UniqueIdentifier>{965fb931-a191-41dd-8a55-13ab9a27a057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\include">
+      <UniqueIdentifier>{83d89fe5-7df0-4557-a1a8-cf0ad3924c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\src">
+      <UniqueIdentifier>{acfc091e-a4c8-4821-a1d7-c02f47b35e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\include\classifier">
+      <UniqueIdentifier>{470c85f2-0ca3-4f55-9459-d1623f161245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\include\feat">
+      <UniqueIdentifier>{73bacf36-d8d5-46aa-9d0f-80c99f0b5ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\include\io">
+      <UniqueIdentifier>{87274f70-deac-40b0-bc39-0cda4dfa6ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\include\util">
+      <UniqueIdentifier>{040e4793-7f99-457d-b92b-cf96818d16df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\src\classifier">
+      <UniqueIdentifier>{6900ffd6-5dd1-4ab8-ba8c-066d80832bc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\src\feat">
+      <UniqueIdentifier>{b2a8a164-1377-4c7d-a585-17bc926a3e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\src\io">
+      <UniqueIdentifier>{e2cde7ec-97bf-4426-9185-eac818520041}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\src\test">
+      <UniqueIdentifier>{6d7e623e-0fb4-4e69-b729-aea864ada067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceDetection\src\util">
+      <UniqueIdentifier>{c75fccd6-cf71-4f61-af87-5e2587a7ac0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceIdentification\include">
+      <UniqueIdentifier>{31c2851a-676d-48f8-907b-e9e8219f859d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SeetaFace\FaceIdentification\src">
+      <UniqueIdentifier>{66065f66-088d-449b-a85b-ee994c2a14b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\LiDar">
+      <UniqueIdentifier>{1493d1ff-1dde-4de8-914b-54af0ee1960c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\LiDar\iiiroboticslidar2">
+      <UniqueIdentifier>{f04aa19b-6dd6-43d8-858e-9e6cea8d1562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Logic\Logic\BlueBlock\UI\Cata\Param">
+      <UniqueIdentifier>{31ce53bd-af9d-43a2-8e7c-f06c87bc4a0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1954,13 +2029,13 @@
       <Filter>1.Ext\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Application.hpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Applications.hpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClInclude>
     <ClInclude Include="ToScript\PX2ToLua.hpp">
-      <Filter>3.ToScript</Filter>
+      <Filter>4.ToScript</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2EditEventType.hpp">
       <Filter>0.Base\Unity\Edit</Filter>
@@ -2395,10 +2470,10 @@
       <Filter>0.Base\Graphics\SceneGraph</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2TriggerController.hpp">
-      <Filter>2.Application\Controllers</Filter>
+      <Filter>3.Application\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2AmbientRegionController.hpp">
-      <Filter>2.Application\Controllers</Filter>
+      <Filter>3.Application\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="Effect\PX2BeamEmitter.hpp">
       <Filter>1.Ext\Effect\Effects\Beam</Filter>
@@ -2482,10 +2557,10 @@
       <Filter>0.Base\Graphics\Animation\Frames</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2ProjectEvent.hpp">
-      <Filter>2.Application\Event</Filter>
+      <Filter>3.Application\Event</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2ProjectEventData.hpp">
-      <Filter>2.Application\Event</Filter>
+      <Filter>3.Application\Event</Filter>
     </ClInclude>
     <ClInclude Include="UI\PX2UIRound.hpp">
       <Filter>1.Ext\UI\Frames\Round</Filter>
@@ -2602,40 +2677,40 @@
       <Filter>0.Base\Unity\GPIO</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineSceneCanvas.hpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineUICanvas.hpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineCanvas.hpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2ProjectEventController.hpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2RUStateManager.hpp">
-      <Filter>2.Application\Redo</Filter>
+      <Filter>3.Application\Redo</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2RedoUndo.hpp">
-      <Filter>2.Application\Redo</Filter>
+      <Filter>3.Application\Redo</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2Bluetooth.hpp">
       <Filter>0.Base\Unity\Bluetooth</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Project.hpp">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Scene.hpp">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2UI.hpp">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2ObjCast.hpp">
-      <Filter>2.Application\CreateCast</Filter>
+      <Filter>3.Application\CreateCast</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Creater.hpp">
-      <Filter>2.Application\CreateCast</Filter>
+      <Filter>3.Application\CreateCast</Filter>
     </ClInclude>
     <ClInclude Include="UI\PX2UIColorSelect.hpp">
       <Filter>1.Ext\UI\Frames\ColorSelect</Filter>
@@ -3310,13 +3385,13 @@
       <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2AppBoostInfo.hpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2GeneralServer.hpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2GeneralClientConnector.hpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2TCPServer.hpp">
       <Filter>0.Base\Net\TcpServer</Filter>
@@ -3502,19 +3577,19 @@
       <Filter>0.Base\Unity\Edit</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineServer.hpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineClientConnector.hpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineNetCmdProcess.hpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineNetDefine.hpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2EngineNetEvent.hpp">
-      <Filter>2.Application\Event</Filter>
+      <Filter>3.Application\Event</Filter>
     </ClInclude>
     <ClInclude Include="Net\PX2DatagramSocketImpl.hpp">
       <Filter>0.Base\Net\Sockets\DatagramSocket</Filter>
@@ -3526,7 +3601,7 @@
       <Filter>0.Base\Net\UdpServer</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2ApplicationUDPNetInfo.hpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2Arduino.hpp">
       <Filter>0.Base\Unity\Arduino</Filter>
@@ -3542,6 +3617,72 @@
     </ClInclude>
     <ClInclude Include="Logic\PX2Logics.hpp">
       <Filter>1.Ext\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockPre.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlocks.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BDefine.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\BlueBlockPlugin.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\PluginExport</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvent.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvents.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockScriptGenController.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSprite.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSystem.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEdit.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCataFrame.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelCont.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelList.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanels.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlueBlockToLua.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\ToScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBManager.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockConnector.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlock.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2Base64.hpp">
       <Filter>0.Base\Unity\Base64</Filter>
@@ -3580,112 +3721,112 @@
       <Filter>0.Base\Unity\Wifi</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIWayMoveController.hpp">
-      <Filter>1.Ext\AI\Way</Filter>
+      <Filter>2.AI\Way</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\AbstractVehicle.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Annotation.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\LocalSpace.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\lq.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Obstacle.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Pathway.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Proximity.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\SteerLibrary.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Utilities.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Camera.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Clock.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Color.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\OldPathway.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Path.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\PlugIn.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPath.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySegmentRadii.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySingleRadius.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlike.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeBaseDataExtractionPolicies.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeMappings.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeUtilities.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPath.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathAlikeUtilities.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathway.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\SharedPointer.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\SimpleVehicle.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\StandardTypes.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\UnusedParameter.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3Utilities.h">
-      <Filter>1.Ext\AI\OpenSteer\include</Filter>
+      <Filter>2.AI\OpenSteer\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\OpenSteer\src\TerrainRayTest.h">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentPath.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgent.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentGroup.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btAabbUtil2.h">
       <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
@@ -4231,10 +4372,10 @@
       <Filter>1.Ext\Physics</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentUtilities.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentWorld.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PX2BtPhysicsWorld.hpp">
       <Filter>1.Ext\Physics</Filter>
@@ -4243,37 +4384,208 @@
       <Filter>1.Ext\Physics</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentObject.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIInfluenceMap.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2CameraPlayController.hpp">
+      <Filter>3.Application\CameraCtrl</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2Serial.hpp">
       <Filter>0.Base\Unity\Serial</Filter>
     </ClInclude>
-    <ClInclude Include="Unity\PX2Serial1.hpp">
-      <Filter>0.Base\Unity\Serial</Filter>
+    <ClInclude Include="Unity\serial\serial.h">
+      <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClInclude>
-    <ClInclude Include="Unity\serial\include\serial\serial.h">
-      <Filter>0.Base\Unity\Serial\serial\include\serial</Filter>
+    <ClInclude Include="Unity\serial\v8stdint.h">
+      <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClInclude>
-    <ClInclude Include="Unity\serial\include\serial\v8stdint.h">
-      <Filter>0.Base\Unity\Serial\serial\include\serial</Filter>
+    <ClInclude Include="Unity\serial\win.h">
+      <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClInclude>
-    <ClInclude Include="Unity\serial\include\serial\impl\win.h">
-      <Filter>0.Base\Unity\Serial\serial\include\serial\impl</Filter>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
     </ClInclude>
-    <ClInclude Include="Unity\PX2Serial2.hpp">
-      <Filter>0.Base\Unity\Serial</Filter>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\common.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
     </ClInclude>
-    <ClInclude Include="Application\PX2CameraPlayController.hpp">
-      <Filter>2.Application\CameraCtrl</Filter>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\detector.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\face_detection.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\feature_map.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\fust.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\model_reader.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier\lab_boosted_classifier.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\classifier</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier\mlp.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\classifier</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\classifier\surf_mlp.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\classifier</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\feat\lab_feature_map.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\feat</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\feat\surf_feature_map.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\feat</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\io\lab_boost_model_reader.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\io\surf_mlp_model_reader.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\util\image_pyramid.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\util\math_func.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceDetection\include\util\nms.h">
+      <Filter>2.AI\SeetaFace\FaceDetection\include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\cfan.h">
+      <Filter>2.AI\SeetaFace\FaceAlignment\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\common.h">
+      <Filter>2.AI\SeetaFace\FaceAlignment\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\face_alignment.h">
+      <Filter>2.AI\SeetaFace\FaceAlignment\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceAlignment\include\sift.h">
+      <Filter>2.AI\SeetaFace\FaceAlignment\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\aligner.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\bias_adder_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\blob.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\bn_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\common.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\common_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\conv_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\eltwise_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\face_identification.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\hyper_param.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\inner_product_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\log.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\math_functions.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\max_pooling_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\net_factory.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\pad_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\recognizer.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\spatial_transform_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\tform_maker_net.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\SeetaFace\FaceIdentification\include\viplnet.h">
+      <Filter>2.AI\SeetaFace\FaceIdentification\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AILiDar.hpp">
+      <Filter>2.AI\LiDar</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidar.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidarProtocol.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CArcTime.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CCountDown.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CDeviceConnection.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CLidarPacket.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CLidarPacketReceiver.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CLidarUnpacket.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CLogUtitls.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CSimulateSerial.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CTime.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\CTypedef.h">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.hpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AIs.hpp">
+      <Filter>2.AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BProject.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.hpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata\Param</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5376,16 +5688,16 @@
       <Filter>1.Ext\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Application.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ApplicationMap.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2AppliactionPlay.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ApplicationInitTerm.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2EditEventType.cpp">
       <Filter>0.Base\Unity\Edit</Filter>
@@ -5488,9 +5800,6 @@
     </ClCompile>
     <ClCompile Include="UI\PX2UIText.cpp">
       <Filter>1.Ext\UI\Frames\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\PX2UIAuiBlockFrame.cpp">
-      <Filter>1.Ext\UI\Aui</Filter>
     </ClCompile>
     <ClCompile Include="UI\PX2UIAuiFrame.cpp">
       <Filter>1.Ext\UI\Aui</Filter>
@@ -5748,10 +6057,10 @@
       <Filter>0.Base\Graphics\SceneGraph</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2TriggerController.cpp">
-      <Filter>2.Application\Controllers</Filter>
+      <Filter>3.Application\Controllers</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2AmbientRegionController.cpp">
-      <Filter>2.Application\Controllers</Filter>
+      <Filter>3.Application\Controllers</Filter>
     </ClCompile>
     <ClCompile Include="Effect\PX2BeamEmitter.cpp">
       <Filter>1.Ext\Effect\Effects\Beam</Filter>
@@ -5841,10 +6150,10 @@
       <Filter>0.Base\Unity\DynLib</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ProjectEvent.cpp">
-      <Filter>2.Application\Event</Filter>
+      <Filter>3.Application\Event</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ProjectEventData.cpp">
-      <Filter>2.Application\Event</Filter>
+      <Filter>3.Application\Event</Filter>
     </ClCompile>
     <ClCompile Include="UI\PX2UIRound.cpp">
       <Filter>1.Ext\UI\Frames\Round</Filter>
@@ -5931,40 +6240,40 @@
       <Filter>0.Base\Unity\GPIO</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineSceneCanvas.cpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineUICanvas.cpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineCanvas.cpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ProjectEventController.cpp">
-      <Filter>2.Application\Canvas</Filter>
+      <Filter>3.Application\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2RUStateManager.cpp">
-      <Filter>2.Application\Redo</Filter>
+      <Filter>3.Application\Redo</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2RedoUndo.cpp">
-      <Filter>2.Application\Redo</Filter>
+      <Filter>3.Application\Redo</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2Bluetooth.cpp">
       <Filter>0.Base\Unity\Bluetooth</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Scene.cpp">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2UI.cpp">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Project.cpp">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ObjCast.cpp">
-      <Filter>2.Application\CreateCast</Filter>
+      <Filter>3.Application\CreateCast</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Creater.cpp">
-      <Filter>2.Application\CreateCast</Filter>
+      <Filter>3.Application\CreateCast</Filter>
     </ClCompile>
     <ClCompile Include="UI\PX2UIColorSelect.cpp">
       <Filter>1.Ext\UI\Frames\ColorSelect</Filter>
@@ -6237,7 +6546,7 @@
       <Filter>1.Ext\Logic\EventSpace</Filter>
     </ClCompile>
     <ClCompile Include="ToScript\PX2ToLua.cpp">
-      <Filter>3.ToScript</Filter>
+      <Filter>4.ToScript</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2FMODSound.cpp">
       <Filter>0.Base\Unity\SoundFMod</Filter>
@@ -6603,10 +6912,10 @@
       <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2GeneralServer.cpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2GeneralClientConnector.cpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2TCPServer.cpp">
       <Filter>0.Base\Net\TcpServer</Filter>
@@ -6771,22 +7080,22 @@
       <Filter>0.Base\Unity\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ApplicationMenus.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2EditEventData.cpp">
       <Filter>0.Base\Unity\Edit</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineServer.cpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineClientConnector.cpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp">
-      <Filter>2.Application\Net</Filter>
+      <Filter>3.Application\Net</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineNetEvent.cpp">
-      <Filter>2.Application\Event</Filter>
+      <Filter>3.Application\Event</Filter>
     </ClCompile>
     <ClCompile Include="Net\PX2DatagramSocketImpl.cpp">
       <Filter>0.Base\Net\Sockets\DatagramSocket</Filter>
@@ -6798,7 +7107,7 @@
       <Filter>0.Base\Net\UdpServer</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ApplicationUDPNetInfo.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2Arduino.cpp">
       <Filter>0.Base\Unity\Arduino</Filter>
@@ -6812,11 +7121,80 @@
     <ClCompile Include="Unity\PX2VoiceEventType.cpp">
       <Filter>0.Base\Unity\Voice</Filter>
     </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BDefine.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\BlueBlockPlugin.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\PluginExport</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\BlueBlockDll.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\PluginExport</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvent.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvents.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockScriptGenController.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSprite.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteLooks.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteOperator.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystem.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEdit.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCataFrame.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelCont.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelList.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanels.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlueBlockToLua.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\ToScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBManager.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockConnector.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlock.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
     <ClCompile Include="Unity\PX2Base64.cpp">
       <Filter>0.Base\Unity\Base64</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2AppBoostInfo.cpp">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="Voxel\PX2VoxelBlock.cpp">
       <Filter>1.Ext\Voxel</Filter>
@@ -6843,70 +7221,70 @@
       <Filter>0.Base\Unity\Wifi</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIWayMoveController.cpp">
-      <Filter>1.Ext\AI\Way</Filter>
+      <Filter>2.AI\Way</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\lq.c">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Pathway.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Vec3.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Camera.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Clock.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Color.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Obstacle.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\OldPathway.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Path.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\PlugIn.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPath.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySegmentRadii.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySingleRadius.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\SegmentedPath.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\SegmentedPathway.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\SimpleVehicle.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\TerrainRayTest.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\OpenSteer\src\Vec3Utilities.cpp">
-      <Filter>1.Ext\AI\OpenSteer\src</Filter>
+      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentPath.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgent.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentGroup.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btAlignedAllocator.cpp">
       <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
@@ -7272,13 +7650,13 @@
       <Filter>1.Ext\Physics</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentFunctions.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentUtilities.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentWorld.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PX2BtPhysicsWorld.cpp">
       <Filter>1.Ext\Physics</Filter>
@@ -7287,37 +7665,160 @@
       <Filter>1.Ext\Physics</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentObject.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIInfluenceMap.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2CameraPlayController.cpp">
+      <Filter>3.Application\CameraCtrl</Filter>
     </ClCompile>
     <ClCompile Include="Unity\PX2Serial.cpp">
       <Filter>0.Base\Unity\Serial</Filter>
     </ClCompile>
-    <ClCompile Include="Unity\PX2Serial1.cpp">
-      <Filter>0.Base\Unity\Serial</Filter>
+    <ClCompile Include="Unity\serial\list_ports_win.cc">
+      <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClCompile>
-    <ClCompile Include="Unity\serial\src\serial.cc">
-      <Filter>0.Base\Unity\Serial\serial\src</Filter>
+    <ClCompile Include="Unity\serial\serial.cc">
+      <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClCompile>
-    <ClCompile Include="Unity\serial\src\impl\win.cc">
-      <Filter>0.Base\Unity\Serial\serial\src\impl</Filter>
+    <ClCompile Include="Unity\serial\win.cc">
+      <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClCompile>
-    <ClCompile Include="Unity\serial\src\impl\list_ports\list_ports_win.cc">
-      <Filter>0.Base\Unity\Serial\serial\src\impl\list_ports</Filter>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\classifier\lab_boosted_classifier.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\classifier</Filter>
     </ClCompile>
-    <ClCompile Include="Unity\PX2Serial2.cpp">
-      <Filter>0.Base\Unity\Serial</Filter>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\classifier\mlp.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\classifier</Filter>
     </ClCompile>
-    <ClCompile Include="Application\PX2CameraPlayController.cpp">
-      <Filter>2.Application\CameraCtrl</Filter>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\classifier\surf_mlp.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\classifier</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\feat\lab_feature_map.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\feat</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\feat\surf_feature_map.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\feat</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\io\lab_boost_model_reader.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\io</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\io\surf_mlp_model_reader.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\io</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\util\image_pyramid.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\util\nms.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\face_detection.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceDetection\src\fust.cpp">
+      <Filter>2.AI\SeetaFace\FaceDetection\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceAlignment\src\cfan.cpp">
+      <Filter>2.AI\SeetaFace\FaceAlignment\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceAlignment\src\face_alignment.cpp">
+      <Filter>2.AI\SeetaFace\FaceAlignment\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceAlignment\src\sift.cpp">
+      <Filter>2.AI\SeetaFace\FaceAlignment\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\bias_adder_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\blob.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\bn_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\common_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\conv_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\eltwise_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\inner_product_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\log.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\math_functions.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\max_pooling_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\pad_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\spatial_transform_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\SeetaFace\FaceIdentification\src\tform_maker_net.cpp">
+      <Filter>2.AI\SeetaFace\FaceIdentification\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AILiDar.cpp">
+      <Filter>2.AI\LiDar</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\C3iroboticsLidar.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CArcTime.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CCountDown.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CDeviceConnection.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CLidarPacketReceiver.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CLidarUnpacket.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CSimulateSerial.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CTime.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\CLidarPacket.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.cpp">
+      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BProject.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\UI\Cata\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystemArduino.cpp">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PX2UIAuiBlockFrame.cpp">
+      <Filter>1.Ext\UI\Aui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -7688,7 +8189,7 @@
       <Filter>0.Base\Unity\Account</Filter>
     </None>
     <None Include="Application\PX2Application.inl">
-      <Filter>2.Application</Filter>
+      <Filter>3.Application</Filter>
     </None>
     <None Include="Effect\PX2Effectable.inl">
       <Filter>1.Ext\Effect\Effects</Filter>
@@ -7904,10 +8405,10 @@
       <Filter>0.Base\Graphics\SceneGraph</Filter>
     </None>
     <None Include="Application\PX2TriggerController.inl">
-      <Filter>2.Application\Controllers</Filter>
+      <Filter>3.Application\Controllers</Filter>
     </None>
     <None Include="Application\PX2AmbientRegionController.inl">
-      <Filter>2.Application\Controllers</Filter>
+      <Filter>3.Application\Controllers</Filter>
     </None>
     <None Include="Effect\PX2BeamEmitter.inl">
       <Filter>1.Ext\Effect\Effects\Beam</Filter>
@@ -7994,13 +8495,13 @@
       <Filter>0.Base\Mathematics\Query</Filter>
     </None>
     <None Include="Application\PX2Project.inl">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </None>
     <None Include="Application\PX2Scene.inl">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </None>
     <None Include="Application\PX2UI.inl">
-      <Filter>2.Application\Project</Filter>
+      <Filter>3.Application\Project</Filter>
     </None>
     <None Include="Mathematics\PX2TriangleKey.inl">
       <Filter>0.Base\Mathematics\Objects3D</Filter>
@@ -8050,11 +8551,17 @@
     <None Include="Unity\PX2DataBase.inl">
       <Filter>0.Base\Unity\DataBase</Filter>
     </None>
+    <None Include="Logic\BlueBlock\PX2BBlockSprite.inl">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Sprite</Filter>
+    </None>
+    <None Include="Logic\BlueBlock\PX2BBlock.inl">
+      <Filter>1.Ext\Logic\Logic\BlueBlock\Block</Filter>
+    </None>
     <None Include="Voxel\PX2VoxelSection.inl">
       <Filter>1.Ext\Voxel</Filter>
     </None>
     <None Include="AI\PX2AIAgent.inl">
-      <Filter>1.Ext\AI\Agent</Filter>
+      <Filter>2.AI\Agent</Filter>
     </None>
   </ItemGroup>
 </Project>

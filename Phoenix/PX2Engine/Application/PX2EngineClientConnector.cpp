@@ -336,14 +336,9 @@ void EngineClientConnector::BroadcastInfoToLocalNet(int port)
 	std::string name = PX2_APP.GetHostName();
 	std::string bufStr = CMD_EngineUDPInfoTag + " " + name;
 
-	UDPServer *udpServer = PX2_APP.GetEngineUDPServerClient();
-	if (udpServer)
-	{
-		DatagramSocket &udpSocket = udpServer->GetSocket();
-		udpSocket.SetBroadcast(true);
-		udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
-		udpSocket.SetBroadcast(false);
-	}
+	DatagramSocket udpSocket;
+	udpSocket.SetBroadcast(true);
+	udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
     
 #endif
 }

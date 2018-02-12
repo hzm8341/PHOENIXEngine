@@ -11,9 +11,7 @@
 #include "PX2LogicES.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2LuaPlusContext.hpp"
-#if defined (PX2_USE_BLUEBLOCK)
 #include "BlueBlockPlugin.hpp"
-#endif
 #include "PX2PluginManager.hpp"
 #include "PX2StringHelp.hpp"
 using namespace PX2;
@@ -24,16 +22,12 @@ mBlueBlockPlugin(0)
 {
 	mPlatformType = PT_EDITOR;
 
-#if defined (PX2_USE_BLUEBLOCK)
 	mBlueBlockPlugin = new BlueBlockPlugin();
-#endif
 }
 //----------------------------------------------------------------------------
 LogicManager::~LogicManager()
 {
-#if defined (PX2_USE_BLUEBLOCK)
 	PX2_PLUGINMAN.UninstallPlugin(mBlueBlockPlugin);
-#endif
 }
 //----------------------------------------------------------------------------
 bool LogicManager::Initlize()
@@ -43,9 +37,7 @@ bool LogicManager::Initlize()
 	_InitCtrls();
 	_InitFuns();
 
-#if defined (PX2_USE_BLUEBLOCK)
 	PX2_PLUGINMAN.InstallPlugin(mBlueBlockPlugin);
-#endif
 
 	return true;
 }
@@ -110,7 +102,14 @@ void LogicManager::_InitCtrls()
 {
 	BeginAddFunObj("Program");
 	AddOutput("Start", FPT_LINK);
-	AddOutput("Update", FPT_LINK);
+	AddOutput("FixUpdate", FPT_LINK);
+	EndAddFun_Ctrl("Ctrl");
+
+	BeginAddFunObj("ProgramStart");
+	AddOutput("Start", FPT_LINK);
+	EndAddFun_Ctrl("Ctrl");
+
+	BeginAddFunObj("ProgramFixUpdate");
 	AddOutput("FixUpdate", FPT_LINK);
 	EndAddFun_Ctrl("Ctrl");
 
@@ -146,7 +145,7 @@ void LogicManager::_InitFuns()
 }
 //----------------------------------------------------------------------------
 FunParamType GetParamType(const std::string &typeStr,
-	Any &getAnyVal, const std::string &valStr)
+	Any &getAnyVal, const std::string &valStr, bool &isEnum)
 {
 	// FPT_NONE,
 	// FPT_INT,
@@ -161,7 +160,10 @@ FunParamType GetParamType(const std::string &typeStr,
 	// FPT_POINTER_THIS_STATIC,
 	// FPT_MAX_TYPE
 
+	isEnum = false;
+
 	FunParamType fpt = FPT_NONE;
+
 	Any anyVal;
 
 	if ("void" == typeStr)
@@ -172,7 +174,7 @@ FunParamType GetParamType(const std::string &typeStr,
 	{
 		fpt = FPT_CHAR;
 		int iVal = 0;
-		if (!valStr.empty())	
+		if (!valStr.empty())
 			iVal = StringHelp::StringToInt(valStr);
 		anyVal = (char)iVal;
 	}
@@ -210,7 +212,7 @@ FunParamType GetParamType(const std::string &typeStr,
 	else if ("bool" == typeStr)
 	{
 		fpt = FPT_BOOL;
-		bool bVal = valStr=="true"? true : false;
+		bool bVal = valStr == "true" ? true : false;
 		anyVal = bVal;
 	}
 	else if ("std::string" == typeStr || "string" == typeStr)
@@ -225,6 +227,38 @@ FunParamType GetParamType(const std::string &typeStr,
 				strValUse = valStr;
 		}
 		anyVal = strValUse;
+	}
+	else if ("unsigned short" == typeStr)
+	{
+		fpt = FPT_INT;
+		int iVal = 0;
+		if (!valStr.empty())
+			iVal = StringHelp::StringToInt(valStr);
+		anyVal = iVal;
+	}
+	else if ("unsigned int" == typeStr)
+	{
+		fpt = FPT_INT;
+		int iVal = 0;
+		if (!valStr.empty())
+			iVal = StringHelp::StringToInt(valStr);
+		anyVal = iVal;
+	}
+	else
+	{
+		// Ã¶¾Ù
+		fpt = FPT_STRING;
+		std::string strValUse;
+		if (!valStr.empty())
+		{
+			if ('"' == valStr[0])
+				strValUse = valStr.substr(1, valStr.length() - 2);
+			else
+				strValUse = valStr;
+		}
+		anyVal = strValUse;
+
+		isEnum = true;
 	}
 
 	getAnyVal = anyVal;
@@ -259,86 +293,114 @@ bool LogicManager::AddPkgInfo(const std::string &filename)
 				funObjectClass->ClassName = className;
 				funObjectClass->ParentClassName = parentName;
 
-				XMLNode functionNode = classNode.IterateChild();
-				while (!functionNode.IsNull())
+				XMLNode classChildNode = classNode.IterateChild();
+				while (!classChildNode.IsNull())
 				{
-					std::string strFunName = functionNode.AttributeToString("name");
-					std::string strFunType = functionNode.AttributeToString("funtype");
-					bool is_operator = functionNode.AttributeToBool("is_operator");
-					bool is_purevirtual = functionNode.AttributeToBool("is_purevirtual");
-					bool is_virtual = functionNode.AttributeToBool("is_virtual");
-					bool is_inline = functionNode.AttributeToBool("is_inline");
-					bool is_const = functionNode.AttributeToBool("is_const");
-
-					bool is_class_constructor = ("class_constructor" == strFunType);
-					bool is_class_destructor = ("class_destructor" == strFunType);
-					bool is_class_member = ("class_member" == strFunType);
-					bool is_static = ("class_static" == strFunType);
-
-					if (is_class_member || is_static)
+					const std::string &name = classChildNode.GetName();
+					if ("enum" == name)
 					{
+						std::string enumName = classChildNode.AttributeToString("name");
 						FunObjectPtr funObj = new0 FunObject;
-						funObj->CateName = "Func";
-						funObj->SigletonName = singletonName;
+						funObj->CateName = "Param";
 						funObj->ClassName = className;
-						funObj->Name = strFunName;
+						funObj->Name = enumName;
+						funObj->IsEnum = true;
+						funObj->SetParamType(FunObject::PT_ENUM);
 						funObjectClass->AddFunObject(funObj);
 
-						if (is_class_member)
+						XMLNode classEnumNode = classChildNode.IterateChild();
+						while (!classEnumNode.IsNull())
 						{
-							funObj->AddInput("handler", FPT_POINTER_THIS, (Object*)0);
+							std::string itemstr = classEnumNode.AttributeToString("itemstr");
+							funObj->AddInput(itemstr, FPT_STRING, enumName, itemstr, true);
+
+							classEnumNode = classChildNode.IterateChild(classEnumNode);
 						}
-						else if (is_static)
+
+						funObj->AddOutput("val", FPT_STRING, enumName, std::string());
+					}
+					else
+					{
+						std::string strFunName = classChildNode.AttributeToString("name");
+						std::string strFunType = classChildNode.AttributeToString("funtype");
+						bool is_operator = classChildNode.AttributeToBool("is_operator");
+						bool is_purevirtual = classChildNode.AttributeToBool("is_purevirtual");
+						bool is_virtual = classChildNode.AttributeToBool("is_virtual");
+						bool is_inline = classChildNode.AttributeToBool("is_inline");
+						bool is_const = classChildNode.AttributeToBool("is_const");
+
+						bool is_class_constructor = ("class_constructor" == strFunType);
+						bool is_class_destructor = ("class_destructor" == strFunType);
+						bool is_class_member = ("class_member" == strFunType);
+						bool is_static = ("class_static" == strFunType);
+
+						if (is_class_member || is_static)
 						{
-							funObj->AddInput("static", FPT_POINTER_THIS_STATIC, (Object*)0);
-						}
+							FunObjectPtr funObj = new0 FunObject;
+							funObj->CateName = "Func";
+							funObj->SigletonName = singletonName;
+							funObj->ClassName = className;
+							funObj->Name = strFunName;
+							funObjectClass->AddFunObject(funObj);
 
-						XMLNode paramNode = functionNode.IterateChild();
-						while (!paramNode.IsNull())
-						{
-							std::string typestr = paramNode.AttributeToString("type_str");
-
-							bool is_return = paramNode.AttributeToBool("is_retrun");
-							bool is_returnvoid = (std::string("void") == typestr);
-							std::string valuename_str = paramNode.AttributeToString("valuename_str");
-							std::string defaultStr = paramNode.AttributeToString("defaultvalue_Str");
-							bool is_pointer = paramNode.AttributeToBool("is_pointer");
-							bool is_ref = paramNode.AttributeToBool("is_ref");
-
-							Any anyData;
-							FunParamType fpt = GetParamType(typestr, anyData, defaultStr);
-
-							if (!is_return)
+							if (is_class_member)
 							{
-								if (is_pointer)
-								{
-									funObj->AddInput(valuename_str, FPT_POINTER, (Object*)0);
-								}
-								else
-								{
-									funObj->AddInput(valuename_str, fpt, anyData);
-								}
+								funObj->AddInput("handler", FPT_POINTER_THIS, "PointerThis", (Object*)0);
 							}
-							else
+							else if (is_static)
 							{
-								if (!is_returnvoid)
+								funObj->AddInput("static", FPT_POINTER_THIS_STATIC, "PointerStatic", (Object*)0);
+							}
+
+							XMLNode paramNode = classChildNode.IterateChild();
+							while (!paramNode.IsNull())
+							{
+								std::string typestr = paramNode.AttributeToString("type_str");
+
+								bool is_return = paramNode.AttributeToBool("is_retrun");
+								bool is_returnvoid = (std::string("void") == typestr);
+								std::string valuename_str = paramNode.AttributeToString("valuename_str");
+								std::string defaultStr = paramNode.AttributeToString("defaultvalue_Str");
+								bool is_pointer = paramNode.AttributeToBool("is_pointer");
+								bool is_ref = paramNode.AttributeToBool("is_ref");
+
+								Any anyData;
+								bool isEnum = false;
+								FunParamType fpt = GetParamType(typestr, anyData, defaultStr, isEnum);
+
+								if (!is_return)
 								{
 									if (is_pointer)
 									{
-										funObj->AddOutput("out_val", FPT_POINTER, (Object*)0);
+										funObj->AddInput(valuename_str, FPT_POINTER, typestr, (Object*)0);
 									}
 									else
 									{
-										funObj->AddOutput("out_val", fpt, anyData);
+										funObj->AddInput(valuename_str, fpt, typestr, anyData, false, isEnum);
 									}
 								}
-							} 
+								else
+								{
+									if (!is_returnvoid)
+									{
+										if (is_pointer)
+										{
+											funObj->AddOutput("out_val", FPT_POINTER, typestr, (Object*)0);
+										}
+										else
+										{
+											funObj->AddOutput("out_val", fpt, typestr, anyData, isEnum);
+										}
+									}
+								}
 
-							paramNode = paramNode.IterateChild(paramNode);
+								paramNode = paramNode.IterateChild(paramNode);
+							}
 						}
+
 					}
 
-					functionNode = functionNode.IterateChild(functionNode);
+					classChildNode = classChildNode.IterateChild(classChildNode);
 				}
 
 				classNode = classNode.IterateChild(classNode);
@@ -427,78 +489,79 @@ void LogicManager::AddInput(const std::string &name,
 {
 	if (FPT_CHAR == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, (int)0);
+		mCurAddFunObj->AddInput(name, funParamType, "char", (int)0);
 	}
 	else if (FPT_INT == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, 0);
+		mCurAddFunObj->AddInput(name, funParamType, "int", 0);
 	}
 	else if (FPT_FLOAT == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, 0.0f);
+		mCurAddFunObj->AddInput(name, funParamType, "float", 0.0f);
 	}
 	else if (FPT_APOINT == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, APoint::ORIGIN);
+		mCurAddFunObj->AddInput(name, funParamType, "APoint", APoint::ORIGIN);
 	}
 	else if (FPT_AVECTOR == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, AVector::ZERO);
+		mCurAddFunObj->AddInput(name, funParamType, "AVector", AVector::ZERO);
 	}
 	else if (FPT_BOOL == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, false);
+		mCurAddFunObj->AddInput(name, funParamType, "bool", false);
 	}
 	else if (FPT_STRING == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, std::string(""));
+		mCurAddFunObj->AddInput(name, funParamType, "string", std::string(""));
 	}
 	else if (FPT_POINTER == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddInput(name, funParamType, "Pointer", (Object*)0);
 	}
 	else if (FPT_POINTER_THIS == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddInput(name, funParamType, "PointerThis", (Object*)0);
 	}
 	else if (FPT_POINTER_THIS_STATIC == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddInput(name, funParamType, "PointerStatic", (Object*)0);
 	}
 	else if (FPT_LINK == funParamType)
 	{
-		mCurAddFunObj->AddInput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddInput(name, funParamType, "Link", (Object*)0);
 	}
 }
 //----------------------------------------------------------------------------
 void LogicManager::AddInputChar(const std::string &name, char val)
 {
-	mCurAddFunObj->AddInput(name, FPT_CHAR, (int)val);
+	mCurAddFunObj->AddInput(name, FPT_CHAR, "char", (int)val);
 }
 //----------------------------------------------------------------------------
 void LogicManager::AddInputInt(const std::string &name, int val)
 {
-	mCurAddFunObj->AddInput(name, FPT_INT, val);
+	mCurAddFunObj->AddInput(name, FPT_INT, "int", val);
 }
 //----------------------------------------------------------------------------
 void LogicManager::AddInputFloat(const std::string &name, float val)
 {
-	mCurAddFunObj->AddInput(name, FPT_FLOAT, val);
+	mCurAddFunObj->AddInput(name, FPT_FLOAT, "float", val);
 }
 //----------------------------------------------------------------------------
 void LogicManager::AddInputBool(const std::string &name, bool val)
 {
-	mCurAddFunObj->AddInput(name, FPT_BOOL, val);
+	mCurAddFunObj->AddInput(name, FPT_BOOL, "bool", val);
 }
 //----------------------------------------------------------------------------
-void LogicManager::AddInputString(const std::string &name, const std::string &val)
+void LogicManager::AddInputString(const std::string &name, 
+	const std::string &val, bool isEnumItem)
 {
-	mCurAddFunObj->AddInput(name, FPT_STRING, val);
+	mCurAddFunObj->AddInput(name, FPT_STRING, "string", val, isEnumItem);
 }
 //----------------------------------------------------------------------------
 void LogicManager::AddInputObj(const std::string &name)
 {
-	mCurAddFunObj->AddInput(name, FPT_POINTER, (Object*)0);
+	mCurAddFunObj->AddInput(name, FPT_POINTER, "Object", (Object*)0);
 }
 //----------------------------------------------------------------------------
 void LogicManager::AddOutput(const std::string &name,
@@ -506,47 +569,47 @@ void LogicManager::AddOutput(const std::string &name,
 {
 	if (FPT_CHAR == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, (int)0);
+		mCurAddFunObj->AddOutput(name, funParamType, "char", (int)0);
 	}
 	else if (FPT_INT == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, 0);
+		mCurAddFunObj->AddOutput(name, funParamType, "int", 0);
 	}
 	else if (FPT_FLOAT == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, 0.0f);
+		mCurAddFunObj->AddOutput(name, funParamType, "float", 0.0f);
 	}
 	else if (FPT_APOINT == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, APoint::ORIGIN);
+		mCurAddFunObj->AddOutput(name, funParamType, "APoint", APoint::ORIGIN);
 	}
 	else if (FPT_AVECTOR == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, AVector::ZERO);
+		mCurAddFunObj->AddOutput(name, funParamType, "AVector", AVector::ZERO);
 	}
 	else if (FPT_BOOL == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, true);
+		mCurAddFunObj->AddOutput(name, funParamType, "bool", true);
 	}
 	else if (FPT_STRING == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, std::string(""));
+		mCurAddFunObj->AddOutput(name, funParamType, "string", std::string(""));
 	}
 	else if (FPT_POINTER == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddOutput(name, funParamType, "pointer", (Object*)0);
 	}
 	else if (FPT_POINTER_THIS == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddOutput(name, funParamType, "pointer", (Object*)0);
 	}
 	else if (FPT_POINTER_THIS_STATIC == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddOutput(name, funParamType, "pointer", (Object*)0);
 	}
 	else if (FPT_LINK == funParamType)
 	{
-		mCurAddFunObj->AddOutput(name, funParamType, (Object*)0);
+		mCurAddFunObj->AddOutput(name, funParamType, "pointer", (Object*)0);
 	}
 }
 //----------------------------------------------------------------------------

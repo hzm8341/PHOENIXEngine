@@ -35,6 +35,7 @@ namespace PX2
 		void ChooseStr(const std::string &str);
 		int GetChoose() const;
 		std::string GetChooseStr() const;
+		UIItem *GetChooseItem();
 		virtual void OnChoosed();
 
 		UIButton *GetSelectButton();

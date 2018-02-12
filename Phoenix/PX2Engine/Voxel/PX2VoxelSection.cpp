@@ -22,13 +22,11 @@ mMinSizeY(-5),
 mMinSizeZ(-1),
 mMaxSizeX(5),
 mMaxSizeY(5),
-mMaxSizeZ(1)
+mMaxSizeZ(1),
+mIsTitleRangeChanged(true),
+CurTitles(0)
 {
 	SetName("PX2VoxelSection");
-
-	CurTitles = 0;
-
-	mIsTitleRangeChanged = true;
 }
 //----------------------------------------------------------------------------
 VoxelSection::VoxelSection(int distXY, int distZ) :
@@ -39,13 +37,11 @@ mMinSizeY(-1),
 mMinSizeZ(-1),
 mMaxSizeX(1),
 mMaxSizeY(1),
-mMaxSizeZ(1)
+mMaxSizeZ(1),
+mIsTitleRangeChanged(true),
+CurTitles(0)
 {
 	SetName("PX2VoxelSection");
-
-	CurTitles = 0;
-
-	mIsTitleRangeChanged = true;
 }
 //----------------------------------------------------------------------------
 VoxelSection::~VoxelSection()
@@ -362,17 +358,20 @@ void VoxelSection::_GenTitleRelation()
 //----------------------------------------------------------------------------
 void VoxelSection::GenMesh()
 {
-	for (int iX = 0; iX < mTitleRangeXY; ++iX)
+	if (CurTitles)
 	{
-		for (int iY = 0; iY < mTitleRangeXY; ++iY)
+		for (int iX = 0; iX < mTitleRangeXY; ++iX)
 		{
-			for (int iZ = 0; iZ < mTitleRangeZ; iZ++)
+			for (int iY = 0; iY < mTitleRangeXY; ++iY)
 			{
-				VoxelTitle *title = CurTitles[iX][iY][iZ];
-				if (title && title->IsNeedReGenMesh())
+				for (int iZ = 0; iZ < mTitleRangeZ; iZ++)
 				{
-					title->GenMesh();
-					title->SetNeedReGenMesh(false);
+					VoxelTitle *title = CurTitles[iX][iY][iZ];
+					if (title && title->IsNeedReGenMesh())
+					{
+						title->GenMesh();
+						title->SetNeedReGenMesh(false);
+					}
 				}
 			}
 		}
@@ -642,7 +641,17 @@ VoxelTitle *VoxelSection::LoadTitle(int iX, int iY, int iZ)
 
 //----------------------------------------------------------------------------
 VoxelSection::VoxelSection(LoadConstructor value) :
-Node(value)
+Node(value),
+mTitleRangeXY(2 * 2 + 1),
+mTitleRangeZ(2 * 2 + 1),
+mMinSizeX(-5),
+mMinSizeY(-5),
+mMinSizeZ(-1),
+mMaxSizeX(5),
+mMaxSizeY(5),
+mMaxSizeZ(1),
+mIsTitleRangeChanged(true),
+CurTitles(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -652,6 +661,13 @@ void VoxelSection::Load(InStream& source)
 
 	Node::Load(source);
 	PX2_VERSION_LOAD(source);
+
+	source.Read(mMinSizeX);
+	source.Read(mMinSizeY);
+	source.Read(mMinSizeZ);
+	source.Read(mMaxSizeX);
+	source.Read(mMaxSizeY);
+	source.Read(mMaxSizeZ);
 
 	PX2_END_DEBUG_STREAM_LOAD(VoxelSection, source);
 }
@@ -682,6 +698,13 @@ void VoxelSection::Save(OutStream& target) const
 	Node::Save(target);
 	PX2_VERSION_SAVE(target);
 
+	target.Write(mMinSizeX);
+	target.Write(mMinSizeY);
+	target.Write(mMinSizeZ);
+	target.Write(mMaxSizeX);
+	target.Write(mMaxSizeY);
+	target.Write(mMaxSizeZ);
+
 	PX2_END_DEBUG_STREAM_SAVE(VoxelSection, target);
 }
 //----------------------------------------------------------------------------
@@ -689,6 +712,13 @@ int VoxelSection::GetStreamingSize(Stream &stream) const
 {
 	int size = Node::GetStreamingSize(stream);
 	size += PX2_VERSION_SIZE(mVersion);
+
+	size += sizeof(mMinSizeX);
+	size += sizeof(mMinSizeY);
+	size += sizeof(mMinSizeZ);
+	size += sizeof(mMaxSizeX);
+	size += sizeof(mMaxSizeY);
+	size += sizeof(mMaxSizeZ);
 
 	return size;
 }

@@ -14,12 +14,19 @@ VoxelManager::~VoxelManager()
 {
 }
 //----------------------------------------------------------------------------
-bool VoxelManager::Initlize()
+bool VoxelManager::Initlize(Type t)
 {
 	LoadBlocksConfig("Data/engine/voxel/blockconfig.xml");
 	PX2_RM.AddTexPack("Data/engine/voxel/blocks.xml");
 
+	mType = t;
+
 	return true;
+}
+//----------------------------------------------------------------------------
+VoxelManager::Type VoxelManager::GetType() const
+{
+	return mType;
 }
 //----------------------------------------------------------------------------
 const TexPackElement &VoxelManager::GetTexPackEle(

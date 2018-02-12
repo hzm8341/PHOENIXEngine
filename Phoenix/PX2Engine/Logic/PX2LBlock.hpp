@@ -57,6 +57,8 @@ namespace PX2
 			CT_WHILE,
 			CT_COROUTINE,
 			CT_PROGRAM,
+			CT_PROGRAMSTART,
+			CT_PROGRAMFIXUPDATE,
 			CT_MAX_TYPE
 		};
 		void SetCtrlType(CtrlType ct);
@@ -68,6 +70,7 @@ namespace PX2
 			PT_VARIABLE,
 			PT_CONST,
 			PT_VALUE,
+			PT_ENUM,
 			PT_ENUMSTRING,
 			PT_VALUESELECT,
 			PT_VARIABLESELECT,
@@ -93,6 +96,9 @@ namespace PX2
 		void SetParent(LParam *parent);
 		LParam *GetParent();
 
+		void SetAnchorParam(float hor, float ver);
+		const Vector3f &GetAnchorParam() const;
+
 	protected:
 		BlockType mBlockType;
 		bool mIsFunOutputConvertToGeneral;
@@ -116,15 +122,25 @@ namespace PX2
 		LParamPtr mBeforeParam;
 		LParamPtr mNextParam;
 		std::vector<LParamPtr> mActOutButs_Operator;
+		Vector3f mAnchorParam;
+
+	public_internal:
+		void SetLFile(LFile *lfile);
+		LFile *GetLFile();
 
 	public:
 		void PreCompile(std::string &script, LFile *file, bool isOriginalStart = false);
-		void Compile(std::string &script, int numTable, LFile *file, bool isOriginalStart = false);
+
+		void CompileStart(std::string &script, int numTable, LFile *file);
+		void CompileFixUpdate(std::string &script, int numTable, LFile *file);
+		void CompileAll(std::string &script, int numTable, LFile *file);
 
 		void Save(const std::string &filename);
 		
 	protected:
 		void _WriteTables(std::string &script, int numTable);
+
+		LFile *mLFile;
 	};
 
 #include "PX2LBlock.inl"

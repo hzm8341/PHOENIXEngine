@@ -68,7 +68,9 @@ void InputEventListener::MouseMoved(const APoint &pos)
 	InputEventData data;
 	data.TheEventType = InputEventSpace::MouseMoved;
 	data.MTPos = pos;
-	data.TPoses.push_back(pos);
+	TouchState ts;
+	ts.Pos = pos;
+	data.TPoses.push_back(ts);
 
 	OnInputEventData(data);
 }
@@ -79,7 +81,9 @@ void InputEventListener::MousePressed(MouseButtonID id, const APoint &pos)
 	data.TheEventType = InputEventSpace::MousePressed;
 	data.MButtonID = id;
 	data.MTPos = pos;
-	data.TPoses.push_back(pos);
+	TouchState ts;
+	ts.Pos = pos;
+	data.TPoses.push_back(ts);
 
 	OnInputEventData(data);
 }
@@ -91,7 +95,9 @@ void InputEventListener::MouseDoublePressed(MouseButtonID id,
 	data.TheEventType = InputEventSpace::MouseDoublePressed;
 	data.MButtonID = id;
 	data.MTPos = pos;
-	data.TPoses.push_back(pos);
+	TouchState ts;
+	ts.Pos = pos;
+	data.TPoses.push_back(ts);
 
 	OnInputEventData(data);
 }
@@ -102,7 +108,9 @@ void InputEventListener::MouseReleased(MouseButtonID id, const APoint &pos)
 	data.TheEventType = InputEventSpace::MouseReleased;
 	data.MButtonID = id;
 	data.MTPos = pos;
-	data.TPoses.push_back(pos);
+	TouchState ts;
+	ts.Pos = pos;
+	data.TPoses.push_back(ts);
 
 	OnInputEventData(data);
 }
@@ -114,7 +122,9 @@ void InputEventListener::MouseWheeled(float val, const APoint &pos)
 	data.MButtonID = MBID_MIDDLE;
 	data.MWheel = val;
 	data.MTPos = pos;
-	data.TPoses.push_back(pos);
+	TouchState ts;
+	ts.Pos = pos;
+	data.TPoses.push_back(ts);
 
 	OnInputEventData(data);
 }
@@ -170,13 +180,15 @@ void InputEventListener::_OnTouchData(InputEventData &data, int num,
 		int id = ids[i];
 		float x = xs[i];
 		float y = ys[i];
-		PX2_UNUSED(id);
 
 		y = mViewSize.Height - y;
 
 		APoint pos = APoint(x, 0.0f, y);
 
-		data.TPoses.push_back(pos);
+		TouchState ts;
+		ts.ID = id;
+		ts.Pos = pos;
+		data.TPoses.push_back(ts);
 
 		if (0 == i)
 		{

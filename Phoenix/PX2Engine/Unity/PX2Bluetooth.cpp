@@ -6,6 +6,7 @@
 #include "PX2StringHelp.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2ScopedCS.hpp"
+#include "PX2GraphicsRoot.hpp"
 
 #if defined(__ANDROID__)
 #include "AppPlayJNI.hpp"
@@ -118,6 +119,8 @@ void Bluetooth::Update(float elapsedSeconds)
 			ent->SetDataStr0(str);
 			ent->SetData<std::string>(str);
 			PX2_EW.BroadcastingLocalEvent(ent);
+
+			PX2_GR.LogInfo("BleNewDevice:" + str);
 		}
 		mDiscoveryNewDevices.clear();
 
@@ -134,6 +137,8 @@ void Bluetooth::Update(float elapsedSeconds)
 			Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnConnected);
 			PX2_EW.BroadcastingLocalEvent(ent);
 
+			PX2_GR.LogInfo("BleOnConnected");
+
 			mConnectedSignal = 0;
 		}
 
@@ -141,6 +146,9 @@ void Bluetooth::Update(float elapsedSeconds)
 		{
 			Event *ent = PX2_CREATEEVENTEX(BluetoothES, OnConnectFailed);
 			PX2_EW.BroadcastingLocalEvent(ent);
+
+
+			PX2_GR.LogInfo("BleOnConnectFailed");
 
 			mConnectFailedSignal = 0;
 		}
@@ -205,7 +213,6 @@ bool Bluetooth::IsConnected() const
 #elif defined(__IOS__)
     return AppPlay::BluetoothIsConnected();
 #endif
-
 	return false;
 }
 //----------------------------------------------------------------------------
@@ -314,6 +321,8 @@ void Bluetooth::DisConnect()
 #elif defined (__IOS__)
     AppPlay::BluetoothDisConnect();
 #endif
+
+	
 }
 //----------------------------------------------------------------------------
 void Bluetooth::Connect(const std::string &addr)
@@ -412,6 +421,8 @@ void Bluetooth::OnDisConnected()
 	ScopedCS cs(&mRecvMutex);
 	mDisconnectedSignal = 1;
 	mRecvs.clear();
+
+	PX2_LOG_INFO("BlueToothOnDisConnected");
 }
 //----------------------------------------------------------------------------
 void Bluetooth::OnDisocveryNewDevice(const std::string &deviceStr)

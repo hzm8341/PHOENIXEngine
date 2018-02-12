@@ -18,10 +18,12 @@ Back(0),
 Bottom(0),
 Top(0)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		Color[i] = Mathf::UnitRandom();
-	}
+	Color = Float4::WHITE;
+	
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	Color[i] = Mathf::UnitRandom();
+	//}
 }
 //----------------------------------------------------------------------------
 VoxelBlock::~VoxelBlock()
@@ -94,7 +96,8 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 	unsigned short startIndex = (unsigned short)(startFace * 6);
 	unsigned short* indices = (unsigned short*)ib->GetData();
 
-	if (0 == MtlType) return;
+	if (0 == MtlType) 
+		return;
 
 	AVector offset((float)IndexX, (float)IndexY, (float)IndexZ);
 

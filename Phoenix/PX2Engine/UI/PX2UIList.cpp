@@ -16,6 +16,7 @@ mFontSize(16),
 mIsUpdateSliderVisible(true),
 mSliderSize(10),
 mItemHeight(20.0f),
+mTextAlignLeftPos(20.0f),
 mIsUpdateContentPos(true),
 mIsReleasedDoSelect(false),
 mSelectedIndex(-1),
@@ -167,6 +168,16 @@ void UIList::SetItemBackPicBox(const std::string &backPicBox)
 	mItemBackPicBox = backPicBox;
 }
 //----------------------------------------------------------------------------
+void UIList::SetTextAlignLeftPos(float isAlignLeft)
+{
+	mTextAlignLeftPos = isAlignLeft;
+}
+//----------------------------------------------------------------------------
+float UIList::GetTextAlignLeftPos() const
+{
+	return mTextAlignLeftPos;
+}
+//----------------------------------------------------------------------------
 UIItem *UIList::AddItem(const std::string &text)
 {
 	if (mNumMaxItems > 0 && GetNumItems() >= GetNumMaxItems())
@@ -183,10 +194,12 @@ UIItem *UIList::AddItem(const std::string &text)
 	mContentFrame->AttachChild(item);
 	mItems.push_back(item);
 
-	item->GetFText()->SetAnchorParamHor(20.0f, 20.0f);
+	item->GetFText()->SetAnchorParamHor(mTextAlignLeftPos, mTextAlignLeftPos);
 	item->GetFText()->GetText()->SetText(text);
 	item->GetFText()->GetText()->SetAutoWarp(true);
 	item->GetFText()->GetText()->SetFontColor(mTextColor);
+	if (!mFont.empty())
+		item->GetFText()->GetText()->SetFont(mFont);
 	item->GetFText()->GetText()->SetFontWidthHeight(mFontSize, mFontSize);
 
 	UIButton *butBack = item->GetButBack();
@@ -197,6 +210,8 @@ UIItem *UIList::AddItem(const std::string &text)
 
 		if (!mItemBackPicBox.empty())
 		{
+			butBack->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
+			butBack->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexCornerSize(16, 16, 16, 16);
 			butBack->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture(mItemBackPicBox);
 		}
 	}
@@ -365,6 +380,11 @@ UIItem *UIList::GetSelectedItem()
 		return mSelectedItems[0];
 	}
 
+	if (0 <= mSelectedIndex && mSelectedIndex<(int)mItems.size())
+	{
+		return mItems[mSelectedIndex];
+	}
+
 	return 0;
 }
 //----------------------------------------------------------------------------
@@ -402,6 +422,23 @@ void UIList::SetTextColor(const Float3 &textColor)
 		if (item)
 		{
 			item->GetFText()->GetText()->SetColor(textColor);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void UIList::SetFont(const std::string &font)
+{
+	mFont = mFont;
+
+	if (!mFont.empty())
+	{
+		for (int i = 0; i < (int)mItems.size(); i++)
+		{
+			UIItem *item = mItems[i];
+			if (item)
+			{
+				item->GetFText()->GetText()->SetFont(mFont);
+			}
 		}
 	}
 }
@@ -517,6 +554,7 @@ void UIList::Load(InStream& source)
 
 	source.Read(mSliderSize);
 	source.Read(mItemHeight);
+	source.Read(mTextAlignLeftPos);
 	source.ReadPointer(mMaskFrame);
 	source.ReadPointer(mContentFrame);
 
@@ -635,6 +673,7 @@ void UIList::Save(OutStream& target) const
 
 	target.Write(mSliderSize);
 	target.Write(mItemHeight);
+	target.Write(mTextAlignLeftPos);
 	target.WritePointer(mMaskFrame);
 	target.WritePointer(mContentFrame);
 	int numItems = (int)mItems.size();
@@ -660,6 +699,7 @@ int UIList::GetStreamingSize(Stream &stream) const
 
 	size += sizeof(mSliderSize);
 	size += sizeof(mItemHeight);
+	size += sizeof(mTextAlignLeftPos);
 	size += PX2_POINTERSIZE(mMaskFrame);
 	size += PX2_POINTERSIZE(mContentFrame);
 	int numItems = (int)mItems.size();

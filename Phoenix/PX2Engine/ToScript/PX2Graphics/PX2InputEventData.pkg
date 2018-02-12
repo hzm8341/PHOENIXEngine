@@ -163,6 +163,7 @@
 		TouchState();
 		~TouchState();
 
+		int ID;
 		APoint Pos;
 	};
 
@@ -185,7 +186,7 @@
 
 		APoint MTPos;
 
-		std::vector<APoint> TPoses;
+		std::vector<TouchState> TPoses;
 	};
 
 	enum CanvasPickType

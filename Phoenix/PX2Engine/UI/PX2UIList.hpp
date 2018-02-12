@@ -32,6 +32,9 @@ namespace PX2
 
 		void SetItemBackPicBox(const std::string &backPicBox);
 
+		void SetTextAlignLeftPos(float isAlignLeft);
+		float GetTextAlignLeftPos() const;
+
 		UIItem *AddItem(const std::string &text);
 		UIItem *GetItem(const std::string &text);
 		UIItem *GetItemByIndex(int index);
@@ -62,6 +65,7 @@ namespace PX2
 		void SetTextColor(const Float3 &textColor);
 		const Float3 &GetTextColor() const;
 
+		void SetFont(const std::string &font);
 		void SetFontSize(int size);
 		int GetFontSize() const;
 
@@ -87,11 +91,13 @@ namespace PX2
 		std::string mItemBackPicBox;
 		float mSliderSize;
 		float mItemHeight;
+		float mTextAlignLeftPos;
 		UIFramePtr mMaskFrame;
 		UIFramePtr mContentFrame;
 		std::vector<UIItemPtr> mItems;
 		UISliderPtr mSlider;
 		Float3 mTextColor;
+		std::string mFont;
 		int mFontSize;
 		Float3 mItemBackColor;
 

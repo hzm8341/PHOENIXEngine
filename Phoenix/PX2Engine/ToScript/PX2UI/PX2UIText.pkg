@@ -99,6 +99,8 @@
 		virtual void SetColor(const Float3 &color);
 		virtual void SetAlpha(float alpha);
 
+		void SetFontSize(int size);
+		void SetFontSize(int width, int height);
 		void SetFontWidthHeight(int width, int height);
 		void SetFontWidth(int width);
 		int GetFontWidth();

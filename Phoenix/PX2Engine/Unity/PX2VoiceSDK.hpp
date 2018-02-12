@@ -26,6 +26,7 @@ namespace PX2
 		void OnSpeakPause();
 		void OnSpeakCancel();
 		void OnSpeakFinish();
+		void OnSpeakText(std::string &txt);
 
 		void OnVoiceRecordStart();
 		void OnVoiceRecordEnd();
@@ -36,11 +37,15 @@ namespace PX2
 		void EnableAutoSpeak(bool isAutoSpeakEnable);
 		bool IsAutoSpeakEnabled() const;
 
+		void EnableAutoSpeakTTS(bool isAutoSpeakTTSEnable);
+		bool IsAutoSpeakTTSEnabled() const;
+
 		void Speak(const std::string &text);
 
 	private:
 		std::string mVoiceSDK;
 		bool mIsAutoSpeakEnabled;
+		bool mIsAutoTTSSpeakEnabled;
 	};
 
 #define PX2_VOICESDK VoiceSDK::GetSingleton()

@@ -6,7 +6,14 @@
 		VoxelManager();
 		~VoxelManager();
 
-		bool Initlize();
+		enum Type
+		{
+			T_TEX,
+			T_COLOR,
+			T_MAX_TYPE
+		};
+		bool Initlize(Type t);
+		Type GetType() const;
 
 		bool LoadBlocksConfig(const std::string &filename);
 
