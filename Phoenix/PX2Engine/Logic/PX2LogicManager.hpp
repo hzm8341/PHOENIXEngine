@@ -50,7 +50,9 @@ namespace PX2
 		void _InitCtrls();
 		void _InitFuns();
 
+#ifdef PX2_USE_BLUEBLOCK
 		BlueBlockPlugin *mBlueBlockPlugin;
+#endif
 		ObjectPtr mSelectObject;
 		PlatformType mPlatformType;
 		std::string mCurGeneratedScript;

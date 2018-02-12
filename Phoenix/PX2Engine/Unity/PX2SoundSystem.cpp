@@ -157,6 +157,8 @@ bool SoundSystem::PlayASound(const char *filename, float volume, float life)
 	if (!IsSoundEnable())
 		return false;
 
+	PX2_UNUSED(volume);
+
 	float curTime = (float)Time::GetTimeInSeconds();
 	if (_CanPlaySameTime(filename, curTime))
 	{
