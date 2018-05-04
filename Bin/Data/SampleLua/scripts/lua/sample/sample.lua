@@ -15,6 +15,8 @@ g_s_AnimCtrl = nil
 
 -- 创建首页
 function sampleLua_Sample()
+	PX2_ENGINECANVAS:SetClearColor(Float4.BLACK)
+	PX2_ENGINESCENECANVAS:SetClearColor(Float4.BLACK)
 
 	local musicName = "thelittleadventurer.mp3"
 	PX2_RM:ReWriteFileToWriteablePath("Data/SampleLua/media/music/"..musicName, musicName)
@@ -25,14 +27,17 @@ function sampleLua_Sample()
 	local scene = Scene:New()
 	PX2_PROJ:SetScene(scene)
 	
+	--[[
 	local rect = PX2_CREATER:CreateMovable_Rectangle()
 	scene:AttachChild(rect)
 	rect.LocalTransform:SetUniformScale(10.0)
-	
+	]]--
+
 	local box = PX2_CREATER:CreateMovable_Box()
 	scene:AttachChild(box)
 	box.LocalTransform:SetTranslateZ(1.0)
 	box.LocalTransform:SetUniformScale(2.0)
+	
 
 	-- model
 	local model = PX2_CREATER:CreateNode_Model("Data/SampleLua/models/actors/swk/model.px2obj")
@@ -74,8 +79,8 @@ function sampleLua_Sample()
 	local cameraPlayCtrl = PX2_CREATER:CreateCameraPlayController()
 	model:AttachController(cameraPlayCtrl)
 	cameraPlayCtrl:SetCameraNode(mainCameraNode)
-	cameraPlayCtrl:SetCameraDistance(20.0)
-	cameraPlayCtrl:SetCameraDist(15.0, 30.0)
+	cameraPlayCtrl:SetCameraDistance(60.0)
+	cameraPlayCtrl:SetCameraDist(30.0, 60.0)
 	cameraPlayCtrl:ResetPlay()
 	
 	if nil~=FBXImporter then
@@ -104,6 +109,20 @@ function sampleLua_Sample()
 		FBXImporter:Delete(importer1)		
 	end
 
+	-- voxel
+	PX2_VOXELM:Initlize(VoxelManager.T_TEX)
+	local vs = VoxelSection:New()
+	vs:SetMinSize(-3, -3, -1)
+	vs:SetMaxSize(3, 3, -1)
+	vs:SetDistXY(10)
+	vs:SetDistZ(10)
+	vs:SetInitMtlType(2)
+	scene:AttachChild(vs)
+
+	-- sky
+	local sky = PX2_CREATER:CreateSkyBox("Data/engine/sky/skybox/thickcloudswater/")
+	scene:AttachChild(sky)
+
 	-- ui
 	local ui = PX2_PROJ:GetUI()
 	
@@ -121,7 +140,7 @@ function sampleLua_Sample()
 	but:SetAnchorVer(1.0, 1.0)
 	but:SetSize(50, 50)
 	but:SetAnchorParamHor(50, 50)
-	but:SetAnchorParamVer(-50, -50)
+	but:SetAnchorParamVer(-100, -100)
 	but:SetScriptHandler("s_Callback")	
 	local fPicBox = UIFPicBox:New()
 	but:AttachChild(fPicBox)
@@ -141,6 +160,7 @@ function sampleLua_Sample()
 	
 	g_s_TableFrame = UITabFrame:New()
 	g_s_UIFrame:AttachChild(g_s_TableFrame)
+	g_s_TableFrame.LocalTransform:SetTranslateY(-10.0)
 	g_s_TableFrame:SetAnchorParamHor(0.0, -msgFrameWidth)	
 	g_s_TableFrame:CreateAddBackgroundPicBox(true, Float3:MakeColor(200, 200, 200))
 	g_s_TableFrame:SetTabBarHeight(40)
@@ -191,7 +211,7 @@ function sampleLua_Sample()
 	animBut0:SetAnchorVer(1.0, 1.0)
 	animBut0:SetSize(50, 50)
 	animBut0:SetAnchorParamHor(110, 110)
-	animBut0:SetAnchorParamVer(-50, -50)
+	animBut0:SetAnchorParamVer(-100.0, -100.0)
 	animBut0:SetScriptHandler("s_Callback")	
 	local fPicBox0 = UIFPicBox:New()
 	animBut0:AttachChild(fPicBox0)
@@ -206,7 +226,7 @@ function sampleLua_Sample()
 	animBut1:SetAnchorVer(1.0, 1.0)
 	animBut1:SetSize(50, 50)
 	animBut1:SetAnchorParamHor(170.0, 170.0)
-	animBut1:SetAnchorParamVer(-50, -50)
+	animBut1:SetAnchorParamVer(-100.0, -100.0)
 	animBut1:SetScriptHandler("s_Callback")	
 	local fPicBox1 = UIFPicBox:New()
 	animBut1:AttachChild(fPicBox1)
@@ -218,20 +238,20 @@ function sampleLua_Sample()
 	frame:AttachChild(logo)
 	logo:SetName("Logo")
 	logo:SetAnchorHor(0.0, 0.0)
-	logo:SetAnchorParamHor(230.0, 230.0)
-	logo:SetAnchorVer(1.0, 1.0)
-	logo:SetAnchorParamVer(-50.0, -50.0)
+	logo:SetAnchorParamHor(50.0, 50.0)
+	logo:SetAnchorVer(0.0, 0.0)
+	logo:SetAnchorParamVer(50.0, 50.0)
 	logo:SetSize(50.0, 50.0)
 	logo:GetUIPicBox():SetTexture("Data/engine/phoenix.png")
 	
 	local textInfo = UIFText:New()
 	frame:AttachChild(textInfo)
-	textInfo:GetText():SetText("使用PhoenixCreate 开发你的机器人，APP，VR/AR应用，服务器程序")
+	textInfo:GetText():SetText("使用PHOENIXEngine开发你的游戏，智能玩具，机器人应用")
 	textInfo:SetAnchorHor(0.0, 0.0)
-	textInfo:SetAnchorParamHor(270.0, 270.0)
+	textInfo:SetAnchorParamHor(100.0, 100.0)
 	textInfo:SetPivot(0.0, 0.5)
-	textInfo:SetAnchorVer(1.0, 1.0)
-	textInfo:SetAnchorParamVer(-50.0, -50.0)
+	textInfo:SetAnchorVer(0.0, 0.0)
+	textInfo:SetAnchorParamVer(50.0, 50.0)
 	textInfo:SetWidth(700.0)
 	textInfo:GetText():SetFontColor(Float3.WHITE)
 	textInfo:GetText():SetAligns(TEXTALIGN_LEFT+TEXTALIGN_TOP)
@@ -305,7 +325,7 @@ function s_CreateUIFrameAbout()
 	frame:AttachChild(fText)
 	fText:SetAnchorHor(0.0, 1.0)
 	fText:SetAnchorVer(0.0, 1.0)
-	fText:GetText():SetText("欢迎使用#RPhoenixIoT#K进行开发! :-D ");
+	fText:GetText():SetText("欢迎使用#RPHOENIXEngine#K进行开发! :-D ");
 	
 	return frame
 end
@@ -688,7 +708,7 @@ function s_CreateUIWebFrame()
 	webFrame:SetAnchorHor(0.0, 1.0)
 	webFrame:SetAnchorVer(0.0, 1.0)
 	webFrame:SetUpdateToTex(true)
-	webFrame:LoadURL("https://github.com/PhoenixIoT")
+	webFrame:LoadURL("http://www.manykit.com")
 	
 	return frame
 end

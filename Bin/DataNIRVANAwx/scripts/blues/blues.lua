@@ -1,6 +1,7 @@
 -- blues.lua
 
 require("Data/BlueBlock/scripts/lua/start.lua")
+require("Data/BluePrint/scripts/lua/start.lua")
 
 -- blueblock
 n_g_FrameBluesTableFrame = nil
@@ -24,13 +25,13 @@ function n_CreateFrame_BBs()
 		tabFrame:SetTabHeight(25)
 
 		if nil~=UIBBlockCataFrame then
-			--b_Start()
-			--tabFrame:AddTab("BlueBlock", PX2_LM_EDITOR:GetValue("BlueBlock"), n_CreateFrame_BlueBlock())
+			b_Start()
+			tabFrame:AddTab("BlueBlock", PX2_LM_EDITOR:GetValue("BlueBlock"), n_CreateFrame_BlueBlock())
 		end
 		if nil~=UIBluePrintFrame then
-			--tabFrame:AddTab("BluePrint", PX2_LM_EDITOR:GetValue("BluePrint"), n_CreateFrame_BluePrint())
+			tabFrame:AddTab("BluePrint", PX2_LM_EDITOR:GetValue("BluePrint"), n_CreateFrame_BluePrint())
 		end
-		--tabFrame:SetActiveTab("BlueBlock")
+		tabFrame:SetActiveTab("BlueBlock")
 	end
 end
 
