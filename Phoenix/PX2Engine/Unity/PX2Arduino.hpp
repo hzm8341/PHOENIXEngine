@@ -8,11 +8,23 @@
 #include "PX2Bluetooth.hpp"
 #include "PX2Singleton_NeedNew.hpp"
 #include "PX2Serial.hpp"
+#include "PX2NetClientConnector.hpp"
+#include "PX2NetServer.hpp"
 
 namespace PX2
 {
+
+	typedef void(*ArduinoToSendCallback) (const std::string &callback);
+
+	enum ArduinoRectType
+	{
+		ART_RECT_DIST,
+		ART_RECV_IR,
+		ART_MAXZ_TYPE
+	};
+	typedef void(*ArduinoReceiveCallback) (ArduinoRectType type, int val);
 	
-	class PX2_ENGINE_ITEM Arduino : public Singleton<Arduino>
+	class PX2_ENGINE_ITEM Arduino : public Object, public Singleton<Arduino>
 	{
 	public:
 		Arduino();
@@ -23,17 +35,32 @@ namespace PX2
 			M_SERIAL,
 			M_BLUETOOTH,
 			M_WIFI_ROBOT,
+			M_WIFI_TCP, // ESP8266
+			M_WIFI_SERVER,
+			M_EMPTY,
 			M_MAX_TYPE
 		};
 
+		void Reset();
 		bool Initlize(Mode mode, const std::string &port="", int baudrate = 9600);
 		bool InitlizeForRobot(int targetRobotID, int udpPort);
+		bool InitlizeWifiTCP(const std::string &ip="192.168.4.1", int port=9000);
+		bool InitlizeEmpty();
+		bool InitlizeServer(Server *server);
 		bool IsInitlized();
 		void Terminate();
 		void Update(float elapsedSeconds);
 
+		void SendToGetNetID();
+		void SetNetID(int id);
+		int GetNetID() const;
+
 		Mode GetMode() const;
 		Serial &GetSerial();
+
+		bool AddArduinoReceiveCallbacks(ArduinoReceiveCallback callback);
+		bool IsHasArduinoReceiveCallback(ArduinoReceiveCallback callback) const;
+		bool AddScriptHandler(const std::string &handler);
 
 		// arduino used -------------------------
 	public:
@@ -59,6 +86,7 @@ namespace PX2
 			P_A3,
 			P_A4,
 			P_A5,
+			P_A6,
 			P_MAX_TYPE
 		};
 
@@ -86,13 +114,13 @@ namespace PX2
 		void DistTest();
 		float GetDist() const;
 
-		// ir
-		void IRRecvInit(Pin pin);
-		void IRSendSony(int val = 1);
-		int GetIRReceive() const;
-
 		// vehicle
 		void VehicleInitMotoBoard();
+		void VehicleInitMotoBoard4567();
+		void VehicleInitMotoBoard298N(Pin pinLA, Pin pinLB, Pin pinLS, Pin pinRA, Pin pinRB, Pin pinRS);
+		// pinLA D2
+		// pinRA D3
+		void VehicleSpeedInit(Pin pinLA, Pin pinLB, Pin pinRA, Pin pinRB);
 		enum DirectionType
 		{
 			DT_NONE,
@@ -125,18 +153,30 @@ namespace PX2
 		void MP3SetVolume(int volume);
 		void MP3Stop();
 
-		void IRInit(Pin pinR);
+		void IRInit(Pin pinReceive);
 		void IRSend(int val);
+		int GetIRReceive() const;
+
+		void WeightInit(int i, Pin pinOut, Pin pinClk);
+		void WeightTest(int i);
+		float GetWeight(int i);
+
+		bool AddArduinoToSendCallback(ArduinoToSendCallback callback);
+		bool IsHasArduinoToSendCallback(ArduinoToSendCallback callback) const;
+		const std::string &GetLastSendString();
 
 	public_internal:
 		void _Send(const std::string &str);
 		void _SetDist(float dist);
 		void _SetIRReceive(int irReceive);
 		void _SetPinVal(Pin pin, int val);
+		void _SetWeight(int index, float weight);
 		void _SetSpeedLR(int left, int right);
 
 		enum OptionType
 		{
+			OT_TOGET_NETID, // phoenixframe
+			OT_RETURN_NETID,
 			OT_PM,
 			OT_DW,
 			OT_AW,
@@ -151,6 +191,10 @@ namespace PX2
 			OT_MOTO_RUN,
 			OT_MOTO_RUNSIMPLE,
 			OT_MOTO_STOP,
+			OT_MOTO_I_SPD,
+			OT_RETURN_MOTOSPD,
+			OT_MOTO_I_DRIVER4567,
+			OT_MOTO_I_DRIVER298N,
 			OT_MP3_INIT,
 			OT_MP3_PLAY,
 			OT_MP3_INDEX,
@@ -159,7 +203,15 @@ namespace PX2
 			OT_MP3_VOLUME,
 			OT_IR_INIT,
 			OT_IR_SEND,
-			OT_RETRUN_IR,
+			OT_RETURN_IR,
+			OT_HX711_I,
+			OT_HX711_TEST,
+			OT_RETURN_HX711,
+			OT_INTERNAL_LIGHT, // makerclock
+			OT_LIGHT,
+			OT_SEGMENT,
+			OT_MOTO,
+			OT_DISTTEST,
 			OT_MAX_TYPE
 		};
 		static std::string sOptTypeStr[OT_MAX_TYPE];
@@ -180,21 +232,42 @@ namespace PX2
 		static SimpleDirectionType _NetStr2SimpleDir(const std::string &str);
 
 	private:
-		void _Reset();
+		void _OnCallback(ArduinoRectType type, int value);
+		void _OnToSendCallback(const std::string &str);
+
+		std::vector<ArduinoReceiveCallback> mCallbacks;
+		std::vector<std::string> mRecvHandlers;
+
+		std::vector<ArduinoToSendCallback> mToSendCallbacks;
 
 		Mode mMode;
+		int mNetID;
 		int mTargetRobotID;
 		int mRobotUDPPort;
-		std::string mArduinoString;
+		std::string mTcpIP;
+		int mTcpPort;
+
 		std::string mEndStr;
 
 		Serial mSerial;
+		ClientConnectorPtr mConnector;
+		Server *mServer;
 
 		float mDist;
 		int mIRReceive;
 
+		float mWeight[4];
+
 		int mPinValue[P_MAX_TYPE];
 		int mSpeed[4];
+
+		std::string mLastSendString;
+
+		// makeblock
+	public:
+		void MCSegmentSet(int pin, int val);
+		void MCMoto(int pin, int speed);
+		void MCTestDist(int pin);
 	};
 
 #define PX2_ARDUINO Arduino::GetSingleton()

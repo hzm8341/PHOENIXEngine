@@ -44,6 +44,24 @@ void UDPNetInfo::UDPServerRecvCallback(SocketAddress &address,
 			}
 		}
 	}
+	else if (CMD_EngineUDPInfoCamera == cmd)
+	{
+		std::string paramName = "Camera";
+
+		std::string myName = PX2_APP.GetHostName();
+		if (paramName != myName)
+		{
+			UDPNetInfo *info = PX2_APP.GetUDPNetInfo(ip);
+			if (!info)
+			{
+				PX2_APP.AddUDPNetInfo(ip, paramName, UDPNetInfo::T_CAMERA);
+			}
+			else
+			{
+				info->UpdateTiming = 0.0f;
+			}
+		}
+	}
 	else if (CMD_EngineUDPConnectMeStr == cmd)
 	{
 		EngineClientConnector *cnt = PX2_APP.GetEngineClientConnector();
@@ -66,6 +84,7 @@ void UDPNetInfo::UDPServerRecvCallback(SocketAddress &address,
 //----------------------------------------------------------------------------
 UDPNetInfo::UDPNetInfo()
 {
+	TheType = UDPNetInfo::T_DEVICE;
 	ClientID = 0;
 	IsConnected = false;
 	UpdateTiming = 0.0f;
@@ -73,6 +92,16 @@ UDPNetInfo::UDPNetInfo()
 //----------------------------------------------------------------------------
 UDPNetInfo::~UDPNetInfo()
 {
+}
+//----------------------------------------------------------------------------
+const std::string &UDPNetInfo::GetName() const
+{
+	return Name;
+}
+//----------------------------------------------------------------------------
+const std::string &UDPNetInfo::GetIP() const
+{
+	return IP;
 }
 //----------------------------------------------------------------------------
 
@@ -88,15 +117,20 @@ UDPNetInfo *Application::GetUDPNetInfo(const std::string &ip)
 	return 0;
 }
 //----------------------------------------------------------------------------
-bool Application::AddUDPNetInfo(const std::string &ip, const std::string &name)
+bool Application::AddUDPNetInfo(const std::string &ip, const std::string &name,
+	UDPNetInfo::Type type)
 {
 	UDPNetInfo *info = GetUDPNetInfo(ip);
-	if (info)
+	if (info && info->TheType == type)
+	{
 		return false;
+	}
 
 	info = new0 UDPNetInfo();
+
 	info->IP = ip;
 	info->Name = name;
+	info->TheType = type;
 
 	mUDPNetInfos.push_back(info);
 
@@ -124,8 +158,7 @@ void Application::ClearUDPNetInfo()
 {
 	mUDPNetInfos.clear();
 
-	Event *ent = EngineNetES::CreateEventX(
-		EngineNetES::EngineClientUDPInfoChanged);
+	Event *ent = PX2_CREATEEVENTEX(EngineNetES, EngineClientUDPInfoChanged);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
@@ -154,8 +187,8 @@ void Application::_UpdateUDPNetInfos(float elapsedTime)
 
 	if (isInfoChanged)
 	{
-		Event *ent = EngineNetES::CreateEventX(
-			EngineNetES::EngineClientUDPInfoChanged);
+		Event *ent = PX2_CREATEEVENTEX(EngineNetES, 
+			EngineClientUDPInfoChanged);
 		PX2_EW.BroadcastingLocalEvent(ent);
 	}
 }

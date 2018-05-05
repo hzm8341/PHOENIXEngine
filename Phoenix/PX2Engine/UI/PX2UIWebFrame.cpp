@@ -218,7 +218,7 @@ void _OnDrawCallback (Renderer *renderer, Renderable *renderable)
 	{
 		if (!webFrame->IsShowNativeView())
 		{
-			webFrame->ShowNativeView(true);
+			webFrame->ShowNativeView(false);
 		}
 	}
 }
@@ -684,15 +684,31 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 {
 	UIFrame::UpdateWorldData(applicationTime, elapsedTime);
 
-	Rectf rect = GetLocalRect();
+	Rectf canvasScreenRect;
+	int screenLeft = 0;
+	int top = 0;
+	int screenWidth = 0;
+	int screenHeight = 0;
+	EngineUICanvas *engineCanvas = EngineUICanvas::GetSingletonPtr();
+	if (engineCanvas)
+	{
+		canvasScreenRect = EngineUICanvas::GetSingleton().GetScreenRect();
+		Rectf screenRect = GetScreenRect();
+		top = canvasScreenRect.Height() - screenRect.Top;
+
+		screenLeft = screenRect.Left;
+		screenWidth = (int)screenRect.Width();
+		screenHeight = (int)screenRect.Height();
+	}
 
 	bool isNeedReGenTex = false;
 	if (mTex2D)
 	{
-		if (rect.Width() != mTex2D->GetWidth() ||
-			rect.Height() != mTex2D->GetHeight())
+		int texWidth = mTex2D->GetWidth();
+		int texHeight = mTex2D->GetHeight();
+		if (screenWidth != texWidth || screenHeight != texHeight)
 		{
-			if (rect.Width() != 0 && rect.Height() != 0)
+			if (screenWidth != 0 && screenHeight != 0)
 			{
 				isNeedReGenTex = true;
 			}
@@ -700,17 +716,17 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	}
 	else
 	{
-		if (rect.Width() != 0 && rect.Height() != 0)
+		if (screenWidth != 0 && screenHeight != 0)
 		{
 			isNeedReGenTex = true;
 		}
 	}
 
-	if (isNeedReGenTex && rect.Width()>0 && rect.Height()>0)
+	if (isNeedReGenTex && screenWidth>0 && screenHeight>0)
 	{
 		mWebViewImageData.clear();
-		int width = (int)rect.Width();
-		int height = (int)rect.Height();
+		int width = screenWidth;
+		int height = screenHeight;
 		mTex2D = new0 Texture2D(Texture::TF_A8R8G8B8, width, height, 1);
 		mImagePicBox->GetUIPicBox()->SetTexture(mTex2D);
 
@@ -718,16 +734,9 @@ void UIWebFrame::UpdateWorldData(double applicationTime, double elapsedTime)
 	}
 
 #if defined (__ANDROID__) 
-	Rectf canvasScreenRect;
-	EngineUICanvas *engineCanvas = EngineUICanvas::GetSingletonPtr();
 	if (engineCanvas)
 	{
-		canvasScreenRect = EngineUICanvas::GetSingleton().GetScreenRect();
-		Rectf screenRect = GetScreenRect();
-		float top = canvasScreenRect.Height() - screenRect.Top;
-
-		setWebViewRectJNI(mViewTag, screenRect.Left, top,
-			screenRect.Width(), screenRect.Height());
+		setWebViewRectJNI(mViewTag, screenLeft, top, screenWidth, screenHeight);
 	}
 
 #elif defined PX2_USE_AWESOMIUM
@@ -771,6 +780,7 @@ void UIWebFrame::_UpdateTex2D()
 			{
 				for (int col = 0; col < height; ++col)
 				{
+#if defined PX2_USE_AWESOMIUM
 					pDest[offsetDst + 0] = mWebViewImageData[offsetSrc + 0]; // b
 					pDest[offsetDst + 1] = mWebViewImageData[offsetSrc + 1]; // g 
 					pDest[offsetDst + 2] = mWebViewImageData[offsetSrc + 2]; // r
@@ -778,6 +788,15 @@ void UIWebFrame::_UpdateTex2D()
 
 					offsetSrc += 4;
 					offsetDst += 4;
+#elif defined (__ANDROID__) 
+					pDest[offsetDst + 0] = mWebViewImageData[offsetSrc + 0]; // b
+					pDest[offsetDst + 1] = mWebViewImageData[offsetSrc + 1]; // g 
+					pDest[offsetDst + 2] = mWebViewImageData[offsetSrc + 2]; // r
+					pDest[offsetDst + 3] = 255;
+
+					offsetSrc += 4;
+					offsetDst += 4;
+#endif
 				}
 			}
 

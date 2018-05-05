@@ -86,6 +86,8 @@ void UISplitterFrame::SetPosType(PosType pt)
 //----------------------------------------------------------------------------
 void UISplitterFrame::OnWidgetPicked(const CanvasInputData &inputData)
 {
+	UIFrame::OnWidgetPicked(inputData);
+
 	if (!IsEnable()) return;
 
 	if (UIPT_PRESSED == inputData.PickType)

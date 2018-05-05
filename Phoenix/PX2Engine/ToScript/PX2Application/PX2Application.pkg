@@ -14,24 +14,35 @@
 			PLT_MAX_TYPE
 		};
 		PlatformType GetPlatformType() const;
+		
+		void SetInEditor(bool isInEditor);
+		bool IsInEditor() const;
 
 		void SetQuit(bool quit);
 		bool IsQuit() const;	
 	
 	public:
 		const std::string &GetHostName() const;
+		
+		const std::string &GetHostName() const;
+		int GetLocalAddressSize();
+		IPAddress GetLocalAddress(int i);
+		std::string GetLocalAddressStr(int i);
 	
 		EngineServer *GetEngineServer();
 		EngineClientConnector *GetEngineClientConnector();	
 		
 		UDPServer *CreateEngineUDPServerClient();
 		UDPServer *GetEngineUDPServerClient();
+		
+		UDPServer *CreateEngineUDPServerEditor();
+		UDPServer *GetEngineUDPServerEditor();
 	
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
-		GeneralServer *GetGeneralServer();
+		bool ShutdownGeneralServer(GeneralServer *generalServer);
 		GeneralClientConnector *CreateGeneralClientConnector();
-		GeneralClientConnector *GetGeneralClientConnector();
+		bool ShutdownGeneralClientConnector(GeneralClientConnector *connector);
 
 		// Update
 	public:
@@ -178,4 +189,13 @@
 			
 	public:	
 		void SendGeneralEvent(const std::string &generalStr);
+		
+		// NetInfo
+	public:
+		UDPNetInfo *GetUDPNetInfo(const std::string &ip);
+		bool AddUDPNetInfo(const std::string &ip, const std::string &name,
+			UDPNetInfo::Type type = UDPNetInfo::T_DEVICE);
+		int GetNumUDPNetInfo() const;
+		UDPNetInfo *GetUDPNetInfo(int i);
+		void ClearUDPNetInfo();
 	};

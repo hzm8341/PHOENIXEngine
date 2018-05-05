@@ -37,6 +37,8 @@ mUISkinManager(0),
 mLogicManager(0),
 mCreater(0),
 mArduino(0),
+mVoiceSDK(0),
+mSTEAMEduManager(0),
 
 mIsInBackground(false),
 mBeforeInBackgroundMusicEnable(true),
@@ -48,7 +50,9 @@ mPlayType(PT_NONE),
 
 mAppTime(0),
 mLastAppTime(0),
-mElapsedTime(0)
+mElapsedTime(0),
+
+mConfigName("Application")
 {
 }
 //----------------------------------------------------------------------------
@@ -126,75 +130,6 @@ void Application::Update()
 	Time::FrameRunnedSeconds += mElapsedTime;
 
 	Update((float)mAppTime, (float)mElapsedTime);
-}
-//----------------------------------------------------------------------------
-void Application::Update(float appSeconds, float elapsedSeconds)
-{
-	// event
-	if (mEventWorld)
-		mEventWorld->Update((float)elapsedSeconds);
-
-	// resource
-	PX2_RM.Update(appSeconds, elapsedSeconds);
-
-	// font
-	PX2_FM.Update();
-
-	if (mSoundSys)
-		mSoundSys->Update(appSeconds, elapsedSeconds);
-
-	// Plugin
-	PX2_PLUGINMAN.Update();
-
-	PX2_ADM.Update((float)elapsedSeconds);
-
-	PX2_TIMERM.Update((float)appSeconds);
-
-	// graph
-	PX2_GR.Update(appSeconds, elapsedSeconds);
-
-	if (mEngineServer)
-		mEngineServer->Run((float)elapsedSeconds);
-
-	if (mEngineClient)
-		mEngineClient->Update((float)elapsedSeconds);
-
-	if (mEngineUDPServerClient)
-		mEngineUDPServerClient->Update((float)elapsedSeconds);
-
-	if (mEngineDUPServerEditor)
-		mEngineDUPServerEditor->Update((float)elapsedSeconds);
-
-	if (mGeneralServer)
-		mGeneralServer->Run((float)elapsedSeconds);
-
-	if (mGeneralClientConnector)
-		mGeneralClientConnector->Update((float)elapsedSeconds);
-
-	if (mArduino)
-		mArduino->Update((float)elapsedSeconds);
-
-	PX2_BLUETOOTH.Update((float)elapsedSeconds);
-	PX2_WIFI.Update((float)elapsedSeconds);
-
-	_UpdateUDPNetInfos((float)elapsedSeconds);
-
-	if (!mUpdateScriptCallbacks.empty())
-	{
-		std::string strAppSeconds = StringHelp::FloatToString(appSeconds);
-		std::string strElapsedSeconds = StringHelp::FloatToString(elapsedSeconds);
-		auto it = mUpdateScriptCallbacks.begin();
-		for (; it != mUpdateScriptCallbacks.end(); it++)
-		{
-			std::string scriptCallback = *it;
-			PX2_SC_LUA->CallString(scriptCallback + "(\"" + strAppSeconds +
-				", " + strElapsedSeconds + "\")");
-		}
-	}
-
-	if (mIsInBackground) return;
-
-	PX2_GR.Draw();
 }
 //----------------------------------------------------------------------------
 bool Application::IsHasUpdateScriptCallback(const std::string &callback)
@@ -280,5 +215,102 @@ void Application::SendGeneralEvent(const std::string &eventDataStr0,
 	ent->SetDataStr0(eventDataStr0);
 	ent->SetDataStr1(eventDataStr1);
 	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Application::SetConfigName(const std::string &cfgName)
+{
+	mConfigName = cfgName;
+}
+//----------------------------------------------------------------------------
+const std::string &Application::GetConfigName()
+{
+	return mConfigName;
+}
+//----------------------------------------------------------------------------
+void Application::SetConfig(const std::string &name, const std::string &cfgStr)
+{
+	mCFGs[name] = cfgStr;
+	_WriteConfigs(mCFGs, mConfigName);
+}
+//----------------------------------------------------------------------------
+std::string Application::GetConfig(const std::string &name)
+{
+	auto it = mCFGs.find(name);
+	if (it != mCFGs.end())
+		return it->second;
+
+	return "";
+}
+//----------------------------------------------------------------------------
+std::string Application::_GetWritePath(const std::string &projName)
+{
+	return "Write_" + projName;
+}
+//----------------------------------------------------------------------------
+void Application::_WriteConfigs(std::map<std::string, std::string> &cfgs,
+	const std::string &cfgName)
+{
+	std::string wirteablePath = PX2_RM.GetWriteablePath();
+	std::string appPath = _GetWritePath(cfgName) + "/";
+
+	if (!PX2_RM.IsFileFloderExist(wirteablePath + appPath))
+	{
+		PX2_RM.CreateFloder(wirteablePath, appPath);
+	}
+
+	_CreateSaveConfigXML(cfgs, cfgName);
+}
+//----------------------------------------------------------------------------
+void Application::_CreateSaveConfigXML(std::map<std::string, std::string> &cfgs, 
+	const std::string &cfgName)
+{
+	std::string wirteablePath = PX2_RM.GetWriteablePath();
+	std::string projectsXML = wirteablePath + _GetWritePath(cfgName) + "/"
+		+ "config.xml";
+
+	XMLData data;
+	data.Create();
+
+	XMLNode rootNode = data.NewChild("config");
+
+	auto it = cfgs.begin();
+	for (; it != cfgs.end(); it++)
+	{
+		const std::string &name = it->first;
+		const std::string &val = it->second;
+
+		XMLNode node = rootNode.NewChild(name);
+		node.SetAttributeString("name", name);
+		node.SetAttributeString("value", val);
+	}
+
+	data.SaveFile(projectsXML);
+}
+//----------------------------------------------------------------------------
+void Application::_LoadConfigs(std::map<std::string, std::string> &cfgs, 
+	const std::string &projName)
+{
+	cfgs.clear();
+
+	std::string wirteablePath = PX2_RM.GetWriteablePath();
+	std::string projectsXML = wirteablePath + _GetWritePath(projName) + "/"
+		+ "config.xml";
+
+	XMLData data;
+	if (data.LoadFile(projectsXML))
+	{
+		XMLNode rootNode = data.GetRootNode();
+
+		XMLNode childNode = rootNode.IterateChild();
+		while (!childNode.IsNull())
+		{
+			std::string name = childNode.AttributeToString("name");
+			std::string value = childNode.AttributeToString("value");
+
+			cfgs[name] = value;
+
+			childNode = childNode.IterateChild(childNode);
+		}
+	}
 }
 //----------------------------------------------------------------------------

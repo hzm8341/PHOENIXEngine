@@ -62,7 +62,6 @@ namespace PX2
 		CountingStreamBuf _buf;
 	};
 
-
 	class PX2_ENGINE_ITEM CountingInputStream : public CountingIOS, public std::istream
 	{
 	public:

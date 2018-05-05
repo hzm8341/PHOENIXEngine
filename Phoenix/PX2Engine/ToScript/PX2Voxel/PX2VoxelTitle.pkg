@@ -3,7 +3,7 @@
 	class VoxelTitle : public Node
 	{
 	public:
-		VoxelTitle(int x, int y, int z);
+		VoxelTitle(int x, int y, int z, int initMtlType);
 		virtual ~VoxelTitle();
 
 		void GetBlockIndex(const APoint &localPos, int &indexX, int &indexY, int &indexZ);

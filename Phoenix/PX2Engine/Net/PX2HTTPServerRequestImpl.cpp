@@ -62,6 +62,11 @@ StreamSocket HTTPServerRequestImpl::DetachSocket()
 	return mSession.DetachSocket();
 }
 //----------------------------------------------------------------------------
+HTTPServerSession &HTTPServerRequestImpl::GetSession()
+{
+	return mSession;
+}
+//----------------------------------------------------------------------------
 bool HTTPServerRequestImpl::ExpectContinue() const
 {
 	const std::string& expect = get(EXPECT, EMPTY);

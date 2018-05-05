@@ -22,7 +22,7 @@ namespace PX2
 	{
 	public:
 		CurlObj();
-		~CurlObj();
+		virtual ~CurlObj();
 
 		bool Initlize();
 		bool Terminate();

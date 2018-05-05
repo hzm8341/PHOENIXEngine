@@ -3,6 +3,7 @@
 #include "PX2VLC.hpp"
 #include "PX2VLCMem.hpp"
 #include "PX2Log.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
 #if defined PX2_USE_VLC
@@ -57,7 +58,8 @@ void VLC::Start(const std::string &filename)
 	PX2_LOG_INFO("vlc start filename %s", filename.c_str());
 
 #if defined PX2_USE_VLC
-	mMedia = libvlc_media_new_path(mInst, filename.c_str());
+	mMedia = libvlc_media_new_location(mInst, filename.c_str());
+	//mMedia = libvlc_media_new_path(mInst, filename.c_str());
 
 	mMediaPlayer = libvlc_media_player_new_from_media(mMedia);
 	libvlc_media_release(mMedia);

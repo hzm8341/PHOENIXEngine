@@ -192,6 +192,8 @@ void UIButton::UpdateWorldData(double applicationTime, double elapsedTime)
 //----------------------------------------------------------------------------
 void UIButton::OnWidgetPicked(const CanvasInputData &inputData)
 {
+	UIFrame::OnWidgetPicked(inputData);
+
 	bool isDoPick = true;
 	if (mRangeAcceptFrame)
 	{
@@ -206,6 +208,8 @@ void UIButton::OnWidgetPicked(const CanvasInputData &inputData)
 
 		if (UIPT_PRESSED == inputData.PickType)
 		{
+			mPressedTouchID = inputData.TouchID;
+
 			if (state == BS_NORMAL || state == BS_HOVERED)
 			{
 				SetButtonState(BS_PRESSED);
@@ -214,18 +218,26 @@ void UIButton::OnWidgetPicked(const CanvasInputData &inputData)
 		}
 		else if (UIPT_RELEASED == inputData.PickType)
 		{
-			if (state == BS_PRESSED)
+			if (mPressedTouchID == inputData.TouchID)
 			{
-				SetButtonState(BS_HOVERED);
-				OnReleased();
+				if (state == BS_PRESSED)
+				{
+					SetButtonState(BS_HOVERED);
+					OnReleased();
+				}
+
+				mPressedTouchID = -1;
 			}
 		}
 #if defined (_WIN32) || defined (WIN32)
 		else if (UIPT_MOVED == inputData.PickType)
 		{
-			if (state == BS_NORMAL)
+			if (mPressedTouchID == inputData.TouchID)
 			{
-				SetButtonState(BS_HOVERED);
+				if (state == BS_NORMAL)
+				{
+					SetButtonState(BS_HOVERED);
+				}
 			}
 		}
 #endif
@@ -250,21 +262,33 @@ void UIButton::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 
 		if (UICT_PRESSED == inputData.PickType)
 		{
-			OnPressedNotPick();
+			if (mPressedTouchID == inputData.TouchID)
+			{
+				OnPressedNotPick();
+				mPressedTouchID = -1;
+			}
 		}
 		else if (UICT_RELEASED == inputData.PickType)
 		{
 			if (BS_PRESSED == state)
 			{
-				SetButtonState(BS_NORMAL);
-				OnReleasedNotPick();
+				if (mPressedTouchID == inputData.TouchID)
+				{
+					SetButtonState(BS_NORMAL);
+					OnReleasedNotPick();
+					mPressedTouchID = -1;
+				}
 			}
 		}
 		else if (UIPT_MOVED == inputData.PickType)
 		{
 			if (state == BS_HOVERED)
 			{
-				SetButtonState(BS_NORMAL);
+				if (mPressedTouchID == inputData.TouchID)
+				{
+					SetButtonState(BS_NORMAL);
+					mPressedTouchID = -1;
+				}
 			}
 		}
 	}

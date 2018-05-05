@@ -40,6 +40,7 @@ namespace PX2
 		void AddCallback(GeneralServerCallback callBack);
 
 		void SendString(int clientid, const std::string &str);
+		void SendRawString(int clientid, const std::string &str);
 
 		bool IsHasOnConnectCallback(const std::string &callback) const;
 		void AddOnConnectCallback(const std::string &callback);

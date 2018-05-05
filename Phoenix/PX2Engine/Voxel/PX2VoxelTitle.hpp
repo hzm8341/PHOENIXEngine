@@ -20,12 +20,13 @@ namespace PX2
 		PX2_DECLARE_STREAM(VoxelTitle);
 
 	public:
-		VoxelTitle(int x, int y, int z);
+		VoxelTitle(int x, int y, int z, int initMtlType);
 		virtual ~VoxelTitle();
 
 		void GetBlockIndex(const APoint &localPos, int &indexX, int &indexY, int &indexZ);
 		bool SetBlock(const APoint &localPos, int type, SetBlockGet *vbg);
 		bool SetBlock(int blockIndexX, int blockIndexY, int blockIndexZ, int mtlType, SetBlockGet *vbg);
+		void SetAllBlock(int mtlType);
 
 		bool IsContainPoint(const APoint &pos) const;
 
@@ -33,6 +34,7 @@ namespace PX2
 		int WorldIndexX;
 		int WorldIndexY;
 		int WorldIndexZ;
+		int mInitMtlType;
 
 		VoxelTitle *Left;
 		VoxelTitle *Right;

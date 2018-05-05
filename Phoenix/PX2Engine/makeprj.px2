@@ -64,6 +64,21 @@ INCPATH := \
 	-I ../Effect/ \
 	-I ../Terrains/ \
 	-I ../UI/ \
+	-I ../Physics/ \
+	-I ../Physics/Bullet/ \
+	-I ../Physics/Bullet/LinearMath/ \
+	-I ../Physics/Bullet/BulletCollision/ \
+	-I ../Physics/Bullet/BulletDynamics/ \
+	-I ../Physics/ \
+	-I ../AI/breezyslam/ \
+	-I ../AI/iiiroboticslidar2/ \
+	-I ../AI/OpenSteer/src \
+	-I ../AI/OpenSteer/ \
+	-I ../AI/OpenSteer/include/ \
+	-I ../AI/OpenSteer/include/OpenSteer \
+	-I ../AI/OpenSteer/ \
+	-I ../AI/SkillSystem/ \
+	-I ../AI/ \
 	-I ../Voxel/ \
 	-I ../Logic/ \
 	-I ../Logic/BlueBlock/ \

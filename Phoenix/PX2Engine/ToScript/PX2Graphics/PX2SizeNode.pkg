@@ -5,6 +5,9 @@
 	public:
 		SizeNode();
 		virtual ~SizeNode();
+		
+		void UpdateLayout();
+		void UpdateScreenRect();
 
 		// Size
 	public:

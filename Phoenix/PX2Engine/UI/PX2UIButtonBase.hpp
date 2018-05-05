@@ -101,6 +101,8 @@ namespace PX2
 		UIFTextPtr mFText;
 
 		bool mIsPicBoxSizeSameWithButton;
+
+		int mPressedTouchID;
 	};
 
 	PX2_REGISTER_STREAM(UIButtonBase);

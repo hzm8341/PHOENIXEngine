@@ -112,6 +112,8 @@ typedef unsigned __int64    uint64_t;
 #define PX2_LITTLE_ENDIAN
 #define PX2_USE_PTHREAD
 
+#define PX2_LONG_IS_64_BIT
+
 #endif
 //----------------------------------------------------------------------------
 // Android

@@ -8,6 +8,7 @@ using namespace PX2;
 
 VoxelManager::VoxelManager()
 {
+	mType = T_COLOR;
 }
 //----------------------------------------------------------------------------
 VoxelManager::~VoxelManager()

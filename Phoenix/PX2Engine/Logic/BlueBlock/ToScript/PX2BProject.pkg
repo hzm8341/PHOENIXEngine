@@ -1,0 +1,15 @@
+// PX2BProject.pkg
+
+	class BProject : public Object
+	{
+		BProject();
+		virtual ~BProject();
+
+		std::string DateStr;
+		std::string Desc;
+		
+		UIFrame *GetContentFrame();
+		Scene *GetScene();
+		CameraNode *GetCameraNode();
+		CameraPlayController *GetCameraPlayController();
+	};

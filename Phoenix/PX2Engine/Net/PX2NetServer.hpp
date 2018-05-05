@@ -43,6 +43,7 @@ namespace PX2
 
 		ServerType GetServerType() const;
 		ServerSocket GetListenSocket();
+		std::string GetAddress();
 
 		bool Start();
 		void Shutdown();
@@ -103,6 +104,7 @@ namespace PX2
 		}
 
 		int SendMsgToClientBuffer(int clientID, int msgid, const char *buf, int size);
+		int SendMsgToClientRawBuffer(int clientID, const char *buf, int size);
 
 	protected:
 		Server();

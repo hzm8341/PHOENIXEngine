@@ -23,6 +23,7 @@ namespace PX2
 			T_COLOR,
 			T_MAX_TYPE
 		};
+		// call it when project play, because PX2_RM may clear some res
 		bool Initlize(Type t);
 		Type GetType() const;
 

@@ -12,7 +12,8 @@ PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UIButtonBase);
 //----------------------------------------------------------------------------
 UIButtonBase::UIButtonBase() :
 mButType(BT_COLOR),
-mButtonState(BS_NORMAL)
+mButtonState(BS_NORMAL),
+mPressedTouchID(-1)
 {
 	mNormalColor = Float3::MakeColor(80, 80, 80);
 	mHoveredColor = Float3::MakeColor(100, 100, 100);
@@ -75,6 +76,13 @@ void UIButtonBase::SetButType(ButType butType)
 		SetPicBox(BS_DISABLED, picDis);
 
 		SetButtonState(UIButtonBase::BS_NORMAL);
+
+		SetStateColor(UIButtonBase::BS_NORMAL, Float3::WHITE);
+		SetStateColor(UIButtonBase::BS_HOVERED, Float3::WHITE);
+		SetStateColor(UIButtonBase::BS_PRESSED, Float3::WHITE);
+		SetStateBrightness(UIButtonBase::BS_NORMAL, 1.0f);
+		SetStateBrightness(UIButtonBase::BS_HOVERED, 1.0f);
+		SetStateBrightness(UIButtonBase::BS_PRESSED, 1.0f);
 	}
 }
 //----------------------------------------------------------------------------
@@ -505,7 +513,8 @@ void UIButtonBase::OnPropertyChanged(const PropertyObject &obj)
 UIButtonBase::UIButtonBase(LoadConstructor value) :
 UIFrame(value),
 mButType(BT_COLOR),
-mButtonState(BS_NORMAL)
+mButtonState(BS_NORMAL),
+mPressedTouchID(-1)
 {
 	mIsPicBoxSizeSameWithButton = true;
 }

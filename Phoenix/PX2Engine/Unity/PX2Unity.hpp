@@ -43,4 +43,7 @@
 // base64
 #include "PX2Base64.hpp"
 
+// PlatformSDK
+#include "PX2PlatformSDK.hpp"
+
 #endif

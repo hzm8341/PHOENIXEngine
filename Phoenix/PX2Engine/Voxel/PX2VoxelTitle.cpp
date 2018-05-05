@@ -20,13 +20,15 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Node, VoxelTitle);
 //----------------------------------------------------------------------------
 bool VoxelTitle::sIsGenTitleSideBock = false;
 //----------------------------------------------------------------------------
-VoxelTitle::VoxelTitle(int x, int y, int z)
+VoxelTitle::VoxelTitle(int x, int y, int z, int initMtlType)
 {
 	SetName("PX2VoxelTitle");
 
 	WorldIndexX = x;
 	WorldIndexY = y;
 	WorldIndexZ = z;
+
+	mInitMtlType = initMtlType;
 
 	_Init();
 }
@@ -51,7 +53,7 @@ void VoxelTitle::_Init()
 	VoxelManager::Type t = PX2_VOXELM.GetType();
 	if (VoxelManager::T_TEX == t)
 	{
-		vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PNT1TB);
+		vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCNT1);
 	}
 	else if (VoxelManager::T_COLOR == t)
 	{
@@ -68,12 +70,12 @@ void VoxelTitle::_Init()
 	if (VoxelManager::T_TEX == t)
 	{
 		mi = new0 MaterialInstance(
-			"Data/engine_mtls/std/std.px2obj", "std_light", false);
+			"Data/engine_mtls/std/std.px2obj", "std_lightshadow", false);
 
 		Texture2D *tex = DynamicCast<Texture2D>(PX2_RM.BlockLoad(
 			"Data/engine/voxel/blocks.png"));
-		//if (tex->CanGenMinmaps())
-			//tex->GenerateMipmaps();
+		if (tex->CanGenMinmaps())
+			tex->GenerateMipmaps();
 		mi->SetPixelTexture(0, "SampleBase", tex);
 	}
 	else
@@ -91,6 +93,7 @@ void VoxelTitle::_Init()
 				Blocks[x][y][z].IndexX = x;
 				Blocks[x][y][z].IndexY = y;
 				Blocks[x][y][z].IndexZ = z;
+				Blocks[x][y][z].MtlType = mInitMtlType;
 
 				if (0 < x)
 				{
@@ -136,6 +139,22 @@ bool VoxelTitle::SetBlock(const APoint &localPos, int type, SetBlockGet *vbg)
 	GetBlockIndex(localPos, x, y, z);
 
 	return SetBlock(x, y, z, type, vbg);
+}
+//----------------------------------------------------------------------------
+void VoxelTitle::SetAllBlock(int mtlType)
+{
+	VoxelBlock Blocks[VOXEL_TITLE_SIZE][VOXEL_TITLE_SIZE][VOXEL_TITLE_SIZE];
+
+	for (int x = 0; x < VOXEL_TITLE_SIZE; x++)
+	{
+		for (int y = 0; y < VOXEL_TITLE_SIZE; y++)
+		{
+			for (int z = 0; z < VOXEL_TITLE_SIZE; z++)
+			{
+				SetBlock(x, y, z, mtlType, 0);
+			}
+		}
+	}
 }
 //----------------------------------------------------------------------------
 bool VoxelTitle::SetBlock(int x, int y, int z,
@@ -463,6 +482,8 @@ void VoxelTitle::Load(InStream& source)
 	source.Read(WorldIndexY);
 	source.Read(WorldIndexZ);
 
+	source.Read(mInitMtlType);
+
 	int numActors = 0;
 	source.Read(numActors);
 	if (numActors > 0)
@@ -532,6 +553,8 @@ void VoxelTitle::Save(OutStream& target) const
 	target.Write(WorldIndexY);
 	target.Write(WorldIndexZ);
 
+	target.Write(mInitMtlType);
+
 	int numActors = (int)mActorModels.size();
 	target.Write(numActors);
 	for (int i = 0; i < numActors; i++)
@@ -550,6 +573,8 @@ int VoxelTitle::GetStreamingSize(Stream &stream) const
 	size += sizeof(WorldIndexX);
 	size += sizeof(WorldIndexY);
 	size += sizeof(WorldIndexZ);
+
+	size += sizeof(mInitMtlType);
 
 	int numActors = (int)mActorModels.size();
 	size += sizeof(numActors);

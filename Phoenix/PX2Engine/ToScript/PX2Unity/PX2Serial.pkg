@@ -6,7 +6,22 @@
 		Serial();
 		~Serial();
 		
+		static Serial *New();
+		static void Delete(Serial *serial);
+		
+		static Serial *GetDefaultSerial();
+		
 		std::vector<std::string> GetPortList();
 		int GetNumPorts() const;
 		std::string GetPort(int i) const;
+		
+		void ClearScirptHandlers();
+		bool IsHasScriptHandler(const std::string &scriptHandler);
+		void AddScriptHandler(const std::string &scriptHandler);
+		void RemoveScriptHandler(const std::string &scriptHandler);
+
+		void ClearScriptHandlersHex();
+		bool IsHasScriptHandlerHex(const std::string &scriptHandler);
+		void AddScriptHandlerHex(const std::string &scriptHandler);
+		void RemoveScriptHandlerHex(const std::string &scriptHandler);
 	};

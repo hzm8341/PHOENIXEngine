@@ -74,6 +74,11 @@ ServerSocket Server::GetListenSocket()
 	return mServerImp->GetListenSocket();
 }
 //-----------------------------------------------------------------------------
+std::string Server::GetAddress()
+{
+	return mServerImp->GetListenSocket().GetAddress().ToString();
+}
+//-----------------------------------------------------------------------------
 const std::vector<int> &Server::GetThreadIDs() const
 {
 	return mServerImp->GetThreadIDs();
@@ -150,6 +155,19 @@ int Server::SendMsgToClientBuffer(int clientID, int msgid,
 	WriteMessageID(buffer + MSGLEN_BYTES, msgid);
 	memcpy(buffer + MSGLEN_BYTES + MSGID_BYTES, buf, size);
 	int allbytes = size + MSGLEN_BYTES + MSGID_BYTES;
+
+	if (!mServerImp->PostWrite(clientID, buffer, allbytes))
+	{
+		printf("SendMsgToClient, PostWrite false\n");
+	}
+	return 0;
+}
+//----------------------------------------------------------------------------
+int Server::SendMsgToClientRawBuffer(int clientID, const char *buf, int size)
+{
+	char buffer[4096];
+	memcpy(buffer, buf, size);
+	int allbytes = size;
 
 	if (!mServerImp->PostWrite(clientID, buffer, allbytes))
 	{

@@ -193,6 +193,8 @@ void UITabFrame::PreCanvasPick(const CanvasInputData &inputData, Canvas *canvas)
 //----------------------------------------------------------------------------
 void UITabFrame::OnWidgetPicked(const CanvasInputData &inputData)
 {
+	UIFrame::OnWidgetPicked(inputData);
+
 	if (UIPT_MOVED == inputData.PickType)
 	{
 		if (!mIsDragingTab && !mPressingTabName.empty())

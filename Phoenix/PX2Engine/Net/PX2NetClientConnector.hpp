@@ -22,6 +22,8 @@ namespace PX2
 		CONNSTATE_WAITSERVER, //向服务器发送完消息， 等待回复消息
 	};
 
+	typedef void(*ClientConnectorRecvCallback) (const std::string &recvStr);
+
 	class PX2_ENGINE_ITEM ClientConnector : public Object
 	{
 	public:
@@ -30,6 +32,9 @@ namespace PX2
 	public:
 		ClientConnector(int num_msghandlers);
 		virtual ~ClientConnector();
+
+		bool IsHasRecvCallback(ClientConnectorRecvCallback callback);
+		bool AddRecvCallback(ClientConnectorRecvCallback callback);
 
 		void RegisterHandler(int msgid, ServerMsgHandleFunc msgfunc, bool need_answer=true, int other_answer_msg=-1);
 
@@ -61,6 +66,7 @@ namespace PX2
 			int other_answermsg;
 		};
 		std::vector<ServerMsgDesc>mMsgHandlers;
+		std::vector<ClientConnectorRecvCallback> mCallbacks;
 
 		BufferEventQueue *mSendQue;
 		BufferEventQueue *mRecvQue;
@@ -86,10 +92,11 @@ namespace PX2
 		int _OnReservedMsg (const void *pbuffer, int buflen);
 		int _ClientOnRead();
 		int _ClientOnWrite();
+		void _OnRecvCallbacks(const std::string &recvStr);
 	};
 
 #include "PX2NetClientConnector.inl"
-	typedef Pointer0<ClientConnector> ClientConnectPtr;
+	typedef Pointer0<ClientConnector> ClientConnectorPtr;
 
 }
 

@@ -112,6 +112,7 @@ namespace PX2
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, NotFoundException, RuntimeException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, IOException, RuntimeException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, DataException, RuntimeException)
+	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, DataFormatException, DataException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, SyntaxException, DataException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, OutOfMemoryException, RuntimeException)
 

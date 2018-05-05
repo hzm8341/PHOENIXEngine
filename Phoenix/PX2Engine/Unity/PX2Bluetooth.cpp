@@ -77,7 +77,7 @@ void Bluetooth::Clear()
 {
 	mSendUpdateSeconds = 0.0f;
 
-	ClearRecvCallbacks();
+	ClearCMDCallbacks();
 	ClearScirptHandlers();
 
 	mPairedDevices.clear();
@@ -450,12 +450,12 @@ void Bluetooth::OnReceive(const std::string &recvBuffer)
 	mRecvs.push_back(recvBuffer);
 }
 //----------------------------------------------------------------------------
-void Bluetooth::ClearRecvCallbacks()
+void Bluetooth::ClearCMDCallbacks()
 {
 	mCallbacks.clear();
 }
 //----------------------------------------------------------------------------
-bool Bluetooth::IsHasReceiveCallback(BluetoothReceiveCallback callBack)
+bool Bluetooth::IsHasCMDCallback(BluetoothReceiveCallback callBack)
 {
 	for (int i = 0; i < (int)mCallbacks.size(); i++)
 	{
@@ -466,15 +466,15 @@ bool Bluetooth::IsHasReceiveCallback(BluetoothReceiveCallback callBack)
 	return false;
 }
 //----------------------------------------------------------------------------
-void Bluetooth::AddReceiveCallback(BluetoothReceiveCallback callBack)
+void Bluetooth::AddCMDCallback(BluetoothReceiveCallback callBack)
 {
-	if (IsHasReceiveCallback(callBack))
+	if (IsHasCMDCallback(callBack))
 		return;
 
 	mCallbacks.push_back(callBack);
 }
 //----------------------------------------------------------------------------
-void Bluetooth::RemoveReceiveCallback(BluetoothReceiveCallback callback)
+void Bluetooth::RemoveCMDCallback(BluetoothReceiveCallback callback)
 {
 	auto it = mCallbacks.begin();
 	for (; it != mCallbacks.end();)

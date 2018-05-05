@@ -5,6 +5,7 @@
 
 #include "PX2MathematicsPre.hpp"
 #include "PX2Vector2.hpp"
+#include "PX2SmartPointer.hpp"
 
 namespace PX2
 {

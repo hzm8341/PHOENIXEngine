@@ -35,6 +35,6 @@ HTTPServer::~HTTPServer()
 void HTTPServer::StopAll(bool abortCurrent)
 {
 	Stop();
-//	mFactory->serverStopped(this, abortCurrent);
+	//mFactory->ServerStopped(this, abortCurrent);
 }
 //----------------------------------------------------------------------------

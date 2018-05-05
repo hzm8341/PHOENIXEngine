@@ -27,15 +27,17 @@ namespace PX2
 		void GetMinSize(int &minSizeX, int &minSizeY, int &minSizeZ) const;		
 		void SetMaxSize(int maxSizeX, int maxSizeY, int maxSizeZ);
 		void GetMaxSize(int &maxSizeX, int &maxSizeY, int &maxSizeZ) const;
-		void GenTitles(int maxZ);
+		void GenTitles(int maxZ, int mtlType);
 
 		void SetDistXY(int val);
 		void SetDistZ(int val);
+		void SetInitMtlType(int mtlType);
 
 		int GetTitleRangeXY() const;
 		int GetTitleRangeZ() const;
 
-		bool SetBlock(const APoint &worldPos, int type, SetBlockGet *get=0);
+		void SetAllBlocks(int mtlType);
+		bool SetBlock(const APoint &worldPos, int mtlType, SetBlockGet *get = 0);
 		bool SetBlock(int titleIndexX, int titleIndexY, int titleIndexZ,
 			int blockIndexX, int blockIndexY, int blockIndexZ, int mtlType, SetBlockGet *get = 0);
 
@@ -62,6 +64,7 @@ namespace PX2
 		int mTitleRangeXY;
 		int mTitleRangeZ;
 		bool mIsTitleRangeChanged;
+		int mInitMtlType;
 
 	public:
 		void SetActorCenterPos(const APoint &pos);

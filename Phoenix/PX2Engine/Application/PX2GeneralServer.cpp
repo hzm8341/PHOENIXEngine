@@ -117,6 +117,14 @@ void GeneralServer::SendString(int clientid, const std::string &str)
 	}
 }
 //----------------------------------------------------------------------------
+void GeneralServer::SendRawString(int clientid, const std::string &str)
+{
+	if (!str.empty() && clientid > 0)
+	{
+		SendMsgToClientRawBuffer(clientid, str.c_str(), str.length());
+	}
+}
+//----------------------------------------------------------------------------
 void GeneralServer::AddCallback(GeneralServerCallback callBack)
 {
 	mCallbacks.push_back(callBack);

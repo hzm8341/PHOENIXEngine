@@ -45,6 +45,11 @@ namespace PX2
 		// top 1; bottom 2; left 3; right 4;
 		int GetDragingDirSimple() const;
 
+		int GetDragingLeftMoveType() const;
+		float GetDragingLeftMoveSpeed() const;
+		int GetDragingRightMoveType() const;
+		float GetDragingRightMoveSpeed() const;
+
 		const APoint &GetCurPickWorldPos() const;
 
 		virtual void SetRangeAcceptFrame(UIFrame *frame);
@@ -54,6 +59,7 @@ namespace PX2
 
 	protected:
 		void _UIButCallback(UIFrame *frame, UICallType type);
+		virtual void UpdateWorldData(double applicationTime, double elapsedTime);
 
 		bool mIsDragable;
 
@@ -65,6 +71,14 @@ namespace PX2
 		Vector2f mDraggedDir;
 		float mDraggedPercent;
 		APoint mCurPickWorldPos;
+
+		int mRoundCurDragingDirSimple;
+		int mDragingLeftMoveType;
+		float mDragingLeftMoveSpeed;
+		int mDragingRightMoveType;
+		float mDragingRightMoveSpeed;
+
+		int mPickTouchID;
 	};
 
 #include "PX2UIRound.inl"

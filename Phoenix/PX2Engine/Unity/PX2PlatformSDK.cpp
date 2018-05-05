@@ -3,6 +3,10 @@
 #include "PX2PlatformSDK.hpp"
 #include "PX2PlatformSDKEventType.hpp"
 #include "PX2Log.hpp"
+#include "PX2Serial.hpp"
+#include "PX2StringHelp.hpp"
+#include "PX2APoint.hpp"
+#include "PX2InputManager.hpp"
 #if defined (__ANDROID__)
 #include "AppPlayJNI.hpp"
 #endif
@@ -34,7 +38,10 @@ BuyData::~BuyData()
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-PlatformSDK::PlatformSDK()
+PlatformSDK::PlatformSDK() :
+mRinGun_PosX(0),
+mRinGun_PosY(0),
+mRinGun_IsFiring(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -231,5 +238,109 @@ void PlatformSDK::OnPayError(const std::string &serial, int error,
 	Event *ent = PlatformSDKSpace::CreateEventX(PlatformSDKSpace::Buy);
 	ent->SetData(data);
 	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void _PlatformSDKSerialReceiveCallback(std::string recvVal)
+{
+	PX2_PFSDK.RinGun_OnReceive(recvVal);
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::TVShowCursor(bool show)
+{
+	Event *ent = PX2_CREATEEVENTEX(PlatformSDKSpace, TVShowCorsor);
+	ent->SetData(show);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::RinGun_Open()
+{
+	Serial *serial = Serial::GetDefaultSerial();
+	if (serial)
+	{
+		serial->AddCallback(_PlatformSDKSerialReceiveCallback);
+	}
+
+	Event *ent = PX2_CREATEEVENTEX(PlatformSDKSpace, TVGameOpen);
+	PX2_EW.BroadcastingLocalEvent(ent);
+
+	TVShowCursor(true);
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::RinGun_Close()
+{
+	Serial *serial = Serial::GetDefaultSerial();
+	if (serial)
+	{
+		serial->RemoveCallback(_PlatformSDKSerialReceiveCallback);
+	}
+
+	Event *ent = PX2_CREATEEVENTEX(PlatformSDKSpace, TVGameClose);
+	PX2_EW.BroadcastingLocalEvent(ent);
+
+	TVShowCursor(false);
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::RinGun_OnReceive(const std::string &string)
+{
+	mRinGun_CMD = string;
+
+	std::string xStrL = string.substr(2 + 0, 2);
+	std::string xStrH = string.substr(4 + 0, 2);
+	std::string xStr = xStrH+xStrL;
+	int xVal = StringHelp::HexToInt(xStr);
+	mRinGun_PosX = xVal;
+
+	std::string yStrL = string.substr(6 + 0, 2);
+	std::string yStrH = string.substr(8 + 0, 2);
+	std::string yStr = yStrH + yStrL;
+	int yVal = StringHelp::HexToInt(yStr);
+	mRinGun_PosY = yVal;
+
+	Event *ent = PX2_CREATEEVENTEX(PlatformSDKSpace, TVSetCorsorPos);
+	APoint pos(mRinGun_PosX*0.0001f, 1.0f-mRinGun_PosY*0.0001f, 0.0f);
+	ent->SetData(pos);
+	PX2_EW.BroadcastingLocalEvent(ent);
+
+	int addVal = 0;
+	std::string strFire = string.substr(0 + addVal, 2);
+	PX2_LOG_INFO("Fire!!!!!!!:%s", strFire.c_str());
+	bool isFire = (StringHelp::StringToInt(strFire)!=0);
+	if (isFire != mRinGun_IsFiring)
+	{
+		if (isFire)
+		{
+			Event *ent = PX2_CREATEEVENTEX(PlatformSDKSpace, TVSetCorsorFirePressed);
+			ent->SetData(pos);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
+		else
+		{
+			Event *ent = PX2_CREATEEVENTEX(PlatformSDKSpace, TVSetCorsorFireReleased);
+			ent->SetData(pos);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
+
+		mRinGun_IsFiring = isFire;
+	}
+}
+//----------------------------------------------------------------------------
+std::string PlatformSDK::RinGUN_GetCMD() const
+{
+	return mRinGun_CMD;
+}
+//----------------------------------------------------------------------------
+int PlatformSDK::RinGun_GetPosX() const
+{
+	return mRinGun_PosX;
+}
+//----------------------------------------------------------------------------
+int PlatformSDK::RinGun_GetPosY() const
+{
+	return mRinGun_PosY;
+}
+//----------------------------------------------------------------------------
+int PlatformSDK::RinGun_IsFiring() const
+{
+	return mRinGun_IsFiring;
 }
 //----------------------------------------------------------------------------

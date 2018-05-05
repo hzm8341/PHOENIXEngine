@@ -1,0 +1,13 @@
+// PX2ToLuaBP.pkg
+
+$#include "PX2BBlueBlockToLua.hpp"
+$pfile "PX2UIBBlockCataFrame.pkg"
+$pfile "PX2UIBBlockPanels.pkg"
+$pfile "PX2UIBBlockEdit.pkg"
+$pfile "PX2UIBBlockEditToolFrame.pkg"
+$pfile "PX2BBlockScriptGenController.pkg"
+$pfile "PX2BBlockSprite.pkg"
+$pfile "PX2BBlockSystem.pkg"
+$pfile "PX2BBManager.pkg"
+$pfile "PX2BProject.pkg"
+$pfile "PX2BBlock.pkg"

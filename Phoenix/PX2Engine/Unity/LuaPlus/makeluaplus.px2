@@ -24,12 +24,12 @@ SOVER = 2
 RELVER = $(SOVER).5
 CFLAGS += -fPIC
 AR := $(CC)
-ARFLAGS := $(LDFLAGS) -L $(LIBPATH) -shared -fPIC -Wl,-soname,$(libPX2Engine).so -o
-LIB := $(LIBPATH)/$(libPX2Engine).so.$(RELVER)
+ARFLAGS := $(LDFLAGS) -L $(LIBPATH) -shared -fPIC -Wl,-soname,$(DSTSO).so -o
+LIB := $(LIBPATH)/$(DSTSO).so.$(RELVER)
 else
 AR := /usr/bin/ar
 ARFLAGS := rs
-LIB := $(LIBPATH)/$(libPX2Engine).a
+LIB := $(LIBPATH)/$(DSTSO).a
 endif
 
 INCPATH := \
@@ -38,9 +38,8 @@ INCPATH := \
 	
 INCDIR := ../../../PX2SDK/Include
 	
-FTINC := $(wildcard *.h)
-FTINC := $(notdir $(INC))
-INC := $(FTINC)
+INC := $(wildcard *.h)
+INC := $(notdir $(INC))
 
 SRC := $(wildcard *.cpp)
 SRC := $(notdir $(SRC))

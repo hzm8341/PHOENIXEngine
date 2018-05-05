@@ -27,6 +27,120 @@
 #include "PX2StringTokenizer.hpp"
 using namespace PX2;
 
+Mutex sServerMutex;
+
+static std::string _sCmdString;
+static std::vector<std::string> _sCmdParams;
+static bool _sIsHasInput = false;
+static bool _sIsDoQuit = false;
+void _InputThreadProc(void* data)
+{
+	PX2_UNUSED(data);
+
+	while (!_sIsDoQuit)
+	{
+		if (!_sIsHasInput)
+		{
+			std::cout << "please input your commond:\n";
+			char buffer[256];
+			std::cin.getline(buffer, 256);
+			std::string cmdbuf(buffer);
+			_sCmdString = cmdbuf;
+			_sCmdParams.resize(0);
+
+			ScopedCS cs(&sServerMutex);
+			_sIsHasInput = true;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+int _ProcessInputString(const std::string &buf)
+{
+	int ret = 0;
+	std::string cmd;
+	std::string contentStr;
+	StringTokenizer tokenizer(buf, " ");
+	int count = (int)tokenizer.Count();
+
+	if (count > 0)
+	{
+		cmd = tokenizer[0];
+
+		if (count > 1)
+			contentStr = tokenizer[1];
+
+		if ("quit" == cmd && count == 1)
+		{
+			ret = 1;
+		}
+		else if ("arduino" == cmd)
+		{
+			PX2_APP._ProcessArduinoCMDs(contentStr);
+		}
+		else if ("arduinoid" == cmd)
+		{
+			std::string strParam0;
+			std::string strParam1;
+
+			StringTokenizer stk_(contentStr, ",");
+			if (stk_.Count() > 0)
+				strParam0 = stk_[0];
+			if (stk_.Count() > 1)
+				strParam1 = stk_[1];
+
+			int id = StringHelp::StringToInt(strParam0);
+			PX2_APP._ProcessArduinoCMDs(strParam1, id);
+		}
+		else if ("car" == cmd)
+		{
+			std::string strParam0;
+			std::string strParam1;
+			std::string strParam2;
+			std::string strParam3;
+
+			StringTokenizer stk_(contentStr, ",");
+			if (stk_.Count() > 0)
+				strParam0 = stk_[0];
+			if (stk_.Count() > 1)
+				strParam1 = stk_[1];
+			if (stk_.Count() > 2)
+				strParam2 = stk_[2];
+			if (stk_.Count() > 3)
+				strParam3 = stk_[3];
+
+			int id = StringHelp::StringToInt(strParam0);
+			PX2_ARDUINO.SetNetID(id);
+
+			if ("move" == strParam1)
+			{
+				int speed = StringHelp::StringToInt(strParam3);
+
+				if ("left" == strParam2)
+				{
+					PX2_ARDUINO.Run(Arduino::SDT_LEFT, speed);
+				}
+				else if ("right" == strParam2)
+				{
+					PX2_ARDUINO.Run(Arduino::SDT_RIGHT, speed);
+				}
+				else if ("forward" == strParam2)
+				{
+					PX2_ARDUINO.Run(Arduino::SDT_FORWARD, speed);
+				}
+				else if ("backward" == strParam2)
+				{
+					PX2_ARDUINO.Run(Arduino::SDT_BACKWARD, speed);
+				}
+				else if ("none" == strParam2)
+				{
+					PX2_ARDUINO.Run(Arduino::SDT_NONE, speed);
+				}
+			}
+		}
+	}
+
+	return ret;
+}
 //----------------------------------------------------------------------------
 bool Application::Initlize()
 {
@@ -46,7 +160,7 @@ bool Application::Initlize()
 	 LT_INFO | LT_ERROR | LT_USER);
 #endif
 
-#if defined (__LINUX__)
+#if defined (__LINUX__) || defined (_WIN32) || defined (WIN32)
 	logger->AddConsoleHandler(LT_INFO | LT_ERROR | LT_USER);
 #endif
 
@@ -71,6 +185,9 @@ bool Application::Initlize()
 
 	InitializeNetwork();
 
+	mInputThread = new0 Thread();
+	mInputThread->Start(_InputThreadProc);
+
 	mDynLibMan = new0 DynLibManager();
 	PX2_UNUSED(mDynLibMan);
 	mPluginMan = new0 PluginManager();
@@ -93,6 +210,8 @@ bool Application::Initlize()
 
 	mBluetooth = new0 Bluetooth();
 	mWifi = new0 Wifi();
+	mDefSerial = new0 Serial();
+	Serial::SetDefaultSerial(mDefSerial);
 
 	mHardCamera = new0 HardCamera();
 
@@ -129,12 +248,16 @@ bool Application::Initlize()
 	mLogicManager = new0 LogicManager();
 
 	mVoxelManager = new0 VoxelManager();
+	mVoxelManager->Initlize(VoxelManager::T_TEX);
 
 	mCreater = new0 Creater();
 
 	mArduino = new0 Arduino();
 
 	mVoiceSDK = new0 VoiceSDK();
+
+	mSTEAMEduManager = new0 STEAMEduManager();
+	mSTEAMEduManager->Initlize();
 
 	mEngineServer = new0 EngineServer(Server::ST_POLL, EngineServerPort);
 	mEngineClient = new0 EngineClientConnector();
@@ -171,6 +294,7 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_HARDCAMERA", "HardCamera", HardCamera::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_VOICESDK", "VoiceSDK", VoiceSDK::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_TIMERM", "TimerManager", TimerManager::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_PFSDK", "PlatformSDK", PlatformSDK::GetSingletonPtr());
 	// end Lua
 
 	Canvas *mainCanvas = new0 Canvas();
@@ -200,6 +324,8 @@ bool Application::Initlize()
 	PX2_SC_LUA->CallFile("Data/boost.lua");
 
 	mHostName = DNS::GetHostName();
+
+	Application::_LoadConfigs(mCFGs, mConfigName);
 
 	return true;
 }
@@ -257,6 +383,80 @@ Renderer *Application::GetRenderer(const std::string &name)
 	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+int Application::GetLocalAddressSize()
+{
+	if (mLocalAddresses.empty())
+	{
+		_RefreshLocalAddress();
+	}
+
+	return (int)mLocalAddresses.size();
+}
+//----------------------------------------------------------------------------
+IPAddress Application::GetLocalAddress(int i)
+{
+	if (mLocalAddresses.empty())
+	{
+		_RefreshLocalAddress();
+	}
+
+	if (0 <= i && i < (int)mLocalAddresses.size())
+	{
+		return mLocalAddresses[i];
+	}
+
+	return IPAddress();
+}
+//----------------------------------------------------------------------------
+std::string Application::GetLocalAddressStr(int i)
+{
+	return GetLocalAddress(i).ToString();
+}
+//----------------------------------------------------------------------------
+void Application::_RefreshLocalAddress()
+{
+	mLocalAddresses.clear();
+
+	HostEntry hostEntry = DNS::GetThisHost();
+	HostEntry::AddressList addressList = hostEntry.GetAddresses();
+	if (addressList.size() > 0)
+	{
+		for (int i = 0; i < (int)addressList.size(); i++)
+		{
+			IPAddress ipAddress = addressList[i];
+			mLocalAddresses.push_back(ipAddress);
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Application::_ShutdownClientConnectors()
+{
+	for (int i = 0; i < (int)mGeneralClientConnectors.size(); i++)
+	{
+		GeneralClientConnector *cnt = mGeneralClientConnectors[i];
+		if (cnt)
+		{
+			cnt->Disconnect();
+		}
+	}
+
+	mGeneralClientConnectors.clear();
+}
+//----------------------------------------------------------------------------
+void Application::_ShutdownGeneralServers()
+{
+	for (int i = 0; i < (int)mGeneralServers.size(); i++)
+	{
+		GeneralServer *server = mGeneralServers[i];
+		if (server)
+		{
+			server->Shutdown();
+		}
+	}
+
+	mGeneralServers.clear();
 }
 //----------------------------------------------------------------------------
 void Application::SetInEditor(bool isInEditor)
@@ -336,49 +536,84 @@ UDPServer *Application::GetEngineUDPServerEditor()
 GeneralServer *Application::CreateGeneralServer(int port,
 	int numMaxConnects, int numMaxMsgHandlers)
 {
-	if (mGeneralServer)
-	{
-		mGeneralServer->Shutdown();
-		mGeneralServer = 0;
-	}
-
 	Server::ServerType st = Server::ST_POLL;
 #if defined (WIN32) || defined (_WIN32)
 	st = Server::ST_IOCP;
 #endif
-	mGeneralServer = new0 GeneralServer(st, port, numMaxConnects,
+	GeneralServer *server = new0 GeneralServer(st, port, numMaxConnects,
 		numMaxMsgHandlers);
+	mGeneralServers.push_back(server);
 
-	PX2_SC_LUA->SetUserTypePointer("PX2_GS", "GeneralServer",
-		(GeneralServer*)mGeneralServer);
-
-	return mGeneralServer;
+	return server;
 }
 //----------------------------------------------------------------------------
-GeneralServer *Application::GetGeneralServer()
+bool Application::ShutdownGeneralServer(GeneralServer *generalServer)
 {
-	return mGeneralServer;
+	if (generalServer)
+	{
+		generalServer->Shutdown();
+
+		auto it = mGeneralServers.begin();
+		for (; it != mGeneralServers.end(); it++)
+		{
+			if (*it == generalServer)
+			{
+				mGeneralServers.erase(it);
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 //----------------------------------------------------------------------------
 GeneralClientConnector *Application::CreateGeneralClientConnector()
 {
-	if (mGeneralClientConnector)
-	{
-		mGeneralClientConnector->Disconnect();
-		mGeneralClientConnector = 0;
-	}
-
-	mGeneralClientConnector = new0 GeneralClientConnector();
-
-	PX2_SC_LUA->SetUserTypePointer("PX2_GCC", "GeneralClientConnector",
-		(GeneralClientConnector*)mGeneralClientConnector);
-
-	return mGeneralClientConnector;
+	GeneralClientConnector *clinetConnector = new0 GeneralClientConnector();
+	mGeneralClientConnectors.push_back(clinetConnector);
+	return clinetConnector;
 }
 //----------------------------------------------------------------------------
-GeneralClientConnector *Application::GetGeneralClientConnector()
+bool Application::ShutdownGeneralClientConnector(
+	GeneralClientConnector *connector)
 {
-	return mGeneralClientConnector;
+	if (connector)
+	{
+		connector->Disconnect();
+
+		auto it = mGeneralClientConnectors.begin();
+		for (; it != mGeneralClientConnectors.end(); it++)
+		{
+			if (*it == connector)
+			{
+				mGeneralClientConnectors.erase(it);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+void Application::_UpdateGeneralServerConnectors(float elapseSeconds)
+{
+	for (int i = 0; i < (int)mGeneralServers.size(); i++)
+	{
+		GeneralServer *gs = mGeneralServers[i];
+		if (gs)
+		{
+			gs->Run((float)elapseSeconds);
+		}
+	}
+
+	for (int i = 0; i < (int)mGeneralClientConnectors.size(); i++)
+	{
+		GeneralClientConnector *connector = mGeneralClientConnectors[i];
+		if (connector)
+		{
+			connector->Update((float)elapseSeconds);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Application::WillEnterForeground(bool isFirstTime)
@@ -433,6 +668,9 @@ bool Application::Terminate()
 	mEngineCanvas = 0;
 
 	mUDPNetInfos.clear();
+	_ShutdownClientConnectors();
+	_ShutdownGeneralServers();
+	mLocalAddresses.clear();
 
 	PX2_EW.Shutdown(true);
 
@@ -448,18 +686,6 @@ bool Application::Terminate()
 	{
 		delete0(mScriptMan);
 		ScriptManager::Set(0);
-	}
-
-	if (mGeneralServer)
-	{
-		mGeneralServer->Shutdown();
-		mGeneralServer = 0;
-	}
-
-	if (mGeneralClientConnector)
-	{
-		mGeneralClientConnector->Disconnect();
-		mGeneralClientConnector = 0;
 	}
 
 	if (mEngineServer)
@@ -500,6 +726,13 @@ bool Application::Terminate()
 	{
 		delete0(mVoiceSDK);
 		VoiceSDK::Set(0);
+	}
+
+	if (mSTEAMEduManager)
+	{
+		mSTEAMEduManager->Terminate();
+		delete0(mSTEAMEduManager);
+		STEAMEduManager::Set(0);
 	}
 
 	if (mVoxelManager)
@@ -602,6 +835,12 @@ bool Application::Terminate()
 		ResourceManager::Set(0);
 	}
 
+	if (mDefSerial)
+	{
+		delete0(mDefSerial);
+		Serial::SetDefaultSerial(0);
+	}
+
 	if (mBluetooth)
 	{
 		delete0(mBluetooth);
@@ -674,6 +913,9 @@ bool Application::Terminate()
 		delete0(mDynLibMan);
 		DynLibManager::Set(0);
 	}
+
+	System::SleepSeconds(0.1f);
+	mInputThread = 0;
 
 	TerminateNetwork();
 
@@ -988,5 +1230,282 @@ void Application::SetScreenSize(const Sizef &screenSize)
 	mScreenSize = screenSize;
 	PX2_GR.GetMainWindow()->SetScreenSize(mScreenSize);
 	PX2_INPUTMAN.GetDefaultListener()->SetViewSize(mScreenSize);
+}
+//----------------------------------------------------------------------------
+void Application::Update(float appSeconds, float elapsedSeconds)
+{
+	if (_sIsHasInput)
+	{
+		int ret = _ProcessInputString(_sCmdString);
+		if (0 == ret)
+		{
+			ScopedCS cs(&sServerMutex);
+			_sIsHasInput = false;
+		}
+		if (1 == ret)
+		{
+			PX2_LOG_INFO("quit...");
+			_sIsDoQuit = true;
+			this->SetQuit(true);
+		}
+	}
+
+	// event
+	if (mEventWorld)
+		mEventWorld->Update((float)elapsedSeconds);
+
+	// resource
+	PX2_RM.Update(appSeconds, elapsedSeconds);
+
+	// font
+	PX2_FM.Update();
+
+	if (mSoundSys)
+		mSoundSys->Update(appSeconds, elapsedSeconds);
+
+	// Plugin
+	PX2_PLUGINMAN.Update();
+
+	PX2_ADM.Update((float)elapsedSeconds);
+
+	PX2_TIMERM.Update((float)appSeconds);
+
+	if (mSTEAMEduManager)
+		mSTEAMEduManager->Update();
+
+	if (mArduino)
+		mArduino->Update((float)elapsedSeconds);
+
+	PX2_BLUETOOTH.Update((float)elapsedSeconds);
+	PX2_WIFI.Update((float)elapsedSeconds);
+	Serial *ser = Serial::GetDefaultSerial();
+	if (ser) ser->Update(elapsedSeconds);
+
+	// graph
+	PX2_GR.Update(appSeconds, elapsedSeconds);
+
+	if (mEngineServer)
+		mEngineServer->Run((float)elapsedSeconds);
+
+	if (mEngineClient)
+		mEngineClient->Update((float)elapsedSeconds);
+
+	if (mEngineUDPServerClient)
+		mEngineUDPServerClient->Update((float)elapsedSeconds);
+
+	if (mEngineDUPServerEditor)
+		mEngineDUPServerEditor->Update((float)elapsedSeconds);
+
+	_UpdateGeneralServerConnectors((float)elapsedSeconds);
+	_UpdateUDPNetInfos((float)elapsedSeconds);
+
+	if (!mUpdateScriptCallbacks.empty())
+	{
+		std::string strAppSeconds = StringHelp::FloatToString(appSeconds);
+		std::string strElapsedSeconds = StringHelp::FloatToString(elapsedSeconds);
+		auto it = mUpdateScriptCallbacks.begin();
+		for (; it != mUpdateScriptCallbacks.end(); it++)
+		{
+			std::string scriptCallback = *it;
+			PX2_SC_LUA->CallString(scriptCallback + "(\"" + strAppSeconds +
+				", " + strElapsedSeconds + "\")");
+		}
+	}
+
+	if (mIsInBackground) return;
+
+	PX2_GR.Draw();
+}
+//----------------------------------------------------------------------------
+void Application::_ProcessArduinoCMDs(const std::string &contentStr, int id)
+{
+	PX2_ARDUINO.SetNetID(id);
+
+	std::string strParam0;
+	std::string strParam1;
+	std::string strParam2;
+	std::string strParam3;
+	std::string strParam4;
+	std::string strParam5;
+	std::string strParam6;
+	std::string strParam7;
+	std::string strParam8;
+	std::string strParam9;
+	std::string strParam10;
+
+	StringTokenizer stk_(contentStr, ",");
+	if (stk_.Count() > 0)
+		strParam0 = stk_[0];
+	if (stk_.Count() > 1)
+		strParam1 = stk_[1];
+	if (stk_.Count() > 2)
+		strParam2 = stk_[2];
+	if (stk_.Count() > 3)
+		strParam3 = stk_[3];
+	if (stk_.Count() > 4)
+		strParam4 = stk_[4];
+	if (stk_.Count() > 5)
+		strParam5 = stk_[5];
+	if (stk_.Count() > 6)
+		strParam6 = stk_[6];
+	if (stk_.Count() > 7)
+		strParam7 = stk_[7];
+	if (stk_.Count() > 8)
+		strParam8 = stk_[8];
+	if (stk_.Count() > 9)
+		strParam9 = stk_[9];
+	if (stk_.Count() > 10)
+		strParam10 = stk_[10];
+
+	if (Arduino::sOptTypeStr[Arduino::OT_TOGET_NETID] == strParam0)
+	{
+		PX2_ARDUINO.SendToGetNetID();
+	}
+	if (Arduino::sOptTypeStr[Arduino::OT_PM] == strParam0)
+	{
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
+		Arduino::PMode pm = Arduino::_NetStr2PinMode(strParam2);
+
+		PX2_ARDUINO.PinMode(pin, pm);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_DW] == strParam0)
+	{
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
+		bool val = Arduino::_NetStr2Bool(strParam2);
+
+		PX2_ARDUINO.DigitalWrite(pin, val);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_AW] == strParam0)
+	{
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
+		int val = Arduino::_NetStr2Int(strParam2);
+
+		PX2_ARDUINO.AnalogWrite(pin, val);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DR] == strParam0)
+	{
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
+		int val = PX2_ARDUINO.DigitalRead(pin);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_AR] == strParam0)
+	{
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
+		int val = PX2_ARDUINO.AnalogRead(pin);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_SVR_I] == strParam0)
+	{
+		int svrIndex = Arduino::_NetStr2Int(strParam1);
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam2);
+
+		PX2_ARDUINO.ServerInit(svrIndex, pin);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_SVR_W] == strParam0)
+	{
+		int svrIndex = Arduino::_NetStr2Int(strParam1);
+		int val = Arduino::_NetStr2Int(strParam2);
+
+		PX2_ARDUINO.ServerWrite(svrIndex, val);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_DST_I] == strParam0)
+	{
+		Arduino::Pin pinTrigger = Arduino::_NetStr2Pin(strParam1);
+		Arduino::Pin pinEcho = Arduino::_NetStr2Pin(strParam2);
+
+		PX2_ARDUINO.DistInit(pinTrigger, pinEcho);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_DST_T] == strParam0)
+	{
+		PX2_ARDUINO.DistTest();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DIST] == strParam0)
+	{
+		float dst = PX2_ARDUINO.GetDist();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I] == strParam0)
+	{
+		PX2_ARDUINO.VehicleInitMotoBoard();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_RUN] == strParam0)
+	{
+		int mi = Arduino::_NetStr2Int(strParam1);
+		Arduino::DirectionType dt = Arduino::_NetStr2Dir(strParam2);
+		int speed = Arduino::_NetStr2Int(strParam3);
+		PX2_ARDUINO.Run(mi, dt, speed);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_RUNSIMPLE] == strParam0)
+	{
+		Arduino::SimpleDirectionType sdt = Arduino::_NetStr2SimpleDir(strParam1);
+		int speed = Arduino::_NetStr2Int(strParam2);
+		PX2_ARDUINO.Run(sdt, speed);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_STOP] == strParam0)
+	{
+		PX2_ARDUINO.Stop();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I_SPD] == strParam0)
+	{
+		Arduino::Pin pin0 = Arduino::_NetStr2Pin(strParam1);
+		Arduino::Pin pin1 = Arduino::_NetStr2Pin(strParam2);
+		Arduino::Pin pin2 = Arduino::_NetStr2Pin(strParam3);
+		Arduino::Pin pin3 = Arduino::_NetStr2Pin(strParam4);
+		PX2_ARDUINO.VehicleSpeedInit(pin0, pin1, pin2, pin3);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_MOTOSPD] == strParam0)
+	{
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I_DRIVER4567] == strParam0)
+	{
+		PX2_ARDUINO.VehicleInitMotoBoard4567();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I_DRIVER298N] == strParam0)
+	{
+		Arduino::Pin pinL0 = Arduino::_NetStr2Pin(strParam1);
+		Arduino::Pin pinL1 = Arduino::_NetStr2Pin(strParam2);
+		Arduino::Pin pinLS = Arduino::_NetStr2Pin(strParam3);
+		Arduino::Pin pinR0 = Arduino::_NetStr2Pin(strParam4);
+		Arduino::Pin pinR1 = Arduino::_NetStr2Pin(strParam5);
+		Arduino::Pin pinRS = Arduino::_NetStr2Pin(strParam6);
+
+		PX2_ARDUINO.VehicleInitMotoBoard298N(pinL0, pinL1, pinLS, pinR0, pinR1, pinRS);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_INIT] == strParam0)
+	{
+		Arduino::Pin pinR = Arduino::_NetStr2Pin(strParam1);
+		Arduino::Pin pinT = Arduino::_NetStr2Pin(strParam2);
+
+		PX2_ARDUINO.MP3Init(pinR, pinT);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_PLAY] == strParam0)
+	{
+		PX2_ARDUINO.MP3Play();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_INDEX] == strParam0)
+	{
+		int index = Arduino::_NetStr2Int(strParam1);
+		PX2_ARDUINO.MP3PlayAtIndex(index);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_NEXT] == strParam0)
+	{
+		PX2_ARDUINO.MP3PlayNext();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_STOP] == strParam0)
+	{
+		PX2_ARDUINO.MP3Stop();
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_VOLUME] == strParam0)
+	{
+		int volume = Arduino::_NetStr2Int(strParam1);
+		PX2_ARDUINO.MP3SetVolume(volume);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_IR_INIT] == strParam0)
+	{
+		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
+		PX2_ARDUINO.IRInit(pin);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_IR_SEND] == strParam0)
+	{
+		int val = Arduino::_NetStr2Int(strParam1);
+		PX2_ARDUINO.IRSend(val);
+	}
 }
 //----------------------------------------------------------------------------

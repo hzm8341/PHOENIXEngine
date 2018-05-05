@@ -5,4 +5,8 @@
 
 #include "PX2UnityPre.hpp"
 
+#if defined (_WIN32) || defined (WIN32)
+//#define PX2_USE_VLC 1
+#endif
+
 #endif

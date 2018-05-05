@@ -103,9 +103,11 @@ void UICheckButton::UpdateWorldData(double applicationTime,
 	UIButtonBase::UpdateWorldData(applicationTime, elapsedTime);
 }
 //----------------------------------------------------------------------------
-void UICheckButton::OnWidgetPicked(const CanvasInputData &data)
+void UICheckButton::OnWidgetPicked(const CanvasInputData &inputData)
 {
-	if (UIPT_RELEASED == data.PickType)
+	UIFrame::OnWidgetPicked(inputData);
+
+	if (UIPT_RELEASED == inputData.PickType)
 	{
 		ButtonState state = GetButtonState();
 

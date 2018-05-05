@@ -21,6 +21,9 @@ int ClientConnector::_ClientOnRead()
 		return -1;
 	}
 
+	std::string recvStr = std::string(mRecvBuf + mRecvLen, nbytes);
+	_OnRecvCallbacks(recvStr);
+
 	mRecvLen += nbytes;
 	while(mRecvLen >= MSGLEN_BYTES)
 	{
@@ -259,6 +262,40 @@ int ClientConnector::Reconnect(BufferEvent *ent)
 	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+bool ClientConnector::IsHasRecvCallback(ClientConnectorRecvCallback cb)
+{
+	for (int i = 0; i < (int)mCallbacks.size(); i++)
+	{
+		ClientConnectorRecvCallback callback = mCallbacks[i];
+		if (callback == cb)
+			return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool ClientConnector::AddRecvCallback(ClientConnectorRecvCallback callback)
+{
+	if (IsHasRecvCallback(callback))
+		return false;
+
+	mCallbacks.push_back(callback);
+
+	return true;
+}
+//----------------------------------------------------------------------------
+void ClientConnector::_OnRecvCallbacks(const std::string &recvStr)
+{
+	for (int i = 0; i < (int)mCallbacks.size(); i++)
+	{
+		ClientConnectorRecvCallback callback = mCallbacks[i];
+		if (callback)
+		{
+			callback(recvStr);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void ClientConnector::RegisterHandler(int msgid, ServerMsgHandleFunc msgfunc,

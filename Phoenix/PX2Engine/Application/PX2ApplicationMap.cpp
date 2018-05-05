@@ -379,7 +379,7 @@ bool Application::SaveProject()
 				const ResourceVersion &resVersion = proj->GetResourceVersion();
 				std::string strVersion = resVersion.GetAsString();
 
-				GenerateProjectFileList(projName, strVersion);
+				GenerateFileList("Data/", projName, strVersion);
 
 				Event *ent = PX2_CREATEEVENTEX(ProjectES, SavedProject);
 				PX2_EW.BroadcastingLocalEvent(ent);
@@ -411,7 +411,7 @@ bool Application::SaveProjectAs(const std::string &pathname)
 				const ResourceVersion &resVersion = proj->GetResourceVersion();
 				std::string strVersion = resVersion.GetAsString();
 
-				GenerateProjectFileList(projName, strVersion);
+				GenerateFileList("Data/", projName, strVersion);
 
 				Event *ent = PX2_CREATEEVENTEX(ProjectES, SavedProject);
 				PX2_EW.BroadcastingLocalEvent(ent);
@@ -757,10 +757,10 @@ void _RefreshDir(XMLNode node, const std::string &pathName)
 	}
 }
 //----------------------------------------------------------------------------
-void Application::GenerateProjectFileList(const std::string &projName,
-	const std::string &versionText)
+void Application::GenerateFileList(const std::string &parentDir, 
+	const std::string &projName, const std::string &versionText)
 {
-	std::string projDataPath = "Data/" + projName;
+	std::string projDataPath = parentDir + projName;
 
 	XMLData data;
 	data.Create();
@@ -771,6 +771,69 @@ void Application::GenerateProjectFileList(const std::string &projName,
 
 	std::string savePath = projDataPath + "/filelist.xml";
 	data.SaveFile(savePath);
+}
+//----------------------------------------------------------------------------
+void _CreateScriptFile(const std::string &pathName, const std::string &subDir,
+	const std::string &scFileName, const std::string &deFunName)
+{
+	std::string scriptPath = "Data/" + pathName + subDir + scFileName;
+	std::ofstream outputFile;
+	outputFile.open(scriptPath.c_str());
+
+	std::string outBaseName;
+	std::string outExt;
+	StringHelp::SplitBaseFilename(scFileName, outBaseName, outExt);
+
+
+	std::string noteStr = "--";
+	if ("lua" == outExt)
+		noteStr = "--";
+	else if ("as" == outExt)
+		noteStr == "//";
+
+	std::string scriptStart;
+	scriptStart += noteStr + scFileName;
+	outputFile << scriptStart << std::endl << std::endl;
+
+	std::string scriptContent;
+	if ("lua" == outExt)
+	{
+		scriptContent += "function pre" + deFunName + "() \n";
+		scriptContent += "end\n";
+
+		scriptContent += "function " + deFunName + "() \n";
+		scriptContent += "end";
+	}
+	outputFile << scriptContent;
+
+	outputFile.close();
+}
+//----------------------------------------------------------------------------
+void Application::MakeAProject(const std::string &projName, 
+	Project::ScreenOrientation so, int width, int height)
+{
+	std::string pathName = projName + "/";
+	PX2_RM.CreateFloder("Data/", pathName);
+	PX2_RM.CreateFloder("Data/", pathName + "images/");
+	PX2_RM.CreateFloder("Data/", pathName + "models/");
+	PX2_RM.CreateFloder("Data/", pathName + "scenes/");
+	PX2_RM.CreateFloder("Data/", pathName + "scripts/");
+	PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/");
+	PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/editor/");
+	PX2_RM.CreateFloder("Data/", pathName + "scripts_server");
+	PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/");
+	PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/editor/");
+
+	_CreateScriptFile(pathName, "scripts/lua/", "play.lua", "play");
+	_CreateScriptFile(pathName, "scripts/lua/", "stop.lua", "stop");
+	_CreateScriptFile(pathName, "scripts/lua/editor/", "editor.lua", "editorplay");
+	_CreateScriptFile(pathName, "scripts_server/lua/", "play.lua", "play");
+	_CreateScriptFile(pathName, "scripts_server/lua/", "stop.lua", "stop");
+
+	std::string pathword = "Data/" + pathName + projName + ".px2proj";
+	std::string pathward = "Data/" + pathName + projName + "_ui.px2proj";
+	PX2_APP.NewProject(pathword, projName, so, width, height);
+	PX2_APP.SaveProject();
 }
 //----------------------------------------------------------------------------
 bool Application::_SaveSceneInternal(const std::string &pathname)

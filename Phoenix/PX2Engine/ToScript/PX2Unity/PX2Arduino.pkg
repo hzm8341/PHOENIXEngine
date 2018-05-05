@@ -1,5 +1,12 @@
 // PX2Arduino.pkg
 	
+	enum ArduinoRectType
+	{
+		ART_RECT_DIST,
+		ART_RECV_IR,
+		ART_MAXZ_TYPE
+	};
+	
 	class Arduino : public Object
 	{
 		Arduino();
@@ -10,17 +17,29 @@
 			M_SERIAL,
 			M_BLUETOOTH,
 			M_WIFI_ROBOT,
+			M_WIFI_TCP, // ESP8266
+			M_WIFI_SERVER,
+			M_EMPTY,
 			M_MAX_TYPE
 		};
 
 		bool Initlize(Mode mode, const std::string &port="", int baudrate = 9600);
 		bool InitlizeForRobot(int targetRobotID, int udpPort);
+		bool InitlizeWifiTCP(const std::string &ip, int port);
+		bool InitlizeEmpty();
+		bool InitlizeServer(Server *server);
 		bool IsInitlized();
 		void Terminate();
 		void Update(float elapsedSeconds);
+		
+		void SendToGetNetID();
+		void SetNetID(int id);
+		int GetNetID() const;
 
 		Mode GetMode() const;
 		Serial &GetSerial();
+		
+		bool AddScriptHandler(const std::string &handler);
 
 		// arduino used -------------------------
 	public:
@@ -55,8 +74,6 @@
 			PM_OUTPUT,
 			PM_MAX_TYPE
 		};
-		static std::string PinStr[P_MAX_TYPE];
-		static std::string PModeStr[PM_MAX_TYPE];
 
 		void PinMode(Pin pin, PMode mode);
 		void DigitalWrite(Pin pin, bool isHigh = true);
@@ -73,13 +90,10 @@
 		void DistTest();
 		float GetDist() const;
 
-		// ir
-		void IRRecvInit(Pin pin);
-		void IRSendSony(int val = 1);
-		int GetIRReceive() const;
-
 		// vehicle
 		void VehicleInitMotoBoard();
+		void VehicleInitMotoBoard4567();
+		void VehicleInitMotoBoard298N(Pin pinLA, Pin pinLB, Pin pinLS, Pin pinRA, Pin pinRB, Pin pinRS);
 		enum DirectionType
 		{
 			DT_NONE,
@@ -87,7 +101,6 @@
 			DT_BACKWARD,
 			DT_MAX_TYPE
 		};
-		static std::string sDirectionTypeStr[DT_MAX_TYPE];
 
 		enum SimpleDirectionType
 		{
@@ -98,10 +111,26 @@
 			SDT_RIGHT,
 			SDT_MAX_TYPE
 		};
-		static std::string sSimpleDirectionTypeStr[SDT_MAX_TYPE];
 
 		void Run(int motoIndex, DirectionType type, int speed);
 		void Run(SimpleDirectionType dt, int speed);
 		int GetSpeed(int motoIndex) const;
 		void Stop();
+		
+		void MP3Init(Pin pinR, Pin pinT);
+		void MP3Play();
+		void MP3PlayNext();
+		void MP3PlayAtIndex(int index);
+		void MP3SetVolume(int volume);
+		void MP3Stop();
+		
+		void IRInit(Pin pinReceive);
+		void IRSend(int val);
+		int GetIRReceive() const;
+		
+		void WeightInit(int i, Pin pinOut, Pin pinClk);
+		void WeightTest(int i);
+		float GetWeight(int i);
+		
+		const std::string &GetLastSendString();
 	};

@@ -13,7 +13,7 @@ SetBlockGet::SetBlockGet()
 	BlockX = 0;
 	BlockY = 0;
 	BlockZ = 0;
-	MtlType = 0;
+	MtlType = 1;
 }
 //----------------------------------------------------------------------------
 SetBlockGet::~SetBlockGet()

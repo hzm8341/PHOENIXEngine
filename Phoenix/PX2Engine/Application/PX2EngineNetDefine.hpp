@@ -17,9 +17,10 @@ namespace PX2
 	const int EngineUDPPortServerEditor = 9909;
 	const float EngineUDPSendInfoTime = 1.0f;
 
-	const int EngineUDPPortHttp = 9910;
+	const int EngineUDPPortHttp = 9919;
 
 	const std::string CMD_EngineUDPInfoTag = "myudpinfo";
+	const std::string CMD_EngineUDPInfoCamera = "camera";
 	const std::string CMD_EngineUDPConnectMeStr = "connectme";
 	const std::string CMD_PushProject = "pushproject";
 	const std::string CMD_LoadProject = "loadproject";

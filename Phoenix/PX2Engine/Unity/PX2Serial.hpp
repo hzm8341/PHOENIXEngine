@@ -22,13 +22,20 @@ namespace PX2
 	PX2_EVENT(OpenFailed)
 	PX2_DECLARE_EVENT_END(SerialES)
 
-	typedef void(*SerialReceiveCallback) (std::string recvVal);
+	typedef void(*SerialCallback) (std::string recvVal);
+	typedef void(*SerialCMDCallback) (std::string recvVal);
 
-	class PX2_ENGINE_ITEM Serial : public Runnable
+	class PX2_ENGINE_ITEM Serial
 	{
 	public:
+		static Serial *New();
+		static void Delete(Serial *serial);
+
 		Serial();
 		virtual ~Serial();
+
+		static void SetDefaultSerial(Serial *serial);
+		static Serial *GetDefaultSerial();
 
 		int Open(const std::string &port, int baudrate);
 		void Close();
@@ -43,29 +50,40 @@ namespace PX2
 		int Write(const std::string &buffer);
 		int Read(std::string &buffer);
 
-		void StartThread();
-		void EndThread();
-		virtual void Run();
-
 		std::vector<std::string> GetPortList();
 		int GetNumPorts() const;
 		std::string GetPort(int i) const;
 
-		void ClearRecvCallbacks();
-		bool IsHasReceiveCallback(SerialReceiveCallback callBack);
-		void AddReceiveCallback(SerialReceiveCallback callBack);
-		void RemoveReceiveCallback(SerialReceiveCallback callback);
+		void ClearCMDCallbacks();
+		bool IsHasCMDCallback(SerialCMDCallback callBack);
+		void AddCMDCallback(SerialCMDCallback callBack);
+		void RemoveCMDCallback(SerialCMDCallback callback);
+
+		void ClearCallbacks();
+		bool IsHasCallback(SerialCallback callBack);
+		void AddCallback(SerialCallback callBack);
+		void RemoveCallback(SerialCallback callback);
+
+		void ClearScirptHandlers();
+		bool IsHasScriptHandler(const std::string &scriptHandler);
+		void AddScriptHandler(const std::string &scriptHandler);
+		void RemoveScriptHandler(const std::string &scriptHandler);
+
+		void ClearScriptHandlersHex();
+		bool IsHasScriptHandlerHex(const std::string &scriptHandler);
+		void AddScriptHandlerHex(const std::string &scriptHandler);
+		void RemoveScriptHandlerHex(const std::string &scriptHandler);
+
+		void OnAndroidUSBReceive(const char *buf, int size);
 
 	protected:
 		void _ProcessRevBuf(std::string &recvBuf);
 		void _OnCmd(const std::string &cmd);
 
-		std::vector<SerialReceiveCallback> mCallbacks;
-
-		ThreadPtr mThread;
-		bool mIsThreadRunning;
-
-		std::string mRecingBuf;
+		std::vector<SerialCMDCallback> mCMDCallbacks;
+		std::vector<SerialCMDCallback> mCallbacks;
+		std::vector<std::string> mScriptHandlers;
+		std::vector<std::string> mScriptHandlersHex;
 
 		std::string mRecvStr;
 		std::string mCmdStr;
@@ -74,6 +92,8 @@ namespace PX2
 		serial::Serial *mSerial;
 #endif
 		std::vector<std::string> mPortList;
+
+		static Serial *msDefaultSerial;
 	};
 
 }

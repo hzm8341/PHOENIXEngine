@@ -53,8 +53,11 @@ namespace PX2
 
 		UIFramePtr mInfoFrame;
 		UIFTextPtr mInfoText;
+		UIFTextPtr mInfoTextMiddle;
 		UIButtonPtr mReloadBut;
 		UIButtonPtr mEngineBut;
+
+		UIFPicBoxPtr mEngineCursor;
 
 		UIFramePtr mEngineFrameBack;
 		UIFramePtr mEngineFrame;

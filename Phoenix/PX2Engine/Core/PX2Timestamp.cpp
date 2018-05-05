@@ -108,7 +108,8 @@ Timestamp Timestamp::FromFileTimeNP(uint32_t fileTimeLow, uint32_t fileTimeHigh)
 //----------------------------------------------------------------------------
 void Timestamp::ToFileTimeNP(uint32_t& fileTimeLow, uint32_t& fileTimeHigh) const
 {
-	ULARGE_INTEGER epoch; // UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
+	ULARGE_INTEGER epoch; // UNIX epoch (1970-01-01 00:00:00) expressed in 
+						 // Windows NT FILETIME
 	epoch.LowPart = 0xD53E8000;
 	epoch.HighPart = 0x019DB1DE;
 

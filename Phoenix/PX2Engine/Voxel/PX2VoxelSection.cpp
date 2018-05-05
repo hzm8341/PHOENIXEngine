@@ -115,6 +115,11 @@ void VoxelSection::SetDistZ(int val)
 	mIsTitleRangeChanged = true;
 }
 //----------------------------------------------------------------------------
+void VoxelSection::SetInitMtlType(int mtlType)
+{
+	mInitMtlType = mtlType;
+}
+//----------------------------------------------------------------------------
 int VoxelSection::GetTitleRangeXY() const
 {
 	return mTitleRangeXY;
@@ -125,7 +130,29 @@ int VoxelSection::GetTitleRangeZ() const
 	return mTitleRangeZ;
 }
 //----------------------------------------------------------------------------
-bool VoxelSection::SetBlock(const APoint &worldPos, int type, SetBlockGet *get)
+void VoxelSection::SetAllBlocks(int mtlType)
+{
+	for (int iX = 0; iX < mTitleRangeXY; ++iX)
+	{
+		for (int iY = 0; iY < mTitleRangeXY; ++iY)
+		{
+			for (int iZ = 0; iZ < mTitleRangeZ; ++iZ)
+			{
+				if (CurTitles)
+				{
+					VoxelTitle *title = CurTitles[iX][iY][iZ];
+					if (title)
+					{
+						title->SetAllBlock(mtlType);
+					}
+				}
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------
+bool VoxelSection::SetBlock(const APoint &worldPos, int mtlType,
+	SetBlockGet *get)
 {
 	const HMatrix &transInverse = WorldTransform.Inverse();
 	APoint localPos = transInverse * worldPos;
@@ -139,7 +166,7 @@ bool VoxelSection::SetBlock(const APoint &worldPos, int type, SetBlockGet *get)
 		get->TitleX = xIndex;
 		get->TitleY = yIndex;
 		get->TitleZ = zIndex;
-		get->MtlType = type;
+		get->MtlType = mtlType;
 	}
 
 	APoint titleLocalPos;
@@ -151,7 +178,7 @@ bool VoxelSection::SetBlock(const APoint &worldPos, int type, SetBlockGet *get)
 		(float)yIndex, (float)zIndex));
 	if (title)
 	{
-		return title->SetBlock(titleLocalPos, type, get);
+		return title->SetBlock(titleLocalPos, mtlType, get);
 	}
 
 	return false;
@@ -420,7 +447,7 @@ VoxelTitle *VoxelSection::GetContainTitle(const APoint &worldPos)
 	return 0;
 }
 //----------------------------------------------------------------------------
-void VoxelSection::GenTitles(int maxZ)
+void VoxelSection::GenTitles(int maxZ, int mtlType)
 {
 	_ClearTitles();
 
@@ -445,7 +472,7 @@ void VoxelSection::GenTitles(int maxZ)
 				APoint offset((float)iX*VOXEL_TITLE_SIZE,
 					(float)iY*VOXEL_TITLE_SIZE, (float)iZ*VOXEL_TITLE_SIZE);
 
-				VoxelTitle *title = new0 VoxelTitle(iX, iY, iZ);
+				VoxelTitle *title = new0 VoxelTitle(iX, iY, iZ, mtlType);
 				title->LocalTransform.SetTranslate(offset);
 
 				for (int i = 0; i < VOXEL_TITLE_SIZE; i++)
@@ -613,7 +640,7 @@ VoxelTitle *VoxelSection::LoadTitle(int iX, int iY, int iZ)
 		VoxelTitle *title = 0;
 		title = DynamicCast<VoxelTitle>(PX2_RM.BlockLoad(path));
 		if (!title)
-			title = new0 VoxelTitle(iX, iY, iZ);
+			title = new0 VoxelTitle(iX, iY, iZ, 1);
 		title->LocalTransform.SetTranslate(offset);
 
 		for (int i = 0; i < vd->NumBlocks; i++)
@@ -629,7 +656,7 @@ VoxelTitle *VoxelSection::LoadTitle(int iX, int iY, int iZ)
 	}
 	else
 	{
-		VoxelTitle *title = new0 VoxelTitle(iX, iY, iZ);
+		VoxelTitle *title = new0 VoxelTitle(iX, iY, iZ, mInitMtlType);
 		title->LocalTransform.SetTranslate(offset);
 
 		return title;
@@ -669,6 +696,8 @@ void VoxelSection::Load(InStream& source)
 	source.Read(mMaxSizeY);
 	source.Read(mMaxSizeZ);
 
+	source.Read(mInitMtlType);
+
 	PX2_END_DEBUG_STREAM_LOAD(VoxelSection, source);
 }
 //----------------------------------------------------------------------------
@@ -705,6 +734,8 @@ void VoxelSection::Save(OutStream& target) const
 	target.Write(mMaxSizeY);
 	target.Write(mMaxSizeZ);
 
+	target.Write(mInitMtlType);
+
 	PX2_END_DEBUG_STREAM_SAVE(VoxelSection, target);
 }
 //----------------------------------------------------------------------------
@@ -719,6 +750,8 @@ int VoxelSection::GetStreamingSize(Stream &stream) const
 	size += sizeof(mMaxSizeX);
 	size += sizeof(mMaxSizeY);
 	size += sizeof(mMaxSizeZ);
+
+	size += sizeof(mInitMtlType);
 
 	return size;
 }

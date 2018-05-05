@@ -31,6 +31,7 @@ namespace PX2
 
 		StreamSocket& GetSocket();
 		StreamSocket DetachSocket();
+		HTTPServerSession &GetSession();
 
 	protected:
 		static const std::string EXPECT;

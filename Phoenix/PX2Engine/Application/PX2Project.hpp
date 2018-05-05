@@ -130,10 +130,7 @@ namespace PX2
 		std::string GetConfig(const std::string &name);
 
 	private:
-		void _WriteConfigs();
 		std::string _GetWritePath(const std::string &projName);
-		void _CreateSaveConfigXML(const std::string &projName);
-		void _LoadConfigs(const std::string &projName);
 
 		std::map<std::string, std::string> mCFGs;
 	};

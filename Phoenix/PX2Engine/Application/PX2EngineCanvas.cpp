@@ -20,6 +20,8 @@
 #include "PX2Serial.hpp"
 #include "PX2StringTokenizer.hpp"
 #include "PX2GraphicsRoot.hpp"
+#include "PX2PlatformSDKEventType.hpp"
+#include "PX2InputManager.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Canvas, EngineCanvas);
@@ -379,6 +381,17 @@ mLastPickTime(0.0f)
 	infoText->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
 	mInfoText = infoText;
 
+	UIFTextPtr infoTextRight = new0 UIFText();
+	frame->AttachChild(infoTextRight);
+	infoTextRight->SetAnchorHor(0.5f, 1.0f);
+	infoTextRight->SetAnchorVer(0.0f, 1.0f);
+	infoTextRight->SetPivot(0.5f, 0.5f);
+	infoTextRight->GetText()->SetText("");
+	infoTextRight->GetText()->SetFontWidthHeight(16, 16);
+	infoTextRight->GetText()->SetFontColor(Float3::WHITE);
+	infoTextRight->GetText()->SetAligns(TEXTALIGN_LEFT | TEXTALIGN_VCENTER);
+	mInfoTextMiddle = infoTextRight;
+
 	mEngineBut = new0 UIButton();
 	btnBackPic->AttachChild(mEngineBut);
 	mEngineBut->SetAnchorHor(1.0f, 1.0f);
@@ -411,6 +424,13 @@ mLastPickTime(0.0f)
 	mReloadBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconprojectrefresh.png");
 	mReloadBut->SetStateColorDefaultWhite();
 	mReloadBut->SetSize(36.0f, 36.0f);
+
+	mEngineCursor = new0 UIFPicBox();
+	AttachChild(mEngineCursor);
+	mEngineCursor->LocalTransform.SetTranslateY(-50.0f);
+	mEngineCursor->GetUIPicBox()->SetTexture("Data/engine/aim.png");
+	mEngineCursor->AutoMakeSizeFixable();
+	mEngineCursor->Show(false);
 
 	_CreateEngineFrame();
 
@@ -1091,7 +1111,7 @@ void EngineCanvas::OnEvent(Event *event)
 		for (int i = 0; i < numUDPNetInfo; i++)
 		{
 			UDPNetInfo *udpNetInfo = PX2_APP.GetUDPNetInfo(i);
-			if (udpNetInfo)
+			if (udpNetInfo && udpNetInfo->TheType == UDPNetInfo::T_DEVICE)
 			{
 				std::string textStr = udpNetInfo->Name + " " + udpNetInfo->IP;
 				if (list)
@@ -1149,6 +1169,45 @@ void EngineCanvas::OnEvent(Event *event)
 	{
 		std::string infoStr = event->GetDataStr0();
 		AddInfoText(infoStr);
+	}
+	else if (PlatformSDKSpace::IsEqual(event, PlatformSDKSpace::TVShowCorsor))
+	{
+		bool isShow = event->GetData<bool>();
+		mEngineCursor->Show(isShow);
+	}
+	else if (PlatformSDKSpace::IsEqual(event, PlatformSDKSpace::TVSetCorsorPos))
+	{
+		APoint pos = event->GetData<APoint>();
+		mEngineCursor->SetAnchorHor(pos.X(), pos.X());
+		mEngineCursor->SetAnchorVer(pos.Y(), pos.Y());
+
+		const Sizef &screenSize = PX2_APP.GetScreenSize();
+		APoint toPos(pos.X()*screenSize.Width, 0.0f, pos.Y()*screenSize.Height);
+		PX2_INPUTMAN.GetDefaultListener()->MouseMoved(toPos);
+	}
+	else if (PlatformSDKSpace::IsEqual(event, PlatformSDKSpace::TVSetCorsorFirePressed))
+	{
+		mEngineCursor->SetColor(Float3::RED);
+
+		APoint pos = event->GetData<APoint>();
+		mEngineCursor->SetAnchorHor(pos.X(), pos.X());
+		mEngineCursor->SetAnchorVer(pos.Y(), pos.Y());
+
+		const Sizef &screenSize = PX2_APP.GetScreenSize();
+		APoint toPos(pos.X()*screenSize.Width, 0.0f, pos.Y()*screenSize.Height);
+		PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT,toPos);
+	}
+	else if (PlatformSDKSpace::IsEqual(event, PlatformSDKSpace::TVSetCorsorFireReleased))
+	{
+		mEngineCursor->SetColor(Float3::WHITE);
+
+		APoint pos = event->GetData<APoint>();
+		mEngineCursor->SetAnchorHor(pos.X(), pos.X());
+		mEngineCursor->SetAnchorVer(pos.Y(), pos.Y());
+
+		const Sizef &screenSize = PX2_APP.GetScreenSize();
+		APoint toPos(pos.X()*screenSize.Width, 0.0f, pos.Y()*screenSize.Height);
+		PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_LEFT, toPos);
 	}
 }
 //----------------------------------------------------------------------------
@@ -1210,6 +1269,7 @@ void EngineCanvas::UpdateLayout(Movable *parent)
 void EngineCanvas::AddInfoText(const std::string &infoText)
 {
 	mEngineInfoList->AddItem(infoText);
+	mInfoTextMiddle->GetText()->SetText(infoText);
 }
 //----------------------------------------------------------------------------
 UIFrame *EngineCanvas::GetEngineFrameBack()
@@ -1312,7 +1372,7 @@ void EngineCanvas::OnLeftDown(const PickInputData &data)
 	APoint pos = data.ScreenPos;
 	if (pos.X() < 200.0f && pos.Z() > (screenRect.Height() - infoH))
 	{
-		float time = Time::GetTimeInSeconds();
+		float time = (float)Time::GetTimeInSeconds();
 		float spaceTime = time - mLastPickTime;
 		if (spaceTime < 1.0f || 0.0f == mLastPickTime)
 		{

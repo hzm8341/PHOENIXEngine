@@ -648,7 +648,7 @@ void LBlock::CompileAll(std::string &script, int numTable, LFile *file)
 					paramIf->Compile(script, numTable + 1, file);
 				}
 
-				script += "then\n";
+				script += " then\n";
 
 				LParam *paramIfDo = GetLParamByName("IfDo");
 				if (paramIfDo)

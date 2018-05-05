@@ -104,8 +104,10 @@ PX2_IMPLEMENT_EXCEPTION(RuntimeException, Exception, "Runtime exception")
 PX2_IMPLEMENT_EXCEPTION(NotFoundException, RuntimeException, "Not found")
 PX2_IMPLEMENT_EXCEPTION(IOException, RuntimeException, "I/O error")
 PX2_IMPLEMENT_EXCEPTION(DataException, RuntimeException, "Data error")
+PX2_IMPLEMENT_EXCEPTION(DataFormatException, DataException, "Bad data format")
 PX2_IMPLEMENT_EXCEPTION(SyntaxException, DataException, "Syntax error")
 PX2_IMPLEMENT_EXCEPTION(OutOfMemoryException, RuntimeException, "Out of memory")
+
 
 PX2_IMPLEMENT_EXCEPTION(URISyntaxException, SyntaxException, "Bad URI syntax")
 PX2_IMPLEMENT_EXCEPTION(PathSyntaxException, SyntaxException, "Bad path syntax")

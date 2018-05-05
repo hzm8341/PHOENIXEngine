@@ -249,21 +249,23 @@ void UIEditBox::OnEvent(Event *ent)
 	}
 }
 //----------------------------------------------------------------------------
-void UIEditBox::OnWidgetPicked(const CanvasInputData &data)
+void UIEditBox::OnWidgetPicked(const CanvasInputData &inputData)
 {
+	UIFrame::OnWidgetPicked(inputData);
+
 	if (!IsEnable())
 		return;
 
-	if (UIPT_PRESSED == data.PickType)
+	if (UIPT_PRESSED == inputData.PickType)
 	{
 		if (!mIsAttachedIME)
 		{
-			_AttachIME(data.LogicPos);
+			_AttachIME(inputData.LogicPos);
 		}
 		else
 		{
 			mAttachedOffsetX = mInputText->GetOffset()[0];
-			mAttachedSelectCharaIndex = _CalAttachCharaIndex(data.LogicPos);
+			mAttachedSelectCharaIndex = _CalAttachCharaIndex(inputData.LogicPos);
 			mDragingSelectCharaIndex = mAttachedSelectCharaIndex;
 			_AdjustFadePicBoxPos(mAttachedSelectCharaIndex, true);
 
@@ -273,11 +275,11 @@ void UIEditBox::OnWidgetPicked(const CanvasInputData &data)
 		mAttachedTimeing = 0.0f;
 		mIsPressed = true;
 	}
-	else if (UIPT_MOVED == data.PickType)
+	else if (UIPT_MOVED == inputData.PickType)
 	{
 		if (mIsPressed && mAttachedTimeing>=0.1f)
 		{
-			int charaIndex = _CalAttachCharaIndex(data.LogicPos);
+			int charaIndex = _CalAttachCharaIndex(inputData.LogicPos);
 			mDragingSelectCharaIndex = charaIndex;
 
 			int atttachIndex = mAttachedSelectCharaIndex;
@@ -292,7 +294,7 @@ void UIEditBox::OnWidgetPicked(const CanvasInputData &data)
 			mIsDragingSelect = true;
 		}
 	}
-	else if (UIPT_RELEASED == data.PickType)
+	else if (UIPT_RELEASED == inputData.PickType)
 	{
 		mIsPressed = false;
 		mAttachedTimeing = 0.0f;

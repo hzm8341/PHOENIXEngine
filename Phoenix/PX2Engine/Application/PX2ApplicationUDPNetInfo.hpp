@@ -15,8 +15,20 @@ namespace PX2
 		UDPNetInfo();
 		~UDPNetInfo();
 
+		enum Type
+		{
+			T_DEVICE,
+			T_CAMERA,
+			T_MAX_TYPE
+		};
+
+		Type TheType;
+
 		std::string Name;
 		std::string IP;
+
+		const std::string &GetName() const;
+		const std::string &GetIP() const;
 
 		int ClientID;
 		bool IsConnected;

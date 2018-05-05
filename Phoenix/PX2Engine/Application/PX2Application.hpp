@@ -35,12 +35,14 @@
 #include "PX2UISizeExtendControl.hpp"
 #include "PX2AppBoostInfo.hpp"
 #include "PX2Wifi.hpp"
+#include "PX2Serial.hpp"
 #include "PX2GeneralServer.hpp"
 #include "PX2GeneralClientConnector.hpp"
 #include "PX2EngineServer.hpp"
 #include "PX2EngineClientConnector.hpp"
 #include "PX2UDPServer.hpp"
 #include "PX2ApplicationUDPNetInfo.hpp"
+#include "PX2STEAMEdu.hpp"
 
 namespace PX2
 {
@@ -92,14 +94,18 @@ namespace PX2
 			int width, int height, int numMultisamples);
 		RendererInput *GetRendererInput(const std::string &name);
 		Renderer *GetRenderer(const std::string &name);
-
-		const std::string &GetHostName() const;
+		Canvas *GetEngineCanvas();
 
 		void SetInEditor(bool isInEditor);
 		bool IsInEditor() const;
 
 		void SetQuit(bool quit);
 		bool IsQuit() const;
+
+		const std::string &GetHostName() const;
+		int GetLocalAddressSize();
+		IPAddress GetLocalAddress(int i);
+		std::string GetLocalAddressStr(int i);
 
 		EngineServer *GetEngineServer();
 		EngineClientConnector *GetEngineClientConnector();
@@ -112,21 +118,30 @@ namespace PX2
 
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
-		GeneralServer *GetGeneralServer();
+		bool ShutdownGeneralServer(GeneralServer *generalServer);
 		GeneralClientConnector *CreateGeneralClientConnector();
-		GeneralClientConnector *GetGeneralClientConnector();
+		bool ShutdownGeneralClientConnector(GeneralClientConnector *connector);
 
 		void WillEnterForeground(bool isFirstTime);
 		void DidEnterBackground();
 
 		bool Terminate();
 
+	public_internal:
+		void _ProcessArduinoCMDs(const std::string &contentStr, int id=0);
+
 	private:
+		void _UpdateGeneralServerConnectors(float elapseSeconds);
+		void _RefreshLocalAddress();
+		void _ShutdownClientConnectors();
+		void _ShutdownGeneralServers();
+	
 		std::map<std::string, RendererInput *> mRendererInputMap;
 		std::map<std::string, Renderer*> mRenderersMap;
 		bool mIsInEditor;
 		std::string mHostName;
 
+		ThreadPtr mInputThread;
 		DynLibManager *mDynLibMan;
 		PluginManager *mPluginMan;
 		TimerManager *mTimerMan;
@@ -135,6 +150,7 @@ namespace PX2
 		ScriptManager *mScriptMan;
 		Bluetooth *mBluetooth;
 		Wifi *mWifi;
+		Serial *mDefSerial;
 		HardCamera *mHardCamera;
 		GraphicsRoot *mRoot;
 		InputManager *mInputMan;
@@ -155,20 +171,22 @@ namespace PX2
 		Creater *mCreater;
 		Arduino *mArduino;
 		VoiceSDK *mVoiceSDK;
+		STEAMEduManager *mSTEAMEduManager;
 
 		EngineServerPtr mEngineServer;
 		EngineClientConnectorPtr mEngineClient;
 		UDPServerPtr mEngineUDPServerClient;
 		UDPServerPtr mEngineDUPServerEditor;
-
-		GeneralServerPtr mGeneralServer;
-		GeneralClientConnectorPtr mGeneralClientConnector;
+		std::vector<GeneralServerPtr> mGeneralServers;
+		std::vector<GeneralClientConnectorPtr> mGeneralClientConnectors;
 
 		bool mIsInBackground;
 		bool mBeforeInBackgroundMusicEnable;
 		bool mBeforeInBackgroundSoundEnable;
 
 		bool mIsQuit;
+
+		std::vector<IPAddress> mLocalAddresses;
 
 		// Update
 	public:
@@ -264,10 +282,11 @@ namespace PX2
 		bool LoadPlugins(const std::vector<std::string> &plugins);
 		void ClosePlugins(const std::vector<std::string> &plugins);
 
-		void GenerateProjectFileList(const std::string &projName,
+		void GenerateFileList(const std::string &parentDir, const std::string &dir,
 			const std::string &versionText);
 
-		Canvas *GetEngineCanvas();
+		void MakeAProject(const std::string &projName, Project::ScreenOrientation so,
+			int width, int height);
 
 	protected:
 		std::string _CalSavePath(const std::string &pathname);
@@ -385,7 +404,8 @@ namespace PX2
 		// NetInfo
 	public:
 		UDPNetInfo *GetUDPNetInfo(const std::string &ip);
-		bool AddUDPNetInfo(const std::string &ip, const std::string &name);
+		bool AddUDPNetInfo(const std::string &ip, const std::string &name,
+			UDPNetInfo::Type type = UDPNetInfo::T_DEVICE);
 		int GetNumUDPNetInfo() const;
 		UDPNetInfo *GetUDPNetInfo(int i);
 		void ClearUDPNetInfo();
@@ -394,6 +414,27 @@ namespace PX2
 		void _UpdateUDPNetInfos(float elapsedTime);
 
 		std::vector<UDPNetInfoPtr> mUDPNetInfos;
+		std::vector<UDPNetInfoPtr> mUDPNetInfosCamera;
+
+		// configs
+	public:
+		void SetConfigName(const std::string &cfgName);
+		const std::string &GetConfigName();
+
+		void SetConfig(const std::string &name, const std::string &cfgStr);
+		std::string GetConfig(const std::string &name);
+
+	public_internal:
+		static void _WriteConfigs(std::map<std::string, std::string> &cfgs,
+			const std::string &cfgName);
+		static std::string _GetWritePath(const std::string &cfgName);
+		static void _CreateSaveConfigXML(std::map<std::string, std::string> &cfgs,
+			const std::string &cfgName);
+		static void _LoadConfigs(std::map<std::string, std::string> &cfgs,
+			const std::string &cfgName);
+
+		std::map<std::string, std::string> mCFGs;
+		std::string mConfigName;
 	};
 #include "PX2Application.inl"
 

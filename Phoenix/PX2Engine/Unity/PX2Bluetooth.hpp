@@ -78,10 +78,10 @@ namespace PX2
 		void OnDisConnected();
 		void OnReceive(const std::string &recvBuffer);
 
-		void ClearRecvCallbacks();
-		bool IsHasReceiveCallback(BluetoothReceiveCallback callBack);
-		void AddReceiveCallback(BluetoothReceiveCallback callBack);
-		void RemoveReceiveCallback(BluetoothReceiveCallback callback);
+		void ClearCMDCallbacks();
+		bool IsHasCMDCallback(BluetoothReceiveCallback callBack);
+		void AddCMDCallback(BluetoothReceiveCallback callBack);
+		void RemoveCMDCallback(BluetoothReceiveCallback callback);
 		
 		void ClearScirptHandlers();
 		bool IsHasScriptHandler(const std::string &scriptHandler);

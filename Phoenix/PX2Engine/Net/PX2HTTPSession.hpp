@@ -7,6 +7,7 @@
 #include "PX2StreamSocket.hpp"
 #include "PX2Exception.hpp"
 #include "PX2Any.hpp"
+#include "PX2DataBuffer.hpp"
 
 namespace PX2
 {
@@ -38,6 +39,8 @@ namespace PX2
 
 		StreamSocket DetachSocket();
 		StreamSocket& GetSocket();
+
+		void drainBuffer(DataBuffer<char>& buffer);
 
 	protected:
 		HTTPSession();

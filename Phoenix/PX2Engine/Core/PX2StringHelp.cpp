@@ -606,14 +606,24 @@ int char2Init(char chara)
 		return 14;
 	else if ('F' == chara)
 		return 15;
+	else if ('a' == chara)
+		return 10;
+	else if ('b' == chara)
+		return 11;
+	else if ('c' == chara)
+		return 12;
+	else if ('d' == chara)
+		return 13;
+	else if ('e' == chara)
+		return 14;
+	else if ('f' == chara)
+		return 15;
 
 	return 0;
 }
 //----------------------------------------------------------------------------
 int StringHelp::HexToInt(const std::string &str)
 {
-	PX2_LOG_INFO("HexToIntStr:%s", str.c_str());
-
 	int ret = 0;
 
 	int length = (int)str.length();
@@ -625,15 +635,11 @@ int StringHelp::HexToInt(const std::string &str)
 		ret += iVal * (int)(pow(16, length - 1 - i));
 	}
 
-	PX2_LOG_INFO("HexToIntVal:%d", ret);
-
 	return ret;
 }
 //----------------------------------------------------------------------------
 int StringHelp::HexToInt(const char *str)
 {
-	PX2_LOG_INFO("HexToIntStr:%s", str);
-
 	int ret = 0;
 
 	int length = strlen(str);
@@ -644,8 +650,6 @@ int StringHelp::HexToInt(const char *str)
 
 		ret += iVal * (int)(pow(16, i));
 	}
-
-	PX2_LOG_INFO("HexToIntVal:%d", ret);
 
 	return ret;
 }

@@ -377,7 +377,6 @@ bool ResourceManager::CopyTheFile(const std::string &srcFilename,
 	PX2_UNUSED(dstFilename);
 	return false;
 #endif
-
 }
 //----------------------------------------------------------------------------
 bool ResourceManager::LoadBuffer(const std::string &filename, int &bufferSize,

@@ -38,9 +38,8 @@ void HTTPServerConnection::Run()
 	std::string server = mParams->GetSoftwareVersion();
 
 	HTTPServerSession session(GetSocket(), mParams);
-	
-	//session.HasMoreRequests()
-	while (!mIsStopped)
+
+	while (!mIsStopped && session.HasMoreRequests())
 	{
 		try
 		{
@@ -91,8 +90,6 @@ void HTTPServerConnection::Run()
 					}
 					throw;
 				}
-
-				mIsStopped = true;
 			}
 		}
 		catch (NoMessageException&)

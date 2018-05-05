@@ -23,6 +23,10 @@
 		float GetDraggedPercent() const;
 		
 		int GetDragingDirSimple() const;
+		int GetDragingLeftMoveType() const;
+		float GetDragingLeftMoveSpeed() const;
+		int GetDragingRightMoveType() const;
+		float GetDragingRightMoveSpeed() const;
 
 		const APoint &GetCurPickWorldPos() const;
 	};

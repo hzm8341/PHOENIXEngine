@@ -19,7 +19,8 @@ mIsNeedReGenSliderLayout(true),
 mButSliderLength(20.0f),
 mPercent(0.0f),
 mIsNeededUpdate(true),
-mIsDraging(false)
+mIsDraging(false),
+mPickTouchID(-1)
 {
 	SetName("UISlider");
 
@@ -209,6 +210,16 @@ void UISlider::_ReGenSliderLayout()
 void UISlider::_SetDraging(bool draging)
 {
 	mIsDraging = draging;
+
+	if (mIsDraging)
+	{
+		const CanvasInputData &lastPickData = mButSlider->GetLastPickData();
+		mPickTouchID = lastPickData.TouchID;
+	}
+	else if (!mIsDraging)
+	{
+		mPickTouchID = -1;
+	}
 }
 //----------------------------------------------------------------------------
 void UISlider::_SliderDrag(UIFrame *frame, UICallType type)
@@ -238,7 +249,7 @@ void UISlider::_SliderDrag(UIFrame *frame, UICallType type)
 //----------------------------------------------------------------------------
 void UISlider::OnSizeNodePicked(const CanvasInputData &inputData)
 {
-	if (UIPT_MOVED == inputData.PickType)
+	if (UIPT_MOVED == inputData.PickType && mPickTouchID == inputData.TouchID)
 	{
 		if (IsDraging())
 		{
@@ -263,8 +274,10 @@ void UISlider::OnSizeNodePicked(const CanvasInputData &inputData)
 
 			percent += addPercent;
 
-			if (percent > 1.0f) percent = 1.0f;
-			if (percent < 0.0f) percent = 0.0f;
+			if (percent > 1.0f) 
+				percent = 1.0f;
+			if (percent < 0.0f) 
+				percent = 0.0f;
 
 			SetPercent(percent);
 		}
@@ -275,7 +288,7 @@ void UISlider::OnSizeNodeNotPicked(const CanvasInputData &inputData)
 {
 	UIFrame::OnSizeNodeNotPicked(inputData);
 
-	if (UIPT_MOVED == inputData.PickType)
+	if (UIPT_MOVED == inputData.PickType && mPickTouchID == inputData.TouchID)
 	{
 		if (IsDraging())
 		{
@@ -359,7 +372,8 @@ mIsNeedReGenSliderLayout(true),
 mButSliderLength(20.0f),
 mPercent(0.0f),
 mIsNeededUpdate(true),
-mIsDraging(false)
+mIsDraging(false),
+mPickTouchID(-1)
 {
 }
 //----------------------------------------------------------------------------

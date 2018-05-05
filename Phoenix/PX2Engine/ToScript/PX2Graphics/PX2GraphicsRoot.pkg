@@ -55,6 +55,10 @@
 		TriMesh *GetXZPlane();
 		TriMesh *GetYZPlane();
 		
+		// Info
+	public:
+		void LogInfo(const std::string &infoStr);
+
 		// Untity
 	public:
 		void PlayScale(Controlledable *contrable);

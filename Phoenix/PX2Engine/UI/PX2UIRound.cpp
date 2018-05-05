@@ -9,7 +9,13 @@ PX2_IMPLEMENT_STREAM(UIRound);
 PX2_IMPLEMENT_FACTORY(UIRound);
 
 //----------------------------------------------------------------------------
-UIRound::UIRound()
+UIRound::UIRound() :
+mPickTouchID(-1),
+mRoundCurDragingDirSimple(0),
+mDragingLeftMoveType(0),
+mDragingLeftMoveSpeed(0.0f),
+mDragingRightMoveType(0),
+mDragingRightMoveSpeed(0.0f)
 {
 	SetWidget(true);
 
@@ -78,7 +84,7 @@ float UIRound::GetDraggingPercentPiece(int num) const
 	float piece = 1.0f / (float)num;
 	float fNum = (dragingPercent + 0.5f*piece) / piece;
 	float numStart = Mathf::Floor(fNum);
-	return (numStart/num);
+	return (numStart / num);
 }
 //----------------------------------------------------------------------------
 AVector UIRound::GetDraggedDirAvector() const
@@ -131,6 +137,26 @@ int UIRound::GetDragingDirSimple() const
 	return 0;
 }
 //----------------------------------------------------------------------------
+int UIRound::GetDragingLeftMoveType() const
+{
+	return mDragingLeftMoveType;
+}
+//----------------------------------------------------------------------------
+float UIRound::GetDragingLeftMoveSpeed() const
+{
+	return mDragingLeftMoveSpeed;
+}
+//----------------------------------------------------------------------------
+int UIRound::GetDragingRightMoveType() const
+{
+	return mDragingRightMoveType;
+}
+//----------------------------------------------------------------------------
+float UIRound::GetDragingRightMoveSpeed() const
+{
+	return mDragingRightMoveSpeed;
+}
+//----------------------------------------------------------------------------
 void UIRound::OnPressed()
 {
 	mIsPressed = true;
@@ -169,7 +195,7 @@ void UIRound::OnReleasedNotPick()
 	_UICallbacksCalls(UICT_ROUND_RELEASEDNOTPICK);
 }
 //----------------------------------------------------------------------------
-void UIRound::OnDrag(const Vector2f &dir, float percent, 
+void UIRound::OnDrag(const Vector2f &dir, float percent,
 	const APoint &pickWorldPos)
 {
 	PX2_UNUSED(pickWorldPos);
@@ -230,7 +256,7 @@ void UIRound::OnSizeNodePicked(const CanvasInputData &inputData)
 {
 	UIFrame::OnSizeNodePicked(inputData);
 
-	if (mIsDragable)
+	if (mIsDragable && mPickTouchID == inputData.TouchID)
 	{
 		const APoint &screenPos = inputData.LogicPos;
 
@@ -267,8 +293,10 @@ void UIRound::_UIButCallback(UIFrame *frame, UICallType type)
 	UIButton *but = DynamicCast<UIButton>(frame);
 	if (but == mBut)
 	{
+		const CanvasInputData &lastPickData = but->GetLastPickData();
 		if (UICallType::UICT_PRESSED == type)
 		{
+			mPickTouchID = lastPickData.TouchID;
 			OnPressed();
 		}
 		else if (UICallType::UICT_RELEASED == type)
@@ -282,12 +310,122 @@ void UIRound::_UIButCallback(UIFrame *frame, UICallType type)
 	}
 }
 //----------------------------------------------------------------------------
+void UIRound::UpdateWorldData(double applicationTime, double elapsedTime)
+{
+	UIFrame::UpdateWorldData(applicationTime, elapsedTime);
+
+	const Vector2f dragDir = GetDraggingDir();
+	float dragingStrength = GetDraggingPercentPiece(4);
+	float absX = Mathf::FAbs(dragDir.X());
+	float signX = Mathf::Sign(dragDir.X());
+	float absY = Mathf::FAbs(dragDir.Y());
+	float signY = Mathf::Sign(dragDir.Y());
+	float param = 1.0f;
+
+	if (0.0f == absX && 0.0f == absY)
+	{
+		mDragingLeftMoveType = 0;
+		mDragingLeftMoveSpeed = 0.0f;
+		mDragingRightMoveType = 0;
+		mDragingRightMoveSpeed = 0.0f;
+	}
+	else
+	{
+		if (absY > absX)
+		{
+			if (signY > 0.0f)
+			{
+				mDragingLeftMoveType = 1;
+				mDragingRightMoveType = 1;
+				if (signX < 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = 255.0f;
+				}
+				else if (signX > 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f;
+					mDragingRightMoveSpeed = 255.0f  * Lerp<float, float>(0, 1, param);
+				}
+			}
+			else if (signY < 0.0f)
+			{
+				mDragingLeftMoveType = 2;
+				mDragingRightMoveType = 2;
+
+				float param = 1.0f;
+				if (signX < 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f;
+					mDragingRightMoveSpeed = 255.0f * Lerp<float, float>(0, 1, param);
+				}
+				else if (signX > 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f  * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = 255.0f;
+				}
+			}
+		}
+		else if (absY < absX)
+		{
+			if (signX > 0.0f)
+			{
+				mDragingLeftMoveType = 1;
+				mDragingRightMoveType = 2;
+
+				if (signY > 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f;
+					mDragingRightMoveSpeed = 255.0f  * Lerp<float, float>(0, 1, param);
+				}
+				else if (signY < 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = 255.0f;
+				}
+			}
+			else if (signX < 0.0f)
+			{
+				mDragingLeftMoveType = 2;
+				mDragingRightMoveType = 1;
+
+				if (signY > 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = 255.0f;
+				}
+				else if (signY < 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = 255.0f;
+					mDragingRightMoveSpeed = 255.0f * Lerp<float, float>(0, 1, param);
+				}
+			}
+		}
+
+		mDragingLeftMoveSpeed *= dragingStrength;
+		mDragingRightMoveSpeed *= dragingStrength;
+	}
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // 持久化支持
 //----------------------------------------------------------------------------
 UIRound::UIRound(LoadConstructor value) :
-UIFrame(value)
+UIFrame(value),
+mRoundCurDragingDirSimple(0),
+mDragingLeftMoveType(0),
+mDragingLeftMoveSpeed(0.0f),
+mDragingRightMoveType(0),
+mDragingRightMoveSpeed(0.0f)
 {
 	mIsDragable = true;
 
@@ -296,6 +434,7 @@ UIFrame(value)
 	mDraggedDir = Vector2f::ZERO;
 	mDraggingPercent = 0.0f;
 	mDraggedPercent = 0.0f;
+	mPickTouchID = -1;
 
 	SetChildPickOnlyInSizeRange(false);
 }

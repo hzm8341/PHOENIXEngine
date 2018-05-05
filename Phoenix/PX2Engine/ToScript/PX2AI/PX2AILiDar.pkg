@@ -1,0 +1,18 @@
+// PX2AILiDar.pkg
+
+	class LiDar : public Object
+	{
+	public:
+		LiDar();
+		virtual ~LiDar();
+
+		static LiDar *New();
+		
+		bool Open(const std::string &port, int baud);
+		bool IsOpened() const;
+		void Close();
+		
+		UIFPicBox *GetUIFPicBox();
+
+		void Update(float appSeconds, float elapsedSeconds);
+	};

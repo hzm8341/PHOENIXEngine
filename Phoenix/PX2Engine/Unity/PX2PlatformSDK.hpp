@@ -88,6 +88,23 @@ namespace PX2
 
 	private:
 		std::string mPlatformSDK;
+
+	public:
+		void TVShowCursor(bool show);
+		void RinGun_Open();
+		void RinGun_Close();
+		void RinGun_OnReceive(const std::string &strCMD);
+		std::string RinGUN_GetCMD() const;
+		int RinGun_GetPosX() const;
+		int RinGun_GetPosY() const;
+		int RinGun_IsFiring() const;
+
+
+	private:
+		std::string mRinGun_CMD;
+		int mRinGun_PosX;
+		int mRinGun_PosY;
+		bool mRinGun_IsFiring;
 	};
 
 #define PX2_PFSDK PlatformSDK::GetSingleton()

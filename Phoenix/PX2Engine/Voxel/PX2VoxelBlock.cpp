@@ -19,11 +19,6 @@ Bottom(0),
 Top(0)
 {
 	Color = Float4::WHITE;
-	
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	Color[i] = Mathf::UnitRandom();
-	//}
 }
 //----------------------------------------------------------------------------
 VoxelBlock::~VoxelBlock()
@@ -146,6 +141,12 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 				u1 = (float)(ele.X + ele.W) / (float)ele.TexWidth;
 				v0 = (float)(ele.TexHeight - ele.Y - ele.H) / (float)ele.TexHeight;
 				v1 = (float)(ele.TexHeight - ele.Y) / (float)ele.TexHeight;
+
+				// adjust
+				u0 += 0.01f;
+				u1 -= 0.01f;
+				v0 += 0.01f;
+				v1 -= 0.01f;
 			}
 			Float2 uvs[4];
 			uvs[0] = Float2(u0, v0);
@@ -215,6 +216,12 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 				u1 = (float)(ele.X + ele.W) / (float)ele.TexWidth;
 				v0 = (float)(ele.TexHeight - ele.Y - ele.H) / (float)ele.TexHeight;
 				v1 = (float)(ele.TexHeight - ele.Y) / (float)ele.TexHeight;
+
+				// adjust
+				u0 += 0.01f;
+				u1 -= 0.01f;
+				v0 += 0.01f;
+				v1 -= 0.01f;
 			}
 			Float2 uvs[4];
 			uvs[0] = Float2(u0, v0);
@@ -284,6 +291,12 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 				u1 = (float)(ele.X + ele.W) / (float)ele.TexWidth;
 				v0 = (float)(ele.TexHeight - ele.Y - ele.H) / (float)ele.TexHeight;
 				v1 = (float)(ele.TexHeight - ele.Y) / (float)ele.TexHeight;
+
+				// adjust
+				u0 += 0.01f;
+				u1 -= 0.01f;
+				v0 += 0.01f;
+				v1 -= 0.01f;
 			}
 			Float2 uvs[4];
 			uvs[0] = Float2(u0, v0);
@@ -353,6 +366,12 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 				u1 = (float)(ele.X + ele.W) / (float)ele.TexWidth;
 				v0 = (float)(ele.TexHeight - ele.Y - ele.H) / (float)ele.TexHeight;
 				v1 = (float)(ele.TexHeight - ele.Y) / (float)ele.TexHeight;
+
+				// adjust
+				u0 += 0.01f;
+				u1 -= 0.01f;
+				v0 += 0.01f;
+				v1 -= 0.01f;
 			}
 			Float2 uvs[4];
 			uvs[0] = Float2(u0, v0);
@@ -417,6 +436,12 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 				u1 = (float)(ele.X + ele.W) / (float)ele.TexWidth;
 				v0 = (float)(ele.TexHeight - ele.Y - ele.H) / (float)ele.TexHeight;
 				v1 = (float)(ele.TexHeight - ele.Y) / (float)ele.TexHeight;
+
+				// adjust
+				u0 += 0.01f;
+				u1 -= 0.01f;
+				v0 += 0.01f;
+				v1 -= 0.01f;
 			}
 			Float2 uvs[4];
 			uvs[0] = Float2(u0, v0);
@@ -481,6 +506,12 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 				u1 = (float)(ele.X + ele.W) / (float)ele.TexWidth;
 				v0 = (float)(ele.TexHeight - ele.Y - ele.H) / (float)ele.TexHeight;
 				v1 = (float)(ele.TexHeight - ele.Y) / (float)ele.TexHeight;
+
+				// adjust
+				u0 += 0.01f;
+				u1 -= 0.01f;
+				v0 += 0.01f;
+				v1 -= 0.01f;
 			}
 			Float2 uvs[4];
 			uvs[0] = Float2(u0, v0);

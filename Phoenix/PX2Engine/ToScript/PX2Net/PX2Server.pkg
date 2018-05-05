@@ -14,6 +14,7 @@
 		virtual ~Server();
 
 		ServerType GetServerType() const;
+		std::string GetAddress();
 
 		bool Start();
 		void Shutdown();

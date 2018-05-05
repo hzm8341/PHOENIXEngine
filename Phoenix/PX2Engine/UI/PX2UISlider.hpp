@@ -74,6 +74,8 @@ namespace PX2
 		float mPercent;
 
 		UIFramePtr mContentFrame;
+
+		int mPickTouchID;
 	};
 
 	PX2_REGISTER_STREAM(UISlider);

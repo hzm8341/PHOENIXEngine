@@ -190,6 +190,12 @@ StreamSocket& HTTPSession::GetSocket()
 	return mSocket;
 }
 //----------------------------------------------------------------------------
+void HTTPSession::drainBuffer(DataBuffer<char>& buffer)
+{
+	buffer.assign(_pCurrent, static_cast<std::size_t>(_pEnd - _pCurrent));
+	_pCurrent = _pEnd;
+}
+//----------------------------------------------------------------------------
 void HTTPSession::attachSocket(const StreamSocket& socket)
 {
 	mSocket = socket;
