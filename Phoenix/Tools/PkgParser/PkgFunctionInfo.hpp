@@ -56,6 +56,7 @@ namespace PkgParse
 		std::string TypeStr;
 		std::string GetTypeStrAS() const;
 		std::string ValueNameStr;
+		std::string DefaultValStr;
 
 		bool IsPointer;
 		bool IsRef;

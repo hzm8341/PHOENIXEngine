@@ -89,6 +89,7 @@ void PkgInfoManager::SaveParam(XMLNode &paramNode, ParamInfo *paramInfo)
 	paramNode.SetAttributeBool("is_retrun", paramInfo->IsReturn);
 	paramNode.SetAttributeString("type_str", paramInfo->TypeStr);
 	paramNode.SetAttributeString("valuename_str", paramInfo->ValueNameStr);
+	paramNode.SetAttributeString("defaultvalue_Str", paramInfo->DefaultValStr);
 	paramNode.SetAttributeBool("is_pointer", paramInfo->IsPointer);
 	paramNode.SetAttributeBool("is_ref", paramInfo->IsRef);
 	paramNode.SetAttributeBool("is_const", paramInfo->IsConst);

@@ -634,6 +634,8 @@ void N_Frame::DoNewProject()
 			std::string path = "Data/" + pathName + name + ".px2proj";
 			PX2_APP.NewProject(path, name, screenOriention, width,
 				height);
+
+			int b = 0;
 		}
 	}
 }

@@ -432,8 +432,21 @@ ParamInfo *PkgParser::PraseFunctionParam(const std::string &paramStr)
 	bool findStar = (paramStr.find("*") != std::string::npos);
 	bool findRef = (paramStr.find("&") != std::string::npos);
 
-	PkgStringTokenizer tokenFun(paramStr, " ",
+	std::string operatorFrontStr = paramStr;
+
+	PkgStringTokenizer tokenFunOperator(paramStr, "=",
 		PkgStringTokenizer::TOK_IGNORE_EMPTY | PkgStringTokenizer::TOK_TRIM);
+
+	// value
+	if (tokenFunOperator.Count() > 1)
+	{
+		operatorFrontStr = tokenFunOperator[0];
+		info->DefaultValStr = tokenFunOperator[1];
+	}
+
+	PkgStringTokenizer tokenFun(operatorFrontStr, " ",
+		PkgStringTokenizer::TOK_IGNORE_EMPTY | PkgStringTokenizer::TOK_TRIM);
+
 	if (tokenFun.Count() > 0)
 	{
 		std::string typeStr;
@@ -465,6 +478,10 @@ ParamInfo *PkgParser::PraseFunctionParam(const std::string &paramStr)
 				if ((typeIndex+2) == (int)tokenFun.Count())
 				{
 					valStr = tokenFun[typeIndex+1];
+				}
+				else if ((typeIndex + 4) == (int)tokenFun.Count())
+				{
+					valStr = tokenFun[typeIndex + 2];
 				}
 			}
 		}

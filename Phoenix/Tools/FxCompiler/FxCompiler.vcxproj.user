@@ -5,6 +5,11 @@
     <LocalDebuggerWorkingDirectory>..\..\..\Bin\Data\engine_mtls\std</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|x64'">
+    <LocalDebuggerCommandArguments>std.xml</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>..\..\..\Bin\Data\engine_mtls\std</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommandArguments>ui.xml</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>

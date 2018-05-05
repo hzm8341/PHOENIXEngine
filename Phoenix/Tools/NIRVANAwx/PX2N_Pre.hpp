@@ -3,8 +3,6 @@
 #ifndef PX2N_PRE_HPP
 #define PX2N_PRE_HPP
 
-#include "PX2N_Pre.hpp"
-
 #include "wx/wxprec.h"
 
 #ifndef WX_PRECOMP

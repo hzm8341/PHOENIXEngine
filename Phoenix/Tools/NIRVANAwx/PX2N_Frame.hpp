@@ -19,7 +19,7 @@ namespace NA
 	class LogView;
 	class TextView;
 	class ConnectView;
-	
+
 	class N_Frame : public wxFrame, public PX2::EventHandler
 	{
 	public:
@@ -58,7 +58,7 @@ namespace NA
 	protected:
 		bool mIsNewProject;
 		bool mIsOpenProject;
-		bool mIsSaveProject;		
+		bool mIsSaveProject;
 		bool mIsCloseProject;
 		bool mIsNewScene;
 		bool mIsOpenScene;
@@ -79,9 +79,9 @@ namespace NA
 		wxMenu *AddMainMenuItem(const std::string &title);
 
 		wxMenu *AddSubMenuItem(wxMenu *menu, const std::string &title);
-		wxMenuItem *AddMenuItem(wxMenu *menu, 
-			const std::string &title, 
-			const std::string &script, 
+		wxMenuItem *AddMenuItem(wxMenu *menu,
+			const std::string &title,
+			const std::string &script,
 			const std::string &param,
 			const std::string &tag = "");
 		void AddSeparater(wxMenu *menu);
@@ -132,7 +132,7 @@ namespace NA
 		virtual void OnEvent(PX2::Event *event);
 
 	protected:
-			void OnResCopyResPath(const std::string &text);
+		void OnResCopyResPath(const std::string &text);
 
 		// renderview
 	public:

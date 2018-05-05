@@ -5,6 +5,7 @@
 #include "PX2N_Frame.hpp"
 #include "PX2EditorEventType.hpp"
 #include "PX2ProjectEvent.hpp"
+#include "PX2LogicES.hpp"
 using namespace NA;
 using namespace PX2;
 
@@ -91,6 +92,12 @@ void TextView::OnEvent(Event *ent)
 	else if (EditorEventSpace::IsEqual(ent, EditorEventSpace::SaveText))
 	{
 		mTextCtrl->SaveFile();
+	}
+	else if (LogicES::IsEqual(ent, LogicES::RefreshGeneratedScript))
+	{
+		mTextCtrl->Clear();
+		const std::string &generatedScript = PX2_LOGICM.GetCurGeneratedScript();
+		mTextCtrl->SetValue(generatedScript);
 	}
 }
 //----------------------------------------------------------------------------

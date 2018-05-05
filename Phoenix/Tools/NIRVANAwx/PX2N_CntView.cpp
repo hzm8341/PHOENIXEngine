@@ -197,7 +197,6 @@ void ConnectView::OnSyn(wxCommandEvent& event)
 		UDPNetInfo *info = PX2_APP.GetUDPNetInfo(mSelectListIndex);
 		if (info)
 		{
-
 			SocketAddress skAddr(info->IP, EngineUDPPortClient);
 
 			std::string strBuf = CMD_PushProject + " " + projName;
