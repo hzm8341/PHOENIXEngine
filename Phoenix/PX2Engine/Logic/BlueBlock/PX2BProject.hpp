@@ -46,7 +46,7 @@ namespace PX2
 		UIFramePtr mContentFrame;
 		ScenePtr mScene;
 		CameraNodePtr mCameraNode;
-		CameraPlayerControllerPtr mCameraPlayCtrl;
+		Pointer0<CameraPlayController> mCameraPlayCtrl;
 
 		UIFramePtr mSmallFrame;
 		CanvasPtr mSmallCanvas;
