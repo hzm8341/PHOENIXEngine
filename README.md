@@ -6,10 +6,6 @@ open soruce cross platform system for Games/AR/VR/AI/IOT/Robots
 
 ![robot](https://github.com/manykits/PHOENIXEngine/blob/master/docs/img/robot.png?raw=true)
 
-##目录
-
-[TOC]
-
 ## 简述
 
 	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目，的开发引擎。集成了ORB-Slam2，更可以开发AR增强现实等应用。
