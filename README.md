@@ -1,7 +1,6 @@
 # PHOENIXEngine
-@(MANYKIT ZERONERobot)[cross platform|c++/lua|project fast wifi synchronization]
 
-跨平台应用开发引擎
+## 跨平台应用开发引擎
 
 open soruce cross platform system for Games/AR/VR/AI/IOT/Robots
 
