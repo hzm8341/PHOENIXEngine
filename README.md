@@ -5,6 +5,8 @@
 
 open soruce cross platform system for Games/AR/VR/AI/IOT/Robots
 
+![robot](https://github.com/manykits/PHOENIXEngine/blob/master/docs/img/robot.png?raw=true)
+
 ##目录
 
 [TOC]
