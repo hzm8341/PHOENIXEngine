@@ -35,7 +35,7 @@ namespace PX2
 		virtual void Reset ();
 		virtual void Play ();
 		void PlaySound ();
-		virtual void Stop ();
+		virtual void Pause ();
 
 		void SetIngoreStopSound (bool stop);
 		bool IsIngoreStopSound () const;

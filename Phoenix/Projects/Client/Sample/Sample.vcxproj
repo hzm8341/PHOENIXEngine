@@ -149,21 +149,16 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FBXIMPORTER_EXPORTS;WIN32_LEAN_AND_MEAN;PX2_ENGINE_DLL_IMPORT;FBXIMPORTER_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;.\ToLua;.\ToScript;..\..\PX2Engine\Unity\;..\..\PX2Engine\Unity\Lua;..\..\PX2Engine\Unity\ToLua;..\..\PX2SDK\Include;..\..\ThirdPartiesLibs\FBX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\ToLua;.\ToScript;..\..\..\PX2Engine\Unity\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\..\ThirdPartiesLibs\FBX\lib\vs2013\x86\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PX2EngineOpenGLD.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>PX2EngineOpenGLD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY "$(TargetPath)" ..\..\..\Bin\PluginsCommon\FBXImporter\
-xcopy /DY "$(OutDir)$(TargetName).lib" ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
-
-xcopy /DY "$(TargetPath)" ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)
-
-</Command>
+      <Command>xcopy /DY "$(TargetPath)"  ..\..\..\..\Bin\Data\$(ProjectName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'">

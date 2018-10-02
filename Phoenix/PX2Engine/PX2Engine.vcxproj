@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -52,62 +52,62 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -170,7 +170,7 @@
     <TargetName>PX2EngineOpenGL</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>PX2Engine64D</TargetName>
@@ -212,15 +212,17 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/SeetaFace/FaceDetection;./AI/SeetaFace/FaceDetection/include;./AI/SeetaFace/FaceDetection/src;./AI/SeetaFace/FaceAlignment;./AI/SeetaFace/FaceAlignment/include;./AI/SeetaFace/FaceAlignment/src;./AI/SeetaFace/FaceIdentification;./AI/SeetaFace/FaceIdentification/include;./AI/SeetaFace/FaceIdentification/src;./AI/iiiroboticslidar2;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Core/TinyJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/rplidar/include;./AI/rplidar;./AI/rplidar/src;./AI/SkillSystem;./AI/recast/include;./AI/detour/include;./AI/OpenSteer/include;./Physics;./Physics/Bullet;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\vlc\libwin;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\DataBase\MySQL\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;awesomium.lib;libvlccore.lib;libvlc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib</AdditionalLibraryDirectories>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\PX2SDK\Include
@@ -290,14 +292,16 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/OpenGL;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/SkillSystem;./AI/breezyslam;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Core/TinyJSON;./Mathematics;./Graphics;./Graphics/Renderers/OpenGLRenderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/rplidar/include;./AI/rplidar;./AI/rplidar/src;./AI/SkillSystem;./AI/recast/include;./AI/detour/include;./AI/OpenSteer/include;./Physics;./Physics/Bullet;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/OpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;fmod_vc.lib;ws2_32.lib;Winmm.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;fmod_vc.lib;ws2_32.lib;Winmm.lib;setupapi.lib;awesomium.lib;libvlccore.lib;libvlc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib;..\ThirdPartiesLibs\OpenGL</AdditionalLibraryDirectories>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\PX2SDK\Include
@@ -432,7 +436,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_OPENGL;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/OpenGL;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/SkillSystem;./AI/breezyslam;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Core/TinyJSON;./Mathematics;./Graphics;./Graphics/Renderers/OpenGLRenderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/rplidar/include;./AI/rplidar;./AI/rplidar/src;./AI/SkillSystem;./AI/recast/include;./AI/detour/include;./AI/OpenSteer/include;./Physics;./Physics/Bullet;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/OpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -442,12 +446,14 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;fmod_vc.lib;ws2_32.lib;Winmm.lib;setupapi.lib;awesomium.lib;libvlccore.lib;libvlc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OPENGL32.LIB;GLU32.LIB;fmod_vc.lib;ws2_32.lib;Winmm.lib;setupapi.lib;awesomium.lib;libvlccore.lib;libvlc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib;..\ThirdPartiesLibs\OpenGL</AdditionalLibraryDirectories>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\PX2SDK\Include
@@ -516,16 +522,16 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;WIN32_LEAN_AND_MEAN;LUAPLUS_EXCEPTIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/AngelScript;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/CURL/config;./Unity/CURL/config/win32;./Unity/CURL/src;./Unity/SQLite;./Unity/Edit;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/SkillSystem;./AI/breezyslam;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod64_vc.lib;ws2_32.lib;mysqld.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x64;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\FBX\lib\vs2013\x64\release;..\ThirdPartiesLibs\VLC\lib;..\ThirdPartiesLibs\DataBase\MySQL\lib;..\ThirdPartiesLibs\DataBase\MySQL\lib\opt</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod64_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x64;..\ThirdPartiesLibs\FMOD\win\lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\PX2SDK\Include
@@ -787,15 +793,17 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;WIN32_LEAN_AND_MEAN;PX2_USE_AWESOMIUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/SeetaFace/FaceDetection;./AI/SeetaFace/FaceDetection/include;./AI/SeetaFace/FaceDetection/src;./AI/SeetaFace/FaceAlignment;./AI/SeetaFace/FaceAlignment/include;./AI/SeetaFace/FaceAlignment/src;./AI/SeetaFace/FaceIdentification;./AI/SeetaFace/FaceIdentification/include;./AI/SeetaFace/FaceIdentification/src;./AI/iiiroboticslidar2;./Physics;./Physics/Bullet;./AI/OpenSteer/include;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/vlc/include;../ThirdPartiesLibs/DataBase/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Core/TinyJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/rplidar/include;./AI/rplidar;./AI/rplidar/src;./AI/SkillSystem;./AI/recast/include;./AI/detour/include;./AI/OpenSteer/include;./Physics;./Physics/Bullet;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\vlc\libwin;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;setupapi.lib;awesomium.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x86;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;awesomium.lib;libvlccore.lib;libvlc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\PX2SDK\Include
@@ -916,18 +924,14 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AI\breezyslam\algorithms.hpp" />
-    <ClInclude Include="AI\breezyslam\BreezySLAM.hpp" />
-    <ClInclude Include="AI\breezyslam\coreslam.h" />
-    <ClInclude Include="AI\breezyslam\coreslam_internals.h" />
-    <ClInclude Include="AI\breezyslam\Laser.hpp" />
-    <ClInclude Include="AI\breezyslam\Map.hpp" />
-    <ClInclude Include="AI\breezyslam\Position.hpp" />
-    <ClInclude Include="AI\breezyslam\random.h" />
-    <ClInclude Include="AI\breezyslam\Scan.hpp" />
-    <ClInclude Include="AI\breezyslam\Velocities.hpp" />
-    <ClInclude Include="AI\breezyslam\WheeledRobot.hpp" />
-    <ClInclude Include="AI\breezyslam\ziggurat.h" />
+    <ClInclude Include="AI\detour\include\DetourAlloc.h" />
+    <ClInclude Include="AI\detour\include\DetourAssert.h" />
+    <ClInclude Include="AI\detour\include\DetourCommon.h" />
+    <ClInclude Include="AI\detour\include\DetourNavMesh.h" />
+    <ClInclude Include="AI\detour\include\DetourNavMeshBuilder.h" />
+    <ClInclude Include="AI\detour\include\DetourNavMeshQuery.h" />
+    <ClInclude Include="AI\detour\include\DetourNode.h" />
+    <ClInclude Include="AI\detour\include\DetourStatus.h" />
     <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidar.h" />
     <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidarProtocol.h" />
     <ClInclude Include="AI\iiiroboticslidar2\CArcTime.h" />
@@ -973,6 +977,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3.h" />
     <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3Utilities.h" />
     <ClInclude Include="AI\OpenSteer\src\TerrainRayTest.h" />
+    <ClInclude Include="AI\PX2AIAgentBase.hpp" />
     <ClInclude Include="AI\PX2AIAgentObject.hpp" />
     <ClInclude Include="AI\PX2AIAgentUtilities.hpp" />
     <ClInclude Include="AI\PX2AIAgentGroup.hpp" />
@@ -980,12 +985,48 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2AIAgent.hpp" />
     <ClInclude Include="AI\PX2AIAgentWorld.hpp" />
     <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp" />
+    <ClInclude Include="AI\PX2AIES.hpp" />
     <ClInclude Include="AI\PX2AIInfluenceMap.hpp" />
     <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp" />
     <ClInclude Include="AI\PX2AILiDar.hpp" />
+    <ClInclude Include="AI\PX2AIMeshUtilities.hpp" />
+    <ClInclude Include="AI\PX2AINavigationMesh.hpp" />
+    <ClInclude Include="AI\PX2AINavigationUtilities.hpp" />
+    <ClInclude Include="AI\PX2AIPath.hpp" />
     <ClInclude Include="AI\PX2AIs.hpp" />
-    <ClInclude Include="AI\PX2AIWayMoveController.hpp" />
-    <ClInclude Include="AI\PX2Rover.hpp" />
+    <ClInclude Include="AI\PX2NavBitArray.hpp" />
+    <ClInclude Include="AI\PX2NavGridMap.hpp" />
+    <ClInclude Include="AI\PX2NavHeapNode.hpp" />
+    <ClInclude Include="AI\PX2NavMoveManager.hpp" />
+    <ClInclude Include="AI\PX2NavMoveUnit.hpp" />
+    <ClInclude Include="AI\PX2NavPoint2D.hpp" />
+    <ClInclude Include="AI\PX2Robot.hpp" />
+    <ClInclude Include="AI\PX2RobotDatas.hpp" />
+    <ClInclude Include="AI\recast\include\Recast.h" />
+    <ClInclude Include="AI\recast\include\RecastAlloc.h" />
+    <ClInclude Include="AI\recast\include\RecastAssert.h" />
+    <ClInclude Include="AI\rplidar\include\rplidar.h" />
+    <ClInclude Include="AI\rplidar\include\rplidar_cmd.h" />
+    <ClInclude Include="AI\rplidar\include\rplidar_driver.h" />
+    <ClInclude Include="AI\rplidar\include\rplidar_protocol.h" />
+    <ClInclude Include="AI\rplidar\include\rptypes.h" />
+    <ClInclude Include="AI\rplidar\src\arch\win32\arch_win32.h" />
+    <ClInclude Include="AI\rplidar\src\arch\win32\net_serial.h" />
+    <ClInclude Include="AI\rplidar\src\arch\win32\timer.h" />
+    <ClInclude Include="AI\rplidar\src\arch\win32\winthread.hpp" />
+    <ClInclude Include="AI\rplidar\src\hal\abs_rxtx.h" />
+    <ClInclude Include="AI\rplidar\src\hal\assert.h" />
+    <ClInclude Include="AI\rplidar\src\hal\byteops.h" />
+    <ClInclude Include="AI\rplidar\src\hal\event.h" />
+    <ClInclude Include="AI\rplidar\src\hal\locker.h" />
+    <ClInclude Include="AI\rplidar\src\hal\socket.h" />
+    <ClInclude Include="AI\rplidar\src\hal\thread.h" />
+    <ClInclude Include="AI\rplidar\src\hal\types.h" />
+    <ClInclude Include="AI\rplidar\src\hal\util.h" />
+    <ClInclude Include="AI\rplidar\src\rplidar_driver_impl.h" />
+    <ClInclude Include="AI\rplidar\src\rplidar_driver_serial.h" />
+    <ClInclude Include="AI\rplidar\src\rplidar_driver_TCP.h" />
+    <ClInclude Include="AI\rplidar\src\sdkcommon.h" />
     <ClInclude Include="AI\SkillSystem\PX2Skill.hpp" />
     <ClInclude Include="AI\SkillSystem\PX2SkillAffect.hpp" />
     <ClInclude Include="AI\SkillSystem\PX2SkillBloodTextObject.hpp" />
@@ -1007,6 +1048,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\SkillSystem\PX2UISkillBuf.hpp" />
     <ClInclude Include="AI\SkillSystem\PX2UISkill.hpp" />
     <ClInclude Include="AI\SkillSystem\PX2UISkills.hpp" />
+    <ClInclude Include="Application\PX2Actor.hpp" />
     <ClInclude Include="Application\PX2AmbientRegionController.hpp" />
     <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
     <ClInclude Include="Application\PX2Application.hpp" />
@@ -1014,6 +1056,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Application\PX2ApplicationUDPNetInfo.hpp" />
     <ClInclude Include="Application\PX2CameraPlayController.hpp" />
     <ClInclude Include="Application\PX2Creater.hpp" />
+    <ClInclude Include="Application\PX2Engine.hpp" />
     <ClInclude Include="Application\PX2EngineCanvas.hpp" />
     <ClInclude Include="Application\PX2EngineClientConnector.hpp" />
     <ClInclude Include="Application\PX2EngineNetCmdProcess.hpp" />
@@ -1024,6 +1067,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Application\PX2EngineUICanvas.hpp" />
     <ClInclude Include="Application\PX2GeneralClientConnector.hpp" />
     <ClInclude Include="Application\PX2GeneralServer.hpp" />
+    <ClInclude Include="Application\PX2Logic.hpp" />
     <ClInclude Include="Application\PX2ObjCast.hpp" />
     <ClInclude Include="Application\PX2Project.hpp" />
     <ClInclude Include="Application\PX2ProjectEvent.hpp" />
@@ -1441,6 +1485,30 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexFormat.hpp" />
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexShader.hpp" />
     <ClInclude Include="Graphics\Renderers\OpenGLRenderer\PX2WglExtensions.hpp" />
+    <ClInclude Include="Logic\BlueBlock\BlueBlockPlugin.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlock.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockConnector.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvent.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvents.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockPre.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlocks.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockScriptGenController.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSprite.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSystem.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBlueBlockToLua.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BBManager.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BDefine.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2BProject.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCataFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEdit.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelCont.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelList.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.hpp" />
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanels.hpp" />
     <ClInclude Include="Logic\PX2LBlock.hpp" />
     <ClInclude Include="Logic\PX2LFile.hpp" />
     <ClInclude Include="Logic\PX2LogicDefine.hpp" />
@@ -1777,10 +1845,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Physics\PX2BtPhysicsWorld.hpp" />
     <ClInclude Include="Physics\PX2BtPre.hpp" />
     <ClInclude Include="Terrains\PX2Jungler.hpp" />
-    <ClInclude Include="Terrains\PX2LODTerrain.hpp" />
-    <ClInclude Include="Terrains\PX2LODTerrainBlock.hpp" />
-    <ClInclude Include="Terrains\PX2LODTerrainPage.hpp" />
-    <ClInclude Include="Terrains\PX2LODTerrainVertex.hpp" />
     <ClInclude Include="Terrains\PX2RawTerrain.hpp" />
     <ClInclude Include="Terrains\PX2RawTerrainPage.hpp" />
     <ClInclude Include="Terrains\PX2Terrain.hpp" />
@@ -2135,6 +2199,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\PX2VLCPre.hpp" />
     <ClInclude Include="Unity\PX2VoiceEventType.hpp" />
     <ClInclude Include="Unity\PX2VoiceSDK.hpp" />
+    <ClInclude Include="Unity\PX2SoundWav.hpp" />
     <ClInclude Include="Unity\PX2Wifi.hpp" />
     <ClInclude Include="Unity\serial\serial.h" />
     <ClInclude Include="Unity\serial\v8stdint.h" />
@@ -2155,27 +2220,14 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\ZLib\zconf.h" />
     <ClInclude Include="Unity\ZLib\zlib.h" />
     <ClInclude Include="Unity\ZLib\zutil.h" />
-    <ClInclude Include="Voxel\PX2VoxelPre.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelBlock.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelBlockMtl.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelManager.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelDefine.hpp" />
-    <ClInclude Include="Voxel\PX2Voxels.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelSection.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelSetBlockGet.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelTitle.hpp" />
-    <ClInclude Include="Voxel\PX2VoxelMapData.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AI\breezyslam\algorithms.cpp" />
-    <ClCompile Include="AI\breezyslam\coreslam.c" />
-    <ClCompile Include="AI\breezyslam\coreslam_sisd.c" />
-    <ClCompile Include="AI\breezyslam\Laser.cpp" />
-    <ClCompile Include="AI\breezyslam\Map.cpp" />
-    <ClCompile Include="AI\breezyslam\random.c" />
-    <ClCompile Include="AI\breezyslam\Scan.cpp" />
-    <ClCompile Include="AI\breezyslam\WheeledRobot.cpp" />
-    <ClCompile Include="AI\breezyslam\ziggurat.c" />
+    <ClCompile Include="AI\detour\src\DetourAlloc.cpp" />
+    <ClCompile Include="AI\detour\src\DetourCommon.cpp" />
+    <ClCompile Include="AI\detour\src\DetourNavMesh.cpp" />
+    <ClCompile Include="AI\detour\src\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="AI\detour\src\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="AI\detour\src\DetourNode.cpp" />
     <ClCompile Include="AI\iiiroboticslidar2\C3iroboticsLidar.cpp" />
     <ClCompile Include="AI\iiiroboticslidar2\CArcTime.cpp" />
     <ClCompile Include="AI\iiiroboticslidar2\CCountDown.cpp" />
@@ -2205,18 +2257,42 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\OpenSteer\src\Vec3.cpp" />
     <ClCompile Include="AI\OpenSteer\src\Vec3Utilities.cpp" />
     <ClCompile Include="AI\PX2AIAgent.cpp" />
-    <ClCompile Include="AI\PX2AIAgentFunctions.cpp" />
+    <ClCompile Include="AI\PX2AIAgentBase.cpp" />
     <ClCompile Include="AI\PX2AIAgentGroup.cpp" />
     <ClCompile Include="AI\PX2AIAgentObject.cpp" />
     <ClCompile Include="AI\PX2AIAgentPath.cpp" />
     <ClCompile Include="AI\PX2AIAgentUtilities.cpp" />
     <ClCompile Include="AI\PX2AIAgentWorld.cpp" />
     <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp" />
+    <ClCompile Include="AI\PX2AIES.cpp" />
     <ClCompile Include="AI\PX2AIInfluenceMap.cpp" />
     <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp" />
     <ClCompile Include="AI\PX2AILiDar.cpp" />
-    <ClCompile Include="AI\PX2AIWayMoveController.cpp" />
-    <ClCompile Include="AI\PX2Rover.cpp" />
+    <ClCompile Include="AI\PX2AIMeshUtilities.cpp" />
+    <ClCompile Include="AI\PX2AINavigationMesh.cpp" />
+    <ClCompile Include="AI\PX2AINavigationUtilities.cpp" />
+    <ClCompile Include="AI\PX2AIPath.cpp" />
+    <ClCompile Include="AI\PX2NavBitArray.cpp" />
+    <ClCompile Include="AI\PX2NavGridMap.cpp" />
+    <ClCompile Include="AI\PX2NavMoveManager.cpp" />
+    <ClCompile Include="AI\PX2NavMoveUnit.cpp" />
+    <ClCompile Include="AI\PX2Robot.cpp" />
+    <ClCompile Include="AI\PX2RobotDatas.cpp" />
+    <ClCompile Include="AI\recast\src\Recast.cpp" />
+    <ClCompile Include="AI\recast\src\RecastAlloc.cpp" />
+    <ClCompile Include="AI\recast\src\RecastArea.cpp" />
+    <ClCompile Include="AI\recast\src\RecastContour.cpp" />
+    <ClCompile Include="AI\recast\src\RecastFilter.cpp" />
+    <ClCompile Include="AI\recast\src\RecastLayers.cpp" />
+    <ClCompile Include="AI\recast\src\RecastMesh.cpp" />
+    <ClCompile Include="AI\recast\src\RecastMeshDetail.cpp" />
+    <ClCompile Include="AI\recast\src\RecastRasterization.cpp" />
+    <ClCompile Include="AI\recast\src\RecastRegion.cpp" />
+    <ClCompile Include="AI\rplidar\src\arch\win32\net_serial.cpp" />
+    <ClCompile Include="AI\rplidar\src\arch\win32\net_socket.cpp" />
+    <ClCompile Include="AI\rplidar\src\arch\win32\timer.cpp" />
+    <ClCompile Include="AI\rplidar\src\hal\thread.cpp" />
+    <ClCompile Include="AI\rplidar\src\rplidar_driver.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2Skill.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2SkillAffect.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2SkillBloodTextObject.cpp" />
@@ -2240,6 +2316,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\SkillSystem\PX2UISkillBuf.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2UISkill.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2UISkills.cpp" />
+    <ClCompile Include="Application\PX2Actor.cpp" />
     <ClCompile Include="Application\PX2AmbientRegionController.cpp" />
     <ClCompile Include="Application\PX2AppBoostInfo.cpp" />
     <ClCompile Include="Application\PX2AppliactionPlay.cpp" />
@@ -2250,6 +2327,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2ApplicationUDPNetInfo.cpp" />
     <ClCompile Include="Application\PX2CameraPlayController.cpp" />
     <ClCompile Include="Application\PX2Creater.cpp" />
+    <ClCompile Include="Application\PX2Engine.cpp" />
     <ClCompile Include="Application\PX2EngineCanvas.cpp" />
     <ClCompile Include="Application\PX2EngineClientConnector.cpp" />
     <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp" />
@@ -2259,6 +2337,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2EngineUICanvas.cpp" />
     <ClCompile Include="Application\PX2GeneralClientConnector.cpp" />
     <ClCompile Include="Application\PX2GeneralServer.cpp" />
+    <ClCompile Include="Application\PX2Logic.cpp" />
     <ClCompile Include="Application\PX2ObjCast.cpp" />
     <ClCompile Include="Application\PX2Project.cpp" />
     <ClCompile Include="Application\PX2ProjectEvent.cpp" />
@@ -2608,6 +2687,32 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexFormat.cpp" />
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2OpenGLVertexShader.cpp" />
     <ClCompile Include="Graphics\Renderers\OpenGLRenderer\PX2WglExtensions.cpp" />
+    <ClCompile Include="Logic\BlueBlock\BlueBlockDll.cpp" />
+    <ClCompile Include="Logic\BlueBlock\BlueBlockPlugin.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlock.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockConnector.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvent.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvents.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockScriptGenController.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSprite.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteLooks.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteOperator.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystem.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystemArduino.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBlueBlockToLua.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BBManager.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BDefine.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2BProject.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCataFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEdit.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelCont.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelList.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.cpp" />
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanels.cpp" />
     <ClCompile Include="Logic\PX2LBlock.cpp" />
     <ClCompile Include="Logic\PX2LBlockSaveLoad.cpp" />
     <ClCompile Include="Logic\PX2LFile.cpp" />
@@ -2843,10 +2948,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Physics\PX2BtPhysicsUtilities.cpp" />
     <ClCompile Include="Physics\PX2BtPhysicsWorld.cpp" />
     <ClCompile Include="Terrains\PX2Jungler.cpp" />
-    <ClCompile Include="Terrains\PX2LODTerrain.cpp" />
-    <ClCompile Include="Terrains\PX2LODTerrainBlock.cpp" />
-    <ClCompile Include="Terrains\PX2LODTerrainPage.cpp" />
-    <ClCompile Include="Terrains\PX2LODTerrainVertex.cpp" />
     <ClCompile Include="Terrains\PX2RawTerrain.cpp" />
     <ClCompile Include="Terrains\PX2RawTerrainPage.cpp" />
     <ClCompile Include="Terrains\PX2Terrain.cpp" />
@@ -3199,6 +3300,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\PX2Serial.cpp" />
     <ClCompile Include="Unity\PX2Sound.cpp" />
     <ClCompile Include="Unity\PX2SoundSystem.cpp" />
+    <ClCompile Include="Unity\PX2SoundWav.cpp" />
     <ClCompile Include="Unity\PX2User.cpp" />
     <ClCompile Include="Unity\PX2UserActor.cpp" />
     <ClCompile Include="Unity\PX2VLC.cpp" />
@@ -3232,16 +3334,13 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\ZLib\trees.c" />
     <ClCompile Include="Unity\ZLib\uncompr.c" />
     <ClCompile Include="Unity\ZLib\zutil.c" />
-    <ClCompile Include="Voxel\PX2VoxelBlock.cpp" />
-    <ClCompile Include="Voxel\PX2VoxelBlockMtl.cpp" />
-    <ClCompile Include="Voxel\PX2VoxelManager.cpp" />
-    <ClCompile Include="Voxel\PX2VoxelSection.cpp" />
-    <ClCompile Include="Voxel\PX2VoxelSetBlockGet.cpp" />
-    <ClCompile Include="Voxel\PX2VoxelTitle.cpp" />
-    <ClCompile Include="Voxel\PX2VoxelMapData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AI\PX2AIAgent.inl" />
+    <None Include="AI\PX2NavBitArray.inl" />
+    <None Include="AI\PX2NavGridMap.inl" />
+    <None Include="AI\PX2NavMoveManager.inl" />
+    <None Include="AI\PX2Robot.inl" />
     <None Include="AI\SkillSystem\PX2Skill.inl" />
     <None Include="AI\SkillSystem\PX2SkillBuf.inl" />
     <None Include="AI\SkillSystem\PX2SkillChara.inl" />
@@ -3386,6 +3485,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Graphics\PX2VertexShader.inl" />
     <None Include="Graphics\PX2VisibleSet.inl" />
     <None Include="Graphics\PX2RenderWindow.inl" />
+    <None Include="Logic\BlueBlock\PX2BBlock.inl" />
+    <None Include="Logic\BlueBlock\PX2BBlockSprite.inl" />
     <None Include="Logic\PX2LBlock.inl" />
     <None Include="Logic\PX2LogicManager.inl" />
     <None Include="Logic\PX2LParam.inl" />
@@ -3440,10 +3541,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Net\PX2SocketImpl.inl" />
     <None Include="Net\PX2TCPServerParams.inl" />
     <None Include="Terrains\PX2Jungler.inl" />
-    <None Include="Terrains\PX2LODTerrain.inl" />
-    <None Include="Terrains\PX2LODTerrainBlock.inl" />
-    <None Include="Terrains\PX2LODTerrainPage.inl" />
-    <None Include="Terrains\PX2LODTerrainVertex.inl" />
     <None Include="Terrains\PX2RawTerrainPage.inl" />
     <None Include="Terrains\PX2Terrain.inl" />
     <None Include="Terrains\PX2TerrainPage.inl" />
@@ -3495,7 +3592,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Unity\PX2Selection.inl" />
     <None Include="Unity\PX2SoundSystem.inl" />
     <None Include="Unity\PX2UserActor.inl" />
-    <None Include="Voxel\PX2VoxelSection.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

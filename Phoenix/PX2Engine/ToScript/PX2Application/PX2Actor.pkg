@@ -1,0 +1,33 @@
+// PX2Actor.pkg
+
+	class Actor : public Node
+	{
+	public:
+		enum AIType
+		{
+			AIT_NONE,
+			AIT_AGENT,
+			AIT_AGENTOBJECT,
+			AIT_MAX_TYPE
+		};
+		Actor(AIType at = AIT_AGENT);
+		virtual ~Actor();
+		void SetAIType(AIType at);
+		AIType GetAIType() const;
+
+		AIAgentBase *GetAIAgentBase();
+		AIAgent *GetAIAgent();
+
+		enum PhysicsShapeType
+		{
+			PST_GENERAL,
+			PST_INFINITEPLANE,
+			PST_MESH,
+			PST_MAX_TYPE
+		};
+		void SetPhysicsShapeType(PhysicsShapeType type, Movable *meshMov=0);
+		PhysicsShapeType GetPhysicsShapeType() const;
+		
+		void SetRobot(Robot *robot);
+		Robot *GetRobot();
+	};

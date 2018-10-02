@@ -152,16 +152,16 @@ bool SoundSystem::PlaySound2DControl(const char *filename,
 	return false;
 }
 //----------------------------------------------------------------------------
-bool SoundSystem::PlayASound(const char *filename, float volume, float life)
+bool SoundSystem::PlayASound(const char *filenameOrUrl, float volume, float life)
 {
 	if (!IsSoundEnable())
 		return false;
 
 	float curTime = (float)Time::GetTimeInSeconds();
-	if (_CanPlaySameTime(filename, curTime))
+	if (_CanPlaySameTime(filenameOrUrl, curTime))
 	{
-		mPlaySameTimeObjMap[filename].CurTiming = curTime;
-		mPlaySameTimeObjMap[filename].CurNum++;
+		mPlaySameTimeObjMap[filenameOrUrl].CurTiming = curTime;
+		mPlaySameTimeObjMap[filenameOrUrl].CurNum++;
 
 		return true;
 	}
@@ -212,6 +212,26 @@ void SoundSystem::ClearAllSounds()
 	mPlaySameTimeObjMap.clear();
 }
 //----------------------------------------------------------------------------
+void SoundSystem::StartRecording(int seconds)
+{
+	PX2_UNUSED(seconds);
+}
+//----------------------------------------------------------------------------
+Sound *SoundSystem::GetRecordingSound()
+{
+	return 0;
+}
+//----------------------------------------------------------------------------
+void SoundSystem::StopRecording()
+{
+}
+//----------------------------------------------------------------------------
+void SoundSystem::GetRecordingBuf(unsigned char *&buf, unsigned int &size)
+{
+	PX2_UNUSED(buf);
+	PX2_UNUSED(size);
+}
+//----------------------------------------------------------------------------
 void SoundSystem::SetMaxNumPlaySameTime(const char *filename, int num)
 {
 	mPlaySameTimeObjMap[filename].MaxNum = num;
@@ -250,6 +270,9 @@ float SoundSystem::GetPlaySameTimeRange(const char *filename) const
 //----------------------------------------------------------------------------
 bool SoundSystem::_CanPlaySameTime(const char *filename, float playTime)
 {
+	if (_IsFromWeb(filename))
+		return true;
+
 	//  ±º‰≈–∂œ
 	std::map<FString, PlaySameTimeObj>::iterator itLastPlayTime = 
 		mPlaySameTimeObjMap.find(filename);
@@ -314,6 +337,17 @@ void SoundSystem::_MinusNumPlaySameTime(const char *filename)
 void SoundSystem::_ResetNumPlaySameTime(const char *filename)
 {
 	mPlaySameTimeObjMap.erase(filename);
+}
+//----------------------------------------------------------------------------
+bool SoundSystem::_IsFromWeb(const std::string &filenameoOrUrl)
+{
+	std::string subHttp = std::string(filenameoOrUrl).substr(0, 4);
+	if ("http" == subHttp)
+	{
+		return true;
+	}
+
+	return false;
 }
 //----------------------------------------------------------------------------
 SoundSystem::PlaySameTimeObj::PlaySameTimeObj() :

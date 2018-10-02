@@ -63,9 +63,9 @@ void CameraNode::UpdateWorldData(double applicationTime, double elapsedTime)
 	{
 		APoint camPosition = WorldTransform.GetTranslate();
 		AVector camDVector, camUVector, camRVector;
-		WorldTransform.GetRotate().GetColumn(0, camRVector);
-		WorldTransform.GetRotate().GetColumn(1, camDVector);
-		WorldTransform.GetRotate().GetColumn(2, camUVector);
+		WorldTransform.GetRotate().GetColumn(0, camRVector); // x
+		WorldTransform.GetRotate().GetColumn(1, camDVector); // y
+		WorldTransform.GetRotate().GetColumn(2, camUVector); // z
 		mCamera->SetFrame(camPosition, camDVector, camUVector, camRVector);
 	}
 }
@@ -80,18 +80,25 @@ void CameraNode::Enable(bool enable)
 	}
 }
 //----------------------------------------------------------------------------
+void CameraNode::LookDir(const AVector &dir, const AVector &up0)
+{
+	AVector right = dir.UnitCross(up0);
+	AVector up = right.UnitCross(dir);
+
+	LocalTransform.SetRotate(HMatrix(right, dir, up, APoint::ORIGIN, true));
+}
+//----------------------------------------------------------------------------
 void CameraNode::LookAt(const APoint &pos, const AVector &up)
 {
+	PX2_UNUSED(up);
+
 	APoint localPos = LocalTransform.GetTranslate();
 	AVector dir = pos - localPos;
 
 	float length = dir.Normalize();
 	if (length > 0.0f)
 	{
-		AVector right = dir.UnitCross(up);
-		AVector up = right.UnitCross(dir);
-
-		LocalTransform.SetRotate(HMatrix(right, dir, up, AVector::ZERO, true));
+		LookDir(dir);
 	}
 }
 //----------------------------------------------------------------------------

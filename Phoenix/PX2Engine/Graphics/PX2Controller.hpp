@@ -36,7 +36,7 @@ namespace PX2
 		void ResetPlay ();
 		virtual void Play ();
 		virtual bool IsPlaying () const;
-		virtual void Stop ();
+		virtual void Pause ();
 		virtual void Reset ();
 
 		// 播放时间
@@ -85,6 +85,7 @@ public_internal:
 		/// 将应用程序的时间转换到控制器的当前时间。派生类在更新自己的时候会
 		/// 用到此函数。
 		double GetControlTimeByRangeTime (double rangeTime);
+		virtual void _InitUpdate(double applicationTime, double elapsedTime);
 		virtual void _Update (double applicationTime, double elapsedTime);
 
 		/// 使用一个常规指针指向被控制的对象。这样避免controller和mObject之间
@@ -100,6 +101,8 @@ public_internal:
 		float mPlayedTime; // 不需要保存
 
 		CtrlPlayedCallback mPlayedCallback;
+
+		bool mIsEverPlayed;
 	};
 
 	PX2_REGISTER_STREAM(Controller);

@@ -18,7 +18,7 @@ STEAMEduManager::~STEAMEduManager()
 //----------------------------------------------------------------------------
 void STEAMEduManager::Initlize()
 {
-	ServerSocket socket(8387);
+	ServerSocket socket(8389);
 	HTTPServerParams *param = new0 HTTPServerParams();
 	param->SetMaxQueued(50);
 	param->SetMaxThreads(1);

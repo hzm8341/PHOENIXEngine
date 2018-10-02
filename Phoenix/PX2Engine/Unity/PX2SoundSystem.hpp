@@ -79,13 +79,18 @@ namespace PX2
 			float volume, bool isLoop, Sound *&sound);
 		virtual bool PlaySound3DControl(const char *filename,
 			const SoundCreateInfo3D &createInfo, Sound *&sound);
-		virtual bool PlayASound(const char *filename, float volume = 1.0f,
+		virtual bool PlayASound(const char *filenameOrUrl, float volume = 1.0f,
 			float life = 10.0f);
 		virtual void LoadSound(const char *filename);
 		virtual void UnloadSound(const char *filename);
 		virtual void EnableSounds(bool enable);
 		bool IsSoundEnable() const;
 		virtual void ClearAllSounds();
+
+		virtual void StartRecording(int seconds);
+		virtual Sound *GetRecordingSound();
+		virtual void StopRecording();
+		virtual void GetRecordingBuf(unsigned char *&buf, unsigned int &size);
 
 		// same time
 		void SetMaxNumPlaySameTime(const char *filename, int num);
@@ -102,6 +107,7 @@ namespace PX2
 		bool _CanPlaySameTime(const char *filename, float playTime);
 		int _GetNumPlaySameTime(const char *filename);
 		void _ResetNumPlaySameTime(const char *filename);
+		bool _IsFromWeb(const std::string &filenameoOrUrl);
 
 		SystemType mSystemType;
 		APoint mListenPos;

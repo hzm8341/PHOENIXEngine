@@ -210,7 +210,7 @@ void UIButton::OnWidgetPicked(const CanvasInputData &inputData)
 		{
 			mPressedTouchID = inputData.TouchID;
 
-			if (state == BS_NORMAL || state == BS_HOVERED)
+			if (state == BS_NORMAL || state == BS_HOVERED || state==BS_PRESSED)
 			{
 				SetButtonState(BS_PRESSED);
 				OnPressed();

@@ -111,11 +111,11 @@ void ScriptController::Play()
 	Controller::Play();
 }
 //---------------------------------------------------------------------------
-void ScriptController::Stop()
+void ScriptController::Pause()
 {
-	ScriptOnStop();
+	ScriptOnPause();
 
-	Controller::Stop();
+	Controller::Pause();
 }
 //---------------------------------------------------------------------------
 void ScriptController::ScriptOnAttached()
@@ -146,7 +146,7 @@ void ScriptController::ScriptOnPlay()
 {
 }
 //---------------------------------------------------------------------------
-void ScriptController::ScriptOnStop()
+void ScriptController::ScriptOnPause()
 {
 }
 //---------------------------------------------------------------------------

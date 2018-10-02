@@ -62,15 +62,15 @@ bool Node::IsPlaying () const
 	return false;
 }
 //----------------------------------------------------------------------------
-void Node::Stop ()
+void Node::Pause()
 {
-	Movable::Stop();
+	Movable::Pause();
 
 	for (int i=0; i<GetNumChildren(); i++)
 	{
 		if (mChild[i] && !mChild[i]->IsSelfCtrled())
 		{
-			mChild[i]->Stop();
+			mChild[i]->Pause();
 		}
 	}
 }
@@ -696,7 +696,6 @@ void Node::Link (InStream& source)
         {
             source.ResolveLink(mChild[i]);
 			mChild[i]->SetParent(this);
-			mChild[i]->OnBeAttached();
         }
     }
 }
@@ -711,6 +710,7 @@ void Node::PostLink ()
 		if (mChild[i])
 		{
 			OnChildAttached(mChild[i]);
+			mChild[i]->OnBeAttached();
 		}
 	}
 }

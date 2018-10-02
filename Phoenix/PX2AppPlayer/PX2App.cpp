@@ -12,6 +12,7 @@
 
 #endif
 
+
 #include "PX2App.hpp"
 #include "PX2IMEDispatcher.hpp"
 #include "PX2Application.hpp"
@@ -40,10 +41,14 @@ static BYTE s_hibyte;
 * VK_A - VK_Z are the same as ASCII 'A' - 'Z' (0x41 - 0x5A)
 */
 //----------------------------------------------------------------------------
-KeyCode ConverKeyCode(WPARAM wParam)
+KeyCode ConvertKeyCode(WPARAM wParam)
 {
 	KeyCode code = KC_UNASSIGNED;
-	if (0x41 == wParam) code = KC_A;
+	if (0x30 == wParam)
+		code = KC_0;
+	else if (0x31 <= wParam && wParam <= 0x39)
+		code = (KeyCode)((int)KC_1 + (wParam - 0x31));
+	else if (0x41 == wParam) code = KC_A;
 	else if (0x42 == wParam) code = KC_B;
 	else if (0x43 == wParam) code = KC_C;
 	else if (0x44 == wParam) code = KC_D;
@@ -69,6 +74,11 @@ KeyCode ConverKeyCode(WPARAM wParam)
 	else if (0x58 == wParam) code = KC_X;
 	else if (0x59 == wParam) code = KC_Y;
 	else if (0x5A == wParam) code = KC_Z;
+	else if (0x25 == wParam) code = KC_LEFT;
+	else if (0x27 == wParam) code = KC_RIGHT;
+	else if (0x26 == wParam) code = KC_UP;
+	else if (0x28 == wParam) code = KC_DOWN;
+	else if (0x20 == wParam) code = KC_SPACE;
 	return code;
 }
 
@@ -205,13 +215,13 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 	case WM_KEYDOWN:
 		if (im)
 		{
-			keyCode = ConverKeyCode(wParam);
+			keyCode = ConvertKeyCode(wParam);
 			im->GetDefaultListener()->KeyPressed(keyCode);
 
 			data.Msg = message;
 			data.WParam = wParam;
 			data.LParam = lParam;
-			ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+			ent = PX2_CREATEEVENTEX(InputEventSpace, MsgRawWin32);
 			ent->SetData(data);
 			PX2_EW.BroadcastingLocalEvent(ent);
 		}
@@ -220,13 +230,13 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 	case WM_KEYUP:
 		if (im)
 		{
-			keyCode = ConverKeyCode(wParam);
+			keyCode = ConvertKeyCode(wParam);
 			im->GetDefaultListener()->KeyReleased(keyCode);
 
 			data.Msg = message;
 			data.WParam = wParam;
 			data.LParam = lParam;
-			ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+			ent = PX2_CREATEEVENTEX(InputEventSpace, MsgRawWin32);
 			ent->SetData(data);
 			PX2_EW.BroadcastingLocalEvent(ent);
 		}
@@ -271,7 +281,7 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 				data.Msg = message;
 				data.WParam = wParam;
 				data.LParam = lParam;
-				ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+				ent = PX2_CREATEEVENTEX(InputEventSpace, MsgRawWin32);
 				ent->SetData(data);
 				PX2_EW.BroadcastingLocalEvent(ent);
 			}
@@ -314,7 +324,7 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 				data.Msg = message;
 				data.WParam = s_ch[0];
 				data.LParam = lParam;
-				ent = InputEventSpace::CreateEventX(InputEventSpace::MsgRawWin32);
+				ent = PX2_CREATEEVENTEX(InputEventSpace, MsgRawWin32);
 				ent->SetData(data);
 				PX2_EW.BroadcastingLocalEvent(ent);
 			}
@@ -399,24 +409,100 @@ int App::Main (int numArguments, char** arguments)
 	return 0;
 }
 #elif defined(__LINUX__)
-#define GLXAPP_BUTTONDOWN   0
-#define GLXAPP_SHIFTDOWN    8 
-#define GLXAPP_CONTROLDOWN  9 
-#define GLXAPP_ALTDOWN     10
-#define GLXAPP_COMMANDDOWN 11
+//----------------------------------------------------------------------------
+PX2::KeyCode App::_ConvertKeyCode(unsigned char chKey)
+{
+	KeyCode code = KC_UNASSIGNED;
+	if ('a' <= chKey && chKey <= 'z')
+	{
+		code = (PX2::KeyCode)((int)KC_A + (int)(chKey - 'a'));
+	}
+	else if (chKey == XK_0)
+	{
+		code = KC_0;
+	}
+	else if (XK_1<=chKey && chKey<=XK_9)
+	{
+		code = (KeyCode)((int)KC_1 + (int)(chKey-XK_1)); 
+	}
+	else if (0x50 <= chKey && chKey <= 0x57)
+	{
+		if (0x50 == chKey)
+		{
+			code = KC_HOME;
+		}
+		else if (0x51 == chKey)
+		{
+			code = KC_LEFT;
+		}
+		else if (0x52 == chKey)
+		{
+			code = KC_UP;
+		}
+		else if (0x53 == chKey)
+		{
+			code = KC_RIGHT;
+		}
+		else if (0x54 == chKey)
+		{
+			code = KC_DOWN;
+		}
+		else if (0x55 == chKey)
+		{
+			code = KC_PGUP;
+		}
+		else if (0x56 == chKey)
+		{
+			code = KC_PGDOWN;
+		}
+		else if (0x57 == chKey)
+		{
+			code = KC_END;
+		}
+	}
+	else if (chKey == 0x63)
+	{
+		// keypad Insert
+		code = KC_INSERT;
+	}
+	else if (chKey == 0xFF)
+	{
+		// keypad Delete
+		code = KC_DELETE;
+	}
+	else if (chKey == 0xE1)
+	{
+		code = KC_LSHIFT;
+	}
+	else if (chKey == 0xE2)
+	{
+		code = KC_RSHIFT;
+	}
+	else if (chKey == 0xE3)
+	{
+		code = KC_LCONTROL;
+	}
+	else if (chKey == 0xE4)
+	{
+		code = KC_RCONTROL;
+	}
+	else if (chKey == 0xE9)
+	{
+		// L-alt
 
-const int MOUSE_LEFT_BUTTON      = 0x0001;
-const int MOUSE_MIDDLE_BUTTON    = 0x0002;
-const int MOUSE_RIGHT_BUTTON     = 0x0003;
-const int MOUSE_DOWN             = 0x0004;
-const int MOUSE_UP               = 0x0005;
+	}
+	else if (chKey == 0xEA)
+	{
+		// R-alt
+	}
+	else
+	{
+		code = (KeyCode)chKey;
+	}
 
-const int MODIFIER_CONTROL       = 0x0004;
-const int MODIFIER_LBUTTON       = 0x0001;
-const int MODIFIER_MBUTTON       = 0x0002;
-const int MODIFIER_RBUTTON       = 0x0003;
-const int MODIFIER_SHIFT         = 0x0001;
-
+	return code;
+}
+//----------------------------------------------------------------------------
 int App::Main (int numArguments, char** arguments)
 {
 	AppBase::Main(numArguments, arguments);
@@ -425,121 +511,129 @@ int App::Main (int numArguments, char** arguments)
 
 	while (!PX2_APP.IsQuit())
 	{
-		if (!XPending(mDisplay))
+
+		if (mIsUseWindows)
 		{
-			OnIdle();
-			continue;
-		}
-
-		XEvent evt;
-		XNextEvent(mDisplay, &evt);
-
-		if (evt.type == ButtonPress || evt.type == ButtonRelease)
-		{	
-			if (evt.type == ButtonPress)
+			if (!XPending(mDisplay))
 			{
-				if(1 == evt.xbutton.button) 
-				{
-					PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, 
-						APoint((float)evt.xbutton.x, 0.0f,
-						PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-				}
-				else if(2 == evt.xbutton.button) 
-				{
-					PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_MIDDLE, 
-						APoint((float)evt.xbutton.x, 0.0f,
-						PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-				}
-				else if(3 == evt.xbutton.button) 
-				{
-					PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_RIGHT, 
-						APoint((float)evt.xbutton.x, 0.0f, 
-						PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-				}
-			}
-			else
-			{
-				if(1 == evt.xbutton.button) 
-				{
-					PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_LEFT, 
-						APoint((float)evt.xbutton.x, 0.0f, 
-						PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-				}
-				else if(2 == evt.xbutton.button) 
-				{
-					PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE, 
-						APoint((float)evt.xbutton.x, 0.0f, 
-						PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-				}
-				else if(3 == evt.xbutton.button) 
-				{
-					PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT, 
-						APoint((float)evt.xbutton.x, 0.0f, 
-						PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-				}
-			}
-
-			continue;
-		}
-		if (evt.type == MotionNotify)
-		{
-			PX2_INPUTMAN.GetDefaultListener()->MouseMoved(APoint((float)evt.xbutton.x, 0.0f, 
-				PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
-			continue;
-		}
-
-		if (evt.type == KeyPress || evt.type == KeyRelease)
-		{
-			int keysyms_per_keycode_return;
-			KeySym* pKeySym = XGetKeyboardMapping(mDisplay,
-				evt.xkey.keycode, 1, &keysyms_per_keycode_return);
-			KeySym& keySym = *pKeySym;
-
-			int key = (keySym & 0x00FF);
-
-			// Quit application if the KEY_TERMINATE key is pressed.
-			if (key == 0x1B)
-			{
-				PX2_LOG_INFO("ClientMessage 0x1B");
-
-				XDestroyWindow(mDisplay, mWindow);
-				PX2_APP.SetQuit(true);
-				XFree(pKeySym);
+				OnIdle();
 				continue;
 			}
 
-			// Adjust for special keys that exist on the key pad and on
-			// the number pad.
-			if ((keySym & 0xFF00) != 0)
-			{
-				unsigned char ucKey = (unsigned char)key;
+			XEvent evt;
+			XNextEvent(mDisplay, &evt);
 
-				if (evt.type == KeyPress)
+			if (evt.type == ButtonPress || evt.type == ButtonRelease)
+			{	
+				if (evt.type == ButtonPress)
 				{
-				//	PX2_INPUTMAN.GetDefaultListener()->KeyPressed(ucKey);
+					if(1 == evt.xbutton.button) 
+					{
+						PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_LEFT, 
+							APoint((float)evt.xbutton.x, 0.0f,
+							PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+					}
+					else if(2 == evt.xbutton.button) 
+					{
+						PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_MIDDLE, 
+							APoint((float)evt.xbutton.x, 0.0f,
+							PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+					}
+					else if(3 == evt.xbutton.button) 
+					{
+						PX2_INPUTMAN.GetDefaultListener()->MousePressed(MBID_RIGHT, 
+							APoint((float)evt.xbutton.x, 0.0f, 
+							PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+					}
 				}
 				else
 				{
-				//	PX2_INPUTMAN.GetDefaultListener()->KeyReleased(ucKey);
+					if(1 == evt.xbutton.button) 
+					{
+						PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_LEFT, 
+							APoint((float)evt.xbutton.x, 0.0f, 
+							PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+					}
+					else if(2 == evt.xbutton.button) 
+					{
+						PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_MIDDLE, 
+							APoint((float)evt.xbutton.x, 0.0f, 
+							PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+					}
+					else if(3 == evt.xbutton.button) 
+					{
+						PX2_INPUTMAN.GetDefaultListener()->MouseReleased(MBID_RIGHT, 
+							APoint((float)evt.xbutton.x, 0.0f, 
+							PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+					}
 				}
+
+				continue;
 			}
-			XFree(pKeySym);
-			continue;
-		}
-		if (evt.type == ConfigureNotify)
-		{
-			if (AppBase::msApplication)
-				AppBase::msApplication->OnSize(evt.xconfigure.width, evt.xconfigure.height);
+			if (evt.type == MotionNotify)
+			{
+				PX2_INPUTMAN.GetDefaultListener()->MouseMoved(APoint((float)evt.xbutton.x, 0.0f, 
+					PX2_INPUTMAN.GetDefaultListener()->GetViewSize().Height-(float)evt.xbutton.y));
+				continue;
+			}
 
-			continue;
-		}
-		if (evt.type == ClientMessage
-			&&  evt.xclient.data.l[0] == mPX2DeleteWindow)
-		{
-			XDestroyWindow(mDisplay, mWindow);
-			PX2_APP.SetQuit(true);
+			if (evt.type == KeyPress || evt.type == KeyRelease)
+			{
+				int keysyms_per_keycode_return;
+				KeySym* pKeySym = XGetKeyboardMapping(mDisplay,
+					evt.xkey.keycode, 1, &keysyms_per_keycode_return);
+				KeySym& keySym = *pKeySym;
 
-			continue;
+				int key = (keySym & 0x00FF);
+
+				// Quit application if the KEY_TERMINATE key is pressed.
+				if (key == 0x1B)
+				{
+					PX2_LOG_INFO("ClientMessage 0x1B");
+
+					XDestroyWindow(mDisplay, mWindow);
+					PX2_APP.SetQuit(true);
+					XFree(pKeySym);
+					continue;
+				}
+
+				// Adjust for special keys that exist on the key pad and on
+				// the number pad.
+				unsigned char ucKey = (unsigned char)key;
+				PX2::KeyCode keyCode = KC_UNASSIGNED;
+				keyCode = _ConvertKeyCode(ucKey);
+
+				if (evt.type == KeyPress)
+				{
+					PX2_INPUTMAN.GetDefaultListener()->KeyPressed(keyCode);
+				}
+				else
+				{
+					PX2_INPUTMAN.GetDefaultListener()->KeyReleased(keyCode);
+				}
+
+				XFree(pKeySym);
+				continue;
+			}
+			if (evt.type == ConfigureNotify)
+			{
+				if (AppBase::msApplication)
+					AppBase::msApplication->OnSize(evt.xconfigure.width, evt.xconfigure.height);
+
+				continue;
+			}
+			if (evt.type == ClientMessage
+				&&  evt.xclient.data.l[0] == mPX2DeleteWindow)
+			{
+				XDestroyWindow(mDisplay, mWindow);
+				PX2_APP.SetQuit(true);
+
+				continue;
+			}
+		}
+		else
+		{
+			OnIdle();
 		}
 	}
 
@@ -658,229 +752,232 @@ bool App::Initlize()
 
 	// boost
 	Sizef boostSize(960, 640);
-    boostSize = PX2_APP.GetBoostSize();
+	boostSize = PX2_APP.GetBoostSize();
+	if (0 != mCMDWidth && 0 != mCMDHeight)
+	{
+		boostSize = Sizef((float)mCMDWidth, (float)mCMDHeight);
+	}
 	mWidth = (int)boostSize.Width;
 	mHeight = (int)boostSize.Height;
 	PX2_APP.SetPt_Size(boostSize);
 
 	PX2_LOG_INFO("PX2_APP.SetPt_Size");
 
-#if defined(_WIN32) || defined(WIN32)
-	static char sWindowClass[] = "Phoenix3DApplicationBase";
-	WNDCLASS wc;
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc = MsWindowEventHandler;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hInstance = 0;
-	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(0, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wc.lpszClassName = sWindowClass;
-	wc.lpszMenuName = 0;
-	RegisterClass(&wc);
-
-	DWORD dwStyle;
-	if (mAllowResize)
-	{
-		dwStyle = WS_OVERLAPPEDWINDOW;
-	}
-	else
-	{
-		dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
-	}
-
-	RECT rect = { 0, 0, mWidth - 1, mHeight - 1 };
-	AdjustWindowRect(&rect, dwStyle, FALSE);
-
-	mhWnd = CreateWindow(sWindowClass, mWindowTitle.c_str(),
-		dwStyle, mXPosition, mYPosition,
-		rect.right - rect.left + 1, rect.bottom - rect.top + 1, 0, 0, 0, 0);
-
-	_CreateMyMenu();
-
-	rw->SetWindowHandle(mhWnd);
-	PX2_APP.SetPt_Data(mhWnd);
-
-	RECT rcDesktop, rcWindow;
-	GetWindowRect(GetDesktopWindow(), &rcDesktop);
-
-	HWND hTaskBar = FindWindow(TEXT("Shell_TrayWnd"), NULL);
-	if (hTaskBar != NULL)
-	{
-		APPBARDATA abd;
-
-		abd.cbSize = sizeof(APPBARDATA);
-		abd.hWnd = hTaskBar;
-
-		SHAppBarMessage(ABM_GETTASKBARPOS, &abd);
-		SubtractRect(&rcDesktop, &rcDesktop, &abd.rc);
-	}
-	GetWindowRect(mhWnd, &rcWindow);
-	int offsetX = (rcDesktop.right - rcDesktop.left - (rcWindow.right - rcWindow.left)) / 2;
-	offsetX = (offsetX > 0) ? offsetX : rcDesktop.left;
-	int offsetY = (rcDesktop.bottom - rcDesktop.top - (rcWindow.bottom - rcWindow.top)) / 2;
-	offsetY = (offsetY > 0) ? offsetY : rcDesktop.top;
-	SetWindowPos(mhWnd, 0, offsetX, offsetY, 0, 0, SWP_NOCOPYBITS | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-	mXPosition = offsetX;
-	mYPosition = offsetY; 
-
-	PX2_APP.InitlizeRenderer();
-	PX2_APP.SetInEditor(false);
-	PX2_APP.SetScreenSize(boostSize);
-
-#elif defined(__LINUX__)
-
 	App *app = (App*)msApplication;
 
-	// Connect to the X server.
-
-	int xPos = app->GetXPosition();
-	int yPos = app->GetYPosition();
-	unsigned int width = (unsigned int)app->GetWidth();
-	unsigned int height = (unsigned int)app->GetHeight();
-
-	const char* displayName = 0;
-	Display* display = XOpenDisplay(displayName);
-	mDisplay = display;
-	if (!display)
+	if (mIsUseWindows)
 	{
-		PX2_LOG_ERROR("XOpenDisplay");
-		return -2;
-	}
+#if defined(_WIN32) || defined(WIN32)
+		static char sWindowClass[] = "PHOENIXEngineApplicationBase";
+		WNDCLASS wc;
+		wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+		wc.lpfnWndProc = MsWindowEventHandler;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = 0;
+		wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+		wc.hCursor = LoadCursor(0, IDC_ARROW);
+		wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+		wc.lpszClassName = sWindowClass;
+		wc.lpszMenuName = 0;
+		RegisterClass(&wc);
+
+		DWORD dwStyle;
+		if (mAllowResize)
+		{
+			dwStyle = WS_OVERLAPPEDWINDOW;
+		}
+		else
+		{
+			dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+		}
+
+		RECT rect = { 0, 0, mWidth - 1, mHeight - 1 };
+		AdjustWindowRect(&rect, dwStyle, FALSE);
+
+		mhWnd = CreateWindow(sWindowClass, mWindowTitle.c_str(),
+			dwStyle, mXPosition, mYPosition,
+			rect.right - rect.left + 1, rect.bottom - rect.top + 1, 0, 0, 0, 0);
+
+		_CreateMyMenu();
+
+		rw->SetWindowHandle(mhWnd);
+		PX2_APP.SetPt_Data(mhWnd);
+
+		RECT rcDesktop, rcWindow;
+		GetWindowRect(GetDesktopWindow(), &rcDesktop);
+
+		HWND hTaskBar = FindWindow(TEXT("Shell_TrayWnd"), NULL);
+		if (hTaskBar != NULL)
+		{
+			APPBARDATA abd;
+
+			abd.cbSize = sizeof(APPBARDATA);
+			abd.hWnd = hTaskBar;
+
+			SHAppBarMessage(ABM_GETTASKBARPOS, &abd);
+			SubtractRect(&rcDesktop, &rcDesktop, &abd.rc);
+		}
+		GetWindowRect(mhWnd, &rcWindow);
+		int offsetX = (rcDesktop.right - rcDesktop.left - (rcWindow.right - rcWindow.left)) / 2;
+		offsetX = (offsetX > 0) ? offsetX : rcDesktop.left;
+		int offsetY = (rcDesktop.bottom - rcDesktop.top - (rcWindow.bottom - rcWindow.top)) / 2;
+		offsetY = (offsetY > 0) ? offsetY : rcDesktop.top;
+		SetWindowPos(mhWnd, 0, offsetX, offsetY, 0, 0, SWP_NOCOPYBITS | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+		mXPosition = offsetX;
+		mYPosition = offsetY;
+
+		PX2_APP.InitlizeRenderer();
+
+#elif defined(__LINUX__)
+		// Connect to the X server.
+
+		int xPos = app->GetXPosition();
+		int yPos = app->GetYPosition();
+		unsigned int width = (unsigned int)app->GetWidth();
+		unsigned int height = (unsigned int)app->GetHeight();
+
+		const char* displayName = 0;
+		Display* display = XOpenDisplay(displayName);
+		mDisplay = display;
+		if (!display)
+		{
+			PX2_LOG_ERROR("XOpenDisplay");
+			return -2;
+		}
 
 #if defined (PX2_USE_OPENGL)
-	
-	// Make sure the X server has OpenGL GLX extensions.
-	int errorBase, eventBase;
-	Bool success = glXQueryExtension(mDisplay, &errorBase, &eventBase);
-	assertion(success == True, "GLX extensions not found.\n");
-	if (!success)
-	{
-		PX2_LOG_ERROR("glXQueryExtension failed.");
-		return -3;
-	}
+
+		// Make sure the X server has OpenGL GLX extensions.
+		int errorBase, eventBase;
+		Bool success = glXQueryExtension(mDisplay, &errorBase, &eventBase);
+		assertion(success == True, "GLX extensions not found.\n");
+		if (!success)
+		{
+			PX2_LOG_ERROR("glXQueryExtension failed.");
+			return -3;
+		}
 #endif
 
-	// Create an X Window with the visual information created by the renderer
-	// constructor.  The visual information might not be the default, so
-	// create an X colormap to use.
+		// Create an X Window with the visual information created by the renderer
+		// constructor.  The visual information might not be the default, so
+		// create an X colormap to use.
 
-	Window rootWindow = RootWindow(mDisplay, XDefaultScreen(mDisplay));
+		Window rootWindow = RootWindow(mDisplay, XDefaultScreen(mDisplay));
 
 #if defined (PX2_USE_OPENGL)
-	int attributes[256];
-	// colorFormat is ignored, create 32-bit RGBA buffer.
-	int i = 0;
-	attributes[i++] = GLX_RGBA;
-	attributes[i++] = GLX_RED_SIZE;
-	attributes[i++] = 8;
-	attributes[i++] = GLX_GREEN_SIZE;
-	attributes[i++] = 8;
-	attributes[i++] = GLX_BLUE_SIZE;
-	attributes[i++] = 8;
-	attributes[i++] = GLX_ALPHA_SIZE;
-	attributes[i++] = 8;
-	// depthStencilFormat is ignored, create 24-8 depthstencil buffer.
-	attributes[i++] = GLX_DEPTH_SIZE;
-	attributes[i++] = 24;
-	attributes[i++] = GLX_STENCIL_SIZE;
-	attributes[i++] = 8;
-	// Use double buffering.
-	attributes[i++] = GLX_DOUBLEBUFFER;
-	attributes[i++] = 1;
-	// Request multisampling.
-	int numMultisamples = 0;
-	if (numMultisamples == 2 || numMultisamples == 4)
-	{
-		attributes[i++] = GLX_SAMPLE_BUFFERS_ARB;
+		int attributes[256];
+		// colorFormat is ignored, create 32-bit RGBA buffer.
+		int i = 0;
+		attributes[i++] = GLX_RGBA;
+		attributes[i++] = GLX_RED_SIZE;
+		attributes[i++] = 8;
+		attributes[i++] = GLX_GREEN_SIZE;
+		attributes[i++] = 8;
+		attributes[i++] = GLX_BLUE_SIZE;
+		attributes[i++] = 8;
+		attributes[i++] = GLX_ALPHA_SIZE;
+		attributes[i++] = 8;
+		// depthStencilFormat is ignored, create 24-8 depthstencil buffer.
+		attributes[i++] = GLX_DEPTH_SIZE;
+		attributes[i++] = 24;
+		attributes[i++] = GLX_STENCIL_SIZE;
+		attributes[i++] = 8;
+		// Use double buffering.
+		attributes[i++] = GLX_DOUBLEBUFFER;
 		attributes[i++] = 1;
-		attributes[i++] = GLX_SAMPLES_ARB;
-		attributes[i++] = numMultisamples;
-	}
+		// Request multisampling.
+		int numMultisamples = 0;
+		if (numMultisamples == 2 || numMultisamples == 4)
+		{
+			attributes[i++] = GLX_SAMPLE_BUFFERS_ARB;
+			attributes[i++] = 1;
+			attributes[i++] = GLX_SAMPLES_ARB;
+			attributes[i++] = numMultisamples;
+		}
 
-	// The list is zero terminated.
-	attributes[i] = 0;
+		// The list is zero terminated.
+		attributes[i] = 0;
 
-	// Get an OpenGL-capable visual.
-	XVisualInfo *x11Visual = glXChooseVisual(mDisplay, DefaultScreen(mDisplay), attributes);
-	if (!x11Visual)
-	{
-		PX2_LOG_ERROR("Error: Unable to acquire visual\n");
-	}
+		// Get an OpenGL-capable visual.
+		XVisualInfo *x11Visual = glXChooseVisual(mDisplay, DefaultScreen(mDisplay), attributes);
+		if (!x11Visual)
+		{
+			PX2_LOG_ERROR("Error: Unable to acquire visual\n");
+		}
 
 #else
-	int iDepth = DefaultDepth(mDisplay, XDefaultScreen(mDisplay));
-	XVisualInfo *x11Visual = new XVisualInfo;
-	XMatchVisualInfo(mDisplay, XDefaultScreen(mDisplay), iDepth, TrueColor, x11Visual);
-	if (!x11Visual)
-	{
-		PX2_LOG_ERROR("Error: Unable to acquire visual\n");
-	}
+		int iDepth = DefaultDepth(mDisplay, XDefaultScreen(mDisplay));
+		XVisualInfo *x11Visual = new XVisualInfo;
+		XMatchVisualInfo(mDisplay, XDefaultScreen(mDisplay), iDepth, TrueColor, x11Visual);
+		if (!x11Visual)
+		{
+			PX2_LOG_ERROR("Error: Unable to acquire visual\n");
+		}
 #endif
 
-	Colormap cMap = XCreateColormap(mDisplay, rootWindow, x11Visual->visual, AllocNone);
+		Colormap cMap = XCreateColormap(mDisplay, rootWindow, x11Visual->visual, AllocNone);
 
-	// Set the event mask to include exposure (paint), button presses (mouse),
-	// and key presses (keyboard).
-	XSetWindowAttributes windowAttributes;
-	windowAttributes.colormap = cMap;
-	windowAttributes.border_pixel = 0;
-	windowAttributes.event_mask =
-		ButtonPressMask |
-		ButtonReleaseMask |
-		PointerMotionMask |
-		Button1MotionMask |
-		Button2MotionMask |
-		Button3MotionMask |
-		KeyPressMask |
-		KeyReleaseMask |
-		ExposureMask |
-		StructureNotifyMask;
+		// Set the event mask to include exposure (paint), button presses (mouse),
+		// and key presses (keyboard).
+		XSetWindowAttributes windowAttributes;
+		windowAttributes.colormap = cMap;
+		windowAttributes.border_pixel = 0;
+		windowAttributes.event_mask =
+			ButtonPressMask |
+			ButtonReleaseMask |
+			PointerMotionMask |
+			Button1MotionMask |
+			Button2MotionMask |
+			Button3MotionMask |
+			KeyPressMask |
+			KeyReleaseMask |
+			ExposureMask |
+			StructureNotifyMask;
 
-	unsigned int borderWidth = 0;
-	unsigned long valueMask = CWBorderPixel | CWColormap | CWEventMask;
+		unsigned int borderWidth = 0;
+		unsigned long valueMask = CWBorderPixel | CWColormap | CWEventMask;
 
-	PX2_LOG_INFO("Begin XCreateWindow");
-	Window window = XCreateWindow(mDisplay, rootWindow, xPos, yPos, width,
-		height, borderWidth, x11Visual->depth, InputOutput,
-		x11Visual->visual, valueMask, &windowAttributes);
-	PX2_LOG_INFO("End XCreateWindow");
-	mWindow = window;
+		PX2_LOG_INFO("Begin XCreateWindow");
+		Window window = XCreateWindow(mDisplay, rootWindow, xPos, yPos, width,
+			height, borderWidth, x11Visual->depth, InputOutput,
+			x11Visual->visual, valueMask, &windowAttributes);
+		PX2_LOG_INFO("End XCreateWindow");
+		mWindow = window;
 
-	XSizeHints hints;
-	hints.flags = PPosition | PSize;
-	hints.x = xPos;
-	hints.y = yPos;
-	hints.width = width;
-	hints.height = height;
-	XSetNormalHints(mDisplay, window, &hints);
+		XSizeHints hints;
+		hints.flags = PPosition | PSize;
+		hints.x = xPos;
+		hints.y = yPos;
+		hints.width = width;
+		hints.height = height;
+		XSetNormalHints(mDisplay, window, &hints);
 
-	std::string title = app->GetTitle();
-	Pixmap iconPixmap = None;
-	XSetStandardProperties(mDisplay, window, title.c_str(),
-		title.c_str(), iconPixmap, mArguments, mNumArguments, &hints);
+		std::string title = app->GetTitle();
+		Pixmap iconPixmap = None;
+		XSetStandardProperties(mDisplay, window, title.c_str(),
+			title.c_str(), iconPixmap, mArguments, mNumArguments, &hints);
 
-	// Intercept the close-window event when the user selects the
-	// window close button.  The event is a "client message".
-	mPX2DeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
-	XSetWMProtocols(mDisplay, window, &mPX2DeleteWindow, 1);
+		// Intercept the close-window event when the user selects the
+		// window close button.  The event is a "client message".
+		mPX2DeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
+		XSetWMProtocols(mDisplay, window, &mPX2DeleteWindow, 1);
 
-	PX2_APP.SetPt_Data(mDisplay);
-	PX2_APP.SetPt_Data1(&window);
-	PX2_APP.SetPt_Data2(x11Visual);
-	PX2_APP.SetPt_Size(Sizef(width, height));
-	Renderer *renderer = PX2_APP.InitlizeRenderer();
-	PX2_APP.SetScreenSize(boostSize);	
-	PX2_APP.SetInEditor(false);
-
-	XMapWindow(mDisplay, window);
-
+		PX2_APP.SetPt_Data(mDisplay);
+		PX2_APP.SetPt_Data1(&window);
+		PX2_APP.SetPt_Data2(x11Visual);
+		PX2_APP.SetPt_Size(Sizef(width, height));
+		PX2_APP.InitlizeRenderer();
+		XMapWindow(mDisplay, window);
 #else
-	PX2_APP.InitlizeRenderer();
+		PX2_APP.InitlizeRenderer();
+#endif
+	}
+
+	PX2_LOG_INFO("PX2_APP::SetScreenSize.");
+
 	PX2_APP.SetScreenSize(boostSize);
 	PX2_APP.SetInEditor(false);
-#endif
 
 	msIsInitlized = true;
 

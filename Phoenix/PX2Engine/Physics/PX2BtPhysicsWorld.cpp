@@ -13,12 +13,12 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 PhysicsWorld::PhysicsWorld(): 
-dynamicsWorld_(0),
-solver_(0),
-dispatcher_(0),
-collisionConfiguration_(0),
-broadphase_(0),
-debugDraw_(0)
+mDynamicsWorld(0),
+mSolver(0),
+mDispatcher(0),
+mCollisionConfiguration(0),
+mBroadphase(0),
+mDebugDraw(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -29,82 +29,88 @@ PhysicsWorld::~PhysicsWorld()
 //----------------------------------------------------------------------------
 btDiscreteDynamicsWorld* PhysicsWorld::GetDynamicsWorld()
 {
-	return dynamicsWorld_;
+	return mDynamicsWorld;
 }
 //----------------------------------------------------------------------------
 void PhysicsWorld::Initialize()
 {
 	static const float gravity = -9.8f;
 
-	broadphase_ = new btDbvtBroadphase();
+	mBroadphase = new btDbvtBroadphase();
 
-	collisionConfiguration_ = new btDefaultCollisionConfiguration();
+	mCollisionConfiguration = new btDefaultCollisionConfiguration();
 
-	dispatcher_ = new btCollisionDispatcher(collisionConfiguration_);
+	mDispatcher = new btCollisionDispatcher(mCollisionConfiguration);
 
-	solver_ = new btSequentialImpulseConstraintSolver();
+	mSolver = new btSequentialImpulseConstraintSolver();
 
-	dynamicsWorld_ = new btDiscreteDynamicsWorld(
-		dispatcher_, broadphase_, solver_, collisionConfiguration_);
+	mDynamicsWorld = new btDiscreteDynamicsWorld(
+		mDispatcher, mBroadphase, mSolver, mCollisionConfiguration);
 
-	dynamicsWorld_->setGravity(btVector3(0, gravity, 0));
+	mDynamicsWorld->setGravity(btVector3(0, 0.0f, gravity));
 
-	debugDraw_ = new PhysicsDebugDraw();
-	dynamicsWorld_->setDebugDrawer(debugDraw_);
-	debugDraw_->setDebugMode(btIDebugDraw::DBG_DrawWireframe |
+	mDebugDraw = new PhysicsDebugDraw();
+	mDynamicsWorld->setDebugDrawer(mDebugDraw);
+	mDebugDraw->setDebugMode(btIDebugDraw::DBG_DrawWireframe |
 		btIDebugDraw::DBG_DrawAabb);
 }
 //----------------------------------------------------------------------------
 void PhysicsWorld::AddRigidBody(btRigidBody* rigidBody)
 {
-	dynamicsWorld_->addRigidBody(rigidBody);
+	if (!rigidBody)
+		return;
+
+	mDynamicsWorld->addRigidBody(rigidBody);
 }
 //----------------------------------------------------------------------------
-void PhysicsWorld::RemoveRigidBody(btRigidBody* const rigidBody)
+void PhysicsWorld::RemoveRigidBody(btRigidBody* rigidBody)
 {
-	dynamicsWorld_->removeRigidBody(rigidBody);
+	if (!rigidBody)
+		return;
+
+	mDynamicsWorld->removeRigidBody(rigidBody);
 }
 //----------------------------------------------------------------------------
 void PhysicsWorld::Cleanup()
 {
-	if (dynamicsWorld_)
+	if (mDynamicsWorld)
 	{
-		delete dynamicsWorld_;
-		dynamicsWorld_ = 0;
+		delete mDynamicsWorld;
+		mDynamicsWorld = 0;
 	}
 
-	if (solver_)
+	if (mSolver)
 	{
-		delete solver_;
-		solver_ = 0;
+		delete mSolver;
+		mSolver = 0;
 	}
 
-	if (dispatcher_)
+	if (mDispatcher)
 	{
-		delete dispatcher_;
-		dispatcher_ = 0;
+		delete mDispatcher;
+		mDispatcher = 0;
 	}
 
-	if (collisionConfiguration_)
+	if (mCollisionConfiguration)
 	{
-		delete collisionConfiguration_;
-		collisionConfiguration_ = 0;
+		delete mCollisionConfiguration;
+		mCollisionConfiguration = 0;
 	}
 
-	if (broadphase_)
+	if (mBroadphase)
 	{
-		delete broadphase_;
-		broadphase_ = 0;
+		delete mBroadphase;
+		mBroadphase = 0;
 	}
 }
 //----------------------------------------------------------------------------
-void PhysicsWorld::StepWorld()
+void PhysicsWorld::StepWorld(float elapsedSeconds)
 {
-	dynamicsWorld_->stepSimulation(1.0f / 30.0f, 1, 1.0f / 30.0f);
+	mDynamicsWorld->stepSimulation(elapsedSeconds, 1, 1.0f / 30.0f);
 }
 //----------------------------------------------------------------------------
 void PhysicsWorld::DrawDebugWorld()
 {
-	dynamicsWorld_->debugDrawWorld();
+	mDynamicsWorld->debugDrawWorld();
 }
 //----------------------------------------------------------------------------

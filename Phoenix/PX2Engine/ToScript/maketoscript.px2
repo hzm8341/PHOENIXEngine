@@ -38,6 +38,11 @@ INCPATH := \
 	-I ../Unity/Lua/ \
 	-I ../Unity/ToLua/ \
 	-I ../Unity/LuaPlus/ \
+	-I ../AI/ \
+	-I ../AI/OpenSteer/ \
+	-I ../AI/OpenSteer/src/ \
+	-I ../AI/OpenSteer/include/ \
+	-I ../AI/OpenSteer/include/OpenSteer/ \
 	-I ../../PX2SDK/Include
 	
 INCDIR := ../../PX2SDK/Include

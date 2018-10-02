@@ -191,7 +191,8 @@ namespace PX2
 		bool IsKeyEvent() const;
 
 		KeyCode KCode;
-		std::wstring KChar;
+		std::string KChar;
+		std::wstring KCharW;
 
 		MouseButtonID MButtonID;
 		float MWheel;
@@ -204,6 +205,8 @@ namespace PX2
 		int64_t Msg;
 		int64_t WParam;
 		int64_t LParam;
+
+		static std::string KCode2KChar(KeyCode kc);
 	};
 
 	enum CanvasPickType

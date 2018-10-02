@@ -138,3 +138,15 @@ bool AxisAlignedBox3<Real>::FindIntersection (const AxisAlignedBox3& box,
     return true;
 }
 //----------------------------------------------------------------------------
+template <typename Real>
+Vector3<Real> AxisAlignedBox3<Real>::GetMin()
+{
+	return Vector3<Real>(Min[0], Min[1], Min[2]);
+}
+//----------------------------------------------------------------------------
+template <typename Real>
+Vector3<Real> AxisAlignedBox3<Real>::GetMax()
+{
+	return Vector3<Real>(Max[0], Max[1], Max[2]);
+}
+//----------------------------------------------------------------------------

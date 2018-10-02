@@ -3,7 +3,7 @@
 #include "PX2AIAgentGroup.hpp"
 #include "PX2AIAgent.hpp"
 using namespace PX2;
-
+ 
 //----------------------------------------------------------------------------
 AIAgentGroup::AIAgentGroup() :
 OpenSteer::AVGroup()
@@ -14,12 +14,10 @@ OpenSteer::AVGroup()
 AIAgentGroup::AIAgentGroup(const AIAgentGroup& group):
 OpenSteer::AVGroup(group)
 {
-
 }
 //----------------------------------------------------------------------------
 AIAgentGroup::~AIAgentGroup()
 {
-
 }
 //----------------------------------------------------------------------------
 AIAgentGroup& AIAgentGroup::operator=(const AIAgentGroup& group)

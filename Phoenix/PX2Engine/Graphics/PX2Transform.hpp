@@ -62,6 +62,7 @@ namespace PX2
 		void SetRotateDegreeX(float degree);
 		void SetRotateDegreeY(float degree);
 		void SetRotateDegreeZ(float degree);
+		void SetRotate(const AVector &r, const AVector &d, const AVector &u);
 		void SetMatrix (const HMatrix& matrix);
 		void SetTranslate (const APoint& translate);
 		void SetTranslate (float x, float y, float z);

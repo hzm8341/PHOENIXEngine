@@ -11,4 +11,10 @@
 #include "PX2SkillChara.hpp"
 #include "PX2SkillBuf.hpp"
 
+#include "PX2Robot.hpp"
+
+#include "PX2AIAgent.hpp"
+#include "PX2AIAgentObject.hpp"
+#include "PX2AIAgentGroup.hpp"
+
 #endif

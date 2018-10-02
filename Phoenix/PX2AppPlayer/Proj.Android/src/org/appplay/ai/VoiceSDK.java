@@ -34,6 +34,12 @@ abstract public class VoiceSDK {
 			AppPlayNatives.nativeOnSpeechStart();		
 	}
 	
+	public void OnSpeechText(String txt)
+	{
+		if (AppPlayBaseActivity.sIsInitlized)
+			AppPlayNatives.nativeOnSpeakText(txt);	
+	}
+	
 	public void OnSpeechPause()
 	{
 		if (AppPlayBaseActivity.sIsInitlized)
@@ -72,6 +78,8 @@ abstract public class VoiceSDK {
 		if (AppPlayBaseActivity.sIsInitlized)
 			AppPlayNatives.nativeOnVoiceRecognizeResults(strRet, strJSON);
 	}
+	
+	public abstract void init();
 
 	public abstract void speak(String text);
 	public abstract void speakPause();
@@ -79,5 +87,10 @@ abstract public class VoiceSDK {
 	public abstract void speakStop();
 	public abstract void destory();
 	
-	public abstract void enableAutoSpeach(boolean enable);	
+	public abstract void enableAutoSpeach(boolean enable);
+
+	public void enableAutoSpeachTTS(boolean enable) {
+		// TODO Auto-generated method stub
+		
+	}	
 }

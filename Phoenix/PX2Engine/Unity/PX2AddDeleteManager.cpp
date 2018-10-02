@@ -138,7 +138,7 @@ void AddDeleteManager::Update(float elapsedSeconds)
 			{
 				if ((*it)->Mov)
 				{
-					(*it)->Mov->Stop();
+					(*it)->Mov->Pause();
 				}
 
 				mDeletingObjs.push_back(*it);

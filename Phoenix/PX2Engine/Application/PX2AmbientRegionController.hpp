@@ -66,6 +66,8 @@ namespace PX2
 		virtual void SetControlledable(Controlledable* object);
 		void _UpdateDirLightCamera();
 		void _UpdateFog();
+		bool _IsNeedUpdateLight;
+		bool _IsNeedUpdateFog;
 
 		float mHorAngle;
 		float mVerAngle;

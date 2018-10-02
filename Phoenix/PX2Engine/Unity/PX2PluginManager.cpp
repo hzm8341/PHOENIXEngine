@@ -20,6 +20,12 @@ PluginManager::~PluginManager()
 //----------------------------------------------------------------------------
 void PluginManager::Load(const std::string &filename)
 {
+	for (int i = 0; i < (int)mPluginLibs.size(); i++)
+	{
+		if (filename == mPluginLibs[i]->GetName())
+			return;
+	}
+
 	DynLib* lib = DynLibManager::GetSingleton().Load(filename);
 	mPluginLibs.push_back(lib);
 

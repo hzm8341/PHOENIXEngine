@@ -24,7 +24,7 @@ namespace PX2
 
 		virtual void Play ();
 		virtual bool IsPlaying () const;
-		virtual void Stop ();
+		virtual void Pause();
 		virtual void Reset ();
 
 		enum { SN_INVALID_CHILD = -1 };

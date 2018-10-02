@@ -117,24 +117,44 @@ void VLCMemObj::OnFrameReady(int width, int height,
 		int offsetSrc = 0;
 		int offsetDst = 0;
 
-		for (int row = 0; row < width; ++row)
+		for (int col = 0; col < width; ++col)
 		{
-			for (int col = 0; col < height; ++col)
+			for (int row = 0; row < height; ++row)
 			{
+				if (4 == size)
+				{
 #if defined (__ANDROID__)
-				pDest[offsetDst] = buf[offsetSrc + 0];			// b
-				pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
-				pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
-				pDest[offsetDst + 3] = buf[offsetSrc + 3];
+					pDest[offsetDst] = buf[offsetSrc + 0];			// b
+					pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
+					pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
+					pDest[offsetDst + 3] = buf[offsetSrc + 3];
 #else
-				pDest[offsetDst] = buf[offsetSrc + 0];			// b
-				pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
-				pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
-				pDest[offsetDst + 3] = buf[offsetSrc + 3];
+					pDest[offsetDst] = buf[offsetSrc + 0];			// b
+					pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
+					pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
+					pDest[offsetDst + 3] = buf[offsetSrc + 3];
 #endif
 
-				offsetSrc += 4;
-				offsetDst += 4;
+					offsetSrc += 4;
+					offsetDst += 4;
+				}
+				else if (3 == size)
+				{
+#if defined (__ANDROID__)
+					pDest[offsetDst] = buf[offsetSrc + 0];			// b
+					pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
+					pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
+					pDest[offsetDst + 3] = 255;
+#else
+					pDest[offsetDst] = buf[offsetSrc + 2];			// b
+					pDest[offsetDst + 1] = buf[offsetSrc + 1];		// g 
+					pDest[offsetDst + 2] = buf[offsetSrc + 0];		// r
+					pDest[offsetDst + 3] = 255;
+#endif
+
+					offsetSrc += 3;
+					offsetDst += 4;
+				}
 			}
 		}
 	}

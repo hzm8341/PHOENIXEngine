@@ -112,7 +112,17 @@ typedef unsigned __int64    uint64_t;
 #define PX2_LITTLE_ENDIAN
 #define PX2_USE_PTHREAD
 
-#define PX2_LONG_IS_64_BIT
+#if defined(__LP64__)
+#define PX2_PTR_IS_64_BIT 1
+#define PX2_LONG_IS_64_BIT 1
+typedef signed long        int64_t;
+typedef unsigned long      uint64_t;
+#else
+typedef signed long long   int64_t;
+typedef unsigned long long uint64_t;
+#endif
+
+#define PX2_HAVE_INT64 1
 
 #endif
 //----------------------------------------------------------------------------

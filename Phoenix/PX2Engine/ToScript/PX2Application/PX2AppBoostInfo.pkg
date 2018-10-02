@@ -20,8 +20,4 @@
 		Sizef BoostSize;
 		PlayLogicMode ThePlayLogicMode;
 		bool IsShowInfo;
-
-		// server
-		int Port;
-		int NumMaxConnection;
 	};

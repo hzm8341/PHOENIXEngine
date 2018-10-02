@@ -11,6 +11,8 @@
 #include "PX2HostEntry.hpp"
 #include "PX2DNS.hpp"
 #include "PX2Application.hpp"
+#include "PX2RobotDatas.hpp"
+#include "PX2Robot.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -26,10 +28,20 @@ mAutoConnectIP("127.0.0.1"),
 mAutoConnectPort(EngineServerPort),
 mHeartTiming(0.0f),
 mIsBroadcastInfo(true),
-mBroadcastTiming(0.0f)
+mBroadcastTiming(0.0f),
+mGettingMapIndex(-1)
 {
 	RegisterHandler(EngineServerMsgID,
 		(ServerMsgHandleFunc)&EngineClientConnector::OnStringMsg);
+
+	RegisterHandler(EngineServerSendMapInfoMsgID,
+		(ServerMsgHandleFunc)&EngineClientConnector::OnMapDataInfo);
+
+	RegisterHandler(EngineServerSendMapMsgID,
+		(ServerMsgHandleFunc)&EngineClientConnector::OnMapData);
+
+	RegisterHandler(EngineServerSendMapEndMsgID,
+		(ServerMsgHandleFunc)&EngineClientConnector::OnMapDataEnd);
 }
 //----------------------------------------------------------------------------
 EngineClientConnector::~EngineClientConnector()
@@ -144,6 +156,8 @@ bool EngineClientConnector::IsConnected() const
 //----------------------------------------------------------------------------
 void EngineClientConnector::OnConnectedToServer()
 {
+	mGettingMapIndex = -1;
+
 	for (int i = 0; i < (int)mOnConnectCallbacks.size(); i++)
 	{
 		const std::string &strCallBack = mOnConnectCallbacks[i];
@@ -159,6 +173,8 @@ void EngineClientConnector::OnConnectedToServer()
 //----------------------------------------------------------------------------
 void EngineClientConnector::OnDisConnectedToServer()
 {
+	mGettingMapIndex = -1;
+
 	for (int i = 0; i < (int)mOnDisconnectCallbacks.size(); i++)
 	{
 		const std::string &strCallBack = mOnDisconnectCallbacks[i];
@@ -272,6 +288,16 @@ void EngineClientConnector::RemoveOnRecvCallback(const std::string &callback)
 	}
 }
 //----------------------------------------------------------------------------
+void EngineClientConnector::InitlizeArduino()
+{
+	PX2_ARDUINO.InitlizeSocketTCP_Connector(this);
+}
+//----------------------------------------------------------------------------
+void EngineClientConnector::TernimateArduino()
+{
+	PX2_ARDUINO.Terminate();
+}
+//----------------------------------------------------------------------------
 int EngineClientConnector::OnStringMsg(const void *pbuffer, int buflen)
 {
 	std::string strBuf((const char*)pbuffer, buflen);
@@ -308,6 +334,57 @@ int EngineClientConnector::OnStringMsg(const void *pbuffer, int buflen)
 	return 0;
 }
 //----------------------------------------------------------------------------
+int EngineClientConnector::OnMapDataInfo(const void *pbuffer, int buflen)
+{
+	memcpy(&mRobotMapDataStruct, pbuffer, buflen);
+
+	PX2_ROBOT.GetCurMapData()->MapStruct = mRobotMapDataStruct;
+	mGettingMap.clear();
+
+	PX2_ROBOT.SetSlam2DPosition(mRobotMapDataStruct.CurPos, 
+		mRobotMapDataStruct.CurAngle);
+
+	mGettingMapIndex = 0;
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+int EngineClientConnector::OnMapData(const void *pbuffer, int buflen)
+{
+	mGettingMapIndex++;
+
+	int curSize = mGettingMap.size();
+	mGettingMap.resize(curSize + buflen);
+	memcpy((char*)&(mGettingMap[0]) + curSize, pbuffer, buflen);
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+int EngineClientConnector::OnMapDataEnd(const void *pbuffer, int buflen)
+{
+	mGettingMapIndex++;
+
+	int curSize = mGettingMap.size();
+
+	unsigned long dstSize = 1024 * 1024;
+	std::vector<unsigned char> dstBuf;
+	dstBuf.resize(dstSize);
+	PX2_RM.ZipUnCompress((unsigned char*)&(dstBuf[0]), &dstSize,
+		(const unsigned char*)&(mGettingMap[0]), curSize);
+
+	PX2_ROBOT.GetCurMapData()->Map2D.clear();
+	PX2_ROBOT.GetCurMapData()->Map2D = dstBuf;
+
+	PX2_ROBOT.SetSlam2DMap(dstBuf, mRobotMapDataStruct.MapSize,
+		mRobotMapDataStruct.MapResolution);
+
+	mGettingMap.clear();
+
+	mGettingMapIndex = false;
+
+	return 0;
+}
+//----------------------------------------------------------------------------
 void EngineClientConnector::_SendHeart()
 {
 	if (IsConnected())
@@ -327,16 +404,16 @@ bool EngineClientConnector::IsBroadcastInfo() const
 }
 //----------------------------------------------------------------------------
 void EngineClientConnector::BroadcastInfoToLocalNet(int port)
-{
-	PX2_UNUSED(port);
-    
+{    
 #if !defined (__IOS__)
 
-	SocketAddress sktAddr("255.255.255.255", EngineUDPPortServerEditor);
+	SocketAddress sktAddr("255.255.255.255", port);
 	std::string name = PX2_APP.GetHostName();
 	std::string bufStr = CMD_EngineUDPInfoTag + " " + name;
 
-	DatagramSocket udpSocket;
+	IPAddress ipAddress = PX2_APP.GetLocalAddressWith10_172_192();
+
+	DatagramSocket udpSocket(SocketAddress(ipAddress, port), true);
 	udpSocket.SetBroadcast(true);
 	udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
     

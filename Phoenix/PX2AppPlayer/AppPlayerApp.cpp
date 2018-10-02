@@ -15,7 +15,6 @@ AppPlayerApp::AppPlayerApp ()
 //----------------------------------------------------------------------------
 AppPlayerApp::~AppPlayerApp ()
 {
-	// 所有内存释放,必须在析构函数之前释放
 }
 //----------------------------------------------------------------------------
 bool AppPlayerApp::Initlize()
@@ -32,12 +31,15 @@ bool AppPlayerApp::Initlize()
 		if (!projectName.empty())
 		{
 			PX2_APP.LoadProject(projectName);
+			PX2_APP.Play(Application::PT_PLAY);
 		}
 
-		PX2_APP.Play(Application::PT_PLAY);
+		PX2_LOG_INFO("AppPlayerApp::GetTitleProj");
 
 		std::string titleProj = GetTitleProj(projectName);
 		SetTitle(titleProj);
+
+		PX2_LOG_INFO("AppPlayerApp::Initlize");
 
 		return true;
 	}
@@ -45,6 +47,13 @@ bool AppPlayerApp::Initlize()
 	return false;
 }
 //----------------------------------------------------------------------------
+#if !defined (__IOS__)
+
+#if defined (_WIN32) || defined (WIN32)
+// windows,console
+#pragma comment( linker, "/subsystem:\"console\" /entry:\"mainCRTStartup\"" )
+#endif
+
 int main(int numArguments, char* arguments[])
 {
 	AppBase::msAppInitlizeFun();
@@ -55,4 +64,5 @@ int main(int numArguments, char* arguments[])
 
 	return exitCode;
 }
+#endif
 //----------------------------------------------------------------------------

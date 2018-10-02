@@ -38,6 +38,10 @@ void Application::NewProject(const std::string &pathname,
 	Event *entUI = PX2_CREATEEVENTEX(ProjectES, NewUI);
 	entUI->SetData<UI*>(TheProject->GetUI());
 	PX2_EW.BroadcastingLocalEvent(entUI);
+
+	Event *entLogic = PX2_CREATEEVENTEX(ProjectES, NewLogic);
+	entLogic->SetData<Logic*>(TheProject->GetLogic());
+	PX2_EW.BroadcastingLocalEvent(entLogic);
 }
 //----------------------------------------------------------------------------
 void _ReWriteProcessXMLNode(XMLNode node)
@@ -208,6 +212,7 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 
 	bool loadResult = false;
 	TheProject = new0 Project();
+
 	if (TheProject->Load(pathname))
 	{
 		PX2_SC_LUA->SetUserTypePointer("PX2_PROJ", "Project", Project::GetSingletonPtr());

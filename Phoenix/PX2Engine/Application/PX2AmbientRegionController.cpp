@@ -17,7 +17,9 @@ mVerAngle(45.0f),
 mLightCameraExtent(10.0f),
 mSpecularPow(10.0f),
 mIntensity(1.0f),
-mLightCameraLookDistance(50.0f)
+mLightCameraLookDistance(50.0f),
+_IsNeedUpdateLight(true),
+_IsNeedUpdateFog(true)
 {
 	SetName("AmbientRegionController");
 
@@ -46,111 +48,123 @@ void AmbientRegionController::_Update(double applicationTime,
 	SetFogParamHeight(mFogParamHeight);
 	SetFogColorDistance(mFogColorDist);
 	SetFogParamDistance(mFogParamDist);
+
+	if (_IsNeedUpdateLight)
+	{
+		_UpdateDirLightCamera();
+		_IsNeedUpdateLight = false;
+	}
+
+	if (_IsNeedUpdateFog)
+	{
+		_UpdateFog();
+		_IsNeedUpdateFog = false;
+	}
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetLightCameraLookPostion(const APoint &pos)
 {
 	mLightCameraLookPosition = pos;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetLightCameraLookDistance(float dist)
 {
 	mLightCameraLookDistance = dist;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetLightCameraExtent(float extent)
 {
 	mLightCameraExtent = extent;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetControlledable(Controlledable* object)
 {
 	TriggerController::SetControlledable(object);
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetHorAngle(float angle)
 {
 	mHorAngle = angle;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetVerAngle(float angle)
 {
 	mVerAngle = angle;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetAmbientColor(const Float3 &color)
 {
 	mAmbientColor = color;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetDiffuseColor(const Float3 &color)
 {
 	mDiffuseColor = color;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetSpecularColor(const Float3 &color)
 {
 	mSpecularColor = color;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetSpecularPow(float pow)
 {
 	mSpecularPow = pow;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetIntensity(float intensity)
 {
 	mIntensity = intensity;
 
-	_UpdateDirLightCamera();
+	_IsNeedUpdateLight = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetFogColorHeight(const Float3 &color)
 {
 	mFogColorHeight = color;
 
-	_UpdateFog();
+	_IsNeedUpdateFog = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetFogParamHeight(const Float2 &param)
 {
 	mFogParamHeight = param;
 
-	_UpdateFog();
+	_IsNeedUpdateFog = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetFogColorDistance(const Float3 &dist)
 {
 	mFogColorDist = dist;
 
-	_UpdateFog();
+	_IsNeedUpdateFog = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::SetFogParamDistance(const Float2 &param)
 {
 	mFogParamDist = param;
 
-	_UpdateFog();
+	_IsNeedUpdateFog = true;
 }
 //----------------------------------------------------------------------------
 void AmbientRegionController::_UpdateDirLightCamera()
@@ -255,8 +269,8 @@ void AmbientRegionController::RegistProperties()
 
 	AddPropertyClass("AmbientRegionController");
 
-	AddProperty("HorAngle", Object::PT_FLOAT, mHorAngle);
-	AddProperty("VerAngle", Object::PT_FLOAT, mVerAngle);
+	AddProperty("HorAngle", Object::PT_INT, (int)mHorAngle);
+	AddProperty("VerAngle", Object::PT_INT, (int)mVerAngle);
 	AddProperty("LightCameraLookPosition", Object::PT_APOINT3, mLightCameraLookPosition);
 	AddProperty("LightCameraLookDistance", Object::PT_FLOAT, mLightCameraLookDistance);
 	AddProperty("LightCameraExtent", Object::PT_FLOAT, mLightCameraExtent);
@@ -279,11 +293,11 @@ void AmbientRegionController::OnPropertyChanged(const PropertyObject &obj)
 
 	if ("HorAngle" == obj.Name)
 	{
-		SetHorAngle(PX2_ANY_AS(obj.Data, float));
+		SetHorAngle((float)PX2_ANY_AS(obj.Data, int));
 	}
 	else if ("VerAngle" == obj.Name)
 	{
-		SetVerAngle(PX2_ANY_AS(obj.Data, float));
+		SetVerAngle((float)PX2_ANY_AS(obj.Data, int));
 	}
 	else if ("LightCameraLookPosition" == obj.Name)
 	{
@@ -361,7 +375,9 @@ void AmbientRegionController::GetAllObjectsByName(const std::string& name,
 // 持久化支持
 //----------------------------------------------------------------------------
 AmbientRegionController::AmbientRegionController(LoadConstructor value) :
-TriggerController(value)
+TriggerController(value),
+_IsNeedUpdateLight(true),
+_IsNeedUpdateFog(true)
 {
 }
 //----------------------------------------------------------------------------

@@ -185,6 +185,54 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeBluetoothDiscov
 
 /*
  * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeBluetoothReceived
+ * Signature: ([B)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeBluetoothReceived
+  (JNIEnv *, jclass, jbyteArray);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeWifiDiscoveryNewDevice
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiDiscoveryNewDevice
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeWifiDiscoveryFinished
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiDiscoveryFinished
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeWifiOnConnected
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiOnConnected
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeWifiOnConnectFailed
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiOnConnectFailed
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeWifiOnDisconnected
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiOnDisconnected
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
  * Method:    nativeVoiceSetSDK
  * Signature: (Ljava/lang/String;)V
  */
@@ -225,6 +273,14 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeechCancel
 
 /*
  * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeOnSpeakText
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeakText
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
  * Method:    nativeOnVoiceRecordStart
  * Signature: ()V
  */
@@ -250,10 +306,26 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecogniz
 /*
  * Class:     org_appplay_lib_AppPlayNatives
  * Method:    nativeCameraSendFrame
- * Signature: (IILjava/lang/String;I)V
+ * Signature: (II[B)V
  */
 JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeCameraSendFrame
-  (JNIEnv *, jclass, jint, jint, jstring, jint);
+  (JNIEnv *, jclass, jint, jint, jbyteArray);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeHardCameraSendFrame
+ * Signature: (II[B)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeHardCameraSendFrame
+  (JNIEnv *, jclass, jint, jint, jbyteArray);
+
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeUSBSendData
+ * Signature: ([B)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeUSBSendData
+  (JNIEnv *, jclass, jbyteArray);
 
 #ifdef __cplusplus
 }

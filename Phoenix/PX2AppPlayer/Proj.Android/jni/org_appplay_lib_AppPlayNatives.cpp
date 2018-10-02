@@ -40,7 +40,8 @@ extern "C"
 	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnResume
 		(JNIEnv *, jclass)
 	{
-		appplay::NativeCall::WillEnterForeground();
+        // not need this
+		//appplay::NativeCall::WillEnterForeground();
 	}
 
 	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnTerm
@@ -216,6 +217,49 @@ extern "C"
 		appplay::NativeCall::BluetoothDiscoveryFinished();
 	}
 	
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeBluetoothReceived
+	(JNIEnv *env, jclass, jbyteArray byteArray)
+	{
+		jbyte * arrayBody = env->GetByteArrayElements(byteArray,0);   
+		jsize theArrayLengthJ = env->GetArrayLength(byteArray);   
+		char * starter = (char *)arrayBody;   
+		
+		appplay::NativeCall::BluetoothOnReceive(starter, theArrayLengthJ);
+	}
+	
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiDiscoveryNewDevice
+	(JNIEnv *env, jclass, jstring strDevice)
+	{
+		const char* pszText = env->GetStringUTFChars(strDevice, NULL);
+		appplay::NativeCall::WifiDiscoveryNewDevice(pszText);
+		env->ReleaseStringUTFChars(strDevice, pszText);
+	}
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiDiscoveryFinished
+	(JNIEnv *env, jclass)
+	{
+		appplay::NativeCall::WifiDiscoveryFinished();
+	}
+
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiOnConnected
+	(JNIEnv *, jclass)
+	{
+		appplay::NativeCall::WifiOnConnected();
+	}
+  
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiOnConnectFailed
+	(JNIEnv *, jclass)
+	{
+		appplay::NativeCall::WifiOnConnectFailed();
+	}
+  
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeWifiOnDisconnected
+	(JNIEnv *, jclass)
+	{
+		appplay::NativeCall::WifiOnDisconnected();
+	}	
+	
 	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeVoiceSetSDK
 	(JNIEnv *env, jclass, jstring strPlat)
 	{
@@ -248,6 +292,15 @@ extern "C"
 		appplay::NativeCall::OnSpeakCancel();	
 	}
 	
+	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnSpeakText
+	(JNIEnv *env, jclass, jstring jtxt)
+	{
+		const char* pszText = env->GetStringUTFChars(jtxt, NULL);
+		appplay::NativeCall::OnSpeakText(pszText);	
+		env->ReleaseStringUTFChars(jtxt, pszText);
+	}
+
+	
 	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeOnVoiceRecordStart
 	(JNIEnv *env, jclass)
 	{
@@ -272,12 +325,34 @@ extern "C"
 	}
 	
 	JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeCameraSendFrame
-  (JNIEnv *env, jclass, jint width, jint height, jstring data, jint size)
-	{
-		const char* pszData = env->GetStringUTFChars(data, NULL);
-		appplay::NativeCall::SetCameraFrame(width, height, pszData, size);
-		env->ReleaseStringUTFChars(data, pszData);
-	}
+  (JNIEnv *env, jclass, jint width, jint height, jbyteArray byteArray)
+  {
+	  	jbyte * arrayBody = env->GetByteArrayElements(byteArray,0);   
+		jsize theArrayLengthJ = env->GetArrayLength(byteArray);   
+		char * starter = (char *)arrayBody;   
+		
+		appplay::NativeCall::SetCameraFrame(width, height, starter, theArrayLengthJ);
+  }
+
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeHardCameraSendFrame
+  (JNIEnv *env, jclass, jint width, jint height, jbyteArray byteArray)
+  {
+	  	jbyte * arrayBody = env->GetByteArrayElements(byteArray,0);   
+		jsize theArrayLengthJ = env->GetArrayLength(byteArray);   
+		char * starter = (char *)arrayBody;   
+		
+		appplay::NativeCall::SetHardCameraFrame(width, height, starter, theArrayLengthJ);
+  }
+  
+  JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeUSBSendData
+  (JNIEnv *env, jclass, jbyteArray byteArray)
+  {
+		jbyte * arrayBody = env->GetByteArrayElements(byteArray,0);   
+		jsize theArrayLengthJ = env->GetArrayLength(byteArray);   
+		char * starter = (char *)arrayBody;   
+		
+		appplay::NativeCall::UsbReceive(starter, theArrayLengthJ);
+  }
 
 #ifdef __cplusplus
 }

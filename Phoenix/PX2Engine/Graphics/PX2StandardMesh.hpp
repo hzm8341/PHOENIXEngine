@@ -118,6 +118,9 @@ namespace PX2
 		Polysegment *LineRectangleForEditor1 (int xSamples, int ySamples, float xExtent,
 			float yExtent, Float4 color);
 
+		// 创建矩形
+		Polysegment *Rectangle(float xLength, float yLength);
+
 		/// 创建圆
 		/**
 		* samples为瓣数(首尾相接)

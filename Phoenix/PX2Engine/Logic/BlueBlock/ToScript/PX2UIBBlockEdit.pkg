@@ -1,0 +1,10 @@
+// PX2UIBBlockEdit.pkg
+
+	class UIBBlockEdit : public UIFrame
+	{
+		UIBBlockEdit();
+		virtual ~UIBBlockEdit();
+		
+		static UIBBlockEdit *New();
+		static UIBBlockEdit *New(const std::string &name);
+	};

@@ -92,3 +92,29 @@ std::string System::GetUniqueID ()
 }
 //----------------------------------------------------------------------------
 #endif
+//----------------------------------------------------------------------------
+std::string System::CallGetOutPut(const std::string &cmdStr)
+{
+	int32_t count(2048);
+	char s[2048];
+	std::string ret;
+
+#if defined(__LINUX__)
+	FILE* stream = popen(cmdStr.c_str(), "r");
+
+	if (stream != NULL) {
+		// 每次从stream中读取指定大小的内容
+		while (fgets(s, count, stream))
+			ret += s;
+		pclose(stream);
+	}
+#endif
+
+	return ret;
+}
+//----------------------------------------------------------------------------
+bool System::CallGetStatus(const std::string &cmdStr)
+{
+	return (system(cmdStr.c_str()) == 0);
+}
+//----------------------------------------------------------------------------

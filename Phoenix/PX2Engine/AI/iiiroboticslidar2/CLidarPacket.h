@@ -56,7 +56,9 @@ namespace everest
 
 				/* CRC sum calculate */
 				u16 calcCheckSum(u8 *start_bytes, u16 num_bytes);
-				bool verifyCheckSum();
+				bool verifyCheckSum(u8 ProtoType);
+
+				u16 calcCheckSum_Xor(u8 *start_bytes, u16 num_bytes);
 
 				/* Print hex */
                 void printHex();
@@ -87,6 +89,8 @@ namespace everest
 
                 /* Buffer to data */
                 static void bufferToData(void *dest_ptr, void *src_ptr, size_t length);
+
+				u8 getPrototypeCode() const { return m_buf[3]; }
 
                 struct TParams
                 {

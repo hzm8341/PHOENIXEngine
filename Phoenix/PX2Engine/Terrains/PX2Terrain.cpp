@@ -10,21 +10,13 @@ PX2_IMPLEMENT_ABSTRACT_FACTORY(Terrain);
 //----------------------------------------------------------------------------
 Terrain::~Terrain ()
 {
-	for (int row = 0; row < mNumRows; ++row)
-	{
-		for (int col = 0; col < mNumCols; ++col)
-		{
-			mPages[row][col] = 0;
-		}
-	}
-
-	delete2(mPages);
 }
 //----------------------------------------------------------------------------
 Terrain::Terrain () :
-mPages(0),
-mNumRows(0),
-mNumCols(0),
+mRowFrom(0),
+mRowTo(0),
+mColFrom(0),
+mColTo(0),
 mNumVertexPage(0),
 mMinElevation(0),
 mMaxElevation(0),
@@ -48,64 +40,49 @@ void Terrain::OnChildDetach(Movable* child)
 {
 	Node::OnChildDetach(child);
 
-	for (int i = 0; i < mNumRows; i++)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int j = 0; j < mNumCols; j++)
+		if (it->second == child)
 		{
-			if (child == mPages[i][j])
-			{
-				mPages[i][j] = 0;
-			}
+			mPages.erase(it);
 		}
 	}
 }
 //----------------------------------------------------------------------------
 TerrainPage *Terrain::GetPage (int row, int col)
 {
-	if (0 <= row && row < mNumRows && 0 <= col && col < mNumCols)
+	std::pair<int, int> key(row, col);
+	auto it = mPages.find(key);
+	if (it != mPages.end())
 	{
-		return mPages[row][col];
+		return it->second;
 	}
 
 	return 0;
 }
 //----------------------------------------------------------------------------
-TerrainPage *Terrain::GetCurrentPage (float x, float y) const
+TerrainPage *Terrain::GetCurrentPage (float x, float y)
 {
 	float invLength = 1.0f/(mSpacing*(float)(mNumVertexPage - 1));
 
 	int col = (int)Mathf::Floor(x*invLength);
-	col %= mNumCols;
-	if (col < 0)
-	{
-		col += mNumCols;
-	}
-
 	int row = (int)Mathf::Floor(y*invLength);
-	row %= mNumRows;
-	if (row < 0)
-	{
-		row += mNumRows;
-	}
 
-	return mPages[row][col];
+	return GetPage(row, col);
 }
 //----------------------------------------------------------------------------
 bool Terrain::GetPageIndex (int &outRow, int &outCol, TerrainPage *page)
 {
-	for (int row = 0; row < mNumRows; ++row)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int col = 0; col < mNumCols; ++col)
+		if (it->second == page)
 		{
-			TerrainPage *curPage = mPages[row][col];
+			outRow = it->first.first;
+			outCol = it->first.second;
 
-			if (curPage == page)
-			{
-				outRow = row;
-				outCol = col;
-
-				return true;
-			}
+			return true;
 		}
 	}
 
@@ -114,11 +91,11 @@ bool Terrain::GetPageIndex (int &outRow, int &outCol, TerrainPage *page)
 //----------------------------------------------------------------------------
 TerrainPagePtr Terrain::ReplacePage (int row, int col, TerrainPage* newPage)
 {
-	if (0 <= row && row < mNumRows && 0 <= col && col < mNumCols)
+	std::pair<int, int> key(row, col);
+	auto it = mPages.find(key);
+	if (it != mPages.end())
 	{
-		TerrainPagePtr save = mPages[row][col];
-		mPages[row][col] = newPage;
-		return save;
+		it->second = newPage;
 	}
 
 	assertion(false, "Invalid row or column index\n");
@@ -127,21 +104,19 @@ TerrainPagePtr Terrain::ReplacePage (int row, int col, TerrainPage* newPage)
 //----------------------------------------------------------------------------
 void Terrain::UpdateHoles ()
 {
-	for (int i=0; i<mNumRows; i++)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int j=0; j<mNumCols; j++)
+		if (it->second)
 		{
-			if (mPages[i][j])
-			{
-				mPages[i][j]->UpdateHoles();
-			}
+			it->second->UpdateHoles();
 		}
 	}
 }
 //----------------------------------------------------------------------------
-float Terrain::GetHeight (float x, float y) const
+float Terrain::GetHeight (float x, float y)
 {
-	TerrainPage* page = GetCurrentPage(x,y);
+	TerrainPage* page = GetCurrentPage(x, y);
 	if (page)
 	{
 		x -= page->LocalTransform.GetTranslate().X();
@@ -153,7 +128,7 @@ float Terrain::GetHeight (float x, float y) const
 	return 0.0f;
 }
 //----------------------------------------------------------------------------
-AVector Terrain::GetNormal (float x, float y) const
+AVector Terrain::GetNormal (float x, float y)
 {
 	float xp = x + mSpacing;
 	float xm = x - mSpacing;
@@ -207,11 +182,13 @@ void Terrain::AddJunglers (Texture2D *tex, APoint center, float radius,
 	if (!tex)
 		return;
 
-	for (int i=0; i<mNumRows; i++)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int j=0; j<mNumCols; j++)
+		TerrainPage *page = it->second;
+		if (page)
 		{
-			GetPage(i, j)->mAddingJObjs.clear();
+			page->mAddingJObjs.clear();
 		}
 	}
 
@@ -244,11 +221,12 @@ void Terrain::AddJunglers (Texture2D *tex, APoint center, float radius,
 		}
 	}
 
-	for (int i=0; i<mNumRows; i++)
+	auto it1 = mPages.begin();
+	for (; it1 != mPages.end(); it1++)
 	{
-		for (int j=0; j<mNumCols; j++)
+		TerrainPage *page = it1->second;
+		if (page)
 		{
-			TerrainPage *page = GetPage(i, j);
 			page->AddJunglers(tex, page->mAddingJObjs);
 		}
 	}
@@ -257,12 +235,12 @@ void Terrain::AddJunglers (Texture2D *tex, APoint center, float radius,
 void Terrain::RemoveJunglers (Texture2D *tex, APoint center, float radius,
 	int num)
 {
-	for (int i=0; i<mNumRows; i++)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int j=0; j<mNumCols; j++)
+		TerrainPage *page = it->second;
+		if (page)
 		{
-			TerrainPage *page = GetPage(i, j);
-
 			page->RemoveJunglers(tex, center, radius, num);
 		}
 	}
@@ -272,12 +250,13 @@ void Terrain::SetJunglerFrequency (float fre)
 {
 	mJunglerFrequency = fre;
 
-	for (int i=0; i<mNumRows; i++)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int j=0; j<mNumCols; j++)
+		TerrainPage *page = it->second;
+		if (page)
 		{
-			TerrainPage *page = GetPage(i, j);
-			page->SetJunglerFrequency(fre);			
+			page->SetJunglerFrequency(fre);
 		}
 	}
 }
@@ -286,11 +265,12 @@ void Terrain::SetJunglerStrength (float strength)
 {
 	mJunglerStrength = strength;
 
-	for (int i=0; i<mNumRows; i++)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int j=0; j<mNumCols; j++)
+		TerrainPage *page = it->second;
+		if (page)
 		{
-			TerrainPage *page = GetPage(i, j);
 			page->SetJunglerStrength(strength);
 		}
 	}
@@ -383,9 +363,10 @@ void Terrain::GetAllObjectsByName (const std::string& name,
 //----------------------------------------------------------------------------
 Terrain::Terrain (LoadConstructor value) :
 Node(value),
-mPages(0),
-mNumRows(0),
-mNumCols(0),
+mRowFrom(0),
+mRowTo(0),
+mColFrom(0),
+mColTo(0),
 mNumVertexPage(0),
 mMinElevation(0.0f),
 mMaxElevation(0.0f),
@@ -402,20 +383,25 @@ void Terrain::Load (InStream& source)
 	Node::Load(source);
 	PX2_VERSION_LOAD(source);
 
-	source.Read(mNumRows);
-	source.Read(mNumCols);
+	source.Read(mRowFrom);
+	source.Read(mRowTo);
+	source.Read(mColFrom);
+	source.Read(mColTo);
 	source.Read(mNumVertexPage);
 	source.Read(mMinElevation);
 	source.Read(mMaxElevation);
 	source.Read(mSpacing);
 
-	mPages = new2<TerrainPagePtr>(mNumCols, mNumRows);
-	for (int row = 0; row < mNumRows; ++row)
+	int numPages = 0;
+	source.Read(numPages);
+	for (int i = 0; i < numPages; i++)
 	{
-		for (int col = 0; col < mNumCols; ++col)
-		{
-			source.ReadPointer(mPages[row][col]);
-		}
+		int x, y;
+		source.Read(x);
+		source.Read(y);
+		TerrainPage *tp = 0;
+		source.ReadPointer(tp);
+		mPages[std::pair<int, int>(x, y)] = tp;
 	}
 
 	source.ReadPointer(mVFormatEdit);
@@ -430,12 +416,10 @@ void Terrain::Link (InStream& source)
 {
 	Node::Link(source);
 
-	for (int row = 0; row < mNumRows; ++row)
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int col = 0; col < mNumCols; ++col)
-		{
-			source.ResolveLink(mPages[row][col]);
-		}
+		source.ResolveLink(it->second);
 	}
 
 	source.ResolveLink(mVFormatEdit);
@@ -451,12 +435,10 @@ bool Terrain::Register (OutStream& target) const
 {
 	if (Node::Register(target))
 	{
-		for (int row = 0; row < mNumRows; ++row)
+		auto it = mPages.begin();
+		for (; it != mPages.end(); it++)
 		{
-			for (int col = 0; col < mNumCols; ++col)
-			{
-				target.Register(mPages[row][col]);
-			}
+			target.Register(it->second);
 		}
 
 		target.Register(mVFormatEdit);
@@ -474,19 +456,25 @@ void Terrain::Save (OutStream& target) const
 	Node::Save(target);
 	PX2_VERSION_SAVE(target);
 
-	target.Write(mNumRows);
-	target.Write(mNumCols);
+	target.Write(mRowFrom);
+	target.Write(mRowTo);
+	target.Write(mColFrom);
+	target.Write(mColTo);
 	target.Write(mNumVertexPage);
 	target.Write(mMinElevation);
 	target.Write(mMaxElevation);
 	target.Write(mSpacing);
 
-	for (int row = 0; row < mNumRows; ++row)
+	int numPages = mPages.size();
+	target.Write(numPages);
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (int col = 0; col < mNumCols; ++col)
-		{
-			target.WritePointer(mPages[row][col]);
-		}
+		int row = it->first.first;
+		int col = it->first.second;
+		target.Write(row);
+		target.Write(col);
+		target.WritePointer(it->second);
 	}
 
 	target.WritePointer(mVFormatEdit);
@@ -502,13 +490,27 @@ int Terrain::GetStreamingSize (Stream &stream) const
 	int size = Node::GetStreamingSize(stream);
 	size += PX2_VERSION_SIZE(mVersion);
 
-	size += sizeof(mNumRows);
-	size += sizeof(mNumCols);
+	size += sizeof(mRowFrom);
+	size += sizeof(mRowTo);
+	size += sizeof(mColFrom);
+	size += sizeof(mColTo);
 	size += sizeof(mNumVertexPage);
 	size += sizeof(mMinElevation);
 	size += sizeof(mMaxElevation);
 	size += sizeof(mSpacing);
-	size += mNumRows*mNumCols*PX2_POINTERSIZE(mPages[0][0]);
+	int numPages = mPages.size();
+	size += sizeof(numPages);
+
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
+	{
+		int row = it->first.first;
+		int col = it->first.second;
+		size += sizeof(row);
+		size += sizeof(col);
+		size += PX2_POINTERSIZE(it->second);
+	}
+
 	size += PX2_POINTERSIZE(mVFormatEdit);
 	size += PX2_POINTERSIZE(mTerrainShine);
 	size += sizeof(mJunglerFrequency);

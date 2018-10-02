@@ -19,6 +19,12 @@
 		void SetHeight(float height);
 		float GetHeight() const;
 		
+		Rectf GetLocalRect() const;
+		Rectf GetWorldRect() const;
+		APoint WorldPosToViewPortPos(const APoint &screenPos);
+		bool IsInSizeRange(const SizeNode *node) const;
+		bool IsIntersectSizeRange(const SizeNode *node) const;
+		
 		void SetScriptHandlerSizeChanged(const std::string &scriptHandler);
 		const std::string &GetScriptSizeChanged() const;
 

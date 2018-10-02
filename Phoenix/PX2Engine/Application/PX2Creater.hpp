@@ -37,6 +37,7 @@ namespace PX2
 {
 
 	class Scene;
+	class Actor;
 
 	class PX2_ENGINE_ITEM Creater : public Singleton<Creater>
 	{
@@ -49,6 +50,8 @@ namespace PX2
 		Movable *CreateMovable_Sphere();
 		Movable *CreateMovable_Rectangle();
 		Node *CreateBlockFrame(int num, float halfExtend, const std::string &image);
+		Movable *CreateSegment_Rectangle(float xLength, float yLength, const Float4 &color);
+		Movable *CreateSegment_Circle(float radius, int numSamples, const Float4 &color);
 
 		Node *CreateNode();
 		CameraNode *CreateNode_Camera(bool createCamera = true);
@@ -58,6 +61,12 @@ namespace PX2
 		ScriptController *CreateScriptController_FromRes(const std::string &filename);
 		ScriptController *CreateScriptController_FromBuffer(const std::string &bufStr, 
 			const std::string &className);
+
+		// actor
+		Actor *CreateActor();
+		Actor *CreateActorBox();
+		Actor *CreateActor_InfinitePlane(const AVector &normal=AVector::UNIT_Z,
+			float originOffset=0.0f);
 
 		// sky
 		Movable *CreateSkyBox(const std::string &skyDirPath);

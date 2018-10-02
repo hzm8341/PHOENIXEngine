@@ -6,6 +6,7 @@
 #include "PX2CorePre.hpp"
 #include "PX2Vector3.hpp"
 #include "PX2TriMesh.hpp"
+#include "PX2Node.hpp"
 #include "PX2HQuaternion.hpp"
 #include "LinearMath/btScalar.h"
 #include "LinearMath/btVector3.h"
@@ -36,21 +37,22 @@ namespace PX2
 		static btVector3 Vector3ToBtVector3(const Vector3f& vector);
 
 		static HQuaternion BtQuaterionToQuaternion(const btQuaternion& quaternion);
+		static btQuaternion QuaterionToBtQuaternion(const HQuaternion &quat);
 
 		//static btRigidBody* CreateBox(
 		//	const btScalar width, const btScalar height, const btScalar length);
 
 		static btRigidBody* CreateCapsule(
-			const btScalar height, const btScalar radius);
+			const btScalar height, btScalar radius);
 
-		//static btRigidBody* CreatePlane(
-		//	const btVector3& normal, const btScalar originOffset);
+		static btRigidBody* CreateInfinitePlane(
+			const btVector3& normal, btScalar originOffset);
 
-		//static btRigidBody* CreateRigidBodyFromMesh(
-		//	const TriMesh& mesh, const btVector3& position, const btScalar mass);
+		static btRigidBody* CreateRigidBodyFromNode(
+			Movable *mov, const btVector3& position, const btScalar mass);
 
-		//static btConvexHullShape* CreateSimplifiedConvexHull(
-		//	const TriMesh& mesh);
+		static btConvexHullShape* CreateSimplifiedConvexHull(
+			TriMesh *mesh);
 
 		//static btRigidBody* CreateSphere(const btScalar radius);
 

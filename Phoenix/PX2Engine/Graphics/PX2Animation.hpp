@@ -62,7 +62,7 @@ namespace PX2
 		void LetCharacterPlay();
 		virtual void OnPlay(ModelController *modelCtrl);
 		virtual bool IsPlaying() const;
-		virtual void Stop();
+		virtual void Pause();
 
 		ModelController *GetCharacter();
 		virtual void OnRemove(ModelController *character);

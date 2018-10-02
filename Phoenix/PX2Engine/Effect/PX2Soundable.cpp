@@ -130,9 +130,9 @@ void Soundable::Set3D (bool is3D)
 	}
 }
 //----------------------------------------------------------------------------
-void Soundable::Stop ()
+void Soundable::Pause()
 {
-	Effectable::Stop();
+	Effectable::Pause();
 
 	if (!mIngoreStopSound)
 	{

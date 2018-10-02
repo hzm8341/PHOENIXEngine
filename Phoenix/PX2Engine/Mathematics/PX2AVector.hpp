@@ -57,6 +57,9 @@ namespace PX2
 		float Length () const;
 		float SquaredLength () const;
 		float Dot (const AVector& vec) const;
+		AVector Dot(float length) const;
+		AVector Over(float val) const;
+		AVector Add(const AVector &vec) const;
 		float Normalize (const float epsilon = Mathf::ZERO_TOLERANCE);
 		AVector &Truncate (float max);
 		AVector Cross (const AVector& vec) const;

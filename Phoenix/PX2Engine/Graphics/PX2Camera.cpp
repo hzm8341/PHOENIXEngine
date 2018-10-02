@@ -35,6 +35,8 @@ mClearFlagStencil(false)
 mValidateCameraFrame(true)
 #endif
 {
+	mCameraDrawCallback = 0;
+
 	if (isPerspective)
 	{
 		SetFrustum(35.0f, 960.0f / 640.0f, 1.0f, 1000.0f);
@@ -550,6 +552,16 @@ Vector2f Camera::WorldDir3DTo2D(const AVector &worldDir)
 	return vec;
 }
 //----------------------------------------------------------------------------
+void Camera::SetCameraDrawCallback(CameraDrawCallback callback)
+{
+	mCameraDrawCallback = callback;
+}
+//----------------------------------------------------------------------------
+CameraDrawCallback Camera::GetCameraDrawCallback()
+{
+	return mCameraDrawCallback;
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // 持久化支持
@@ -578,6 +590,8 @@ mClearFlagStencil(false)
 mValidateCameraFrame(true)
 #endif
 {
+	mCameraDrawCallback = 0;
+
 	mProjectionViewMatrix[mDepthType] = HMatrix::ZERO;
 
 	for (int i = 0; i < VF_QUANTITY; ++i)

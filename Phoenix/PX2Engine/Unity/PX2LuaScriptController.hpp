@@ -48,10 +48,13 @@ namespace PX2
 
 	private:
 		bool _Init();
+		void _CallOnClass(const std::string &className);
 
 		static LuaPlus::LuaObject New(LuaPlus::LuaObject self,
 			LuaPlus::LuaObject constructionData,
 			LuaPlus::LuaObject originalSubClass);
+
+		static LuaScriptController *sCurOperatorNewController;
 
 	public:
 		bool BuildCppDataFromScript(LuaPlus::LuaObject &scriptClass, 

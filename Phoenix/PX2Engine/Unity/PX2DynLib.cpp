@@ -37,7 +37,8 @@ void DynLib::Load()
 
 	if (!mhInst)
 	{
-		assertion(false, "Could not load dynamic library");
+		assertion(false, "Could not load dynamic library %s . System Error: %s",
+			mName.c_str(), DynlibError().c_str());
 		PX2_LOG_ERROR("Could not load dynamic library %s . System Error: %s",
 			mName.c_str(), DynlibError().c_str());
 	}
@@ -61,8 +62,9 @@ void* DynLib::GetSymbol(const std::string &strName)
 {
 #if !defined __IOS__
 	return (void*)PLUGIN_GETSYM(mhInst, strName.c_str());
+#else
+	return 0;
 #endif
-    return 0;
 }
 //----------------------------------------------------------------------------
 std::string DynLib::DynlibError()

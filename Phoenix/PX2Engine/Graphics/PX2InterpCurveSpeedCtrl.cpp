@@ -87,7 +87,7 @@ void InterpCurveSpeedController::_Update(double applicationTime,
 		{
 			disLength = mMaxLength - mAllLength;
 			mAllLength = mMaxLength;
-			Stop();
+			Pause();
 		}
 		else
 		{

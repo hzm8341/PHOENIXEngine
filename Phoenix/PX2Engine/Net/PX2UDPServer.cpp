@@ -13,7 +13,7 @@ UDPServer::UDPServer() :
 mThread("UDPServer"),
 mIsStop(false)
 {
-	mSocket.Bind(SocketAddress(), true);
+	//mSocket.Bind(SocketAddress(), true);
 }
 //----------------------------------------------------------------------------
 UDPServer::UDPServer(const SocketAddress& sa) :
@@ -26,6 +26,12 @@ mIsStop(false)
 UDPServer::~UDPServer()
 {
 	Stop();
+}
+//----------------------------------------------------------------------------
+void UDPServer::Bind(int port)
+{
+	SocketAddress addr(port);
+	mSocket.Bind(addr, true);
 }
 //----------------------------------------------------------------------------
 void UDPServer::Start()
@@ -55,9 +61,6 @@ int UDPServer::GetPort() const
 SocketAddress UDPServer::GetAddress() const
 {
 	return mSocket.GetAddress();
-
-	Mutex mMutex;
-	std::vector<std::pair<SocketAddress, std::string> > mRecvBufs;
 }
 //----------------------------------------------------------------------------
 void UDPServer::Update(float elapsedSeconds)
@@ -111,7 +114,7 @@ void UDPServer::OnRecv(SocketAddress &address, const std::string &buf)
 		const std::string &callback = mOnRecvCallbacks[i];
 		if (!callback.empty())
 		{
-			std::string paramStr = ip + " " + buf;
+			std::string paramStr = ip + "&" + buf;
 
 			PX2_SC_LUA->CallFunction(callback, this, paramStr);
 		}

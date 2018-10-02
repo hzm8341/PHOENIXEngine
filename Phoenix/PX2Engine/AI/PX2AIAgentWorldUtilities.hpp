@@ -20,7 +20,10 @@ namespace PX2
 		static AIAgentObject* CreateSandboxObject(
 			AIAgentWorld* world, Node* node);
 
-		static void UpdateWorldTransform(AIAgentObject* agentObject);
+		//static NavigationMesh* CreateNavigationMesh(
+		//	AIAgentWorld* const sandbox,
+		//	rcConfig config,
+		//	const const std::string& navMeshName);
 	};
 
 }

@@ -495,8 +495,15 @@ void UIWebFrame::LoadFile(const std::string &fileName)
 	PX2_UNUSED(fileName);
 
 #if defined (__ANDROID__)
-	//std::string fullPath = getUrlStringByFileName(fileName);
-	//loadFileJNI(mViewTag, fullPath);
+	std::string fullPath = getUrlStringByFileName(fileName);
+	loadFileJNI(mViewTag, fullPath);
+#else
+
+#if defined PX2_USE_AWESOMIUM
+	mWebView->LoadURL(WebURL(WSLit(fileName.c_str())));
+#endif
+
+	mIsTexNeedUpdate = true;
 #endif
 }
 //----------------------------------------------------------------------------
@@ -592,12 +599,16 @@ void UIWebFrame::CreateJSGlobalVaiable(const std::string &name,
 	const std::string &val)
 {
 #if defined (__ANDROID__)
-#elif defined PX2_USE_AWESOMIUM
+
+#else
+
+#if defined PX2_USE_AWESOMIUM
 	std::string strEmpty;
 	JSValue sjVal = mWebView->CreateGlobalJavascriptObject(
 		WebString::CreateFromUTF8(name.c_str(), 0));
 	sjVal = WebString::CreateFromUTF8(val.c_str(), 0);
-#else
+#endif // _DEBUG
+
 #endif
 }
 //----------------------------------------------------------------------------

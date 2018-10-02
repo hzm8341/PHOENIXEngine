@@ -184,6 +184,27 @@ void GraphicsRoot::SetUIShareDraw(bool shareDraw)
 	mIsUIShareDraw = shareDraw;
 }
 //----------------------------------------------------------------------------
+void GraphicsRoot::SendGeneralEvent(const std::string &eventDataStr0,
+	float timeDelay)
+{
+	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
+	ent->SetData<std::string>(eventDataStr0);
+	ent->SetDataStr0(eventDataStr0);
+	ent->SetTimeDelay(timeDelay);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void GraphicsRoot::SendGeneralEvent(const std::string &eventDataStr0,
+	const std::string &eventDataStr1, float timeDelay)
+{
+	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
+	ent->SetData<std::string>(eventDataStr0);
+	ent->SetDataStr0(eventDataStr0);
+	ent->SetDataStr1(eventDataStr1);
+	ent->SetTimeDelay(timeDelay);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
 bool GraphicsRoot::AddRenderWindow(const std::string &name, RenderWindow *rw)
 {
 	if (IsHasRenderWindow(name))
@@ -436,7 +457,7 @@ void GraphicsRoot::PlayScale(Controlledable *contrable)
 		ctrlScaleStop->AddPoint(0.1f, 1.0f, ICM_CURVE_AUTO);
 		contrable->AttachController(ctrlScaleStop);
 	}
-	ctrlScaleStop->Stop();
+	ctrlScaleStop->Pause();
 }
 //----------------------------------------------------------------------------
 void GraphicsRoot::PlayNormal(Controlledable *contrable)
@@ -445,7 +466,7 @@ void GraphicsRoot::PlayNormal(Controlledable *contrable)
 		contrable->GetControllerByName("CtrlScalePlay"));
 	if (0 != ctrlScalePlay)
 	{
-		ctrlScalePlay->Stop();
+		ctrlScalePlay->Pause();
 	}
 
 	auto ctrlScaleStop = DynamicCast<InterpCurveUniformScaleController>(

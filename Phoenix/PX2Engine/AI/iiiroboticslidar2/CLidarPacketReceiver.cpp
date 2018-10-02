@@ -75,48 +75,48 @@ bool CLidarPacketReceiver::receivePacket(CLidarPacket *packet)
 		return false;
 	}
 
-    /* Read packet */
+	/* Read packet */
 	m_count_down.setTime((double)m_params.packet_max_time_ms);
 	char ch;
-	while(1)
+	while (1)
 	{
-		if(m_count_down.isEnd())
+		if (m_count_down.isEnd())
 		{
-//			printf("[CLidarPacketReceiver] Receive packet time %5.2f ms is over!\n", m_count_down.getInputTime());
-			if(m_log_when_receive_time_over)
-            {
-                printf("[CLidarPacketReceiver] Receive packet time is over!\n");
-            }
+			//			printf("[CLidarPacketReceiver] Receive packet time %5.2f ms is over!\n", m_count_down.getInputTime());
+			if (m_log_when_receive_time_over)
+			{
+				printf("[CLidarPacketReceiver] Receive packet time is over!\n");
+			}
 			return false;
 		}
 
-        int read_bytes = m_device_conn->read((char *)&ch, 1, 1);
-		if(read_bytes == 0)
+		int read_bytes = m_device_conn->read((char *)&ch, 1, 1);
+		if (read_bytes == 0)
 		{
 			continue;
 		}
-		else if(read_bytes < 0)
+		else if (read_bytes < 0)
 		{
-		    printf("[CLidarPacketReceiver] finish read data read bytes is %d!\n", read_bytes);
-		    return false;
+			printf("[CLidarPacketReceiver] finish read data read bytes is %d!\n", read_bytes);
+			return false;
 		}
 		else
 		{
-		    TPacketResult packet_result = readPacket(packet, ch);
-		    switch(packet_result)
-		    {
-                case PACKET_ING: break;
-		        case PACKET_SUCCESS:
-		        {
-                    reset();
-		            return true;
-		        }
-		        case PACKET_FAILED:
-		        {
-                    reset();
-		            return false;
-		        }
-		    }
+			TPacketResult packet_result = readPacket(packet, ch);
+			switch (packet_result)
+			{
+			case PACKET_ING: break;
+			case PACKET_SUCCESS:
+			{
+				reset();
+				return true;
+			}
+			case PACKET_FAILED:
+			{
+				reset();
+				return false;
+			}
+			}
 		}
 	}
 
@@ -203,22 +203,22 @@ Others:       None
 CLidarPacketReceiver::TPacketResult CLidarPacketReceiver::processStateLength(CLidarPacket *packet, u8 ch)
 {
 #if 1
-    /* Limit packet length */
-    if(ch < 6 || ch > 100)
-    {
-        reset();
-        printf("[CLidarPacketReceiver] Find erro length is %d!\n", int(ch));
-        return PACKET_ING;
-    }
+	/* Limit packet length */
+	if (ch < 6 || ch > 250)
+	{
+		reset();
+		printf("[CLidarPacketReceiver] Find erro length is 0x%x!\n", (ch));
+		return PACKET_ING;
+	}
 #endif
-    packet->pushBack(ch);
+	packet->pushBack(ch);
 
-    // Add 2bytes for receive CRC16, sub 3 bytes for header(1bytes) and length(2bytes)
-    m_packet_length = (int)ch + 2 - 3;
+	// Add 2bytes for receive CRC16, sub 3 bytes for header(1bytes) and length(2bytes)
+	m_packet_length = (int)ch + 2 - 3;
 
-    m_state = STATE_ACQUIRE_DATA;
+	m_state = STATE_ACQUIRE_DATA;
 
-    return PACKET_ING;
+	return PACKET_ING;
 }
 
 /***********************************************************************************
@@ -236,7 +236,8 @@ CLidarPacketReceiver::TPacketResult CLidarPacketReceiver::processStateAcquireDat
     if(m_actual_count == m_packet_length)
     {
         reset();
-        if(packet->verifyCheckSum())
+		if (packet->verifyCheckSum(packet->getPrototypeCode()))
+        //if(packet->verifyCheckSum())
         {
             return PACKET_SUCCESS;
         }

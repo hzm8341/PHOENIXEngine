@@ -17,7 +17,9 @@ mIsTouchMoved(false),
 mIsMiddleDown(false),
 mCameraNode(0),
 mTouchUpMoveLength(0.0f),
-mTouchSizeNode(0)
+mTouchSizeNode(0),
+mIsWidgetPressed(false),
+mIsSizeNodePressed(false)
 {
 	SetName("CameraPlayController");
 
@@ -163,7 +165,33 @@ void CameraPlayController::_TouchCallback(SizeNode *object,
 	{
 		if (SizeNodePickType::SNPT_WIDGET_PICKED == ct)
 		{
-
+			if (inputData.PickType == UIPT_PRESSED)
+			{
+				mIsWidgetPressed = true;
+				mIsSizeNodePressed = true;
+			}
+			else if (inputData.PickType == UIPT_RELEASED)
+			{
+				mIsWidgetPressed = false;
+				mIsSizeNodePressed = false;
+			}
+			else if (inputData.PickType == UIPT_MOVED)
+			{
+				if (mIsWidgetPressed)
+				{
+					mDegreeHor += inputData.MoveDelta.X() * Mathf::DEG_TO_RAD * 8.0f;
+					mDegreeVer -= inputData.MoveDelta.Z() * Mathf::DEG_TO_RAD * 8.0f;
+				}
+			}
+		}
+		else if (SizeNodePickType::SNPT_SIZENODE_PICKED == ct)
+		{
+			mIsSizeNodePressed = true;
+		}
+		else if (SizeNodePickType::SNPT_SIZENODE_NOTPICKED == ct)
+		{
+			mIsWidgetPressed = false;
+			mIsSizeNodePressed = false;
 		}
 	}
 }
@@ -177,91 +205,102 @@ void CameraPlayController::OnEvent(Event *ent)
 {
 	if (InputEventSpace::IsIn(ent))
 	{
-		// mouse
 		InputEventData data = ent->GetData<InputEventData>();
-		APoint worldPos = data.MTPos;
 
-		if (InputEventSpace::MousePressed == data.TheEventType)
+		if (!mTouchSizeNode)
 		{
-			if (MBID_LEFT == data.MButtonID ||
-				MBID_RIGHT == data.MButtonID ||
-				MBID_MIDDLE == data.MButtonID)
+			// mouse
+			APoint worldPos = data.MTPos;
+
+			if (InputEventSpace::MousePressed == data.TheEventType)
 			{
-				mIsTouchDown = true;
+				if (MBID_LEFT == data.MButtonID ||
+					MBID_RIGHT == data.MButtonID ||
+					MBID_MIDDLE == data.MButtonID)
+				{
+					mIsTouchDown = true;
+					mIsTouchMoved = false;
+
+					if (MBID_MIDDLE == data.MButtonID)
+						mIsMiddleDown = true;
+
+					mLastPickPos_Touch = mPickPos_Touch;
+					mPickPos_Touch = data.MTPos;
+				}
+			}
+			else if (InputEventSpace::MouseReleased == data.TheEventType)
+			{
+				mIsTouchDown = false;
 				mIsTouchMoved = false;
 
 				if (MBID_MIDDLE == data.MButtonID)
-					mIsMiddleDown = true;
-
+				{
+					mIsMiddleDown = false;
+				}
+			}
+			else if (InputEventSpace::MouseMoved == data.TheEventType)
+			{
 				mLastPickPos_Touch = mPickPos_Touch;
 				mPickPos_Touch = data.MTPos;
-			}
-		}
-		else if (InputEventSpace::MouseReleased == data.TheEventType)
-		{
-			mIsTouchDown = false;
-			mIsTouchMoved = false;
+				AVector moveDelta = mPickPos_Touch - mLastPickPos_Touch;
 
-			if (MBID_MIDDLE == data.MButtonID)
+				if (mIsTouchDown)
+				{
+					mIsTouchMoved = true;
+
+					mDegreeHor += moveDelta.X() * 0.5f;
+					mDegreeVer -= moveDelta.Z() * 0.1f;
+					mDegreeVer = Mathf::Clamp(mDegreeVer, 0.0f, 80.0f);
+				}
+			}
+			else if (InputEventSpace::TouchPressed == data.TheEventType)
 			{
-				mIsMiddleDown = false;
-			}
-		}
-		else if (InputEventSpace::MouseMoved == data.TheEventType)
-		{
-			mLastPickPos_Touch = mPickPos_Touch;
-			mPickPos_Touch = data.MTPos;
-			AVector moveDelta = mPickPos_Touch - mLastPickPos_Touch;
+				mIsTouchDown = true;
+				mIsTouchMoved = false;
+				mTouchUpMoveLength = 0.0f;
 
-			if (mIsTouchDown)
+				mStartPickPos_Touch = data.MTPos;
+				mLastPickPos_Touch = data.MTPos;
+				mPickPos_Touch = data.MTPos;
+			}
+			else if (InputEventSpace::TouchReleased == data.TheEventType)
+			{
+				mIsTouchDown = false;
+				mPickPos_Touch = data.MTPos;
+
+				AVector moveDiff = mPickPos_Touch - mStartPickPos_Touch;
+				mTouchUpMoveLength = Mathf::Sqrt(moveDiff.X()*moveDiff.X()
+					+ moveDiff.Z()*moveDiff.Z());
+			}
+			else if (InputEventSpace::TouchMoved == data.TheEventType)
 			{
 				mIsTouchMoved = true;
 
-				mDegreeHor += moveDelta.X() * 0.5f;
-				mDegreeVer -= moveDelta.Z() * 0.1f;
-				mDegreeVer = Mathf::Clamp(mDegreeVer, 0.0f, 80.0f);
+				mLastPickPos_Touch = mPickPos_Touch;
+				mPickPos_Touch = data.MTPos;
+
+				if (mIsTouchDown)
+				{
+					AVector moveDir = mPickPos_Touch - mLastPickPos_Touch;
+
+					mDegreeHor += moveDir.X() * 0.5f;
+					mDegreeVer -= moveDir.Z() * 0.1f;
+					mDegreeVer = Mathf::Clamp(mDegreeVer, 0.0f, 80.0f);
+				}
+			}
+
+			if (InputEventSpace::MouseWheeled == data.TheEventType && 
+				mIsWidgetPressed)
+			{
+				mDistance += (data.MWheel * 0.01f);
+				mDistance = Mathf::Clamp(mDistance, mCameraMin, mCameraMax);
 			}
 		}
-		else if (InputEventSpace::MouseWheeled == data.TheEventType)
+
+		if (InputEventSpace::MouseWheeled == data.TheEventType)
 		{
 			mDistance += (data.MWheel * 0.01f);
 			mDistance = Mathf::Clamp(mDistance, mCameraMin, mCameraMax);
-		}
-		// touch
-		else if (InputEventSpace::TouchPressed == data.TheEventType)
-		{
-			mIsTouchDown = true;
-			mIsTouchMoved = false;
-			mTouchUpMoveLength = 0.0f;
-
-			mStartPickPos_Touch = data.MTPos;
-			mLastPickPos_Touch = data.MTPos;
-			mPickPos_Touch = data.MTPos;
-		}
-		else if (InputEventSpace::TouchReleased == data.TheEventType)
-		{
-			mIsTouchDown = false;
-			mPickPos_Touch = data.MTPos;
-
-			AVector moveDiff = mPickPos_Touch - mStartPickPos_Touch;
-			mTouchUpMoveLength = Mathf::Sqrt(moveDiff.X()*moveDiff.X()
-				+ moveDiff.Z()*moveDiff.Z());
-		}
-		else if (InputEventSpace::TouchMoved == data.TheEventType)
-		{
-			mIsTouchMoved = true;
-
-			mLastPickPos_Touch = mPickPos_Touch;
-			mPickPos_Touch = data.MTPos;
-
-			if (mIsTouchDown)
-			{
-				AVector moveDir = mPickPos_Touch - mLastPickPos_Touch;
-
-				mDegreeHor += moveDir.X() * 0.5f;
-				mDegreeVer -= moveDir.Z() * 0.1f;
-				mDegreeVer = Mathf::Clamp(mDegreeVer, 0.0f, 80.0f);
-			}		
 		}
 	}
 }
@@ -273,7 +312,9 @@ void CameraPlayController::OnEvent(Event *ent)
 CameraPlayController::CameraPlayController(LoadConstructor value) :
 Controller(value),
 mCameraNode(0),
-mTouchSizeNode(0)
+mTouchSizeNode(0),
+mIsWidgetPressed(false),
+mIsSizeNodePressed(false)
 {
 }
 //----------------------------------------------------------------------------

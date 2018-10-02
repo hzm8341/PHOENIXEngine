@@ -34,6 +34,11 @@ EffectableController *Cast::ToEffectController(Object *obj)
 	return DynamicCast<EffectableController>(obj);
 }
 //----------------------------------------------------------------------------
+Actor *Cast::ToActor(Object *obj)
+{
+	return DynamicCast<Actor>(obj);
+}
+//----------------------------------------------------------------------------
 Object *Cast::ToO(void *obj)
 {
 	return (Object*)obj;

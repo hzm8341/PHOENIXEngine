@@ -8,12 +8,12 @@ inline Shine *Terrain::GetTerrainShine()
 //----------------------------------------------------------------------------
 inline int Terrain::GetRowQuantity () const
 {
-	return mNumRows;
+	return mRowTo - mRowFrom;
 }
 //----------------------------------------------------------------------------
 inline int Terrain::GetColQuantity () const
 {
-	return mNumCols;
+	return mColTo - mColFrom;
 }
 //----------------------------------------------------------------------------
 inline int Terrain::GetNumVertexPage() const

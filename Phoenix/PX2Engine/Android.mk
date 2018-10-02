@@ -15,7 +15,6 @@ LOCAL_WHOLE_STATIC_LIBRARIES += Net
 LOCAL_WHOLE_STATIC_LIBRARIES += Effect
 LOCAL_WHOLE_STATIC_LIBRARIES += Terrains
 LOCAL_WHOLE_STATIC_LIBRARIES += UI
-LOCAL_WHOLE_STATIC_LIBRARIES += Voxel
 LOCAL_WHOLE_STATIC_LIBRARIES += Physics
 LOCAL_WHOLE_STATIC_LIBRARIES += AI
 LOCAL_WHOLE_STATIC_LIBRARIES += Logic
@@ -35,7 +34,6 @@ $(call import-module, Net)
 $(call import-module, Effect)
 $(call import-module, Terrains)
 $(call import-module, UI)
-$(call import-module, Voxel)
 $(call import-module, Physics)
 $(call import-module, AI)
 $(call import-module, Logic)

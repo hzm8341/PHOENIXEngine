@@ -58,12 +58,12 @@ bool Controlledable::IsPlaying () const
 	return false;
 }
 //----------------------------------------------------------------------------
-void Controlledable::Stop ()
+void Controlledable::Pause()
 {
 	for (int i=0; i<GetNumControllers(); i++)
 	{
 		if (mControllers[i]->IsEnable() && !mControllers[i]->IsPlaySelfCtrl())
-			mControllers[i]->Stop();
+			mControllers[i]->Pause();
 	}
 }
 //----------------------------------------------------------------------------

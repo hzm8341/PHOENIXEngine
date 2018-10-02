@@ -59,6 +59,12 @@ Server::~Server()
 	}
 }
 //-----------------------------------------------------------------------------
+Server *Server::New(ServerType serverType, int port, int numMaxConnects,
+	int numMaxMsgHandlers)
+{
+	return new0 Server(serverType, port, numMaxConnects, numMaxMsgHandlers);
+}
+//-----------------------------------------------------------------------------
 int Server::GetPort() const
 {
 	return mPort;
@@ -150,7 +156,7 @@ void Server::DisconnectClient(unsigned int clientid)
 int Server::SendMsgToClientBuffer(int clientID, int msgid,
 	const char *buf, int size)
 {
-	char buffer[4096];
+	char buffer[MAX_OVERLAPBUF_ALLSZIE];
 	WriteMessageLen(buffer, (MSGID_BYTES + size));
 	WriteMessageID(buffer + MSGLEN_BYTES, msgid);
 	memcpy(buffer + MSGLEN_BYTES + MSGID_BYTES, buf, size);
@@ -165,7 +171,7 @@ int Server::SendMsgToClientBuffer(int clientID, int msgid,
 //----------------------------------------------------------------------------
 int Server::SendMsgToClientRawBuffer(int clientID, const char *buf, int size)
 {
-	char buffer[4096];
+	char buffer[MAX_OVERLAPBUF_ALLSZIE];
 	memcpy(buffer, buf, size);
 	int allbytes = size;
 

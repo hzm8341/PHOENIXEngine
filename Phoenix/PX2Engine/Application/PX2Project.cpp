@@ -194,6 +194,7 @@ bool Project::Load(const std::string &filename)
 	std::string uiFilename;
 	std::string languageFilename;
 
+	int id = 0;
 	char *buffer = 0;
 	int bufferSize = 0;
 	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
@@ -202,6 +203,12 @@ bool Project::Load(const std::string &filename)
 		if (data.LoadBuffer(buffer, bufferSize))
 		{
 			XMLNode rootNode = data.GetRootNode();
+
+			if (rootNode.HasAttribute("id"))
+			{
+				id = rootNode.AttributeToInt("id");
+				SetID(id);
+			}
 
 			// general
 			XMLNode generalNode = rootNode.GetChild("general");
@@ -261,6 +268,9 @@ bool Project::Load(const std::string &filename)
 
 			// ui
 			mUIFilename = outPath + outBaseName + "_ui.px2obj";
+
+			// logic
+			mLogicFilename = outPath + outBaseName + "_logic.px2obj";
 
 			// plugins
 			XMLNode nodePlugins = rootNode.GetChild("plugins");
@@ -335,6 +345,41 @@ Sizef Project::GetConfigSize(const std::string &filename)
 	return sz;
 }
 //----------------------------------------------------------------------------
+int Project::GetProjectID(const std::string &filename)
+{
+	int id = 0;
+
+#if defined (_WIN32) || defined(WIN32)
+	if (!PX2_RM.IsFileFloderExist(filename))
+		return 0;
+#endif
+
+	std::string name;
+	int height = 0;
+	std::string sceneFilename;
+	int width = 0;
+	std::string uiFilename;
+	std::string languageFilename;
+
+	char *buffer = 0;
+	int bufferSize = 0;
+	if (PX2_RM.LoadBuffer(filename, bufferSize, buffer))
+	{
+		XMLData data;
+		if (data.LoadBuffer(buffer, bufferSize))
+		{
+			XMLNode rootNode = data.GetRootNode();
+
+			if (rootNode.HasAttribute("id"))
+			{
+				id = rootNode.AttributeToInt("id");
+			}
+		}
+	}
+
+	return id;
+}
+//----------------------------------------------------------------------------
 void Project::SetScene(Scene *scene)
 {
 	if (mScene)
@@ -395,6 +440,30 @@ void Project::SetUI(UI *ui)
 UI *Project::GetUI()
 {
 	return mUI;
+}
+//----------------------------------------------------------------------------
+void Project::SetLogic(Logic *logic)
+{
+	LogicPtr logic1 = logic;
+
+	if (mLogic)
+	{
+		Logic *logicBefore = mLogic;
+
+		mLogic = 0;
+		Event *ent = PX2_CREATEEVENTEX(ProjectES, CloseLogic);
+		ent->SetData<Logic*>(logicBefore);
+		PX2_EW.BroadcastingLocalEvent(ent);
+	}
+
+	mLogic = logic1;
+
+	if (mLogic)
+	{
+		Event *ent = PX2_CREATEEVENTEX(ProjectES, NewLogic);
+		ent->SetData<Logic*>((Logic*)mLogic);
+		PX2_EW.BroadcastingLocalEvent(ent);
+	}
 }
 //----------------------------------------------------------------------------
 void Project::SetSize(float width, float height)

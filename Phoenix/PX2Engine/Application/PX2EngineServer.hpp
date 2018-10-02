@@ -34,13 +34,18 @@ namespace PX2
 		void SendString(int clientid, const std::string &str);
 		void BroadCastString(const std::string &str);
 
+		void SendRobotMap(int clientid);
+		void BroadCastRobotMap();
+
 	protected:
 		virtual int OnConnect(unsigned int clientid);
 		virtual int OnDisconnect(unsigned int clientid);
 		int OnString(unsigned int clientid, const void *pbuffer, int buflen);
+		int OnArduinoString(unsigned int clientid, const void *pbuffer, int buflen);
 
 	protected:
 		std::map<unsigned int, _ConnectObjPtr> mConnections;
+		float mBroadCastMapTiming;
 	};
 	typedef Pointer0<EngineServer> EngineServerPtr;
 

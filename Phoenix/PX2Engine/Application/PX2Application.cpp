@@ -39,13 +39,13 @@ mCreater(0),
 mArduino(0),
 mVoiceSDK(0),
 mSTEAMEduManager(0),
+mSlam(0),
 
 mIsInBackground(false),
 mBeforeInBackgroundMusicEnable(true),
 mBeforeInBackgroundSoundEnable(true),
 mIsQuit(false),
 
-mBoostMode(BM_APP),
 mPlayType(PT_NONE),
 
 mAppTime(0),
@@ -115,13 +115,18 @@ Application::PlatformType Application::GetPlatformType() const
 //----------------------------------------------------------------------------
 float Application::GetElapsedTime()
 {
+	return (float)mElapsedTime;
+}
+//----------------------------------------------------------------------------
+float Application::_CalElapsedTime()
+{
 	return (float)(mAppTime - mLastAppTime);
 }
 //----------------------------------------------------------------------------
 void Application::Update()
 {
 	mAppTime = Time::GetTimeInSeconds();
-	mElapsedTime = GetElapsedTime();
+	mElapsedTime = _CalElapsedTime();
 	mLastAppTime = mAppTime;
 	if (mElapsedTime > 1.0f)
 		mElapsedTime = 0.1f;
@@ -197,24 +202,6 @@ void Application::OnEvent(Event *ent)
 			info->IsConnected = false;
 		}
 	}
-}
-//----------------------------------------------------------------------------
-void Application::SendGeneralEvent(const std::string &eventDataStr0)
-{
-	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
-	ent->SetData<std::string>(eventDataStr0);
-	ent->SetDataStr0(eventDataStr0);
-	PX2_EW.BroadcastingLocalEvent(ent);
-}
-//----------------------------------------------------------------------------
-void Application::SendGeneralEvent(const std::string &eventDataStr0, 
-	const std::string &eventDataStr1)
-{
-	Event *ent = PX2_CREATEEVENTEX(GraphicsES, GeneralString);
-	ent->SetData<std::string>(eventDataStr0);
-	ent->SetDataStr0(eventDataStr0);
-	ent->SetDataStr1(eventDataStr1);
-	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void Application::SetConfigName(const std::string &cfgName)

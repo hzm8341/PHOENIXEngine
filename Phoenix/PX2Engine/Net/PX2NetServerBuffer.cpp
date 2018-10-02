@@ -10,7 +10,7 @@ using namespace PX2;
 //-----------------------------------------------------------------------------
 void ServerBuffer::Init(int op)
 {
-	assertion(4096 == (int)sizeof(ServerBuffer), "");
+	assertion(MAX_OVERLAPBUF_ALLSZIE == (int)sizeof(ServerBuffer), "");
 
 	mOperation = op;
 	mDataPos = 0;

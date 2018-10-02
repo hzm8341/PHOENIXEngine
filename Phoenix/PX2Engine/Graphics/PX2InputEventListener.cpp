@@ -21,7 +21,23 @@ void InputEventListener::OnInputEventData(InputEventData &data)
 
 	mCurInputEventData = data;
 
-	Event *ent = InputEventSpace::CreateEventX(data.TheEventType);
+	Event *ent = 0;
+	if (InputEventSpace::KeyPressed == data.TheEventType)
+	{
+		ent = PX2_CREATEEVENTEX(InputEventSpace, KeyPressed);
+		ent->SetDataStr0(data.KChar);
+	}
+	else if (InputEventSpace::KeyReleased == data.TheEventType)
+	{
+		ent = PX2_CREATEEVENTEX(InputEventSpace, KeyReleased);
+		ent->SetDataStr0(data.KChar);
+	}
+	else
+	{
+		ent = InputEventSpace::CreateEventX(data.TheEventType);
+		ent->SetDataStr0("unknow");
+	}
+
 	ent->SetData<InputEventData>(data);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
@@ -41,6 +57,7 @@ void InputEventListener::KeyPressed(KeyCode code)
 	InputEventData data;
 	data.TheEventType = InputEventSpace::KeyPressed;
 	data.KCode = code;
+	data.KChar = InputEventData::KCode2KChar(code);
 
 	OnInputEventData(data);
 }
@@ -50,6 +67,7 @@ void InputEventListener::KeyReleased(KeyCode code)
 	InputEventData data;
 	data.TheEventType = InputEventSpace::KeyReleased;
 	data.KCode = code;
+	data.KChar = InputEventData::KCode2KChar(code);
 
 	OnInputEventData(data);
 }
@@ -58,7 +76,7 @@ void InputEventListener::KeyChar(const std::wstring &charStr)
 {
 	InputEventData data;
 	data.TheEventType = InputEventSpace::KeyChar;
-	data.KChar = charStr;
+	data.KCharW = charStr;
 
 	OnInputEventData(data);
 }

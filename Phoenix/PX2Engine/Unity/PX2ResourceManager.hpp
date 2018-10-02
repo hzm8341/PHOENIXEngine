@@ -116,6 +116,11 @@ namespace PX2
 		unsigned int RunLoadingThread();
 		void GarbageCollect(double appSeconds, double elapsedSeconds);
 
+		bool ZipCompress(unsigned char *dest, unsigned long *destLen, 
+			const unsigned char *source, unsigned long sourceLen);
+		bool ZipUnCompress(unsigned char *dest, unsigned long *destLen,
+			const unsigned char *source, unsigned long sourceLen);
+
 		virtual void Run();
 
 	protected:

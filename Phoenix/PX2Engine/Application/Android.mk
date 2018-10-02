@@ -19,6 +19,7 @@ $(PX2_ROOT)/PX2Engine/Unity/ToLua/ \
 $(PX2_ROOT)/PX2Engine/Unity/LuaPlus/ \
 $(PX2_ROOT)/PX2Engine/ToScript/ \
 $(PX2_ROOT)/PX2Engine/Unity/AppPlay/ \
+$(PX2_ROOT)/PX2Engine/AI/OpenSteer/include/ \
 $(PX2_ROOT)/PX2SDK/Include/
 
 LOCAL_CFLAGS := -D__ANDROID__

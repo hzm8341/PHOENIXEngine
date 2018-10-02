@@ -31,16 +31,16 @@ namespace PX2
 		void RemoveRigidBody(btRigidBody* rigidBody);
 		void Cleanup();
 
-		void StepWorld();
+		void StepWorld(float elapsedSeconds);
 		void DrawDebugWorld();
 
 	private:
-		btBroadphaseInterface* broadphase_;
-		btDefaultCollisionConfiguration* collisionConfiguration_;
-		btCollisionDispatcher* dispatcher_;
-		btSequentialImpulseConstraintSolver* solver_;
-		btDiscreteDynamicsWorld* dynamicsWorld_;
-		PhysicsDebugDraw* debugDraw_;
+		btBroadphaseInterface* mBroadphase;
+		btDefaultCollisionConfiguration* mCollisionConfiguration;
+		btCollisionDispatcher* mDispatcher;
+		btSequentialImpulseConstraintSolver* mSolver;
+		btDiscreteDynamicsWorld* mDynamicsWorld;
+		PhysicsDebugDraw* mDebugDraw;
 	};
 
 }

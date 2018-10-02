@@ -43,7 +43,7 @@ bool FramesMesh::IsPlaying() const
 	return mIsPlaying;
 }
 //----------------------------------------------------------------------------
-void FramesMesh::Stop()
+void FramesMesh::Pause()
 {
 	mIsPlaying = false;
 }
@@ -100,7 +100,7 @@ void FramesMesh::UpdateWorldData(double applicationTime, double elapsedTime)
 	{
 		if (mIsPlayOnce)
 		{
-			Stop();
+			Pause();
 			mAnimPlayedTime = mPlayOnceTime;
 		}
 		else

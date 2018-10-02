@@ -60,14 +60,6 @@
 
 		// boost
 	public:
-		enum BoostMode
-		{
-			BM_APP,
-			BM_SERVER,
-			BM_MAX_MODE
-		};
-		BoostMode GetBoostMode() const;
-	
 		bool LoadBoost(const std::string &filename);
 		const Sizef &GetBoostSize() const;
 		const std::string &GetBoostProjectName() const;
@@ -87,7 +79,7 @@
 	public:
 		void NewProject(const std::string &pathname,
 			const std::string &projName, int so, int width, int height);
-		bool LoadProject(const std::string &name, bool doUpdate);
+		bool LoadProject(const std::string &name, bool doUpdate=false);
 		bool LoadProjectByPath(const std::string &pathname);
 		bool SaveProject();
 		bool SaveProjectAs(const std::string &pathname);
@@ -110,12 +102,13 @@
 		enum PlayType
 		{
 			PT_NONE,
-			PT_SIMULATE,
 			PT_PLAY,
 			PT_MAX_TYPE
 		};
 		void Play(PlayType type);
 		PlayType GetPlayType() const;
+		
+		void RunFile(const std::string &pathname);
 		
 		// project tree menus
 	public:
@@ -186,9 +179,6 @@
 	public:
 		RenderWindow *CreateUIWindow(RenderWindow *parent, const std::string &name,
 			const std::string &title, const APoint &pos, const Sizef &size, bool isFloat);
-			
-	public:	
-		void SendGeneralEvent(const std::string &generalStr);
 		
 		// NetInfo
 	public:

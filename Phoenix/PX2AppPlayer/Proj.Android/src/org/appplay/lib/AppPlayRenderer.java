@@ -38,18 +38,13 @@ class AppPlayRenderer implements GLSurfaceView.Renderer
     	Log.d("appplay.lib", "AppPlayRenderer.onSurfaceChanged" + width + " " + height);
     	 
     	AppPlayNatives.nativeInit(mWidth, mHeight); 
-    	
-    	// GLES20.glViewport(0, 0, width, height);
     } 
 
     @Override
     public void onDrawFrame(GL10 gl)
     {
     	// draw
-    	AppPlayNatives.nativeOdle();
-    	
-    	// update blue
-    	
+    	AppPlayNatives.nativeOdle(); 	
     }
     
     // -- funcions implemented ourself -- 

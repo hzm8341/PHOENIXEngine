@@ -277,9 +277,6 @@
     <Filter Include="1.Ext\Effect">
       <UniqueIdentifier>{3f6e2114-b3a4-4ffd-9b11-cd3b5621117b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\Logic">
-      <UniqueIdentifier>{3ad3c201-f22e-43b8-9468-7e009b4e6fda}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Graphics\Animation">
       <UniqueIdentifier>{51a476f4-e964-4479-9362-6eb7c8042d84}</UniqueIdentifier>
     </Filter>
@@ -475,12 +472,6 @@
     <Filter Include="0.Base\Unity\google\util\internal">
       <UniqueIdentifier>{8e9a7786-e5af-4880-96d1-f30b45bbaef5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\Logic\Logic">
-      <UniqueIdentifier>{639574ef-692d-4f63-bd81-cd1abe269544}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\EventSpace">
-      <UniqueIdentifier>{f77586e2-6384-458d-b743-11b2f3157ccc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Unity\VLCWarp">
       <UniqueIdentifier>{ba7d9d42-f9e8-45a3-8cce-f8d702c5da70}</UniqueIdentifier>
     </Filter>
@@ -598,9 +589,6 @@
     <Filter Include="0.Base\Net\GameServer\Client">
       <UniqueIdentifier>{bbac70b8-7c7f-4195-8fd3-7d2bf5130695}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1.Ext\Voxel">
-      <UniqueIdentifier>{5ae5b4f9-aabe-406e-b8e7-5645d1e22411}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Base\Unity\Wifi">
       <UniqueIdentifier>{4472b59f-4f8e-438c-9a20-cf94bcfda375}</UniqueIdentifier>
     </Filter>
@@ -622,9 +610,6 @@
     <Filter Include="3.Application\Redo">
       <UniqueIdentifier>{46305e11-c405-46c7-86c4-d83d71906157}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3.Application\Project">
-      <UniqueIdentifier>{b573ff0e-3d2a-4f34-a02b-817868204203}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3.Application\CameraCtrl">
       <UniqueIdentifier>{3b059404-9747-4e80-8357-b9e8a8b46d13}</UniqueIdentifier>
     </Filter>
@@ -636,87 +621,6 @@
     </Filter>
     <Filter Include="4.ToScript">
       <UniqueIdentifier>{13a27acf-ca27-4ad2-abea-e5891671c81b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI">
-      <UniqueIdentifier>{9bfa247e-74dc-48b8-bcc1-fcb92382591b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Agent">
-      <UniqueIdentifier>{9e89d000-80c9-4048-96fa-135152e765c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer">
-      <UniqueIdentifier>{acaf74e3-92e0-4a52-95e0-6b21fe41cf64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer\include">
-      <UniqueIdentifier>{3f2390f9-5844-47b9-a393-ab40a0a2c79c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer\src">
-      <UniqueIdentifier>{6fe48de0-6720-49b0-97c6-a425e310f9f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Way">
-      <UniqueIdentifier>{8fe8c85c-c9b8-43ce-afd9-7600bcb6541a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\LiDar">
-      <UniqueIdentifier>{1493d1ff-1dde-4de8-914b-54af0ee1960c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\LiDar\iiiroboticslidar2">
-      <UniqueIdentifier>{f04aa19b-6dd6-43d8-858e-9e6cea8d1562}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics">
-      <UniqueIdentifier>{fe40ce68-6bbe-449d-8146-73089d36fd89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet">
-      <UniqueIdentifier>{3134136b-ad71-4f33-9d7c-bf6c7c890d51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletCollision">
-      <UniqueIdentifier>{64df44aa-43db-4743-827b-53baa77dd07c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision">
-      <UniqueIdentifier>{5384caf1-a2ef-4e8f-9ed9-54cf565af1a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch">
-      <UniqueIdentifier>{43869d08-65a6-4193-9900-9e014b9dce78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes">
-      <UniqueIdentifier>{1fc14331-8ae8-4e2d-9bf5-85b91d615cce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact">
-      <UniqueIdentifier>{e4bdc64c-324b-4ffc-a728-e4ecb9ddce12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision">
-      <UniqueIdentifier>{b77e7716-1b3f-41a4-b95e-99bb6c35f2d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletDynamics">
-      <UniqueIdentifier>{7b7f8d09-0a1c-4112-9b2a-0e20004acc77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletDynamics\Character">
-      <UniqueIdentifier>{f3b33717-f02e-470e-a6a3-79188b377e9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver">
-      <UniqueIdentifier>{0e62f379-d21f-4a70-8fde-b8440d8e4bec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics">
-      <UniqueIdentifier>{546d3935-9095-4d2d-acaf-097306fd5163}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\BulletDynamics\Vehicle">
-      <UniqueIdentifier>{edcaf158-f88f-4a5f-a313-faca471b2a69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1.Ext\Logic\Physics\Bullet\LinearMath">
-      <UniqueIdentifier>{906a683c-85f6-4a67-b838-c6e9bf0f7080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\SkillSystem">
-      <UniqueIdentifier>{a9b85f28-e02d-4713-8e91-10f4b9558e10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\SkillSystem\SkillDef">
-      <UniqueIdentifier>{0118fea2-ae3c-4a10-9cfb-47c207d2bf37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\SkillSystem\Skill">
-      <UniqueIdentifier>{809ff06e-768a-41d0-babf-814ec154cfd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\SkillSystem\UI">
-      <UniqueIdentifier>{5cc834c1-4a6d-4f1e-ba21-16cc05ea164b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\SkillSystem\Event">
-      <UniqueIdentifier>{77841218-85bd-43ee-bb6c-637919ed495e}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base\Net\Sockets\WebSocket">
       <UniqueIdentifier>{b642cfd1-5765-4c05-be66-660371d0330b}</UniqueIdentifier>
@@ -733,8 +637,197 @@
     <Filter Include="3.Application\STEAMEdu">
       <UniqueIdentifier>{d665c881-97d6-4799-9b92-b1b4c420bc82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\LiDar\breezyslam">
-      <UniqueIdentifier>{3aae5f7a-5917-44e8-bc8e-f31ce9ba681c}</UniqueIdentifier>
+    <Filter Include="1.Ext\Physics">
+      <UniqueIdentifier>{fe40ce68-6bbe-449d-8146-73089d36fd89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet">
+      <UniqueIdentifier>{3134136b-ad71-4f33-9d7c-bf6c7c890d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletCollision">
+      <UniqueIdentifier>{64df44aa-43db-4743-827b-53baa77dd07c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision">
+      <UniqueIdentifier>{5384caf1-a2ef-4e8f-9ed9-54cf565af1a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch">
+      <UniqueIdentifier>{43869d08-65a6-4193-9900-9e014b9dce78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletCollision\CollisionShapes">
+      <UniqueIdentifier>{1fc14331-8ae8-4e2d-9bf5-85b91d615cce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletCollision\Gimpact">
+      <UniqueIdentifier>{e4bdc64c-324b-4ffc-a728-e4ecb9ddce12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision">
+      <UniqueIdentifier>{b77e7716-1b3f-41a4-b95e-99bb6c35f2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletDynamics">
+      <UniqueIdentifier>{7b7f8d09-0a1c-4112-9b2a-0e20004acc77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletDynamics\Character">
+      <UniqueIdentifier>{f3b33717-f02e-470e-a6a3-79188b377e9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver">
+      <UniqueIdentifier>{0e62f379-d21f-4a70-8fde-b8440d8e4bec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletDynamics\Dynamics">
+      <UniqueIdentifier>{546d3935-9095-4d2d-acaf-097306fd5163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\BulletDynamics\Vehicle">
+      <UniqueIdentifier>{edcaf158-f88f-4a5f-a313-faca471b2a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Ext\Physics\Bullet\LinearMath">
+      <UniqueIdentifier>{906a683c-85f6-4a67-b838-c6e9bf0f7080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\ProjectSceneUI">
+      <UniqueIdentifier>{b573ff0e-3d2a-4f34-a02b-817868204203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic">
+      <UniqueIdentifier>{3ad3c201-f22e-43b8-9468-7e009b4e6fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic">
+      <UniqueIdentifier>{639574ef-692d-4f63-bd81-cd1abe269544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock">
+      <UniqueIdentifier>{78b95b03-9ae5-40a6-951b-233bc24454e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\ToScript">
+      <UniqueIdentifier>{5748bb6f-3268-4333-90df-25f7c0cde221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\PluginExport">
+      <UniqueIdentifier>{8494093f-df59-4ec0-a091-595bb43fd6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\Events">
+      <UniqueIdentifier>{3891ef00-e5da-488c-ab4f-4a46b903a4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\Sprite">
+      <UniqueIdentifier>{0b46d7ae-95af-43d8-956a-619c454ee48c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\Block">
+      <UniqueIdentifier>{782cc8fb-a598-4d5d-8250-915cee7a35a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI">
+      <UniqueIdentifier>{48ae808a-98f6-47c3-92cf-b56093559d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI\Cata">
+      <UniqueIdentifier>{7876199f-dab1-4d9d-bfe1-9c6cd5fd405e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI\Cata\Param">
+      <UniqueIdentifier>{31ce53bd-af9d-43a2-8e7c-f06c87bc4a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI\Editor">
+      <UniqueIdentifier>{ff43e401-6e3e-487c-9144-cac83c5867b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Logic\EventSpace">
+      <UniqueIdentifier>{f77586e2-6384-458d-b743-11b2f3157ccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI">
+      <UniqueIdentifier>{9bfa247e-74dc-48b8-bcc1-fcb92382591b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Agent">
+      <UniqueIdentifier>{9e89d000-80c9-4048-96fa-135152e765c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Agent\Path">
+      <UniqueIdentifier>{6eb0be79-0494-40e6-85e7-ec78282f80c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Agent\Utilities">
+      <UniqueIdentifier>{e63669ec-2f6f-434f-9d7b-9842761b7ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer">
+      <UniqueIdentifier>{acaf74e3-92e0-4a52-95e0-6b21fe41cf64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer\include">
+      <UniqueIdentifier>{3f2390f9-5844-47b9-a393-ab40a0a2c79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer\include\OpenSteer">
+      <UniqueIdentifier>{62ee4787-d9cd-4fc9-b21f-8b1b7a7713f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\OpenSteer\src">
+      <UniqueIdentifier>{6fe48de0-6720-49b0-97c6-a425e310f9f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SkillSystem">
+      <UniqueIdentifier>{a9b85f28-e02d-4713-8e91-10f4b9558e10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SkillSystem\SkillDef">
+      <UniqueIdentifier>{0118fea2-ae3c-4a10-9cfb-47c207d2bf37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SkillSystem\Skill">
+      <UniqueIdentifier>{809ff06e-768a-41d0-babf-814ec154cfd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SkillSystem\UI">
+      <UniqueIdentifier>{5cc834c1-4a6d-4f1e-ba21-16cc05ea164b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\SkillSystem\Event">
+      <UniqueIdentifier>{77841218-85bd-43ee-bb6c-637919ed495e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot">
+      <UniqueIdentifier>{1de2c05e-fe03-4098-8f75-c3b21f7c6900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar">
+      <UniqueIdentifier>{1493d1ff-1dde-4de8-914b-54af0ee1960c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\iiiroboticslidar2">
+      <UniqueIdentifier>{f04aa19b-6dd6-43d8-858e-9e6cea8d1562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\rplidar">
+      <UniqueIdentifier>{b258bc0a-962f-4340-9b13-4ebbb7236211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\rplidar\include">
+      <UniqueIdentifier>{b603e14f-ea4f-4240-b757-786c6adf6418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\rplidar\src">
+      <UniqueIdentifier>{84f1bbae-5685-417e-8794-7a26ac6a752f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\rplidar\src\arch">
+      <UniqueIdentifier>{9f880b65-eccd-4ac6-9a4b-4953b2e57b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\rplidar\src\arch\win32">
+      <UniqueIdentifier>{f765f370-eb42-48d0-ba11-41fc18ff8457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\rplidar\src\hal">
+      <UniqueIdentifier>{abf90133-18e9-41d4-a3ff-64522823daaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Robot">
+      <UniqueIdentifier>{a66f036d-0b2b-4e05-a95b-ae5a352b3590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigation">
+      <UniqueIdentifier>{6d9fb656-8290-4354-bb78-32e0a2da25f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\detour">
+      <UniqueIdentifier>{be962870-10dd-4d5d-930a-16482d94b931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\detour\include">
+      <UniqueIdentifier>{3787b1ae-2e15-44b8-a580-88a5864d4a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\detour\src">
+      <UniqueIdentifier>{987afe35-93e4-43fa-b0fd-0fb830796253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\recast">
+      <UniqueIdentifier>{25d0c960-3d82-4cd8-88d7-87d71badb87e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\recast\include">
+      <UniqueIdentifier>{582ad1d9-31b7-46bd-8e1f-8c2a36a22099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\recast\src">
+      <UniqueIdentifier>{b80f2928-68fd-4dfa-95dc-73de740d44a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\NavigationGrid">
+      <UniqueIdentifier>{0cc13495-2ddf-45e8-988e-64195b7e42d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Net\General">
+      <UniqueIdentifier>{0026d885-b15e-40d6-9f5f-46f066e566be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Net\Engine">
+      <UniqueIdentifier>{64fe27e1-2449-46ad-9e60-cf4b82ee286b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.Application\Exports">
+      <UniqueIdentifier>{7b90eca3-82ab-40b4-97a7-ae3c01e16e7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Path">
+      <UniqueIdentifier>{43ab1cff-3cdc-4029-a5f3-39c69593a53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\LiDar\sick">
+      <UniqueIdentifier>{ff3dad4e-0595-42f8-bf65-1ca80c5b6fed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1944,18 +2037,6 @@
     <ClInclude Include="Terrains\PX2Jungler.hpp">
       <Filter>1.Ext\Terrains</Filter>
     </ClInclude>
-    <ClInclude Include="Terrains\PX2LODTerrain.hpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrains\PX2LODTerrainBlock.hpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrains\PX2LODTerrainPage.hpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrains\PX2LODTerrainVertex.hpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClInclude>
     <ClInclude Include="Terrains\PX2RawTerrain.hpp">
       <Filter>1.Ext\Terrains</Filter>
     </ClInclude>
@@ -2644,13 +2725,13 @@
       <Filter>0.Base\Unity\Bluetooth</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Project.hpp">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Scene.hpp">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2UI.hpp">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2ObjCast.hpp">
       <Filter>3.Application\CreateCast</Filter>
@@ -2926,25 +3007,25 @@
       <Filter>0.Base\Unity\google\util\internal</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LBlock.hpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LFile.hpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LogicDefine.hpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LogicManager.hpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LogicPre.hpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LParam.hpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2LogicES.hpp">
-      <Filter>1.Ext\Logic\EventSpace</Filter>
+      <Filter>3.Application\Logic\EventSpace</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2FMODSound.hpp">
       <Filter>0.Base\Unity\SoundFMod</Filter>
@@ -3333,12 +3414,6 @@
     <ClInclude Include="Application\PX2AppBoostInfo.hpp">
       <Filter>3.Application</Filter>
     </ClInclude>
-    <ClInclude Include="Application\PX2GeneralServer.hpp">
-      <Filter>3.Application\Net</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\PX2GeneralClientConnector.hpp">
-      <Filter>3.Application\Net</Filter>
-    </ClInclude>
     <ClInclude Include="Net\PX2TCPServer.hpp">
       <Filter>0.Base\Net\TcpServer</Filter>
     </ClInclude>
@@ -3522,18 +3597,6 @@
     <ClInclude Include="Unity\PX2EditEventData.hpp">
       <Filter>0.Base\Unity\Edit</Filter>
     </ClInclude>
-    <ClInclude Include="Application\PX2EngineServer.hpp">
-      <Filter>3.Application\Net</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\PX2EngineClientConnector.hpp">
-      <Filter>3.Application\Net</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\PX2EngineNetCmdProcess.hpp">
-      <Filter>3.Application\Net</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\PX2EngineNetDefine.hpp">
-      <Filter>3.Application\Net</Filter>
-    </ClInclude>
     <ClInclude Include="Application\PX2EngineNetEvent.hpp">
       <Filter>3.Application\Event</Filter>
     </ClInclude>
@@ -3562,145 +3625,79 @@
       <Filter>0.Base\Unity\Voice</Filter>
     </ClInclude>
     <ClInclude Include="Logic\PX2Logics.hpp">
-      <Filter>1.Ext\Logic</Filter>
+      <Filter>3.Application\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockPre.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlocks.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BDefine.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\BlueBlockPlugin.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\PluginExport</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvent.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvents.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockScriptGenController.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSprite.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockSystem.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEdit.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCataFrame.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelCont.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelList.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanels.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlueBlockToLua.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\ToScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBManager.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlockConnector.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BBlock.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
     </ClInclude>
     <ClInclude Include="Unity\PX2Base64.hpp">
       <Filter>0.Base\Unity\Base64</Filter>
     </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelPre.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelBlock.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelBlockMtl.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelDefine.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelSection.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelSetBlockGet.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelTitle.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelMapData.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2VoxelManager.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
-    <ClInclude Include="Voxel\PX2Voxels.hpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClInclude>
     <ClInclude Include="Unity\PX2Wifi.hpp">
       <Filter>0.Base\Unity\Wifi</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2AIWayMoveController.hpp">
-      <Filter>2.AI\Way</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\AbstractVehicle.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Annotation.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\LocalSpace.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\lq.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Obstacle.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Pathway.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Proximity.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SteerLibrary.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Utilities.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Camera.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Clock.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Color.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\OldPathway.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Path.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PlugIn.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPath.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySegmentRadii.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySingleRadius.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlike.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeBaseDataExtractionPolicies.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeMappings.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeUtilities.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPath.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathAlikeUtilities.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathway.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SharedPointer.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SimpleVehicle.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\StandardTypes.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\UnusedParameter.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3Utilities.h">
-      <Filter>2.AI\OpenSteer\include</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\src\TerrainRayTest.h">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2AIAgentPath.hpp">
-      <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgent.hpp">
       <Filter>2.AI\Agent</Filter>
@@ -3709,570 +3706,561 @@
       <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btAabbUtil2.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btAlignedAllocator.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btAlignedObjectArray.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btConvexHull.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btConvexHullComputer.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btDefaultMotionState.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btGeometryUtil.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btGrahamScan2dConvexHull.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btHashMap.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btIDebugDraw.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btList.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btMatrix3x3.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btMinMax.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btMotionState.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btPolarDecomposition.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btPoolAllocator.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btQuadWord.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btQuaternion.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btQuickprof.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btRandom.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btScalar.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btSerializer.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btStackAlloc.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btTransform.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btTransformUtil.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btVector3.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\btBulletCollisionCommon.h">
-      <Filter>1.Ext\Logic\Physics\Bullet</Filter>
+      <Filter>1.Ext\Physics\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\btBulletDynamicsCommon.h">
-      <Filter>1.Ext\Logic\Physics\Bullet</Filter>
+      <Filter>1.Ext\Physics\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\Bullet-C-Api.h">
-      <Filter>1.Ext\Logic\Physics\Bullet</Filter>
+      <Filter>1.Ext\Physics\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btBroadphaseInterface.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btBroadphaseProxy.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvt.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvtBroadphase.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDispatcher.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCache.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCallback.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btQuantizedBvh.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btSimpleBroadphase.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxDetector.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionConfiguration.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionCreateFunc.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionDispatcher.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionObject.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionObjectWrapper.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionWorld.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btGhostObject.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btInternalEdgeUtility.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btManifoldResult.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSimulationIslandManager.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\btUnionFind.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionDispatch\SphereTriangleDetector.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btBox2dShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btBoxShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCapsuleShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCollisionMargin.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCollisionShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCompoundShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConcaveShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConeShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvex2dShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexHullShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexInternalShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPointCloudShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPolyhedron.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btCylinderShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btEmptyShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMaterial.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMinkowskiSumShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultiSphereShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btOptimizedBvh.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btPolyhedralConvexShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btShapeHull.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btSphereShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btStaticPlaneShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btStridingMeshInterface.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTetrahedronShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleBuffer.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleCallback.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleInfoMap.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMesh.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMeshShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\CollisionShapes\btUniformScalingShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btBoxCollision.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btClipPolygon.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btContactProcessing.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGenericPoolAllocator.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGeometryOperations.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactBvh.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactMassUtil.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactQuantizedBvh.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactShape.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btQuantization.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\btTriangleShapeEx.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_array.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_basic_geometry_operations.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_bitset.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_box_collision.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_box_set.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_clip_polygon.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_contact.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_geom_types.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_geometry.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_hash_table.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_linear_math.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_math.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_memory.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_radixsort.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\Gimpact\gim_tri_collision.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btConvexCast.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btConvexPenetrationDepthSolver.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btDiscreteCollisionDetectorInterface.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpa2.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btManifoldPoint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPersistentManifold.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPointCollector.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btRaycastCallback.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btSimplexSolverInterface.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Character\btCharacterControllerInterface.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Character</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Character</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Character\btKinematicCharacterController.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Character</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Character</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btConeTwistConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btConstraintSolver.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btContactConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btContactSolverInfo.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGearConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHinge2Constraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHingeConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btJacobianEntry.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSliderConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolverBody.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolverConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btTypedConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btUniversalConstraint.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btActionInterface.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btDynamicsWorld.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btRigidBody.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Dynamics\btSimpleDynamicsWorld.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Vehicle\btRaycastVehicle.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Vehicle</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Vehicle</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Vehicle\btVehicleRaycaster.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Vehicle</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Vehicle</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Bullet\BulletDynamics\Vehicle\btWheelInfo.h">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Vehicle</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Vehicle</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PX2BtPhysicsUtilities.hpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PX2BtPre.hpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2AIAgentUtilities.hpp">
-      <Filter>2.AI\Agent</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentWorld.hpp">
       <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PX2BtPhysicsWorld.hpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PX2BtPhysicsDebugDraw.hpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp">
-      <Filter>2.AI\Agent</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentObject.hpp">
       <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIInfluenceMap.hpp">
-      <Filter>2.AI\Agent</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp">
       <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2CameraPlayController.hpp">
@@ -4291,49 +4279,55 @@
       <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AILiDar.hpp">
-      <Filter>2.AI\LiDar</Filter>
+      <Filter>2.AI\Robot\LiDar</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidar.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\C3iroboticsLidarProtocol.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CArcTime.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CCountDown.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CDeviceConnection.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CLidarPacket.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CLidarPacketReceiver.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CLidarUnpacket.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CLogUtitls.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CSimulateSerial.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CTime.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\CTypedef.h">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.hpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIs.hpp">
       <Filter>2.AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2BProject.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.hpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata\Param</Filter>
     </ClInclude>
     <ClInclude Include="AI\SkillSystem\PX2SkillDef.hpp">
       <Filter>2.AI\SkillSystem\SkillDef</Filter>
@@ -4446,44 +4440,284 @@
     <ClInclude Include="Application\PX2STEAMEdu.hpp">
       <Filter>3.Application\STEAMEdu</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\algorithms.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="Unity\PX2SoundWav.hpp">
+      <Filter>0.Base\Unity\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\BreezySLAM.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\PX2AIAgentPath.hpp">
+      <Filter>2.AI\Agent\Path</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\coreslam.h">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp">
+      <Filter>2.AI\Agent\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\coreslam_internals.h">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\PX2AIAgentUtilities.hpp">
+      <Filter>2.AI\Agent\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\Laser.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp">
+      <Filter>2.AI\Agent\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\Map.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\include\rplidar.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\include</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\Position.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\include\rplidar_cmd.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\include</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\random.h">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\include\rplidar_driver.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\include</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\Scan.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\include\rplidar_protocol.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\include</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\Velocities.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\include\rptypes.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\include</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\WheeledRobot.hpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\src\arch\win32\arch_win32.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
     </ClInclude>
-    <ClInclude Include="AI\breezyslam\ziggurat.h">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClInclude Include="AI\rplidar\src\arch\win32\net_serial.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
     </ClInclude>
-    <ClInclude Include="AI\PX2Rover.hpp">
-      <Filter>2.AI\LiDar</Filter>
+    <ClInclude Include="AI\rplidar\src\arch\win32\timer.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\arch\win32\winthread.hpp">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\abs_rxtx.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\assert.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\byteops.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\event.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\locker.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\socket.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\thread.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\types.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\hal\util.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\rplidar_driver_impl.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\rplidar_driver_serial.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\rplidar_driver_TCP.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\rplidar\src\sdkcommon.h">
+      <Filter>2.AI\Robot\LiDar\rplidar\src</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2Robot.hpp">
+      <Filter>2.AI\Robot\Robot</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AINavigationMesh.hpp">
+      <Filter>2.AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AINavigationUtilities.hpp">
+      <Filter>2.AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AIMeshUtilities.hpp">
+      <Filter>2.AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourAlloc.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourAssert.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourCommon.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourNavMesh.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourNavMeshBuilder.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourNavMeshQuery.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourNode.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\detour\include\DetourStatus.h">
+      <Filter>2.AI\detour\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\recast\include\Recast.h">
+      <Filter>2.AI\recast\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\recast\include\RecastAlloc.h">
+      <Filter>2.AI\recast\include</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\recast\include\RecastAssert.h">
+      <Filter>2.AI\recast\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2Logic.hpp">
+      <Filter>3.Application\ProjectSceneUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2Actor.hpp">
+      <Filter>3.Application\ProjectSceneUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AIAgentBase.hpp">
+      <Filter>2.AI\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\AbstractVehicle.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Annotation.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Camera.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Clock.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Color.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\LocalSpace.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\lq.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Obstacle.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\OldPathway.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Path.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Pathway.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PlugIn.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPath.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySegmentRadii.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySingleRadius.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Proximity.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlike.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeBaseDataExtractionPolicies.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeMappings.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeUtilities.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPath.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathAlikeUtilities.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathway.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SharedPointer.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SimpleVehicle.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\StandardTypes.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SteerLibrary.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\UnusedParameter.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Utilities.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3Utilities.h">
+      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\OpenSteer\src\TerrainRayTest.h">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2Engine.hpp">
+      <Filter>3.Application\Exports</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AIES.hpp">
+      <Filter>2.AI\Robot</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RobotDatas.hpp">
+      <Filter>2.AI\Robot\Robot</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2NavBitArray.hpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2NavGridMap.hpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2NavHeapNode.hpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2NavMoveUnit.hpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2NavMoveManager.hpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2NavPoint2D.hpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2GeneralClientConnector.hpp">
+      <Filter>3.Application\Net\General</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2GeneralServer.hpp">
+      <Filter>3.Application\Net\General</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineClientConnector.hpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineNetCmdProcess.hpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineNetDefine.hpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\PX2EngineServer.hpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AIPath.hpp">
+      <Filter>2.AI\Path</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5561,18 +5795,6 @@
     <ClCompile Include="Terrains\PX2Jungler.cpp">
       <Filter>1.Ext\Terrains</Filter>
     </ClCompile>
-    <ClCompile Include="Terrains\PX2LODTerrain.cpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrains\PX2LODTerrainBlock.cpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrains\PX2LODTerrainPage.cpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrains\PX2LODTerrainVertex.cpp">
-      <Filter>1.Ext\Terrains</Filter>
-    </ClCompile>
     <ClCompile Include="Terrains\PX2RawTerrain.cpp">
       <Filter>1.Ext\Terrains</Filter>
     </ClCompile>
@@ -6159,13 +6381,13 @@
       <Filter>0.Base\Unity\Bluetooth</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Scene.cpp">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2UI.cpp">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Project.cpp">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2ObjCast.cpp">
       <Filter>3.Application\CreateCast</Filter>
@@ -6426,22 +6648,22 @@
       <Filter>0.Base\Unity\google\util\internal</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PX2LBlock.cpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PX2LBlockSaveLoad.cpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PX2LFile.cpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PX2LogicManager.cpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PX2LParam.cpp">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PX2LogicES.cpp">
-      <Filter>1.Ext\Logic\EventSpace</Filter>
+      <Filter>3.Application\Logic\EventSpace</Filter>
     </ClCompile>
     <ClCompile Include="ToScript\PX2ToLua.cpp">
       <Filter>4.ToScript</Filter>
@@ -6809,12 +7031,6 @@
     <ClCompile Include="UI\PX2UICollapseItem.cpp">
       <Filter>1.Ext\UI\Frames\CollapsePanel</Filter>
     </ClCompile>
-    <ClCompile Include="Application\PX2GeneralServer.cpp">
-      <Filter>3.Application\Net</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\PX2GeneralClientConnector.cpp">
-      <Filter>3.Application\Net</Filter>
-    </ClCompile>
     <ClCompile Include="Net\PX2TCPServer.cpp">
       <Filter>0.Base\Net\TcpServer</Filter>
     </ClCompile>
@@ -6983,15 +7199,6 @@
     <ClCompile Include="Unity\PX2EditEventData.cpp">
       <Filter>0.Base\Unity\Edit</Filter>
     </ClCompile>
-    <ClCompile Include="Application\PX2EngineServer.cpp">
-      <Filter>3.Application\Net</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\PX2EngineClientConnector.cpp">
-      <Filter>3.Application\Net</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp">
-      <Filter>3.Application\Net</Filter>
-    </ClCompile>
     <ClCompile Include="Application\PX2EngineNetEvent.cpp">
       <Filter>3.Application\Event</Filter>
     </ClCompile>
@@ -7019,95 +7226,83 @@
     <ClCompile Include="Unity\PX2VoiceEventType.cpp">
       <Filter>0.Base\Unity\Voice</Filter>
     </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BDefine.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\BlueBlockPlugin.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\PluginExport</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\BlueBlockDll.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\PluginExport</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvent.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvents.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockScriptGenController.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSprite.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteLooks.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteOperator.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystem.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEdit.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCataFrame.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelCont.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelList.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanels.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlueBlockToLua.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\ToScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBManager.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockConnector.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlock.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
     <ClCompile Include="Unity\PX2Base64.cpp">
       <Filter>0.Base\Unity\Base64</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2AppBoostInfo.cpp">
       <Filter>3.Application</Filter>
     </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelBlock.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelBlockMtl.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelSection.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelTitle.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelMapData.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelManager.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="Voxel\PX2VoxelSetBlockGet.cpp">
-      <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
     <ClCompile Include="Unity\PX2Wifi.cpp">
       <Filter>0.Base\Unity\Wifi</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2AIWayMoveController.cpp">
-      <Filter>2.AI\Way</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\lq.c">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Pathway.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Vec3.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Camera.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Clock.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Color.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Obstacle.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\OldPathway.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Path.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PlugIn.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPath.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySegmentRadii.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySingleRadius.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\SegmentedPath.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\SegmentedPathway.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\SimpleVehicle.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\TerrainRayTest.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Vec3Utilities.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2AIAgentPath.cpp">
-      <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgent.cpp">
       <Filter>2.AI\Agent</Filter>
@@ -7116,393 +7311,381 @@
       <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btAlignedAllocator.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btConvexHull.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btConvexHullComputer.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btGeometryUtil.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btPolarDecomposition.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btQuickprof.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btSerializer.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btVector3.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\LinearMath</Filter>
+      <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvt.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDbvtBroadphase.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btDispatcher.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCache.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btQuantizedBvh.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\BroadphaseCollision\btSimpleBroadphase.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\BroadphaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btBoxBoxDetector.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionDispatcher.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionObject.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCollisionWorld.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btGhostObject.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btInternalEdgeUtility.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btManifoldResult.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSimulationIslandManager.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\btUnionFind.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionDispatch\SphereTriangleDetector.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionDispatch</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btBox2dShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btBoxShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCapsuleShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCollisionShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCompoundShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConcaveShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConeShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvex2dShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexHullShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexInternalShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPointCloudShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexPolyhedron.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btCylinderShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btEmptyShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btMinkowskiSumShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btMultiSphereShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btOptimizedBvh.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btPolyhedralConvexShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btShapeHull.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btSphereShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btStaticPlaneShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btStridingMeshInterface.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTetrahedronShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleBuffer.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleCallback.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMesh.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btTriangleMeshShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\CollisionShapes\btUniformScalingShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btContactProcessing.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGenericPoolAllocator.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactBvh.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactQuantizedBvh.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btGImpactShape.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\btTriangleShapeEx.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_box_set.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_contact.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_memory.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\Gimpact\gim_tri_collision.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\Gimpact</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\Gimpact</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btConvexCast.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpa2.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPersistentManifold.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btRaycastCallback.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletCollision\NarrowPhaseCollision</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Character\btKinematicCharacterController.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Character</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Character</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btContactConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGearConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHinge2Constraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btHingeConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSliderConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btTypedConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\ConstraintSolver\btUniversalConstraint.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\ConstraintSolver</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\btRigidBody.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\btSimpleDynamicsWorld.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Dynamics\Bullet-C-API.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Dynamics</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Dynamics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Vehicle\btRaycastVehicle.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Vehicle</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Vehicle</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Bullet\BulletDynamics\Vehicle\btWheelInfo.cpp">
-      <Filter>1.Ext\Logic\Physics\Bullet\BulletDynamics\Vehicle</Filter>
+      <Filter>1.Ext\Physics\Bullet\BulletDynamics\Vehicle</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PX2BtPhysicsUtilities.cpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2AIAgentFunctions.cpp">
-      <Filter>2.AI\Agent</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2AIAgentUtilities.cpp">
-      <Filter>2.AI\Agent</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentWorld.cpp">
       <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PX2BtPhysicsWorld.cpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PX2BtPhysicsDebugDraw.cpp">
-      <Filter>1.Ext\Logic\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp">
-      <Filter>2.AI\Agent</Filter>
+      <Filter>1.Ext\Physics</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentObject.cpp">
       <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIInfluenceMap.cpp">
-      <Filter>2.AI\Agent</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp">
       <Filter>2.AI\Agent</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2CameraPlayController.cpp">
@@ -7521,37 +7704,46 @@
       <Filter>0.Base\Unity\Serial\serial</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AILiDar.cpp">
-      <Filter>2.AI\LiDar</Filter>
+      <Filter>2.AI\Robot\LiDar</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\C3iroboticsLidar.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CArcTime.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CCountDown.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CDeviceConnection.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CLidarPacketReceiver.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CLidarUnpacket.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CSimulateSerial.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CTime.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\CLidarPacket.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.cpp">
-      <Filter>2.AI\LiDar\iiiroboticslidar2</Filter>
+      <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BProject.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystemArduino.cpp">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="UI\PX2UIAuiBlockFrame.cpp">
       <Filter>1.Ext\UI\Aui</Filter>
@@ -7673,35 +7865,197 @@
     <ClCompile Include="Application\PX2STEAMEduHandler.cpp">
       <Filter>3.Application\STEAMEdu</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\algorithms.cpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="Unity\PX2SoundWav.cpp">
+      <Filter>0.Base\Unity\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\coreslam.c">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\PX2AIAgentPath.cpp">
+      <Filter>2.AI\Agent\Path</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\coreslam_sisd.c">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp">
+      <Filter>2.AI\Agent\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\Laser.cpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\PX2AIAgentUtilities.cpp">
+      <Filter>2.AI\Agent\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\Map.cpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp">
+      <Filter>2.AI\Agent\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\random.c">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\rplidar\src\arch\win32\net_serial.cpp">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\Scan.cpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\rplidar\src\arch\win32\net_socket.cpp">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\WheeledRobot.cpp">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\rplidar\src\arch\win32\timer.cpp">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\arch\win32</Filter>
     </ClCompile>
-    <ClCompile Include="AI\breezyslam\ziggurat.c">
-      <Filter>2.AI\LiDar\breezyslam</Filter>
+    <ClCompile Include="AI\rplidar\src\hal\thread.cpp">
+      <Filter>2.AI\Robot\LiDar\rplidar\src\hal</Filter>
     </ClCompile>
-    <ClCompile Include="AI\PX2Rover.cpp">
-      <Filter>2.AI\LiDar</Filter>
+    <ClCompile Include="AI\rplidar\src\rplidar_driver.cpp">
+      <Filter>2.AI\Robot\LiDar\rplidar\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2Robot.cpp">
+      <Filter>2.AI\Robot\Robot</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AINavigationMesh.cpp">
+      <Filter>2.AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AINavigationUtilities.cpp">
+      <Filter>2.AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AIMeshUtilities.cpp">
+      <Filter>2.AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\detour\src\DetourAlloc.cpp">
+      <Filter>2.AI\detour\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\detour\src\DetourCommon.cpp">
+      <Filter>2.AI\detour\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\detour\src\DetourNavMesh.cpp">
+      <Filter>2.AI\detour\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\detour\src\DetourNavMeshBuilder.cpp">
+      <Filter>2.AI\detour\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\detour\src\DetourNavMeshQuery.cpp">
+      <Filter>2.AI\detour\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\detour\src\DetourNode.cpp">
+      <Filter>2.AI\detour\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\Recast.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastAlloc.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastArea.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastContour.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastFilter.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastLayers.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastMesh.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastMeshDetail.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastRasterization.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\recast\src\RecastRegion.cpp">
+      <Filter>2.AI\recast\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2Logic.cpp">
+      <Filter>3.Application\ProjectSceneUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2Actor.cpp">
+      <Filter>3.Application\ProjectSceneUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AIAgentBase.cpp">
+      <Filter>2.AI\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Camera.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Clock.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Color.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\lq.c">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Obstacle.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\OldPathway.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Path.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Pathway.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\PlugIn.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPath.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySegmentRadii.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySingleRadius.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\SegmentedPath.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\SegmentedPathway.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\SimpleVehicle.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\TerrainRayTest.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Vec3.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\OpenSteer\src\Vec3Utilities.cpp">
+      <Filter>2.AI\OpenSteer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2Engine.cpp">
+      <Filter>3.Application\Exports</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AIES.cpp">
+      <Filter>2.AI\Robot</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RobotDatas.cpp">
+      <Filter>2.AI\Robot\Robot</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2NavBitArray.cpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2NavGridMap.cpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2NavMoveUnit.cpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2NavMoveManager.cpp">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2GeneralClientConnector.cpp">
+      <Filter>3.Application\Net\General</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2GeneralServer.cpp">
+      <Filter>3.Application\Net\General</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineClientConnector.cpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineServer.cpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AIPath.cpp">
+      <Filter>2.AI\Path</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8044,18 +8398,6 @@
     <None Include="Terrains\PX2Jungler.inl">
       <Filter>1.Ext\Terrains</Filter>
     </None>
-    <None Include="Terrains\PX2LODTerrain.inl">
-      <Filter>1.Ext\Terrains</Filter>
-    </None>
-    <None Include="Terrains\PX2LODTerrainBlock.inl">
-      <Filter>1.Ext\Terrains</Filter>
-    </None>
-    <None Include="Terrains\PX2LODTerrainPage.inl">
-      <Filter>1.Ext\Terrains</Filter>
-    </None>
-    <None Include="Terrains\PX2LODTerrainVertex.inl">
-      <Filter>1.Ext\Terrains</Filter>
-    </None>
     <None Include="Terrains\PX2RawTerrainPage.inl">
       <Filter>1.Ext\Terrains</Filter>
     </None>
@@ -8378,13 +8720,13 @@
       <Filter>0.Base\Mathematics\Query</Filter>
     </None>
     <None Include="Application\PX2Project.inl">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </None>
     <None Include="Application\PX2Scene.inl">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </None>
     <None Include="Application\PX2UI.inl">
-      <Filter>3.Application\Project</Filter>
+      <Filter>3.Application\ProjectSceneUI</Filter>
     </None>
     <None Include="Mathematics\PX2TriangleKey.inl">
       <Filter>0.Base\Mathematics\Objects3D</Filter>
@@ -8399,13 +8741,13 @@
       <Filter>1.Ext\UI\Frames\VLC</Filter>
     </None>
     <None Include="Logic\PX2LBlock.inl">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </None>
     <None Include="Logic\PX2LogicManager.inl">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </None>
     <None Include="Logic\PX2LParam.inl">
-      <Filter>1.Ext\Logic\Logic</Filter>
+      <Filter>3.Application\Logic\Logic</Filter>
     </None>
     <None Include="Graphics\PX2InputManager.inl">
       <Filter>0.Base\Graphics\Input</Filter>
@@ -8434,8 +8776,11 @@
     <None Include="Unity\PX2DataBase.inl">
       <Filter>0.Base\Unity\DataBase</Filter>
     </None>
-    <None Include="Voxel\PX2VoxelSection.inl">
-      <Filter>1.Ext\Voxel</Filter>
+    <None Include="Logic\BlueBlock\PX2BBlockSprite.inl">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
+    </None>
+    <None Include="Logic\BlueBlock\PX2BBlock.inl">
+      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
     </None>
     <None Include="AI\PX2AIAgent.inl">
       <Filter>2.AI\Agent</Filter>
@@ -8469,6 +8814,18 @@
     </None>
     <None Include="Core\PX2TextIterator.inl">
       <Filter>0.Base\Core\Text</Filter>
+    </None>
+    <None Include="AI\PX2Robot.inl">
+      <Filter>2.AI\Robot\Robot</Filter>
+    </None>
+    <None Include="AI\PX2NavBitArray.inl">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </None>
+    <None Include="AI\PX2NavMoveManager.inl">
+      <Filter>2.AI\NavigationGrid</Filter>
+    </None>
+    <None Include="AI\PX2NavGridMap.inl">
+      <Filter>2.AI\NavigationGrid</Filter>
     </None>
   </ItemGroup>
 </Project>

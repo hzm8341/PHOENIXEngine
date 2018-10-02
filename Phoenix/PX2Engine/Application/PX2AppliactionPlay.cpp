@@ -3,6 +3,9 @@
 #include "PX2Application.hpp"
 #include "PX2ScriptManager.hpp"
 #include "PX2ProjectEvent.hpp"
+#if defined _WIN32 || defined (WIN32)
+#include <ShellApi.h>
+#endif
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -11,12 +14,10 @@ void Application::Play(PlayType type)
 	if (mPlayType == type) 
 		return;
 
-	std::string dirScirpt = "scripts";
-	if (BM_APP == mBoostMode)
-		dirScirpt = "/scripts";
-	else if (BM_SERVER == mBoostMode)
-		dirScirpt = "/scripts_server";
+	if (mProjectName.empty())
+		return;
 
+	std::string dirScirpt = "/scripts";
 	if (PT_PLAY == type)
 	{
 		PX2_LOG_INFO("Begin PT_PLAY");
@@ -64,5 +65,13 @@ void Application::Play(PlayType type)
 
 		PX2_LOG_INFO("End PT_NONE");
 	}
+}
+//----------------------------------------------------------------------------
+void Application::RunFile(const std::string &pathname)
+{
+#if defined _WIN32 || defined (WIN32)
+	std::string cmdStr = pathname;
+	ShellExecute(NULL, "open", cmdStr.c_str(), NULL, NULL, SW_SHOWNORMAL);
+#endif
 }
 //----------------------------------------------------------------------------

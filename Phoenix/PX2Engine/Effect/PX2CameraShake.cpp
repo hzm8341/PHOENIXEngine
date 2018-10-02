@@ -67,9 +67,9 @@ void CameraShake::Play ()
 		mIsUseZ);
 }
 //----------------------------------------------------------------------------
-void CameraShake::Stop ()
+void CameraShake::Pause()
 {
-	Effectable::Stop();
+	Effectable::Pause();
 
 	if (mShakeChannel >= 0)
 	{

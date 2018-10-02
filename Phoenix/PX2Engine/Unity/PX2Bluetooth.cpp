@@ -348,8 +348,9 @@ void Bluetooth::ReConnect()
 //----------------------------------------------------------------------------
 void Bluetooth::Send(const std::string &str, bool withRead)
 {
+	PX2_UNUSED(withRead);
+
 	int length = (int)str.length();
-	PX2_LOG_INFO("Bluetooth Send:%d Str:%s", (int)str.length(), str.c_str());
 	if (str.length() >= 64)
 	{
 		PX2_LOG_INFO("bluetooth size bigger%d", length);
@@ -602,7 +603,6 @@ void Bluetooth::_OnReceive(const std::string &recvStr)
 			PX2_SC_LUA->CallString(scriptStr + "(\"" + recvStr + "\")");
 		}
 	}
-
 
 	if ((int)mScriptHandlersHex.size() > 0)
 	{

@@ -13,8 +13,8 @@ namespace PX2
 	/// 像机节点类
 	/**
 	* Node的世界变换被用作Camera的空间方位。Node的世界旋转矩阵被用作Camera的坐
-	* 标轴方向。世界变换的第0列是像机的方向（direction）向量，第1列是像机的上
-	* （up）向量，第2列是像机的右（right）向量。
+	* 标轴方向。世界变换的第0列是像机的右（right）向量,第1列是像机的方向
+	*（direction）向量，第2列是像机的上（up）向量
 	*/
 	class PX2_ENGINE_ITEM CameraNode : public Node
 	{
@@ -29,9 +29,9 @@ namespace PX2
 		/**
 		* 在构造函数中，像机的当前坐标系统被作为Node的本地变换。
 		* local translation		  = camera location
-		* local rotation column 0 = camera direction
-		* local rotation column 1 = camera up
-		* local rotation column 2 = camera right
+		* local rotation column 0 = camera right
+		* local rotation column 1 = camera direction
+		* local rotation column 2 = camera up
 		*/
 		CameraNode (Camera* camera = 0);
 		virtual ~CameraNode ();
@@ -53,6 +53,7 @@ namespace PX2
 
 		void LookAt(const APoint &pos, const AVector &up=AVector::UNIT_Z);
 		void LookAt(const Movable *mov, const AVector &up = AVector::UNIT_Z);
+		void LookDir(const AVector &dir, const AVector &up = AVector::UNIT_Z);
 
 	protected:
 		virtual void UpdateWorldData (double applicationTime, double elapsedTime);

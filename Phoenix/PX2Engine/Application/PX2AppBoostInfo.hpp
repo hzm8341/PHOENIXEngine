@@ -31,11 +31,6 @@ namespace PX2
 		bool IsShowInfo;
 		bool IsDataReWriteToDataUpdate;
 
-		// server
-		std::string ServerProjectName;
-		int Port;
-		int NumMaxConnection;
-
 		// projects
 		std::vector<std::string> Projects;
 		bool IsHasProject(const std::string &projectName) const;

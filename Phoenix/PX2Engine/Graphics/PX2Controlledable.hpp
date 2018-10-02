@@ -29,7 +29,7 @@ namespace PX2
 		void ResetPlay ();
 		virtual void Play ();
 		virtual bool IsPlaying () const;
-		virtual void Stop ();
+		virtual void Pause();
 		virtual void Reset ();
 		void SetSelfCtrled (bool selfCtrled);
 		bool IsSelfCtrled () const;

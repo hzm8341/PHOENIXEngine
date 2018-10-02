@@ -80,6 +80,8 @@ namespace PX2
 		HWND mhWnd;
 
 #elif defined (__LINUX__)
+		PX2::KeyCode _ConvertKeyCode(unsigned char chKey);
+
 		Display *mDisplay;
 		Window mWindow;
 		Atom mPX2DeleteWindow;

@@ -20,7 +20,7 @@ namespace PX2
 
 		virtual void Play();
 		virtual bool IsPlaying() const;
-		virtual void Stop();
+		virtual void Pause();
 
 		void SetSize(float size);
 

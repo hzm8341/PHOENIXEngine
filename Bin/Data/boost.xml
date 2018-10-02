@@ -7,10 +7,5 @@
 			<var playlogicmode="logic" isshowinfo="true" isdatawrite="false"/>
 		</play>
 	</app>
-	<server>
-		<play>
-			<var port="18180" nummaxconnection="400"/>
-		</play>
-	</server>
 </boost>
 

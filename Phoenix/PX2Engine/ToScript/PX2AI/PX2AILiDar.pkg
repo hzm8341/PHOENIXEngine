@@ -8,11 +8,23 @@
 
 		static LiDar *New();
 		
-		bool Open(const std::string &port, int baud);
-		bool IsOpened() const;
-		void Close();
+		enum LiDarType
+		{
+			LT_III,
+			LT_RP,
+			LT_WR,
+			LT_SICK,
+			LT_MAX_TYPE
+		};
+		void SetLiDarType(LiDarType type);
+		LiDarType GetLiDarType() const;
 		
-		UIFPicBox *GetUIFPicBox();
+		bool Open(const std::string &port, int baud);
+		bool IsOpened();
+		void Close();
+
+		Texture2D *GetTextureLidar();
+		UIFPicBox *GetUIFPicBoxLidar();
 
 		void Update(float appSeconds, float elapsedSeconds);
 	};

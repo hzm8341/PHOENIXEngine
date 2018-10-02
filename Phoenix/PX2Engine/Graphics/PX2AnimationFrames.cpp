@@ -85,12 +85,12 @@ bool AnimationFrames::IsPlaying() const
 	return false;
 }
 //----------------------------------------------------------------------------
-void AnimationFrames::Stop()
+void AnimationFrames::Pause()
 {
-	Animation::Stop();
+	Animation::Pause();
 
 	if (mFramesMesh)
-		mFramesMesh->Stop();
+		mFramesMesh->Pause();
 }
 //----------------------------------------------------------------------------
 void AnimationFrames::SetWorldRunDir(const AVector &vec)

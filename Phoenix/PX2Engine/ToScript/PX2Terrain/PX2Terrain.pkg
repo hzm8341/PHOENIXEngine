@@ -9,7 +9,7 @@
 		inline int GetColQuantity () const;
 		inline int GetNumVertexPage () const;
 		inline float GetSpacing () const;
-		float GetHeight (float x, float y) const;
+		float GetHeight (float x, float y);
 
 		Shine *GetTerrainShine ();
 	};

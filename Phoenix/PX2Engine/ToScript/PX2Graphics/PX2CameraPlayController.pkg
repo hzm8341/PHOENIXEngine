@@ -14,6 +14,9 @@
 		void GetCameraDist(float &min, float &max);
 
 		AVector GetCurDir();
+		
+		void SetTouchSizeNode(SizeNode *frame);
+		SizeNode *GetTouchSizeNode();
 
 		virtual void OnEvent(Event *ent);
 

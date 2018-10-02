@@ -37,7 +37,6 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import org.appplay.ap.R;
 import com.baidu.speech.VoiceRecognitionService;

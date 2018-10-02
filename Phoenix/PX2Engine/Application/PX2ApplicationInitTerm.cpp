@@ -14,7 +14,9 @@
 #include "PX2EngineUICanvas.hpp"
 #include "PX2ProjectEventController.hpp"
 #include "PX2ServerInfoManager.hpp"
+#if defined PX2_USE_VOXEL
 #include "PX2VoxelManager.hpp"
+#endif
 #include "PX2Bluetooth.hpp"
 #include "PX2TimerManager.hpp"
 #include "PX2ErrorHandler.hpp"
@@ -25,31 +27,45 @@
 #include "PX2VoiceSDK.hpp"
 #include "PX2FileIO.hpp"
 #include "PX2StringTokenizer.hpp"
+#include "PX2StringHelp.hpp"
+#include "PX2Robot.hpp"
 using namespace PX2;
 
+//----------------------------------------------------------------------------
 Mutex sServerMutex;
-
+//----------------------------------------------------------------------------
 static std::string _sCmdString;
-static std::vector<std::string> _sCmdParams;
 static bool _sIsHasInput = false;
 static bool _sIsDoQuit = false;
 void _InputThreadProc(void* data)
 {
 	PX2_UNUSED(data);
 
+	std::cout << "_InputThreadProc start\n";
+
 	while (!_sIsDoQuit)
 	{
-		if (!_sIsHasInput)
+		bool isHasInput = false;
 		{
-			std::cout << "please input your commond:\n";
+			ScopedCS cs(&sServerMutex);
+			isHasInput = _sIsHasInput;
+		}
+		if (!isHasInput)
+		{
+			{
+				ScopedCS cs(&sServerMutex);
+				std::cout << "please input your commond:\n";
+			}
+			
 			char buffer[256];
 			std::cin.getline(buffer, 256);
 			std::string cmdbuf(buffer);
 			_sCmdString = cmdbuf;
-			_sCmdParams.resize(0);
 
-			ScopedCS cs(&sServerMutex);
-			_sIsHasInput = true;
+			{
+				ScopedCS cs(&sServerMutex);
+				_sIsHasInput = true;
+			}
 		}
 	}
 }
@@ -72,6 +88,47 @@ int _ProcessInputString(const std::string &buf)
 		if ("quit" == cmd && count == 1)
 		{
 			ret = 1;
+		}
+		else if ("ask" == cmd)
+		{
+			wchar_t *unic = StringHelp::AnsiToUnicode(contentStr.c_str());
+			const char *askStr = StringHelp::UnicodeToUTF8(unic);
+
+			std::string strRet = PX2_VOICESDK.GetAnswer(askStr, true);
+#if defined (_WIN32) || defined (WIN32) || defined(__LINUX__)
+			const wchar_t *ansStr_w = StringHelp::UTF8ToUnicode(strRet.c_str());
+			const char *ansStr = StringHelp::UnicodeToAnsi(ansStr_w);
+
+			std::cout << ansStr << std::endl;
+#endif
+		}
+		else if ("say" == cmd)
+		{
+			wchar_t *unic = StringHelp::AnsiToUnicode(contentStr.c_str());
+			const char *sayStr = StringHelp::UnicodeToUTF8(unic);
+			PX2_VOICESDK.Speak(sayStr);
+		}
+		else if ("music" == cmd)
+		{
+			wchar_t *unic = StringHelp::AnsiToUnicode(contentStr.c_str());
+			const char *sayStr = StringHelp::UnicodeToUTF8(unic);
+			PX2_VOICESDK.PlayMusic(sayStr);
+		}
+		else if ("musichot" == cmd)
+		{
+			PX2_VOICESDK.PlayHotMusic();
+		}
+		else if ("musicstop" == cmd)
+		{
+			PX2_SS.ClearAllSounds();
+		}
+		else if ("voicestart" == cmd)
+		{
+			PX2_VOICESDK.StartVoiceListening();
+		}
+		else if ("voicestop" == cmd)
+		{
+			PX2_VOICESDK.EndVoiceListening();
 		}
 		else if ("arduino" == cmd)
 		{
@@ -137,6 +194,38 @@ int _ProcessInputString(const std::string &buf)
 				}
 			}
 		}
+		else if ("serial" == cmd)
+		{
+			std::string listStr;
+	
+			Serial serial;
+			std::vector<std::string> portList = serial.GetPortList();
+			for (int i = 0; i<(int)portList.size(); i++)
+			{
+				std::string portStr = portList[i];
+				listStr += portStr + ", ";
+			}
+			PX2_LOG_INFO("Serial list: %s", listStr.c_str());
+		}
+
+		std::string param0;
+		std::string param1;
+		std::string param2;
+		if (!contentStr.empty())
+		{
+			StringTokenizer stk_(contentStr, ",");
+			if (stk_.Count() > 0)
+				param0 = stk_[0];
+			if (stk_.Count() > 1)
+				param1 = stk_[1];
+			if (stk_.Count() > 2)
+				param2 = stk_[2];
+		}
+
+		PX2_SC_LUA->CallString(std::string("cmd") + "(\"" + cmd + "\"" +
+			", " + "\"" + param0 + "\"" ", " 
+			+ "\"" + param1 + "\"" + ", " 
+			+ "\"" + param2 + "\")");
 	}
 
 	return ret;
@@ -157,7 +246,7 @@ bool Application::Initlize()
 
 #if defined(_WIN32) || defined(WIN32) || defined(__LINUX__)
 	logger->AddFileHandler("PX2Application_Log.txt",
-	 LT_INFO | LT_ERROR | LT_USER);
+		LT_INFO | LT_ERROR | LT_USER);
 #endif
 
 #if defined (__LINUX__) || defined (_WIN32) || defined (WIN32)
@@ -210,8 +299,6 @@ bool Application::Initlize()
 
 	mBluetooth = new0 Bluetooth();
 	mWifi = new0 Wifi();
-	mDefSerial = new0 Serial();
-	Serial::SetDefaultSerial(mDefSerial);
 
 	mHardCamera = new0 HardCamera();
 
@@ -247,8 +334,10 @@ bool Application::Initlize()
 
 	mLogicManager = new0 LogicManager();
 
+#if defined PX2_USE_VOXEL
 	mVoxelManager = new0 VoxelManager();
 	mVoxelManager->Initlize(VoxelManager::T_TEX);
+#endif
 
 	mCreater = new0 Creater();
 
@@ -259,7 +348,10 @@ bool Application::Initlize()
 	mSTEAMEduManager = new0 STEAMEduManager();
 	mSTEAMEduManager->Initlize();
 
+	mSlam = new0 Robot();
+
 	mEngineServer = new0 EngineServer(Server::ST_POLL, EngineServerPort);
+	mEngineServer->Start();
 	mEngineClient = new0 EngineClientConnector();
 
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
@@ -277,7 +369,7 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_LM_APP", "LanguagePackage", LanguageManager::GetSingletonPtr()->GetPackageApp());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LM_APP1", "LanguagePackage", LanguageManager::GetSingletonPtr()->GetPackageApp1());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LOGGER", "Logger", Logger::GetSingletonPtr());
-	PX2_SC_LUA->SetUserTypePointer("PX2_RM", "ResourceManager", PX2_SC_LUA);
+	PX2_SC_LUA->SetUserTypePointer("PX2_RM", "ResourceManager", ResourceManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SM", "ScriptManager", ScriptManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SC_LUA", "LuaContext", PX2_SC_LUA);
 	PX2_SC_LUA->SetUserTypePointer("PX2_CREATER", "Creater", Creater::GetSingletonPtr());
@@ -286,7 +378,9 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_SELECTM_E", "Selection", SelectionManager::GetSingleton().GetSelecton("Editor"));
 	PX2_SC_LUA->SetUserTypePointer("PX2_URDOM", "URDoManager", URDoManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_LOGICM", "LogicManager", LogicManager::GetSingletonPtr());
+#if defined PX2_USE_VOXEL
 	PX2_SC_LUA->SetUserTypePointer("PX2_VOXELM", "VoxelManager", VoxelManager::GetSingletonPtr());
+#endif
 	PX2_SC_LUA->SetUserTypePointer("PX2_BLUETOOTH", "Bluetooth", Bluetooth::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_WIFI", "Wifi", Wifi::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SS", "SoundSystem", SoundSystem::GetSingletonPtr());
@@ -295,6 +389,7 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_VOICESDK", "VoiceSDK", VoiceSDK::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_TIMERM", "TimerManager", TimerManager::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_PFSDK", "PlatformSDK", PlatformSDK::GetSingletonPtr());
+	PX2_SC_LUA->SetUserTypePointer("PX2_ROBOT", "Robot", Robot::GetSingletonPtr());
 	// end Lua
 
 	Canvas *mainCanvas = new0 Canvas();
@@ -415,6 +510,47 @@ std::string Application::GetLocalAddressStr(int i)
 	return GetLocalAddress(i).ToString();
 }
 //----------------------------------------------------------------------------
+IPAddress Application::GetLocalAddressWith10_172_192()
+{
+	if (mLocalAddresses.empty())
+	{
+		_RefreshLocalAddress();
+	}
+
+	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
+	{
+		std::string ipStr = mLocalAddresses[i].ToString();
+		StringTokenizer stk(ipStr, ".");
+		if (stk.Count() > 0)
+		{
+			if ("10" == stk[0])
+				return mLocalAddresses[i];
+		}
+	}
+	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
+	{
+		std::string ipStr = mLocalAddresses[i].ToString();
+		StringTokenizer stk(ipStr, ".");
+		if (stk.Count() > 0)
+		{
+			if ("172" == stk[0])
+				return mLocalAddresses[i];
+		}
+	}
+	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
+	{
+		std::string ipStr = mLocalAddresses[i].ToString();
+		StringTokenizer stk(ipStr, ".");
+		if (stk.Count() > 0)
+		{
+			if ("192" == stk[0])
+				return mLocalAddresses[i];
+		}
+	}
+
+	return IPAddress();
+}
+//----------------------------------------------------------------------------
 void Application::_RefreshLocalAddress()
 {
 	mLocalAddresses.clear();
@@ -520,7 +656,9 @@ UDPServer *Application::CreateEngineUDPServerEditor()
 {
 	mEngineDUPServerEditor = 0;
 
-	SocketAddress udpAddr(EngineUDPPortServerEditor);
+	IPAddress ipAddr = GetLocalAddressWith10_172_192();
+	SocketAddress udpAddr(ipAddr, EngineUDPPortServerEditor);
+	
 	mEngineDUPServerEditor = new0 UDPServer(udpAddr);
 	mEngineDUPServerEditor->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
 	mEngineDUPServerEditor->Start();
@@ -735,11 +873,21 @@ bool Application::Terminate()
 		STEAMEduManager::Set(0);
 	}
 
+	if (mSlam)
+	{
+		mSlam->ShutdownShareMenory();
+
+		delete0(mSlam);
+		Robot::Set(0);
+	}
+
+#if defined PX2_USE_VOXEL
 	if (mVoxelManager)
 	{
 		delete0(mVoxelManager);
 		VoxelManager::Set(0);
 	}
+#endif
 
 	if (mLogicManager)
 	{
@@ -833,12 +981,6 @@ bool Application::Terminate()
 		mResMan->Clear();
 		delete0(mResMan);		
 		ResourceManager::Set(0);
-	}
-
-	if (mDefSerial)
-	{
-		delete0(mDefSerial);
-		Serial::SetDefaultSerial(0);
 	}
 
 	if (mBluetooth)
@@ -945,16 +1087,6 @@ bool Application::Terminate()
 	return true;
 }
 //----------------------------------------------------------------------------
-void Application::SetBoostMode(BoostMode mode)
-{
-	mBoostMode = mode;
-}
-//----------------------------------------------------------------------------
-Application::BoostMode Application::GetBoostMode() const
-{
-	return mBoostMode;
-}
-//----------------------------------------------------------------------------
 bool Application::LoadBoost(const std::string &filename)
 {
 	XMLData data;
@@ -982,12 +1114,6 @@ bool Application::LoadBoost(const std::string &filename)
 				mBoostInfo.ThePlayLogicMode = _StrToPlayLogicMode(data.GetNodeByPath("app.play.var").AttributeToString("playlogicmode"));
 				mBoostInfo.IsShowInfo = data.GetNodeByPath("app.play.var").AttributeToBool("isshowinfo");
 				mBoostInfo.IsDataReWriteToDataUpdate = data.GetNodeByPath("app.play.var").AttributeToBool("isdatawrite");
-			}
-			else if ("server" == name)
-			{
-				XMLNode nodePlay = nodeChild.GetChild("play");
-				mBoostInfo.Port = nodePlay.GetChild("var").AttributeToInt("port");
-				mBoostInfo.NumMaxConnection = nodePlay.GetChild("var").AttributeToInt("nummaxconnection");
 			}
 
 			nodeChild = rootNode.IterateChild(nodeChild);
@@ -1050,10 +1176,6 @@ bool Application::LoadBoost(const std::string &filename)
 			if (stk.Count() > 0)
 			{
 				mBoostInfo.ProjectName = stk[0];
-			}
-			if (stk.Count() > 1)
-			{
-				mBoostInfo.ServerProjectName = stk[1];
 			}
 		}
 
@@ -1136,14 +1258,6 @@ bool Application::WriteBoost()
 	varNode_play.SetAttributeString("playlogicmode", GetPlayLogicModeStr());
 	varNode_play.SetAttributeBool("isshowinfo", mBoostInfo.IsShowInfo);
 	varNode_play.SetAttributeBool("isdatawrite", mBoostInfo.IsDataReWriteToDataUpdate);
-
-	// server Node
-	XMLNode serverNode = boostNode.NewChild("server");
-
-	XMLNode playNodeServer = serverNode.NewChild("play");
-	XMLNode varNodeServer_play = playNodeServer.NewChild("var");
-	varNodeServer_play.SetAttributeInt("port", mBoostInfo.Port);
-	varNodeServer_play.SetAttributeInt("nummaxconnection", mBoostInfo.NumMaxConnection);
 
 	data.SaveFile("Data/boost.xml");
 
@@ -1234,13 +1348,20 @@ void Application::SetScreenSize(const Sizef &screenSize)
 //----------------------------------------------------------------------------
 void Application::Update(float appSeconds, float elapsedSeconds)
 {
-	if (_sIsHasInput)
+	bool isHasInput = false;
+	{
+		ScopedCS cs(&sServerMutex);
+		isHasInput = _sIsHasInput;
+	}
+	
+	if (isHasInput)
 	{
 		int ret = _ProcessInputString(_sCmdString);
 		if (0 == ret)
 		{
 			ScopedCS cs(&sServerMutex);
-			_sIsHasInput = false;
+			 _sIsHasInput = false;
+
 		}
 		if (1 == ret)
 		{
@@ -1273,6 +1394,9 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	if (mSTEAMEduManager)
 		mSTEAMEduManager->Update();
 
+	if (mSlam)
+		mSlam->Update(appSeconds, elapsedSeconds);
+
 	if (mArduino)
 		mArduino->Update((float)elapsedSeconds);
 
@@ -1303,12 +1427,12 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	{
 		std::string strAppSeconds = StringHelp::FloatToString(appSeconds);
 		std::string strElapsedSeconds = StringHelp::FloatToString(elapsedSeconds);
-		auto it = mUpdateScriptCallbacks.begin();
+		auto it = mUpdateScriptCallbacks.begin(); 
 		for (; it != mUpdateScriptCallbacks.end(); it++)
 		{
 			std::string scriptCallback = *it;
-			PX2_SC_LUA->CallString(scriptCallback + "(\"" + strAppSeconds +
-				", " + strElapsedSeconds + "\")");
+			PX2_SC_LUA->CallString(scriptCallback + "(\"" + strAppSeconds + "\""
+				", " +  "\"" + strElapsedSeconds + "\")");
 		}
 	}
 
@@ -1371,7 +1495,7 @@ void Application::_ProcessArduinoCMDs(const std::string &contentStr, int id)
 	else if (Arduino::sOptTypeStr[Arduino::OT_DW] == strParam0)
 	{
 		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		bool val = Arduino::_NetStr2Bool(strParam2);
+		bool val = Arduino::_HighLow2Bool(strParam2);
 
 		PX2_ARDUINO.DigitalWrite(pin, val);
 	}

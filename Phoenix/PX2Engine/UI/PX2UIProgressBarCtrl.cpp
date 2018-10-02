@@ -37,7 +37,7 @@ void UIProgressBarCtrl::SetProgressInit(float progress)
 	mProgress = progress;
 
 	Reset();
-	Stop();
+	Pause();
 }
 //----------------------------------------------------------------------------
 void UIProgressBarCtrl::SetProgress(float progress)
@@ -77,7 +77,7 @@ void UIProgressBarCtrl::_Update(double applicationTime, double elapsedTime)
 	float useTime = GetPlayedTimeMinusDelay();
 	if (useTime > lastPointTime)
 	{
-		Stop();
+		Pause();
 		mPlayedTime = lastPointTime + mDelayPlayTime;
 		useTime = lastPointTime;
 	}

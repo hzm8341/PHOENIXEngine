@@ -35,11 +35,16 @@ namespace PX2
 			float volume, bool isLoop, Sound *&sound);
 		virtual bool PlaySound3DControl(const char *filename,
 			const SoundCreateInfo3D &createInfo, Sound *&sound);
-		virtual bool PlayASound(const char *filename, float volume = 1.0f,
+		virtual bool PlayASound(const char *filenameOrUrl, float volume = 1.0f,
 			float life = 10.0f);
 		virtual void ClearAllSounds();
 
 		virtual void EnableSounds(bool enable);
+
+		virtual void StartRecording(int seconds);
+		virtual Sound *GetRecordingSound();
+		virtual void StopRecording();
+		virtual void GetRecordingBuf(unsigned char *&buf, unsigned int &size);
 
 	public_internal:
 		bool Initialize(const SoundSystemInitInfo &initInfo);
@@ -84,21 +89,11 @@ namespace PX2
 			ST_3D
 		};
 
-		struct FMODSoundRes
-		{
-			FMODSoundRes();
-			~FMODSoundRes();
-
-			std::string SoundFilename;
-			FMOD::Sound *TheFMODSound;
-		};
-		typedef Pointer0 <FMODSoundRes> FMODSoundResPtr;
-		typedef std::map<std::string, FMODSoundResPtr> FMODSoundResMap;
-
-		FMODSoundRes *GetSoundResource(const char *fileName, SoundType type);
+		FMODSoundResPtr GetSoundResource(const char *fileName, SoundType type);
 		FMODSoundResMap mSoundResMap;
 
 		std::vector<SoundPtr> mSounds;
+		FMODSoundPtr mRecordingSound;
 	};
 
 }

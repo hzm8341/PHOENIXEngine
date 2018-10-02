@@ -87,6 +87,12 @@ void Transform::SetRotateDegreeZ(float degree)
 	SetRotateDegree(rotate.X(), rotate.Y(), degree);
 }
 //----------------------------------------------------------------------------
+void Transform::SetRotate(const AVector &r, const AVector &d, const AVector &u)
+{
+	HMatrix mat(r, d, u, APoint::ORIGIN, true);
+	SetRotate(mat);
+}
+//----------------------------------------------------------------------------
 void Transform::SetMatrix (const HMatrix& matrix)
 {
 	mMatrix = matrix;

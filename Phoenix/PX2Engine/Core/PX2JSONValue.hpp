@@ -6,6 +6,9 @@
 #include "PX2CorePre.hpp"
 #include "PX2Object.hpp"
 
+#define PX2_USE_RAPID_JSON 1
+class JsonObject;
+
 namespace PX2
 {
 
@@ -13,7 +16,11 @@ namespace PX2
 	{
 	public:
 		JSONValue();
+#if defined PX2_USE_RAPID_JSON
 		JSONValue(void* jsValue);
+#endif
+		JSONValue(JsonObject &obj);
+		JSONValue(const JsonObject &obj);
 		JSONValue(const JSONValue &rhs);
 		~JSONValue();
 
@@ -22,6 +29,7 @@ namespace PX2
 		float ToFloat();
 		bool ToBool();
 		std::string ToString();
+		JSONValue ToArray();
 		bool ToIntVal(int &value);
 		bool ToFloatVal(float &value);
 		bool ToBoolVal(bool &value);

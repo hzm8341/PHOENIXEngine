@@ -15,6 +15,9 @@ namespace PX2
 		static int GetNumCPUs ();
 		static int GetCurrentThreadID ();
 		static std::string GetUniqueID ();
+
+		static std::string CallGetOutPut(const std::string &cmdStr);
+		static bool CallGetStatus(const std::string &cmdStr);
 	};
 
 }

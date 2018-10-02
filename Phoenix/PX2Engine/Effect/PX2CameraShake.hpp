@@ -34,7 +34,7 @@ namespace PX2
 		virtual ~CameraShake ();
 
 		virtual void Play ();
-		virtual void Stop ();
+		virtual void Pause ();
 
 		void SetUseX (bool use);
 		bool IsUseX () const;

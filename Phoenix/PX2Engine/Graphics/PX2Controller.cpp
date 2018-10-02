@@ -25,7 +25,8 @@ mDelayPlayTime(0.0f),
 mIsPlaying(false),
 mPlayedTime(0.0f),
 mIsPlayedDoDetach(false),
-mPlayedCallback(0)
+mPlayedCallback(0),
+mIsEverPlayed(false)
 {
 	SetName("Controller");
 }
@@ -75,15 +76,16 @@ bool Controller::IsPlaying () const
 	return mIsPlaying;
 }
 //----------------------------------------------------------------------------
-void Controller::Stop ()
+void Controller::Pause()
 {
 	mIsPlaying = false;
 }
 //----------------------------------------------------------------------------
 void Controller::Reset ()
 {
-	Stop();
+	Pause();
 
+	mIsEverPlayed = false;
 	mPlayedTime = 0.0f;
 }
 //----------------------------------------------------------------------------
@@ -110,7 +112,13 @@ bool Controller::Update(double applicationTime, double elapsedTime1)
 
 			if (maxPlayTime>0.0f && playedTimeMinusDelay>=maxPlayTime)
 			{
-				Stop();
+				Pause();
+			}
+
+			if (!mIsEverPlayed)
+			{
+				mIsEverPlayed = true;
+				_InitUpdate(applicationTime, elapsedTime);
 			}
 
 			_Update(applicationTime, elapsedTime);
@@ -199,6 +207,12 @@ double Controller::GetControlTimeByRangeTime (double rangeTime)
 
 	// minimum和maximum相同，返回minimum
 	return MinTime;
+}
+//----------------------------------------------------------------------------
+void Controller::_InitUpdate(double applicationTime, double elapsedTime)
+{
+	PX2_UNUSED(applicationTime);
+	PX2_UNUSED(elapsedTime);
 }
 //----------------------------------------------------------------------------
 void Controller::_Update(double applicationTime, double elapsedTime)
@@ -327,7 +341,8 @@ mDelayPlayTime(0.0f),
 mIsPlaying(false),
 mPlayedTime(0.0f),
 mIsPlayedDoDetach(false),
-mPlayedCallback(0)
+mPlayedCallback(0),
+mIsEverPlayed(false)
 {
 }
 //----------------------------------------------------------------------------

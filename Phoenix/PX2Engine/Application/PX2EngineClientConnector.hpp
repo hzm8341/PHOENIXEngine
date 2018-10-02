@@ -7,6 +7,7 @@
 #include "PX2NetClientConnector.hpp"
 #include "PX2EngineNetDefine.hpp"
 #include "PX2DatagramSocket.hpp"
+#include "PX2RobotDatas.hpp"
 
 namespace PX2
 {
@@ -47,8 +48,14 @@ namespace PX2
 		void AddOnRecvCallback(const std::string &callback);
 		void RemoveOnRecvCallback(const std::string &callback);
 
+		void InitlizeArduino();
+		void TernimateArduino();
+
 	protected:
 		int OnStringMsg(const void *pbuffer, int buflen);
+		int OnMapDataInfo(const void *pbuffer, int buflen);
+		int OnMapData(const void *pbuffer, int buflen);
+		int OnMapDataEnd(const void *pbuffer, int buflen);
 		void _SendHeart();
 
 		bool mIsAutoConnect;
@@ -76,6 +83,10 @@ namespace PX2
 		float mBroadcastTiming;
 		static bool sIsDownloadingFile;
 		std::string mCurDownLoadFilename;
+
+		RobotMapDataStruct mRobotMapDataStruct;
+		int mGettingMapIndex;
+		std::vector<char> mGettingMap;
 	};
 	typedef Pointer0<EngineClientConnector> EngineClientConnectorPtr;
 

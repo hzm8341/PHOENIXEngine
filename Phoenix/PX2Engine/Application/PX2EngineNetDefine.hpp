@@ -4,14 +4,21 @@
 #define PX2ENGINENETDEFINE_HPP
 
 #include "PX2CorePre.hpp"
+#include "PX2Arduino.hpp"
 
 namespace PX2
 {
 
 	const int EngineServerMsgID = 3;
+	const int EngineServerSendMapInfoMsgID = 4;
+	const int EngineServerSendMapMsgID = 5;
+	const int EngineServerSendMapEndMsgID = 6;
+
+	const int EngineServerArduinoMsgID = Arduino_SocketTCP_MsgID;
+
 	const float EngineClientHeartTime = 5.0f;
 	const int EngineServerPort = 9907;
-	const float EngineServerHeartTime = 10.0f;
+	const float EngineServerHeartTime = 20.0f;
 
 	const int EngineUDPPortClient = 9908;
 	const int EngineUDPPortServerEditor = 9909;

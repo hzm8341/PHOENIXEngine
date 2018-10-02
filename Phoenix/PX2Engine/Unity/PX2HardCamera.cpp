@@ -49,9 +49,6 @@ void HardCamera::CloseCamera()
 void HardCamera::OnSetCameraFrame(int width, int height, const char *data,
 	int size)
 {
-	PX2_LOG_INFO("SetCameraFrame %d, width:%d, height:%d", size,
-		width, height);
-
 	for (int i = 0; i < (int)mCallbacks.size(); i++)
 	{
 		HardCameraCallback callback = mCallbacks[i];

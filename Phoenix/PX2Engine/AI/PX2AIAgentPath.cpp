@@ -9,19 +9,19 @@ PolylinePathway()
 {
 }
 //----------------------------------------------------------------------------
-AIAgentPath::AIAgentPath(const std::vector<Vector3f> &points,
-	const float radius, const bool cyclic)
+AIAgentPath::AIAgentPath(const std::vector<APoint> &points,
+	float radius, bool cyclic)
 {
 	OpenSteer::Vec3 vec3Point[MAX_PATH_POINTS];
 
 	assert(points.size() < MAX_PATH_POINTS);
 
-	std::vector<Vector3f>::const_iterator it;
+	std::vector<APoint>::const_iterator it;
 	int count = 0;
 
 	for (it = points.begin(); it != points.end(); ++it)
 	{
-		const Vector3f& vec = *it;
+		const APoint& vec = *it;
 
 		vec3Point[count].x = vec.X();
 		vec3Point[count].y = vec.Y();
@@ -48,6 +48,34 @@ AIAgentPath& AIAgentPath::operator=(const AIAgentPath& path)
 	return *this;
 }
 //----------------------------------------------------------------------------
+void AIAgentPath::AddPoint(const APoint &pt)
+{
+	mPoints.push_back(pt);
+}
+//----------------------------------------------------------------------------
+void AIAgentPath::ConfigPoints(float radius, bool cyclic)
+{
+	OpenSteer::Vec3 vec3Point[MAX_PATH_POINTS];
+
+	assert(mPoints.size() < MAX_PATH_POINTS);
+
+	std::vector<APoint>::const_iterator it;
+	int count = 0;
+
+	for (it = mPoints.begin(); it != mPoints.end(); ++it)
+	{
+		const APoint& vec = *it;
+
+		vec3Point[count].x = vec.X();
+		vec3Point[count].y = vec.Y();
+		vec3Point[count].z = vec.Z();
+
+		++count;
+	}
+
+	initialize(count, vec3Point, radius, cyclic);
+}
+//----------------------------------------------------------------------------
 int AIAgentPath::GetNumberOfPathPoints() const
 {
 	return pointCount;
@@ -58,7 +86,7 @@ float AIAgentPath::GetPathLength() const
 	return (float)totalPathLength;
 }
 //----------------------------------------------------------------------------
-void AIAgentPath::GetPathPoints(std::vector<Vector3f>& outPoints) const
+void AIAgentPath::GetPathPoints(std::vector<APoint>& outPoints) const
 {
 	outPoints.clear();
 
@@ -67,18 +95,18 @@ void AIAgentPath::GetPathPoints(std::vector<Vector3f>& outPoints) const
 	for (size_t index = 0; index < pathPoints; ++index)
 	{
 		const OpenSteer::Vec3& vec3 = points[index];
-		outPoints.push_back(Vector3f(vec3.x, vec3.y, vec3.z));
+		outPoints.push_back(APoint(vec3.x, vec3.y, vec3.z));
 	}
 }
 //----------------------------------------------------------------------------
-float AIAgentPath::GetDistanceAlongPath(const Vector3f& position) const
+float AIAgentPath::GetDistanceAlongPath(const APoint& position) const
 {
 	const OpenSteer::Vec3 vec3(position.X(), position.Y(), position.Z());
 
 	return const_cast<AIAgentPath*>(this)->mapPointToPathDistance(vec3);
 }
 //----------------------------------------------------------------------------
-Vector3f AIAgentPath::GetNearestPointOnPath(const Vector3f& position) const
+APoint AIAgentPath::GetNearestPointOnPath(const APoint& position) const
 {
 	const OpenSteer::Vec3 vec3(position.X(), position.Y(), position.Z());
 	OpenSteer::Vec3 tangent;
@@ -87,15 +115,15 @@ Vector3f AIAgentPath::GetNearestPointOnPath(const Vector3f& position) const
 	const OpenSteer::Vec3 pointOnPath =
 		const_cast<AIAgentPath*>(this)->mapPointToPath(vec3, tangent, outside);
 
-	return Vector3f(pointOnPath.x, pointOnPath.y, pointOnPath.z);
+	return APoint(pointOnPath.x, pointOnPath.y, pointOnPath.z);
 }
 //----------------------------------------------------------------------------
-Vector3f AIAgentPath::GetPointOnPath(const float distance) const
+APoint AIAgentPath::GetPointOnPath(const float distance) const
 {
 	const OpenSteer::Vec3 pointOnPath =
 		const_cast<AIAgentPath*>(this)->mapPathDistanceToPoint(distance);
 
-	return Vector3f(pointOnPath.x, pointOnPath.y, pointOnPath.z);
+	return APoint(pointOnPath.x, pointOnPath.y, pointOnPath.z);
 }
 //----------------------------------------------------------------------------
 float AIAgentPath::GetRadius() const

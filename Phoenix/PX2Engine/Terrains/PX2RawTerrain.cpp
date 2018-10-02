@@ -18,14 +18,16 @@ RawTerrain::~RawTerrain ()
 {
 }
 //----------------------------------------------------------------------------
-void RawTerrain::SetRowQuantity (int numRows)
+void RawTerrain::SetRowFromTo(int from, int to)
 {
-	mNumRows = numRows;
+	mRowFrom = from;
+	mRowTo = to;
 }
 //----------------------------------------------------------------------------
-void RawTerrain::SetColQuantity (int numCols)
+void RawTerrain::SetColFromTo(int from, int to)
 {
-	mNumCols = numCols;
+	mColFrom = from;
+	mColTo = to;
 }
 //----------------------------------------------------------------------------
 void RawTerrain::SetSize (int size)
@@ -40,98 +42,36 @@ void RawTerrain::SetSpacing (float spacing)
 //----------------------------------------------------------------------------
 void RawTerrain::AllocateRawTerrainPages ()
 {
-	mPages = new2<TerrainPagePtr>(mNumCols, mNumRows);
 	int row, col;
-	for (row = 0; row < mNumRows; ++row)
+	for (row = mRowFrom; row < mRowTo; ++row)
 	{
-		for (col = 0; col < mNumCols; ++col)
+		for (col = mColFrom; col < mColTo; ++col)
 		{
 			CreatePage(row, col);
 		}
 	}
 
-	mChild.resize(mNumRows*mNumCols);
-	for (row = 0; row < mNumRows; ++row)
+	int numRows = mRowTo - mRowFrom;
+	int numCols = mColTo - mColFrom;
+	mChild.resize(numRows*numCols);
+	auto it = mPages.begin();
+	for (; it != mPages.end(); it++)
 	{
-		for (col = 0; col < mNumCols; ++col)
+		TerrainPage *tp = it->second;
+		if (tp)
 		{
-			AttachChild(mPages[row][col]);
+			AttachChild(tp);
 		}
 	}
 }
 //----------------------------------------------------------------------------
 RawTerrainPage *RawTerrain::CreatePage (int row, int col)
 {
-	if (0<=row && row<mNumRows && 0<=col && col<mNumCols)
+	std::pair<int, int> key(row, col);
+	auto it = mPages.find(key);
+	if (it != mPages.end())
 	{
-		if (mPages[row][col])
-		{
-			DetachChild(mPages[row][col]);
-		}
-	}
-
-	int newRow = 0;
-	int newCol = 0;
-	if (row >= mNumRows)
-	{
-		newRow = row + 1;
-	}
-	else
-	{
-		newRow = mNumRows;
-	}
-
-	if (col > mNumCols)
-	{
-		newCol = col + 1;
-	}
-	else
-	{
-		newCol = mNumCols;
-	}
-
-	if (newRow>mNumRows || newCol>mNumCols)
-	{
-		TerrainPagePtr** pagesTemp = new2<TerrainPagePtr>(mNumCols, mNumRows);
-
-		int row, col;
-		for (row = 0; row < mNumRows; ++row)
-		{
-			for (col = 0; col < mNumCols; ++col)
-			{
-				pagesTemp[row][col] = mPages[row][col];
-			}
-		}
-
-		for (int row = 0; row < mNumRows; ++row)
-		{
-			for (int col = 0; col < mNumCols; ++col)
-			{
-				mPages[row][col] = 0;
-			}
-		}
-		delete2(mPages);
-
-		mPages = new2<TerrainPagePtr>(newCol, newRow);
-		for (row = 0; row < mNumRows; ++row)
-		{
-			for (col = 0; col < mNumCols; ++col)
-			{
-				mPages[row][col] = pagesTemp[row][col];
-			}
-		}
-
-		for (int row = 0; row < mNumRows; ++row)
-		{
-			for (int col = 0; col < mNumCols; ++col)
-			{
-				pagesTemp[row][col] = 0;
-			}
-		}
-		delete2(pagesTemp);
-
-		mNumRows = newRow;
-		mNumCols = newCol;
+		DetachChild(it->second);
 	}
 
 	int numHeights = mNumVertexPage*mNumVertexPage;
@@ -141,12 +81,11 @@ RawTerrainPage *RawTerrain::CreatePage (int row, int col)
 	float length = mSpacing*(float)(mNumVertexPage - 1);
 	Float2 origin(col*length, row*length);
 
-	RawTerrainPage* page = 0;
-	page = new0 RawTerrainPage(mVFormatEdit, mNumVertexPage, heights, origin, mSpacing);
+	RawTerrainPage* page = new0 RawTerrainPage(mVFormatEdit, mNumVertexPage, heights, origin, mSpacing);
 	page->SetShine(mTerrainShine);
 
 	page->SetName("[" + StringHelp::IntToString(row) + "]" + "[" + StringHelp::IntToString(col) + "]");
-	mPages[row][col] = page;
+	mPages[std::pair<int, int>(row, col)] = page;
 
 	return page;
 }

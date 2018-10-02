@@ -524,8 +524,6 @@ void FBXImporter::PX2ProcessMtl(FbxMesh *fbxmesh)
 			mi = new0 MaterialInstance("Data/engine_mtls/std/std.px2obj", "std_light", false);
 		}
 
-		triMesh->SetMaterialInstance(mi);
-
 		Mtl * mtl = mTriMesh2Mtls[triMesh];
 		if (!mtl->mDiffuseMapName.empty())
 		{
@@ -546,6 +544,12 @@ void FBXImporter::PX2ProcessMtl(FbxMesh *fbxmesh)
 				mi->SetPixelTexture(0, "SampleBase", texture);
 			}
 		}
+		else
+		{
+			mi = new0 MaterialInstance("Data/engine_mtls/materialcolor/materialcolor.px2obj", "materialcolor", false);
+		}
+
+		triMesh->SetMaterialInstance(mi);
 
 		Shine *shine = new0 Shine();
 		shine->Emissive = MathHelp::Float3ToFloat4(mtl->mEmissive, 1.0f);

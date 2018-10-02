@@ -20,6 +20,9 @@
 		float Length () const;
 		float SquaredLength () const;
 		float Dot (const AVector& vec) const;
+		AVector Dot(float length) const;
+		AVector Over(float val) const;
+		AVector Add(const AVector &vec) const;
 		float Normalize (float epsilon = Mathf::ZERO_TOLERANCE);
 		AVector Cross (const AVector& vec) const;
 		AVector UnitCross (const AVector& vec) const;

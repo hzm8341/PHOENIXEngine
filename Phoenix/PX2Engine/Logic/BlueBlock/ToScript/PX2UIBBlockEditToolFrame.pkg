@@ -1,0 +1,21 @@
+// PX2UIBBlockEditToolFrame.pkg
+
+	class UIBBlockEditToolFrame : public UIFrame
+	{
+		UIBBlockEditToolFrame();
+		virtual ~UIBBlockEditToolFrame();
+		
+		static UIBBlockEditToolFrame *New();
+		static UIBBlockEditToolFrame *New(const std::string &name);
+
+		UIButton *GetButtonRecycle();
+		
+		enum ShowType
+		{
+			ST_NORMAL,
+			ST_RECYCLE,
+			ST_MAX_TYPE
+		};
+		void SetShowType(ShowType st);
+		ShowType GetShowType() const;
+	};

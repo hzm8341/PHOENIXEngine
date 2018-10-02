@@ -58,6 +58,10 @@ namespace PX2
 		const static std::string sEmptyResPath;
 		const static std::string sTerResPath;
 
+		void SendGeneralEvent(const std::string &eventDataStr0, float timeDelay=0.0f);
+		void SendGeneralEvent(const std::string &eventDataStr0, 
+			const std::string &eventDataStr1, float timeDelay = 0.0f);
+
 	private:
 		bool mIsInEditor;
 		bool mIsUIShareDraw;
@@ -98,7 +102,6 @@ namespace PX2
 		enum PlayType
 		{
 			PT_NONE,
-			PT_SIMULATE,
 			PT_PLAY,
 			PT_MAX_TYPE
 		};

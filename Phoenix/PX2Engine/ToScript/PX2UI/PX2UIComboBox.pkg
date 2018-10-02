@@ -16,8 +16,8 @@
 
 		void SetChooseListHeightSameWithChooses();
 
-		void Choose(int i);
-		void ChooseStr(const std::string &str);
+		void Choose(int i, bool isDoCallback=true);
+		void ChooseStr(const std::string &str, bool isDoCallback = true);
 		int GetChoose() const;
 		std::string GetChooseStr() const;
 

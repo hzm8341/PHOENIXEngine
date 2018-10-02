@@ -473,7 +473,7 @@ void Movable::OnPropertyChanged (const PropertyObject &obj)
 	}
 	else if ("WorldTransform" == obj.Name)
 	{
-		LocalTransform = *Any_Cast<Transform>(&obj.Data);
+		WorldTransform = *Any_Cast<Transform>(&obj.Data);
 	}
 	else if ("WorldTransformIsCurrent" == obj.Name)
 	{

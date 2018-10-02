@@ -10,6 +10,7 @@
 #include "PX2GeneralServer.hpp"
 #include "PX2GeneralClientConnector.hpp"
 #include "PX2SizeNode.hpp"
+#include "PX2Actor.hpp"
 
 namespace PX2
 {
@@ -23,6 +24,7 @@ namespace PX2
 		static Node *ToNode(Object *obj);
 		static SizeNode *ToSizeNode(Object *obj);
 		static EffectableController *ToEffectController(Object *obj);
+		static Actor *ToActor(Object *obj);
 		static Object *ToO(void *obj);
 		static ScriptController *ToSC(void *obj);
 		static GeneralServer *ToGS(void *obj);

@@ -45,9 +45,9 @@ bool SwitchNode::IsPlaying () const
 	return false;
 }
 //----------------------------------------------------------------------------
-void SwitchNode::Stop ()
+void SwitchNode::Pause()
 {
-	Node::Stop();
+	Node::Pause();
 
 	//Movable *actChild = GetActiveChildPointer();
 	//if (actChild && !actChild->IsSelfCtrled())

@@ -32,7 +32,7 @@ namespace PX2
 
 		virtual void Play ();
 		virtual bool IsPlaying () const;
-		virtual void Stop ();
+		virtual void Pause();
 		virtual void Reset ();
 
 		/// 获得孩子数量

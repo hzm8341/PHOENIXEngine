@@ -21,10 +21,10 @@ public class VoiceSDKTuLing extends VoiceSDK
 {
     private final String TURING_APIKEY = "783798bd15124bcb841685fc32a437bb";
     private final String TURING_SECRET = "62b43aabb171b01d";
-    private final String BD_APIKEY = "6I1kTPz8nRilfw5rgDHE4Q0a";
-    private final String BD_SECRET = "734ac630b233324b547618010995bdff";	
+    private final String BD_APIKEY = "i2sA4vGZMwio9QpN3HKr6SG7";
+    private final String BD_SECRET = "dXS0qdMv3qhC2P41mUcbTKimOtImqYV3";	
 	
-    private final String TAG = "PhoenixIoT.px2";
+    private final String TAG = "PhoenixCreate.px2";
     private TTSManager mTtsManager;
     private RecognizeManager mRecognizerManager;
     private TuringManager mTuringManager;
@@ -50,11 +50,18 @@ public class VoiceSDKTuLing extends VoiceSDK
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case MSG_SPEECH_START:
-                mTtsManager.startTTS((String) msg.obj);
+            	String txt = (String) msg.obj;
+            	VoiceSDK.sTheVoiceSDK.OnSpeechText(txt);
+            	if (mIsAutoSpeachTTS)
+            		mTtsManager.startTTS(txt);
+            	else
+            		mTtsManager.startTTS("");
                 break;
             case MSG_RECOGNIZE_RESULT:
             	if (mIsEanableAutoSpeach)
+            	{
             		mTuringManager.requestTuring((String) msg.obj);
+            	}  
                 break;
             case MSG_RECOGNIZE_START:
                 mRecognizerManager.startRecognize();
@@ -62,6 +69,12 @@ public class VoiceSDKTuLing extends VoiceSDK
             }
         };
     };
+    
+    @Override
+	public void init()
+    {
+    	mTtsManager.startTTS("");
+    }
 
 	// Start VoiceSDK
 	
@@ -120,8 +133,7 @@ public class VoiceSDKTuLing extends VoiceSDK
         }
 
         @Override
-        public void onRecordStart() {
-        	
+        public void onRecordStart() {        	
         	VoiceSDK.sTheVoiceSDK.OnVoiceRecordStart();
         }
 
@@ -141,6 +153,7 @@ public class VoiceSDKTuLing extends VoiceSDK
             }
             
         	VoiceSDK.sTheVoiceSDK.OnVoiceRecognizeResults(result, "");
+            Log.e(TAG, "OnVoiceRecognizeResults:" + result);
         	
             mHandler.obtainMessage(MSG_RECOGNIZE_RESULT, result).sendToTarget();
         }
@@ -206,8 +219,10 @@ public class VoiceSDKTuLing extends VoiceSDK
                     try {
                         Log.d(TAG, "result" + result);
                         JSONObject result_obj = new JSONObject(result);
-                        if (result_obj.has("text")) {
-                            Log.d(TAG, result_obj.get("text").toString());
+                        if (result_obj.has("text")) 
+                        {
+                        	String txt = result_obj.get("text").toString(); 
+                            
                             mHandler.obtainMessage(MSG_SPEECH_START,
                                     result_obj.get("text")).sendToTarget();
                         }
@@ -232,6 +247,13 @@ public class VoiceSDKTuLing extends VoiceSDK
 	@Override
 	public void enableAutoSpeach(boolean enable) {
 		// TODO Auto-generated method stub
-		mIsEanableAutoSpeach = enable;
+		mIsEanableAutoSpeach = enable;		
+	}
+	
+    private boolean mIsAutoSpeachTTS = true;
+	@Override
+	public void enableAutoSpeachTTS(boolean enable) {
+		// TODO Auto-generated method stub
+		mIsAutoSpeachTTS = enable;		
 	}
 }

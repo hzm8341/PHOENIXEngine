@@ -26,7 +26,7 @@ namespace PX2
 
 		virtual void OnPlay(ModelController *modelCtrl);
 		virtual bool IsPlaying() const;
-		virtual void Stop();
+		virtual void Pause();
 
 		void SetWorldRunDir(const AVector &vec);
 		const AVector &GetWorldRunDir() const;

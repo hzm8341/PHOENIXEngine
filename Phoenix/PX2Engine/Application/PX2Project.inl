@@ -36,6 +36,16 @@ inline const std::string &Project::GetUIFilename() const
 	return mUIFilename;
 }
 //----------------------------------------------------------------------------
+inline Logic *Project::GetLogic()
+{
+	return mLogic;
+}
+//----------------------------------------------------------------------------
+inline const std::string &Project::GetLogicFilename() const
+{
+	return mLogicFilename;
+}
+//----------------------------------------------------------------------------
 inline const std::vector<std::string> &Project::GetPlugins() const
 {
 	return mPlugins;

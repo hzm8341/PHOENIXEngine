@@ -15,6 +15,8 @@
 #include "PX2RawTerrain.hpp"
 #include "PX2LogicManager.hpp"
 #include "PX2LuaScriptController.hpp"
+#include "PX2VertexColor4Material.hpp"
+#include "PX2Actor.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -36,7 +38,7 @@ Movable *Creater::CreateMovable_Box()
 
 	StandardMesh stdMesh(vf);
 	TriMesh *mesh = stdMesh.Box1(0.5f, 0.5f, 0.5f);
-	mesh->SetName("Mesh");
+	mesh->SetName("Poly");
 
 	MaterialInstance *mi = new0 MaterialInstance(
 		"Data/engine_mtls/std/std.px2obj", "std_lightshadow", false);
@@ -116,6 +118,38 @@ Node *Creater::CreateBlockFrame(int num, float halfExtend,
 	}
 
 	return node;
+}
+//----------------------------------------------------------------------------
+Movable *Creater::CreateSegment_Rectangle(float xLength, float yLength,
+	const Float4 &color)
+{
+	VertexFormat *vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
+
+	StandardMesh stdMesh(vf);
+	stdMesh.SetVertexColor(color);
+	Polysegment *segment = stdMesh.Rectangle(xLength, yLength);
+	segment->SetName("Mesh");
+
+	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();
+	segment->SetMaterialInstance(mi);
+
+	return segment;
+}
+//----------------------------------------------------------------------------
+Movable *Creater::CreateSegment_Circle(float radius, int numSamples,
+	const Float4 &color)
+{
+	VertexFormat *vf = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
+
+	StandardMesh stdMesh(vf);
+	stdMesh.SetVertexColor(color);
+	Polysegment *segment = stdMesh.Circle(radius, numSamples);
+	segment->SetName("Mesh");
+
+	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();
+	segment->SetMaterialInstance(mi);
+
+	return segment;
 }
 //----------------------------------------------------------------------------
 Node *Creater::CreateNode()
@@ -254,6 +288,37 @@ EffectModule *Creater::CreateEffectModule(const std::string &typeName)
 {
 	EffectModule *module = EffectModule::CreateModule(typeName);
 	return module;
+}
+//----------------------------------------------------------------------------
+Actor *Creater::CreateActor()
+{
+	Actor *actor = new0 Actor();
+	actor->SetPhysicsShapeType(Actor::PST_GENERAL);
+	return actor;
+}
+//----------------------------------------------------------------------------
+Actor *Creater::CreateActorBox()
+{
+	Actor *actor = new0 Actor(Actor::AIT_AGENTOBJECT);
+
+	Movable *mov = CreateMovable_Box();
+	actor->AttachChild(mov);
+
+	actor->SetPhysicsShapeType(Actor::PST_MESH, mov);
+
+	return actor;
+}
+//----------------------------------------------------------------------------
+Actor *Creater::CreateActor_InfinitePlane(const AVector &normal, 
+	float originOffset)
+{
+	Actor *actor = new0 Actor(Actor::AIT_AGENTOBJECT);
+	Movable *movRectangle = CreateMovable_Rectangle();
+	actor->AttachChild(movRectangle);
+	actor->SetPhysicsShapeType(Actor::PST_INFINITEPLANE);
+	movRectangle->LocalTransform.SetUniformScale(100.0f);
+
+	return actor;
 }
 //----------------------------------------------------------------------------
 Movable *Creater::CreateSkyBox(const std::string &skyDirPath)
@@ -416,8 +481,8 @@ Movable *Creater::CreateTerrain()
 {
 	RawTerrain *rawTerrain = new0 RawTerrain();
 	rawTerrain->SetSize(129);
-	rawTerrain->SetRowQuantity(4);
-	rawTerrain->SetColQuantity(4);
+	rawTerrain->SetRowFromTo(-4, 4);
+	rawTerrain->SetColFromTo(-4, 4);
 	rawTerrain->SetSpacing(2);
 	rawTerrain->AllocateRawTerrainPages();
 

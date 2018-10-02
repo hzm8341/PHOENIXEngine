@@ -24,8 +24,8 @@ namespace PX2
 		/*
 		* 这些接口，在编辑器中创建地形使用
 		*/
-		void SetRowQuantity (int numRows);
-		void SetColQuantity (int numCols);
+		void SetRowFromTo(int from, int to);
+		void SetColFromTo(int from, int to);
 		void SetSize (int size);
 		void SetSpacing (float spacing);
 		void AllocateRawTerrainPages ();

@@ -37,7 +37,7 @@ UI::UI()
 	AttachChild(mDefaultCameraNode);
 	mDefaultCameraNode->SetName("DefaultCameraNode");
 	mDefaultCameraNode->LocalTransform.SetTranslate(
-			0.0f, -50.0f, 0.0f);
+		0.0f, msUICameraY, 0.0f);
 
 	SetAnchorHor(0.0f, 1.0f);
 	SetAnchorVer(0.0f, 1.0f);

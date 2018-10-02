@@ -7,6 +7,8 @@
 #include "PX2Object.hpp"
 #include "PX2JSONValue.hpp"
 
+class JsonObject;
+
 namespace PX2
 {
 
@@ -38,6 +40,7 @@ namespace PX2
 
 	private:
 		void *mDocument;
+		JsonObject *mJsonObject;
 	};
 
 }

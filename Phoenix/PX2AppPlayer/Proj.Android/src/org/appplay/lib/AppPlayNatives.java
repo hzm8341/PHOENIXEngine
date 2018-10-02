@@ -29,6 +29,13 @@ public class AppPlayNatives
     public static native void nativeBluetoothOnConnectFailed();
     public static native void nativeBluetoothDiscoveryNewDevice(String strDevice);
     public static native void nativeBluetoothDiscoveryFinished();
+    public static native void nativeBluetoothReceived(byte[] strData);
+    
+    public static native void nativeWifiDiscoveryNewDevice(String strDevice);
+    public static native void nativeWifiDiscoveryFinished();
+    public static native void nativeWifiOnConnected();
+    public static native void nativeWifiOnConnectFailed();
+    public static native void nativeWifiOnDisconnected();
 	
 	public static native void nativeVoiceSetSDK (String sdkName);
 	
@@ -36,11 +43,15 @@ public class AppPlayNatives
 	public static native void nativeOnSpeechPause();
 	public static native void nativeOnSpeechFinish();
 	public static native void nativeOnSpeechCancel();
+	public static native void nativeOnSpeakText(String txt);
 	
 	public static native void nativeOnVoiceRecordStart();
 	public static native void nativeOnVoiceRecordEnd();
 	
     public static native void nativeOnVoiceRecognizeResults(String strRet, String strJSON);
     
-	public static native void nativeCameraSendFrame (int width, int height, String data, int dataSize);	
+	public static native void nativeCameraSendFrame (int width, int height, byte[] strData);
+	public static native void nativeHardCameraSendFrame (int width, int height, byte[] strData);
+	
+    public static native void nativeUSBSendData(byte[] strData);
 }

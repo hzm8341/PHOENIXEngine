@@ -39,7 +39,7 @@ bool InterpCurveShakeController::Update (double applicationTime,
 
 			if (maxPlayTime>0.0f && playedTimeMinusDelay>=maxPlayTime)
 			{
-				Stop();
+				Pause();
 			}
 
 			_Update(applicationTime, elapsedTime);

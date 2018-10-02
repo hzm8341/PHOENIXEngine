@@ -263,9 +263,9 @@ void NumberFormatter::append(std::string& str, const void* ptr)
 	char buffer[24];
 #if defined(PX2_PTR_IS_64_BIT)
 #if defined(PX2_LONG_IS_64_BIT)
-	std::sprintf(buffer, "%016lX", (UIntPtr)ptr);
+	std::sprintf(buffer, "%016lX", (uint64_t)ptr);
 #else
-	std::sprintf(buffer, "%016" I64_FMT "X", (UIntPtr)ptr);
+	std::sprintf(buffer, "%016" I64_FMT "X", (uint64_t)ptr);
 #endif
 #else
 	std::sprintf(buffer, "%08lX", (unsigned long)ptr);

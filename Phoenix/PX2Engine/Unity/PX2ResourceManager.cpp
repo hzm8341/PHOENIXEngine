@@ -118,7 +118,7 @@ mLoadRecordMutex(0),
 mLoadingDequeMutex(0),
 mLoadingThread(0),
 mQuitLoading(false),
-mIsUseGarbageCollect(true),
+mIsUseGarbageCollect(false),
 mGarbageCollectTime(6.0f),
 mGarbageUpdateTime(1.0f),
 mResTableMutex(0),
@@ -1051,6 +1051,30 @@ void ResourceManager::GarbageCollect(double appSeconds, double elapsedSeconds)
 	}
 }
 //----------------------------------------------------------------------------
+bool ResourceManager::ZipCompress(unsigned char *dest, unsigned long *destLen,
+	const unsigned char *source, unsigned long sourceLen)
+{
+	if (Z_OK == compress((Bytef *)dest, destLen, (const Bytef *)source,
+		sourceLen))
+	{
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool ResourceManager::ZipUnCompress(unsigned char *dest, unsigned long *destLen,
+	const unsigned char *source, unsigned long sourceLen)
+{
+	if (Z_OK == uncompress((Bytef *)dest, destLen, (const Bytef *)source, 
+		sourceLen))
+	{
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
 ResourceManager::LoadRecord::LoadRecord()
 {
 	TheRecordType = RT_OBJECT;
@@ -1384,6 +1408,9 @@ bool ResourceManager::IsHasUpdate(const std::string &filename)
 bool ResourceManager::IsHasUpdate(const std::string &filename,
 	std::string &outUpdatedFilename)
 {
+	if (mDataUpdateFileTable.empty())
+		return false;
+
 	std::string writeablePath = PX2_RM.GetWriteablePath();
 
 	auto it = mDataUpdateFileTable.find(filename.c_str());

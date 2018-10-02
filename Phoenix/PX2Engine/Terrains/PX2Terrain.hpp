@@ -28,11 +28,11 @@ namespace PX2
 		inline int GetColQuantity () const;
 		inline int GetNumVertexPage () const;
 		inline float GetSpacing () const;
-		float GetHeight (float x, float y) const;
-		AVector GetNormal (float x, float y) const;
+		float GetHeight (float x, float y);
+		AVector GetNormal (float x, float y);
 
 		TerrainPage* GetPage (int row, int col);
-		TerrainPage* GetCurrentPage (float x, float y) const;
+		TerrainPage* GetCurrentPage (float x, float y);
 		bool GetPageIndex (int &outRow, int &outCol, TerrainPage *page);
 		TerrainPagePtr ReplacePage (int row, int col, TerrainPage* newPage);
 
@@ -53,11 +53,11 @@ namespace PX2
 	protected:
 		Terrain();
 
-		int mNumRows, mNumCols;
+		int mRowFrom, mRowTo;
+		int mColFrom, mColTo;
 		int mNumVertexPage;
 		float mMinElevation, mMaxElevation, mSpacing;
-		TerrainPagePtr** mPages;
-
+		std::map<std::pair<int, int>, TerrainPagePtr> mPages;
 		VertexFormatPtr mVFormatEdit;
 
 		ShinePtr mTerrainShine;

@@ -60,6 +60,9 @@ namespace PX2
 		bool mAllowResize;
 
 		std::string mCmdProjectName;
+		int mCMDWidth;
+		int mCMDHeight;
+		bool mIsUseWindows;
 
 		int mNumArguments;
 		char** mArguments;

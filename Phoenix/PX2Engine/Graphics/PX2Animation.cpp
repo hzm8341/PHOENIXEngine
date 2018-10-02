@@ -120,7 +120,7 @@ bool Animation::IsPlaying() const
 	return mIsPlaying;
 }
 //----------------------------------------------------------------------------
-void Animation::Stop()
+void Animation::Pause()
 {
 	mIsPlaying = false;
 }

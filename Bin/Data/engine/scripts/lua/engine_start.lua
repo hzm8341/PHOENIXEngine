@@ -281,6 +281,8 @@ function Vec3.__operators.__div(left, right)
 	return temp;
 end
 
+-- agent
+require("Data/engine/scripts/lua/agent/engine_agent.lua")
 
 function playFrameScale(frame)
 	local ctrlPlay = frame:GetControllerByName("_ScaleCtrlPlay")
@@ -301,13 +303,13 @@ function playFrameScale(frame)
 		ctrlStop:AddPoint(0.0, 0.8, ICM_CURVE_AUTO)
 		ctrlStop:AddPoint(0.1, 1.0, ICM_CURVE_AUTO)
 	end
-	ctrlStop:Stop()
+	ctrlStop:Pause()
 end
 
 function playFrameNormal(frame)
 	local ctrlPlay = frame:GetControllerByName("_ScaleCtrlPlay")
 	if nil~=ctrlPlay then
-		ctrlPlay:Stop()
+		ctrlPlay:Pause()
 	end
 
 	local ctrlStop = frame:GetControllerByName("_ScaleCtrlStop")
@@ -370,6 +372,7 @@ function engine_AddLanguage()
 	PX2_LM_ENGINE:AddItem1("Serial", "串口")
 	PX2_LM_ENGINE:AddItem1("Reload", "重载")
 	PX2_LM_ENGINE:AddItem1("Clear", "清空")
+	PX2_LM_ENGINE:AddItem1("Updating", "更新中")
 end
 
 function engine_start()

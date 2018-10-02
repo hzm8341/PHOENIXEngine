@@ -7,6 +7,8 @@
 #include "PX2UDPServer.hpp"
 #include "PX2System.hpp"
 #include "PX2ScriptManager.hpp"
+#include "PX2Math.hpp"
+#include "PX2System.hpp"
 using namespace PX2;
 
 const uint8_t START_BYTE = 0x12;
@@ -16,13 +18,15 @@ const uint8_t ESCAPE_BYTE = 0x7D;
 //----------------------------------------------------------------------------
 void _ArduinoProcessStr1(std::string recvVal)
 {
-	PX2_LOG_INFO("_ProcessStr %s", recvVal.c_str());
-
 	StringTokenizer stk(recvVal, " ");
 	std::string cmdStr;
 	std::string paramStr;
 	std::string paramStr1;
 	std::string paramStr2;
+	std::string paramStr3;
+	std::string paramStr4;
+	std::string paramStr5;
+	std::string paramStr6;
 
 	if (stk.Count() > 0)
 		cmdStr = stk[0];
@@ -32,6 +36,14 @@ void _ArduinoProcessStr1(std::string recvVal)
 		paramStr1 = stk[2];
 	if (stk.Count() > 3)
 		paramStr2 = stk[3];
+	if (stk.Count() > 4)
+		paramStr3 = stk[4];
+	if (stk.Count() > 5)
+		paramStr4 = stk[5];
+	if (stk.Count() > 6)
+		paramStr5 = stk[6];
+	if (stk.Count() > 7)
+		paramStr6 = stk[7];
 
 	if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DIST] == cmdStr)
 	{
@@ -53,8 +65,6 @@ void _ArduinoProcessStr1(std::string recvVal)
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_IR] == cmdStr) 
 	{
 		int val = StringHelp::StringToInt(paramStr);
-		PX2_LOG_INFO("!!!!!!!!!!!!!!!!Recved IR %d", val);
-
 		PX2_ARDUINO._SetIRReceive(val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_NETID] == cmdStr)
@@ -71,14 +81,94 @@ void _ArduinoProcessStr1(std::string recvVal)
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_HX711] == cmdStr)
 	{
 		int index = StringHelp::StringToInt(paramStr);
-		float val = StringHelp::StringToInt(paramStr1);
+		float val = (float)StringHelp::StringToInt(paramStr1);
 		PX2_ARDUINO._SetWeight(index, val);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DSTMAT] == cmdStr)
+	{
+		int index = StringHelp::StringToInt(paramStr);
+		float val = (float)StringHelp::StringToInt(paramStr1);
+		PX2_ARDUINO._SetDistMat(index, val);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_AXIS] == cmdStr)
+	{
+		unsigned long time = (unsigned long)atol(paramStr.c_str());
+		float yAxis = StringHelp::StringToFloat(paramStr1);
+		float xAxis = StringHelp::StringToFloat(paramStr2);
+		float zAxis = StringHelp::StringToFloat(paramStr3);
+		float pitch = StringHelp::StringToFloat(paramStr4);
+		float roll = StringHelp::StringToFloat(paramStr5);
+		float yaw = StringHelp::StringToFloat(paramStr6);
+
+		//yAxis = 0.0f;
+		//xAxis = 0.0f;
+		//zAxis = 0.0f;
+		//pitch = 0.0f;
+		//roll = 0.0f;
+		//yaw = 0.0f;
+
+		PX2_ARDUINO._SetAxis(time, yAxis, xAxis, zAxis, pitch, roll, yaw);
+	}
+}
+//----------------------------------------------------------------------------
+void Arduino::_SetAxis(unsigned long timeMilliseconds, float yAxis, float xAxis, 
+	float zAxis, float pitch, float roll, float yaw)
+{
+	mYAxis = yAxis;
+	mXAxis = xAxis;
+	mZAxis = zAxis;
+	mPitch = pitch;
+	mRoll = roll;
+	mYaw = yaw;
+
+	int iNum = (int)Mathf::Floor(Mathf::FAbs(mYaw) / 180.0f);
+	if (mYaw >= 0.0f)
+	{
+		if (iNum % 2 == 0)
+			mYaw = mYaw - iNum*180.0f;
+		else
+			mYaw = -(180.0f - (mYaw - iNum*180.0f));
+	}
+	else
+	{
+		if (iNum % 2 == 0)
+			mYaw = mYaw + iNum*180.0f;
+		else
+			mYaw = 180.0f + (mYaw + iNum*180.0f);
+	}
+
+	AxisObj axisObj;
+	axisObj.TStamp = mArduinoSetTime + Timestamp::TimeDiff(timeMilliseconds*Timespan::MILLISECONDS);
+	axisObj.IsValied = true;
+	axisObj.AX = mXAxis;
+	axisObj.AY = mYAxis;
+	axisObj.AZ = mZAxis;
+	axisObj.P = mPitch;
+	axisObj.R = mRoll;
+	axisObj.Y = mYaw;
+	mCurAxisObj = axisObj;
+	mAxisObjs.push_back(axisObj);
+	Timestamp::TimeVal t = axisObj.TStamp.EpochMicroseconds();
+
+	//PX2_LOG_INFO("Time: %I64d, %d, %d, %d, %d, %d, %d ", (int64_t)timeMilliseconds, (int)mXAxis, (int)mYAxis, (int)mZAxis, (int)mPitch, (int)mRoll, (int)mYaw);
+
+	if (mAxisObjs.size() > 60)
+	{
+		std::vector<AxisObj> axisObj;
+		for (int i = 10; i < (int)mAxisObjs.size(); i++)
+		{
+			axisObj.push_back(mAxisObjs[i]);
+		}
+		mAxisObjs = axisObj;
 	}
 }
 //----------------------------------------------------------------------------
 void _Less4Process(std::string recvVal)
 {
 	if (recvVal.empty())
+		return;
+
+	if (recvVal.length() < 4)
 		return;
 
 	std::string useStr = recvVal.substr(4);
@@ -150,11 +240,19 @@ std::string Arduino::sOptTypeStr[OT_MAX_TYPE] =
 	"27", //OT_HX711_I
 	"28", //OT_HX711_TEST
 	"29", //OT_RETURN_HX711
-	"500", //OT_INTERNAL_LIGHT
-	"501", //OT_LIGHT
-	"502", //OT_SEGMENT
-	"503", //OT_MOTO
-	"504" //OT_DISTTEST
+	"30", //OT_DSTMAT_I,
+	"31", //OT_RETURN_DSTMAT,
+	"32", //OT_AXIS_I,
+	"33", //OT_RETURN_AXIS
+	"34", //OT_SET_TIME
+	"500", //OT_MC_INTERNAL_LIGHT
+	"501", //OT_MC_LIGHT
+	"502", //OT_MC_SEGMENT
+	"503", //OT_MC_MOTO
+	"504", //OT_MC_DISTTEST
+	"601", //OT_MB_MOTO
+	"602", //OT_MB_SEND
+	"603" //OT_MB_BUZZER
 };
 //---------------------------------------------------------------------------
 std::string Arduino::sDirectionTypeStr[DT_MAX_TYPE] =
@@ -181,6 +279,9 @@ void Arduino::_SetDist(float dist)
 	mDist = dist;
 
 	_OnCallback(ART_RECT_DIST, (int)mDist);
+
+	mIsBlockLoopDoBreak = true;
+	mBlockLoopUpdateTimes = 0;
 }
 //---------------------------------------------------------------------------
 void Arduino::_SetIRReceive(int irReceive)
@@ -194,6 +295,9 @@ void Arduino::_SetPinVal(Pin pin, int val)
 {
 	if (0 <= pin && pin < P_MAX_TYPE)
 		mPinValue[pin] = val;
+
+	mIsBlockLoopDoBreak = true;
+	mBlockLoopUpdateTimes = 0;
 }
 //---------------------------------------------------------------------------
 void Arduino::_SetWeight(int index, float weight)
@@ -201,6 +305,17 @@ void Arduino::_SetWeight(int index, float weight)
 	if (0 <= index && index < 4)
 	{
 		mWeight[index] = weight;
+	}
+
+	mIsBlockLoopDoBreak = true;
+	mBlockLoopUpdateTimes = 0;
+}
+//---------------------------------------------------------------------------
+void Arduino::_SetDistMat(int index, float val)
+{
+	if (0 <= index && index < NUMDISTMAT)
+	{
+		mDistMat[index] = val;
 	}
 }
 //---------------------------------------------------------------------------
@@ -211,6 +326,8 @@ void Arduino::_SetSpeedLR(int left, int right)
 }
 //---------------------------------------------------------------------------
 Arduino::Arduino() :
+mIsBlockLoopDoBreak(true),
+mBlockLoopUpdateTimes(0),
 mMode(M_BLUETOOTH),
 mNetID(0),
 mTargetRobotID(0),
@@ -218,7 +335,15 @@ mRobotUDPPort(0),
 mTcpPort(9000),
 mDist(0.0f),
 mIRReceive(0),
-mServer(0)
+mServer(0),
+mYAxis(0.0f),
+mXAxis(0.0f),
+mZAxis(0.0f),
+mPitch(0.0f),
+mRoll(0.0f),
+mYaw(0.0f),
+mIsEverSetTime(false),
+mEverSetTime(0.0f)
 {
 	mEndStr = "\n";
 
@@ -314,9 +439,11 @@ bool Arduino::Initlize(Mode mode, const std::string &port, int baudrate)
 	return true;
 }
 //---------------------------------------------------------------------------
-bool Arduino::InitlizeForRobot(int targetRobotID, int udpPort)
+bool Arduino::InitlizeSocketUDP_Broadcast(int targetRobotID, int udpPort)
 {
-	mMode = M_WIFI_ROBOT;
+	Reset();
+
+	mMode = M_SOCKETUDP_Broadcast;
 	mTargetRobotID = targetRobotID;
 	mRobotUDPPort = udpPort;
 
@@ -390,9 +517,11 @@ void _ClientConnectorRecvCallback(const std::string &recvStr)
 	}
 }
 //---------------------------------------------------------------------------
-bool Arduino::InitlizeWifiTCP(const std::string &ip, int port)
+bool Arduino::InitlizeESPSocketTCP_Connector(const std::string &ip, int port)
 {
-	mMode = M_WIFI_TCP;
+	Reset();
+
+	mMode = M_ESP_SOCKETTCP_Connector;
 
 	if (mConnector)
 	{
@@ -414,17 +543,28 @@ bool Arduino::InitlizeWifiTCP(const std::string &ip, int port)
 	return true;
 }
 //---------------------------------------------------------------------------
-bool Arduino::InitlizeEmpty()
+bool Arduino::InitlizeSocketTCP_Connector(ClientConnector *clientConnector)
 {
-	mMode = M_EMPTY;
+	Reset();
+
+	mMode = M_SOCKETTCP_Connector;
+
+	if (mConnector)
+	{
+		mConnector->Disconnect();
+		mConnector = 0;
+	}
+
+	mConnector = clientConnector;
 
 	return true;
 }
 //---------------------------------------------------------------------------
-bool Arduino::InitlizeServer(Server *server)
+bool Arduino::InitlizeEmpty()
 {
-	mMode = M_WIFI_SERVER;
-	mServer = server;
+	Reset();
+
+	mMode = M_EMPTY;
 
 	return true;
 }
@@ -439,7 +579,7 @@ bool Arduino::IsInitlized()
 	{
 		return PX2_BLUETOOTH.IsConnected();
 	}
-	else if (M_WIFI_TCP == mMode)
+	else if (M_ESP_SOCKETTCP_Connector == mMode)
 	{
 		return (mConnector->GetConnectState() == CONNSTATE_CONNECTED);
 	}
@@ -463,6 +603,9 @@ void Arduino::Terminate()
 //---------------------------------------------------------------------------
 void Arduino::Reset()
 {
+	mIsBlockLoopDoBreak = true;
+	mBlockLoopUpdateTimes = 0;
+
 	mDist = 0.0f;
 	mIRReceive = 0;
 
@@ -481,7 +624,54 @@ void Arduino::Reset()
 		mWeight[i] = 0.0f;
 	}
 
-	PX2_BLUETOOTH.AddCMDCallback(_Less4Process);
+	for (int i = 0; i < NUMDISTMAT; i++)
+	{
+		mDistMat[i] = 0;
+	}
+
+	Bluetooth *bth = Bluetooth::GetSingletonPtr();
+	if (bth)
+	{
+		bth->AddCMDCallback(_Less4Process);
+	}
+
+	mIsEverSetTime = false;
+	mEverSetTime = 0.0f;
+}
+//----------------------------------------------------------------------------
+void Arduino::_SetTime()
+{
+	std::string opStr = sOptTypeStr[OT_SET_TIME];
+	std::string sendStr = opStr;
+
+	_Send(sendStr + mEndStr);
+	mArduinoSetTime = Timestamp();
+}
+//----------------------------------------------------------------------------
+Arduino::AxisObj::AxisObj()
+{
+	IsValied = false;
+
+	AX = 0.0f;
+	AY = 0.0f;
+	AZ = 0.0f;
+	P = 0.0f;
+	R = 0.0f;
+	Y = 0.0f;
+}
+//----------------------------------------------------------------------------
+Arduino::AxisObj::~AxisObj()
+{
+}
+//---------------------------------------------------------------------------
+std::vector<Arduino::AxisObj> &Arduino::GetAxisObjs()
+{
+	return mAxisObjs;
+}
+//---------------------------------------------------------------------------
+Arduino::AxisObj Arduino::GetCurAxisObj()
+{
+	return mCurAxisObj;
 }
 //---------------------------------------------------------------------------
 void Arduino::_OnCallback(ArduinoRectType type, int value)
@@ -539,11 +729,30 @@ void Arduino::Update(float elapsedSeconds)
 	if (mSerial.IsOpened())
 	{
 		mSerial.Update(elapsedSeconds);
+
+		if (!mIsEverSetTime)
+		{
+			mEverSetTime += elapsedSeconds;
+			if (mEverSetTime > 2.0f)
+			{
+				_SetTime();
+				mIsEverSetTime = true;
+			}
+		}
 	}
 
 	if (mConnector)
 	{
 		mConnector->Update(elapsedSeconds);
+
+		if (CONNSTATE_CONNECTED == mConnector->GetConnectState())
+		{
+			if (!mIsEverSetTime)
+			{
+				_SetTime();
+				mIsEverSetTime = true;
+			}
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -575,7 +784,7 @@ std::string Arduino::_DirectionType2Str(DirectionType dt)
 //----------------------------------------------------------------------------
 Arduino::Pin Arduino::_NetStr2Pin(const std::string &str)
 {
-	if ("0" == str)
+	if ("P_0" == str)
 		return Arduino::P_0;
 	else if ("1" == str)
 		return Arduino::P_1;
@@ -634,6 +843,11 @@ bool Arduino::_NetStr2Bool(const std::string &str)
 	return str=="true" ? true : false;
 }
 //----------------------------------------------------------------------------
+bool Arduino::_HighLow2Bool(const std::string &str)
+{
+	return str=="high" ? true : false;
+}
+//----------------------------------------------------------------------------
 int Arduino::_NetStr2Int(const std::string &str)
 {
 	return StringHelp::StringToInt(str);
@@ -668,11 +882,11 @@ float Arduino::_NetStr2Float(const std::string &str)
 	 {
 		 return SDT_NONE;
 	 }
-	 if ("forward" == str)
+	 if ("go" == str)
 	 {
 		 return SDT_FORWARD;
 	 }
-	 else if ("backward" == str)
+	 else if ("back" == str)
 	 {
 		 return SDT_BACKWARD;
 	 }
@@ -733,11 +947,44 @@ void Arduino::AnalogWrite(Pin pin, int val)
 //----------------------------------------------------------------------------
 int Arduino::DigitalRead(Pin pin)
 {
+	std::string opStr = sOptTypeStr[OT_RETURN_DR];
+	std::string pinStr = _Pin2Str(pin);
+
+	std::string sendStr = opStr + " " + pinStr;
+
+	_Send(sendStr + mEndStr);
+
+	mIsBlockLoopDoBreak = false;
+
+	while (!mIsBlockLoopDoBreak && mBlockLoopUpdateTimes<1000)
+	{
+		Update(0.001f);
+		System::SleepSeconds(0.001f);
+		mBlockLoopUpdateTimes++;
+
+	}
+
 	return mPinValue[pin]>0 ? 1:0;
 }
 //----------------------------------------------------------------------------
 int Arduino::AnalogRead(Pin pin)
 {
+	std::string opStr = sOptTypeStr[OT_RETURN_AR];
+	std::string pinStr = _Pin2Str(pin);
+
+	std::string sendStr = opStr + " " + pinStr;
+
+	_Send(sendStr + mEndStr);
+
+	mIsBlockLoopDoBreak = false;
+
+	while (!mIsBlockLoopDoBreak && mBlockLoopUpdateTimes < 1000)
+	{
+		Update(0.001f);
+		System::SleepSeconds(0.001f);
+		mBlockLoopUpdateTimes++;
+	}
+
 	return mPinValue[pin];
 }
 //----------------------------------------------------------------------------
@@ -897,6 +1144,15 @@ void Arduino::DistTest()
 	std::string sendStr = sOptTypeStr[OT_DST_T];
 
 	_Send(sendStr + mEndStr);
+
+	mIsBlockLoopDoBreak = false;
+
+	while (!mIsBlockLoopDoBreak && mBlockLoopUpdateTimes < 1000)
+	{
+		Update(0.001f);
+		System::SleepSeconds(0.001f);
+		mBlockLoopUpdateTimes++;
+	}
 }
 //----------------------------------------------------------------------------
 float Arduino::GetDist() const
@@ -906,7 +1162,7 @@ float Arduino::GetDist() const
 //----------------------------------------------------------------------------
 void Arduino::ServerInit(int i, Pin pin)
 {
-	if (0 <= i && i < 3)
+	if (0 <= i && i < 5)
 	{
 		std::string sendStr = sOptTypeStr[OT_SVR_I];
 		sendStr += " " + StringHelp::IntToString(i) + " " + _Pin2Str(pin);
@@ -917,7 +1173,7 @@ void Arduino::ServerInit(int i, Pin pin)
 //----------------------------------------------------------------------------
 void Arduino::ServerWrite(int i, int val)
 {
-	if (0 <= i && i < 3)
+	if (0 <= i && i < 5)
 	{
 		std::string sendStr = sOptTypeStr[OT_SVR_W] + " " +
 			StringHelp::IntToString(i) + " " +
@@ -965,6 +1221,70 @@ float Arduino::GetWeight(int i)
 	return 0.0f;
 }
 //----------------------------------------------------------------------------
+void Arduino::DistMatInit(int i, Pin pinTrig, Pin pinEcho)
+{
+	std::string sendStr = sOptTypeStr[OT_DSTMAT_I];
+
+	sendStr += StringHelp::IntToString(i) + " " + _Pin2Str(pinTrig) + " " 
+		+ _Pin2Str(pinEcho);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+float Arduino::GetMatDist(int i) const
+{
+	if (0 <= i && i < NUMDISTMAT)
+	{
+		return mDistMat[i];
+	}
+
+	return 0.0f;
+}
+//----------------------------------------------------------------------------
+void Arduino::AxisInit()
+{
+	mYAxis = 0.0f;
+	mXAxis = 0.0f;
+	mZAxis = 0.0f;
+	mPitch = 0.0f;
+	mRoll = 0.0f;
+	mYaw = 0.0f;
+
+	std::string sendStr = sOptTypeStr[OT_AXIS_I];
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+float Arduino::AxisGetYAxis() const
+{
+	return mYAxis;
+}
+//----------------------------------------------------------------------------
+float Arduino::AxisGetXAxis() const
+{
+	return mXAxis;
+}
+//----------------------------------------------------------------------------
+float Arduino::AxisGetZAxis() const
+{
+	return mZAxis;
+}
+//----------------------------------------------------------------------------
+float Arduino::AxisGetPitch() const
+{
+	return mPitch;
+}
+//----------------------------------------------------------------------------
+float Arduino::AxisGetRoll() const
+{
+	return mRoll;
+}
+//----------------------------------------------------------------------------
+float Arduino::AxisGetYaw() const
+{
+	return mYaw;
+}
+//----------------------------------------------------------------------------
 bool Arduino::AddArduinoToSendCallback(ArduinoToSendCallback callback)
 {
 	if (IsHasArduinoToSendCallback(callback))
@@ -986,14 +1306,19 @@ bool Arduino::IsHasArduinoToSendCallback(ArduinoToSendCallback callback) const
 	return false;
 }
 //----------------------------------------------------------------------------
-const std::string &Arduino::GetLastSendString()
+const std::string &Arduino::GetLastSendContentString() const
+{
+	return mLastSendContentString;
+}
+//----------------------------------------------------------------------------
+const std::string &Arduino::GetLastSendString() const
 {
 	return 	mLastSendString;
 }
 //----------------------------------------------------------------------------
 void Arduino::MCSegmentSet(int pin, int val)
 {
-	std::string sendStr = sOptTypeStr[OT_SEGMENT];
+	std::string sendStr = sOptTypeStr[OT_MC_SEGMENT];
 	sendStr += " " + _Int2Str(pin) + " " + StringHelp::IntToString(val);
 
 	_Send(sendStr + mEndStr);
@@ -1001,7 +1326,7 @@ void Arduino::MCSegmentSet(int pin, int val)
 //----------------------------------------------------------------------------
 void Arduino::MCMoto(int pin, int speed)
 {
-	std::string sendStr = sOptTypeStr[OT_MOTO];
+	std::string sendStr = sOptTypeStr[OT_MC_MOTO];
 	sendStr += " " + _Int2Str(pin) + " " + StringHelp::IntToString(speed);
 
 	_Send(sendStr + mEndStr);
@@ -1009,20 +1334,42 @@ void Arduino::MCMoto(int pin, int speed)
 //----------------------------------------------------------------------------
 void Arduino::MCTestDist(int pin)
 {
-	std::string sendStr = sOptTypeStr[OT_DISTTEST];
+	std::string sendStr = sOptTypeStr[OT_MC_DISTTEST];
 	sendStr += " " + _Int2Str(pin);
 
 	_Send(sendStr + mEndStr);
 }
 //----------------------------------------------------------------------------
+void Arduino::MBotInit()
+{
+
+}
+//----------------------------------------------------------------------------
+void Arduino::MBotMoto(int leftRight, int speed)
+{
+}
+//----------------------------------------------------------------------------
+void Arduino::MBotIRSend(int val)
+{
+}
+//----------------------------------------------------------------------------
+void Arduino::MBotIRBuzzer(bool on)
+{
+}
+//----------------------------------------------------------------------------
+void Arduino::MBotIsButtonPressed() const
+{
+}
+//----------------------------------------------------------------------------
+int Arduino::MBotGetLightSensorValue() const
+{
+	return 0;
+}
+//----------------------------------------------------------------------------
 void Arduino::_Send(const std::string &cmdStr)
 {
+	mLastSendContentString = cmdStr;
 	std::string lastCmdStr = "0000" + cmdStr;
-
-	int allLength = 2 + cmdStr.length();
-	*(unsigned short *)(&lastCmdStr[0]) = (unsigned short)allLength; // length
-	*(unsigned short *)(&lastCmdStr[2]) = (unsigned short)2; // GeneralServerMsgID
-
 	mLastSendString = lastCmdStr;
 
 	if (M_SERIAL == mMode)
@@ -1033,8 +1380,12 @@ void Arduino::_Send(const std::string &cmdStr)
 	{
 		PX2_BLUETOOTH.Send(lastCmdStr);
 	}
-	else if (M_WIFI_ROBOT == mMode)
+	else if (M_SOCKETUDP_Broadcast == mMode)
 	{
+		int allLength = 2 + cmdStr.length();
+		*(unsigned short *)(&lastCmdStr[0]) = (unsigned short)allLength; // length
+		*(unsigned short *)(&lastCmdStr[2]) = (unsigned short)2; // GeneralServerMsgID
+
 		if (0 != mRobotUDPPort)
 		{
 			SocketAddress sktAddr("255.255.255.255", (int16_t)mRobotUDPPort);
@@ -1047,27 +1398,21 @@ void Arduino::_Send(const std::string &cmdStr)
 			udpSocket.SendTo(sendStr.c_str(), sendStr.length(), sktAddr);
 		}
 	}
-	else if (M_WIFI_TCP == mMode)
+	else if (M_ESP_SOCKETTCP_Connector == mMode)
 	{
 		if (mConnector && !lastCmdStr.empty())
 		{
 			mConnector->GetSocket().SendBytes(lastCmdStr.c_str(), (int)lastCmdStr.length());
 		}
 	}
-	else if (M_WIFI_SERVER == mMode)
+	else if (M_SOCKETTCP_Connector == mMode)
 	{
-		if (0 != mNetID)
+		if (mConnector && !mLastSendContentString.empty())
 		{
-			if (mServer && !cmdStr.empty())
-			{
-				// 2 is GeneralServerMsgID
-				mServer->SendMsgToClientBuffer(mNetID, 2, cmdStr.c_str(),
-					cmdStr.length());
-			}
-		}
-		else
-		{
-			PX2_LOG_INFO("NetID should not be 0");
+			mConnector->SendMsgToServerBuffer(Arduino_SocketTCP_MsgID,
+				mLastSendContentString.c_str(),
+				(int)mLastSendContentString.length());
+			mConnector->Update(0.0f);
 		}
 	}
 

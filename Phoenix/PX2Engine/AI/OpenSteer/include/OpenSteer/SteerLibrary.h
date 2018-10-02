@@ -48,7 +48,7 @@
 
 
 #include "OpenSteer/AbstractVehicle.h"
-#include "OpenSteer/Pathway.h"
+#include "OpenSteer/OldPathway.h"
 #include "OpenSteer/Obstacle.h"
 #include "OpenSteer/Utilities.h"
 
@@ -115,8 +115,8 @@ namespace OpenSteer {
         // Path Following behaviors
         Vec3 steerToFollowPath (const int direction,
                                 const float predictionTime,
-                                Pathway& path);
-        Vec3 steerToStayOnPath (const float predictionTime, Pathway& path);
+								Old::Pathway& path);
+        Vec3 steerToStayOnPath (const float predictionTime, Old::Pathway& path);
 
         // ------------------------------------------------------------------------
         // Obstacle Avoidance behavior
@@ -393,7 +393,7 @@ xxxsteerForSeek (const Vec3& target)
 template<class Super>
 OpenSteer::Vec3
 OpenSteer::SteerLibraryMixin<Super>::
-steerToStayOnPath (const float predictionTime, Pathway& path)
+steerToStayOnPath(const float predictionTime, Old::Pathway& path)
 {
     // predict our future position
     const Vec3 futurePosition = predictFuturePosition (predictionTime);
@@ -427,7 +427,7 @@ OpenSteer::Vec3
 OpenSteer::SteerLibraryMixin<Super>::
 steerToFollowPath (const int direction,
                    const float predictionTime,
-                   Pathway& path)
+				   Old::Pathway& path)
 {
     // our goal will be offset from our path distance by this amount
     const float pathDistanceOffset = direction * predictionTime * speed();

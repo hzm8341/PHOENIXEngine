@@ -1,7 +1,7 @@
 // SampleToLua.hpp
 
-#ifndef FBXIMPORTERTOLUA_HPP
-#define FBXIMPORTERTOLUA_HPP
+#ifndef SAMPLETOLUA_HPP
+#define SAMPLETOLUA_HPP
 
 #include "PX2CorePre.hpp"
 #include "SamplePre.hpp"

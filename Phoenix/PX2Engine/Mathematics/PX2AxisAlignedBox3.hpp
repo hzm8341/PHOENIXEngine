@@ -44,6 +44,9 @@ namespace PX2
 		bool FindIntersection (const AxisAlignedBox3& box,
 			AxisAlignedBox3& intersection) const;
 
+		Vector3<Real> GetMin();
+		Vector3<Real> GetMax();
+
 		Real Min[3], Max[3];
 	};
 

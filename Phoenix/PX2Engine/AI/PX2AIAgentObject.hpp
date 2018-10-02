@@ -7,59 +7,57 @@
 #include "PX2Object.hpp"
 #include "PX2HQuaternion.hpp"
 #include "OpenSteer/Obstacle.h"
+#include "PX2Controller.hpp"
+#include "PX2Movable.hpp"
+#include "PX2AIAgentBase.hpp"
 
 class btRigidBody;
 
 namespace PX2
 {
-
+	class AIAgentWorld;
 	class Node;
 
-	class AIAgentObject : public Object, private OpenSteer::SphereObstacle
+	class PX2_ENGINE_ITEM AIAgentObject : public AIAgentBase, public OpenSteer::SphereObstacle
 	{
-		friend class AIAgent;
+		PX2_DECLARE_RTTI;
+		PX2_DECLARE_NAMES;
+		PX2_DECLARE_STREAM(AIAgentObject);
+		PX2_DECLARE_PROPERTY;
 
 	public:
-		AIAgentObject(int objectID, Node *sceneNode, btRigidBody* rigidBody);
+		AIAgentObject(Node *node=0);
 		virtual ~AIAgentObject();
 
-		virtual void Initialize();
-		virtual void Cleanup();
-		virtual void Update(float elapsedSeconds);
+		enum PhysicsShapeType
+		{
+			PST_INFINITEPLANE,
+			PST_MESH,
+			PST_MAX_TYPE
+		};
+		PhysicsShapeType GetPhysicsShapeType() const;
 
-		void SetMass(const float mass);
-		float GetMass() const;
+		void InitializeInfinitePlane(const AVector &normal, float originOffset);
+		void InitializeMesh(Movable *mov);
 
 		void SetOrientation(const HQuaternion& quaternion);
 		HQuaternion GetOrientation() const;
 
-		void SetPosition(const Vector3f& position);
-		Vector3f GetPosition() const;
+		float GetRigidBodyRadius() const;
 
-		float GetRadius() const;
-
-		Node* GetSceneNode();
-		const Node* GetSceneNode() const;
-
-		btRigidBody* GetRigidBody();
-		const btRigidBody* GetRigidBody() const;
-
-	private:
-		Node* sceneNode_;
-		btRigidBody* rigidBody_;
-
-		AIAgentObject(const AIAgentObject& gameObject);
-		AIAgentObject& operator=(const AIAgentObject& gameObject);
-
-		OpenSteer::Vec3 getPosition() const;
-
-		// Overloading the SphereObstacle's radius implementation.
-		virtual float getRadius() const;
-
-		virtual OpenSteer::Vec3 steerToAvoid(
+	public_internal:
+		OpenSteer::Vec3 _GetPosition() const;
+		OpenSteer::Vec3 _SteerToAvoid(
 			const OpenSteer::AbstractVehicle& vehicle,
 			const float minTimeToCollision) const;
+
+	private:
+		float mLastWorldPosZ;
+		PhysicsShapeType mPhysicsShapeType;
 	};
+
+	PX2_REGISTER_STREAM(AIAgentObject);
+	typedef Pointer0<AIAgentObject> AIAgentObjectPtr;
 
 }
 

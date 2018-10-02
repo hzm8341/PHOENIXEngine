@@ -39,6 +39,9 @@ namespace PX2
 			int numMaxMsgHandlers);
 		virtual ~Server();
 
+		static Server *New(ServerType serverType, int port, int numMaxConnects,
+			int numMaxMsgHandlers);
+
 		int GetPort() const;
 
 		ServerType GetServerType() const;
@@ -70,7 +73,7 @@ namespace PX2
 		template<class T>
 		int SendMsgToClient(unsigned int clientid, int msgid, T&msg)
 		{
-			char buffer[4096];
+			char buffer[MAX_OVERLAPBUF_ALLSZIE];
 			int nbytes = MsgToRawBuffer(msgid, msg, buffer, sizeof(buffer));
 			if (nbytes <= 0)
 			{
@@ -88,7 +91,7 @@ namespace PX2
 		template<class T>
 		int BroadMsgToClients(int msgid, T&msg)
 		{
-			char buffer[4096];
+			char buffer[MAX_OVERLAPBUF_ALLSZIE];
 			int nbytes = MsgToRawBuffer(msgid, msg, buffer, sizeof(buffer));
 			if (nbytes <= 0)
 			{

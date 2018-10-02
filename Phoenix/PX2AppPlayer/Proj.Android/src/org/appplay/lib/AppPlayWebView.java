@@ -85,6 +85,9 @@ public class AppPlayWebView extends WebView
         this.getSettings().setSupportZoom(scalesPageToFit);
     } 
     
+    private int imageWidth = 0;
+    private int imageHeight = 0;
+    private int imageWidthBytes = 0;
     public byte[] getWebViewImage() 
     {   
     	if (mIsPaused)
@@ -99,10 +102,29 @@ public class AppPlayWebView extends WebView
     		bmp.copyPixelsToBuffer(buf);
     		imageData = buf.array();
     		
+    		imageWidthBytes = bmp.getRowBytes();
+    		imageWidth = bmp.getWidth();
+    		imageHeight = bmp.getHeight();
+    		
     		return imageData;
     	}
 
    		return null;
+    }
+    
+    public int getImageWidth()
+    {
+    	return imageWidth;
+    }
+    
+    public int getImageHeight()
+    {
+    	return imageHeight;
+    }
+    
+    public int getImageWidthBytes()
+    {
+    	return imageWidthBytes;
     }
     
 	class AppPlayWebViewClient extends WebViewClient 

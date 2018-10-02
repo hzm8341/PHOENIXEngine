@@ -15,6 +15,9 @@
 namespace PX2
 {
 	class CameraNode;
+	class Renderer;
+
+	typedef void(*CameraDrawCallback) (Renderer *renderer);
 
 	/// 相机类
 	class PX2_ENGINE_ITEM Camera : public Object
@@ -216,6 +219,9 @@ namespace PX2
 			bool *isInBack=0);
 		Vector2f WorldDir3DTo2D(const AVector &worldDir);
 
+		void SetCameraDrawCallback(CameraDrawCallback callback);
+		CameraDrawCallback GetCameraDrawCallback();
+
 	protected:
 		// 相机改变后，重新计算取景矩阵
 		void OnFrameChange ();
@@ -260,6 +266,8 @@ namespace PX2
 		// msDefaultDepthType。这个值不需要持久化，从此类派生的Projector会覆盖
 		// 这个值，并且将其持久化。
 		DepthType mDepthType;
+
+		CameraDrawCallback mCameraDrawCallback;
 
 		// 缺省投影矩阵类型（在DirectX和OpenGL不同）。这个值在构造函数中用来初始
 		// 化mDepthType。

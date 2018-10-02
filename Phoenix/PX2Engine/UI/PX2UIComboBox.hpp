@@ -23,6 +23,8 @@ namespace PX2
 
 		virtual void ConfigSkinColor();
 
+		void SetFontSize(int size);
+
 		UIItem *AddChooseStr(const std::string &choose);
 		void RemoveAllChooseStr();
 		int GetNumChooseStr() const;
@@ -31,8 +33,8 @@ namespace PX2
 
 		void SetChooseListHeightSameWithChooses();
 
-		void Choose(int i);
-		void ChooseStr(const std::string &str);
+		void Choose(int i, bool isDoCallback=true);
+		void ChooseStr(const std::string &str, bool isDoCallback=true);
 		int GetChoose() const;
 		std::string GetChooseStr() const;
 		UIItem *GetChooseItem();

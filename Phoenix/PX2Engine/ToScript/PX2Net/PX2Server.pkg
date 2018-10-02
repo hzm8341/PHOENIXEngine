@@ -12,7 +12,10 @@
 		Server(ServerType serverType, int port, int numMaxConnects, 
 			int numMaxMsgHandlers);
 		virtual ~Server();
-
+		
+		static Server *New(ServerType serverType, int port, int numMaxConnects, 
+			int numMaxMsgHandlers);
+			
 		ServerType GetServerType() const;
 		std::string GetAddress();
 

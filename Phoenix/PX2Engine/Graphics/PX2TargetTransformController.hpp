@@ -47,7 +47,7 @@ namespace PX2
 		virtual void Reset ();
 		virtual void Play ();
 		bool IsPlaying () const;
-		virtual void Stop ();
+		virtual void Pause();
 
 		virtual bool Update(double applicationTime, double elapsedTime);
 

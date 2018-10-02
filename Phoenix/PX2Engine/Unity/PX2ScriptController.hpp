@@ -33,7 +33,7 @@ namespace PX2
 
 		virtual void Reset();
 		virtual void Play();
-		virtual void Stop();
+		virtual void Pause();
 
 		virtual bool Update(double applicationTime, double elapsedTime);
 		virtual void FixUpdate();
@@ -46,7 +46,7 @@ namespace PX2
 
 		virtual void ScriptOnReset();
 		virtual void ScriptOnPlay();
-		virtual void ScriptOnStop();
+		virtual void ScriptOnPause();
 		virtual void ScriptOnPlayUpdate();
 
 		void SetNumFixUpdatePerSeconds(int num);

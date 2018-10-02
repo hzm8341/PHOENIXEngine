@@ -48,7 +48,7 @@ INCDIR := ../../../PX2SDK/Include/
 INC := $(wildcard *.h)
 INC := $(notdir $(INC))
 
-SRC := $(wildcard *.cpp)
+SRC := $(wildcard src/*.cpp)
 SRC := $(notdir $(SRC))
 
 OBJDIR := ../../$(CFG)

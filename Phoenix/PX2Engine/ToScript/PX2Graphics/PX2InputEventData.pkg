@@ -179,7 +179,8 @@
 		bool IsKeyEvent() const;
 
 		KeyCode KCode;
-		std::wstring KChar;
+		std::string KChar;
+		std::wstring KCharW;
 
 		MouseButtonID MButtonID;
 		float MWheel;

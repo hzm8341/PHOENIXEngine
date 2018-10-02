@@ -5,33 +5,38 @@
 
 #include "PX2CorePre.hpp"
 #include "PX2Controller.hpp"
-#include "PX2BtPhysicsUtilities.hpp"
 #include "PX2AIAgentPath.hpp"
 #include "PX2HQuaternion.hpp"
+#include "PX2AIAgentBase.hpp"
 #include "OpenSteer/AbstractVehicle.h"
 #include "OpenSteer/LocalSpace.h"
 #include "OpenSteer/SteerLibrary.h"
+#include "PX2NavMoveUnit.hpp"
 
 namespace PX2
 {
-	class Node;
-	class AIAgentWorld;
 
-	class PX2_ENGINE_ITEM AIAgent : public Controller, private
+	class AIAgentGroup;
+	class AIAgentObject;
+
+	class PX2_ENGINE_ITEM AIAgent : public AIAgentBase, private
 		OpenSteer::SteerLibraryMixin<OpenSteer::AbstractVehicle>
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_NAMES;
 		PX2_DECLARE_STREAM(AIAgent);
+		PX2_DECLARE_PROPERTY;
 
-		friend class AgentGroup;
+		friend class AIAgentGroup;
 	public:
-		AIAgent(int agentId, Node *sceneNode, btRigidBody* rigidBody);
+		AIAgent();
+		AIAgent(Node *node);
 		virtual ~AIAgent();
+
+		void InitializeCapsule();
 
 		static const float DEFAULT_AGENT_HEALTH;
 		static const float DEFAULT_AGENT_HEIGHT;
-		static const float DEFAULT_AGENT_MASS;
 		static const float DEFAULT_AGENT_MAX_FORCE;
 		static const float DEFAULT_AGENT_MAX_SPEED;
 		static const float DEFAULT_AGENT_RADIUS;
@@ -42,36 +47,82 @@ namespace PX2
 		static const std::string DEFAULT_AGENT_TEAM;
 
 	public:
+		AVector ForceToAlign(float maxDistance, float maxAngle, 
+			const AIAgentGroup& group);
+		AVector ForceToAvoidAgents(const std::vector<AIAgent*>& agents,
+			float predictionTime = 2.0f);
+		AVector ForceToAvoidObjects(
+			const std::vector<AIAgentObject*>& objects,
+			float predictionTime = 2.0f);
+		
+		AVector ForceToCombine(float maxDistance, float maxAngle,
+			AIAgent *agent);
+		AVector ForceToCombine(float maxDistance, float maxAngle,
+			const AIAgentGroup& group);
+		AVector ForceToCombine(float maxDistance, float maxAngle, 
+			const std::vector<AIAgent*>& agents);
+
+		AVector ForceToFleePosition(const APoint& position);
+		AVector ForceToFollowPath(float predictionTime = 2.0f);
+		AVector ForceToFollowPath(AIAgentPath& path, 
+			float predictionTime = 2.0f);
+		AVector ForceToPosition(const APoint& position);
+
+		AVector ForceToSeparateAgents(float maxDistance, float maxAngle);
+		AVector ForceToSeparate(float maxDistance, float maxAngle,
+			const AIAgentGroup& group);
+		AVector ForceToSeparate(float maxDistance, float maxAngle,
+			std::vector<AIAgent*> agents);
+		AVector ForceToSeparate(float maxDistance, float maxAngle,
+			AIAgent *agent);
+
+		AVector ForceToStayOnPath(float predictionTime = 2.0f);
+		AVector ForceToStayOnPath(AIAgentPath& path, 
+			float predictionTime = 2.0f);
+		AVector ForceToTargetSpeed(const float speed);
+		AVector ForceToWander(float deltaMilliseconds);
+
+		AVector ForceToAvoidAgents(float predictionTime = 2.0f);
+		AVector ForceToAvoidObjects(float predictionTime = 2.0f);
+
+		void ApplyForce(const AVector &force);
+
+		APoint PredictFuturePosition(float predictionTime) const;
+
 		void RemovePath();
-		void SetForward(const Vector3f& forward);
-		void SetForward(const HQuaternion& orientation);
-		void SetHealth(float health);
+		void SetForward(const AVector& forward);
+		void SetRotate(const HMatrix& mat);
 		void SetHeight(float  height);
-		void SetMass(float  mass);
 		void SetMaxForce(float force);
 		void SetMaxSpeed(float speed);
 		void SetPath(const AIAgentPath& path);
-		void SetPosition(const Vector3f& position);
-		void SetRadius(float radius);
-		void SetRigidBody(btRigidBody* rigidBody);
-		void SetAgentWorld(AIAgentWorld *agentWorld);
 		void SetSpeed(float speed);
-		void SetTarget(const Vector3f& target);
+		void SetTarget(const APoint& target);
 		void SetTargetRadius(float radius);
 		void SetTeam(const std::string& team);
-		void SetVelocity(const Vector3f& velocity);
+		void SetVelocity(const AVector& velocity);
 
-		btRigidBody* GetRigidBody();
-		AIAgentWorld *GetAgentWorld();
+		AVector GetRight() const;
+		AVector GetUp() const;
+		AVector GetForward() const;
 
-		Vector3f GetForward() const;
-		Vector3f GetPosition() const;
-		HQuaternion GetOrientation() const;
-
+		void SetHealth(float health);
 		float GetHealth() const;
+
+		void SetRadius(float radius);
+		virtual float GetRadius() const;
+
 		float GetHeight() const;
-		float GetRadius() const;
-		float GetMass() const;
+
+		float GetMaxForce() const;
+		float GetMaxSpeed() const;
+
+		float GetSpeed() const;
+
+		APoint GetTarget() const;
+		float GetTargetRadius() const;
+
+		AVector GetVelocity() const;
 
 		// AbstractLocalSpace
 	public:
@@ -81,8 +132,8 @@ namespace PX2
 		virtual OpenSteer::Vec3 setUp(OpenSteer::Vec3 u);
 		virtual OpenSteer::Vec3 forward(void) const;
 		virtual OpenSteer::Vec3 setForward(OpenSteer::Vec3 f);
-		virtual OpenSteer::Vec3 position(void) const;
 		virtual OpenSteer::Vec3 setPosition(OpenSteer::Vec3 p);
+		virtual OpenSteer::Vec3 position(void) const;
 		virtual bool rightHanded(void) const;
 		virtual void resetLocalSpace(void);
 		virtual OpenSteer::Vec3 localizeDirection(const OpenSteer::Vec3& globalDirection) const;
@@ -95,48 +146,46 @@ namespace PX2
 		virtual void regenerateOrthonormalBasis(const OpenSteer::Vec3& newForward, const OpenSteer::Vec3& newUp);
 		virtual OpenSteer::Vec3 localRotateForwardToSide(const OpenSteer::Vec3& v) const;
 		virtual OpenSteer::Vec3 globalRotateForwardToSide(const OpenSteer::Vec3& globalForward) const;
+		virtual void update(const float, const float);
 
 		// AbstractVehicle
 	public:
-		virtual float mass(void) const;
+		virtual float mass() const;
 		virtual float setMass(float);
 
-		virtual float radius(void) const;
+		virtual float radius() const;
 		virtual float setRadius(float);
 
-		virtual OpenSteer::Vec3 velocity(void) const;
-		virtual float speed(void) const;
+		virtual OpenSteer::Vec3 velocity() const;
+		virtual float speed() const;
 		virtual float setSpeed(float);
 
 		virtual OpenSteer::Vec3 predictFuturePosition(const float predictionTime) const;
 
-		virtual float maxForce(void) const;
+		virtual float maxForce() const;
 		virtual float setMaxForce(float);
 
-		virtual float maxSpeed(void) const;
+		virtual float maxSpeed() const;
 		virtual float setMaxSpeed(float);
 
-		virtual void update(const float currentTime, const float elapsedTime);
+	public_internal:
+		void SetAIAgentWorld(AIAgentWorld *agentWorld);
 
 	private:
-		AIAgentWorld *mAgentWorld;
+		virtual void _Update(double applicationTime, double elapsedTime);
 
-		Node* sceneNode_;
-		btRigidBody* rigidBody_;
+		AIAgentPath mPath;
+		bool mIsHasPath;
 
-		AIAgentPath path_;
-		bool hasPath_;
-
-		float height_;
-		float maxForce_;
-		float maxSpeed_;
-		float radius_;
-		float speed_;
-		float mass_;
-		Vector3f target_;
-		float targetRadius_;
-		float health_;
-		std::string team_;
+		float mHealth;
+		float mHeight;
+		float mRadius;
+		float mMaxForce;
+		float mMaxSpeed;
+		float mSpeed;
+		APoint mTarget;
+		float mTargetRadius;
+		std::string mTeam;
 	};
 
 	PX2_REGISTER_STREAM(AIAgent);

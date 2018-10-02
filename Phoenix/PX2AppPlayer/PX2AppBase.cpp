@@ -22,7 +22,10 @@ mWidth(800),
 mHeight(600),
 mAllowResize(true),
 mNumArguments(0),
-mArguments(0)
+mArguments(0),
+mCMDWidth(0),
+mCMDHeight(0),
+mIsUseWindows(true)
 {
 	mWindowTitle = GetTitleProj("");
 }
@@ -39,7 +42,7 @@ bool AppBase::IsInitlized ()
 bool AppBase::Initlize ()
 {
 	Application *app = new Application();
-	app->SetBoostMode(Application::BM_APP);
+	PX2_UNUSED(app);
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -140,9 +143,32 @@ int AppBase::Main (int numArguments, char** arguments)
 	mNumArguments = numArguments;
 	mArguments = arguments;
 
-	if (numArguments > 1)
+	for (int i = 1; i < numArguments; i++)
 	{
-		mCmdProjectName = std::string(arguments[1]);
+		std::string strParam = arguments[i];
+		StringTokenizer stk(strParam, "=");
+		if (strParam.size() > 1)
+		{
+			std::string str = stk[0];
+			std::string strVal = stk[1];
+			if ("proj" == str)
+			{
+				mCmdProjectName = strVal;
+			}
+			else if ("w" == str)
+			{
+				mCMDWidth = StringHelp::StringToInt(strVal);
+			}
+			else if ("h" == str)
+			{
+				mCMDHeight = StringHelp::StringToInt(strVal);
+			}
+			else if ("window" == str)
+			{
+				mIsUseWindows =
+					(1 == StringHelp::StringToInt(strVal)) ? true : false;
+			}
+		}
 	}
 
 	return 1;

@@ -73,4 +73,8 @@
 		
 		void UseAlphaBlend(bool use);
 		bool IsUseAlphaBlend() const;
+		
+		void UseAlphaBlendAdd(bool use);
+
+		void SetDoubleSide(bool doubleSide);
 	};

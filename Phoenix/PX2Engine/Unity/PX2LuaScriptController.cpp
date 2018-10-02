@@ -17,6 +17,8 @@ PX2_IMPLEMENT_FACTORY(LuaScriptController);
 const char* LuaSCRIPCONTROLLER_NAME = "LuaScriptController";
 const char* gST_NAME = "gScriptTable";
 //---------------------------------------------------------------------------
+LuaScriptController *LuaScriptController::sCurOperatorNewController = 0;
+//---------------------------------------------------------------------------
 LuaScriptController::LuaScriptController() :
 mLuaState(0),
 mSelfP(0)
@@ -47,7 +49,13 @@ LuaPlus::LuaObject LuaScriptController::New(LuaPlus::LuaObject self,
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
 	LuaPlus::LuaState *luaState = luaContext->GetLuaPlusState();
 
-	LuaScriptController *ctrl = new0 LuaScriptController;
+	LuaScriptController *ctrl = 0;
+	if (sCurOperatorNewController)
+	{
+		ctrl = sCurOperatorNewController;
+	}
+	else
+		ctrl = new0 LuaScriptController;
 
 	ctrl->mLO_Self.AssignNewTable(*luaState);
 	if (ctrl->BuildCppDataFromScript(originalSubClass, constructionData))
@@ -81,29 +89,7 @@ void LuaScriptController::SetFileClass(const std::string &filename,
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
 	luaContext->CallFile(filename);
 
-	LuaPlus::LuaObject subClass = mLuaState->GetGlobal(className.c_str());
-	LuaPlus::LuaObject constructionData = subClass;
-
-	mLO_Self.AssignNewTable(mLuaState);
-	if (BuildCppDataFromScript(subClass, constructionData))
-	{
-		LuaPlus::LuaObject metaTableObj = mLuaState->GetGlobals().Lookup(
-			LuaSCRIPCONTROLLER_NAME);
-		assertion(!metaTableObj.IsNil(), "");
-
-		mLO_Self.SetLightUserdata("__object", this);
-		mLO_Self.SetMetatable(metaTableObj);
-
-		LuaPlus::LuaObject gst = mLuaState->GetGlobals().Lookup(gST_NAME);
-		assertion(!gst.IsNil(), "");
-		mSelfPObject = mLuaState->BoxPointer(this);
-		gst.SetObject(mSelfPObject, mLO_Self);
-		mSelfP = mSelfPObject.m_stackIndex;
-	}
-	else
-	{
-		mLO_Self.AssignNil(mLuaState);
-	}
+	_CallOnClass(className);
 }
 //---------------------------------------------------------------------------
 void LuaScriptController::SetStringClass(const std::string &str,
@@ -114,29 +100,44 @@ void LuaScriptController::SetStringClass(const std::string &str,
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
 	luaContext->CallString(str);
 
+	_CallOnClass(className);
+}
+//---------------------------------------------------------------------------
+void LuaScriptController::_CallOnClass(const std::string &className)
+{
 	LuaPlus::LuaObject subClass = mLuaState->GetGlobal(className.c_str());
-	LuaPlus::LuaObject constructionData = subClass;
-
-	mLO_Self.AssignNewTable(mLuaState);
-	if (BuildCppDataFromScript(subClass, constructionData))
+	LuaPlus::LuaObject funNew = subClass.GetByName("New");
+	if (!funNew.IsNil())
 	{
-		LuaPlus::LuaObject metaTableObj = mLuaState->GetGlobals().Lookup(
-			LuaSCRIPCONTROLLER_NAME);
-		assertion(!metaTableObj.IsNil(), "");
-
-		mLO_Self.SetLightUserdata("__object", this);
-		mLO_Self.SetMetatable(metaTableObj);
-
-		LuaPlus::LuaObject gst = mLuaState->GetGlobals().Lookup(gST_NAME);
-		assertion(!gst.IsNil(), "");
-		mSelfPObject = mLuaState->BoxPointer(this);
-		gst.SetObject(mSelfPObject, mLO_Self);
-		mSelfP = mSelfPObject.m_stackIndex;
+		sCurOperatorNewController = this;
+		LuaCall call = funNew;
+		call << subClass << LuaRun();
+		sCurOperatorNewController = 0;
 	}
-	else
-	{
-		mLO_Self.AssignNil(mLuaState);
-	}
+
+	//LuaPlus::LuaObject constructionData;
+	//constructionData.AssignNewTable(mLuaState);
+
+	//mLO_Self.AssignNewTable(mLuaState);
+	//if (BuildCppDataFromScript(subClass, constructionData))
+	//{
+	//	LuaPlus::LuaObject metaTableObj = mLuaState->GetGlobals().Lookup(
+	//		LuaSCRIPCONTROLLER_NAME);
+	//	assertion(!metaTableObj.IsNil(), "");
+
+	//	mLO_Self.SetLightUserdata("__object", this);
+	//	mLO_Self.SetMetatable(metaTableObj);
+
+	//	LuaPlus::LuaObject gst = mLuaState->GetGlobals().Lookup(gST_NAME);
+	//	assertion(!gst.IsNil(), "");
+	//	mSelfPObject = mLuaState->BoxPointer(this);
+	//	gst.SetObject(mSelfPObject, mLO_Self);
+	//	mSelfP = mSelfPObject.m_stackIndex;
+	//}
+	//else
+	//{
+	//	mLO_Self.AssignNil(mLuaState);
+	//}
 }
 //---------------------------------------------------------------------------
 bool LuaScriptController::BuildCppDataFromScript(
@@ -185,7 +186,8 @@ bool LuaScriptController::BuildCppDataFromScript(
 	}
 	else
 	{
-		PX2_LOG_ERROR("scriptClass is not a table in LuaScriptController::BuildCppDataFromScript()");
+		PX2_LOG_ERROR(
+			"scriptClass is not a table in LuaScriptController::BuildCppDataFromScript()");
 		return false;
 	}
 

@@ -8,6 +8,8 @@
 #include "PX2SmartPointer.hpp"
 #include "PX2Object.hpp"
 
+struct curl_slist;
+
 namespace PX2
 {
 
@@ -49,6 +51,8 @@ namespace PX2
 		bool IsGettedOK() const;
 		float GetGettedProgress() const;
 
+		void ClearOptionList();
+		void AddOptionListStr(const std::string &optStr);
 		int Get(const std::string &url);
 		int Post(const std::string &url, const std::string &data);
 
@@ -65,6 +69,7 @@ namespace PX2
 		virtual int OnProgress(double dltotal, double dlnow, double ultotal, double ulnow);
 
 	private:
+		curl_slist *_AddOptions();
 		static int WriteFunction(void *buffer, size_t size, size_t nmemb,
 			void *clientp);
 		static int ProgressFunction(void *clientp, double dltotal,
@@ -81,6 +86,8 @@ namespace PX2
 		int mNeedDownloadSize;
 		int mCurGettedSize;
 		Mutex mMutex;
+
+		std::vector<std::string> mOptionStrs;
 
 		char *mGettedMemory;
 

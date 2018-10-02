@@ -8,6 +8,7 @@
 #include "PX2AmbientRegionController.hpp"
 #include "PX2CameraNode.hpp"
 #include "PX2Terrain.hpp"
+#include "PX2AIAgentWorld.hpp"
 
 namespace PX2
 {
@@ -24,6 +25,9 @@ namespace PX2
 		Scene();
 		virtual ~Scene();
 
+		static int NextID(int solt);
+
+		// Environment
 		EnvirParamController *GetEnvirParamController();
 		AmbientRegionController *GetAmbientRegionController();
 
@@ -39,6 +43,8 @@ namespace PX2
 
 	protected:
 		static void _CollectCameras(Scene *scene, Node *node);
+		static const int sNumIDGroup = 10;
+		static int sNextIDs[sNumIDGroup];
 
 		bool AddCamera(Camera *camera);
 		void ClearCameras();
@@ -55,7 +61,28 @@ namespace PX2
 		bool mIsNeedReCalCameras;
 
 	public:
-		void OnEvent(Event *ent);
+		virtual void OnEvent(Event *ent);
+
+		// Paths
+	public:
+		Node *GetPathRoot();
+
+	private:
+		NodePtr mPathRoot;
+
+		// Areas
+	public:
+		Node *GetAreaRoot();
+
+	private:
+		NodePtr mAreaRoot;
+
+		// AI
+	public:
+		AIAgentWorld *GetAIAgentWorld();
+
+	private:
+		AIAgentWorldPtr mAIAgentWorld;
 	};
 
 #include "PX2Scene.inl"

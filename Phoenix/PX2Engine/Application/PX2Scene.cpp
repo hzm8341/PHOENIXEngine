@@ -7,6 +7,8 @@
 #include "PX2Float2.hpp"
 #include "PX2ProjectEvent.hpp"
 #include "PX2GraphicsRoot.hpp"
+#include "PX2AIAgentWorld.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Node, Scene);
@@ -15,7 +17,9 @@ PX2_IMPLEMENT_FACTORY(Scene);
 PX2_IMPLEMENT_DEFAULT_NAMES(Node, Scene);
 
 //----------------------------------------------------------------------------
-Scene::Scene() 
+int Scene::sNextIDs[] = {0,0,0,0,0,0,0,0,0,0};
+//----------------------------------------------------------------------------
+Scene::Scene()
 {
 	ComeInEventWorld();
 
@@ -23,10 +27,12 @@ Scene::Scene()
 
 	mEnvirParam = new0 EnvirParamController();
 	AttachController(mEnvirParam);
+	mEnvirParam->SetPlaySelfCtrl(true);
 	mEnvirParam->ResetPlay();
 
 	mAmbientRegionController = new0 AmbientRegionController();
 	AttachController(mAmbientRegionController);
+	mAmbientRegionController->SetPlaySelfCtrl(true);
 	mAmbientRegionController->ResetPlay();
 
 	CameraNode *camNode = PX2_CREATER.CreateNode_Camera();
@@ -37,12 +43,39 @@ Scene::Scene()
 	camNode->LookAt(APoint(0.0f, 0.0f, 0.0f));
 	SetMainCameraNode(camNode);
 
+	mPathRoot = new0 Node();
+	AttachChild(mPathRoot);
+	mPathRoot->SetName("Path");
+
+	mAreaRoot = new0 Node();
+	AttachChild(mAreaRoot);
+	mAreaRoot->SetName("Area");
+
 	mIsNeedReCalCameras = true;
+
+	int nextID = NextID(0);
+	SetID(nextID);
+
+	mAIAgentWorld = new0 AIAgentWorld();
+	AttachController(mAIAgentWorld);
+	mAIAgentWorld->SetNode(this);
 }
 //----------------------------------------------------------------------------
 Scene::~Scene()
 {
+	mAIAgentWorld->Clear();
+	
 	GoOutEventWorld();
+}
+//----------------------------------------------------------------------------
+int Scene::NextID(int solt)
+{
+	if (0 <= solt && solt < sNumIDGroup)
+	{
+		return sNextIDs[solt]++;
+	}
+
+	return 0;
 }
 //----------------------------------------------------------------------------
 void Scene::SetTerrain(Terrain *terrain)
@@ -198,6 +231,17 @@ void Scene::OnEvent(Event *ent)
 		Sizef size = ent->GetData<Sizef>();
 		AdjustCameraFrustum(size);
 	}
+	else if (ProjectES::IsEqual(ent, ProjectES::Play))
+	{
+		ResetPlay();
+	}
+	else if (ProjectES::IsEqual(ent, ProjectES::Stop))
+	{
+		if (mAIAgentWorld)
+		{
+			Reset();
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Scene::AdjustCameraFrustum(const Sizef &canvasSize)
@@ -271,6 +315,11 @@ void Scene::Load(InStream& source)
 	source.ReadPointer(mAmbientRegionController);
 	source.ReadPointer(mMainCameraNode);
 
+	source.ReadPointer(mPathRoot);
+	source.ReadPointer(mAreaRoot);
+
+	source.ReadPointer(mAIAgentWorld);
+
 	PX2_END_DEBUG_STREAM_LOAD(Scene, source);
 }
 //----------------------------------------------------------------------------
@@ -286,6 +335,15 @@ void Scene::Link(InStream& source)
 
 	if (mMainCameraNode)
 		source.ResolveLink(mMainCameraNode);
+
+	if (mPathRoot)
+		source.ResolveLink(mPathRoot);
+
+	if (mAreaRoot)
+		source.ResolveLink(mAreaRoot);
+
+	if (mAIAgentWorld)
+		source.ResolveLink(mAIAgentWorld);
 }
 //----------------------------------------------------------------------------
 void Scene::PostLink()
@@ -293,19 +351,31 @@ void Scene::PostLink()
 	Node::PostLink();
 
 	if (mEnvirParam)
+	{
 		mEnvirParam->PostLink();
-
-	if (mEnvirParam)
 		mEnvirParam->ResetPlay();
+	}
 
 	if (mAmbientRegionController)
+	{
 		mAmbientRegionController->PostLink();
-
-	if (mAmbientRegionController)
 		mAmbientRegionController->ResetPlay();
+	}
 
 	if (mMainCameraNode)
 		mMainCameraNode->PostLink();
+
+	if (mPathRoot)
+		mPathRoot->PostLink();
+
+	if (mAreaRoot)
+		mAreaRoot->PostLink();
+
+	if (mAIAgentWorld)
+	{
+		mAIAgentWorld->PostLink();
+		mAIAgentWorld->SetNode(this);
+	}
 }
 //----------------------------------------------------------------------------
 bool Scene::Register(OutStream& target) const
@@ -327,6 +397,18 @@ bool Scene::Register(OutStream& target) const
 			mMainCameraNode->Register(target);
 		}
 
+		if (mMainCameraNode)
+			mMainCameraNode->Register(target);
+
+		if (mPathRoot)
+			mPathRoot->Register(target);
+
+		if (mAreaRoot)
+			mAreaRoot->Register(target);
+
+		if (mAIAgentWorld)
+			mAIAgentWorld->Register(target);
+
 		return true;
 	}
 
@@ -344,6 +426,11 @@ void Scene::Save(OutStream& target) const
 	target.WritePointer(mAmbientRegionController);
 	target.WritePointer(mMainCameraNode);
 
+	target.WritePointer(mPathRoot);
+	target.WritePointer(mAreaRoot);
+
+	target.WritePointer(mAIAgentWorld);
+
 	PX2_END_DEBUG_STREAM_SAVE(Scene, target);
 }
 //----------------------------------------------------------------------------
@@ -355,6 +442,11 @@ int Scene::GetStreamingSize(Stream &stream) const
 	size += PX2_POINTERSIZE(mEnvirParam);
 	size += PX2_POINTERSIZE(mAmbientRegionController);
 	size += PX2_BOOLSIZE(mMainCameraNode);
+
+	size += PX2_POINTERSIZE(mPathRoot);
+	size += PX2_POINTERSIZE(mAreaRoot);
+
+	size += PX2_POINTERSIZE(mAIAgentWorld);
 	
 	return size;
 }

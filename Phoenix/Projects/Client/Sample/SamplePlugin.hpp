@@ -28,6 +28,7 @@
 #include "PX2Application.hpp"
 #include "PX2LanguageManager.hpp"
 #include "PX2Singleton_NeedNew.hpp"
+
 namespace PX2
 {
 	class SAMPLE_DLL_ITEM SamplePlugin : public Plugin, public EventHandler, public Singleton<SamplePlugin>

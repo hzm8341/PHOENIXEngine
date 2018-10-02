@@ -68,7 +68,8 @@ u16 CLidarPacket::calcCheckSum(u8 *start_bytes, u16 num_bytes)
 	return (uchCRCHi << 8 | uchCRCLo);
 }
 
-bool CLidarPacket::verifyCheckSum()
+
+bool CLidarPacket::verifyCheckSum(u8 ProtoType)
 {
 	if (m_length < m_params.least_packet_len)
 	{
@@ -79,7 +80,12 @@ bool CLidarPacket::verifyCheckSum()
 	u8 c2 = m_buf[m_length - 2];
 	u8 c1 = m_buf[m_length - 1];
 	u16 chksum = (c2 << 8) | c1;
-	u16 caculate = calcCheckSum(&m_buf[0], m_length - 2);
+	u16 caculate;
+
+	if(ProtoType < 1)
+		caculate = calcCheckSum(&m_buf[0], m_length - 2);
+	else
+		caculate = calcCheckSum_Xor(&m_buf[0], m_length - 2);
 
 #if 0
 	printf("[CLidarPacket] m_length %d CRC 0x%X 0x%X, receive CRC %d, caculate CRC %d!\n",
@@ -96,6 +102,17 @@ bool CLidarPacket::verifyCheckSum()
 		return false;
 	}
 }
+
+u16 CLidarPacket::calcCheckSum_Xor(u8 *start_bytes, u16 num_bytes)
+{
+	u16 checksum = 0;                             // Checksum
+	while (num_bytes--)
+	{
+		checksum += *start_bytes++;     // ¼ÆËãChecksum
+	}
+	return checksum;
+}
+
 
 u16 CLidarPacket::getParamLength()
 {

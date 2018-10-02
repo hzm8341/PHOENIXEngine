@@ -45,7 +45,7 @@ void UIScoreStaticTextCtrl::SetNumInit(int num)
 	mNum = num;
 
 	Reset();
-	Stop();
+	Pause();
 }
 //----------------------------------------------------------------------------
 void UIScoreStaticTextCtrl::SetNum(int num)

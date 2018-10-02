@@ -7,8 +7,6 @@
 #include "PX2Jungler.hpp"
 
 // terrains
-#include "PX2LODTerrain.hpp"
-#include "PX2LODTerrainPage.hpp"
 #include "PX2RawTerrain.hpp"
 #include "PX2RawTerrainPage.hpp"
 #include "PX2Terrain.hpp"

@@ -19,11 +19,14 @@ namespace PX2
 
 	class PX2_ENGINE_ITEM UDPServer : public Object, public Runnable
 	{
+		PX2_NEW(UDPServer);
+
 	public:
 		UDPServer();
 		UDPServer(const SocketAddress& sa);
 		~UDPServer();
 
+		void Bind(int port);
 		void Start();
 		void Stop();
 

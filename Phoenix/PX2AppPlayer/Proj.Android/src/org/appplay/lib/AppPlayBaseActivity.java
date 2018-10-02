@@ -1,5 +1,6 @@
 package org.appplay.lib;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -7,7 +8,9 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -18,17 +21,19 @@ import android.provider.Settings;
 import org.apache.http.conn.util.InetAddressUtils;
 import org.appplay.ai.VoiceSDK;
 import org.appplay.ai.VoiceSDKCreater;
+import org.appplay.ap.AppPlayApplication;
 import org.appplay.ap.R;
 import org.appplay.bluetooth.BluetoothLE;
-import org.appplay.bluetooth.BluetoothListener.AutoConnectionListener;
-import org.appplay.bluetooth.BluetoothListener.BluetoothConnectionListener;
+import org.appplay.bluetooth.BluetoothSPPListener.AutoConnectionListener;
+import org.appplay.bluetooth.BluetoothSPPListener.BluetoothConnectionListener;
 import org.appplay.bluetooth.BluetoothSPP;
-import org.appplay.bluetooth.BluetoothState;
+import org.appplay.bluetooth.BluetoothSPPState;
 import org.appplay.platformsdk.PlatformSDKNatives;
 import org.appplay.platformsdk.PlatformSDK;
 import org.appplay.platformsdk.PlatformSDKCreater;
 
 import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.hardware.Sensor;
@@ -36,11 +41,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -54,7 +61,10 @@ import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.graphics.YuvImage;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
@@ -75,23 +85,33 @@ import android.location.LocationProvider;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class AppPlayBaseActivity extends Activity implements Runnable
+public class AppPlayBaseActivity extends Activity
 {
 	// Init
 	public static boolean sIsInitlized = false;
+	
+	// Application
+    public AppPlayApplication mApplication;
 	
 	// Activtiy
 	public static AppPlayBaseActivity sTheActivity;
@@ -121,18 +141,31 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 	ArrayList<String> mScanedDeviceStrs = new ArrayList<String>();
 	
 	// usb
+    private final int VendorID = 0x20BC;    //这里要改成自己的硬件ID
+    private final int ProductID = 0x5500;
+    
+    private PendingIntent mPermissionIntent;
+    private static final String ACTION_USB_PERMISSION =
+            "com.demo.xprinter.USB_PERMISSION";
+    
 	private UsbManager mUsbManager;
 	private UsbDevice mDeviceFound;
-    private UsbDeviceConnection mUsbDeviceConnection;
     private UsbInterface mUsbInterfaceFound = null;
+    private UsbDeviceConnection mUsbDeviceConnection = null;
     private UsbEndpoint mEndpointOut = null;
     private UsbEndpoint mEndpointIn = null;
     
 	// Camera
     private Camera mCamera;
-    private SurfaceView mSurfaceView;
-    private int mScreenWidth = 300;
-    private int mScreenHeight = 300;
+    private SurfaceTexture mSurfaceTexture;
+    private int mCameraWidth = 300;
+    private int mCameraHeight = 300;
+    
+    // HardCamera
+    //private HardCamera mHardCamera = null;
+    
+    // Wifi
+    //private WifiHelper mWifiHelper = null;
     
 	// View
 	private static FrameLayout sFrame = null;
@@ -144,6 +177,9 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 	// Sensor
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
+	
+	// Wake lock
+	private WakeLock mWakeLock;
 
 	public static FrameLayout GetFrameLayout() {
 		return AppPlayBaseActivity.sFrame;
@@ -154,8 +190,13 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		Log.d("appplay.ap", "AppPlayBaseActivity::onCreate");
 
 		sTheActivity = this;
+		mApplication = (AppPlayApplication) getApplication();
 
 		super.onCreate(savedInstanceState);
+		
+	    requestWindowFeature(Window.FEATURE_NO_TITLE); 
+	    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+	        WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		// Package
 		String packageName = getApplication().getPackageName();
@@ -176,69 +217,59 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		sVersion_Dir = dataDir;
 		sVersion_Filename = info.dataDir + "/version.xml";
 		sVersion_Filename_Temp = info.dataDir + "/version_Temp.xml";
-
+     
 		// Initlize
 		Log.d("appplay.ap", "begin - AppPlayActivity::onCreate");
 
 		AppPlayMetaData.Initlize(getApplicationContext());
+		
+		// ble
+		_BluetoothSetBle(false);
+		
+		// wake always
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
+				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);		
 
-		// bluetooth2.0
-		if (AppPlayMetaData.sIsBluetoothable)
-		{
-			BluetoothAdapter bleAdapter = BluetoothAdapter.getDefaultAdapter();
-			if (null != bleAdapter)
-			{
-				//mBt = new BluetoothSPP(this);
-				
-				if (null != mBt)
-				{
-					if (!mBt.IsBluetoothAvailable()) 
-					{
-						Toast.makeText(getApplicationContext(),
-								"Bluetooth is not available", Toast.LENGTH_SHORT)
-								.show();
-					}
-
-					_BtGetPairedDevices();
-
-					IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-					this.registerReceiver(mReceiver, filter);
-					filter = new IntentFilter(
-							BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-					this.registerReceiver(mReceiver, filter);	
-				}
-				
-				mBLE = new BluetoothLE(this);
-				
-				if (null != mBLE)
-				{
-					if (!mBLE.IsBluetoothAvailable()) 
-					{
-						Toast.makeText(getApplicationContext(),
-								"Bluetooth is not available", Toast.LENGTH_SHORT)
-								.show();
-					}
-					else
-					{
-						mBLE.Initlize();						
-						_BtGetPairedDevices();		
-					}
-				}
-			}
-		}
+        //保持cpu一直运行，不管屏幕是否黑屏  
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);  
+		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CPUKeepRunning");  
+		mWakeLock.acquire();
 
 		// voice
 		if (AppPlayMetaData.sIsVoiceable)
 			VoiceSDK.sTheVoiceSDK = VoiceSDKCreater.Create(this);
 		
 		// usb
+		/*
+		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+        registerReceiver(mUsbReceiver, filter);
 		mUsbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
+		_EnumUSBDevice();
+		_FindInterface();	
+        if (!mUsbManager.hasPermission(mDeviceFound)) {
+        	mUsbManager.requestPermission(mDeviceFound, mPermissionIntent);
+        }
+        else
+        {
+    		_OpenDevice();
+    		_AssignEndpoint();	
+        }
+        */
         
 		// camera
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		mScreenWidth = dm.widthPixels;
-		mScreenHeight = dm.heightPixels;
+		//DisplayMetrics dm = new DisplayMetrics();
+		//getWindowManager().getDefaultDisplay().getMetrics(dm);
+		mCameraWidth = 400;
+		mCameraHeight = 300;
+		
+		//_InitCamera(0);
+		
+		// hardcamera
+		//mHardCamera = new HardCamera(this);
+		
+		// wifi
+		//mWifiHelper = new WifiHelper(this); 
 
 		// frame
 		ViewGroup.LayoutParams framelayout_params = 
@@ -323,52 +354,26 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 	public void onStart() {
 		Log.d("appplay.lib", "AppPlayBaseActivity::onStart");
 		
-		super.onStart();
-
-		if (AppPlayMetaData.sIsBluetoothable)
-		{
-			if (null != mBt)
-			{
-				if (!mBt.IsBluetoothEnabled())
-				{
-					Intent intent = new Intent(
-							BluetoothAdapter.ACTION_REQUEST_ENABLE);
-					startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
-				} 
-				else 
-				{
-					if (!mBt.IsServiceAvailable())
-					{
-						mBt.Start(BluetoothState.IS_DEVICE_SELF);
-					}
-				}	
-			}
-			
-			if (null != mBLE)
-			{
-				/*_*/
-			}
-		}		
+		super.onStart();		
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		if (requestCode == BluetoothState.REQUEST_ENABLE_BT)
+		if (requestCode == BluetoothSPPState.REQUEST_ENABLE_BT)
 		{
 			if (resultCode == Activity.RESULT_OK) 
 			{
 				if (null != mBt)
-					mBt.Start(BluetoothState.IS_DEVICE_SELF);
+					mBt.Start(BluetoothSPPState.IS_DEVICE_SELF);
+				
 				if (null != mBLE)
 				{
-					/*_*/
+					mBLE.Initlize();						
+					_BtGetPairedDevices();	
 				}				
 			} 
 			else
 			{
-				Toast.makeText(getApplicationContext(),
-						"Bluetooth was not enabled.", Toast.LENGTH_SHORT)
-						.show();
 			}
 		}
 	}
@@ -382,12 +387,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		if (_IsAppOnForeground()) {
 			mIsAppForeground = false;
 		}
-
-		if (AppPlayMetaData.sIsBluetoothable) 
-		{
-			if (null!=mBt)
-				mBt.Shutdown();
-		}	
 	}
 
 	@Override
@@ -401,6 +400,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		
 		if (null != mWebViewNatives)
 			mWebViewNatives.pauseAll();
+		
+		_StartBackTask();
 	}
 
 	@Override
@@ -417,13 +418,17 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		{
 			if (null != PlatformSDK.sThePlatformSDK)
 				PlatformSDK.sThePlatformSDK.OnResume();
+			
+			if (null != mWebViewNatives)
+				mWebViewNatives.resumeAll();
 
 			mIsAppForeground = true;
-		}
+		}		
 		
-		if (null != mWebViewNatives)
-			mWebViewNatives.resumeAll();
+		_RemoveBackTask();
 		
+		/*
+		//before
         Intent intent = getIntent();
         String action = intent.getAction();
 		
@@ -439,130 +444,291 @@ public class AppPlayBaseActivity extends Activity implements Runnable
             	setUsbDevice(null);
             }
         }
+        */
 	}
 	
-	private void setUsbDevice(UsbDevice device) 
+	// timer
+	private void _StartBackTask()
 	{
-		 mUsbInterfaceFound = null;
-	     mEndpointOut = null;
-	     mEndpointIn = null;
-	     
-	     for (int i = 0; i < device.getInterfaceCount(); i++) 
-	     {      
-	    	 UsbInterface usbif = device.getInterface(i);
-	    	 
-	    	 UsbEndpoint tOut = null;
-	    	 UsbEndpoint tIn = null;
-	
-	    	 int tEndpointCnt = usbif.getEndpointCount();
-	    	 if (tEndpointCnt >= 2) 
-	    	 {
-	    		 for (int j = 0; j < tEndpointCnt; j++)
-	    		 {
-	    			 if (usbif.getEndpoint(j).getType() == UsbConstants.USB_ENDPOINT_XFER_BULK) 
-	    			 {
-	    				 if (usbif.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_OUT) 
-	    				 {
-	    					 tOut = usbif.getEndpoint(j);
-	    				 } 
-	    				 else if (usbif.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_IN)
-	    				 {
-	    					 tIn = usbif.getEndpoint(j);
-	    				 }
-	    			}
-	    		}
-	    		 
-	    		if (tOut != null && tIn != null)
-	    		{
-	    			 // This interface have both USB_DIR_OUT
-	    			 // and USB_DIR_IN of USB_ENDPOINT_XFER_BULK
-	    			 mUsbInterfaceFound = usbif;
-	    			 mEndpointOut = tOut;
-	    			 mEndpointIn = tIn;
-	    		}
-	    	}
-	    }
-	        
-	    if (mUsbInterfaceFound == null)
-	    {
-	    	return;
-	    }
-	
-	    mDeviceFound = device;
-	        
-	    if (device != null) 
-	    {
-	    	UsbDeviceConnection connection = mUsbManager.openDevice(device);
-	    	if (connection != null && 
-	             connection.claimInterface(mUsbInterfaceFound, true)) 
-	    	{
-	    		mUsbDeviceConnection = connection;
-	    		
-	    		Thread thread = new Thread(this);
-	    		thread.start();
-	    	}
-	    	else
-	    	{
-	    		mUsbDeviceConnection = null;
-	    	}
-	    }
+		handler.postDelayed(runnable, TIME); //每隔1s执行  
 	}
-	 
-	// usb
-	private void sendCommand(int control) 
-	 {
-		 synchronized (this) 
-		 {
-			 if (mUsbDeviceConnection != null) 
-			 {
-				 byte[] message = new byte[1];
-				 message[0] = (byte)control;
-				 
-				 mUsbDeviceConnection.bulkTransfer(mEndpointOut, message, message.length, 0);
-	         }
-	     }
-	}
-	 
-	 
-	@Override
-	public void run() 
+	
+	private void _RemoveBackTask()
 	{
-		// TODO Auto-generated method stub		
-		ByteBuffer buffer = ByteBuffer.allocate(1);
-        UsbRequest request = new UsbRequest();
-        request.initialize(mUsbDeviceConnection, mEndpointIn);
-        while (true) 
-        {
-        	request.queue(buffer, 1);
-        	
-            if (mUsbDeviceConnection.requestWait() == request)
-            {
-                byte rxCmd = buffer.get(0);
-                if(rxCmd!=0)
-                {
-                	// 
-                	// bar.setProgress((int)rxCmd);
-                }
+		handler.removeCallbacks(runnable);
+	}
+	
+    private int TIME = 200;
+    Handler handler = new Handler();  
+    Runnable runnable = new Runnable() {  
+  
+        @Override  
+        public void run() {  
+            // handler自带方法实现定时器  
+            try {
             	
-                try 
-                {
-                    Thread.sleep(100);
-                } 
-                catch (InterruptedException e)
-                {
+            	if (!mIsAppForeground)
+            	{
+            		AppPlayNatives.nativeOdle();
+            	}
+            	            	
+                handler.postDelayed(this, TIME);
+            } catch (Exception e) {  
+                // TODO Auto-generated catch block  
+                e.printStackTrace();  
+                System.out.println("exception...");  
+            }  
+        }  
+    };  
+    
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (ACTION_USB_PERMISSION.equals(action)) {
+                synchronized (this) {
+                    UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                        if (device != null) {
+                        	
+                    		_OpenDevice();
+                    		_AssignEndpoint();	
+                    		
+                        }
+                    } else {
+                       
+                        //finish();
+                    }
                 }
-            } 
-            else 
+            }
+        }
+    };
+    
+	private void _EnumUSBDevice()
+	{
+        if (mUsbManager == null)
+            return;
+ 
+        HashMap<String, UsbDevice> deviceList = mUsbManager.getDeviceList();
+        if (!deviceList.isEmpty())
+        { 
+        	// deviceList不为空
+			StringBuffer sb = new StringBuffer();
+			for (UsbDevice device : deviceList.values()) 
+			{
+			    sb.append(device.toString());
+			    sb.append("\n");
+				
+				// 输出设备信息
+				Log.d("appplay.ap", "DeviceInfo: " + device.getVendorId() + " , "
+				                        + device.getProductId());
+		 
+				// 枚举到设备
+				if (device.getVendorId() == VendorID && device.getProductId() == ProductID)
+				{
+					mDeviceFound = device;
+				    Log.d("appplay.ap", "枚举设备成功");
+				}
+			}
+		}
+	}
+	
+	private void _FindInterface()
+	{
+      if (mDeviceFound != null) 
+      {
+            Log.d("", "interfaceCounts : " + mDeviceFound.getInterfaceCount());
+            int interfaceCount = mDeviceFound.getInterfaceCount();
+            for (int i = 0; i < interfaceCount; i++) 
             {
+                UsbInterface intf = mDeviceFound.getInterface(i);
+                // 根据手上的设备做一些判断，其实这些信息都可以在枚举到设备时打印出来
+                
+                int classID = intf.getInterfaceClass();
+                int interfaceSubClass = intf.getInterfaceSubclass();
+                int interfaceProtocol = intf.getInterfaceProtocol();
+                
+                if (intf.getInterfaceClass() == 3
+                        && intf.getInterfaceSubclass() == 0
+                        && intf.getInterfaceProtocol() == 0) 
+                {
+                	// fire gun
+                	mUsbInterfaceFound = intf;
+                    Log.d("appplay.ap", "找到我的设备接口");
+                }
                 break;
             }
-        }  
+        }
 	}
+	
+	private void _OpenDevice()
+	{
+		if (null == mUsbManager)
+			return;
+		
+       if (mUsbInterfaceFound != null)
+       {
+            UsbDeviceConnection conn = null;
+            // 在open前判断是否有连接权限；对于连接权限可以静态分配，也可以动态分配权限，可以查阅相关资料
+            if (mUsbManager.hasPermission(mDeviceFound)) {
+                conn = mUsbManager.openDevice(mDeviceFound);
+            }
+ 
+            if (conn == null) {
+                return;
+            }
+ 
+            if (conn.claimInterface(mUsbInterfaceFound, true)) 
+            {
+            	mUsbDeviceConnection = conn; // 到此你的android设备已经连上HID设备
+                Log.d("appplay.ap", "打开设备成功");
+                
+                new ConnectionThread().start();
+            } else 
+            {
+                conn.close();
+            }
+        }
+	}
+	
+    /**
+     * 分配端点，IN | OUT，即输入输出；此处我直接用1为OUT端点，0为IN，当然你也可以通过判断
+     */
+     //USB_ENDPOINT_XFER_BULK 
+     /* 
+     #define USB_ENDPOINT_XFER_CONTROL 0 --控制传输
+     #define USB_ENDPOINT_XFER_ISOC 1 --等时传输
+     #define USB_ENDPOINT_XFER_BULK 2 --块传输
+     #define USB_ENDPOINT_XFER_INT 3 --中断传输 
+     **/
+    private void _AssignEndpoint()
+    {
+	    if (mUsbInterfaceFound != null) 
+	    {
+	       for (int i = 0; i < mUsbInterfaceFound.getEndpointCount(); i++) { 
+	
+	          UsbEndpoint ep = mUsbInterfaceFound.getEndpoint(i);
+	
+	          if (ep.getType() == UsbConstants.USB_ENDPOINT_XFER_INT) 
+	          { 
+		          if (ep.getDirection() == UsbConstants.USB_DIR_OUT) 
+		          { 
+		        	  mEndpointOut = ep;
+		          } 
+		          else
+		          { 
+		        	  mEndpointIn = ep;
+		          } 
+		      }
+	        }
+	     }
+    }
+    
+    private class ConnectionThread extends Thread {
+        @Override
+        public void run() {
+        	while (true)
+        	{	    		
+        		if (null != mEndpointIn)
+        		{
+                	byte [] readedData = usbRead(9);
+                	if (readedData.length == 9)
+                	{
+                		String strHex = _BytesToHexString(readedData);
+                		AppPlayNatives.nativeUSBSendData(strHex.getBytes());
+                	}
+                	
+                	byte [] sendData = new byte[4];
+                	sendData[0] = 0x30;
+                	sendData[1] = 0x01;
+                	sendData[2] = 0x02;
+                	sendData[3] = 0x03;
+                	usbWrite(sendData);
+        		}	
+        	}
+        }
+    }
+    
+	public void _USBReceive(final byte[] data)
+	{
+		runOnUiThread(new Runnable() {
 
+			@Override
+			public void run() {
+				AppPlayNatives.nativeUSBSendData(data);	
+			}
+		});
+	}
+    
+	// usb
+
+    public void usbWrite(byte[] data) {
+    	usbWrite(data, 0, data.length);
+    }
+
+    public void usbWrite(byte[] data, int size) {
+    	usbWrite(data, 0, size);
+    }
+
+    public void usbWrite(byte[] data, int offset, int size) {
+        if (offset != 0) {
+            data = Arrays.copyOfRange(data, offset, size);
+        }
+        if (mEndpointOut == null) {
+            // use the control endpoint
+
+        } else {
+        	mUsbDeviceConnection.bulkTransfer(mEndpointOut, data, size, 1000);
+        }
+    }
+	
+	public byte[] usbRead(int size) {
+        return _usbRead(size, -1);
+    }
+
+    public byte[] _usbRead(int size, int timeout) 
+    {
+        byte[] buffer = new byte[size];
+        int bytesRead = mUsbDeviceConnection.bulkTransfer(mEndpointIn, buffer, size, timeout);
+        if (bytesRead < size) 
+        {
+            buffer = Arrays.copyOfRange(buffer, 0, bytesRead);
+        }
+        
+        return buffer;
+    }
+	
+    public static String _BytesToHexString(byte[] src)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        
+        if (src == null || src.length <= 0) 
+        {
+            return null;  
+        }
+        
+        for (int i = 0; i < src.length; i++) 
+        {
+            int v = src[i] & 0xFF;  
+            String hv = Integer.toHexString(v);  
+            if (hv.length() < 2) {  
+                stringBuilder.append(0);  
+            }  
+            stringBuilder.append(hv);  
+        }  
+        
+        return stringBuilder.toString();  
+    }  
+  
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		
+		if (null != mWakeLock)
+		{
+			mWakeLock.release();
+		}
 		
 		if (null != VoiceSDK.sTheVoiceSDK)
 			VoiceSDK.sTheVoiceSDK.destory();
@@ -573,26 +739,21 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		if (null != PlatformSDK.sThePlatformSDK)
 			PlatformSDK.sThePlatformSDK.Term();
 		
-		if (null != mBt)
-		{
-			unregisterReceiver(mReceiver);
-			mBt.CancelDiscovery();
-		}
+		_ShutDownBluetooth();
 		
-		if (null != mBLE)
-		{
-			mBLE.CancelDiscovery();
-		}
-	}
+		_ShutdownCamera();
+	}	
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (null != PlatformSDK.sThePlatformSDK) {
 				PlatformSDK.sThePlatformSDK.OnExist();
-
-				return true;
 			}
+			
+			moveTaskToBack(false);
+			
+			return true;
 		}
 
 		return super.onKeyDown(keyCode, event);
@@ -756,6 +917,9 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 				if (null != mUpdateView)
 					mUpdateView.setVisibility(View.GONE);
 				
+				if (null != VoiceSDK.sTheVoiceSDK)
+					VoiceSDK.sTheVoiceSDK.init();
+				
 				AppPlayBaseActivity.sIsInitlized = true;
 			}
 		});
@@ -775,7 +939,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 	public void Show_NoWifiDialog() {
 		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("注意")
 				.setMessage("游戏需要更新，您处在非wifi网络环境下，确定进行更新？")
-				.setIcon(R.drawable.ic_launcher)
+				.setIcon(R.drawable.appicon)
 				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
@@ -819,7 +983,6 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 				android.os.Process.killProcess(android.os.Process.myPid());
 			}
 		});
-
 	}
 	
 	public void _SetScreenOrientation(final int or)
@@ -964,6 +1127,189 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 	}
 
 	// bluetooth
+	
+	// bluetooth
+	private boolean IsBluetoothBle = false;
+	public static void BluetoothSetBle(boolean isBle)
+	{
+		if (null != sTheActivity) 
+		{
+			//sTheActivity._BluetoothSetBle(isBle);
+		}
+	}
+	private void _BluetoothSetBle(boolean isBle)
+	{
+		_ShutDownBluetooth();		
+		
+		IsBluetoothBle = isBle;
+
+		if (AppPlayMetaData.sIsBluetoothable)
+		{
+			BluetoothAdapter bleAdapter = BluetoothAdapter.getDefaultAdapter();
+			if (null != bleAdapter)
+			{
+				if (!IsBluetoothBle)
+					mBt = new BluetoothSPP(this);
+				
+				// 2.0
+				if (null != mBt)
+				{
+					if (!mBt.IsBluetoothAvailable()) 
+					{
+					}
+
+					_BtGetPairedDevices();
+
+					IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+					this.registerReceiver(mReceiver, filter);
+					filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+					this.registerReceiver(mReceiver, filter);	
+				}
+				
+				if (IsBluetoothBle)
+					mBLE = new BluetoothLE(this);
+				
+				// 4.0
+				if (null != mBLE)
+				{
+					if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+					{
+					}
+					
+					if (!mBLE.IsBluetoothAvailable()) 
+					{
+					}
+					else
+					{
+						mBLE.Initlize();						
+						_BtGetPairedDevices();		
+					}
+				}
+			}
+		}
+		
+		if (AppPlayMetaData.sIsBluetoothable)
+		{
+			if (null != mBt)
+			{
+				if (!mBt.IsBluetoothEnabled())
+				{
+					Intent intent = new Intent(
+							BluetoothAdapter.ACTION_REQUEST_ENABLE);
+					startActivityForResult(intent, BluetoothSPPState.REQUEST_ENABLE_BT);
+				} 
+				else 
+				{
+					if (!mBt.IsServiceAvailable())
+					{
+						mBt.Start(BluetoothSPPState.IS_DEVICE_SELF);
+					}
+				}	
+			}
+			
+			if (null != mBLE)
+			{
+				if (!mBLE.IsBluetoothEnabled())
+				{
+					Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+					startActivityForResult(intent, BluetoothSPPState.REQUEST_ENABLE_BT);
+				}
+				else
+				{
+					/*_*/
+				}
+			}
+		}
+	}
+	
+	private boolean IsBluetoothDataProtocolHex = false;
+	public boolean IsBluetoothSetDataProtocolHex()
+	{
+		return IsBluetoothDataProtocolHex;
+	}
+	public static void BluetoothSetDataProtocolHex(boolean isHex)
+	{
+		if (null != sTheActivity) 
+		{
+			sTheActivity._BluetoothSetDataProtocolHex(isHex);
+		}
+	}
+	private void _BluetoothSetDataProtocolHex(boolean isHex)
+	{
+		IsBluetoothDataProtocolHex = isHex;
+	}
+	
+	private void _ShutDownBluetooth()
+	{
+		if (null != mBt)
+		{
+			mBt.Shutdown();
+			mBt.Disconnect();
+			unregisterReceiver(mReceiver);
+			mBt.CancelDiscovery();			
+			mBt = null;
+		}
+		
+		if (null != mBLE)
+		{
+			mBLE.Shutdown();
+			mBLE.CancelDiscovery();			
+			mBLE = null;
+		}
+	}
+	
+	public String WriteServiceID = new String("0000ffe0-0000-1000-8000-00805f9b34fb");
+	public String WriteCharaID = new String("0000ffe1-0000-1000-8000-00805f9b34fb");
+	public String ReadServiceID = new String("0000ffe0-0000-1000-8000-00805f9b34fb"); // ?
+	public String ReadCharaID = new String("0000ffe1-0000-1000-8000-00805f9b34fb"); // ?
+	public static void BluetoothSetWriteServiceID(String writeServiceID)
+	{
+		if (null != sTheActivity) 
+		{
+			sTheActivity._BluetoothSetWriteServiceID(writeServiceID);
+		}
+	}
+	private void _BluetoothSetWriteServiceID(String writeServiceID)
+	{
+		WriteServiceID = writeServiceID;
+	}
+	
+	public static void BluetoothSetWriteCharaID(String writeCharaID)
+	{
+		if (null != sTheActivity) 
+		{
+			sTheActivity._BluetoothSetWriteCharaID(writeCharaID);
+		}
+	}
+	private void _BluetoothSetWriteCharaID(String writeCharaID)
+	{
+		WriteCharaID = writeCharaID;
+	}
+	
+	public static void BluetoothSetReadServiceID(String readServiceID)
+	{
+		if (null != sTheActivity) 
+		{
+			sTheActivity._BluetoothSetReadServiceID(readServiceID);
+		}
+	}
+	private void _BluetoothSetReadServiceID(String readServiceID)
+	{
+		ReadServiceID = readServiceID;
+	}
+	
+	public static void BluetoothSetReadCharaID(String readCharaID)
+	{
+		if (null != sTheActivity) 
+		{
+			sTheActivity._BluetoothSetReadCharaID(readCharaID);
+		}
+	}
+	private void _BluetoothSetReadCharaID(String readCharaID)
+	{
+		ReadCharaID = readCharaID;
+	}
+	
 	public static boolean BluetoothIsAvailable() {
 		if (null != sTheActivity.mBt) {
 			return sTheActivity.mBt.IsBluetoothAvailable();
@@ -972,20 +1318,20 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		if (null != sTheActivity.mBLE) {
 			return sTheActivity.mBLE.IsBluetoothAvailable();
 		}
-
+		
 		return false;
 	}
 
 	public static boolean BluetoothIsConnected() {
 		if (null != sTheActivity.mBt) {
 			if (sTheActivity.mBt.IsBluetoothAvailable()) {
-				return sTheActivity.mBt.GetServiceState() == BluetoothState.STATE_CONNECTED;
+				return sTheActivity.mBt.GetServiceState() == BluetoothSPPState.STATE_CONNECTED;
 			}
 		}
 		
 		if (null != sTheActivity.mBLE) {
 			if (sTheActivity.mBLE.IsBluetoothAvailable()) {
-				return sTheActivity.mBLE.GetConnectionState() == BluetoothState.STATE_CONNECTED;
+				return sTheActivity.mBLE.GetConnectionState() == BluetoothSPPState.STATE_CONNECTED;
 			}
 		}
 
@@ -1035,14 +1381,62 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			});		
 		}
 	}	
-
-	public static void BluetoothSend(byte[] bytes) {
+	
+	public static void BluetoothOnConnected() 
+	{
 		if (null != sTheActivity) {
-				sTheActivity._BluetoothSend(bytes);
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._BluetoothOnConnected();
+				}
+			});		
 		}
 	}
 	
-	private void _BluetoothSend(final byte[] bytes) {
+	private void _BluetoothOnConnected()
+	{
+		AppPlayNatives.nativeBluetoothOnConnected();
+	}
+	
+	public static void BluetoothOnDisConnected() 
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._BluetoothOnDisConnected();
+				}
+			});		
+		}
+	}
+	
+	private void _BluetoothOnDisConnected()
+	{
+		AppPlayNatives.nativeBluetoothOnDisConnected();
+	}
+	
+	public static void BluetoothOnConnectFailed() 
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._BluetoothOnConnectFailed();
+				}
+			});		
+		}
+	}
+	
+	private void _BluetoothOnConnectFailed()
+	{
+		AppPlayNatives.nativeBluetoothOnConnectFailed();
+	}	
+
+	public static void BluetoothSend(byte[] bytes, boolean needCallback) {
+		if (null != sTheActivity) {
+				sTheActivity._BluetoothSend(bytes, needCallback);
+		}
+	}
+	
+	private void _BluetoothSend(final byte[] bytes, final boolean withRead) {
 		if (null != sTheActivity) {
 			sTheActivity.runOnUiThread(new Runnable() {
 				public void run() {
@@ -1053,7 +1447,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 					}
 					if (null != mBLE && mBLE.IsBluetoothAvailable()) {
 						if (mBLE.IsBluetoothAvailable()) {
-							mBLE.Send(bytes);
+							mBLE.Send(bytes, withRead);
 						}
 					}	
 				}
@@ -1129,6 +1523,17 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		}
 	}
 	
+	public static void BluetoothOnRecived(final byte[] str)
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {					
+					AppPlayNatives.nativeBluetoothReceived(str);
+				}
+			});
+		}
+	}
+	
 	private void _BtGetPairedDevices() {
 		mPairedDeviceStrs.clear();
 		
@@ -1137,7 +1542,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			Set<BluetoothDevice> devices = mBt.GetBondedDevices();
 			for (BluetoothDevice device : devices) 
 			{
-				mPairedDeviceStrs.add(device.getName() + "_" + device.getAddress());
+				mPairedDeviceStrs.add(device.getName() + "$" + device.getAddress()
+					+ "$" + Integer.toString(-1));
 			}
 		}
 		
@@ -1146,7 +1552,8 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			Set<BluetoothDevice> devices = mBLE.GetBondedDevices();
 			for (BluetoothDevice device : devices) 
 			{
-				mPairedDeviceStrs.add(device.getName() + "_" + device.getAddress());
+				mPairedDeviceStrs.add(device.getName() + "$" + device.getAddress()
+					+ "$" + Integer.toString(-1));
 			}
 		}
 	}
@@ -1178,21 +1585,84 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			String action = intent.getAction();
 
 			// When discovery finds a device
-			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+			if (BluetoothDevice.ACTION_FOUND.equals(action))
+			{
 				// Get the BluetoothDevice object from the Intent
 				BluetoothDevice device = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-				String strDevice = device.getName() + "_" + device.getAddress();
+				String strDevice = device.getName() + "$" + device.getAddress() + "$"
+									+ Integer.toString(-1);
 
-				AppPlayBaseActivity.sTheActivity
-						._BtOnDiscoveryNewDevice(strDevice);
-			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
-					.equals(action)) {
+				AppPlayBaseActivity.sTheActivity._BtOnDiscoveryNewDevice(strDevice);
+			} 
+			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
+			{
 				AppPlayNatives.nativeBluetoothDiscoveryFinished();
 			}
 		}
 	};
+	
+	// wifi
+	public static void WifiConnect(final String path, final String password)
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._WifiConnect(path, password);					
+				}
+			});			
+		}
+	}
+	
+	private void _WifiConnect(String path, String password)
+	{
+		//mHardCamera.connectDevice(path, password);
+	}
+	
+	public static void WifiDisconnect()
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._WifiDisconnect();					
+				}
+			});			
+		}
+	}
+	
+	private void _WifiDisconnect()
+	{
+		//mHardCamera.disconnectDevice();
+	}
+	
+	public static void WifiDoDiscovery() {
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._WifiDoDiscovery();					
+				}
+			});			
+		}
+	}
+	
+	public void _WifiDoDiscovery(){
+		//mWifiHelper.ScanWifi();
+	}
+
+	public static void WifiCancelDiscovery() {		
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					sTheActivity._WifiCancelDiscovery();	
+				}
+			});
+		}
+	}
+	
+	public void _WifiCancelDiscovery(){
+		
+	}
 
 	// voice recognize
 
@@ -1253,6 +1723,24 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 			}
 		});
 	}
+	
+	public static void EnableAutoSpeakTTS(boolean autoSpeak)
+	{
+		if (null != sTheActivity)
+		{
+			sTheActivity._EnableAutoSpeakTTS(autoSpeak);
+		}
+	}
+	
+	private void _EnableAutoSpeakTTS(final boolean autoSpeak)
+	{
+		this.runOnUiThread(new Runnable() {
+			public void run() {
+				if (null != VoiceSDK.sTheVoiceSDK)
+					VoiceSDK.sTheVoiceSDK.enableAutoSpeachTTS(autoSpeak);
+			}
+		});
+	}
 		
 	// Camera
 	public static void OpenCameraStream(final int type)
@@ -1277,8 +1765,10 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		}
 	}
 	
+	private static final int MAGIC_TEXTURE_ID = 10;
+	
 	// 0 后置，1前置
-	public void _InitCamera(int type)
+	@SuppressLint("NewApi") public void _InitCamera(int type)
 	{
 		if (null != mCamera)
 		{
@@ -1298,37 +1788,65 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 				mCamera = Camera.open(k);
 			}
 		}
-    		
+		
 		if (mCamera != null)
-		{
+		{	
 			try
 			{	
+				mSurfaceTexture=new SurfaceTexture(MAGIC_TEXTURE_ID);
+				mSurfaceTexture.setDefaultBufferSize(mCameraWidth, mCameraHeight);
+				
 				Camera.Parameters parameters = mCamera.getParameters();
-				parameters.setPreviewSize(800, 600);
+				parameters.setPreviewSize(mCameraWidth, mCameraHeight);
 				parameters.setPictureFormat(ImageFormat.NV21); // 设置图片格式
-				parameters.setPreviewFrameRate(5); 
-				parameters.setPictureSize(800, 600); // 设置照片的大小
-				mCamera.setPreviewDisplay(null);
-				mCamera.setDisplayOrientation(90);
+				parameters.setPictureSize(mCameraWidth, mCameraHeight); // 设置照片的大小
+				mCamera.setPreviewTexture(mSurfaceTexture);
+				mCamera.setDisplayOrientation(90);				
 				mCamera.setPreviewCallback(new PreviewCallback() {				
 					@Override
 					public void onPreviewFrame(byte[] data, Camera c) {
-						// TODO Auto-generated method stub
-						int length = data.length;
-						Size size = mCamera.getParameters().getPreviewSize();
-						try
-						{				
-							String dataStr = new String(data);
-							AppPlayNatives.nativeCameraSendFrame(800,
-									600, dataStr, length);
-						}
-						catch(Exception ex)
-						{  
-							Log.e("Sys","Error:"+ex.getMessage());  
-			            }
+				        //处理data  
+				        Camera.Size previewSize = mCamera.getParameters().getPreviewSize();//获取尺寸,格式转换的时候要用到  
+				        BitmapFactory.Options newOpts = new BitmapFactory.Options();  
+				        newOpts.inJustDecodeBounds = true;  
+				        YuvImage yuvimage = new YuvImage(  
+				                data,  
+				                ImageFormat.NV21,  
+				                previewSize.width,  
+				                previewSize.height,  
+				                null);  
+				        ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+				        yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width, previewSize.height), 100, baos);// 80--JPG图片的质量[0-100],100最高  
+				        byte[] rawImage = baos.toByteArray();  
+				        //将rawImage转换成bitmap  
+				        BitmapFactory.Options options = new BitmapFactory.Options();  
+				        options.inPreferredConfig = Bitmap.Config.ARGB_8888;  
+				        
+				        Bitmap bitmap = BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length, options); 
+                        if (bitmap != null)
+                        {
+                            try 
+                            {    
+		                    	int bitWidth = bitmap.getWidth();
+		                    	int bitHeight = bitmap.getHeight();                            	
+		  
+		                		ByteBuffer buf = ByteBuffer.allocate(bitmap.getRowBytes() * bitmap.getHeight());
+		                		bitmap.copyPixelsToBuffer(buf);
+		                		byte [] imageData = buf.array();
+		                    	int length = imageData.length;
+		                    	AppPlayBaseActivity.SetCameraData(bitWidth, bitHeight, imageData);
+                            }
+                            finally
+                            {
+                                if (!bitmap.isRecycled()) 
+                                {
+                                    bitmap.recycle();
+                                }
+                            }
+                        }
 					}					
 				});
-				mCamera.startPreview(); // 开始预览				
+				mCamera.startPreview(); // 开始预览	
 				mCamera.autoFocus(null); // 自动对焦
 			}
 			catch (Exception e) 
@@ -1338,10 +1856,22 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		}
 	}
 	
+	public static void SetCameraData(final int width, final int height, final byte[] data)
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					AppPlayNatives.nativeCameraSendFrame(width, height, data);
+				}
+			});
+		}
+	}
+	
 	public void _ShutdownCamera()
 	{
 		if (null != mCamera)
 		{
+			mCamera.setPreviewCallback(null);
 			mCamera.stopPreview();
 			mCamera.release();
 			mCamera = null;
@@ -1358,11 +1888,11 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		 for ( int camIdx = 0; camIdx < cameraCount;camIdx++ ) 
 		 {  
 		     Camera.getCameraInfo( camIdx, cameraInfo ); // get camerainfo   
-		     if ( cameraInfo.facing ==Camera.CameraInfo.CAMERA_FACING_FRONT ) 
+		     if (cameraInfo.facing ==Camera.CameraInfo.CAMERA_FACING_FRONT) 
 		     {   
 		    	 // 代表摄像头的方位，目前有定义值两个分别为CAMERA_FACING_FRONT前置和CAMERA_FACING_BACK后置   
-		    	 return camIdx;  
-	          }  
+		    	 return camIdx;
+		     }  
 		 }
 		 
 		 return -1;  
@@ -1395,8 +1925,7 @@ public class AppPlayBaseActivity extends Activity implements Runnable
 		mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!mlocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) 
         {  
-            Toast.makeText(this, "请开启GPS导航...", Toast.LENGTH_SHORT).show();  
-            // 返回开启GPS导航设置界面  
+			// 返回开启GPS导航设置界面  
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
             startActivityForResult(intent, 0);  
         }

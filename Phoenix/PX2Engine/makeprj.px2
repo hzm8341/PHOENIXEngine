@@ -72,14 +72,16 @@ INCPATH := \
 	-I ../Physics/ \
 	-I ../AI/breezyslam/ \
 	-I ../AI/iiiroboticslidar2/ \
-	-I ../AI/OpenSteer/src \
 	-I ../AI/OpenSteer/ \
+	-I ../AI/OpenSteer/src/ \
 	-I ../AI/OpenSteer/include/ \
-	-I ../AI/OpenSteer/include/OpenSteer \
-	-I ../AI/OpenSteer/ \
+	-I ../AI/OpenSteer/include/OpenSteer/ \
+	-I ../AI/recast/include/ \
+	-I ../AI/detour/include/ \
+	-I ../AI/rplidar/include/ \
+	-I ../AI/rplidar/src/ \
 	-I ../AI/SkillSystem/ \
 	-I ../AI/ \
-	-I ../Voxel/ \
 	-I ../Logic/ \
 	-I ../Logic/BlueBlock/ \
 	-I ../Application/ \

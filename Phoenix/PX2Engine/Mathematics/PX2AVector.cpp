@@ -186,6 +186,23 @@ float AVector::Dot (const AVector& vec) const
 	return dotProduct;
 }
 //----------------------------------------------------------------------------
+AVector AVector::Over(float val) const
+{
+	if (0.0f == val)
+		val = 0.0001f;
+	return *this / val;
+}
+//----------------------------------------------------------------------------
+AVector AVector::Dot(float length) const
+{
+	return *this * length;
+}
+//----------------------------------------------------------------------------
+AVector AVector::Add(const AVector &vec) const
+{
+	return *this + vec;
+}
+//----------------------------------------------------------------------------
 float AVector::Normalize (const float epsilon)
 {
 	float length = Length();

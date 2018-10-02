@@ -50,6 +50,8 @@ namespace PX2
 	class Arduino;
 	class VoiceSDK;
 	class VoxelManager;
+	class Robot;
+	class PhysicsWorld;
 
 	class PX2_ENGINE_ITEM Application : public Singleton<Application>, public EventHandler
 	{
@@ -106,6 +108,7 @@ namespace PX2
 		int GetLocalAddressSize();
 		IPAddress GetLocalAddress(int i);
 		std::string GetLocalAddressStr(int i);
+		IPAddress GetLocalAddressWith10_172_192();
 
 		EngineServer *GetEngineServer();
 		EngineClientConnector *GetEngineClientConnector();
@@ -150,7 +153,6 @@ namespace PX2
 		ScriptManager *mScriptMan;
 		Bluetooth *mBluetooth;
 		Wifi *mWifi;
-		Serial *mDefSerial;
 		HardCamera *mHardCamera;
 		GraphicsRoot *mRoot;
 		InputManager *mInputMan;
@@ -172,6 +174,7 @@ namespace PX2
 		Arduino *mArduino;
 		VoiceSDK *mVoiceSDK;
 		STEAMEduManager *mSTEAMEduManager;
+		Robot *mSlam;
 
 		EngineServerPtr mEngineServer;
 		EngineClientConnectorPtr mEngineClient;
@@ -200,6 +203,7 @@ namespace PX2
 		void ClearUpdateScriptCallback();
 
 	private:
+		float _CalElapsedTime();
 		double mAppTime;
 		double mLastAppTime;
 		double mElapsedTime;
@@ -215,15 +219,6 @@ namespace PX2
 
 		// boost
 	public:
-		enum BoostMode
-		{
-			BM_APP = 1,
-			BM_SERVER = 2,
-			BM_MAX_MODE
-		};
-		void SetBoostMode(BoostMode mode);
-		BoostMode GetBoostMode() const;
-
 		bool LoadBoost(const std::string &filename);
 
 		AppBoostInfo &GetBoostInfo();
@@ -252,7 +247,6 @@ namespace PX2
 
 		AppBoostInfo::PlayLogicMode _StrToPlayLogicMode(const std::string &str);
 
-		BoostMode mBoostMode;
 		AppBoostInfo mBoostInfo;
 		AppBoostInfo mBoostInfoUpdate;
 
@@ -318,6 +312,8 @@ namespace PX2
 		};
 		void Play(PlayType type);
 		PlayType GetPlayType() const;
+
+		void RunFile(const std::string &pathname);
 
 	protected:
 		PlayType mPlayType;
@@ -398,8 +394,6 @@ namespace PX2
 		// Event
 	public:
 		virtual void OnEvent(Event *ent);
-		void SendGeneralEvent(const std::string &eventDataStr0);
-		void SendGeneralEvent(const std::string &eventDataStr0, const std::string &eventDataStr1);
 
 		// NetInfo
 	public:

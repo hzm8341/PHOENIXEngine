@@ -63,6 +63,8 @@ namespace PX2
 		bool mIsMiddleDown;
 
 		SizeNode *mTouchSizeNode;
+		bool mIsWidgetPressed;
+		bool mIsSizeNodePressed;
 	};
 
 	PX2_REGISTER_STREAM(CameraPlayController);

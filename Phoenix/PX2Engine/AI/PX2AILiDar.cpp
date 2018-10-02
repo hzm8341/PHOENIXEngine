@@ -5,9 +5,20 @@
 #include "PX2Log.hpp"
 #include "PX2LidarSerialConnection.hpp"
 #include "PX2Renderer.hpp"
-#include "PX2Rover.hpp"
-#include "Position.hpp"
-#include "algorithms.hpp"
+#include "PX2StringHelp.hpp"
+#include "PX2System.hpp"
+#include "PX2ScopedCS.hpp"
+#include "PX2GraphicsRoot.hpp"
+#include "PX2GraphicsEventType.hpp"
+#include "PX2NetClientConnector.hpp"
+#include "PX2AIES.hpp"
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+#include "rptypes.h"
+#include "rplidar_cmd.h"
+#include "rplidar_driver.h"
+#include "hal/locker.h"
+using namespace rp::standalone::rplidar;
+#endif
 using namespace PX2;
 using namespace everest::hwdrivers;
 
@@ -26,83 +37,107 @@ int _MM2pix(double mm)
 	return (int)(mm / (MAP_SIZE_METERS * 1000. / MAP_SIZE_PIXELS));
 }
 //----------------------------------------------------------------------------
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+rplidar_response_device_info_t rplidarInfo;
+std::vector<RplidarScanMode> modeVec_;
+_u16 usingScanMode_ = 0;
+#endif
+void _ThreadLiDarReadCallback(void* ld)
+{
+	LiDar *lidar = (LiDar*)(ld);
+	while (lidar)
+	{
+		lidar->GetSlamData();
+	}
+}
+//----------------------------------------------------------------------------
 LiDar::LiDar():
 mDeviceConnectin(0),
-mLiDar(0)
+mLiDarIII(0),
+mIsCurTransformLost(false),
+mIsTransformUpdate(false),
+mIsConnected(false),
+mIsHasDataNew(false),
+mIsSupportControlMoto(false)
 {
-	mLiDar = new everest::hwdrivers::C3iroboticsLidar();
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+	mLidar_drv = 0;
+#endif
 
-	Texture::Format format = Texture::TF_A8R8G8B8;
-	int width = 256;
-	int height = 256;
-	mTexture = new0 Texture2D(format, width, height, 1);
+	mOffsetDegree = -90.0f;
 
-	char *pDest = mTexture->GetData(0);
-	int offsetDst = 0;
+	mLiDarType = LT_RP;
+	mLiDarIII = new everest::hwdrivers::C3iroboticsLidar();
+	mClientConnector = new0 ClientConnector(5);
 
+	mThread = new0 Thread();
+	
+	int width = 512;
+	int height = 512;
+
+	// leidar
+	Texture::Format formatLidar = Texture::TF_A8R8G8B8;
+	mTextureLiDar = new0 Texture2D(formatLidar, width, height, 1);
+	char *pDestLiDar = mTextureLiDar->GetData(0);
+	int offsetDstLidar = 0;
 	for (int row = 0; row < width; ++row)
 	{
 		for (int col = 0; col < height; ++col)
 		{
-			pDest[offsetDst + 0] = 0; // b
-			pDest[offsetDst + 1] = 0; // g 
-			pDest[offsetDst + 2] = 0; // r
-			pDest[offsetDst + 3] = 255;
+			pDestLiDar[offsetDstLidar + 0] = 0; // b
+			pDestLiDar[offsetDstLidar + 1] = 100; // g
+			pDestLiDar[offsetDstLidar + 2] = 0; // r
+			pDestLiDar[offsetDstLidar + 3] = 255;
 
-			offsetDst += 4;
+			offsetDstLidar += 4;
 		}
 	}
+	mPicBoxLiDar = new0 UIFPicBox();
+	mPicBoxLiDar->GetUIPicBox()->SetTexture(mTextureLiDar);
+	mPicBoxLiDar->GetUIPicBox()->GetMaterialInstance()
+		->GetMaterial()->GetPixelShader(0, 0)->SetFilter(0,
+		Shader::SF_NEAREST);
 
-	mPicBox = new0 UIFPicBox();
-	mPicBox->GetUIPicBox()->SetTexture(mTexture);
-	mPicBox->GetUIPicBox()->GetMaterialInstance()
-		->GetMaterial()->GetPixelShader(0, 0)->SetFilter(0, Shader::SF_NEAREST);
+	mMatrix.MakeIdentity();
+	mMatrixRot.MakeIdentity();
 
-	mCurPosPic = new0 UIFPicBox();
-	mPicBox->AttachChild(mCurPosPic);
-	mCurPosPic->LocalTransform.SetTranslateY(-2.0f);
-	mCurPosPic->SetAnchorHor(0.0f, 0.0f);
-	mCurPosPic->SetAnchorVer(0.0f, 0.0f);
-	mCurPosPic->SetSize(16, 16);
-
-	mRover = new0 Rover();
-	mMapData = new1<unsigned char>(MAP_SIZE_PIXELS * MAP_SIZE_PIXELS);
-
-	MinesURG04LX laser;
-	mSlam = (SinglePositionSLAM*)(new0 RMHC_SLAM(laser, MAP_SIZE_PIXELS,
-		MAP_SIZE_METERS, 9999));
+	ComeInEventWorld();
 }
 //----------------------------------------------------------------------------
 LiDar::~LiDar()
 {
-	if (mLiDar)
-	{
-		delete(mLiDar);
-		mLiDar = 0;
-	}
+	GoOutEventWorld();
 
+	System::SleepSeconds(0.5f);
+	mThread->Join();
+	mThread = 0;
+
+	Close();
+
+	// III
+	if (mLiDarIII)
+	{
+		delete(mLiDarIII);
+		mLiDarIII = 0;
+	}
 	if (mDeviceConnectin)
 	{
 		delete(mDeviceConnectin);
 		mDeviceConnectin = 0;
 	}
 
-	if (mRover)
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+	if (mLidar_drv)
 	{
-		delete0(mRover);
-		mRover = 0;
+		mLidar_drv->stop();
+		rp::standalone::rplidar::RPlidarDriver::DisposeDriver(mLidar_drv);
 	}
+#endif
 
-	if (mMapData)
+	if (mClientConnector)
 	{
-		delete1(mMapData);
-	}
-	mMapData = 0;
-
-	if (mSlam)
-	{
-		delete0(mSlam);
-		mSlam = 0;
+		mClientConnector->Disconnect();
+		delete0(mClientConnector);
 	}
 }
 //----------------------------------------------------------------------------
@@ -110,35 +145,211 @@ LiDar *LiDar::New()
 {
 	return new0 LiDar();
 }
-//----------------------------------------------------------------------------	
-bool LiDar::Open(const std::string &port, int baud)
+//----------------------------------------------------------------------------
+void LiDar::SetLiDarType(LiDarType type)
 {
-	if (mLiDar)
-	{
-		if (mDeviceConnectin)
-		{
-			mDeviceConnectin->close();
-			delete(mDeviceConnectin);
-		}
+	mLiDarType = type;
+	mIsConnected = false;
+	mIsHasDataNew = false;
+}
+//----------------------------------------------------------------------------
+LiDar::LiDarType LiDar::GetLiDarType() const
+{
+	return mLiDarType;
+}
+static char *m_receiveBuffer;
+static int m_numberOfBytesInReceiveBuffer = 0;
+//----------------------------------------------------------------------------
+void _LiDarClientConnectorRecvCallback1(uint8_t* buffer, uint32_t numOfBytes)
+{
+	bool beVerboseHere = false;
 
-		SerialConnection *cnt = new SerialConnection();
-		cnt->SetParam(port, baud);
-		mDeviceConnectin = cnt;
-		if (mDeviceConnectin->openSimple())
+	UINT32 remainingSpace = sizeof(m_receiveBuffer) - m_numberOfBytesInReceiveBuffer;
+	UINT32 bytesToBeTransferred = numOfBytes;
+	if (remainingSpace < numOfBytes)
+	{
+		bytesToBeTransferred = remainingSpace;
+	}
+	else
+	{
+	}
+
+	if (bytesToBeTransferred > 0)
+	{
+		// Data can be transferred into our input buffer
+		memcpy(&(m_receiveBuffer[m_numberOfBytesInReceiveBuffer]), buffer, bytesToBeTransferred);
+		m_numberOfBytesInReceiveBuffer += bytesToBeTransferred;
+	}
+	else
+	{
+		// There was input data from the TCP interface, but our input buffer was unable to hold a single byte.
+		// Either we have not read data from our buffer for a long time, or something has gone wrong. To re-sync,
+		// we clear the input buffer here.
+		m_numberOfBytesInReceiveBuffer = 0;
+	}
+}
+void _LiDarClientConnectorRecvCallback(const std::string &recvData)
+{
+	_LiDarClientConnectorRecvCallback1((uint8_t*)recvData.c_str(),
+		(uint32_t)recvData.length());
+}
+//----------------------------------------------------------------------------	
+bool LiDar::Open(const std::string &portIP, int baudratePort)
+{
+	std::string lastPort = portIP;
+	transform(lastPort.begin(), lastPort.end(), lastPort.begin(), ::tolower);
+
+	mIsHasDataNew = false;
+	mIsSupportControlMoto = false;
+
+	if (LT_III == mLiDarType)
+	{
+		if (mLiDarIII)
 		{
 			if (mDeviceConnectin)
-				return mLiDar->initilize(mDeviceConnectin);
+			{
+				mDeviceConnectin->close();
+				delete(mDeviceConnectin);
+			}
+
+			SerialConnection *cnt = new SerialConnection();
+			cnt->SetParam(portIP, baudratePort);
+			mDeviceConnectin = cnt;
+			if (mDeviceConnectin->openSimple())
+			{
+				if (mDeviceConnectin)
+				{
+					if (mLiDarIII->initilize(mDeviceConnectin))
+					{
+						mThread->Start(_ThreadLiDarReadCallback, this);
+						mIsConnected = true;
+
+						Event *ent = PX2_CREATEEVENTEX(AIES, LiDarOpen);
+						PX2_EW.BroadcastingLocalEvent(ent);
+
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+	else if (LT_RP == mLiDarType)
+	{
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+		if (!mLidar_drv)
+			mLidar_drv = RPlidarDriver::CreateDriver(DRIVER_TYPE_SERIALPORT);
+
+#if defined _WIN32 || defined WIN32
+		std::size_t it = lastPort.find("com");
+		if (it != std::string::npos)
+		{
+			std::string subStr = lastPort.substr(it + 3, portIP.size() - it - 3);
+			int numVal = StringHelp::StringToInt(subStr);
+			if (numVal >= 10)
+			{
+				lastPort = std::string("\\\\.\\") + portIP;
+			}
+		}
+#endif
+
+		PX2_LOG_INFO("rplidar try to connect %s at baud %d", portIP.c_str(), baudratePort);
+
+		if (IS_FAIL(mLidar_drv->connect(portIP.c_str(), baudratePort)))
+		{
+			PX2_LOG_INFO("rplidar connect failed");
+
+			return false;
+		}
+
+		PX2_LOG_INFO("rplidar connectted");
+
+#if defined _DEBUG
+		_InitLiDar(false);
+		_InitLiDar1();
+#else
+		PX2_GR.SendGeneralEvent("LIDARINIT", 1.0f);
+#endif
+
+#endif
+	}
+	else if (LT_SICK == mLiDarType)
+	{
+		mClientConnector->Disconnect();
+
+		mClientConnector->AddRecvCallback(_LiDarClientConnectorRecvCallback);
+		mClientConnector->ConnectB(portIP, baudratePort);
+		if (CONNSTATE_CONNECTED == mClientConnector->GetConnectState())
+		{
+			PX2_LOG_INFO("Connected!");
+
+			// 启动是1，关闭是0
+			std::string buf("<\x02sEN LMDscandata 1\x03\0");
+			mClientConnector->GetSocket().SendBytes(buf.c_str(), buf.length());
 		}
 	}
 
-	return false;
+	return true;
 }
 //----------------------------------------------------------------------------
-bool LiDar::IsOpened() const
+void LiDar::SetOffsetDegree(float offsetDegree)
 {
-	if (mDeviceConnectin)
+	mOffsetDegree = offsetDegree;
+}
+//----------------------------------------------------------------------------
+bool LiDar::_CheckDeviceHealth(int * errorCode)
+{
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+	int errcode = 0;
+	bool ans = false;
+
+	do 
 	{
-		return CDeviceConnection::STATUS_OPEN == mDeviceConnectin->getStatus();
+		if (!mIsConnected) {
+			errcode = RESULT_OPERATION_FAIL;
+			break;
+		}
+
+		rplidar_response_device_health_t healthinfo;
+		if (IS_FAIL(mLidar_drv->getHealth(healthinfo)))
+		{
+			errcode = RESULT_OPERATION_FAIL;
+			break;
+		}
+
+		if (healthinfo.status != RPLIDAR_STATUS_OK) 
+		{
+			errcode = healthinfo.error_code;
+			break;
+		}
+
+		ans = true;
+	} while (0);
+
+	if (errorCode) 
+		*errorCode = errcode;
+	return ans;
+
+#else
+	return false;
+#endif
+}
+//----------------------------------------------------------------------------
+bool LiDar::IsOpened()
+{
+	if (LT_III == mLiDarType)
+	{
+		if (mDeviceConnectin)
+		{
+			return CDeviceConnection::STATUS_OPEN == mDeviceConnectin->getStatus();
+		}
+	}
+	else
+	{
+		return mIsConnected;
+		// this will stop
+		//return _CheckDeviceHealth();
 	}
 
 	return false;
@@ -146,169 +357,251 @@ bool LiDar::IsOpened() const
 //----------------------------------------------------------------------------
 void LiDar::Close()
 {
-	if (mDeviceConnectin)
+	if (LT_III == mLiDarType)
 	{
-		mDeviceConnectin->close();
-		delete(mDeviceConnectin);
-		mDeviceConnectin = 0;
+		if (mDeviceConnectin)
+		{
+			mDeviceConnectin->close();
+			delete(mDeviceConnectin);
+			mDeviceConnectin = 0;
+
+			Event *ent = PX2_CREATEEVENTEX(AIES, LiDarClose);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
+	}
+	else
+	{
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+		if (mIsConnected) 
+		{
+			mLidar_drv->stop();
+
+			Event *ent = PX2_CREATEEVENTEX(AIES,LiDarClose);
+			PX2_EW.BroadcastingLocalEvent(ent);
+		}
+#endif
+	}
+
+	mIsHasDataNew = false;
+	mIsSupportControlMoto = false;
+}
+//----------------------------------------------------------------------------
+void LiDar::SetCurSlam3DTransformLost(bool lost)
+{
+	mIsCurTransformLost = lost;
+}
+//----------------------------------------------------------------------------
+void LiDar::SetCurTransform(HMatrix &mat)
+{
+	mMatrix = mat;
+	AVector right;
+	AVector direction;
+	AVector up;
+	APoint pos;
+
+	mMatrix.GetRow(0, right);
+	mMatrix.GetRow(1, direction);
+	mMatrix.GetRow(2, up);
+	mMatrix.GetRow(3, pos);
+
+	mMatrixRot = HMatrix(right, direction, up, APoint::ORIGIN, true);
+
+	mCurPos = pos;
+	mCurDirection = direction;
+
+	mIsTransformUpdate = true;
+}
+//----------------------------------------------------------------------------
+const APoint &LiDar::GetCurPos() const
+{
+	return mCurPos;
+}
+//----------------------------------------------------------------------------
+const AVector &LiDar::GetCurDirection() const
+{
+	return mCurDirection;
+}
+//----------------------------------------------------------------------------
+void LiDar::GetSlamData()
+{
+	if (!mIsConnected)
+		return;
+
+	std::vector<RslidarDataComplete> lidarDataThread;
+
+	bool isHanNewData = false;
+	if (LT_III == mLiDarType)
+	{
+		if (!mLiDarIII || !mDeviceConnectin)
+			return;
+
+		if (CDeviceConnection::STATUS_OPEN != mDeviceConnectin->getStatus())
+			return;
+
+		TLidarGrabResult result = mLiDarIII->getScanData();
+		switch (result)
+		{
+		case LIDAR_GRAB_ING:
+		{
+			break;
+		}
+		case LIDAR_GRAB_SUCESS:
+		{
+			TLidarScan lidar_scan = mLiDarIII->getLidarScan();
+			size_t lidar_scan_size = lidar_scan.getSize();
+
+			lidarDataThread.resize(lidar_scan_size);
+			RslidarDataComplete one_lidar_data;
+			for (size_t i = 0; i < lidar_scan_size; i++)
+			{
+				one_lidar_data.signal = (uint8_t)lidar_scan.signal[i];
+				one_lidar_data.angle = 360.0 - lidar_scan.angle[i];
+				one_lidar_data.distance = lidar_scan.distance[i];
+				lidarDataThread[i] = one_lidar_data;
+			}
+
+			isHanNewData = true;
+
+			break;
+		}
+		case LIDAR_GRAB_ERRO:
+		{
+			break;
+		}
+		case LIDAR_GRAB_ELSE:
+		{
+			PX2_LOG_INFO("[Main] LIDAR_GRAB_ELSE!\n");
+			break;
+		}
+		}
+	}
+	else if (LT_RP == mLiDarType)
+	{
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+		if (!mLidar_drv)
+			return;
+
+		rplidar_response_measurement_node_t nodes[8192];
+		size_t cnt = (sizeof(nodes) / sizeof(nodes[0]));
+
+		if (IS_OK(mLidar_drv->grabScanData(nodes, cnt, 0)))
+		{
+			lidarDataThread.clear();
+			for (int i = 0; i < (int)cnt; i++)
+			{
+				RslidarDataComplete one_lidar_data;
+
+				one_lidar_data.signal = (nodes[i].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+				one_lidar_data.angle = (nodes[i].angle_q6_checkbit >> RPLIDAR_RESP_MEASUREMENT_ANGLE_SHIFT) / 64.0f + mOffsetDegree;
+				one_lidar_data.distance = (float)(nodes[i].distance_q2 / 4.0f * 0.001f);
+
+				one_lidar_data.angle = 360.0 - one_lidar_data.angle;
+
+				lidarDataThread.push_back(one_lidar_data);
+			}
+
+			if (!lidarDataThread.empty())
+			{
+				isHanNewData = true;
+			}
+		}
+#endif
+	}
+	else if (LT_WR == mLiDarType)
+	{
+		/*_*/
+	}
+
+	std::sort(lidarDataThread.begin(), lidarDataThread.end(), RslidarDataComplete::LessThan);
+
+	if (isHanNewData)
+	{
+		ScopedCS cs(&mMutex);
+		mLidarDatTimestamp = Timestamp();
+		mLiDarData = lidarDataThread;
+		mIsHasDataNew = true;
+		isHanNewData = false;
 	}
 }
-Position curPos;
+//----------------------------------------------------------------------------
+void LiDar::OnEvent(Event *ent)
+{
+	if (GraphicsES::IsEqual(ent, GraphicsES::GeneralString))
+	{
+		std::string str = ent->GetDataStr0();
+		if (str == "LIDARINIT")
+		{
+			_InitLiDar(true);
+		}
+		else if (str == "LIDARINIT1")
+		{
+			_InitLiDar1();
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void LiDar::_InitLiDar(bool sendMsg)
+{
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+	// retrieve the devinfo
+	u_result ans = mLidar_drv->getDeviceInfo(rplidarInfo);
+	if (IS_FAIL(ans))
+	{
+
+	}
+
+	modeVec_.clear();
+	mLidar_drv->getAllSupportedScanModes(modeVec_);
+
+	_u16 typicalMode;
+	mLidar_drv->getTypicalScanMode(typicalMode);
+	usingScanMode_ = typicalMode;
+
+	mLidar_drv->checkMotorCtrlSupport(mIsSupportControlMoto);
+
+	_CheckDeviceHealth();
+	mLidar_drv->startMotor();
+
+	if (sendMsg)
+		PX2_GR.SendGeneralEvent("LIDARINIT1", 1.0f);
+#endif
+}
+//----------------------------------------------------------------------------
+void LiDar::_InitLiDar1()
+{
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+	mLidar_drv->startScanExpress(0, RPLIDAR_CONF_SCAN_COMMAND_STD);
+	mThread->Start(_ThreadLiDarReadCallback, this);
+
+	mIsConnected = true;
+
+	Event *ent = PX2_CREATEEVENTEX(AIES, LiDarOpen);
+	ent->SetTimeDelay(0.5f);
+	PX2_EW.BroadcastingLocalEvent(ent);
+#endif
+}
 //----------------------------------------------------------------------------
 void LiDar::Update(float appSeconds, float elapsedSeconds)
 {
 	PX2_UNUSED(elapsedSeconds);
 
-	if (!mLiDar || !mDeviceConnectin)
-		return;
-
-	if (CDeviceConnection::STATUS_OPEN != mDeviceConnectin->getStatus())
-		return;
-
-	//vector<double *> trajectory;
-
-	bool isTexUpdate = false;
-
-	TLidarGrabResult result = mLiDar->getScanData();
-	switch (result)
+	std::vector<RslidarDataComplete> lidarDatas;
 	{
-	case LIDAR_GRAB_ING:
-	{
-		break;
-	}
-	case LIDAR_GRAB_SUCESS:
-	{
-		TLidarScan lidar_scan = mLiDar->getLidarScan();
-		size_t lidar_scan_size = lidar_scan.getSize();
-
-		mLiDarData.resize(lidar_scan_size);
-		RslidarDataComplete one_lidar_data;
-		for (size_t i = 0; i < lidar_scan_size; i++)
-		{
-			one_lidar_data.signal = (uint8_t)lidar_scan.signal[i];
-			one_lidar_data.angle = lidar_scan.angle[i];
-			one_lidar_data.distance = lidar_scan.distance[i];
-			mLiDarData[i] = one_lidar_data;
-		}
-
-		if (mSlam)
-		{
-			int *lidarData = new int [SCAN_SIZE];
-			memset(lidarData, 0, SCAN_SIZE);
-
-			for (size_t i = 0; i < lidar_scan_size; i++)
-			{
-				RslidarDataComplete &data = mLiDarData[i];
-				float angle = data.angle;
-				float dist = data.distance;
-				if (angle > 360.0f) angle = 360.0f;
-				int iIndex = (int)((angle / 360.0f) * SCAN_SIZE);
-				if (iIndex >= SCAN_SIZE) iIndex = SCAN_SIZE - 1;
-				if (iIndex < 0) iIndex = 0;
-				lidarData[iIndex] = (int)(dist * 5000);
-			}
-
-			mSlam->update(lidarData);
-			delete [] lidarData;
-
-			curPos = mSlam->getpos();
-		}
-
-		isTexUpdate = true;
-
-		break;
-	}
-	case LIDAR_GRAB_ERRO:
-	{
-		break;
-	}
-	case LIDAR_GRAB_ELSE:
-	{
-		PX2_LOG_INFO("[Main] LIDAR_GRAB_ELSE!\n");
-		break;
-	}
+		ScopedCS cs(&mMutex);
+		lidarDatas = mLiDarData;
 	}
 
-	// update map
-	if (mSlam)
+	if (mClientConnector && LT_SICK==mLiDarType)
 	{
-		memset(mMapData, 0, MAP_SIZE_PIXELS * MAP_SIZE_PIXELS);
-		mSlam->getmap(mMapData);
-
-		int x = _MM2pix(curPos.x_mm);
-		int y = _MM2pix(curPos.y_mm);
-		//curPoses.insert(std::pair<int, int>(x, y));
+		mClientConnector->Update(appSeconds);
 	}
-
-	if (isTexUpdate)
-	{
-		int texWidth = mTexture->GetWidth();
-		int texHeight = mTexture->GetHeight();
-		char* pDest = mTexture->GetData(0);
-
-		// clear
-		int offsetDst = 0;
-		for (int row = 0; row < texWidth; ++row)
-		{
-			for (int col = 0; col < texHeight; ++col)
-			{
-				pDest[offsetDst + 0] = 0; // b
-				pDest[offsetDst + 1] = 0; // g 
-				pDest[offsetDst + 2] = 0; // r
-				pDest[offsetDst + 3] = 255;
-				offsetDst += 4;
-			}
-		}
-
-		//for (auto it = curPoses.begin(); it != curPoses.end(); it++)
-		//{
-		//	std::pair<int, int> px = *it;
-		//	mMapData[_Coords2index(px.first, px.second)] = 50;
-		//}
-
-		int x = _MM2pix(curPos.x_mm);
-		int y = _MM2pix(curPos.y_mm);
-		float xPos = (float)x / MAP_SIZE_PIXELS;
-		float yPos = (float)y / MAP_SIZE_PIXELS;
-		mCurPosPic->SetAnchorHor(xPos, xPos);
-		mCurPosPic->SetAnchorVer(yPos, yPos);
-
-		for (int i = 0; i < MAP_SIZE_PIXELS; i++)
-		{
-			for (int j = 0; j < MAP_SIZE_PIXELS; j++)
-			{
-				unsigned char val = mMapData[_Coords2index(j, i)];
-
-				float u = (float)j / (float)(MAP_SIZE_PIXELS - 1);
-				float v = (float)i / (float)(MAP_SIZE_PIXELS - 1);
-
-				int posU = texWidth * u;
-				if (posU < 0) posU = 0;
-				if (posU > texWidth-1) posU = texWidth-1;
-
-				int posV = texHeight * v;
-				if (posV < 0) posV = 0;
-				if (posV > texHeight-1) posV = texHeight-1;
-
-				int destPos = (posV * texWidth + posU) * 4;
-				pDest[destPos + 0] = 0; // b
-				pDest[destPos + 1] = 0; // g 
-				pDest[destPos + 2] = val; // r
-				pDest[destPos + 3] = 255;
-
-			}
-		}
-
-		Renderer::UpdateAll(mTexture, 0);
-	}
-	/*
 
 	// update cur tex
-	if (isTexUpdate)
+	if (mIsHasDataNew)
 	{
-		int texWidth = mTexture->GetWidth();
-		int texHeight = mTexture->GetHeight();
-		char* pDest = mTexture->GetData(0);
+		int texWidth = mTextureLiDar->GetWidth();
+		int texHeight = mTextureLiDar->GetHeight();
+		char* pDestLidar = mTextureLiDar->GetData(0);
 
 		// clear
 		int offsetDst = 0;
@@ -316,19 +609,19 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 		{
 			for (int col = 0; col < texHeight; ++col)
 			{
-				pDest[offsetDst + 0] = 0; // b
-				pDest[offsetDst + 1] = 0; // g 
-				pDest[offsetDst + 2] = 0; // r
-				pDest[offsetDst + 3] = 255;
+				pDestLidar[offsetDst + 0] = 0; // b
+				pDestLidar[offsetDst + 1] = 0; // g 
+				pDestLidar[offsetDst + 2] = 0; // r
+				pDestLidar[offsetDst + 3] = 255;
 				offsetDst += 4;
 			}
 		}
 
 		// update
 		float maxDist = 6.0f;
-		for (int i = 0; i < (int)mLiDarData.size(); i++)
+		for (int i = 0; i < (int)lidarDatas.size(); i++)
 		{
-			RslidarDataComplete lidarData = mLiDarData[i];
+			RslidarDataComplete lidarData = lidarDatas[i];
 
 			int signal = lidarData.signal;
 			float angle = lidarData.angle;
@@ -339,28 +632,49 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 			float offsetY = Mathf::Sin(rad) * distance / maxDist;
 			float u = 0.5f + 0.5f * offsetX;
 			float v = 0.5f + 0.5f * offsetY;
-			int posU = texWidth * u;
-			if (posU < 0) posU = 0;
-			if (posU > texWidth) posU = texWidth;
+			int posU = (int)(texWidth * u);
+			if (posU < 0)
+				continue;
+			if (posU > texWidth-1) 
+				continue;
 
-			int posV = texHeight * v;
-			if (posV < 0) posV = 0;
-			if (posV > texHeight) posV = texHeight;
+			int posV = texHeight - (int)(texHeight * v);
+			if (posV < 0)
+				continue;
+			if (posV > texHeight-1)
+				continue;
 
 			int destPos = (posV * texWidth + posU)*4;
-			pDest[destPos + 0] = 0; // b
-			pDest[destPos + 1] = 0; // g 
-			pDest[destPos + 2] = 255; // r
-			pDest[destPos + 3] = 255;
+			pDestLidar[destPos + 0] = 0; // b
+			pDestLidar[destPos + 1] = 0; // g 
+			pDestLidar[destPos + 2] = 255; // r
+			pDestLidar[destPos + 3] = 255;
 		}
 
-		Renderer::UpdateAll(mTexture, 0);
+		Renderer::UpdateAll(mTextureLiDar, 0);
 	}
-	*/
+
+	mIsHasDataNew = false;
 }
 //----------------------------------------------------------------------------
-UIFPicBox *LiDar::GetUIFPicBox()
+std::vector<RslidarDataComplete> LiDar::GetLiDarData()
 {
-	return mPicBox;
+	ScopedCS cs(&mMutex);
+	return mLiDarData;
+}
+//----------------------------------------------------------------------------
+Timestamp LiDar::GetLiDarDataTimestamp()
+{
+	return mLidarDatTimestamp;
+}
+//----------------------------------------------------------------------------
+Texture2D *LiDar::GetTextureLidar()
+{
+	return mTextureLiDar;
+}
+//----------------------------------------------------------------------------
+UIFPicBox *LiDar::GetUIFPicBoxLidar()
+{
+	return mPicBoxLiDar;
 }
 //----------------------------------------------------------------------------

@@ -11,6 +11,7 @@
 #include "PX2Canvas.hpp"
 #include "PX2UIFrame.hpp"
 #include "PX2UI.hpp"
+#include "PX2Logic.hpp"
 #include "PX2ResourceUpdate.hpp"
 
 namespace PX2
@@ -61,6 +62,7 @@ namespace PX2
 		bool SaveConfig(const std::string &filename); //< only used in editor	
 		bool Load(const std::string &filename);
 		static Sizef GetConfigSize(const std::string &filename);
+		static int GetProjectID(const std::string &filename);
 
 		// Config
 	public:
@@ -100,6 +102,16 @@ namespace PX2
 		std::string mUIFilename;
 		UIPtr mUI;
 
+		// Logic
+	public:
+		void SetLogic(Logic *logic);
+		Logic *GetLogic();
+		const std::string &GetLogicFilename() const;
+
+	private:
+		std::string mLogicFilename;
+		LogicPtr mLogic;
+		
 		// Plugins
 	public:
 		const std::vector<std::string> &GetPlugins() const;

@@ -10,11 +10,14 @@
 #include "PX2Serial.hpp"
 #include "PX2NetClientConnector.hpp"
 #include "PX2NetServer.hpp"
+#include "PX2Timestamp.hpp"
 
 namespace PX2
 {
 
 	typedef void(*ArduinoToSendCallback) (const std::string &callback);
+
+	const int Arduino_SocketTCP_MsgID = 7;
 
 	enum ArduinoRectType
 	{
@@ -23,6 +26,8 @@ namespace PX2
 		ART_MAXZ_TYPE
 	};
 	typedef void(*ArduinoReceiveCallback) (ArduinoRectType type, int val);
+
+	#define NUMDISTMAT 6
 	
 	class PX2_ENGINE_ITEM Arduino : public Object, public Singleton<Arduino>
 	{
@@ -34,21 +39,22 @@ namespace PX2
 		{
 			M_SERIAL,
 			M_BLUETOOTH,
-			M_WIFI_ROBOT,
-			M_WIFI_TCP, // ESP8266
-			M_WIFI_SERVER,
+			M_SOCKETUDP_Broadcast,
+			M_ESP_SOCKETTCP_Connector, // ESP8266
+			M_SOCKETTCP_Connector, // SocketTCP_MsgID
 			M_EMPTY,
 			M_MAX_TYPE
 		};
 
 		void Reset();
 		bool Initlize(Mode mode, const std::string &port="", int baudrate = 9600);
-		bool InitlizeForRobot(int targetRobotID, int udpPort);
-		bool InitlizeWifiTCP(const std::string &ip="192.168.4.1", int port=9000);
+		bool InitlizeSocketUDP_Broadcast(int targetRobotID, int udpPort);
+		bool InitlizeESPSocketTCP_Connector(const std::string &ip = "192.168.4.1", int port = 8888);
+		bool InitlizeSocketTCP_Connector(ClientConnector *clientConnector);
 		bool InitlizeEmpty();
-		bool InitlizeServer(Server *server);
 		bool IsInitlized();
 		void Terminate();
+
 		void Update(float elapsedSeconds);
 
 		void SendToGetNetID();
@@ -161,9 +167,22 @@ namespace PX2
 		void WeightTest(int i);
 		float GetWeight(int i);
 
+		void DistMatInit(int i, Pin pinTrig, Pin pinEcho);
+		float GetMatDist(int i) const;
+
+		void AxisInit();
+		float AxisGetYAxis() const;
+		float AxisGetXAxis() const;
+		float AxisGetZAxis() const;
+		float AxisGetPitch() const;
+		float AxisGetRoll() const;
+		float AxisGetYaw() const;
+
 		bool AddArduinoToSendCallback(ArduinoToSendCallback callback);
 		bool IsHasArduinoToSendCallback(ArduinoToSendCallback callback) const;
-		const std::string &GetLastSendString();
+
+		const std::string &GetLastSendContentString() const;
+		const std::string &GetLastSendString() const;
 
 	public_internal:
 		void _Send(const std::string &str);
@@ -172,6 +191,9 @@ namespace PX2
 		void _SetPinVal(Pin pin, int val);
 		void _SetWeight(int index, float weight);
 		void _SetSpeedLR(int left, int right);
+		void _SetDistMat(int index, float val);
+		void _SetAxis(unsigned long timeMilliseconds, float yAxis, float xAxis, float zAxis, float pitch,
+			float roll, float yaw);
 
 		enum OptionType
 		{
@@ -185,7 +207,7 @@ namespace PX2
 			OT_SVR_I,
 			OT_SVR_W,
 			OT_DST_I,
-			OT_DST_T,
+			OT_DST_T, // ·ÏÆú
 			OT_RETURN_DIST,
 			OT_MOTO_I,
 			OT_MOTO_RUN,
@@ -207,11 +229,19 @@ namespace PX2
 			OT_HX711_I,
 			OT_HX711_TEST,
 			OT_RETURN_HX711,
-			OT_INTERNAL_LIGHT, // makerclock
-			OT_LIGHT,
-			OT_SEGMENT,
-			OT_MOTO,
-			OT_DISTTEST,
+			OT_DSTMAT_I,
+			OT_RETURN_DSTMAT,
+			OT_AXIS_I,
+			OT_RETURN_AXIS,
+			OT_SET_TIME,
+			OT_MC_INTERNAL_LIGHT, // makerclock
+			OT_MC_LIGHT,
+			OT_MC_SEGMENT,
+			OT_MC_MOTO,
+			OT_MC_DISTTEST,
+			OT_MB_MOTO,	// mbot
+			OT_MB_SEND,
+			OT_MB_BUZZER,
 			OT_MAX_TYPE
 		};
 		static std::string sOptTypeStr[OT_MAX_TYPE];
@@ -226,14 +256,38 @@ namespace PX2
 		static Pin _NetStr2Pin(const std::string &str);
 		static PMode _NetStr2PinMode(const std::string &str);
 		static bool _NetStr2Bool(const std::string &str);
+		static bool _HighLow2Bool(const std::string &str);
 		static int _NetStr2Int(const std::string &str);
 		static float _NetStr2Float(const std::string &str);
 		static DirectionType _NetStr2Dir(const std::string &str);
 		static SimpleDirectionType _NetStr2SimpleDir(const std::string &str);
 
+		class PX2_ENGINE_ITEM AxisObj
+		{
+		public:
+			AxisObj();
+			~AxisObj();
+
+			bool IsValied;
+			Timestamp TStamp;
+			float AX;
+			float AY;
+			float AZ;
+			float P;
+			float R;
+			float Y;
+		};
+
+		std::vector<AxisObj> &GetAxisObjs();
+		AxisObj GetCurAxisObj();
+
 	private:
 		void _OnCallback(ArduinoRectType type, int value);
 		void _OnToSendCallback(const std::string &str);
+		void _SetTime();
+
+		bool mIsBlockLoopDoBreak;
+		int mBlockLoopUpdateTimes;
 
 		std::vector<ArduinoReceiveCallback> mCallbacks;
 		std::vector<std::string> mRecvHandlers;
@@ -246,6 +300,10 @@ namespace PX2
 		int mRobotUDPPort;
 		std::string mTcpIP;
 		int mTcpPort;
+
+		bool mIsEverSetTime;
+		float mEverSetTime;
+		Timestamp mArduinoSetTime;
 
 		std::string mEndStr;
 
@@ -261,13 +319,37 @@ namespace PX2
 		int mPinValue[P_MAX_TYPE];
 		int mSpeed[4];
 
+		std::string mLastSendContentString;
 		std::string mLastSendString;
+
+		float mDistMat[NUMDISTMAT];
+
+		std::vector<AxisObj> mAxisObjs;
+		AxisObj mCurAxisObj;
+		float mYAxis;
+		float mXAxis;
+		float mZAxis;
+		float mPitch;
+		float mRoll;
+		float mYaw;
 
 		// makeblock
 	public:
 		void MCSegmentSet(int pin, int val);
 		void MCMoto(int pin, int speed);
 		void MCTestDist(int pin);
+
+		// mbot
+	public:
+		void MBotInit();
+		void MBotMoto(int leftRight, int speed);
+		
+		void MBotIRSend(int val);
+		int MBotIRGetReceivedValue();
+
+		void MBotIRBuzzer(bool on);
+		void MBotIsButtonPressed() const;
+		int MBotGetLightSensorValue() const;
 	};
 
 #define PX2_ARDUINO Arduino::GetSingleton()

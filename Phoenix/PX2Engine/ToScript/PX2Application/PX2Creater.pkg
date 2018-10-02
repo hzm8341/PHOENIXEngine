@@ -14,6 +14,12 @@
 		Node *CreateNode_Model(Movable *movable);
 		Movable *CreateMovable_FromRes(const std::string &filename);
 		ScriptController *CreateScriptController_FromRes(const std::string &filename);
+		
+		// actor
+		Actor *CreateActor();
+		Actor *CreateActorBox();
+		Actor *CreateActor_InfinitePlane(const AVector &normal=AVector::UNIT_Z,
+			float originOffset=0.0f);
 
 		// sky
 		Movable *CreateSkyBox(const std::string &skyDirPath);

@@ -34,7 +34,7 @@
 
 		void LetCharacterPlay();
 		virtual bool IsPlaying() const;
-		virtual void Stop();
+		virtual void Pause();
 
 		ModelController *GetCharacter();
 	};

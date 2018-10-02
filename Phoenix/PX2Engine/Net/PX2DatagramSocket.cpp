@@ -31,6 +31,13 @@ Socket(socket)
 	}
 }
 //----------------------------------------------------------------------------
+DatagramSocket::DatagramSocket(const std::string &ip, int port,
+	bool reuseAddress) :
+	Socket(new0 DatagramSocketImpl(SocketAddress(ip, port).GetFamily()))
+{
+	Bind(SocketAddress(ip, port), reuseAddress);
+}
+//----------------------------------------------------------------------------
 DatagramSocket::DatagramSocket(SocketImpl* pImpl) :
 Socket(pImpl)
 {
@@ -66,6 +73,11 @@ void DatagramSocket::Bind(const SocketAddress& address, bool reuseAddress)
 	GetImpl()->Bind(address, reuseAddress);
 }
 //----------------------------------------------------------------------------
+int DatagramSocket::SendString(const std::string &str)
+{
+	return GetImpl()->SendBytes(str.c_str(), str.length());
+}
+//----------------------------------------------------------------------------
 int DatagramSocket::SendBytes(const void* buffer, int length, int flags)
 {
 	return GetImpl()->SendBytes(buffer, length, flags);
@@ -86,6 +98,15 @@ int DatagramSocket::ReceiveFrom(void* buffer, int length,
 	SocketAddress& address, int flags)
 {
 	return GetImpl()->ReceiveFrom(buffer, length, address, flags);
+}
+//----------------------------------------------------------------------------
+void DatagramSocket::Bradcast(int port, const std::string &str)
+{
+	SocketAddress sktAddr("255.255.255.255", (int16_t)port);
+
+	DatagramSocket udpSocket;
+	udpSocket.SetBroadcast(true);
+	udpSocket.SendTo(str.c_str(), str.length(), sktAddr);
 }
 //----------------------------------------------------------------------------
 void DatagramSocket::SetBroadcast(bool flag)

@@ -4,6 +4,7 @@
 #include "PX2ResourceManager.hpp"
 #include "PX2Time.hpp"
 #include "PX2Log.hpp"
+#include "PX2SoundWav.hpp"
 
 #ifdef PX2_USE_FMOD
 #include "fmod.hpp"
@@ -27,24 +28,6 @@ Volume(0.0f)
 //----------------------------------------------------------------------------
 FMODSoundSystem::MusicChannelInfo::~MusicChannelInfo()
 {
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
-// FMODSoundRes
-//----------------------------------------------------------------------------
-FMODSoundSystem::FMODSoundRes::FMODSoundRes()
-:
-TheFMODSound(0)
-{
-}
-//----------------------------------------------------------------------------
-FMODSoundSystem::FMODSoundRes::~FMODSoundRes()
-{
-	if (TheFMODSound)
-		TheFMODSound->release();
-
-	TheFMODSound = 0;
 }
 //----------------------------------------------------------------------------
 
@@ -92,6 +75,8 @@ bool FMODSoundSystem::Initialize(const SoundSystemInitInfo &initInfo)
 
 		return false;
 	}
+
+	mFMODSystem->setStreamBufferSize(6400 * 1024, FMOD_TIMEUNIT_RAWBYTES);
 
 	mFMODSystem->set3DSettings(initInfo.DopplerScale, initInfo.DistanceFactor,
 		initInfo.RolloffScale);
@@ -171,15 +156,53 @@ void FMODSoundSystem::Update(double appSeconds, double elapsedSeconds)
 	auto it = mSounds.begin();
 	for (; it != mSounds.end();)
 	{
-		if (!(*it)->Update((float)elapsedSeconds))
+		FMODSound *fmodSound = (FMODSound*)((Sound*)(*it));
+		if (fmodSound->IsWebStream)
 		{
-			Sound *sound = (*it);
-			_ResetNumPlaySameTime(sound->Filename.c_str());
-			it = mSounds.erase(it);
+			FMOD::Channel *channel = fmodSound->GetChannel();
+			if (!channel)
+			{
+				FMOD::Channel *channel = 0;
+				mFMODSystem->playSound(fmodSound->TheSoundRes->TheFMODSound, 
+					mChannelGroupSound, true, &channel);
+
+				if (channel)
+				{
+					fmodSound->SetChannel(channel);
+
+					channel->setChannelGroup(mChannelGroupSound);
+					channel->setVolume(fmodSound->Volume);
+					channel->setLoopCount(fmodSound->IsLoop ? -1 : 0);
+					channel->setPaused(false);
+				}
+				it++;
+			}
+			else
+			{
+				if (!(*it)->Update((float)elapsedSeconds))
+				{
+					Sound *sound = (*it);
+					_ResetNumPlaySameTime(sound->Filename.c_str());
+					it = mSounds.erase(it);
+				}
+				else
+				{
+					it++;
+				}
+			}
 		}
 		else
 		{
-			it++;
+			if (!(*it)->Update((float)elapsedSeconds))
+			{
+				Sound *sound = (*it);
+				_ResetNumPlaySameTime(sound->Filename.c_str());
+				it = mSounds.erase(it);
+			}
+			else
+			{
+				it++;
+			}
 		}
 	}
 
@@ -295,7 +318,7 @@ bool FMODSoundSystem::PlaySound2DControl(const char *filename,
 	if (!SoundSystem::PlaySound2DControl(filename, volume, isLoop, rSound))
 		return false;
 
-	FMODSoundSystem::FMODSoundRes *pres = GetSoundResource(filename, ST_2D);
+	FMODSoundResPtr pres = GetSoundResource(filename, ST_2D);
 	if (!pres) return false;
 
 	FMOD::Sound* fSound = pres->TheFMODSound;
@@ -303,17 +326,44 @@ bool FMODSoundSystem::PlaySound2DControl(const char *filename,
 
 	if (fSound)
 	{
-		FMOD::Channel *channel = 0;
-		mFMODSystem->playSound(fSound, mChannelGroupSound, true, &channel);
-		if (channel)
+		if (pres->IsWebStream)
 		{
-			channel->setChannelGroup(mChannelGroupSound);
-			channel->setVolume(volume);
-			channel->setLoopCount(isLoop ? -1 : 0);
-			channel->setPaused(false);
+			FMOD::Channel *channel = 0;
+			mFMODSystem->playSound(fSound, mChannelGroupSound, true, &channel);
 
-			soundObj = new0 FMODSound(channel);
+			soundObj = new0 FMODSound(channel, true);
 			soundObj->Filename = filename;
+			soundObj->TheSoundRes = pres;
+			soundObj->IsLoop = isLoop;
+			soundObj->Volume = volume;
+
+			if (channel)
+			{
+				soundObj->SetChannel(channel);
+
+				channel->setChannelGroup(mChannelGroupSound);
+				channel->setVolume(volume);
+				channel->setLoopCount(isLoop ? -1 : 0);
+				channel->setPaused(false);
+			}
+		}
+		else
+		{
+			FMOD::Channel *channel = 0;
+			mFMODSystem->playSound(fSound, mChannelGroupSound, true, &channel);
+			if (channel)
+			{
+				channel->setChannelGroup(mChannelGroupSound);
+				channel->setVolume(volume);
+				channel->setLoopCount(isLoop ? -1 : 0);
+				channel->setPaused(false);
+
+				soundObj = new0 FMODSound(channel);
+				soundObj->Filename = filename;
+				soundObj->TheSoundRes = pres;
+				soundObj->IsLoop = isLoop;
+				soundObj->Volume = volume;
+			}
 		}
 	}
 
@@ -364,39 +414,20 @@ bool FMODSoundSystem::PlaySound3DControl(const char *filename,
 	return true;
 }
 //----------------------------------------------------------------------------
-bool FMODSoundSystem::PlayASound(const char *filename, float volume,
+bool FMODSoundSystem::PlayASound(const char *filenameOrUrl, float volume,
 	float life)
 {
 	Sound *sound;
 
-	if (!SoundSystem::PlaySound2DControl(filename, volume, false, sound))
+	if (!PlaySound2DControl(filenameOrUrl, volume, false, sound))
 		return false;
 
-	FMODSoundSystem::FMODSoundRes *pres = GetSoundResource(filename, ST_2D);
-	if (!pres) return false;
-
-	FMOD::Sound* fSound = pres->TheFMODSound;
-	FMODSound *soundObj = 0;
-
-	if (fSound)
+	if (sound)
 	{
-		FMOD::Channel *channel = 0;
-		mFMODSystem->playSound(fSound, mChannelGroupSound, true, &channel);
-		if (channel)
-		{
-			channel->setChannelGroup(mChannelGroupSound);
-			channel->setVolume(volume);
-			channel->setLoopCount(false ? -1 : 0);
-			channel->setPaused(false);
-
-			soundObj = new0 FMODSound(channel);
-			soundObj->Filename = filename;
-		}
+		sound = sound;
+		sound->Life = life;
+		mSounds.push_back(sound);
 	}
-
-	sound = soundObj;
-	sound->Life = life;
-	mSounds.push_back(sound);
 
 	return true;
 }
@@ -477,7 +508,7 @@ void FMODSoundSystem::_ClearMusicChannel(int channel, bool main, bool fadein)
 	}
 }
 //----------------------------------------------------------------------------
-FMODSoundSystem::FMODSoundRes *FMODSoundSystem::GetSoundResource(
+FMODSoundResPtr FMODSoundSystem::GetSoundResource(
 	const char *fileName, SoundType type)
 {
 	if (!fileName)
@@ -489,25 +520,16 @@ FMODSoundSystem::FMODSoundRes *FMODSoundSystem::GetSoundResource(
 		return (*it).second;
 	}
 
-	int bufferSize = 0;
-	char *buffer = 0;
-	if (PX2_RM.LoadBuffer(fileName, bufferSize, buffer))
+	if (_IsFromWeb(fileName))
 	{
-		FMOD::Sound *sound = 0;
-		FMOD_MODE mode = FMOD_LOOP_NORMAL | FMOD_3D_LINEARROLLOFF | FMOD_OPENMEMORY;
-
-		if (type == ST_2D)
-			mode |= FMOD_2D;
-		else
-			mode |= FMOD_3D;
-
 		FMOD_CREATESOUNDEXINFO exinfo;
-		memset(&exinfo, 0, sizeof(exinfo));
-		exinfo.cbsize = sizeof(exinfo);
-		exinfo.length = bufferSize;
+		memset(&exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+		exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+		exinfo.filebuffersize = 1024 * 16;
 
-		if (mFMODSystem->createSound((const char*)buffer, mode, &exinfo,
-			&sound) != FMOD_OK)
+		FMOD::Sound *sound = 0;
+		if (mFMODSystem->createSound(fileName, FMOD_CREATESTREAM | FMOD_NONBLOCKING, &exinfo, &sound)
+			!= FMOD_OK)
 		{
 			assertion(false, "createSound %s failed.", fileName);
 			PX2_LOG_ERROR("createSound %s failed.", fileName);
@@ -516,16 +538,53 @@ FMODSoundSystem::FMODSoundRes *FMODSoundSystem::GetSoundResource(
 		FMODSoundResPtr res = new0 FMODSoundRes;
 		res->SoundFilename = std::string(fileName);
 		res->TheFMODSound = sound;
-		mSoundResMap[res->SoundFilename] = res;
+		res->IsWebStream = true;
+		
+		// do not put in the map
+		//mSoundResMap[res->SoundFilename] = res;
 
 		return res;
 	}
 	else
 	{
-		assertion(false, "Open sound file failed: %s", fileName);
-		PX2_LOG_ERROR("Open sound file failed: %s", fileName);
+		int bufferSize = 0;
+		char *buffer = 0;
+		if (PX2_RM.LoadBuffer(fileName, bufferSize, buffer))
+		{
+			FMOD::Sound *sound = 0;
+			FMOD_MODE mode = FMOD_LOOP_NORMAL | FMOD_3D_LINEARROLLOFF | FMOD_OPENMEMORY;
 
-		return 0;
+			if (type == ST_2D)
+				mode |= FMOD_2D;
+			else
+				mode |= FMOD_3D;
+
+			FMOD_CREATESOUNDEXINFO exinfo;
+			memset(&exinfo, 0, sizeof(exinfo));
+			exinfo.cbsize = sizeof(exinfo);
+			exinfo.length = bufferSize;
+
+			if (mFMODSystem->createSound((const char*)buffer, mode, &exinfo,
+				&sound) != FMOD_OK)
+			{
+				assertion(false, "createSound %s failed.", fileName);
+				PX2_LOG_ERROR("createSound %s failed.", fileName);
+			}
+
+			FMODSoundResPtr res = new0 FMODSoundRes;
+			res->SoundFilename = std::string(fileName);
+			res->TheFMODSound = sound;
+			mSoundResMap[res->SoundFilename] = res;
+
+			return res;
+		}
+		else
+		{
+			assertion(false, "Open sound file failed: %s", fileName);
+			PX2_LOG_ERROR("Open sound file failed: %s", fileName);
+
+			return 0;
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -534,6 +593,124 @@ void FMODSoundSystem::EnableSounds(bool enable)
 	SoundSystem::EnableSounds(enable);
 
 	mChannelGroupSound->setPaused(enable);
+}
+//----------------------------------------------------------------------------
+#define RECORD_DEVICE_INDEX (0)
+#define LATENCY_MS (50) /* Some devices will require higher latency to avoid glitches */
+#define DRIFT_MS (1)
+//----------------------------------------------------------------------------
+void FMODSoundSystem::StartRecording(int seconds)
+{
+	int numDrivers = 0;
+	FMOD_RESULT result = mFMODSystem->getRecordNumDrivers(NULL, &numDrivers);
+	if (result != FMOD_OK)
+	{
+		assertion(false, "get record drivers failed!");
+	}
+
+	int nativeRate = 0;
+	int nativeChannels = 0;
+	result = mFMODSystem->getRecordDriverInfo(RECORD_DEVICE_INDEX, NULL, 0, 
+		NULL, &nativeRate, NULL, &nativeChannels, NULL);
+	if (result != FMOD_OK)
+	{
+		assertion(false, "getRecordDriverInfo failed!");
+	}
+
+	nativeRate = 16000;
+	nativeChannels = 1;
+
+	FMOD_CREATESOUNDEXINFO exinfo = { 0 };
+	exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+	exinfo.numchannels = nativeChannels;
+	exinfo.format = FMOD_SOUND_FORMAT_PCM16;
+	exinfo.defaultfrequency = nativeRate;
+	exinfo.length = seconds * nativeRate * sizeof(short)* nativeChannels; /* 1 second buffer, size here doesn't change latency */
+
+	FMOD::Sound *sound = NULL;
+	result = mFMODSystem->createSound(0, FMOD_LOOP_OFF | FMOD_OPENUSER, &exinfo, &sound);
+	
+	mRecordingSound = new0 FMODSound(0, false);
+	mRecordingSound->IsRecording = true;
+	mRecordingSound->TheSoundRes = new0 FMODSoundRes();
+	mRecordingSound->TheSoundRes->TheFMODSound = sound;
+
+	result = mFMODSystem->recordStart(RECORD_DEVICE_INDEX, sound, false);
+	if (result != FMOD_OK)
+	{
+		assertion(false, "recordStart failed!");
+	}
+
+	unsigned int soundLength = 0;
+	result = sound->getLength(&soundLength, FMOD_TIMEUNIT_PCM);
+	if (result != FMOD_OK)
+	{
+		assertion(false, "sound getLength failed!");
+	}
+}
+//----------------------------------------------------------------------------
+Sound *FMODSoundSystem::GetRecordingSound()
+{
+	return mRecordingSound;
+}
+//----------------------------------------------------------------------------
+void FMODSoundSystem::StopRecording()
+{
+	mFMODSystem->recordStop(RECORD_DEVICE_INDEX);
+
+	//FMOD::Channel *channel = 0;
+	//mFMODSystem->playSound(mRecordingSound->TheSoundRes->TheFMODSound,
+	//	mChannelGroupSound, false, &channel);
+	//if (channel)
+	//{
+	//	mRecordingSound->SetChannel(channel);
+
+	//	channel->setChannelGroup(mChannelGroupSound);
+	//	channel->setVolume(mRecordingSound->Volume);
+	//	channel->setLoopCount(mRecordingSound->IsLoop ? -1 : 0);
+	//	channel->setPaused(false);
+	//}
+}
+//----------------------------------------------------------------------------
+void FMODSoundSystem::GetRecordingBuf(unsigned char *&buf, unsigned int &size)
+{
+	//CWaveFile wave;
+	//wave.read("2.wav");
+	//size = wave.header->data->cb_size;
+	//buf = new char[size];
+	//memcpy(buf, (void*)&(wave.data[0]), size);
+
+	unsigned char **dstBuf = &(buf);
+	if (mRecordingSound)
+	{
+		int needSize = 7 * 16000 * sizeof(short)* 1;
+		void *buf1 = 0;
+		unsigned int length1 = 0;
+		void *buf2 = 0;
+		unsigned int length2 = 0;
+		FMOD_RESULT result = mRecordingSound->TheSoundRes->TheFMODSound->lock(0,
+			needSize, &buf1, &buf2, &length1, &length2);
+		if (result == FMOD_OK)
+		{
+			if (length1 > 0)
+			{
+				buf = new unsigned char[length1];
+				memset(buf, 0, length1);
+				memcpy(buf, buf1, length1);
+				size = length1;
+			}
+			mRecordingSound->TheSoundRes->TheFMODSound->unlock(buf1, buf2,
+				length1, length2);
+
+			Wave_header header(1, 16000, 16);
+			std::string rwPath = PX2_RM.GetWriteablePath();
+			CWaveFile::write(rwPath+"fmodsound.wav", header, buf, length1);
+		}
+		else
+		{
+			assertion(false, "voice locked failed");
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void FMODSoundSystem::ClearAllSounds()

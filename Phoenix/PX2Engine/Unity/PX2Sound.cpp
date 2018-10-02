@@ -26,6 +26,9 @@ void Sound::MinusNumPlaySameTime()
 //----------------------------------------------------------------------------
 bool Sound::Update(float elapsedSeconds)
 {
+	if (Life < 0.0f)
+		return true;
+
 	Age += elapsedSeconds;
 
 	if (Age >= Life)

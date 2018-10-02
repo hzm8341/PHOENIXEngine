@@ -1,10 +1,13 @@
 # PHOENIXEngine
+@(MANYKIT ZERONERobot)[cross platform|c++/lua|project fast wifi synchronization]
 
-## 跨平台应用开发引擎
+跨平台应用开发引擎
 
 open soruce cross platform system for Games/AR/VR/AI/IOT/Robots
 
-![robot](https://github.com/manykits/PHOENIXEngine/blob/master/docs/img/robot.png?raw=true)
+##目录
+
+[TOC]
 
 ## 简述
 
@@ -58,7 +61,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 	在目录PHOENIXEngine/Phoenix中执行:sudo make CFG=ReleaseDynamic -f makefile.px2 install
 
-4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
+**4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
 如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
 
 	在目录PHOENIXEngine/Phoenix/Projects/Client/Sample中执行:make CFG=ReleaseDynamic -f makefile.px2
@@ -95,9 +98,10 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 	在目录PHEONIXEngine/Phoenix中执行:sudo make CFG=ReleaseARMDynamic -f makefile.px2 install
 
-**4.编译项目库General.so:**
+**4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
+如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
 
-	在目录PHEONIXEngine/Phoenix/Projects/Client/General中执行:make CFG=ReleaseARMDynamic -f makefile.px2
+	在目录PHOENIXEngine/Phoenix/Projects/Client/Sample中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
 **5.执行**
 	

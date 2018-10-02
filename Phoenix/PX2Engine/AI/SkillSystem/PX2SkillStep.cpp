@@ -140,25 +140,28 @@ void SkillStep::ProcessStep()
 		if (!def.AffectAnim.empty())
 		{
 			Animation *anim = skillChara->GetAnim(def.AffectAnim);
-			mAnims.push_back(anim);
-
-			AnimationCall *callBegin = anim->GetAnimationCall("begin");
-			callBegin->SetUserData("step", this);
-			callBegin->CallBack = _SkillStepCallbackBegin;
-
-			AnimationCall *callEnd = anim->GetAnimationCall("end");
-			callEnd->SetUserData("step", this);
-			callEnd->CallBack = _SkillStepCallbackEnd;
-
-			if (!def.AffectEffectKey.empty() && anim)
+			if (anim)
 			{
-				AnimationCall *call = anim->GetAnimationCall(def.AffectEffectKey);
-				if (call)
+				mAnims.push_back(anim);
+
+				AnimationCall *callBegin = anim->GetAnimationCall("begin");
+				callBegin->SetUserData("step", this);
+				callBegin->CallBack = _SkillStepCallbackBegin;
+
+				AnimationCall *callEnd = anim->GetAnimationCall("end");
+				callEnd->SetUserData("step", this);
+				callEnd->CallBack = _SkillStepCallbackEnd;
+
+				if (!def.AffectEffectKey.empty() && anim)
 				{
-					call->SetUserData("step", this);
-					call->SetUserData("index", i);
-					call->CallBack = _SkillStepCallback;
-					mUseAnimCall = true;
+					AnimationCall *call = anim->GetAnimationCall(def.AffectEffectKey);
+					if (call)
+					{
+						call->SetUserData("step", this);
+						call->SetUserData("index", i);
+						call->CallBack = _SkillStepCallback;
+						mUseAnimCall = true;
+					}
 				}
 			}
 		}

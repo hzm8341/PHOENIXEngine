@@ -306,7 +306,7 @@ CameraNode *Canvas::CreateUICameraNode()
 	Camera *camera = new0 Camera(false);
 	camera->SetFrame(APoint(0.0f, msUICameraY, 0.0f), AVector::UNIT_Y,
 		AVector::UNIT_Z, AVector::UNIT_X);
-	camera->SetFrustum(0.1f, Mathf::FAbs(msUICameraY) + 100.0f, -100.0, 100.0f,
+	camera->SetFrustum(0.1f, Mathf::FAbs(msUICameraY) + 1000.0f, -100.0, 100.0f,
 		-100.0f, 100.0f);
 	AddCamera(camera);
 	camera->SetClearFlag(false, false, false);
@@ -342,6 +342,9 @@ bool Canvas::IsUICameraAutoAdjust() const
 //----------------------------------------------------------------------------
 void Canvas::OnGetVisibleSet(Culler& culler, bool noCull)
 {
+	if (!IsShow())
+		return;
+
 	Movable *cullingScene = culler.GetCurCullingScene();
 	if (cullingScene == this)
 	{ 
@@ -457,7 +460,8 @@ void Canvas::ComputeVisibleSet()
 //----------------------------------------------------------------------------
 void Canvas::Draw(Renderer *renderer)
 {
-	if (!IsShow()) return;
+	if (!IsShow())
+		return;
 
 	// before
 	Rectf beforeViewPort = renderer->GetViewPort();
@@ -651,6 +655,13 @@ void Canvas::_Draw(Camera *camera, Renderer *renderer, Culler *culler)
 			clearStencil, camera->GetClearStencil());
 
 		renderer->Draw(visibleSet);
+
+		// cameradrawcallback
+		CameraDrawCallback callback = camera->GetCameraDrawCallback();
+		if (callback)
+		{
+			callback(renderer);
+		}
 
 		renderer->SetCamera(beforeCamera);
 	}
@@ -1285,6 +1296,15 @@ void Canvas::_ClearInRangePickWidget()
 bool _UIFrameFrontThan(const Node *frame0,
 	const Node *frame1)
 {
+	if (frame0->IsDoPick() && !frame1->IsDoPick())
+	{
+		return true;
+	}
+	else if (!frame0->IsDoPick() && frame1->IsDoPick())
+	{
+		return false;
+	}
+
 	float posY0 = frame0->WorldTransform.GetTranslate().Y();
 	float posY1 = frame1->WorldTransform.GetTranslate().Y();
 
@@ -1380,6 +1400,8 @@ void Canvas::Load(InStream& source)
 
 	source.ReadPointer(mCanvasRenderBind);
 
+	source.ReadPointer(mUICameraNode);
+
 	source.ReadBool(mClearFlagColor);
 	source.ReadBool(mClearFlagDepth);
 	source.ReadBool(mClearFlagStencil);
@@ -1398,6 +1420,9 @@ void Canvas::Link(InStream& source)
 	SizeNode::Link(source);
 
 	source.ResolveLink(mCanvasRenderBind);
+
+	source.ResolveLink(mUICameraNode);
+
 	source.ResolveLink(mOverrideWireProperty);
 }
 //----------------------------------------------------------------------------
@@ -1430,6 +1455,9 @@ bool Canvas::Register(OutStream& target) const
 	if (SizeNode::Register(target))
 	{
 		target.Register(mCanvasRenderBind);
+
+		target.Register(mUICameraNode);
+
 		target.Register(mOverrideWireProperty);
 
 		return true;
@@ -1446,6 +1474,8 @@ void Canvas::Save(OutStream& target) const
 	PX2_VERSION_SAVE(target);
 
 	target.WritePointer(mCanvasRenderBind);
+
+	target.WritePointer(mUICameraNode);
 
 	target.WriteBool(mClearFlagColor);
 	target.WriteBool(mClearFlagDepth);
@@ -1466,6 +1496,8 @@ int Canvas::GetStreamingSize(Stream &stream) const
 	size += PX2_VERSION_SIZE(mVersion);
 
 	size += PX2_POINTERSIZE(mCanvasRenderBind);
+
+	size += PX2_POINTERSIZE(mUICameraNode);
 
 	size += PX2_BOOLSIZE(mClearFlagColor);
 	size += PX2_BOOLSIZE(mClearFlagDepth);

@@ -134,8 +134,7 @@ bool Application::AddUDPNetInfo(const std::string &ip, const std::string &name,
 
 	mUDPNetInfos.push_back(info);
 
-	Event *ent = EngineNetES::CreateEventX(
-		EngineNetES::EngineClientUDPInfoChanged);
+	Event *ent = PX2_CREATEEVENTEX(EngineNetES, EngineClientUDPInfoChanged);
 	PX2_EW.BroadcastingLocalEvent(ent);
 
 	return true;
@@ -166,7 +165,7 @@ void Application::_UpdateUDPNetInfos(float elapsedTime)
 {
 	bool isInfoChanged = false;
 	
-	auto it = mUDPNetInfos.begin();
+	std::vector<UDPNetInfoPtr>::iterator it = mUDPNetInfos.begin();
 	for (; it != mUDPNetInfos.end();)
 	{
 		UDPNetInfo *info = *it;

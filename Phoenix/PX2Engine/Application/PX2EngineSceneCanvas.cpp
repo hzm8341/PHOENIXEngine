@@ -512,6 +512,13 @@ void EngineSceneCanvas::_Draw(Camera *camera, Renderer *renderer,
 		{
 			_DoClear(renderer, camera);
 			renderer->Draw(visibleSet);
+
+			// cameradrawcallback
+			CameraDrawCallback callback = camera->GetCameraDrawCallback();
+			if (callback)
+			{
+				callback(renderer);
+			}
 		}
 	}
 

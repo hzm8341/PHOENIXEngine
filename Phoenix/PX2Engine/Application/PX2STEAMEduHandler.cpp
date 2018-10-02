@@ -155,7 +155,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				else if ("connectwifi" == strParam0)
 				{
 					PX2_ARDUINO.Terminate();
-					PX2_ARDUINO.InitlizeWifiTCP();
+					PX2_ARDUINO.InitlizeESPSocketTCP_Connector();
 
 					response.add("Access-Control-Allow-Origin", "*");
 					std::ostream& ostr = response.Send();
@@ -217,7 +217,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				ostr << PX2_PFSDK.RinGun_IsFiring();
 			}
 		}
-		else if ("pxframe" == cmdStr)
+		else if ("arduino" == cmdStr)
 		{
 			std::string strParam0;
 			std::string strParam1;
@@ -284,7 +284,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 			else if (Arduino::sOptTypeStr[Arduino::OT_DW] == strParam0)
 			{
 				Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-				bool val = Arduino::_NetStr2Bool(strParam2);
+				bool val = Arduino::_HighLow2Bool(strParam2);
 
 				PX2_ARDUINO.DigitalWrite(pin, val);
 
@@ -307,6 +307,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 			{
 				Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
 				int val = PX2_ARDUINO.DigitalRead(pin);
+
 
 				response.add("Access-Control-Allow-Origin", "*");
 				std::ostream& ostr = response.Send();
@@ -364,6 +365,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 			}
 			else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DIST] == strParam0)
 			{
+				PX2_ARDUINO.DistTest();
 				float dst = PX2_ARDUINO.GetDist();
 
 				response.add("Access-Control-Allow-Origin", "*");
@@ -395,7 +397,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				int speed = Arduino::_NetStr2Int(strParam2);
 				PX2_ARDUINO.Run(sdt, speed);
 
-				response.add("Access-Control-Allow-Origin", "*");
+   				response.add("Access-Control-Allow-Origin", "*");
 				std::ostream& ostr = response.Send();
 				ostr << "suc";
 			}
@@ -590,7 +592,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 			if (stk_.Count() > 10)
 				strParam10 = stk_[10];
 
-			if (Arduino::sOptTypeStr[Arduino::OT_INTERNAL_LIGHT] == strParam0)
+			if (Arduino::sOptTypeStr[Arduino::OT_MC_INTERNAL_LIGHT] == strParam0)
 			{
 				int mcPin = 3;
 				std::string strPin0 = mMCPins[mcPin - 1].first;
@@ -607,7 +609,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				std::ostream& ostr = response.Send();
 				ostr << "suc";
 			}
-			else if (Arduino::sOptTypeStr[Arduino::OT_LIGHT] == strParam0)
+			else if (Arduino::sOptTypeStr[Arduino::OT_MC_LIGHT] == strParam0)
 			{
 				int mcPin = Arduino::_NetStr2Int(strParam1);
 				bool isHigh = Arduino::_NetStr2Bool(strParam2);
@@ -624,7 +626,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				std::ostream& ostr = response.Send();
 				ostr << "suc";
 			}
-			else if (Arduino::sOptTypeStr[Arduino::OT_SEGMENT] == strParam0)
+			else if (Arduino::sOptTypeStr[Arduino::OT_MC_SEGMENT] == strParam0)
 			{
 				int mcPin = Arduino::_NetStr2Int(strParam1);
 				int val = Arduino::_NetStr2Int(strParam2);
@@ -635,7 +637,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				std::ostream& ostr = response.Send();
 				ostr << "suc";
 			}
-			else if (Arduino::sOptTypeStr[Arduino::OT_MOTO] == strParam0)
+			else if (Arduino::sOptTypeStr[Arduino::OT_MC_MOTO] == strParam0)
 			{
 				int mcPin = Arduino::_NetStr2Int(strParam1);
 				int val = Arduino::_NetStr2Int(strParam2);
@@ -652,7 +654,7 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 				std::ostream& ostr = response.Send();
 				ostr << "suc";
 			}
-			else if (Arduino::sOptTypeStr[Arduino::OT_DISTTEST] == strParam0)
+			else if (Arduino::sOptTypeStr[Arduino::OT_MC_DISTTEST] == strParam0)
 			{
 				int mcPin = Arduino::_NetStr2Int(strParam1);
 

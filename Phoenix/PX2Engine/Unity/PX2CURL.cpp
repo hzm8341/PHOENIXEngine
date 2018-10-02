@@ -27,7 +27,10 @@ mCurlProgressCallback(0)
 //----------------------------------------------------------------------------
 CurlObj::~CurlObj()
 {
-
+	if (mGettedMemory)
+	{
+		delete1(mGettedMemory);
+	}
 }
 //----------------------------------------------------------------------------
 bool CurlObj::Initlize()
@@ -246,6 +249,16 @@ bool CurlObj::Download(const std::string &filename,
 	return true;
 }
 //----------------------------------------------------------------------------
+void CurlObj::ClearOptionList()
+{
+	mOptionStrs.clear();
+}
+//----------------------------------------------------------------------------
+void CurlObj::AddOptionListStr(const std::string &optStr)
+{
+	mOptionStrs.push_back(optStr);
+}
+//----------------------------------------------------------------------------
 int CurlObj::Get(const std::string &url)
 {
 	mIsGettedOK = false;
@@ -293,7 +306,7 @@ int CurlObj::Get(const std::string &url)
 		return false;
 	}
 
-	result = curl_easy_setopt(mCurl, CURLOPT_TIMEOUT, 5);
+	result = curl_easy_setopt(mCurl, CURLOPT_TIMEOUT, 30);
 	if (result != CURLE_OK)
 	{
 		PX2_LOG_ERROR("Failed to set time out: %s", mCurlErrDesc);
@@ -322,6 +335,18 @@ int CurlObj::Get(const std::string &url)
 	return 1;
 }
 //----------------------------------------------------------------------------
+curl_slist *CurlObj::_AddOptions()
+{
+	curl_slist *list = 0;
+	for (int i = 0; i < (int)mOptionStrs.size(); i++)
+	{
+		const std::string &optStr = mOptionStrs[i];
+		list = curl_slist_append(list, optStr.c_str());
+	}
+	
+	return list;
+}
+//----------------------------------------------------------------------------
 int CurlObj::Post(const std::string &url, const std::string &data)
 {
 	mIsGettedOK = false;
@@ -338,6 +363,18 @@ int CurlObj::Post(const std::string &url, const std::string &data)
 		return false;
 	}
 
+	struct curl_slist *headers = NULL;
+	headers = _AddOptions();
+	if (headers)
+	{
+		result = curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, headers);
+		if (result != CURLE_OK)
+		{
+			PX2_LOG_ERROR("Failed to change httpHeader: %s", mCurlErrDesc);
+			return false;
+		}
+	}
+
 	result = curl_easy_setopt(mCurl, CURLOPT_POST, true);
 
 	if (result != CURLE_OK)
@@ -346,10 +383,24 @@ int CurlObj::Post(const std::string &url, const std::string &data)
 		return -1;
 	}
 
+	result = curl_easy_setopt(mCurl, CURLOPT_TIMEOUT, 30);
+	if (result != CURLE_OK)
+	{
+		PX2_LOG_ERROR("Failed to set time out: %s", mCurlErrDesc);
+		return false;
+	}
+
 	result = curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, data.c_str());
 	if (result != CURLE_OK)
 	{
 		PX2_LOG_ERROR("Failed to set CURLOPT_POSTFIELDS:%s", mCurlErrDesc);
+		return -1;
+	}
+
+	result = curl_easy_setopt(mCurl, CURLOPT_POSTFIELDSIZE, (int)data.length());
+	if (result != CURLE_OK)
+	{
+		PX2_LOG_ERROR("Failed to set CURLOPT_POSTFIELDSIZE:%s", mCurlErrDesc);
 		return -1;
 	}
 
@@ -550,8 +601,8 @@ int CurlObj::ProgressFunction(void *clientp, double dltotal,
 	CurlObj *curlObj = static_cast<CurlObj *>(clientp);
 	if (!curlObj)
 	{
-		assertion(false, "WriteFunction curlObj must exist\n");
-		PX2_LOG_ERROR("WriteFunction curlObj must exist\n");
+		assertion(false, "curlObj curlObj must exist\n");
+		PX2_LOG_ERROR("curlObj curlObj must exist\n");
 	}
 
 	return curlObj->OnProgress(dltotal, dlnow, ultotal, dlnow);

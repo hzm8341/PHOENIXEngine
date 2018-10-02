@@ -1,0 +1,72 @@
+// PX2Robot.pkg
+
+	class Robot
+	{
+	public:
+		Robot();
+		virtual ~Robot();
+
+		void StartShareMemory();
+		void ShutdownShareMenory();
+
+		void Update(float appseconds, float elpasedSeconds);
+
+		UIFrame *GetUIFrame();
+		UIVlc *GetUIVlc();
+
+		void SetOffset(const AVector &offset);
+		const AVector &GetOffset() const;
+
+		const APoint &GetPosition() const;
+		const AVector &GetDirection() const;
+		const AVector &GetUp() const;
+		const AVector &GetRight() const;
+		const HMatrix &GetMatrix() const;
+
+		// slam 3d
+	public:
+		void SetCurSlam3DCameraMatrix(HMatrix &mat);
+		void SetCurSlam3DTransformLost(bool lost);
+		bool IsCurSlam3DTransformLost() const;
+
+		const APoint &GetCameraPosition() const;
+		const AVector &GetCameraDirection() const;
+		const AVector &GetCameraUp() const;
+		const AVector &GetCameraRight() const;
+		const HMatrix &GetCameraMatrix() const;
+
+		std::vector<Slam3DPoint> AllPoints;
+		std::vector<Slam3DPoint> CurPoints;
+
+		void SetVoxelSection(VoxelSection *vs);
+		VoxelSection *GetVoxelSection();
+
+		// slam2d
+	public:
+		void CreateLidar();
+		bool LidarOpen(const std::string &port, int baud);
+		LiDar *GetLidar();
+		
+		float GetMapSize() const;
+		float GetResolution() const;
+	
+		void SetSlam2DPosition(const APoint &pos, float angle);
+		float GetSlam2DDegree() const;
+
+		void SetSlamMapUpdate(bool update);
+		bool IsSlamMapUpdate() const;
+		
+		Texture2D *GetTextureMap();
+		UIFPicBox *GetUIFPicBoxMap();
+		
+		bool SaveMap(const std::string &filename);
+		bool LoadMap(const std::string &filename, const APoint &initPos = APoint::ORIGIN, float curAngle=0.0f);
+		
+		// 100 robotpos
+		// 10 none
+		// 200 space can go
+		void SetValueAtPos(const APoint &pos, float range = 0.1f, int val=1.0f);
+		
+	public:
+		void GoTarget(const APoint &targetPos);
+	};

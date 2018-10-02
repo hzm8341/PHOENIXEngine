@@ -206,7 +206,8 @@ int ClientConnector::ConnectNB(const std::string &ip, int port)
 	if (!IsEnable())
 		return -1;
 
-	SocketAddress sa(ip, (int16_t)port);
+	int16_t port16 = (int16_t)port;
+	SocketAddress sa(ip, port16);
 	return ConnectNB(sa);
 }
 //----------------------------------------------------------------------------

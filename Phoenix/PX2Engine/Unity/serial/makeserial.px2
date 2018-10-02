@@ -5,7 +5,7 @@ CFG ?= Debug
 
 CC := /usr/bin/gcc
 
-CFLAGS := -c -D__LINUX__ -DFT2_BUILD_LIBRARY
+CFLAGS := -c -D__LINUX__ -D__linux__ -DTIOCSSERIAL
 
 ifeq (ARM,$(findstring ARM,$(CFG)))
 CFLAGS += -DPX2_USE_OPENGLES

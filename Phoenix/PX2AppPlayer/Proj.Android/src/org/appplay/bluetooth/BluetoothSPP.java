@@ -3,8 +3,8 @@ package org.appplay.bluetooth;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.appplay.bluetooth.BluetoothListener.AutoConnectionListener;
-import org.appplay.bluetooth.BluetoothListener.BluetoothConnectionListener;
+import org.appplay.bluetooth.BluetoothSPPListener.AutoConnectionListener;
+import org.appplay.bluetooth.BluetoothSPPListener.BluetoothConnectionListener;
 import org.appplay.lib.AppPlayBaseActivity;
 import org.appplay.lib.AppPlayNatives;
 
@@ -17,19 +17,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 public class BluetoothSPP 
 {	
-    private Context mContext;    
+    private AppPlayBaseActivity mContext;    
     private BluetoothAdapter mBluetoothAdapter = null;
 	
-    private BluetoothListener.BluetoothStateListener mBluetoothStateListener = null;
-    private BluetoothListener.OnDataReceivedListener mDataReceivedListener = null;
-    private BluetoothListener.BluetoothConnectionListener mBluetoothConnectionListener = null;
-    private BluetoothListener.AutoConnectionListener mAutoConnectionListener = null;
+    private BluetoothSPPListener.BluetoothStateListener mBluetoothStateListener = null;
+    private BluetoothSPPListener.OnDataReceivedListener mDataReceivedListener = null;
+    private BluetoothSPPListener.BluetoothConnectionListener mBluetoothConnectionListener = null;
+    private BluetoothSPPListener.AutoConnectionListener mAutoConnectionListener = null;
     
-    private BluetoothService mChatService = null;
+    private BluetoothSPPService mChatService = null;
 
     private String mDeviceName = null;
     private String mDeviceAddress = null;
@@ -41,36 +40,33 @@ public class BluetoothSPP
     private boolean mIsServiceRunning = false;
     
     private String Keyword = "";
-    private boolean mIsAndroidSelf = BluetoothState.IS_DEVICE_SELF;
+    private boolean mIsAndroidSelf = BluetoothSPPState.IS_DEVICE_SELF;
     
-    private BluetoothListener.BluetoothConnectionListener bcl;
+    private BluetoothSPPListener.BluetoothConnectionListener bcl;
     private int c = 0;
     
-    public BluetoothSPP(Context context)
+    static public BluetoothSPP TheBluetoothSPP;
+    
+    public BluetoothSPP(AppPlayBaseActivity context)
     {
+    	TheBluetoothSPP = this;
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (null != mBluetoothAdapter)
         {
     		SetBluetoothConnectionListener(new BluetoothConnectionListener() {
-    			public void onDeviceConnected(String name, String address) {
-    				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(),
-    						"Connected to " + name, Toast.LENGTH_SHORT).show();
-
-    				AppPlayNatives.nativeBluetoothOnConnected();
+    			public void onDeviceConnected(String name, String address) {	
+    				mContext.BluetoothOnConnected();
     			}
 
     			public void onDeviceDisconnected() {
-    				Toast.makeText(AppPlayBaseActivity.sTheActivity.getApplicationContext(), "Connection lost",
-    						Toast.LENGTH_SHORT).show();
-
-    				AppPlayNatives.nativeBluetoothOnDisConnected();
+    				mContext.BluetoothOnDisConnected();
     			}
 
     			public void onDeviceConnectionFailed() {
     				Log.i("Check", "Unable to connect");
 
-    				AppPlayNatives.nativeBluetoothOnConnectFailed();
+    				mContext.BluetoothOnConnectFailed();
     			}
     		});
 
@@ -145,12 +141,12 @@ public class BluetoothSPP
     
     public void Start(boolean isAndroidSelf) 
     {
-        mChatService = new BluetoothService(mContext, mHandler);        
+        mChatService = new BluetoothSPPService(mContext, msHandler);        
 		Log.d("appplay.ap", "BluetoothSPP SetupService");
     	
         if (mChatService != null) 
         {
-            if (mChatService.GetState() == BluetoothState.STATE_NONE) 
+            if (mChatService.GetState() == BluetoothSPPState.STATE_NONE) 
             {
                 mIsServiceRunning = true;
                 mChatService.Start(isAndroidSelf);
@@ -187,36 +183,40 @@ public class BluetoothSPP
         BluetoothSPP.this.mIsAndroidSelf = isAndroidSelf;
     }
     
-    private final Handler mHandler = new Handler()
+    public final Handler msHandler = new Handler()
     {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-			case BluetoothState.MESSAGE_WRITE:
+    	@Override
+        public void handleMessage(Message msg)
+    	{
+            switch (msg.what) 
+            {
+			case BluetoothSPPState.MESSAGE_WRITE:
                 break;
-            case BluetoothState.MESSAGE_READ:
+            case BluetoothSPPState.MESSAGE_READ:
                 byte[] readBuf = (byte[]) msg.obj;
                 String readMessage = new String(readBuf);
-                if(readBuf != null && readBuf.length > 0) {
+                if(readBuf != null && readBuf.length > 0) 
+                {
                     if(mDataReceivedListener != null)
                         mDataReceivedListener.onDataReceived(readBuf, readMessage);
+                    
+                    AppPlayBaseActivity.BluetoothOnRecived(readBuf);
                 }
                 break;
-            case BluetoothState.MESSAGE_DEVICE_NAME:
-                mDeviceName = msg.getData().getString(BluetoothState.DEVICE_NAME);
-                mDeviceAddress = msg.getData().getString(BluetoothState.DEVICE_ADDRESS);
+            case BluetoothSPPState.MESSAGE_DEVICE_NAME:
+                mDeviceName = msg.getData().getString(BluetoothSPPState.DEVICE_NAME);
+                mDeviceAddress = msg.getData().getString(BluetoothSPPState.DEVICE_ADDRESS);
                 if(mBluetoothConnectionListener != null)
                     mBluetoothConnectionListener.onDeviceConnected(mDeviceName, mDeviceAddress);
                 mIsConnected = true;
                 break;
-            case BluetoothState.MESSAGE_TOAST:
-                Toast.makeText(mContext, msg.getData().getString(BluetoothState.TOAST)
-                        , Toast.LENGTH_SHORT).show();
+            case BluetoothSPPState.MESSAGE_TOAST:
                 break;
-            case BluetoothState.MESSAGE_STATE_CHANGE:
+            case BluetoothSPPState.MESSAGE_STATE_CHANGE:
                 if(mBluetoothStateListener != null)
                     mBluetoothStateListener.onServiceStateChanged(msg.arg1);
                 
-                if(mIsConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) 
+                if(mIsConnected && msg.arg1 != BluetoothSPPState.STATE_CONNECTED) 
                 {
                     if(mBluetoothConnectionListener != null)
                         mBluetoothConnectionListener.onDeviceDisconnected();
@@ -230,13 +230,13 @@ public class BluetoothSPP
                     mDeviceAddress = null;
                 }
                 
-                if(!mIsConnecting && msg.arg1 == BluetoothState.STATE_CONNECTING)
+                if(!mIsConnecting && msg.arg1 == BluetoothSPPState.STATE_CONNECTING)
                 {
                 	mIsConnecting = true;
                 } 
                 else if(mIsConnecting) 
                 {
-                    if(msg.arg1 != BluetoothState.STATE_CONNECTED) 
+                    if(msg.arg1 != BluetoothSPPState.STATE_CONNECTED) 
                     {
                         if(mBluetoothConnectionListener != null)
                             mBluetoothConnectionListener.onDeviceConnectionFailed();
@@ -279,7 +279,7 @@ public class BluetoothSPP
             mIsServiceRunning = false;
             mChatService.Stop();
             
-            if(mChatService.GetState() == BluetoothState.STATE_NONE)
+            if(mChatService.GetState() == BluetoothSPPState.STATE_NONE)
             {
                 mIsServiceRunning = true;
                 mChatService.Start(BluetoothSPP.this.mIsAndroidSelf);
@@ -287,22 +287,22 @@ public class BluetoothSPP
         }
     }
     
-    public void SetBluetoothStateListener (BluetoothListener.BluetoothStateListener listener) 
+    public void SetBluetoothStateListener (BluetoothSPPListener.BluetoothStateListener listener) 
     {
         mBluetoothStateListener = listener;
     }
     
-    public void setOnDataReceivedListener (BluetoothListener.OnDataReceivedListener listener) 
+    public void setOnDataReceivedListener (BluetoothSPPListener.OnDataReceivedListener listener) 
     {
         mDataReceivedListener = listener;
     }
     
-    public void SetBluetoothConnectionListener (BluetoothListener.BluetoothConnectionListener listener)
+    public void SetBluetoothConnectionListener (BluetoothSPPListener.BluetoothConnectionListener listener)
     {
         mBluetoothConnectionListener = listener;
     }
     
-    public void SetAutoConnectionListener(BluetoothListener.AutoConnectionListener listener)
+    public void SetAutoConnectionListener(BluetoothSPPListener.AutoConnectionListener listener)
     {
         mAutoConnectionListener = listener;
     }
@@ -314,7 +314,7 @@ public class BluetoothSPP
     
     public void Send(byte[] data) 
     {
-        if(mChatService.GetState() == BluetoothState.STATE_CONNECTED) 
+        if(mChatService.GetState() == BluetoothSPPState.STATE_CONNECTED) 
         {
         	mChatService.Write(data);
         }
@@ -383,7 +383,7 @@ public class BluetoothSPP
                 }
             }
     
-            bcl = new BluetoothListener.BluetoothConnectionListener() 
+            bcl = new BluetoothSPPListener.BluetoothConnectionListener() 
             {
                 public void onDeviceConnected(String name, String address) 
                 {
@@ -436,7 +436,6 @@ public class BluetoothSPP
             }
             else 
             {
-            	Toast.makeText(mContext, "Device name mismatch", Toast.LENGTH_SHORT).show();	
             }
         }
     }

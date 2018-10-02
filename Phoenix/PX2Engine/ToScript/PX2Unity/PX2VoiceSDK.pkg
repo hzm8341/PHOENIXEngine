@@ -3,11 +3,15 @@
 	class VoiceSDK
 	{
 	public:
-		void SetVoiceSDK(const std::string &thirdname);
-		const std::string &GetVoiceSDK() const;
+		void SetSDK_AutoSpeech(const std::string &name);
+		const std::string &GetSDK_AutoSpeech() const;
+
+		void SetSDK_TTS(const std::string &name);
+		const std::string &GetSDK_TTS() const;
 
 		void StartVoiceListening();
 		void EndVoiceListening();
+		void IngoreThisTimeAutoSpeech();
 
 		void OnSpeakStart();
 		void OnSpeakPause();
@@ -27,4 +31,7 @@
 		bool IsAutoSpeakTTSEnabled() const;
 
 		void Speak(const std::string &text);
+		
+		void PlayHotMusic();
+		void PlayMusic(const std::string &musicName);
 	};

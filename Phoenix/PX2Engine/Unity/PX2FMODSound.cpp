@@ -6,15 +6,48 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-FMODSound::FMODSound(FMOD::Channel *channel)
+// FMODSoundRes
+//----------------------------------------------------------------------------
+FMODSoundRes::FMODSoundRes() :
+TheFMODSound(0),
+IsWebStream(false)
+{
+}
+//----------------------------------------------------------------------------
+FMODSoundRes::~FMODSoundRes()
+{
+	if (TheFMODSound)
+		TheFMODSound->release();
+
+	TheFMODSound = 0;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+FMODSound::FMODSound(FMOD::Channel *channel, bool isWebStream)
 {
 	mChannel = channel;
+	IsWebStream = isWebStream;
+	IsRecording = false;
+	IsLoop = false;
+	Volume = 1.0f;
+	mIsStraving = false;
 }
 //----------------------------------------------------------------------------
 FMODSound::~FMODSound()
 {
 	if (mChannel)
 		mChannel->stop();
+}
+//----------------------------------------------------------------------------
+void FMODSound::SetChannel(FMOD::Channel *channel)
+{
+	mChannel = channel;
+}
+//----------------------------------------------------------------------------
+FMOD::Channel *FMODSound::GetChannel()
+{
+	return mChannel;
 }
 //----------------------------------------------------------------------------
 bool FMODSound::IsPlaying()
@@ -66,6 +99,43 @@ void FMODSound::SetDistance(float minDistance, float maxDistance)
 {
 	if (mChannel)
 		mChannel->set3DMinMaxDistance(minDistance, maxDistance);
+}
+//----------------------------------------------------------------------------
+void FMODSound::_CheckStraving()
+{
+	if (TheSoundRes)
+	{
+		unsigned int    percent = 0;
+		bool            playing = false;
+		bool            paused = false;
+		bool            starving = false;
+		FMOD_OPENSTATE   openstate = FMOD_OPENSTATE_READY;
+		TheSoundRes->TheFMODSound->getOpenState(&openstate, &percent, &mIsStraving, 0);
+	}
+}
+//----------------------------------------------------------------------------
+bool FMODSound::Update(float elapsedSeconds)
+{
+	if (!Sound::Update(elapsedSeconds))
+		return false;
+
+	_CheckStraving();
+
+	if (TheSoundRes)
+	{
+		bool starving = false;
+
+		unsigned int pos = 0;
+		if (mChannel)
+		{
+			mChannel->getPosition(&pos, FMOD_TIMEUNIT_MS);
+
+			/* Silence the stream until we have sufficient data for smooth playback. */
+			mChannel->setMute(starving);
+		}
+	}
+
+	return true;
 }
 //----------------------------------------------------------------------------
 

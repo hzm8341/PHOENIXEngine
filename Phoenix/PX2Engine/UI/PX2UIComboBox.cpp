@@ -58,6 +58,12 @@ void UIComboBox::ConfigSkinColor()
 	}
 }
 //----------------------------------------------------------------------------
+void UIComboBox::SetFontSize(int size)
+{
+	mSelectButton->GetFText()->GetText()->SetFontSize(size);
+	mChooseList->SetFontSize(size);
+}
+//----------------------------------------------------------------------------
 UIItem *UIComboBox::AddChooseStr(const std::string &choose)
 {
 	mChooses.push_back(choose);
@@ -89,30 +95,34 @@ std::string UIComboBox::GetChooseStrByIndex(int i) const
 	return "";
 }
 //----------------------------------------------------------------------------
-void UIComboBox::Choose(int i)
+void UIComboBox::Choose(int i, bool isDoCallback)
 {
 	mChoose = i;
 
 	if (mChooseList->IsShow())
 	{
 		mChooseList->Show(false);
-		_UICallbacksCalls(UICT_COMBOBOX_CLOSE);
+		if (isDoCallback)
+		{
+			_UICallbacksCalls(UICT_COMBOBOX_CLOSE);
+		}
 	}
-
-	mChooseList->Show(false);
 
 	UIText *text = mSelectButton->GetText();
 	text->SetText(GetChooseStrByIndex(mChoose));
 
-	OnChoosed();
+	if (isDoCallback)
+	{
+		OnChoosed();
+	}
 }
 //----------------------------------------------------------------------------
-void UIComboBox::ChooseStr(const std::string &str)
+void UIComboBox::ChooseStr(const std::string &str, bool isDoCallback)
 {
 	int strIndex = mChooseList->GetItemIndex(str);
 	if (strIndex >= 0)
 	{
-		Choose(strIndex);
+		Choose(strIndex, isDoCallback);
 	}
 }
 //----------------------------------------------------------------------------

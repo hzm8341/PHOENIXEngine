@@ -85,6 +85,8 @@ namespace PX2
 		std::vector<std::string> mScriptHandlers;
 		std::vector<std::string> mScriptHandlersHex;
 
+		std::string mSerialPortName;
+
 		std::string mRecvStr;
 		std::string mCmdStr;
 

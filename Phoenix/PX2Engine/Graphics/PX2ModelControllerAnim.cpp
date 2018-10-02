@@ -98,7 +98,7 @@ void ModelController::PlayAnim(Animation *anim)
 		sameAnim = true;
 
 	if (mCurPlayingAnim)
-		mCurPlayingAnim->Stop();
+		mCurPlayingAnim->Pause();
 
 	if (AT_SKELETON == mAnimType)
 	{
@@ -146,7 +146,7 @@ void ModelController::StopAnim(Animation *anim)
 	if (!HasAnim(anim))
 		return;
 
-	anim->Stop();
+	anim->Pause();
 }
 //----------------------------------------------------------------------------
 void ModelController::PlayCurAnim()
@@ -158,7 +158,7 @@ void ModelController::PlayCurAnim()
 void ModelController::StopCurAnim()
 {
 	if (mCurPlayingAnim)
-		mCurPlayingAnim->Stop();
+		mCurPlayingAnim->Pause();
 }
 //----------------------------------------------------------------------------
 bool ModelController::IsHasAnimPlaying() const

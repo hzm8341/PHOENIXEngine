@@ -1662,6 +1662,62 @@ Polysegment *StandardMesh::LineRectangleForEditor1 (int xSamples, int ySamples,
 	return new0 Polysegment(mVFormat, vbuffer, false);
 }
 //----------------------------------------------------------------------------
+Polysegment *StandardMesh::Rectangle(float xLength, float yLength)
+{
+	int numVertices = 4+1;
+	int stride = mVFormat->GetStride();
+
+	VertexBuffer *vbuffer = new0 VertexBuffer(numVertices, stride, mUsage);
+	VertexBufferAccessor vba(mVFormat, vbuffer);
+
+	float x = 0.0f;
+	float y = 0.0f;
+	for (int i = 0; i < numVertices; i++)
+	{
+		if (0 == i)
+		{
+			x = -xLength * 0.5f;
+			y = -yLength * 0.5f;
+		}
+		else if (1 == i)
+		{
+			x = xLength * 0.5f;
+			y = -yLength * 0.5f;
+		}
+		else if (2 == i)
+		{
+			x = xLength * 0.5f;
+			y = yLength * 0.5f;
+		}
+		else if (3 == i)
+		{
+			x = -xLength * 0.5f;
+			y = yLength * 0.5f;
+		}
+		else if (4 == i)
+		{
+			x = -xLength * 0.5f;
+			y = -yLength * 0.5f;
+		}
+
+		vba.Position<Float3>(i) = Float3(x, y, 0.0f);
+
+		if (mHasVertexColor)
+		{
+			if (3 == mColorNum)
+				vba.Color<Float3>(0, i) = mVertexColor3;
+			else if (4 == mColorNum)
+				vba.Color<Float4>(0, i) = mVertexColor4;
+		}
+	}
+
+	TransformData(vba);
+
+	Polysegment *segment = new0 Polysegment(mVFormat, vbuffer, true);
+
+	return segment;
+}
+//----------------------------------------------------------------------------
 Polysegment *StandardMesh::Circle (float radius, int samples)
 {
 	int numVertices = samples+1;

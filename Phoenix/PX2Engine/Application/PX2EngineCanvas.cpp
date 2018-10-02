@@ -349,10 +349,6 @@ mLastPickTime(0.0f)
 
 	UIFramePtr frame = new0 UIFrame();
 	AttachChild(frame);
-	//UIPicBox *backPic = frame->CreateAddBackgroundPicBox(true,
-	//	Float3::MakeColor(200, 200, 200));
-	//backPic->UseAlphaBlend(true);
-	//backPic->SetAlpha(0.4f);
 	frame->SetAnchorHor(0.0f, 1.0f);
 	frame->SetAnchorVer(1.0f, 1.0f);
 	frame->SetSize(0.0f, 32.0f);
@@ -395,7 +391,7 @@ mLastPickTime(0.0f)
 	mEngineBut = new0 UIButton();
 	btnBackPic->AttachChild(mEngineBut);
 	mEngineBut->SetAnchorHor(1.0f, 1.0f);
-	mEngineBut->SetAnchorParamHor(-47.0f, -47.0f);
+	mEngineBut->SetAnchorParamHor(-28.0f, -28.0f);
 	mEngineBut->SetAnchorVer(0.5f, 0.5f);
 	mEngineBut->SetPivot(0.5f, 0.5f);
 	mEngineBut->LocalTransform.SetTranslateY(-1.0f);
@@ -406,15 +402,15 @@ mLastPickTime(0.0f)
 	mEngineBut->AddUICallback(_EngineUICallback);
 	mEngineBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconengine.png");
 	mEngineBut->SetStateColorDefaultWhite();
-	mEngineBut->AutoMakeSizeFixable();
+	mEngineBut->SetSize(24.0f, 24.0f);
 
 	mReloadBut = new0 UIButton();
 	btnBackPic->AttachChild(mReloadBut);
-	mReloadBut->SetAnchorParamHor(-47.0f*3.0f, -47.0f*3.0f);
+	mReloadBut->SetAnchorParamHor(-28.0f*3.0f, -28.0f*3.0f);
 	mReloadBut->SetAnchorHor(1.0f, 1.0f);
 	mReloadBut->SetAnchorVer(0.5f, 0.5f);
 	mReloadBut->SetPivot(0.5f, 0.5f);
-	mReloadBut->SetAnchorParamHor(-47.0f*3.0f, -47.0f*3.0f);
+	mReloadBut->SetAnchorParamHor(-28.0f*3.0f, -28.0f*3.0f);
 	mReloadBut->LocalTransform.SetTranslateY(-1.0f);
 	mReloadBut->SetName("ButReload");
 	auto textReload = mReloadBut->CreateAddText(PX2_LM_ENGINE.V("Reload"));
@@ -423,7 +419,7 @@ mLastPickTime(0.0f)
 	mReloadBut->AddUICallback(_EngineUICallback);
 	mReloadBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconprojectrefresh.png");
 	mReloadBut->SetStateColorDefaultWhite();
-	mReloadBut->SetSize(36.0f, 36.0f);
+	mReloadBut->SetSize(24.0f, 24.0f);
 
 	mEngineCursor = new0 UIFPicBox();
 	AttachChild(mEngineCursor);

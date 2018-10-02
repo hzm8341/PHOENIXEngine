@@ -73,7 +73,7 @@ void TargetTransformController::Play ()
 	mIsPlaying = true;
 }
 //----------------------------------------------------------------------------
-void TargetTransformController::Stop ()
+void TargetTransformController::Pause()
 {
 	mIsPlaying = false;
 }
@@ -131,7 +131,7 @@ bool TargetTransformController::Update(double applicationTime,
 			OnArriveAtTarget();
 			if (mArriveAtTargetCallback)
 				mArriveAtTargetCallback(this);
-			Stop();
+			Pause();
 		}
 		else
 		{

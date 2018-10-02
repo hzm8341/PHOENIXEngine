@@ -1,0 +1,29 @@
+// PX2AIAgentPath.pkg
+
+	class AIAgentPath
+	{
+	public:
+		AIAgentPath();
+		AIAgentPath( const std::vector<APoint> &points, float radius,
+			bool cyclic);
+		virtual ~AIAgentPath();
+
+		AIAgentPath(const AIAgentPath& path);
+		AIAgentPath& operator=(const AIAgentPath& path);
+
+		// config
+		void AddPoint(const APoint &pt);
+		void ConfigPoints(float radius, bool cyclic);
+
+		int GetNumberOfPathPoints() const;
+
+		float GetPathLength() const;
+
+		void GetPathPoints(std::vector<APoint>& outPoints) const;
+		float GetDistanceAlongPath(const APoint& position) const;
+		APoint GetNearestPointOnPath(const APoint& position) const;
+		APoint GetPointOnPath(const float distance) const;
+
+		float GetRadius() const;
+		unsigned int GetSegmentCount() const;
+	};

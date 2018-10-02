@@ -1,9 +1,9 @@
 # build.sh
 
 # set params
-NDK_ROOT_LOCAL=/cygdrive/d/Android/ndk
-ENGINE_ROOT_LOCAL=/cygdrive/e/DuoDuoYiShan/Phoenix/trunk/Phoenix
-APPPLAY_MYAPP_BIN_ROOT_LOCAL=/cygdrive/e/DuoDuoYiShan/Phoenix/trunk/Bin
+NDK_ROOT_LOCAL=/cygdrive/Android/android-ndk-r8e
+ENGINE_ROOT_LOCAL=/cygdrive/D/PHOENIXEngine/trunk/Phoenix
+APPPLAY_MYAPP_BIN_ROOT_LOCAL=/cygdrive/D/PHOENIXEngine/trunk/Bin
 APPPLAY_MYAPP_DATAFROM=Data
 
 if [ $NDK_ROOT"xyz" != "xyz" ]; then
@@ -22,10 +22,7 @@ if [ $APPPLAY_MYAPP_BIN_ROOT"xyz" != "xyz" ]; then
 fi
 
 #project params
-PROJECT_NAME=WhatIf
-PROJECT_ROOT=$ENGINE_ROOT_LOCAL/Projects/Client/$PROJECT_NAME
-
-PLUGIN_NAME=BlueBlock
+PLUGIN_NAME=None
 
 #appplay params
 APPPLAY_MYAPP_ANDROID_ROOT=$ENGINE_ROOT_LOCAL/PX2AppPlayer/Proj.Android
@@ -38,7 +35,6 @@ mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets
 mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
 mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine
 mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine_mtls
-mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PROJECT_NAME
 
 if [ $PLUGIN_NAME"xyz" != "Nonexyz" ]; then
 	mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PLUGIN_NAME
@@ -49,6 +45,9 @@ fi
 # boost.lua boost.xml version.xml versionList.dat
 cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.xml $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
 cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.lua $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
+cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.list $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
+cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/project.list $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
+cp -rf $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/plugin.list $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data
 
 # engine
 for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/engine/*
@@ -58,6 +57,17 @@ cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine
 fi
 if [ -f $file ]; then
 cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine
+fi
+done
+
+# engine appicon
+for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/engine/appicon/*
+do
+if [ -d $file ]; then
+cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/res
+fi
+if [ -f $file ]; then
+cp $file $APPPLAY_MYAPP_ANDROID_ROOT/res
 fi
 done
 
@@ -72,30 +82,78 @@ cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/engine_mtls
 fi
 done
 
-# projects
-for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$PROJECT_NAME/*
+# plugins
+cat $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/plugin.list | while read line
 do
-if [ -d $file ]; then
-cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PROJECT_NAME
-fi
-if [ -f $file ]; then
-cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PROJECT_NAME
-fi
+	CATA_NAME=$line
+	if [ $CATA_NAME"xyz" != "xyz" ]; then
+		mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$CATA_NAME
+	fi	
+done
+cat $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/plugin.list | while read line
+do
+	CATA_NAME=$line
+	echo $CATA_NAME
+	if [ $CATA_NAME"xyz" != "xyz" ]; then
+		for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$CATA_NAME/*
+		do
+			if [ -d $file ]; then
+				cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$CATA_NAME
+			fi
+			if [ -f $file ]; then
+				cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$CATA_NAME
+			fi
+		done
+	fi
 done
 
-# blueblock
-if [ $PLUGIN_NAME"xyz" != "Nonexyz" ]; then
-	for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$PLUGIN_NAME/*
-	do
-		if [ -d $file ]; then
-		cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PLUGIN_NAME
-		fi
-		if [ -f $file ]; then
-		cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$PLUGIN_NAME
-		fi
-	done
-fi
+# projects
+cat $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/project.list | while read line
+do
+	CATA_NAME=$line
+	if [ $CATA_NAME"xyz" != "xyz" ]; then
+		mkdir $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$CATA_NAME
+	fi
+done
+cat $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/project.list | while read line
+do
+	CATA_NAME=$line
+	echo $CATA_NAME
+	if [ $CATA_NAME"xyz" != "xyz" ]; then
+		for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$CATA_NAME/*
+		do
+			if [ -d $file ]; then
+				cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$CATA_NAME
+			fi
+			if [ -f $file ]; then
+				cp $file $APPPLAY_MYAPP_ANDROID_ROOT/assets/Data/$CATA_NAME
+			fi
+		done
+	fi
+done
 
+# boost appicon
+echo "Copy boost project icons begin"
+cat $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.list | while read line
+do
+	CATA_NAME=$line
+	echo $CATA_NAME
+	
+	if [ $CATA_NAME"xyz" != "xyz" ]; then	
+		for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$CATA_NAME/appicon/*
+		do					
+			if [ -d $file ]; then
+				cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/res
+			fi
+			if [ -f $file ]; then
+				cp $file $APPPLAY_MYAPP_ANDROID_ROOT/res
+			fi
+		done
+	fi
+done
+echo "Copy boost project icons end"
+
+chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/res
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/assets
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/obj/local/armeabi
 
@@ -158,6 +216,18 @@ cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
 fi
 done
 
+# HardCamera
+#for file in $ENGINE_ROOT_LOCAL/ThirdPartiesLibs/HardCamera/android/libs/*
+#do
+#if [ -d $file ]; then
+#cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/libs
+#fi
+#if [ -f $file ]; then
+#cp $file $APPPLAY_MYAPP_ANDROID_ROOT/libs
+#fi
+#done
+
+chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/libs
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/libs/armeabi
 
 echo "end copy so"

@@ -11,6 +11,20 @@
 #include "PX2Format.hpp"
 using namespace PX2;
 
+#ifdef __GNUC__
+#include <stdint.h>
+#elif defined(_MSC_VER)
+typedef __int32 int32_t;
+typedef __int64 int64_t;
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int64 uint64_t;
+#else
+typedef int int32_t;
+typedef long long int int64_t;
+typedef unsigned int uint32_t;
+typedef unsigned long long int uint64_t;
+#endif
+
 //----------------------------------------------------------------------------
 WebSocketImpl::WebSocketImpl(StreamSocketImpl* pStreamSocketImpl, HTTPSession& session, bool mustMaskPayload) :
 StreamSocketImpl(pStreamSocketImpl->GetSocket()),
@@ -104,7 +118,7 @@ int WebSocketImpl::receiveHeader(char mask[4], bool& useMask)
 		}
 		MemoryInputStream istr(header + 2, 8);
 		BinaryReader reader(istr, BinaryReader::NETWORK_BYTE_ORDER);
-		uint64_t l;
+		uint64_t l = 0;
 		reader >> l;
 		payloadLength = static_cast<int>(l);
 	}
@@ -118,7 +132,7 @@ int WebSocketImpl::receiveHeader(char mask[4], bool& useMask)
 		}
 		MemoryInputStream istr(header + 2, 2);
 		BinaryReader reader(istr, BinaryReader::NETWORK_BYTE_ORDER);
-		uint16_t l;
+		uint16_t l = 0;
 		reader >> l;
 		payloadLength = static_cast<int>(l);
 	}
