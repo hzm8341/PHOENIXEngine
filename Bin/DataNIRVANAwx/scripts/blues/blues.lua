@@ -1,11 +1,9 @@
 -- blues.lua
 
-require("Data/BlueBlock/scripts/lua/start.lua")
-require("Data/BluePrint/scripts/lua/start.lua")
+--require("Data/BlueBlock/scripts/lua/start.lua")
+--require("Data/BluePrint/scripts/lua/start.lua")
 
 -- blueblock
-n_g_FrameBluesTableFrame = nil
-
 function n_CreateFrame_BBs()
 	local logicCanvas = PX2EU_MAN:GetLogicCanvas()
 	if nil~= logicCanvas then
@@ -16,22 +14,26 @@ function n_CreateFrame_BBs()
 		frame:SetAnchorVer(0.0, 1.0)
 
 		local tabFrame = UITabFrame:New()
-		n_g_FrameBluesTableFrame = tabFrame
 		frame:AttachChild(tabFrame)
 		tabFrame:SetLayoutPos(UITabFrame.LPT_BOTTOM)
 		tabFrame:SetAnchorHor(0.0, 1.0)
 		tabFrame:SetAnchorVer(0.0, 1.0)
 		tabFrame:SetTabBarHeight(25)
 		tabFrame:SetTabHeight(25)
+		tabFrame:SetFontColor(Float3.WHITE)
 
-		if nil~=UIBBlockCataFrame then
-			b_Start()
+		tabFrame:AddTab("Mission", PX2_LM_EDITOR:GetValue("Mission"), UIFrame:New())
+		tabFrame:AddTab("Behaviour", PX2_LM_EDITOR:GetValue("Behaviour"), UIFrame:New())
+		if nil~=bb_IsUseBlueBlock then
 			tabFrame:AddTab("BlueBlock", PX2_LM_EDITOR:GetValue("BlueBlock"), n_CreateFrame_BlueBlock())
 		end
-		if nil~=UIBluePrintFrame then
+		if nil~=bb_IsUseBluePrint then
 			tabFrame:AddTab("BluePrint", PX2_LM_EDITOR:GetValue("BluePrint"), n_CreateFrame_BluePrint())
 		end
-		tabFrame:SetActiveTab("BlueBlock")
+		tabFrame:AddTab("Scratch", PX2_LM_EDITOR:GetValue("Scratch"), UIFrame:New())
+		tabFrame:SetActiveTab("Mission")
+
+		n_g_FrameLogicTableFrame = tabFrame
 	end
 end
 
@@ -39,6 +41,8 @@ n_g_FrameBlueBlockFrame = nil
 n_g_FrameBlueBlockCodeEditor = nil
 
 function n_CreateFrame_BlueBlock()
+	b_Start()
+	
 	local frame = UIFrame:New()
 	n_g_FrameBlueBlockFrame = frame
 	frame:SetAnchorHor(0.0, 1.0)

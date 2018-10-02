@@ -1,6 +1,69 @@
 -- functions.lua
 
 -- create objs
+function n_Create_Actor_Actor()
+	local selectObj = PX2_SELECTM_E:GetFirstObject()
+	local node = Cast:ToNode(selectObj)
+	
+	if nil==node then
+		node = PX2_PROJ:GetScene()
+	end
+	
+	if nil~=node then
+		local pickPos = PX2_EDIT:GetPickLocalPos(node)
+		local mov = PX2_CREATER:CreateActor()
+
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then		
+			mov.LocalTransform:SetTranslate(pickPos)
+		end
+		PX2_CREATER:AddObject(node, mov)
+	else
+		PX2EU_MAN:PlayTip(PX2_LM_EDITOR:GetValue("n_Notice"), PX2_LM_EDITOR:GetValue("n_TipNotHasParent"))
+	end
+end
+
+function n_Create_Actor_InfinitePlane()
+	local selectObj = PX2_SELECTM_E:GetFirstObject()
+	local node = Cast:ToNode(selectObj)
+	
+	if nil==node then
+		node = PX2_PROJ:GetScene()
+	end
+	
+	if nil~=node then
+		local pickPos = PX2_EDIT:GetPickLocalPos(node)
+		local mov = PX2_CREATER:CreateActor_InfinitePlane()
+
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then		
+			mov.LocalTransform:SetTranslate(pickPos)
+		end
+		PX2_CREATER:AddObject(node, mov)
+	else
+		PX2EU_MAN:PlayTip(PX2_LM_EDITOR:GetValue("n_Notice"), PX2_LM_EDITOR:GetValue("n_TipNotHasParent"))
+	end
+end
+
+function n_Create_Actor_Box()
+	local selectObj = PX2_SELECTM_E:GetFirstObject()
+	local node = Cast:ToNode(selectObj)
+	
+	if nil==node then
+		node = PX2_PROJ:GetScene()
+	end
+	
+	if nil~=node then
+		local pickPos = PX2_EDIT:GetPickLocalPos(node)
+		local mov = PX2_CREATER:CreateActorBox()
+
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then		
+			mov.LocalTransform:SetTranslate(pickPos)
+		end
+		PX2_CREATER:AddObject(node, mov)
+	else
+		PX2EU_MAN:PlayTip(PX2_LM_EDITOR:GetValue("n_Notice"), PX2_LM_EDITOR:GetValue("n_TipNotHasParent"))
+	end
+end
+
 function n_Create_Geometry_Plane()
 	local selectObj = PX2_SELECTM_E:GetFirstObject()
 	local node = Cast:ToNode(selectObj)
@@ -12,7 +75,7 @@ function n_Create_Geometry_Plane()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateMovable_Rectangle()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then		
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then		
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -32,7 +95,7 @@ function n_Create_Geometry_Box()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateMovable_Box()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -52,7 +115,7 @@ function n_Create_Geometry_Sphere()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateMovable_Sphere()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -72,7 +135,7 @@ function n_Create_Node()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateNode()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -92,7 +155,7 @@ function n_Create_Camera()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateNode_Camera()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -147,7 +210,7 @@ function n_Create_Particle()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateParticleEmitter()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -168,7 +231,7 @@ function n_Create_Billboard()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateBillboard()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov.LocalTransform:SetTranslate(pickPos)
 		end
 		PX2_CREATER:AddObject(node, mov)
@@ -332,7 +395,7 @@ function n_Create_UIFrame()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUIFrame()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then	
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then	
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end
@@ -354,7 +417,7 @@ function n_Create_UIFPicBox()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUIFPicBox()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end
@@ -376,7 +439,7 @@ function n_Create_UIFText()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUIFText()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end
@@ -399,7 +462,7 @@ function n_Create_UIButton()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUIButton()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end
@@ -421,7 +484,7 @@ function n_Create_UICheckButton()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUICheckButton()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end
@@ -443,7 +506,7 @@ function n_Create_UIComboBox()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUIComboBox()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end
@@ -465,7 +528,7 @@ function n_Create_UIEditBox()
 	if nil~=node then
 		local pickPos = PX2_EDIT:GetPickLocalPos(node)
 		local mov = PX2_CREATER:CreateUIEditBox()
-		if EU_Manager.EMT_PROJTREE==PX2EU_MAN:GetEidtMenuType() then
+		if EU_Manager.EMT_SCENE==PX2EU_MAN:GetEidtMenuType() then
 			mov:SetAnchorParamHor(pickPos:X(), pickPos:X())
 			mov:SetAnchorParamVer(pickPos:Z(), pickPos:Z())
 		end

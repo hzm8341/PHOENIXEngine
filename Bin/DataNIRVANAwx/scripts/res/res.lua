@@ -23,3 +23,11 @@ function n_ResButCallback(objPtr, callType)
 		end
 	end
 end
+
+function n_ResView_Refresh()
+	PX2_EDIT:BroadCastEditorEventRefreshRes()
+end
+
+function n_ResView_Clear()
+	PX2_EDIT:BraodCastEditorEventClearRes()
+end

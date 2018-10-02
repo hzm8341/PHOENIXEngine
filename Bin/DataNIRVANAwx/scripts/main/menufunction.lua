@@ -112,5 +112,5 @@ function n_UserLogin()
 end
 
 function n_About()
-	NirMan:MessageBox(PX2_LM_EDITOR:V("n_About"), "http://wwww.phoenixiot.com")
+	NirMan:MessageBox(PX2_LM_EDITOR:V("n_About"), "http://wwww.manykit.com")
 end

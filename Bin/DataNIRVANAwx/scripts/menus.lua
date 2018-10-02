@@ -2,8 +2,10 @@
 
 function n_CreateResMenu()
 	local editMenu = NirMan:GetCurMenu()
-	NirMan:AddMenuItem(editMenu, PX2_LM_EDITOR:GetValue("n_Open"), "n_ResView_Open")
-	NirMan:AddMenuItem(editMenu, PX2_LM_EDITOR:GetValue("n_CopyResPath"), "n_ResView_CopyResPath")
+	if nil~=editMenu then
+		NirMan:AddMenuItem(editMenu, ""..PX2_LM_EDITOR:GetValue("n_Open"), "n_ResView_Open", "")
+		NirMan:AddMenuItem(editMenu, ""..PX2_LM_EDITOR:GetValue("n_CopyResPath"), "n_ResView_CopyResPath", "")
+	end
 end
 
 function n_ResView_Open()

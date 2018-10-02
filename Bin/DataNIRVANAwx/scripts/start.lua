@@ -22,8 +22,18 @@ function naPreStart()
 	n_AddLanguage()
 end
 
+n_g_FrameBluesTableFrame = nil
 function naStart()
 	n_CreateMainMenu()
 	n_CreateToolBarMain()
 	n_CreateFrame_BBs()
+end
+
+function naPreEnd()
+	if nil~=n_g_FrameLogicTableFrame then
+		n_g_FrameLogicTableFrame:RemoveAllTabs()
+	end
+end
+
+function naEnd()
 end

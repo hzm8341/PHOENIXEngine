@@ -9,7 +9,10 @@ function n_AddLanguagePre()
 	PX2_LM_EDITOR:AddItem1("PlyW", "在窗口中运行")
 
 	PX2_LM_EDITOR:AddItem1("BlueBlock", "蓝块")
-	PX2_LM_EDITOR:AddItem1("BluePrint", "蓝图")
+	PX2_LM_EDITOR:AddItem1("Mission", "任务")
+	PX2_LM_EDITOR:AddItem1("Behaviour", "行为")
+	PX2_LM_EDITOR:AddItem1("BluePrint", "蓝图编程")
+	PX2_LM_EDITOR:AddItem1("Scratch", "积木编程")
 
 	PX2_LM_EDITOR:AddItem1("Login", "登录")
 	PX2_LM_EDITOR:AddItem1("UserLevelUp", "升级为铂金用户")
