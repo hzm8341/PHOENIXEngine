@@ -12,7 +12,7 @@
 #include "PX2ScriptManager.hpp"
 #include "PX2LuaPlusContext.hpp"
 
-#define PX2_USE_BLUEBLOCK_HPP
+//#define PX2_USE_BLUEBLOCK_HPP
 
 #if defined PX2_USE_BLUEBLOCK_HPP
 #include "BlueBlockPlugin.hpp"

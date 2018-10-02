@@ -688,36 +688,6 @@
     <Filter Include="3.Application\Logic\Logic">
       <UniqueIdentifier>{639574ef-692d-4f63-bd81-cd1abe269544}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock">
-      <UniqueIdentifier>{78b95b03-9ae5-40a6-951b-233bc24454e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\ToScript">
-      <UniqueIdentifier>{5748bb6f-3268-4333-90df-25f7c0cde221}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\PluginExport">
-      <UniqueIdentifier>{8494093f-df59-4ec0-a091-595bb43fd6c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\Events">
-      <UniqueIdentifier>{3891ef00-e5da-488c-ab4f-4a46b903a4cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\Sprite">
-      <UniqueIdentifier>{0b46d7ae-95af-43d8-956a-619c454ee48c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\Block">
-      <UniqueIdentifier>{782cc8fb-a598-4d5d-8250-915cee7a35a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI">
-      <UniqueIdentifier>{48ae808a-98f6-47c3-92cf-b56093559d77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI\Cata">
-      <UniqueIdentifier>{7876199f-dab1-4d9d-bfe1-9c6cd5fd405e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI\Cata\Param">
-      <UniqueIdentifier>{31ce53bd-af9d-43a2-8e7c-f06c87bc4a0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3.Application\Logic\Logic\BlueBlock\UI\Editor">
-      <UniqueIdentifier>{ff43e401-6e3e-487c-9144-cac83c5867b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3.Application\Logic\EventSpace">
       <UniqueIdentifier>{f77586e2-6384-458d-b743-11b2f3157ccc}</UniqueIdentifier>
     </Filter>
@@ -3627,72 +3597,6 @@
     <ClInclude Include="Logic\PX2Logics.hpp">
       <Filter>3.Application\Logic</Filter>
     </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockPre.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlocks.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BDefine.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\BlueBlockPlugin.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\PluginExport</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvent.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockEvents.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockScriptGenController.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockSprite.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockSystem.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEdit.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCataFrame.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelCont.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelList.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockPanels.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlueBlockToLua.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\ToScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBManager.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlockConnector.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BBlock.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClInclude>
     <ClInclude Include="Unity\PX2Base64.hpp">
       <Filter>0.Base\Unity\Base64</Filter>
     </ClInclude>
@@ -4322,12 +4226,6 @@
     </ClInclude>
     <ClInclude Include="AI\PX2AIs.hpp">
       <Filter>2.AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2BProject.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.hpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata\Param</Filter>
     </ClInclude>
     <ClInclude Include="AI\SkillSystem\PX2SkillDef.hpp">
       <Filter>2.AI\SkillSystem\SkillDef</Filter>
@@ -7226,75 +7124,6 @@
     <ClCompile Include="Unity\PX2VoiceEventType.cpp">
       <Filter>0.Base\Unity\Voice</Filter>
     </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BDefine.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\BlueBlockPlugin.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\PluginExport</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\BlueBlockDll.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\PluginExport</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvent.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockEvents.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockScriptGenController.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockSprite.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteLooks.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockSpriteOperator.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystem.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEdit.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditCanvas.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockEditToolFrame.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCataFrame.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelBlock.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelCont.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelList.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanelMusic.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockPanels.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlueBlockToLua.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\ToScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBManager.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockConnector.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlock.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClCompile>
     <ClCompile Include="Unity\PX2Base64.cpp">
       <Filter>0.Base\Unity\Base64</Filter>
     </ClCompile>
@@ -7735,15 +7564,6 @@
     </ClCompile>
     <ClCompile Include="AI\iiiroboticslidar2\PX2LidarSerialConnection.cpp">
       <Filter>2.AI\Robot\LiDar\iiiroboticslidar2</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BProject.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2UIBBlockCreateVariableFrame.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\UI\Cata\Param</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\BlueBlock\PX2BBlockSystemArduino.cpp">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="UI\PX2UIAuiBlockFrame.cpp">
       <Filter>1.Ext\UI\Aui</Filter>
@@ -8775,12 +8595,6 @@
     </None>
     <None Include="Unity\PX2DataBase.inl">
       <Filter>0.Base\Unity\DataBase</Filter>
-    </None>
-    <None Include="Logic\BlueBlock\PX2BBlockSprite.inl">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Sprite</Filter>
-    </None>
-    <None Include="Logic\BlueBlock\PX2BBlock.inl">
-      <Filter>3.Application\Logic\Logic\BlueBlock\Block</Filter>
     </None>
     <None Include="AI\PX2AIAgent.inl">
       <Filter>2.AI\Agent</Filter>
