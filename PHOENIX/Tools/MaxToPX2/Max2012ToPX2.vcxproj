@@ -113,7 +113,8 @@
       <ImportLibrary>$(OutDir)Max2012ToPX2.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2EngineD.dll "$(ADSK_3DSMAX_32_2012)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

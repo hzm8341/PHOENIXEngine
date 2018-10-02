@@ -107,8 +107,8 @@
       <ImportLibrary>$(OutDir)Max9ToPX2.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2EngineD.dll D:\3dsMax9
-xcopy /DY ..\..\..\Bin\PluginsTool\Max9\32\Debug\Max9ToPX2D.dle D:\3dsMax9\plugins</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
