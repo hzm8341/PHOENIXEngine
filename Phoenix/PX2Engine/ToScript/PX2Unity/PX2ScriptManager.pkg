@@ -1,8 +1,0 @@
-// PX2ScriptManager.pkg
-
-	class ScriptManager
-	{
-		// SINGLETON Application
-		
-		ScriptContext *GetContext(ScriptContext::ContextType type);
-	};

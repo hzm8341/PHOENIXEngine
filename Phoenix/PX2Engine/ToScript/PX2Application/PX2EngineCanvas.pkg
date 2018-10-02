@@ -1,8 +1,0 @@
-// PX2EngineCanvas.pkg
-
-	class EngineCanvas : public Canvas
-	{
-	public:
-		EngineCanvas();
-		virtual ~EngineCanvas();
-	};

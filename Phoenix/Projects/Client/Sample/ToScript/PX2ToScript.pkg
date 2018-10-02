@@ -1,4 +1,0 @@
-// PX2ToScript.pkg
-
-$#include "SampleToLua.hpp"
-$pfile "Sample.pkg"
