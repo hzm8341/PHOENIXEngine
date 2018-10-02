@@ -58,7 +58,7 @@ mToolbarClearID(0)
 
 	bSizer10->Add(mToolBar, 1, wxEXPAND, 0);
 
-	bSizer9->Add(bSizer10, 0, wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 0);
+	bSizer9->Add(bSizer10, 0,  wxALIGN_CENTER_HORIZONTAL, 0);
 
 	// commond text
 	wxBoxSizer* bSizer60;

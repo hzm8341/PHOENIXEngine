@@ -26,8 +26,7 @@ ResTreeItem::~ResTreeItem()
 //-----------------------------------------------------------------------------
 void ResTreeItem::RootBuild(bool isOnlyDir)
 {
-	if (0 != mItemID)
-		mResTree->DeleteChildren(mItemID);
+	mResTree->DeleteAllItems();
 
 	mParent = 0;
 	int iconID = mResTree->Icons["folder"];
@@ -202,7 +201,7 @@ void ResTreeItem::_BuildChild(bool isOnlyDir)
 			{
 				if ((eachFilename != wxT(".")) && (eachFilename != wxT("..")))
 				{
-					std::string fileName = eachFilename.ToAscii();
+					std::string fileName = eachFilename;
 					std::string pathName = mResPathName + fileName;
 					std::string pathName1 = pathName + "/";
 

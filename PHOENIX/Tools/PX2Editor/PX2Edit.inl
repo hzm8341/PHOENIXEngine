@@ -31,6 +31,11 @@ inline Edit::RenderMode Edit::GetRenderMode() const
 	return mRenderMode;
 }
 //----------------------------------------------------------------------------
+inline Edit::CameraMode Edit::GetCameraMode() const
+{
+	return mCameraMode;
+}
+//----------------------------------------------------------------------------
 inline Edit::SimuRenderViewMode Edit::GetSimuRenderViewMode() const
 {
 	return mSimuRenderViewMode;

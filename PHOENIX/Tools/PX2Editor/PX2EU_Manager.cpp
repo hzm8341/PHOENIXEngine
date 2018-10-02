@@ -72,7 +72,8 @@ bool EU_Manager::Initlize1(const std::string &tag)
 {
 	if ("wx" == tag)
 	{
-		PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", "naStart");
+		PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", 
+			"naStart");
 	}
 
 	return true;
@@ -80,6 +81,16 @@ bool EU_Manager::Initlize1(const std::string &tag)
 //----------------------------------------------------------------------------
 bool EU_Manager::Terminate()
 {
+	PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua",
+		"naPreEnd");
+
+	return true;
+}
+//----------------------------------------------------------------------------
+bool EU_Manager::Terminate1()
+{
+	PX2_SC_LUA->CallFileFunction("DataNIRVANAwx/scripts/start.lua", "naEnd");
+
 	if (mEditParams)
 		mEditParams->Save("DataNIRVANAwx/config/config.xml");
 	mEditParams = 0;
@@ -211,8 +222,13 @@ void EU_Manager::CreateEditMenu(const std::string &whereStr, const APoint &pos, 
 	
 	if (selectedNode)
 	{
-		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "Node", PX2_LM_EDITOR.V("n_Node"), "n_Create_Node");
+		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "Actor", PX2_LM_EDITOR.V("n_Actor"));
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateActor", "Actor", PX2_LM_EDITOR.V("n_Actor"), "n_Create_Actor");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateActor", "InfinitePlane", PX2_LM_EDITOR.V("n_InfinitePlane"), "n_Create_Actor_InfinitePlane");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateActor", "Box", PX2_LM_EDITOR.V("n_Box"), "n_Create_Actor_Box");
 
+		PX2_APP.Menu_Edit_AddItemSeparater(whereStr, "EditCreate");
+		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreate", "Node", PX2_LM_EDITOR.V("n_Node"), "n_Create_Node");
 		PX2_APP.Menu_Edit_AddSubItem(whereStr, "EditCreate", "Geometry", PX2_LM_EDITOR.V("n_Geometry"));
 		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateGeometry", "Plane", PX2_LM_EDITOR.V("n_Plane"), "n_Create_Geometry_Plane");
 		PX2_APP.Menu_Edit_AddItem(whereStr, "EditCreateGeometry", "Box", PX2_LM_EDITOR.V("n_Box"), "n_Create_Geometry_Box");

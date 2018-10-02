@@ -158,8 +158,10 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 		for (int i = 0; i < numCtrls; i++)
 		{
 			Controller *ctrl = mov->GetController(i);
-
-			AddChild(ctrl, mIconID, mTreeLevel, mIsShowHelpNode);
+			if (!GetItem(ctrl))
+			{
+				AddChild(ctrl, mIconID, mTreeLevel, mIsShowHelpNode);
+			}
 		}
 	}
 
@@ -167,7 +169,10 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 	{
 		MaterialInstance *mtlInst = renderable->GetMaterialInstance();
 		Material *mtl = mtlInst->GetMaterial();
-		AddChild(mtl, mIconID, mTreeLevel, mIsShowHelpNode);
+		if (!GetItem(mtl))
+		{
+			AddChild(mtl, mIconID, mTreeLevel, mIsShowHelpNode);
+		}
 	}
 	if (mtl)
 	{
@@ -175,7 +180,10 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 		for (int i = 0; i < numTechniques; i++)
 		{
 			MaterialTechnique *mtlTechnique = mtl->GetTechnique(i);
-			AddChild(mtlTechnique, mIconID, mTreeLevel, isShowHelpNode);
+			if (!GetItem(mtlTechnique))
+			{
+				AddChild(mtlTechnique, mIconID, mTreeLevel, isShowHelpNode);
+			}
 		}
 	}
 	if (mtlTechnique)
@@ -184,20 +192,37 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 		for (int i = 0; i < numPasses; i++)
 		{
 			MaterialPass *mtlPass = mtlTechnique->GetPass(i);
-			AddChild(mtlPass, mIconID, mTreeLevel, isShowHelpNode);
+			if (!GetItem(mtlPass))
+			{
+				AddChild(mtlPass, mIconID, mTreeLevel, isShowHelpNode);
+			}
 		}
 	}
 	if (mtlPass)
 	{
-		AddChild(mtlPass->GetVertexShader(), mIconID, mTreeLevel, isShowHelpNode);
-		AddChild(mtlPass->GetPixelShader(), mIconID, mTreeLevel, isShowHelpNode);
+		if (!GetItem(mtlPass->GetVertexShader()))
+			AddChild(mtlPass->GetVertexShader(), mIconID, mTreeLevel, isShowHelpNode);
 
-		AddChild(mtlPass->GetAlphaProperty(), mIconID, mTreeLevel, isShowHelpNode);
-		AddChild(mtlPass->GetCullProperty(), mIconID, mTreeLevel, isShowHelpNode);
-		AddChild(mtlPass->GetDepthProperty(), mIconID, mTreeLevel, isShowHelpNode);
-		AddChild(mtlPass->GetOffsetProperty(), mIconID, mTreeLevel, isShowHelpNode);
-		AddChild(mtlPass->GetStencilProperty(), mIconID, mTreeLevel, isShowHelpNode);
-		AddChild(mtlPass->GetWireProperty(), mIconID, mTreeLevel, isShowHelpNode);
+		if (!GetItem(mtlPass->GetPixelShader()))
+			AddChild(mtlPass->GetPixelShader(), mIconID, mTreeLevel, isShowHelpNode);
+
+		if (!GetItem(mtlPass->GetAlphaProperty()))
+			AddChild(mtlPass->GetAlphaProperty(), mIconID, mTreeLevel, isShowHelpNode);
+
+		if (!GetItem(mtlPass->GetCullProperty()))
+			AddChild(mtlPass->GetCullProperty(), mIconID, mTreeLevel, isShowHelpNode);
+
+		if (!GetItem(mtlPass->GetDepthProperty()))
+			AddChild(mtlPass->GetDepthProperty(), mIconID, mTreeLevel, isShowHelpNode);
+
+		if (!GetItem(mtlPass->GetOffsetProperty()))
+			AddChild(mtlPass->GetOffsetProperty(), mIconID, mTreeLevel, isShowHelpNode);
+
+		if (!GetItem(mtlPass->GetStencilProperty()))
+			AddChild(mtlPass->GetStencilProperty(), mIconID, mTreeLevel, isShowHelpNode);
+
+		if (!GetItem(mtlPass->GetWireProperty()))
+			AddChild(mtlPass->GetWireProperty(), mIconID, mTreeLevel, isShowHelpNode);
 	}
 
 	if (addModule)
@@ -206,7 +231,8 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 		for (int i = 0; i < numModules; i++)
 		{
 			EffectModule *module = effectableCtrl->GetModule(i);
-			AddChild(module, mIconID, mTreeLevel, mIsShowHelpNode);
+			if (!GetItem(module))
+				AddChild(module, mIconID, mTreeLevel, mIsShowHelpNode);
 		}
 	}
 
@@ -216,7 +242,7 @@ void ProjTreeItem::SetTreeLevel(ProjTreeLevel level, bool isShowHelpNode)
 		for (int i = 0; i < numChildren; i++)
 		{
 			Movable *child = node->GetChild(i);
-			if (child)
+			if (child && !GetItem(child))
 			{
 				bool ingore = false;
 				if (!isShowHelpNode && ("HelpNode" == child->GetName()))

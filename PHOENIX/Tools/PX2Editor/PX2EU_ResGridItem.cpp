@@ -164,7 +164,10 @@ void EU_ResGridItem::SetPathFilename(const std::string &pathFilename)
 	mResPicBox->GetUIPicBox()->SetTexture(tex2D);
 
 	std::string filename = GetUserData<std::string>("BaseFilename");
-	mText->GetText()->SetText(filename);
+	wchar_t *unic = StringHelp::AnsiToUnicode(filename.c_str());
+	const char *askStr = StringHelp::UnicodeToUTF8(unic);
+
+	mText->GetText()->SetText(askStr);
 }
 //----------------------------------------------------------------------------
 

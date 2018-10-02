@@ -37,6 +37,7 @@ namespace PX2
 	PX2_EVENT(ChangeResDir)
 	PX2_EVENT(SelectRes)
 	PX2_EVENT(RefreshRes)
+	PX2_EVENT(ClearRes)
 	PX2_EVENT(OpenRes)
 	PX2_EVENT(UpRes)
 	PX2_EVENT(DownRes)
@@ -61,6 +62,7 @@ namespace PX2
 	PX2_EVENT(SetEditAxisMode)
 	PX2_EVENT(SetEditMode)
 	PX2_EVENT(SetRenderMode)
+	PX2_EVENT(SetCameraMode)
 	PX2_EVENT(SetSimuRenderViewMode)
 
 	PX2_EVENT(SetTheme)

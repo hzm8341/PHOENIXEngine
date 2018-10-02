@@ -61,7 +61,7 @@ mRenderWindow(uiWindow)
 
 	SetFocus();
 	// wx
-	mPerspConfigName = "NIRVANAwx.layout.1.0";
+	mPerspConfigName = "NIRVANAwx.layout.1.0.xml";
 }
 //----------------------------------------------------------------------------
 void N_Frame::_Init()
@@ -634,8 +634,6 @@ void N_Frame::DoNewProject()
 			std::string path = "Data/" + pathName + name + ".px2proj";
 			PX2_APP.NewProject(path, name, screenOriention, width,
 				height);
-
-			int b = 0;
 		}
 	}
 }

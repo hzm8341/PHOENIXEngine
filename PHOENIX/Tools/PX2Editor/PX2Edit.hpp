@@ -81,6 +81,20 @@ namespace PX2
 		void SetRenderMode(RenderMode mode);
 		RenderMode GetRenderMode() const;
 
+		enum CameraMode
+		{
+			CM_PERSPECTIVE,
+			CM_LEFT,
+			CM_RIGHT,
+			CM_FRONT,
+			CM_BACK,
+			CM_BOTTOM,
+			CM_TOP,
+			CM_MAX_TYPE
+		};
+		void SetCameraMode(CameraMode camMode);
+		CameraMode GetCameraMode() const;
+
 		enum SimuRenderViewMode
 		{
 			SRVM_PROJ,
@@ -95,6 +109,7 @@ namespace PX2
 		EditAxisMode mEditAxisMode;
 		EditMode mEditMode;
 		RenderMode mRenderMode;
+		CameraMode mCameraMode;
 		SimuRenderViewMode mSimuRenderViewMode;
 
 	public:
@@ -273,6 +288,7 @@ namespace PX2
 		// Events
 	public:
 		void BroadCastEditorEventRefreshRes();
+		void BraodCastEditorEventClearRes();
 		void BroadCastEditorEventUp();
 		void BroadCastEditorEventDown();
 		void BroadCastEditorEventPlayInWindow();

@@ -51,6 +51,37 @@ void _ComboBoxCallback(UIFrame *frame, UICallType type)
 					PX2_EDIT.SetRenderMode(Edit::RM_WIREFRAME);
 				}
 			}
+			else if ("CameraMode" == name)
+			{
+				if ("Perspective" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_PERSPECTIVE);
+				}
+				else if ("Left" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_LEFT);
+				}
+				else if ("Right" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_RIGHT);
+				}
+				else if ("Front" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_FRONT);
+				}
+				else if ("Back" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_BACK);
+				}
+				else if ("Bottom" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_BOTTOM);
+				}
+				else if ("Top" == chooseStr)
+				{
+					PX2_EDIT.SetCameraMode(Edit::CM_TOP);
+				}
+			}
 		}
 	}
 }
@@ -208,6 +239,25 @@ EU_StageFrame::EU_StageFrame()
 
 	addButPos = 0.0f;
 	addButPos -= comboWidth / 2.0f;
+	UIComboBox *cameraTypeComboBox = new0 UIComboBox();
+	mToolFrame->AttachChild(cameraTypeComboBox);
+	cameraTypeComboBox->LocalTransform.SetTranslateY(-1.0f);
+	cameraTypeComboBox->SetAnchorHor(1.0f, 1.0f);
+	cameraTypeComboBox->SetAnchorVer(0.5f, 0.5f);
+	cameraTypeComboBox->SetAnchorParamHor(addButPos, 0.0f);
+	cameraTypeComboBox->SetSize(Sizef(comboWidth, butSize.Height));
+	cameraTypeComboBox->SetName("CameraMode");
+	cameraTypeComboBox->AddChooseStr("Perspective");
+	cameraTypeComboBox->AddChooseStr("Top");
+	cameraTypeComboBox->SetChooseListHeightSameWithChooses();
+	cameraTypeComboBox->SetTextColor(Float3::MakeColor(220, 220, 220));
+	cameraTypeComboBox->GetSelectButton()->GetText()->SetFontScale(0.65f);
+	Edit::CameraMode cm = PX2_EDIT.GetCameraMode();
+	cameraTypeComboBox->Choose(cm == Edit::CM_PERSPECTIVE ? 0 : 1);
+	cameraTypeComboBox->AddUICallback(_ComboBoxCallback);
+
+	addButPos -= butSpace;
+	addButPos -= comboWidth;
 	UIComboBox *renderModeComboBox = new0 UIComboBox();
 	mToolFrame->AttachChild(renderModeComboBox);
 	renderModeComboBox->LocalTransform.SetTranslateY(-1.0f);

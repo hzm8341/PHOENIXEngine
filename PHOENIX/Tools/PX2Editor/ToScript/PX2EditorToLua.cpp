@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2Editor
-** Generated automatically by tolua++-1.0.92 on 05/27/17 16:35:42.
+** Generated automatically by tolua++-1.0.92 on 05/19/18 13:25:27.
 */
 
 #ifndef __cplusplus
@@ -1777,6 +1777,37 @@ static int tolua_PX2Editor_Edit_BroadCastEditorEventRefreshRes00(lua_State* tolu
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'BroadCastEditorEventRefreshRes'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: BraodCastEditorEventClearRes of class  Edit */
+#ifndef TOLUA_DISABLE_tolua_PX2Editor_Edit_BraodCastEditorEventClearRes00
+static int tolua_PX2Editor_Edit_BraodCastEditorEventClearRes00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Edit",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Edit* self = (Edit*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'BraodCastEditorEventClearRes'", NULL);
+#endif
+  {
+   self->BraodCastEditorEventClearRes();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'BraodCastEditorEventClearRes'.",&tolua_err);
  return 0;
 #endif
 }
@@ -5077,6 +5108,7 @@ static int tolua_PX2Editor_EU_ContentFrame_SetContAcceptKeyboardInput00(lua_Stat
    tolua_function(tolua_S,"SetActivateOpenedFile",tolua_PX2Editor_Edit_SetActivateOpenedFile00);
    tolua_function(tolua_S,"GetActivateOpenedFile",tolua_PX2Editor_Edit_GetActivateOpenedFile00);
    tolua_function(tolua_S,"BroadCastEditorEventRefreshRes",tolua_PX2Editor_Edit_BroadCastEditorEventRefreshRes00);
+   tolua_function(tolua_S,"BraodCastEditorEventClearRes",tolua_PX2Editor_Edit_BraodCastEditorEventClearRes00);
    tolua_function(tolua_S,"BroadCastEditorEventUp",tolua_PX2Editor_Edit_BroadCastEditorEventUp00);
    tolua_function(tolua_S,"BroadCastEditorEventDown",tolua_PX2Editor_Edit_BroadCastEditorEventDown00);
    tolua_function(tolua_S,"BroadCastEditorEventPlayInWindow",tolua_PX2Editor_Edit_BroadCastEditorEventPlayInWindow00);

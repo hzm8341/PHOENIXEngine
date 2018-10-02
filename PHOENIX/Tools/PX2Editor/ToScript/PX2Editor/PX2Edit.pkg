@@ -118,6 +118,7 @@
 	
 	public:
 		void BroadCastEditorEventRefreshRes();
+		void BraodCastEditorEventClearRes();
 		void BroadCastEditorEventUp();
 		void BroadCastEditorEventDown();
 		void BroadCastEditorEventPlayInWindow();		

@@ -27,6 +27,7 @@ mEditType(ET_SCENE),
 mEditAxisMode(EAM_WORLD),
 mEditMode(EM_NONE),
 mRenderMode(RM_NORMAL),
+mCameraMode(CM_PERSPECTIVE),
 mGeoObjFactory(0),
 IsAltDown(false),
 IsCtrlDown(false),
@@ -99,7 +100,7 @@ bool Edit::Terminate()
 
 	if (mEU_Man)
 	{
-		mEU_Man->Terminate();
+		mEU_Man->Terminate1();
 		delete0(mEU_Man);
 		EU_Manager::Set(0);
 	}
@@ -153,6 +154,14 @@ void Edit::SetRenderMode(RenderMode mode)
 	mRenderMode = mode;
 
 	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::SetRenderMode);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::SetCameraMode(CameraMode camMode)
+{
+	mCameraMode = camMode;
+
+	Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::SetCameraMode);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
@@ -544,15 +553,15 @@ void Edit::AnimStop()
 
 	if (ctrl)
 	{
-		ctrl->Stop();
+		ctrl->Pause();
 	}
 	else if (ctrlable)
 	{
-		ctrlable->Stop();
+		ctrlable->Pause();
 	}
 	else if (anim)
 	{
-		anim->LetCharacterPlay();
+		anim->Pause();
 	}
 }
 //----------------------------------------------------------------------------
@@ -561,6 +570,7 @@ void Edit::AnimReset()
 	Object *obj = PX2_SELECTM_E->GetFirstObject();
 	Controller *ctrl = DynamicCast<Controller>(obj);
 	Controlledable *ctrlable = DynamicCast<Controlledable>(obj);
+	Animation *anim = DynamicCast<Animation>(obj);
 
 	if (ctrl)
 	{
@@ -570,6 +580,10 @@ void Edit::AnimReset()
 	{
 		ctrlable->Reset();
 	}
+	else if (anim)
+	{
+		anim->Pause();
+	}
 }
 //----------------------------------------------------------------------------
 bool Edit::IsAnimPlaying()
@@ -577,6 +591,7 @@ bool Edit::IsAnimPlaying()
 	Object *obj = PX2_SELECTM_E->GetFirstObject();
 	Controller *ctrl = DynamicCast<Controller>(obj);
 	Controlledable *ctrlable = DynamicCast<Controlledable>(obj);
+	Animation *anim = DynamicCast<Animation>(obj);
 
 	if (ctrl)
 	{
@@ -584,7 +599,11 @@ bool Edit::IsAnimPlaying()
 	}
 	else if (ctrlable)
 	{
-		ctrlable->IsPlaying();
+		return ctrlable->IsPlaying();
+	}
+	else if (anim)
+	{
+		return anim->IsPlaying();
 	}
 
 	return false;
@@ -781,6 +800,13 @@ void Edit::BroadCastEditorEventRefreshRes()
 {
 	Event *ent = EditorEventSpace::CreateEventX(
 		EditorEventSpace::RefreshRes);
+	PX2_EW.BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void Edit::BraodCastEditorEventClearRes()
+{
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::ClearRes);
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------

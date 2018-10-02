@@ -71,25 +71,25 @@
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX2D</TargetName>
     <TargetExt>.dle</TargetExt>
-    <OutDir>..\..\..\Bin\PluginsTool\Max2012\32\Debug</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX264D</TargetName>
     <TargetExt>.dle</TargetExt>
-    <OutDir>..\..\..\Bin\PluginsTool\Max2012\64\Debug</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\Bin\PluginsTool\Max2012\32\Release</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)</OutDir>
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX2</TargetName>
     <TargetExt>.dle</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\Bin\PluginsTool\Max2012\64\Release</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)</OutDir>
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max2012ToPX264</TargetName>
     <TargetExt>.dle</TargetExt>
@@ -113,8 +113,7 @@
       <ImportLibrary>$(OutDir)Max2012ToPX2.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2EngineD.dll "$(ADSK_3DSMAX_32_2012)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,7 +135,9 @@
       <ImportLibrary>$(OutDir)/Max2012ToPX2.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2Engine64D.dll "$(ADSK_3DSMAX_x64_2012)"</Command>
+      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2Engine64D.dll "$(ADSK_3DSMAX_x64_2012)"
+xcopy /DY ..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)\Max2012ToPX264D.dle "$(ADSK_3DSMAX_x64_2012)plugins"
+xcopy /DY ..\..\..\Bin\fmod64.dll "$(ADSK_3DSMAX_x64_2012)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -162,8 +163,7 @@
       <BaseAddress>0x02F60000</BaseAddress>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2Engine.dll "$(ADSK_3DSMAX_32_2012)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

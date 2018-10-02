@@ -41,7 +41,7 @@ ProjTree::ProjTree()
 //----------------------------------------------------------------------------
 ProjTree::ProjTree(wxWindow *parent) :
 wxTreeCtrl(parent, sID_PROJVIEW, wxDefaultPosition, wxDefaultSize,
-wxTR_DEFAULT_STYLE | wxTR_FULL_ROW_HIGHLIGHT | wxTR_NO_LINES | wxNO_BORDER),
+wxTR_DEFAULT_STYLE | wxTR_FULL_ROW_HIGHLIGHT | wxNO_BORDER | wxTR_TWIST_BUTTONS),
 mIsShowHelpNode(false),
 mTreeLevel(PTL_CHILDREN),
 mImageList(0),
@@ -257,7 +257,7 @@ void ProjTree::_TravelRefreshChild(ProjTreeItem *item, Movable *mov)
 		for (int i = 0; i < node->GetNumChildren(); i++)
 		{
 			Movable *movChild = node->GetChild(i);
-			if (movChild)
+			if (movChild && !item->GetItem(movChild))
 			{
 				ProjTreeLevel treeLevel = mTreeLevel;
 				NA::ProjTreeItem *itemAdd = item->AddChild(movChild, _GetIconID(movChild), treeLevel, mIsShowHelpNode);
@@ -299,7 +299,7 @@ void ProjTree::_AddObject(Object *obj)
 		Node *parNode = DynamicCast<Node>(move->GetParent());
 		ProjTreeItem *item = GetItem(parNode);
 
-		if (parNode && item)
+		if (parNode && item && !item->GetItem(obj))
 		{
 			ProjTreeLevel treeLevel = mTreeLevel;
 			NA::ProjTreeItem *itemAdd = item->AddChild(move, _GetIconID(move), treeLevel, mIsShowHelpNode);
@@ -313,7 +313,7 @@ void ProjTree::_AddObject(Object *obj)
 		EffectableController *eftableCtrl = DynamicCast<EffectableController>(
 			eftModule->GetEffectableController());
 		ProjTreeItem *item = GetItem(eftableCtrl);
-		if (eftableCtrl && item)
+		if (eftableCtrl && item && !item->GetItem(obj))
 		{
 			item->AddChild(eftModule, _GetIconID(move), mTreeLevel, mIsShowHelpNode);
 			Expand(item->GetItemID());

@@ -54,10 +54,10 @@ mCurCameraMoveSpeed_D(0.0f)
 	mStageCameraNode = PX2_CREATER.CreateNode_Camera();
 	mStageCameraNode->SetName("MainCameraNode");
 	mStageCameraNode->GetCamera()->SetName("MainCamera");
-	mStageCameraNode->LocalTransform.SetTranslate(-20.0f, -20.0f, 10.0f);
-	mStageCameraNode->LookAt(APoint(0.0f, 0.0f, 0.0f));
 	mStageCameraNode->GetCamera()->SetClearFlag(false, false, false);
 	mStageCameraNodeRoot->AttachChild(mStageCameraNode);
+	SetViewType(EU_CanvasStage::VT_PERSPECTIVE);
+	PX2_EDIT.SetCameraMode(Edit::CM_PERSPECTIVE);
 
 	Camera *editorCamera = mStageCameraNode->GetCamera();
 	float upFovDegrees = 0.0f;
@@ -116,6 +116,37 @@ CameraNode *EU_CanvasStage::GetOverCameraNode()
 void EU_CanvasStage::SetViewType(ViewType viewType)
 {
 	mViewType = viewType;
+
+	APoint pos = mStageCameraNode->LocalTransform.GetTranslate();
+
+	if (VT_PERSPECTIVE == mViewType)
+	{
+		mStageCameraNode->GetCamera()->SetPerspective(true);
+		mStageCameraNode->LocalTransform.SetTranslate(-20.0f, -20.0f, 10.0f);
+		mStageCameraNode->LookAt(APoint(0.0f, 0.0f, 0.0f), AVector::UNIT_Z);
+		_UpdateCamera();
+		mStageCameraNode->Update();
+		if (0 == PX2_SELECTM_E->GetNumObjects())
+		{
+		}
+		else
+		{
+			PX2_EDIT.FocusOnSelection();
+		}
+	}
+	else if (VT_LEFT == mViewType)
+	{
+		mStageCameraNode->GetCamera()->SetPerspective(false);
+		mStageCameraNode->LookDir(AVector::UNIT_X);
+	}
+	else if (VT_TOP == mViewType)
+	{
+		mStageCameraNode->LocalTransform.SetTranslateZ(100.0);
+		mStageCameraNode->GetCamera()->SetPerspective(false);
+		mStageCameraNode->LookDir(-AVector::UNIT_Z, AVector::UNIT_Y);
+		mStageCameraNode->Update();
+		PX2_EDIT.FocusOnSelection();
+	}
 }
 //----------------------------------------------------------------------------
 EU_CanvasStage::ViewType EU_CanvasStage::GetViewType()
@@ -226,6 +257,26 @@ void EU_CanvasStage::OnEvent(Event *event)
 		else if (Edit::RenderMode::RM_WIREFRAME == rm)
 		{
 			SetViewDetail(EU_CanvasStage::VD_WIREFRAME);
+		}
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::SetCameraMode))
+	{
+		Edit::CameraMode cm = PX2_EDIT.GetCameraMode();
+		if (Edit::CameraMode::CM_PERSPECTIVE == cm)
+		{
+			SetViewType(ViewType::VT_PERSPECTIVE);
+		}
+		else if (Edit::CameraMode::CM_TOP == cm)
+		{
+			SetViewType(ViewType::VT_TOP);
+		}
+		else if (Edit::CameraMode::CM_LEFT == cm)
+		{
+			SetViewType(ViewType::VT_LEFT);
+		}
+		else if (Edit::CameraMode::CM_FRONT == cm)
+		{
+			SetViewType(ViewType::VT_FRONT);
 		}
 	}
 	else if (EditES::IsEqual(event, EditES::AddSelect))
@@ -917,22 +968,6 @@ void EU_CanvasStage::_PanCamera(const float &hor, const float &ver)
 	Scene *scene = PX2_PROJ.GetScene();
 	if (!scene) return;
 
-	float transDist = 50.0f;
-	int numMovs = 0;
-	APoint posCenter;
-	APoint boundCenter;
-	float radius = 0.0f;
-	PX2_EDIT.GetSelectionCenterRadius(numMovs, posCenter, boundCenter, radius);
-
-	if (radius > transDist)
-	{
-		transDist = radius;
-	}
-
-	Sizef scSize = RenderWindow::GetDeskScreenSize();
-	float horz = (hor / scSize.Width) * transDist;
-	float vert = (ver / scSize.Height) * transDist;
-
 	if (mStageCameraNode)
 	{
 		APoint position = mStageCameraNode->LocalTransform.GetTranslate();
@@ -940,29 +975,59 @@ void EU_CanvasStage::_PanCamera(const float &hor, const float &ver)
 		AVector dVector;
 		AVector uVector;
 		mStageCameraNode->LocalTransform.GetRDUVector(rVector, dVector, uVector);
+		Camera *cam = mStageCameraNode->GetCamera();
+		// VF_DMIN = 0,  //< near
+		// VF_DMAX = 1,  //< far
+		// VF_UMIN = 2,  //< bottom
+		// VF_UMAX = 3,  //< top
+		// VF_RMIN = 4,  //< left
+		// VF_RMAX = 5,  //< right
+		const float *frust = cam->GetFrustum();
 
 		if (mViewType == VT_PERSPECTIVE)
 		{
+			float transDist = 50.0f;
+			int numMovs = 0;
+			APoint posCenter;
+			APoint boundCenter;
+			float radius = 0.0f;
+			PX2_EDIT.GetSelectionCenterRadius(numMovs, posCenter, boundCenter, radius);
+			if (radius > transDist)
+			{
+				transDist = radius;
+			}
+			Sizef scSize = RenderWindow::GetDeskScreenSize();
+			float horz = (hor / scSize.Width) * transDist;
+			float vert = (ver / scSize.Height) * transDist;
+
 			rVector.Normalize();
 			position += rVector * horz;
 
 			uVector.Normalize();
 			position -= uVector * vert;
 		}
-		else if (mViewType == VT_TOP)
+		else
 		{
-			position.Y() += vert;
-			position.X() -= horz;
-		}
-		else if (mViewType == VT_LEFT)
-		{
-			position.Z() += vert;
-			position.Y() += horz;
-		}
-		else if (mViewType == VT_FRONT)
-		{
-			position.Z() += vert;
-			position.X() -= horz;
+			float horDist = frust[Camera::VF_RMAX] - frust[Camera::VF_RMIN];
+			float verDist = frust[Camera::VF_UMAX] - frust[Camera::VF_UMIN];
+			float horAdjust = horDist / GetSize().Width;
+			float verAdjust = verDist / GetSize().Height;
+
+			if (mViewType == VT_TOP)
+			{
+				position.Y() -= ver * horAdjust;
+				position.X() += hor * verAdjust;
+			}
+			else if (mViewType == VT_LEFT)
+			{
+				position.Z() += ver * horAdjust;;
+				position.Y() += hor * verAdjust;
+			}
+			else if (mViewType == VT_FRONT)
+			{
+				position.Z() += ver * horAdjust;
+				position.X() -= hor * verAdjust;
+			}
 		}
 		mStageCameraNode->LocalTransform.SetTranslate(position);
 	}

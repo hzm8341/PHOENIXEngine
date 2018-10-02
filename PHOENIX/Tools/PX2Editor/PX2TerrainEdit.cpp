@@ -156,15 +156,15 @@ void TerrainEdit::SetTerrain(RawTerrain *terrain)
 	}
 }
 //----------------------------------------------------------------------------
-LODTerrain *TerrainEdit::CreateLODTerrain(RawTerrain *rawTerrain)
-{
-	assertion(0 != rawTerrain, "rawTerrain must not be 0.\n");
-
-	LODTerrain *lodTer = new0 LODTerrain();
-	lodTer->CreateFromRawTerrain(rawTerrain);
-
-	return lodTer;
-}
+//LODTerrain *TerrainEdit::CreateLODTerrain(RawTerrain *rawTerrain)
+//{
+//	assertion(0 != rawTerrain, "rawTerrain must not be 0.\n");
+//
+//	LODTerrain *lodTer = new0 LODTerrain();
+//	lodTer->CreateFromRawTerrain(rawTerrain);
+//
+//	return lodTer;
+//}
 //----------------------------------------------------------------------------
 void TerrainEdit::CreateTerrainHelpGrid()
 {

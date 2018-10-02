@@ -35,6 +35,10 @@ bool N_App::OnInit()
 	PX2_APP.Initlize();
 	PX2_EW.ComeIn(this);
 
+	std::vector<std::string> plugins;
+	plugins.push_back("BluePrint");
+	PX2_APP.LoadPlugins(plugins);
+
 	PX2_APP.Play(Application::PT_NONE);
 
 	NirMan *nirMan = new0 NirMan();
@@ -81,6 +85,14 @@ int N_App::OnExit()
 void N_App::CleanUp()
 {
 	wxApp::CleanUp();
+
+	PX2_EW.Shutdown(true);
+
+	PX2EU_MAN.Terminate();
+
+	std::vector<std::string> plugins;
+	plugins.push_back("BluePrint");
+	PX2_APP.ClosePlugins(plugins);
 
 	NirMan *nirMan = NirMan::GetSingletonPtr();
 	if (nirMan)
@@ -162,23 +174,26 @@ void N_App::SimuApp(SimuType st)
 	else if (ST_SERVER == st)
 		exeName = "ServerPlayer" + renderTag;
 
+	std::string strCfg =
+		std::string(" ") + "proj" + std::string("=") + projName;
+
 	std::string appName;
 
 #if defined(_WIN32) || defined(WIN32)
 
 #ifdef _DEBUG
 #if defined(_WIN64) || defined(WIN64)
-	appName = exeName + "64D.exe" + std::string(" ") + projName;
+	appName = exeName + "64D.exe" + std::string(" ") + strCfg;
 #else
-	appName = exeName + "D.exe" + std::string(" ") + projName;
+	appName = exeName + "D.exe" + std::string(" ") + strCfg;
 #endif
 
 #else
 
 #if defined(_WIN64) || defined(WIN64)
-	appName = exeName + "64.exe" + std::string(" ") + projName;
+	appName = exeName + "64.exe" + std::string(" ") + strCfg;
 #else
-	appName = exeName + ".exe" + std::string(" ") + projName;
+	appName = exeName + ".exe" + std::string(" ") + strCfg;
 #endif
 
 #endif

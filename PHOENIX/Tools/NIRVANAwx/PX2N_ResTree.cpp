@@ -32,7 +32,7 @@ END_EVENT_TABLE()
 //----------------------------------------------------------------------------
 ResTree::ResTree(wxWindow *parent, bool isUseOnlyDir) :
 wxTreeCtrl(parent, sID_RESTREE, wxDefaultPosition, wxDefaultSize,
-wxTR_DEFAULT_STYLE | wxTR_FULL_ROW_HIGHLIGHT | wxTR_NO_LINES | wxNO_BORDER),
+wxTR_DEFAULT_STYLE | wxTR_FULL_ROW_HIGHLIGHT | wxNO_BORDER | wxTR_TWIST_BUTTONS),
 mEditMenu(0),
 mIsUseOnlyDir(isUseOnlyDir)
 {
@@ -260,6 +260,10 @@ void ResTree::OnEvent(PX2::Event *event)
 	if (EditorEventSpace::IsEqual(event, EditorEventSpace::RefreshRes))
 	{
 		ResRefresh();
+	}
+	if (EditorEventSpace::IsEqual(event, EditorEventSpace::ClearRes))
+	{
+		ResClear();
 	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::UpRes))
 	{

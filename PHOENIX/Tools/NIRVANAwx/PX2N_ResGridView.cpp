@@ -18,8 +18,10 @@ ResGridView::ResGridView()
 ResGridView::ResGridView(wxWindow *parent) :
 wxWindow(parent, wxID_ANY)
 {
-	SetBackgroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()->GetCurTheme()->Color_Page_Background));
-	SetForegroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()->GetCurTheme()->Color_Page_Foreground));
+	SetBackgroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()
+		->GetCurTheme()->Color_Page_Background));
+	SetForegroundColour(Float3TowxColour(PX2EU_MAN.GetEditParams()
+		->GetCurTheme()->Color_Page_Foreground));
 
 	wxBoxSizer* bSizer54;
 	bSizer54 = new wxBoxSizer(wxVERTICAL);
@@ -35,7 +37,7 @@ wxWindow(parent, wxID_ANY)
 	canvas->SetClearColor(Float4::MakeColor(51, 51, 51, 51));
 	canvas->CreateUICameraNode();
 
-	float toolBarHeight = 24.0f;
+	float toolBarHeight = 28.0f;
 
 	UIFrame *toolBarFrame = new0 UIFrame();
 	canvas->AttachChild(toolBarFrame);
@@ -140,6 +142,7 @@ wxWindow(parent, wxID_ANY)
 	canvasGridFrame->AttachChild(resGrid);
 	resGrid->SetAnchorHor(0.0f, 1.0f);
 	resGrid->SetAnchorVer(0.0f, 1.0f);
+	resGrid->SetAnchorParamVer(10.0, 10.0f);
 
 	RenderView *renderView = new RenderView(rw, this);
 	rw->SetName("ResGridView");

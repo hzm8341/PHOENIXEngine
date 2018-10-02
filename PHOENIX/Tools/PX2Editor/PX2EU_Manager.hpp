@@ -31,6 +31,7 @@ namespace PX2
 		bool Initlize(const std::string &tag);
 		bool Initlize1(const std::string &tag);
 		bool Terminate();
+		bool Terminate1();
 		const std::string &GetEditorTag() const;
 
 		EditParams *GetEditParams();

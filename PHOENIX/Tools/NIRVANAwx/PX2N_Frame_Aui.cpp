@@ -131,7 +131,6 @@ void N_Frame::InitlizeAUI()
 void N_Frame::InitMainFrameItems()
 {
 	std::vector<std::string> menuItems;
-	menuItems.push_back("Proj_NewProject");
 	menuItems.push_back("Proj_Save");
 	menuItems.push_back("Proj_Close");
 	menuItems.push_back("Proj_Scene_NewScene");
@@ -152,15 +151,31 @@ void N_Frame::_CreateMainToolBar()
 	if (mAuiBarMain)
 	{
 		mAuiBarMain->SetArtProvider(new PX2wxAuiToolBarArt(2));
-
 		mAuiBarMain->Realize();
 
 		mAuiManager->AddPane(mAuiBarMain, wxAuiPaneInfo().
 			Name(wxT("maintoolbar")).
 			ToolbarPane().Gripper(true).Top().Dockable(false).PaneBorder(true).
-			MinSize(200, 24).MaxSize(200, 24).Top().Resizable(false).CaptionVisible(false).
+			MinSize(200, 36).MaxSize(200, 36).Top().Resizable(false).CaptionVisible(false).
 			BottomDockable(false).LeftDockable(false).RightDockable(false).Floatable(false));
 	}
+
+	mAuiBarMainLeft = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+		wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_VERTICAL);
+	mAuiBarMainLeft->SetArtProvider(new PX2wxAuiToolBarArt(2));
+	mAuiBarMainLeft->SetToolBitmapSize(wxSize(48, 48));
+	mAuiBarMainLeft->AddSpacer(24);
+	mAuiBarMainLeft->AddTool(wxID_ANY, wxT("general"), wxBitmap("DataNIRVANAwx/images/icons/connect/start.png", wxBITMAP_TYPE_PNG));
+	mAuiBarMainLeft->AddSpacer(12);
+	mAuiBarMainLeft->AddTool(wxID_ANY, wxT("expert"), wxBitmap("DataNIRVANAwx/images/icons/connect/start.png", wxBITMAP_TYPE_PNG));
+	mAuiBarMainLeft->AddStretchSpacer();
+	mAuiBarMainLeft->AddTool(wxID_ANY, wxT("setting"), wxBitmap("DataNIRVANAwx/images/icons/connect/start.png", wxBITMAP_TYPE_PNG));
+	mAuiBarMainLeft->AddSpacer(24);
+	mAuiBarMainLeft->Realize();
+	mAuiManager->AddPane(mAuiBarMainLeft, wxAuiPaneInfo().
+		Name(wxT("maintollbarleft")).ToolbarPane().Gripper(true).Left().Dockable(false).PaneBorder(true).
+		MinSize(48, 48).MaxSize(48, 48).Resizable(false).CaptionVisible(false).
+		BottomDockable(false).RightDockable(false).Floatable(false));
 }
 //-----------------------------------------------------------------------------
 void N_Frame::_CreateViews()
@@ -228,7 +243,7 @@ void N_Frame::_CreateViewStages(bool isTopStyle)
 	mSimuView->CreateRenderView(false);
 	WindowObj obj2;
 	obj2.Name = "SIMU";
-	obj2.Caption = PX2_LM_EDITOR.GetValue("n_Play");
+	obj2.Caption = PX2_LM_EDITOR.GetValue("n_Play0");
 	obj2.TheWindow = mSimuView;
 	windowObjs.push_back(obj2);
 
@@ -255,7 +270,7 @@ void N_Frame::_CreateViewProjRes(bool isTopStyle)
 	windowObjs.push_back(obj0);
 
 	_CreateView(windowObjs, "PROJRES", "PROJRES",
-		wxAuiPaneInfo().DefaultPane().Left(), isTopStyle);
+		wxAuiPaneInfo().DefaultPane().Right(), isTopStyle);
 }
 //-----------------------------------------------------------------------------
 void N_Frame::_CreateViewInspConsole(bool isTopStyle)

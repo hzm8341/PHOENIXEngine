@@ -6,7 +6,6 @@
 #include "PX2EditorPre.hpp"
 #include "PX2TerrainBrush.hpp"
 #include "PX2TerrainProcess.hpp"
-#include "PX2LODTerrain.hpp"
 #include "PX2EditObjectTerrain.hpp"
 
 namespace PX2
@@ -46,7 +45,7 @@ namespace PX2
 		void SetTerrain(PX2::RawTerrain *terrain);
 
 	protected:
-		PX2::LODTerrain *CreateLODTerrain(PX2::RawTerrain *rawTerrain);
+		//PX2::LODTerrain *CreateLODTerrain(PX2::RawTerrain *rawTerrain);
 		void CreateTerrainHelpGrid();
 		void DestoryTerrainHelpGrid();
 

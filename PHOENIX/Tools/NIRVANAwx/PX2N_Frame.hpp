@@ -190,6 +190,7 @@ namespace NA
 		std::string mPerspConfigName;
 		wxAuiManager *mAuiManager;
 		PX2wxAuiToolBar *mAuiBarMain;
+		wxAuiToolBar *mAuiBarMainLeft;
 		wxStaticText *mStatusBarText;
 		std::map<std::string, WindowObj> mWindowObjs;
 		std::map<wxWindow*, wxAuiNotebook*> mBookMap;
