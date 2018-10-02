@@ -1,0 +1,22 @@
+// PX2EU_ContentFrame.pkg
+
+	class EU_ContentFrame : public UIFrame
+	{
+		EU_ContentFrame();
+		virtual ~EU_ContentFrame();
+		
+		static EU_ContentFrame *New();
+		static EU_ContentFrame *New(const std::string &name);
+
+		virtual void SetActive(bool act);
+
+		enum ContentType
+		{
+			CT_TEXT,
+			CT_PREVIEW,
+			CT_MAX_TYPE
+		};
+		void SetCont(ContentType type, const std::string &filename);
+		void SetContString(const std::string &str);
+		void SetContAcceptKeyboardInput(bool accept);
+	};

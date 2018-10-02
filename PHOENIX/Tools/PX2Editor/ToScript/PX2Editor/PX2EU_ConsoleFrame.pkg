@@ -1,0 +1,11 @@
+// PX2EU_ConcoleFrame.pkg
+
+	class EU_ConcoleFrame : public UIFrame
+	{
+	public:
+		EU_ConcoleFrame();
+		virtual ~EU_ConcoleFrame();
+		
+		static EU_ConcoleFrame *New();
+		static EU_ConcoleFrame *New(const std::string &name);
+	};

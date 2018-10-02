@@ -1,0 +1,20 @@
+// PX2EU_InspectorFrame.pkg
+
+	class EU_InspectorFrame : public UIFrame
+	{	
+		EU_InspectorFrame();
+		virtual ~EU_InspectorFrame();
+		
+		static EU_InspectorFrame *New();
+		static EU_InspectorFrame *New(const std::string &name);
+
+		enum InspType
+		{
+			IT_PROP,
+			IT_RES,
+			IT_EDIT,
+			IT_MAX_TYPE
+		};
+		void SetInspType(InspType type);
+		InspType GetInspType() const;
+	};

@@ -1,0 +1,11 @@
+// PX2EU_ResGridFrame.pkg
+
+	class EU_ResGridFrame : public UIGridFrame
+	{
+	public:
+		EU_ResGridFrame();
+		virtual ~EU_ResGridFrame();
+		
+		static EU_ResGridFrame *New();
+		static EU_ResGridFrame *New(const std::string &name);
+	};

@@ -1,0 +1,45 @@
+// PX2BBManager.pkg
+
+	class BBManager
+	{
+	public:
+		BBManager();
+		virtual ~BBManager();
+		
+		void SetPlatformTag(const std::string &platTag);
+		const std::string &GetPlatformTag() const;
+		
+		void SetProductTag(const std::string &productTag);
+		const std::string &GetProductTag() const;
+		
+		void SetSelectSprite(BBlockSprite *sprite);
+		BBlockSprite *GetSelectSprite();
+		
+		void SetSelectBBlockEditor(BBlock *block);
+		BBlock *GetSelectBBlockEditor();
+		
+		BProject *GetCurProject();
+		
+		void SetStageFrame(UIFrame *stageFrame);
+		UIFrame *GetStageFrame();
+		
+		void SetSmallFrame(UIFrame *smallFrame);
+		UIFrame *GetSmallFrame();
+		
+		void GetLocalProjects(const std::string &appName);
+		
+		int GetNumProject() const;
+		std::string GetProjectName(int i) const;
+		BProject *GetProject(int i) const;
+
+		int NewProject(const std::string &appName, const std::string &projName);
+		void SaveProject();
+		bool LoadProject(const std::string &appName, const std::string &projName);
+		const std::string &GetAppName() const;
+		const std::string &GetProjectName() const;
+
+		bool IsHasProject(const std::string &projName);
+		void CloseProject();
+
+		void DeleteProject(const std::string &appName, const std::string &projName);
+	};

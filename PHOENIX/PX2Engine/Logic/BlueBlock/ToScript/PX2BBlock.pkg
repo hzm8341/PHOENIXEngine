@@ -1,0 +1,71 @@
+// PX2BBlock.pkg
+
+	class BBlock : public UIFrame
+	{
+	public:
+		BBlock();
+		virtual ~BBlock();
+
+		enum BlockState 
+		{
+			BS_NORMAL,
+			BS_PRESSED,
+			BS_MAX_STEATE
+		};
+		void SetState(BlockState state);
+		BlockState GetState() const;
+
+		bool IsAttachedToBlockConnector();
+
+		enum EditState
+		{
+			ES_INIT,
+			ES_PRE_EDITOR,
+			ES_EDITOR
+		};
+		void SetEditState(EditState state);
+		EditState GetEditState() const;
+
+		BBlock *CopyAll(EditState editState);
+
+		void SetLBlock(LBlock *block);
+		void ResetBlock();
+		LBlock *GetLBlock();
+
+		void OnSelect(bool select);
+
+		void SetPickingOffset(const Float2 &offset);
+		const Float2 &GetPickingOffset() const;
+
+		enum ShapeType
+		{
+			ST_EVENT,
+			ST_FUN,
+			ST_FUN_OUTPUT,
+			ST_FUN_OPERATOR,
+			ST_PARAM,
+			ST_IF,
+			ST_IFELSE,
+			ST_WHILE,
+			ST_PROGRAM,
+			ST_PROGRAMSTART,
+			ST_COROUTINE,
+			BST_MAX_TYPE
+		};
+		void SetShapeType(ShapeType st);
+		ShapeType GetShapeType() const;
+
+		void SetBoardColor(const Float4 &color);
+		const Float4 &GetBoardColor() const;
+
+		BBlockConnector *GetBlockConnectorByName(const std::string &name);
+		BBlockConnector *GetCloestConnector(BBlock *block);
+
+		std::vector<Pointer0<BBlockConnector> > &GetConnectors();
+
+		UICheckButton *GetCheckButtonUseThisPointer();
+		
+		void SetDoReset();
+
+		virtual void OnEvent(Event *ent);
+	};

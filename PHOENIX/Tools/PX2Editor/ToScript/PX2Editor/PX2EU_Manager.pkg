@@ -1,0 +1,51 @@
+// PX2EU_Manager.pkg
+
+	class EU_Manager
+	{	
+		// commonds
+	public:
+		void NewProject();
+		void OpenProject();
+		void SaveProject();
+		void CloseProject();
+		void NewScene();
+		void OpenScene();
+		void SaveScene();
+		void SaveSceneAs();
+		void CloseScene();
+		void Exit();
+		void Import();
+		void Export();
+		
+		// edit menu
+	public:
+		enum EditMenuType
+		{
+			EMT_PROJTREE,
+			EMT_SCENE,
+			EMT_UI,
+			EMT_BP,
+			EMT_MAX_TYPE
+		};
+		void CreateEditMenu(const std::string &whereStr, const APoint &pos, EditMenuType menuType);
+		EditMenuType GetEidtMenuType();
+		
+		void SetLogicCanvas(Canvas *logicCanvas);
+		Canvas *GetLogicCanvas();
+		
+		void SetInspectorView(int val);
+		
+		void SetProjectTreeLevel(int level);
+		
+		// tool bar
+	public:
+		void AddTool(const std::string &whereStr, const std::string &icon, std::string &script, const std::string &helpStr = "", int type = 0);
+		void AddToolChoose(const std::string &whereStr, const std::string &script,
+			const std::string &choose0,
+			const std::string &choose1 = "",
+			const std::string &choose2 = "",
+			const std::string &choose3 = "",
+			const std::string &choose4 = "");
+		void AddToolSeparater(const std::string &whereStr);
+		void AddToolStretch(const std::string &whereStr);
+	};
