@@ -106,11 +106,10 @@ void FMODSound::_CheckStraving()
 	if (TheSoundRes)
 	{
 		unsigned int    percent = 0;
-		bool            playing = false;
 		bool            paused = false;
-		bool            starving = false;
 		FMOD_OPENSTATE   openstate = FMOD_OPENSTATE_READY;
-		TheSoundRes->TheFMODSound->getOpenState(&openstate, &percent, &mIsStraving, 0);
+		TheSoundRes->TheFMODSound->getOpenState(&openstate, &percent,
+			&mIsStraving, 0);
 	}
 }
 //----------------------------------------------------------------------------

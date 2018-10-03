@@ -264,7 +264,7 @@ const char* SQLiteResult::GetDataStream(const std::string &s,
 //----------------------------------------------------------------------------
 DBResult *SQLiteResult::Advance()
 {
-	bool mIsRowAvailable = (sqlite3_step(mHandle) == SQLITE_ROW);
+	mIsRowAvailable = (sqlite3_step(mHandle) == SQLITE_ROW);
 	return mIsRowAvailable ? this : 0;
 }
 //----------------------------------------------------------------------------
