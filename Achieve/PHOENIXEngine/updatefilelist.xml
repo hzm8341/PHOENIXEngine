@@ -909,9 +909,7 @@
 	<file filename="PHOENIXEngine/plugins/visualization/libprojectm_plugin.dll" md5="696f653de4302baed3620ff9f2f3fbb2"/>
 	<file filename="PHOENIXEngine/plugins/visualization/libvisual_plugin.dll" md5="b2e081737160b1baf3d59f6d9449548f"/>
 	<file filename="PHOENIXEngine/PluginsCommon/FBXImporter/FBXImporter.dll" md5="dea127128dc45bd93d4bde28bb8684b8"/>
-	<file filename="PHOENIXEngine/PluginsCommon/FBXImporter/FBXImporterD.dll" md5="5279cd5a37f3527436263bd0298cb60c"/>
 	<file filename="PHOENIXEngine/PluginsCommon/FBXImporter/FBXImporterOpenGL.dll" md5="434441270c4034880ad2b29a90bbe068"/>
-	<file filename="PHOENIXEngine/PluginsCommon/FBXImporter/FBXImporterOpenGLD.dll" md5="c2f734a2b528ca7a73f4a0c9493f42f2"/>
 	<file filename="PHOENIXEngine/PluginsCommon/Slam2D/Slam2D.dll" md5="b4962ff74f5c44412d55528683d0dad2"/>
 	<file filename="PHOENIXEngine/PluginsCommon/Slam2D/Slam2DOpenGL.dll" md5="9414f84b849a08295a862e6656ccca46"/>
 	<file filename="PHOENIXEngine/PX2Editor.dll" md5="075ffa94855d6d0ca70e84de65bbcfd5"/>
