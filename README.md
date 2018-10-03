@@ -4,14 +4,32 @@
 
 open soruce cross platform system for robots/iOT
 
+网址website: www.manykit.com
+
+商城market: https://shop194048616.taobao.com
+
+![avatar](Documentation/ShowImagesGitHub/img/phoenixframe.png)
+
+
 ## 简述
 
-	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目，的开发引擎。集成了HectorSlam，用来做为机器人室内导航。
+	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目的开发引擎。集成了HectorSlam，用来做为机器人室内导航。
 	引擎已经支持Windows上，ARM，Linux，LinuxARM，iOS平台，使用简洁高效的Lua作为主要逻辑开发，使用C++/C作为底层构建语言，通过跨平台编译，可以将项目运行在所需要的平台上。
 	借助Arduino，ESP8266/32等芯片，使用PHOENIXFrameWireWall，引擎可以支持一般的物联设备开发。
 	当需要更高级的嵌入式方案时，我们可以选择LinuxArm作为开发环境，打造高级的物联网系统。
-	PHOENIXEngine只选择了最基本的两种语言C/C++和Python，降低使用者的门槛。引擎致力于打造容易实用，典雅优美的开发体验。
+	PHOENIXEngine只选择了最基本的两种语言C/C++和Lua，降低使用者的门槛。引擎致力于打造容易实用，典雅优美的开发体验。
 
+## 版权信息/LICENCE
+
+	ManyKit开源协议：
+	PHOENIXEngine是一个开放开源的引擎，拥有免费版本和商业版本，开源版本也是对商业开发非常友好的版本。
+	1.任何人，组织都可以自由修改引擎，免费应用于商业开发。
+	2.使用PHOENIXEngine免费版本，必须在醒目位置标准PHOENIXEngine的商标，并且在软件中出现PHOENIXEngine开源协议。
+	3.用户开发的扩展包，可以选择开源或者避源，也可以选择付费还是免费。
+	4.许多米科技保留对PHONEIXEngine，PHOENIXFrame的商标权，第三方不得任意使用。
+	5.许多米可以保留对引擎的教育培训领域的完全使用权，第三方如想要使用PHOENIXEngine作为培训教育，可以从许多米可以获得认证。
+	6.许多米可以保留对引擎技术社区，包含项目交流社区的独家开发使用权。
+	7.任何捐赠第三方必须首先提出对引擎修改，以及技术支持的需求。
 
 ##  编译/Compile
 
