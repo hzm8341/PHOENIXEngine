@@ -1,21 +1,16 @@
 # PHOENIXEngine
-@(MANYKIT ZERONERobot)[cross platform|c++/lua|project fast wifi synchronization]
 
-跨平台应用开发引擎
+开源的室内机器人及物联网开发引擎
 
-open soruce cross platform system for Games/AR/VR/AI/IOT/Robots
-
-##目录
-
-[TOC]
+open soruce cross platform system for robots/iOT
 
 ## 简述
 
-	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目，的开发引擎。集成了ORB-Slam2，更可以开发AR增强现实等应用。
-	引擎已经支持Windows上，ARM，Linux，LinuxARM，IOS平台，使用简洁高效的Lua作为主要逻辑开发，使用C++/C作为底层构建语言，通过跨平台编译，可以将项目运行在所需要的平台上。
+	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目，的开发引擎。集成了HectorSlam，用来做为机器人室内导航。
+	引擎已经支持Windows上，ARM，Linux，LinuxARM，iOS平台，使用简洁高效的Lua作为主要逻辑开发，使用C++/C作为底层构建语言，通过跨平台编译，可以将项目运行在所需要的平台上。
 	借助Arduino，ESP8266/32等芯片，使用PHOENIXFrameWireWall，引擎可以支持一般的物联设备开发。
-	当需要更高级的嵌入式方案时，我们可以选择LINUXArm作为开发环境，打造高级的物联网系统。
-	PHOENIXEngine注重实用，构建上手的容易度，因此只选择了最基本的两种语言，降低使用者的门槛。引擎致力于打造容易实用，典雅优美的开发体验。
+	当需要更高级的嵌入式方案时，我们可以选择LinuxArm作为开发环境，打造高级的物联网系统。
+	PHOENIXEngine只选择了最基本的两种语言C/C++和Python，降低使用者的门槛。引擎致力于打造容易实用，典雅优美的开发体验。
 
 
 ##  编译/Compile
@@ -30,7 +25,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 ### Windows
 
-使用visualstudio打开PHOENIXEngine/Phoenix.sln编译
+使用visualstudio打开PHOENIXEngine/PHOENIX.sln编译
 
 ### Linux
 
@@ -38,7 +33,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 - 	拷贝FMOD:
 
-	进入目录 Phoenix/trunk/Phoenix/ThirdPartiesLibs/
+	进入目录 PHOENIX/ThirdPartiesLibs/
 
 	sudo cp -fr FMOD /usr/local/lib/ 
 
@@ -64,11 +59,11 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 **4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
 如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
 
-	在目录PHOENIXEngine/Phoenix/Projects/Client/Sample中执行:make CFG=ReleaseDynamic -f makefile.px2
+	在目录PHOENIXEngine/PHOENIX/Projects/Client/Sample中执行:make CFG=ReleaseDynamic -f makefile.px2
 
 **5.运行最终的可执行程序**
 	
-	在PHOENIXEngine/Phoenix/Bin目录执行 ./AppPlayer.ReleaseDynamic
+	在PHOENIXEngine/PHOENIX/Bin目录执行 ./AppPlayer.ReleaseDynamic
 	
 ### Linux Raspberry
 
@@ -76,7 +71,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 - 拷贝FMOD:
 
-	进入目录 Phoenix/trunk/Phoenix/ThirdPartiesLibs/
+	进入目录 PHOENIX/ThirdPartiesLibs/
 
 	sudo cp -fr FMOD /usr/local/lib/ 
 
@@ -101,11 +96,11 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 **4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
 如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
 
-	在目录PHOENIXEngine/Phoenix/Projects/Client/Sample中执行:make CFG=ReleaseARMDynamic -f makefile.px2
+	在目录PHOENIXEngine/PHOENIX/Projects/Client/Sample中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
 **5.执行**
 	
-	在PHEONIXEngine/Phoenix/Bin目录执行 AppPlayer.ReleaseARMDynamic
+	在PHEONIXEngine/PHOENIX/Bin目录执行 AppPlayer.ReleaseARMDynamic
 
 ### Android
 
@@ -119,7 +114,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 
 ### IOS
 
-	使用XCode打开项目Phoenix/Phoenix.xcworkspace编译项目
+	使用XCode打开项目PHOENIX/Phoenix.xcworkspace编译项目
 
 ## 使用方法/General Use
 
@@ -131,3 +126,5 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 	项目运行前，执行，Sample/lua/start.lua中的prestart
 	紧接着运行，执行，Sample/lua/start.lua中的start
 	用户的项目逻辑在presstart和start函数中写就可以
+
+- Bin/Data/Sample 是一个空项目
