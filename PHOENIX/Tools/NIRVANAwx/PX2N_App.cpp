@@ -36,8 +36,8 @@ bool N_App::OnInit()
 	PX2_EW.ComeIn(this);
 
 	std::vector<std::string> plugins;
-	plugins.push_back("BluePrint");
-	PX2_APP.LoadPlugins(plugins);
+	//plugins.push_back("BluePrint");
+	//PX2_APP.LoadPlugins(plugins);
 
 	PX2_APP.Play(Application::PT_NONE);
 
