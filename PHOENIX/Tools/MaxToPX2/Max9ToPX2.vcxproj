@@ -69,7 +69,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\..\Bin\PluginsTool\Max9\32\Debug</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max9\$(Platform)\$(Configuration)</OutDir>
     <IntDir>_OutPut\Max9\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max9ToPX2D</TargetName>
     <TargetExt>.dle</TargetExt>
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\Bin\PluginsTool\Max9\32\Release</OutDir>
+    <OutDir>..\..\..\Bin\PluginsTool\Max9\$(Platform)\$(Configuration)</OutDir>
     <IntDir>_OutPut\Max9\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>Max9ToPX2</TargetName>
     <TargetExt>.dle</TargetExt>
@@ -112,8 +112,8 @@
       <ImportLibrary>$(OutDir)Max9ToPX2.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2EngineD.dll "E:\Autodesk\3ds Max 9"
+xcopy /DY ..\..\..\Bin\PluginsTool\Max9\$(Platform)\$(Configuration)\Max9ToPX2D.dle "E:\Autodesk\3ds Max 9\plugins"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
