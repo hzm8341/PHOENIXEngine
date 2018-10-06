@@ -46,6 +46,7 @@
     <ProjectGuid>{35494173-FE1E-4EF8-B56D-9C6C4549447B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NIRVANA2</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -170,7 +171,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>NIRVANA264D</TargetName>
+    <TargetName>NIRVANAwx64D</TargetName>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\Bin\</OutDir>
   </PropertyGroup>

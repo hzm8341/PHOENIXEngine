@@ -64,8 +64,7 @@ bool N_App::OnInit()
 	Edit *edit = new0 Edit();
 	edit->Initlize("wx");
 
-	frame->InitlizeAUI();
-
+	frame->InitlizeAUI()
 	edit->Initlize1("wx");
 
 	frame->InitMainFrameItems();

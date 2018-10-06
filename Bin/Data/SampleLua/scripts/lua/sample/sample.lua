@@ -42,7 +42,7 @@ function sampleLua_Sample()
 	-- model
 	local model = PX2_CREATER:CreateNode_Model("Data/SampleLua/models/actors/swk/model.px2obj")
 	scene:AttachChild(model)
-	model.LocalTransform:SetUniformScale(0.05)
+	model.LocalTransform:SetUniformScale(0.1)
 	model.LocalTransform:SetRotateDegree(0.0, 0.0, 180.0)
 	model.LocalTransform:SetTranslate(2.5, 0.0, 0.0)
 	g_s_AnimCtrl = model:GetControllerByName("ModelController")
@@ -59,7 +59,7 @@ function sampleLua_Sample()
 	-- model1
 	local model1 = PX2_CREATER:CreateNode_Model("Data/SampleLua/models/actors/swk/model.px2obj")
 	scene:AttachChild(model1)
-	model1.LocalTransform:SetUniformScale(0.05)
+	model1.LocalTransform:SetUniformScale(0.1)
 	model1.LocalTransform:SetRotateDegree(0.0, 0.0, 0.0)
 	model1.LocalTransform:SetTranslate(-5, 0.0, 0.0)
 	model1:ResetPlay()	
@@ -109,15 +109,10 @@ function sampleLua_Sample()
 		FBXImporter:Delete(importer1)		
 	end
 
-	-- voxel
-	PX2_VOXELM:Initlize(VoxelManager.T_TEX)
-	local vs = VoxelSection:New()
-	vs:SetMinSize(-3, -3, -1)
-	vs:SetMaxSize(3, 3, -1)
-	vs:SetDistXY(10)
-	vs:SetDistZ(10)
-	vs:SetInitMtlType(2)
-	scene:AttachChild(vs)
+	-- panel
+	local rectangle = PX2_CREATER:CreateMovable_Rectangle()
+	scene:AttachChild(rectangle)
+	rectangle.LocalTransform:SetUniformScale(10.0)
 
 	-- sky
 	local sky = PX2_CREATER:CreateSkyBox("Data/engine/sky/skybox/thickcloudswater/")

@@ -22,6 +22,7 @@
     <ProjectGuid>{25A7930D-F0AE-4C05-AB83-6B44F07D27A6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Max2012ToPX2_VC100</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,7 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>_OutPut\Max2012\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>Max2012ToPX264D</TargetName>
+    <TargetName>Max2012ToPX2D</TargetName>
     <TargetExt>.dle</TargetExt>
     <OutDir>..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)</OutDir>
   </PropertyGroup>
@@ -136,9 +137,8 @@ xcopy /DY ..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)\Max2012T
       <ImportLibrary>$(OutDir)/Max2012ToPX2.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2Engine64D.dll "$(ADSK_3DSMAX_x64_2012)"
-xcopy /DY ..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)\Max2012ToPX264D.dle "$(ADSK_3DSMAX_x64_2012)plugins"
-xcopy /DY ..\..\..\Bin\fmod64.dll "$(ADSK_3DSMAX_x64_2012)"</Command>
+      <Command>xcopy /DY ..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration)\PX2EngineD.dll "$(ADSK_3DSMAX_x64_2012)"
+xcopy /DY ..\..\..\Bin\PluginsTool\Max2012\$(Platform)\$(Configuration)\Max2012ToPX2D.dle "$(ADSK_3DSMAX_x64_2012)\plugins"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
