@@ -22,16 +22,16 @@ function ActorController:OnAttached()
 end
 
 function ActorController:OnInitUpdate()
-	--PX2_LOGGER:LogInfo("script_lua", ""..self._name.." OnInitUpdate")
+	PX2_LOGGER:LogInfo("script_lua", ""..self._name.." OnInitUpdate")
 end
 
 function ActorController:OnPPlay()
-	--PX2_LOGGER:LogInfo("script_lua", ""..self._name.." OnPPlay")
+	PX2_LOGGER:LogInfo("script_lua", ""..self._name.." OnPPlay")
 end
 
 function ActorController:OnPUpdate()
 	--PX2_LOGGER:LogInfo("script_lua", ""..self._name.." OnPUpdate")
-	--[[
+
 	local elapsedSeconds = PX2_APP:GetElapsedTime()
 	
 	-- self
@@ -55,5 +55,4 @@ function ActorController:OnPUpdate()
 	
 	Agent_ApplyPhysicsSteeringForce(self._agent, steeringForces, elapsedSeconds)
 	Agent_ClampHorizontalSpeed(self._agent)
-	]]--
 end

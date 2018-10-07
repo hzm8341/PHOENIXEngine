@@ -74,4 +74,6 @@ function ActorControllerPath:OnPUpdate()
 	
 	Agent_ApplyPhysicsSteeringForce(self._agent, steeringForces, elapsedSeconds)
 	Agent_ClampHorizontalSpeed(self._agent)
+	
+	collectgarbage("collect")
 end

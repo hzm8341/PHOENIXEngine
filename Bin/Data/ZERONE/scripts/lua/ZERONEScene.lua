@@ -44,10 +44,8 @@ function zo_Scene()
     
     -- actor control
     local followerActorAgent = nil
-
-
     -- seek
-    for i=1,10,1 do
+    for i=1,1,1 do
         local actor = PX2_CREATER:CreateActor()
         scene:AttachChild(actor)
         local movBox = PX2_CREATER:CreateMovable_Box()
@@ -59,7 +57,6 @@ function zo_Scene()
         scriptCtrl:ResetPlay()
     end
 
-	--[[
     -- path
     for i=1,2,1 do
         local actor = PX2_CREATER:CreateActor()
@@ -95,7 +92,6 @@ function zo_Scene()
             scriptCtrl:ResetPlay()
         end     
     end
-	]]--
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane()
