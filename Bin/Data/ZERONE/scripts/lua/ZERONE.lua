@@ -25,8 +25,6 @@ function zo_ZERONE()
     UnRegistAllEventFunctions("AIES::AxisOpen")
     UnRegistAllEventFunctions("AIES::AxisClose")
 
-    -- update
-    PX2_APP:AddUpdateScriptCallback("zo_AppUpdateCallback")
 
     -- lidar
     PX2_ROBOT:CreateLidar()
@@ -142,10 +140,7 @@ function zo_OnStartUp(useSpeed)
 end
 
 function zo_AppUpdateCallback(appSecondsStr, elapsedSecondsStr)
-    local appSeconds = StringHelp:StringToInt(appSecondsStr)
-    local elapsedSeconds = StringHelp:StringToInt(elapsedSecondsStr)
-
     if nil~=ZERONE_UDPServer then
-        ZERONE_UDPServer:Update(0.0)
+        ZERONE_UDPServer:Update(elapsedSecondsStr)
     end
 end

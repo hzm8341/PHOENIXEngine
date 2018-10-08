@@ -27,7 +27,7 @@ void Application::Play(PlayType type)
 
 		PX2_LOG_INFO("Begin PT_PLAY CallFileFunction %s", callFilenameLua.c_str());
 
-		PX2_SC_LUA->CallFileFunction(callFilenameLua.c_str(), "preplay");
+		PX2_SC_LUA->CallFileFunction(callFilenameLua.c_str(), "engine_project_preplay");
 
 		PX2_LOG_INFO("Begin PT_PLAY SetPlayType");
 
@@ -41,7 +41,7 @@ void Application::Play(PlayType type)
 
 		PX2_LOG_INFO("Begin PT_PLAY call script");
 
-		PX2_SC_LUA->CallFileFunction(callFilenameLua.c_str(), "play");
+		PX2_SC_LUA->CallFileFunction(callFilenameLua.c_str(), "engine_project_play");
 
 		PX2_LOG_INFO("End PT_PLAY");
 	}
@@ -51,7 +51,7 @@ void Application::Play(PlayType type)
 
 		std::string callFilename = "Data/" + mProjectName + dirScirpt + 
 			"/lua/stop.lua";
-		PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "prestop");
+		PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "engine_project_prestop");
 
 		PX2_TIMERM.ClearTimers();
 
@@ -61,7 +61,7 @@ void Application::Play(PlayType type)
 		Event *entPlay = PX2_CREATEEVENTEX(ProjectES, Stop);
 		PX2_EW.BroadcastingLocalEvent(entPlay);
 
-		PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "stop");
+		PX2_SC_LUA->CallFileFunction(callFilename.c_str(), "engine_project_stop");
 
 		PX2_LOG_INFO("End PT_NONE");
 	}

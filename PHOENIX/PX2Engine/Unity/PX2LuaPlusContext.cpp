@@ -189,6 +189,12 @@ void *LuaPlusContext::GetLuaState()
 	return mLuaPlusState->GetCState();
 }
 //----------------------------------------------------------------------------
+void LuaPlusContext::Update(double appSeconds, double elapsedSeconds)
+{
+	PX2_UNUSED(appSeconds);
+	PX2_UNUSED(elapsedSeconds);
+}
+//----------------------------------------------------------------------------
 bool LuaPlusContext::CallString1(const char *str)
 {
 	return CallString(str);

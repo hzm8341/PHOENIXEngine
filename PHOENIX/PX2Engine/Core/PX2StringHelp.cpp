@@ -329,6 +329,18 @@ std::string StringHelp::FloatToString (float val, int numPoint)
 		sprintf(c, "%.1f", val);
 	else if (2 == numPoint)
 		sprintf(c, "%.2f", val);
+	else if (3 == numPoint)
+		sprintf(c, "%.3f", val);
+	else if (4 == numPoint)
+		sprintf(c, "%.4f", val);
+	else if (5 == numPoint)
+		sprintf(c, "%.5f", val);
+	else if (6 == numPoint)
+		sprintf(c, "%.6f", val);
+	else if (7 == numPoint)
+		sprintf(c, "%.7f", val);
+	else if (8 == numPoint)
+		sprintf(c, "%.8f", val);
 	str = c;
 	return str;
 }

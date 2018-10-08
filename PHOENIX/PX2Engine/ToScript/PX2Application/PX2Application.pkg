@@ -47,11 +47,6 @@
 		// Update
 	public:
 		float GetElapsedTime();
-		
-		bool IsHasUpdateScriptCallback(const std::string &callback);
-		bool AddUpdateScriptCallback(const std::string &callback);
-		bool RemoveUpdateScriptCallback(const std::string &callback);
-		void ClearUpdateScriptCallback();
 
 		// screen adjust
 	public:

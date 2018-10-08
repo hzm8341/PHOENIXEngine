@@ -380,3 +380,8 @@ function engine_start()
 	PX2_LOGGER:LogInfo("script_lua", "engine_start")
 end
 engine_start()
+
+function engine_update(appSeconds, elapsedSeconds)
+	-- important to do things to clear
+	collectgarbage("collect")
+end

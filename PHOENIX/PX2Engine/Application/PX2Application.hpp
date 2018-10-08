@@ -197,17 +197,11 @@ namespace PX2
 		void Update(float appSeconds, float elapsedSeconds);
 		float GetElapsedTime();
 
-		bool IsHasUpdateScriptCallback(const std::string &callback);
-		bool AddUpdateScriptCallback(const std::string &callback);
-		bool RemoveUpdateScriptCallback(const std::string &callback);
-		void ClearUpdateScriptCallback();
-
 	private:
 		float _CalElapsedTime();
 		double mAppTime;
 		double mLastAppTime;
 		double mElapsedTime;
-		std::vector<std::string> mUpdateScriptCallbacks;
 
 		// screen adjust
 	public:

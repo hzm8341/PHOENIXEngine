@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 09/28/18 08:24:08.
+** Generated automatically by tolua++-1.0.92 on 10/08/18 10:55:19.
 */
 
 #ifndef __cplusplus
@@ -94732,142 +94732,6 @@ static int tolua_PX2_Application_GetElapsedTime00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: IsHasUpdateScriptCallback of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_IsHasUpdateScriptCallback00
-static int tolua_PX2_Application_IsHasUpdateScriptCallback00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
-  const std::string callback = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'IsHasUpdateScriptCallback'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->IsHasUpdateScriptCallback(callback);
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-   tolua_pushcppstring(tolua_S,(const char*)callback);
-  }
- }
- return 2;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'IsHasUpdateScriptCallback'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: AddUpdateScriptCallback of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_AddUpdateScriptCallback00
-static int tolua_PX2_Application_AddUpdateScriptCallback00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
-  const std::string callback = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'AddUpdateScriptCallback'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->AddUpdateScriptCallback(callback);
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-   tolua_pushcppstring(tolua_S,(const char*)callback);
-  }
- }
- return 2;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'AddUpdateScriptCallback'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: RemoveUpdateScriptCallback of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_RemoveUpdateScriptCallback00
-static int tolua_PX2_Application_RemoveUpdateScriptCallback00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
-  const std::string callback = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RemoveUpdateScriptCallback'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->RemoveUpdateScriptCallback(callback);
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-   tolua_pushcppstring(tolua_S,(const char*)callback);
-  }
- }
- return 2;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'RemoveUpdateScriptCallback'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: ClearUpdateScriptCallback of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_ClearUpdateScriptCallback00
-static int tolua_PX2_Application_ClearUpdateScriptCallback00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ClearUpdateScriptCallback'", NULL);
-#endif
-  {
-   self->ClearUpdateScriptCallback();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ClearUpdateScriptCallback'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: SetScreenSize of class  Application */
 #ifndef TOLUA_DISABLE_tolua_PX2_Application_SetScreenSize00
 static int tolua_PX2_Application_SetScreenSize00(lua_State* tolua_S)
@@ -107758,10 +107622,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"CreateGeneralClientConnector",tolua_PX2_Application_CreateGeneralClientConnector00);
    tolua_function(tolua_S,"ShutdownGeneralClientConnector",tolua_PX2_Application_ShutdownGeneralClientConnector00);
    tolua_function(tolua_S,"GetElapsedTime",tolua_PX2_Application_GetElapsedTime00);
-   tolua_function(tolua_S,"IsHasUpdateScriptCallback",tolua_PX2_Application_IsHasUpdateScriptCallback00);
-   tolua_function(tolua_S,"AddUpdateScriptCallback",tolua_PX2_Application_AddUpdateScriptCallback00);
-   tolua_function(tolua_S,"RemoveUpdateScriptCallback",tolua_PX2_Application_RemoveUpdateScriptCallback00);
-   tolua_function(tolua_S,"ClearUpdateScriptCallback",tolua_PX2_Application_ClearUpdateScriptCallback00);
    tolua_function(tolua_S,"SetScreenSize",tolua_PX2_Application_SetScreenSize00);
    tolua_function(tolua_S,"GetScreenSize",tolua_PX2_Application_GetScreenSize00);
    tolua_function(tolua_S,"LoadBoost",tolua_PX2_Application_LoadBoost00);

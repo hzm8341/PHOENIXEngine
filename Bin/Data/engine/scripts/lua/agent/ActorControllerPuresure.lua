@@ -6,6 +6,4 @@ ActorControllerPuresure = class(ActorController,
 })
 
 function ActorControllerPuresure:OnPUpdate()
-	-- need do it to clear
-	--collectgarbage("collect")
 end

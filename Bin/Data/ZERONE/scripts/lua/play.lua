@@ -14,19 +14,23 @@ require("Data/ZERONE/scripts/lua/ZERONEServer.lua")
 require("Data/ZERONE/scripts/lua/ZERONEUIFaceCtrl.lua")
 require("Data/ZERONE/scripts/lua/ZERONEUIPadCtrl.lua")
 
-function preplay()
+function engine_project_preplay()
 	PX2_APP:SetShowInfo(true)
 	zo_AddLanguage()	
 
 	PX2_BLUETOOTH:SetDataProtocolHex(false)
 end
 
-function play()
+function engine_project_play()
 	zo_ZERONE()
 end
 
+function engine_project_update(appseconds, elapsedseconds)
+	zo_AppUpdateCallback(appseconds, elapsedseconds)
+end
+
 -- cmds default called by PHOENIXEngine
-function cmd(cmd, param0, param1, param2)
+function engine_project_cmd(cmd, param0, param1, param2)
 	if "robot" == cmd then
 		ZERONE_CurSerialOptType = 1
 		PX2_ARDUINO:Initlize(Arduino.M_SERIAL, param0)

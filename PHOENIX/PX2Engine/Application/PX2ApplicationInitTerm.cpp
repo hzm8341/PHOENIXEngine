@@ -222,7 +222,7 @@ int _ProcessInputString(const std::string &buf)
 				param2 = stk_[2];
 		}
 
-		PX2_SC_LUA->CallString(std::string("cmd") + "(\"" + cmd + "\"" +
+		PX2_SC_LUA->CallString(std::string("project_cmd") + "(\"" + cmd + "\"" +
 			", " + "\"" + param0 + "\"" ", " 
 			+ "\"" + param1 + "\"" + ", " 
 			+ "\"" + param2 + "\")");
@@ -1423,17 +1423,15 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	_UpdateGeneralServerConnectors((float)elapsedSeconds);
 	_UpdateUDPNetInfos((float)elapsedSeconds);
 
-	if (!mUpdateScriptCallbacks.empty())
+	std::string strAppSeconds = StringHelp::FloatToString(appSeconds, 6);
+	std::string strElapsedSeconds = StringHelp::FloatToString(elapsedSeconds, 6);
+	PX2_SC_LUA->CallString(std::string("engine_update") + "(\"" + strAppSeconds + "\""
+		", " + "\"" + strElapsedSeconds + "\")");
+
+	if (Project::GetSingletonPtr())
 	{
-		std::string strAppSeconds = StringHelp::FloatToString(appSeconds);
-		std::string strElapsedSeconds = StringHelp::FloatToString(elapsedSeconds);
-		auto it = mUpdateScriptCallbacks.begin(); 
-		for (; it != mUpdateScriptCallbacks.end(); it++)
-		{
-			std::string scriptCallback = *it;
-			PX2_SC_LUA->CallString(scriptCallback + "(\"" + strAppSeconds + "\""
-				", " +  "\"" + strElapsedSeconds + "\")");
-		}
+		PX2_SC_LUA->CallString(std::string("engine_project_update") + "(\"" + strAppSeconds + "\""
+			", " + "\"" + strElapsedSeconds + "\")");
 	}
 
 	if (mIsInBackground) return;

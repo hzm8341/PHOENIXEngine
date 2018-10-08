@@ -1,6 +1,10 @@
 -- stop.lua
 
-function stop()
+function engine_project_prestop()
+
+end
+
+function engine_project_stop()
     local udpServer = PX2_PROJ:PoolGet("DUPServer")
     if nil~=udpServer then
         udpServer:Stop()

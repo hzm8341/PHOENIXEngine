@@ -137,51 +137,6 @@ void Application::Update()
 	Update((float)mAppTime, (float)mElapsedTime);
 }
 //----------------------------------------------------------------------------
-bool Application::IsHasUpdateScriptCallback(const std::string &callback)
-{
-	for (int i = 0; i < (int)mUpdateScriptCallbacks.size(); i++)
-	{
-		if (callback == mUpdateScriptCallbacks[i])
-			return true;
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-bool Application::AddUpdateScriptCallback(const std::string &callback)
-{
-	if (IsHasUpdateScriptCallback(callback))
-		return false;
-
-	mUpdateScriptCallbacks.push_back(callback);
-
-	return true;
-}
-//----------------------------------------------------------------------------
-bool Application::RemoveUpdateScriptCallback(const std::string &callback)
-{
-	auto it = mUpdateScriptCallbacks.begin();
-	for (; it != mUpdateScriptCallbacks.end();)
-	{
-		if (callback == *it)
-		{
-			it = mUpdateScriptCallbacks.erase(it);
-			return true;
-		}
-		else
-		{
-			it++;
-		}
-	}
-
-	return false;
-}
-//----------------------------------------------------------------------------
-void Application::ClearUpdateScriptCallback()
-{
-	mUpdateScriptCallbacks.clear();
-}
-//----------------------------------------------------------------------------
 void Application::OnEvent(Event *ent)
 {
 	if (EngineNetES::IsEqual(ent, EngineNetES::OnEngineServerBeConnected))

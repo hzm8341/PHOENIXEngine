@@ -26,6 +26,12 @@ bool ScriptContext::CallString(const std::string &str)
 	return false;
 }
 //----------------------------------------------------------------------------
+void ScriptContext::Update(double appSeconds, double elapsedSeconds)
+{
+	PX2_UNUSED(appSeconds);
+	PX2_UNUSED(elapsedSeconds);
+}
+//----------------------------------------------------------------------------
 bool ScriptContext::CallFile(const std::string &filename)
 {
 	PX2_UNUSED(filename);

@@ -26,6 +26,8 @@ namespace PX2
 		LuaPlus::LuaState *GetLuaPlusState();
 		void *GetLuaState();
 
+		virtual void Update(double appSeconds, double elapsedSeconds);
+
 		bool CallString1(const char *str);
 		bool CallFile1(const char *filename);
 

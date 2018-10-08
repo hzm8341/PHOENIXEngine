@@ -27,6 +27,8 @@ namespace PX2
 
 		ContextType GetType() const;
 
+		virtual void Update(double appSeconds, double elapsedSeconds);
+
 		// general
 		virtual bool CallString(const std::string &str);
 		virtual bool CallFile(const std::string &filename);

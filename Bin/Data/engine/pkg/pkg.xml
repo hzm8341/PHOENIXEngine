@@ -10220,21 +10220,6 @@
 			<function name="GetElapsedTime" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="IsHasUpdateScriptCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="AddUpdateScriptCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="RemoveUpdateScriptCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp;callback" is_retrun="false" type_str="std::string" valuename_str="callback" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ClearUpdateScriptCallback" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
 			<function name="SetScreenSize" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const Sizef &amp;screenSize" is_retrun="false" type_str="Sizef" valuename_str="screenSize" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
