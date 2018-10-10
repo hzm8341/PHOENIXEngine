@@ -6,6 +6,8 @@ open soruce cross platform system for robots/iOT
 
 # 交流社区
 
+github地址：https://github.com/manykits/PHOENIXEngine
+
 QQ交流群：336273110
 
 网址website: www.manykit.com
