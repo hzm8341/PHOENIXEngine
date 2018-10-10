@@ -67,7 +67,7 @@ QQ交流群：336273110
 
 ### 依赖库
 
-ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
+ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q)
 
 下载放置PHOENIXEngine\Phoenix目录下，解压。
 
