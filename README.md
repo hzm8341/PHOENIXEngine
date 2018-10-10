@@ -11,6 +11,10 @@ open soruce cross platform system for robots/iOT
     功能完备的3D场景仿真渲染，UI组件等
 
     基于Windows和Liunx室内机器人自主定位建图，路径规划0.01版
+    
+快速编译测试：
+
+    在Windows平台，下载安装VisualStudio，下载引擎及依赖库解压，编译即可运行
 
 网址website: www.manykit.com
 
