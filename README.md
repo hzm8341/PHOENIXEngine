@@ -4,6 +4,18 @@
 
 open soruce cross platform system for robots/iOT
 
+# 交流社区
+
+QQ交流群：336273110
+
+网址website: www.manykit.com
+
+商城market: https://shop194048616.taobao.com
+
+“引擎在不断更新演化，相信美好的事情将发生:-D”
+
+# 版本
+
 版本：测试版 0.01
 
 主要核心功能：
@@ -11,46 +23,61 @@ open soruce cross platform system for robots/iOT
     功能完备的3D场景仿真渲染，UI组件等
 
     基于Windows和Liunx室内机器人自主定位建图，路径规划0.01版
+    
+快速编译测试：
 
-网址website: www.manykit.com
-
-商城market: https://shop194048616.taobao.com
+    在Windows平台，下载安装VisualStudio2015，下载引擎及依赖库解压，编译即可运行
 
 ![avatar](Documentation/ShowImagesGitHub/img/phoenixframe.png)
-![avatar](Documentation/ShowImagesGitHub/img/slammap.png)
 
-
-## 简述
+## 关于PHOENIXEngine
 
 	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目的开发引擎。集成了HectorSlam，用来做为机器人室内导航。
-	引擎已经支持Windows上，ARM，Linux，LinuxARM，iOS平台，使用简洁高效的Lua作为主要逻辑开发，使用C++/C作为底层构建语言，通过跨平台编译，可以将项目运行在所需要的平台上。
+	引擎已经支持Windows上，ARM，Linux，LinuxARM，iOS平台，使用简洁高效的Lua作为主要逻辑开发，使用C++/C作为底层构建语言。
+	通过跨平台编译，可以将项目运行在所需要的平台上。
 	借助Arduino，ESP8266/32等芯片，使用PHOENIXFrameWireWall，引擎可以支持一般的物联设备开发。
 	当需要更高级的嵌入式方案时，我们可以选择LinuxArm作为开发环境，打造高级的物联网系统。
 	PHOENIXEngine只选择了最基本的两种语言C/C++和Lua，降低使用者的门槛。引擎致力于打造容易实用，典雅优美的开发体验。
+	
+## 关于PHOENIXFrame
+
+    PHOENIXFrame是一个基于通用开源硬件形成的机器人开发硬件，和PHOENIXEngine配合，是软件工程师学习机器人非常好的平台工具。
+	PHOENIXFrame包含普通版本和SLAM两个版本：
+	
+	基础版: 铝合金骨架，金属连接件装饰件，ZODuino，传感器，电池，手机支架，机械臂，铜柱，螺丝螺母，工具等
+    高级版: 包含基础版所有内容，同时包含树莓派Raspberry，树莓派扩展板，多功能充电电池，摄像头，激光雷达，树莓派屏幕，相关配件等
+	
+## 关于作者
+    
+    引擎一直由ManyXu在维护，ManyXu从腾讯IEG，思前想后，多番权衡，辞职后，孤身来到了深圳华强北，开了一家小公司-深圳许多米科技，从事跨平台机器人软硬件的开发。今天将其开源出来，终于开始小规模测试。
 
 ## 版权信息/LICENCE
 
 	ManyKit开源协议：
-	PHOENIXEngine是一个开放开源的引擎，拥有免费版本和商业版本，开源版本也是对商业开发非常友好的版本。
+	PHOENIXEngine是一个开源开放的引擎，拥有免费版本和商业版本，开源版本只需要遵循较少的规则就可以免费用于商业开发，商业版本包含相关的技术服务。协议声明如下：
 	1.任何人，组织都可以自由修改引擎，免费应用于商业开发。
-	2.使用PHOENIXEngine免费版本，必须在醒目位置标准PHOENIXEngine的商标，并且在软件中出现PHOENIXEngine开源协议。
-	3.用户开发的扩展包，可以选择开源或者避源，也可以选择付费还是免费。
-	4.许多米科技保留对PHONEIXEngine，PHOENIXFrame的商标权，第三方不得任意使用。
-	5.许多米可以保留对引擎的教育培训领域的完全使用权，第三方如想要使用PHOENIXEngine作为培训教育，可以从许多米可以获得认证。
-	6.许多米可以保留对引擎技术社区，包含项目交流社区的独家开发使用权。
-	7.任何捐赠第三方必须首先提出对引擎修改，以及技术支持的需求。
+	2.使用PHOENIXEngine免费版本，必须在醒目位置标注PHOENIXEngine的商标，并且在软件中出现PHOENIXEngine开源协议，即本协议。
+	3.用户开发的扩展包，可以选择开源或者闭源，对自己开发的开发包享有完全的自主控制权利。
+	4.许多米科技保留对PHONEIXEngine，PHOENIXFrame的商标权。
+	5.许多米科技目前保留对引擎的教育培训领域的完全使用权，第三方如想要使用PHOENIXEngine作为培训教育，许多米可以进行相关培训，获得相关认证。
+	6.许多米科技目前保留对引擎技术社区，包含项目交流社区的独家开发使用权。
+	7.任何捐赠第三方必须首先提出对引擎修改意见和技术支持的具体需求。
 
 ##  编译/Compile
 
 ### 依赖库
 
-ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
+ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q)
+
+依赖库在MANYKIT/PHOENIX/下
 
 下载放置PHOENIXEngine\Phoenix目录下，解压。
 
-如需编译编辑器NIRVANA2，预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
+如需编译编辑器NIRVANA2，预先编译ThirdPartiesLibs/wxWidgets-3.1.1/build/msw/wx_vc14.sln
 
 ### Windows
+
+首先确认安装了依赖库（上一步骤）
 
 使用visualstudio打开PHOENIXEngine/PHOENIX.sln编译
 
@@ -153,5 +180,7 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 	项目运行前，执行，Sample/lua/start.lua中的prestart
 	紧接着运行，执行，Sample/lua/start.lua中的start
 	用户的项目逻辑在presstart和start函数中写就可以
+	
+## 更多内容请查看 GitHub Wiki
 
-- Bin/Data/Sample 是一个空项目
+https://github.com/manykits/PHOENIXEngine/wiki
