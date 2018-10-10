@@ -155,5 +155,5 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 	项目运行前，执行，Sample/lua/start.lua中的prestart
 	紧接着运行，执行，Sample/lua/start.lua中的start
 	用户的项目逻辑在presstart和start函数中写就可以
-
-- Bin/Data/Sample 是一个空项目
+	
+## 更多内容请查看GitHub Wiki
