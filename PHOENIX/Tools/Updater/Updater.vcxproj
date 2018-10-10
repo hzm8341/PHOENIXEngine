@@ -39,6 +39,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>PkgParser</RootNamespace>
     <ProjectName>Updater</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -161,7 +162,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\..\Bin\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>PkgParser</TargetName>
+    <TargetName>Updater64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
