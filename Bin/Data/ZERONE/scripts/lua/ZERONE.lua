@@ -112,8 +112,6 @@ function zo_ZERONE()
             end
         end
     end)
-
-    zo_Scene()
 end
 
 function zo_OnStartUp(useSpeed)

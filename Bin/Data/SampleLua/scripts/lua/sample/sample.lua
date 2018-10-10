@@ -290,7 +290,7 @@ function s_Callback(objPtr, callType)
 		s_PrintMsg("UICT_DISCHECKED")
 	elseif UICT_EDITBOX_TEXTCHANGED==callType then
 		s_PrintMsg("UICT_EDITBOX_TEXTCHANGED")
-	elseif UICT_EDITBOX_ENTER==callType then
+	elseif UICT_EDITBOX_ENTER==callType then 
 		s_PrintMsg("UICT_EDITBOX_ENTER")
 	elseif UICT_LIST_SELECTED==callType then
 		s_PrintMsg("UICT_LIST_SELECTED")
