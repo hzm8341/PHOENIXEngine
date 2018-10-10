@@ -17,8 +17,6 @@ open soruce cross platform system for robots/iOT
 商城market: https://shop194048616.taobao.com
 
 ![avatar](Documentation/ShowImagesGitHub/img/phoenixframe.png)
-![avatar](Documentation/ShowImagesGitHub/img/slammap.png)
-
 
 ## 简述
 
