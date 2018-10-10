@@ -4,11 +4,20 @@
 
 open soruce cross platform system for robots/iOT
 
+版本：测试版 0.01
+
+主要核心功能：
+
+    功能完备的3D场景仿真渲染，UI组件等
+
+    基于Windows和Liunx室内机器人自主定位建图，路径规划0.01版
+
 网址website: www.manykit.com
 
 商城market: https://shop194048616.taobao.com
 
 ![avatar](Documentation/ShowImagesGitHub/img/phoenixframe.png)
+![avatar](Documentation/ShowImagesGitHub/img/slammap.png)
 
 
 ## 简述
