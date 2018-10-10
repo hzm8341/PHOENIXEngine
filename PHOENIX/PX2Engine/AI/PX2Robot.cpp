@@ -852,7 +852,12 @@ void Robot::SetCurSlam3DCameraMatrix(HMatrix &mat)
 //----------------------------------------------------------------------------
 void Robot::InitSlamMap(int mapSize, float resolution)
 {
+	// 这里在debug下需要很久, 所以我们将其变小
+#if defined _DEBUG
+	mPathGraph->InitSlamMap(mapSize/4, resolution*4);
+#else
 	mPathGraph->InitSlamMap(mapSize, resolution);
+#endif
 
 	mRobotMapData->MapStruct.MapSize = mapSize;
 	mRobotMapData->MapStruct.MapResolution = resolution;
