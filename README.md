@@ -26,7 +26,7 @@ QQ交流群：336273110
     
 快速编译测试：
 
-    在Windows平台，下载安装VisualStudio，下载引擎及依赖库解压，编译即可运行
+    在Windows平台，下载安装VisualStudio2015，下载引擎及依赖库解压，编译即可运行
 
 ![avatar](Documentation/ShowImagesGitHub/img/phoenixframe.png)
 
@@ -49,7 +49,7 @@ QQ交流群：336273110
 	
 ## 关于作者
     
-    引擎一直由ManyXu在维护，ManyXu从腾讯IEG离职后，来到了深圳华强北，从事机器人相关软硬件的开发。今天将其开源出来，终于开始小规模测试。
+    引擎一直由ManyXu在维护，ManyXu从腾讯IEG，思前想后，多番权衡，辞职后，孤身来到了深圳华强北，开了一家小公司-深圳许多米科技，从事跨平台机器人软硬件的开发。今天将其开源出来，终于开始小规模测试。
 
 ## 版权信息/LICENCE
 
@@ -69,11 +69,15 @@ QQ交流群：336273110
 
 ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q)
 
+依赖库在MANYKIT/PHOENIX/下
+
 下载放置PHOENIXEngine\Phoenix目录下，解压。
 
-如需编译编辑器NIRVANA2，预先编译ThirdPartiesLibs/wxWidgets-3.0.2/build/msw/wx_vc12.sln
+如需编译编辑器NIRVANA2，预先编译ThirdPartiesLibs/wxWidgets-3.1.1/build/msw/wx_vc14.sln
 
 ### Windows
+
+首先确认安装了依赖库（上一步骤）
 
 使用visualstudio打开PHOENIXEngine/PHOENIX.sln编译
 
