@@ -4,6 +4,16 @@
 
 open soruce cross platform system for robots/iOT
 
+# 交流社区
+
+QQ交流群：336273110
+
+网址website: www.manykit.com
+
+商城market: https://shop194048616.taobao.com
+
+# 版本
+
 版本：测试版 0.01
 
 主要核心功能：
@@ -16,19 +26,25 @@ open soruce cross platform system for robots/iOT
 
     在Windows平台，下载安装VisualStudio，下载引擎及依赖库解压，编译即可运行
 
-网址website: www.manykit.com
-
-商城market: https://shop194048616.taobao.com
-
 ![avatar](Documentation/ShowImagesGitHub/img/phoenixframe.png)
 
-## 简述
+## 关于PHOENIXEngine
 
 	欢迎来到PHOENIXEngine，这是一个可以用来开发游戏，机器人，物联网项目的开发引擎。集成了HectorSlam，用来做为机器人室内导航。
 	引擎已经支持Windows上，ARM，Linux，LinuxARM，iOS平台，使用简洁高效的Lua作为主要逻辑开发，使用C++/C作为底层构建语言，通过跨平台编译，可以将项目运行在所需要的平台上。
 	借助Arduino，ESP8266/32等芯片，使用PHOENIXFrameWireWall，引擎可以支持一般的物联设备开发。
 	当需要更高级的嵌入式方案时，我们可以选择LinuxArm作为开发环境，打造高级的物联网系统。
 	PHOENIXEngine只选择了最基本的两种语言C/C++和Lua，降低使用者的门槛。引擎致力于打造容易实用，典雅优美的开发体验。
+	
+## 关于PHOENIXFrame
+
+    PHOENIXFrame是一个基于通用开源硬件形成的机器人开发硬件，和PHOENIXEngine配合，是软件工程师学习机器人非常好的平台工具。
+	PHOENIXFrame包含普通版本和SLAM两个版本：
+	
+	基础版: 铝合金骨架，金属连接件装饰件，ZODuino，传感器，电池，手机支架，机械臂，铜柱，螺丝螺母，工具等
+    高级版: 包含基础版所有内容，同时包含树莓派Raspberry，树莓派扩展板，多功能充电电池，摄像头，激光雷达，树莓派屏幕，相关配件等
+	
+	
 
 ## 版权信息/LICENCE
 
@@ -156,4 +172,6 @@ ThirdPartiesLibs.zip：[http://url.cn/49EuKAU](http://url.cn/49EuKAU)
 	紧接着运行，执行，Sample/lua/start.lua中的start
 	用户的项目逻辑在presstart和start函数中写就可以
 	
-## 更多内容请查看GitHub Wiki
+## 更多内容请查看 GitHub Wiki
+
+https://github.com/manykits/PHOENIXEngine/wiki
