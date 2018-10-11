@@ -8,6 +8,8 @@ open soruce cross platform system for robots/iOT
 
 GitHub地址：https://github.com/manykits/PHOENIXEngine
 
+Gitee地址：https://gitee.com/manykit/PHOENIXEngine
+
 QQ交流群：336273110
 
 网址website: www.manykit.com
