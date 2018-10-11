@@ -1,6 +1,6 @@
 # PHOENIXEngine
 
-开源的室内机器人及物联网开发引擎
+开源，跨平台，室内机器人及物联网开发引擎
 
 open soruce cross platform system for robots/iOT
 
