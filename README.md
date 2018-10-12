@@ -1,10 +1,14 @@
 # PHOENIXEngine
 
-开源的室内机器人及物联网开发引擎
+开源，跨平台，室内机器人及物联网开发引擎
 
 open soruce cross platform system for robots/iOT
 
 # 交流社区
+
+GitHub地址：https://github.com/manykits/PHOENIXEngine
+
+Gitee地址：https://gitee.com/manykit/PHOENIXEngine
 
 QQ交流群：336273110
 
