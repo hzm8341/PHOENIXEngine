@@ -779,7 +779,7 @@ void Application::GenerateFileList(const std::string &parentDir,
 }
 //----------------------------------------------------------------------------
 void _CreateScriptFile(const std::string &pathName, const std::string &subDir,
-	const std::string &scFileName, const std::string &deFunName)
+	const std::string &scFileName)
 {
 	std::string scriptPath = "Data/" + pathName + subDir + scFileName;
 	std::ofstream outputFile;
@@ -803,11 +803,30 @@ void _CreateScriptFile(const std::string &pathName, const std::string &subDir,
 	std::string scriptContent;
 	if ("lua" == outExt)
 	{
-		scriptContent += "function pre" + deFunName + "() \n";
-		scriptContent += "end\n";
-
-		scriptContent += "function " + deFunName + "() \n";
-		scriptContent += "end";
+		if ("play" == outBaseName)
+		{
+			scriptContent += "function engine_project_preplay() \n";
+			scriptContent += "end\n";
+			scriptContent += "\n";
+			scriptContent += "function engine_project_play() \n";
+			scriptContent += "end\n";
+			scriptContent += "\n";
+			scriptContent += "function engine_project_update(appseconds, elapsedseconds) \n";
+			scriptContent += "end\n";
+			scriptContent += "\n";
+			scriptContent += "function engine_project_cmd(cmd, param0, param1, param2) \n";
+			scriptContent += "end\n";
+			scriptContent += "\n";
+		}
+		else if ("stop" == outBaseName)
+		{
+			scriptContent += "function engine_project_prestop() \n";
+			scriptContent += "end\n";
+			scriptContent += "\n";
+			scriptContent += "function engine_project_stop() \n";
+			scriptContent += "end\n";
+			scriptContent += "\n";
+		}
 	}
 	outputFile << scriptContent;
 
@@ -829,16 +848,16 @@ void Application::MakeAProject(const std::string &projName,
 	PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/");
 	PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/editor/");
 
-	_CreateScriptFile(pathName, "scripts/lua/", "play.lua", "play");
-	_CreateScriptFile(pathName, "scripts/lua/", "stop.lua", "stop");
-	_CreateScriptFile(pathName, "scripts/lua/editor/", "editor.lua", "editorplay");
-	_CreateScriptFile(pathName, "scripts_server/lua/", "play.lua", "play");
-	_CreateScriptFile(pathName, "scripts_server/lua/", "stop.lua", "stop");
+	_CreateScriptFile(pathName, "scripts/lua/", "play.lua");
+	_CreateScriptFile(pathName, "scripts/lua/", "stop.lua");
+	
+	_CreateScriptFile(pathName, "scripts/lua/editor/", "editor.lua");
 
 	std::string pathword = "Data/" + pathName + projName + ".px2proj";
 	std::string pathward = "Data/" + pathName + projName + "_ui.px2proj";
 	PX2_APP.NewProject(pathword, projName, so, width, height);
 	PX2_APP.SaveProject();
+	PX2_APP.CloseProject();
 }
 //----------------------------------------------------------------------------
 bool Application::_SaveSceneInternal(const std::string &pathname)
