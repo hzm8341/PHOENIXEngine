@@ -101,7 +101,9 @@ namespace PX2
 	
 	private:
 		int _CurlLogin(const std::string &userName, const std::string &password);
+		void _GetProjectList(const std::string &strUserID);
 		void _CurlLogout();
+		int _GetNextID();
 
 		int mSceneOrientation;
 		UIEditBox *mCreateProEditbox;
@@ -116,6 +118,8 @@ namespace PX2
 
 		std::string mCfgUserName;
 		std::string mCfgPassword;
+		int mUserID;
+		int mNextID;
 
 	public_internal:
 		Pointer0<Project> TheProject;

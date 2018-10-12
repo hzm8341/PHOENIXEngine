@@ -31,7 +31,9 @@ LP_Manager::LP_Manager()
 :mSceneOrientation(1),
 mProjHeight(500),
 mProjWidth(500),
-mIsStartNoWindow(false)
+mIsStartNoWindow(false),
+mUserID(0),
+mNextID(1)
 {
 }
 //----------------------------------------------------------------------------
@@ -401,17 +403,20 @@ int LP_Manager::_CurlLogin(const std::string &userName,
 	{
 		char *chMem = mCurlObject->GetGettedMemory();
 		int size = mCurlObject->GetGettedMemorySize();
-		std::string ret = std::string(chMem, size);
+		std::string retStr = std::string(chMem, size);
 
 		JSONData jsData;
-		if (jsData.LoadBuffer(ret))
+		if (jsData.LoadBuffer(retStr))
 		{
 			if (jsData.IsHasMember("data"))
 			{
-				JSONValue jsValue = jsData.GetMember("data");
+				JSONValue jsValueData = jsData.GetMember("data");
+				if (jsValueData.IsHasMember("id"))
+				{
+					mUserID = jsValueData.GetMember("id").ToInt();
+				}
 
 				mLoginInFrame->Show(false);
-
 				mLoginButton->Show(false);
 				mRegistButton->Show(false);
 				mUserButton->Show(true);
@@ -423,23 +428,7 @@ int LP_Manager::_CurlLogin(const std::string &userName,
 				PX2_APP.SetConfig("UserName", userName);
 				PX2_APP.SetConfig("Password", password);
 
-				LP_ProjectItem *item = new0 LP_ProjectItem();
-				item->Name = "111";
-				item->ID = 111;
-				item->IsCloud = true;
-				AddProject_Cloud(item);
-
-				LP_ProjectItem *item1 = new0 LP_ProjectItem();
-				item1->Name = "222";
-				item1->ID = 222;
-				item1->IsCloud = true;
-				AddProject_Cloud(item1);
-
-				LP_ProjectItem *itemZERONE = new0 LP_ProjectItem();
-				itemZERONE->Name = "ZERONE";
-				itemZERONE->ID = 12345;
-				itemZERONE->IsCloud = true;
-				AddProject_Cloud(itemZERONE);
+				_GetProjectList(StringHelp::IntToString(mUserID));
 			}
 			if (jsData.IsHasMember("errmsg"))
 			{
@@ -450,6 +439,49 @@ int LP_Manager::_CurlLogin(const std::string &userName,
 	}
 
 	return ret;
+}
+//----------------------------------------------------------------------------
+void LP_Manager::_GetProjectList(const std::string &strUserID)
+{
+	ClearProjects_Cloud();
+
+	std::string url = "http://www.manykit.com/res/filelist?";
+	std::string data = "userid=" + strUserID;
+	int ret = mCurlObject->Post(url, data);
+
+	if (1 == ret)
+	{
+		char *chMem = mCurlObject->GetGettedMemory();
+		int size = mCurlObject->GetGettedMemorySize();
+		std::string retStr = std::string(chMem, size);
+
+		JSONData jsData;
+		if (jsData.LoadBuffer(retStr))
+		{
+			if (jsData.IsHasMember("data"))
+			{
+				JSONValue jsValueData = jsData.GetMember("data");
+				if (jsValueData.IsArray())
+				{
+					int numArray = jsValueData.GetArraySize();
+					for (int i = 0; i < numArray; i++)
+					{
+						JSONValue eleData = jsValueData.GetArrayElement(i);
+						if (eleData.IsHasMember("title"))
+						{
+							std::string titleStr = eleData.GetMember("title").ToString();
+
+							LP_ProjectItem *item = new0 LP_ProjectItem();
+							item->Name = titleStr;
+							item->ID = _GetNextID();
+							item->IsCloud = true;
+							AddProject_Cloud(item);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void LP_Manager::_CurlLogout()
@@ -487,6 +519,11 @@ void LP_Manager::_CurlLogout()
 	}
 
 	mUserButtonListFrame->Show(false);
+}
+//----------------------------------------------------------------------------
+int LP_Manager::_GetNextID()
+{
+	return mNextID++;
 }
 //----------------------------------------------------------------------------
 void LP_Manager::Visit(Object *obj, int info)
@@ -1381,15 +1418,39 @@ UIItem *LP_Manager::_AddProjectItem(const std::string &name, int id,
 	cb->AddVisitor(this);
 	cb->SetUserData("IsPlugin", false);
 
-	auto cloudBtn = UIButton::New("CloudPic");
+	auto cloudBtn = UIButton::New("BtnCloud");
 	item->AttachChild(cloudBtn);
 	cloudBtn->LocalTransform.SetTranslateY(-2.0f);
 	cloudBtn->SetStateColorDefaultWhite();
 	cloudBtn->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetTexture("Data/LPlugin/images/cloud.png");
-	cloudBtn->SetSize(25.0f, 16.0f);
-	cloudBtn->SetAnchorParamHor(-50.0f, -50.0f);
+	cloudBtn->SetSize(16.0f, 16.0f);
+	cloudBtn->SetAnchorParamHor(-40.0f, -40.0f);
 	cloudBtn->SetAnchorHor(1.0f, 1.0f);
+	cloudBtn->Show(projItem->IsCloud);
+	cloudBtn->AddVisitor(this);
+
+	auto btnUpload = UIButton::New("BtnUpload");
+	item->AttachChild(btnUpload);
+	btnUpload->LocalTransform.SetTranslateY(-2.0f);
+	//btnUpload->SetStateColorDefaultWhite();
+	btnUpload->SetSize(16.0f, 16.0f);
+	btnUpload->SetAnchorParamHor(-60.0f, -60.0f);
+	btnUpload->SetAnchorHor(1.0f, 1.0f);
+	btnUpload->CreateAddText("u");
+	btnUpload->Show(projItem->IsCloud);
+	btnUpload->AddVisitor(this);
+
+	auto btnDownload = UIButton::New("BtnUpload");
+	item->AttachChild(btnDownload);
+	btnDownload->LocalTransform.SetTranslateY(-2.0f);
+	//btnDownload->SetStateColorDefaultWhite();
+	btnDownload->SetSize(16.0f, 16.0f);
+	btnDownload->SetAnchorParamHor(-80.0f, -80.0f);
+	btnDownload->SetAnchorHor(1.0f, 1.0f);
+	btnDownload->CreateAddText("d");
+	btnDownload->Show(projItem->IsCloud);
+	btnDownload->AddVisitor(this);
 
 	cloudBtn->Show(projItem->IsCloud);
 
