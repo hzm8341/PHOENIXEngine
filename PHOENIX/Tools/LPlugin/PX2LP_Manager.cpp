@@ -326,7 +326,7 @@ void LP_Manager::Initlize()
 		_CurlLogin(mCfgUserName, mCfgPassword);
 	}
 
-	_RefreshProjects();
+	_RefreshProjectsUI();
 }
 //----------------------------------------------------------------------------
 void LP_Manager::Terminate()
@@ -428,7 +428,7 @@ int LP_Manager::_CurlLogin(const std::string &userName,
 				PX2_APP.SetConfig("UserName", userName);
 				PX2_APP.SetConfig("Password", password);
 
-				_GetProjectList(StringHelp::IntToString(mUserID));
+				_GetProjectListCloud(mUserID);
 			}
 			if (jsData.IsHasMember("errmsg"))
 			{
@@ -443,9 +443,11 @@ int LP_Manager::_CurlLogin(const std::string &userName,
 	return ret;
 }
 //----------------------------------------------------------------------------
-void LP_Manager::_GetProjectList(const std::string &strUserID)
+void LP_Manager::_GetProjectListCloud(int userID)
 {
 	ClearProjects_Cloud();
+
+	std::string strUserID = StringHelp::IntToString(userID);
 
 	std::string url = "http://www.manykit.com/res/filelist?";
 	std::string data = "userid=" + strUserID;
@@ -473,7 +475,7 @@ void LP_Manager::_GetProjectList(const std::string &strUserID)
 
 						JSONValue eleData = jsValueData.GetArrayElement(i);
 						if (eleData.IsHasMember("id"))
-							id = eleData.GetMember("title").ToString();
+							id = eleData.GetMember("id").ToInt();
 
 						if (eleData.IsHasMember("title"))
 						{
@@ -499,22 +501,100 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 
 	const std::string &projName = item->Name;
 
-	std::string data = "userid=" + StringHelp::IntToString(mUserID);
-	data += "&type=1";
-	data += "&title=" + projName;
-	data += std::string("&desc=") + "hello this phoenix project";
-	data += "&state=1";
-	data += std::string("&files=") + "1234567890";
-	int ret = mCurlObject->Post("http://www.manykit.com/res/upload", data);
+#if defined(_WIN32) || defined(WIN32)
+
+	std::string strCmp = "compress_project.bat " + projName;
+	WinExec(strCmp.c_str(), SW_SHOW);
+
+#endif
+
+	std::string bufStr = PX2_RM.LoadBuffer("tempprojectuploading.7z", true);
+	int size = bufStr.length();
+
+	if (!bufStr.empty())
+	{
+		XMLData xmlData;
+		xmlData.Create();
+		XMLNode xmlNode = xmlData.NewChild("data");
+		xmlNode.SetAttributeString("content", bufStr);
+		xmlData.SaveFile("tempprojectuploading.xml");
+		
+		std::string tempStr = PX2_RM.LoadBuffer("tempprojectuploading.xml", true);
+
+		std::string data = "userid=" + StringHelp::IntToString(mUserID);
+		data += "&type=1";
+		data += "&title=" + projName;
+		data += std::string("&desc=") + "hello this phoenix project";
+		data += "&state=1";
+		data += std::string("&files=") + tempStr;
+		
+		int ret = mCurlObject->Post("http://www.manykit.com/res/upload", data);
+
+		if (1 == ret)
+		{
+			_GetProjectListCloud(mUserID);
+			_RefreshProjectsUI();
+		}
+	}
 }
 //----------------------------------------------------------------------------
-void LP_Manager::_DeleteProject(int projectID)
+void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 {
+	if (!_IsLogined())
+		return;
+
+	int projectID = item->ID;
+	const std::string &projName = item->Name;
+
+	std::string data = "id=" + StringHelp::IntToString(projectID);
+
+	int ret = mCurlObject->Post("http://www.manykit.com/res/getfile", data);
+
+	if (1 == ret)
+	{
+		char *chMem = mCurlObject->GetGettedMemory();
+		int size = mCurlObject->GetGettedMemorySize();
+		std::string retStr = std::string(chMem, size);
+
+		bool ret = FileIO::Save("tempprojectdownloaded.xml", true, (int)size,
+			chMem);
+
+		std::string tempStr = PX2_RM.LoadBuffer("tempprojectuploading.xml", true);
+		if (!tempStr.empty())
+		{
+			XMLData xmlData;
+			if (xmlData.LoadBuffer(tempStr.c_str(), tempStr.length()))
+			{
+				XMLNode rootNode = xmlData.GetRootNode();
+				std::string contentStr = rootNode.AttributeToString("content");
+				
+				FileIO::Save("tempprojectuploading.7z", true, 
+					(int)contentStr.length(), contentStr.c_str());
+			}
+		}
+
+
+#if defined(_WIN32) || defined(WIN32)
+
+		std::string strCmp = "compress_un_project.bat " + projName;
+		WinExec(strCmp.c_str(), SW_SHOW);
+
+#endif
+	}
+}
+//----------------------------------------------------------------------------
+void LP_Manager::_DeleteProject(LP_ProjectItem *item)
+{
+	int projectID = item->ID;
+
 	std::string url = "http://www.manykit.com/res/dealfile";
 	std::string data = "userid=" + StringHelp::IntToString(mUserID);
 	data += "&state=5";
 	data += "&id=" + StringHelp::IntToString(projectID);
-	int ret = mCurlObject->Post("http://www.manykit.com/res/upload", data);
+	int ret = mCurlObject->Post(url, data);
+
+	_GetProjectListCloud(mUserID);
+	_RefreshProjectsUI();
 }
 //----------------------------------------------------------------------------
 void LP_Manager::_CurlLogout()
@@ -591,7 +671,7 @@ void LP_Manager::Visit(Object *obj, int info)
 			}
 			else if ("ButRefresh" == name)
 			{
-				_RefreshProjects();
+				_RefreshProjectsUI();
 			}
 			else if ("ButNetLoadProject" == name)
 			{
@@ -682,7 +762,19 @@ void LP_Manager::Visit(Object *obj, int info)
 			}
 			else if ("BtnDownload" == name)
 			{
-
+				LP_ProjectItem *projectItem = but->GetUserData<LP_ProjectItem*>("projectitem");
+				if (projectItem)
+				{
+					_DownloadProject(projectItem);
+				}	
+			}
+			else if ("BtnDelete" == name)
+			{
+				LP_ProjectItem *projectItem = but->GetUserData<LP_ProjectItem*>("projectitem");
+				if (projectItem)
+				{
+					_DeleteProject(projectItem);
+				}
 			}
 		}
 	}
@@ -1358,7 +1450,7 @@ int LP_Manager::_GetProjType(const std::string &projName)
 	return 1;
 }
 //----------------------------------------------------------------------------
-void LP_Manager::_RefreshProjects()
+void LP_Manager::_RefreshProjectsUI()
 {
 	mProjectList->RemoveAllItems();
 	mPluginList->RemoveAllItems();
@@ -1379,7 +1471,6 @@ void LP_Manager::_RefreshProjects()
 		{
 			do
 			{
-
 				UIItem *item = 0;
 				std::string projName = eachFilename;
 
@@ -1488,7 +1579,6 @@ UIItem *LP_Manager::_AddProjectItem(const std::string &name, int id,
 	btnUpload->SetAnchorParamHor(-60.0f, -60.0f);
 	btnUpload->SetAnchorHor(1.0f, 1.0f);
 	btnUpload->CreateAddText("u");
-	//btnUpload->Show(projItem->IsCloud);
 	btnUpload->AddVisitor(this);
 	btnUpload->SetUserData("projectname", name);
 	btnUpload->SetUserData("projectitem", projItem);
@@ -1500,17 +1590,28 @@ UIItem *LP_Manager::_AddProjectItem(const std::string &name, int id,
 	btnDownload->SetSize(16.0f, 16.0f);
 	btnDownload->SetAnchorParamHor(-80.0f, -80.0f);
 	btnDownload->SetAnchorHor(1.0f, 1.0f);
-	btnDownload->CreateAddText("d");
-	btnDownload->Show(projItem->IsCloud);
+	btnDownload->CreateAddText("dl");
 	btnDownload->AddVisitor(this);
 	btnDownload->SetUserData("projectname", name);
 	btnDownload->SetUserData("projectitem", projItem);
+	btnDownload->Show(projItem->IsCloud);
 
-	cloudBtn->Show(projItem->IsCloud);
+	auto btnDelete = UIButton::New("BtnDelete");
+	item->AttachChild(btnDelete);
+	btnDelete->LocalTransform.SetTranslateY(-2.0f);
+	//btnDownload->SetStateColorDefaultWhite();
+	btnDelete->SetSize(16.0f, 16.0f);
+	btnDelete->SetAnchorParamHor(-100.0f, -100.0f);
+	btnDelete->SetAnchorHor(1.0f, 1.0f);
+	btnDelete->CreateAddText("de");
+	btnDelete->AddVisitor(this);
+	btnDelete->SetUserData("projectname", name);
+	btnDelete->SetUserData("projectitem", projItem);
+	btnDelete->Show(projItem->IsCloud);
 
 	if (projItem->IsCloud)
 	{
-		cloudBtn->SetAlpha(1.0f);
+		btnDelete->SetAlpha(1.0f);
 	}
 
 	projItem->TheCheckButton = cb;
