@@ -55,6 +55,7 @@ namespace PX2
 		void AddOptionListStr(const std::string &optStr);
 		int Get(const std::string &url);
 		int Post(const std::string &url, const std::string &data);
+		int Post(const std::string &url, const char *data, int length);
 
 		char *GetGettedMemory();
 		const char *GetGettedMemory() const;

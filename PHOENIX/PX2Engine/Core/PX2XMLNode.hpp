@@ -56,6 +56,7 @@ namespace PX2
 		void SetAttributeFloat(const std::string &name, float value);
 		void SetAttributeBool(const std::string &name, bool value);
 		void SetAttributeString(const std::string &name, const std::string &str);
+		void SetAttributeString(const std::string &name, const char *str, int length);
 
 	public:
 		XML_NODEPTR mElement;

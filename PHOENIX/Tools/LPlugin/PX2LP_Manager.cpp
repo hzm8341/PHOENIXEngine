@@ -512,26 +512,29 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 	std::string bufStr = PX2_RM.LoadBuffer("tempprojectuploading.7z", true);
 	int size = bufStr.length();
 
-	if (!bufStr.empty())
-	{
-		//XMLData xmlData;
-		//xmlData.Create();
-		//XMLNode xmlNode = xmlData.NewChild("data");
-		//xmlNode.SetAttributeString("content", bufStr);
-		//xmlData.SaveFile("tempprojectuploading.xml");
-		
-		//std::string tempStr = PX2_RM.LoadBuffer("tempprojectuploading.xml", true);
-		std::string tempStr = bufStr;
+	std::string zipStr = Base64::Encode(bufStr);
+	int zipStrLength = zipStr.length();
 
-		std::string outStr = Base64::Encode(tempStr);
-		int outLength = outStr.length();
+	int outDeco = 0;
+	std::string zipStrDecode = Base64::Decode(zipStr, outDeco);
+
+
+	if (!zipStr.empty())
+	{
+		XMLData xmlData;
+		xmlData.Create();
+		XMLNode xmlNode = xmlData.NewChild("data");
+		xmlNode.SetAttributeString("content", zipStr.c_str(), zipStrLength);
+		xmlData.SaveFile("tempprojectuploading.xml");
+		
+		std::string tempStr = PX2_RM.LoadBuffer("tempprojectuploading.xml", true);
 
 		std::string data = "userid=" + StringHelp::IntToString(mUserID);
 		data += "&type=1";
 		data += "&title=" + projName;
 		data += std::string("&desc=") + "hello this phoenix project";
 		data += "&state=1";
-		data += std::string("&files=") + outStr;
+		data += std::string("&files=") + tempStr;
 		
 		int ret = mCurlObject->Post("http://www.manykit.com/res/upload", data);
 
@@ -576,32 +579,33 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 						JSONValue jsonContent = jsValueData.GetMember("pcontext");
 						std::string contentStr;
 						jsonContent.ToStringVal(contentStr);
+						int contentStrLength = jsonContent.GetStringLength(contentStr);
+
 						if (!contentStr.empty())
 						{
-							int contentLength = contentStr.length();
-							int outLength = 0;
-							std::string outStr = Base64::Decode(contentStr, outLength);
+							bool ret = FileIO::Save("tempprojectdownloaded.xml", true, contentStrLength,
+								contentStr.c_str());
 
-							FileIO::Save("tempprojectdownloaded.7z", true,
-								outLength, outStr.c_str());
-
-							/*	bool ret = FileIO::Save("tempprojectdownloaded.xml", true, outLength,
-									outStr.c_str());
-
-								std::string tempStr = PX2_RM.LoadBuffer("tempprojectuploading.xml", true);
-								if (!tempStr.empty())
+							std::string tempStr = PX2_RM.LoadBuffer("tempprojectdownloaded.xml", true);
+							if (!tempStr.empty())
+							{
+								int tempStrLength = tempStr.length();
+								XMLData xmlData;
+								if (xmlData.LoadBuffer(tempStr.c_str(), tempStrLength))
 								{
-									int tempStrLength = tempStr.length();
-									XMLData xmlData;
-									if (xmlData.LoadBuffer(tempStr.c_str(), tempStrLength))
-									{
-										XMLNode rootNode = xmlData.GetRootNode();
-										std::string contentStr = rootNode.AttributeToString("content");
+									XMLNode rootNode = xmlData.GetRootNode();
+									std::string contentStr = rootNode.AttributeToString("content");
+									int contentStrLength = contentStr.length();
 
-										FileIO::Save("tempprojectuploading.7z", true,
-											(int)contentStr.length(), contentStr.c_str());
-									}
-								}*/
+									std::replace(contentStr.begin(), contentStr.end(), ' ', '+');
+
+									int outSize = 0;
+									std::string decodeStr = Base64::Decode(contentStr, outSize);
+
+									FileIO::Save("tempprojectdownloaded.7z", true,
+										outSize, decodeStr.c_str());
+								}
+								}
 						}
 					}
 				}

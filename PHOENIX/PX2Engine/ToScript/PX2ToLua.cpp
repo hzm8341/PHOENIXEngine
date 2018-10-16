@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 10/16/18 11:46:13.
+** Generated automatically by tolua++-1.0.92 on 10/16/18 18:03:01.
 */
 
 #ifndef __cplusplus
@@ -45372,7 +45372,7 @@ static int tolua_PX2_Base64_Encode00(lua_State* tolua_S)
  else
 #endif
  {
-  unsigned const char* str = ((unsigned const char*)  tolua_tostring(tolua_S,2,0));
+  const char* str = ((const char*)  tolua_tostring(tolua_S,2,0));
   int bytes = ((int)  tolua_tonumber(tolua_S,3,0));
   {
    std::string tolua_ret = (std::string)  Base64::Encode(str,bytes);

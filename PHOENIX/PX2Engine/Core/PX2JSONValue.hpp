@@ -34,6 +34,7 @@ namespace PX2
 		bool ToFloatVal(float &value);
 		bool ToBoolVal(bool &value);
 		bool ToStringVal(std::string &value);
+		int GetStringLength(std::string &value);
 
 		bool IsArray();
 		int GetArraySize();

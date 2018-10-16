@@ -143,7 +143,7 @@ std::string WebSocket::_ComputeAccept(const std::string& key)
 	sha1.update(accept);
 	DigestEngine::Digest d = sha1.digest();
 
-	const unsigned char *dBuf = reinterpret_cast<unsigned char*>(&d[0]);
+	const char *dBuf = reinterpret_cast<char*>(&d[0]);
 	int size = d.size();
 	std::string retStr = Base64::Encode(dBuf, size);
 

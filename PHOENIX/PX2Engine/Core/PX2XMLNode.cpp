@@ -232,15 +232,19 @@ void XMLNode::SetAttributeBool(const std::string &name, bool value)
 void XMLNode::SetAttributeString(const std::string &name, 
 	const std::string &str)
 {
+	SetAttributeString(name, str.c_str(), str.length());
+}
+//----------------------------------------------------------------------------
+void XMLNode::SetAttributeString(const std::string &name, const char *str, 
+	int length)
+{
 	rapidxml::xml_attribute<> *attr = mElement->first_attribute(name.c_str());
-	if (attr) attr->value(str.c_str());
+	if (attr) attr->value(str);
 	else
 	{
-		int length = str.length();
-
 		rapidxml::xml_document<> *doc = mElement->document();
 		char *name2 = doc->allocate_string(name.c_str());
-		char *str2 = doc->allocate_string(str.c_str(), length);
+		char *str2 = doc->allocate_string(str, length);
 		mElement->append_attribute(doc->allocate_attribute(name2, str2,
 			name.length(), length));
 	}

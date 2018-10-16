@@ -160,6 +160,18 @@ bool JSONValue::ToStringVal(std::string &value)
 	return false;
 }
 //----------------------------------------------------------------------------
+int JSONValue::GetStringLength(std::string &value)
+{
+	if (!mValue) return 0;
+
+#if defined PX2_USE_RAPID_JSON
+	rapidjson::Value *jValue = (rapidjson::Value*)mValue;
+	return jValue->GetStringLength();
+#endif
+
+	return 0;
+}
+//----------------------------------------------------------------------------
 bool JSONValue::IsArray()
 {
 	if (!mValue) return false;

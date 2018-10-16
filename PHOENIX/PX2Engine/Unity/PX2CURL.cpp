@@ -347,8 +347,9 @@ curl_slist *CurlObj::_AddOptions()
 	return list;
 }
 //----------------------------------------------------------------------------
-int CurlObj::Post(const std::string &url, const std::string &data)
+int CurlObj::Post(const std::string &url, const char *data, int length)
 {
+
 	mIsGettedOK = false;
 	mCurGettedSize = 0;
 	mIsUseNeedDownloadSize = false;
@@ -390,14 +391,14 @@ int CurlObj::Post(const std::string &url, const std::string &data)
 		return false;
 	}
 
-	result = curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, data.c_str());
+	result = curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, data);
 	if (result != CURLE_OK)
 	{
 		PX2_LOG_ERROR("Failed to set CURLOPT_POSTFIELDS:%s", mCurlErrDesc);
 		return -1;
 	}
 
-	result = curl_easy_setopt(mCurl, CURLOPT_POSTFIELDSIZE, (int)data.length());
+	result = curl_easy_setopt(mCurl, CURLOPT_POSTFIELDSIZE, length);
 	if (result != CURLE_OK)
 	{
 		PX2_LOG_ERROR("Failed to set CURLOPT_POSTFIELDSIZE:%s", mCurlErrDesc);
@@ -414,6 +415,11 @@ int CurlObj::Post(const std::string &url, const std::string &data)
 	}
 
 	return 1;
+}
+//----------------------------------------------------------------------------
+int CurlObj::Post(const std::string &url, const std::string &data)
+{
+	return Post(url, data.c_str(), data.length());
 }
 //----------------------------------------------------------------------------
 int CurlObj::WriteFunction(void *buffer, size_t size, size_t nmemb,
