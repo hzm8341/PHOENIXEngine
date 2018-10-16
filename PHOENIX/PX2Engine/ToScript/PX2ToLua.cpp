@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 10/08/18 10:55:19.
+** Generated automatically by tolua++-1.0.92 on 10/16/18 11:46:13.
 */
 
 #ifndef __cplusplus
@@ -45364,12 +45364,42 @@ static int tolua_PX2_Base64_Encode00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertable(tolua_S,1,"Base64",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  unsigned const char* str = ((unsigned const char*)  tolua_tostring(tolua_S,2,0));
+  int bytes = ((int)  tolua_tonumber(tolua_S,3,0));
+  {
+   std::string tolua_ret = (std::string)  Base64::Encode(str,bytes);
+   tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Encode'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Encode of class  Base64 */
+#ifndef TOLUA_DISABLE_tolua_PX2_Base64_Encode01
+static int tolua_PX2_Base64_Encode01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Base64",0,&tolua_err) ||
      !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
  else
-#endif
  {
   const std::string s = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
   {
@@ -45379,11 +45409,8 @@ static int tolua_PX2_Base64_Encode00(lua_State* tolua_S)
   }
  }
  return 2;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Encode'.",&tolua_err);
- return 0;
-#endif
+tolua_lerror:
+ return tolua_PX2_Base64_Encode00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -45396,25 +45423,58 @@ static int tolua_PX2_Base64_Decode00(lua_State* tolua_S)
  if (
      !tolua_isusertable(tolua_S,1,"Base64",0,&tolua_err) ||
      !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  const std::string s = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const std::string encoded_string = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  int outLength = ((int)  tolua_tonumber(tolua_S,3,0));
   {
-   std::string tolua_ret = (std::string)  Base64::Decode(s);
+   std::string tolua_ret = (std::string)  Base64::Decode(encoded_string,outLength);
    tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
-   tolua_pushcppstring(tolua_S,(const char*)s);
+   tolua_pushcppstring(tolua_S,(const char*)encoded_string);
+   tolua_pushnumber(tolua_S,(lua_Number)outLength);
   }
  }
- return 2;
+ return 3;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'Decode'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Decode of class  Base64 */
+#ifndef TOLUA_DISABLE_tolua_PX2_Base64_Decode01
+static int tolua_PX2_Base64_Decode01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Base64",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  const char* str = ((const char*)  tolua_tostring(tolua_S,2,0));
+  int length = ((int)  tolua_tonumber(tolua_S,3,0));
+  int outLength = ((int)  tolua_tonumber(tolua_S,4,0));
+  {
+   std::string tolua_ret = (std::string)  Base64::Decode(str,length,outLength);
+   tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+   tolua_pushnumber(tolua_S,(lua_Number)outLength);
+  }
+ }
+ return 2;
+tolua_lerror:
+ return tolua_PX2_Base64_Decode00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -105309,7 +105369,9 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,".call",tolua_PX2_Base64_new00_local);
    tolua_function(tolua_S,"delete",tolua_PX2_Base64_delete00);
    tolua_function(tolua_S,"Encode",tolua_PX2_Base64_Encode00);
+   tolua_function(tolua_S,"Encode",tolua_PX2_Base64_Encode01);
    tolua_function(tolua_S,"Decode",tolua_PX2_Base64_Decode00);
+   tolua_function(tolua_S,"Decode",tolua_PX2_Base64_Decode01);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Wifi","Wifi","",tolua_collect_Wifi);

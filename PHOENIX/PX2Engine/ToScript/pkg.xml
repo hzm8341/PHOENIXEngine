@@ -4778,11 +4778,23 @@
 			<function name="Base64" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="Encode" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="std::string " is_retrun="true" type_str="std::string" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp; s" is_retrun="false" type_str="std::string" valuename_str="s" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="const unsigned char *str" is_retrun="false" type_str="unsignedchar" valuename_str="str" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="true"/>
+				<param paramstr="int bytes" is_retrun="false" type_str="int" valuename_str="bytes" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="Encode" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="std::string " is_retrun="true" type_str="std::string" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;s" is_retrun="false" type_str="std::string" valuename_str="s" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="Decode" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="std::string " is_retrun="true" type_str="std::string" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp; s" is_retrun="false" type_str="std::string" valuename_str="s" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="const std::string &amp;encoded_string" is_retrun="false" type_str="std::string" valuename_str="encoded_string" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="int &amp;outLength" is_retrun="false" type_str="int" valuename_str="outLength" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+			</function>
+			<function name="Decode" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="std::string " is_retrun="true" type_str="std::string" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const char *str" is_retrun="false" type_str="char" valuename_str="str" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="true"/>
+				<param paramstr="int length" is_retrun="false" type_str="int" valuename_str="length" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int &amp;outLength" is_retrun="false" type_str="int" valuename_str="outLength" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
 			</function>
 		</class>
 		<class name="Wifi" parentname="" singletonname="">

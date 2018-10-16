@@ -72,7 +72,8 @@ void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 	StringTokenizer stkQuestion(url, "?");
 	if (stkQuestion.Count() > 1)
 	{
-		std::string valStr = Base64::Decode(stkQuestion[1]);
+		int outLength = 0;
+		std::string valStr = Base64::Decode(stkQuestion[1], outLength);
 		StringTokenizer stkEqual(valStr, "$");
 
 		std::string cmdStr;
