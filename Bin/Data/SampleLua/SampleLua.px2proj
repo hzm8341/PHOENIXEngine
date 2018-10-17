@@ -1,4 +1,4 @@
-<project id="123456">
+<project id="0">
 	<general name="SampleLua" screenorientation="landscape" width="1136" height="640"/>
 	<scene filename=""/>
 	<render_setting/>

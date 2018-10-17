@@ -597,6 +597,7 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 									std::string contentStr = rootNode.AttributeToString("content");
 									int contentStrLength = contentStr.length();
 
+									// important
 									std::replace(contentStr.begin(), contentStr.end(), ' ', '+');
 
 									int outSize = 0;
@@ -605,7 +606,7 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 									FileIO::Save("tempprojectdownloaded.7z", true,
 										outSize, decodeStr.c_str());
 								}
-								}
+							}
 						}
 					}
 				}
@@ -615,7 +616,8 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 
 #if defined(_WIN32) || defined(WIN32)
 
-		std::string strCmp = "compress_un_project.bat " + projName;
+		std::string strCmp = "compress_un_project.bat " + projName + "_" + 
+			StringHelp::IntToString(projectID);
 		WinExec(strCmp.c_str(), SW_SHOW);
 
 #endif
@@ -1469,14 +1471,18 @@ UIFrame *LP_Manager::CreateEngineFrame()
 	return mEngineFrame;
 }
 //----------------------------------------------------------------------------
-int LP_Manager::_GetProjType(const std::string &projName)
+int LP_Manager::_GetProjType(const std::string &projName, int projectID)
 {
 	if ("engine" == projName || "engine_mtls" == projName)
 	{
 		return 0;
 	}
 
-	std::string projPath = "Data/" + projName;
+	std::string addStr;
+	if (0 != projectID)
+		addStr = "_" + StringHelp::IntToString(projectID);
+
+	std::string projPath = "Data/" + projName + addStr;
 	if (!PX2_RM.IsFileFloderExist(projPath))
 	{
 		return 0;
@@ -1517,7 +1523,7 @@ void LP_Manager::_RefreshProjectsUI()
 					projName + ".px2proj";
 				int id = Project::GetProjectID(projXMLPath);
 
-				int projType = _GetProjType(projName);
+				int projType = _GetProjType(projName, id);
 				if (1 == projType)
 				{
 					LP_ProjectItem *projItem = new0 LP_ProjectItem();

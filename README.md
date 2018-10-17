@@ -10,6 +10,8 @@ GitHub地址：https://github.com/manykits/PHOENIXEngine
 
 Gitee地址：https://gitee.com/manykit/PHOENIXEngine
 
+工具集网盘地址：https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q#list/path=%2F
+
 QQ交流群：336273110
 
 网址website: www.manykit.com
