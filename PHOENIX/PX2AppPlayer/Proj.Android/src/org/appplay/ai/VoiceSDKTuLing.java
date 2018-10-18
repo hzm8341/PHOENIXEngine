@@ -1,5 +1,7 @@
 package org.appplay.ai;
 
+/*
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -257,3 +259,5 @@ public class VoiceSDKTuLing extends VoiceSDK
 		mIsAutoSpeachTTS = enable;		
 	}
 }
+
+*/

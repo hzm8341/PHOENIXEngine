@@ -28,6 +28,7 @@ public class VoiceSDKCreater
 		{
 			VoiceSDK.sPlatformStr = "baidu";
 			//return new VoiceSDKBaiDu(activity);
+			return null;
 		}
 		else if (sSDK_NAME_KEDA.equals(source)) 
 		{
@@ -36,7 +37,8 @@ public class VoiceSDKCreater
 		else if (sSDK_NAME_TULING.equals(source))
 		{
 			VoiceSDK.sPlatformStr = "tuling";
-			sdk = new VoiceSDKTuLing(activity);
+			//sdk = new VoiceSDKTuLing(activity);
+			return null;
 		}
 		VoiceSDK.sTheVoiceSDK = sdk;
 		
