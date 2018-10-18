@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 10/16/18 18:03:01.
+** Generated automatically by tolua++-1.0.92 on 10/18/18 11:12:29.
 */
 
 #ifndef __cplusplus
@@ -28998,37 +28998,37 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: OnEvent of class  CameraPlayController */
-#ifndef TOLUA_DISABLE_tolua_PX2_CameraPlayController_OnEvent01
-static int tolua_PX2_CameraPlayController_OnEvent01(lua_State* tolua_S)
+/* method: SetTouchSizeNode of class  CameraPlayController */
+#ifndef TOLUA_DISABLE_tolua_PX2_CameraPlayController_SetTouchSizeNode01
+static int tolua_PX2_CameraPlayController_SetTouchSizeNode01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"CameraPlayController",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Event",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"SizeNode",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
  else
  {
   CameraPlayController* self = (CameraPlayController*)  tolua_tousertype(tolua_S,1,0);
-  Event* ent = ((Event*)  tolua_tousertype(tolua_S,2,0));
+  SizeNode* frame = ((SizeNode*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'OnEvent'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetTouchSizeNode'", NULL);
 #endif
   {
-   self->OnEvent(ent);
+   self->SetTouchSizeNode(frame);
   }
  }
  return 0;
 tolua_lerror:
- return tolua_PX2_CameraPlayController_OnEvent00(tolua_S);
+ return tolua_PX2_CameraPlayController_SetTouchSizeNode00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: UpdateCameraRot of class  CameraPlayController */
-#ifndef TOLUA_DISABLE_tolua_PX2_CameraPlayController_UpdateCameraRot01
-static int tolua_PX2_CameraPlayController_UpdateCameraRot01(lua_State* tolua_S)
+/* method: GetTouchSizeNode of class  CameraPlayController */
+#ifndef TOLUA_DISABLE_tolua_PX2_CameraPlayController_GetTouchSizeNode01
+static int tolua_PX2_CameraPlayController_GetTouchSizeNode01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -29040,41 +29040,16 @@ static int tolua_PX2_CameraPlayController_UpdateCameraRot01(lua_State* tolua_S)
  {
   CameraPlayController* self = (CameraPlayController*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'UpdateCameraRot'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetTouchSizeNode'", NULL);
 #endif
   {
-   self->UpdateCameraRot();
+   SizeNode* tolua_ret = (SizeNode*)  self->GetTouchSizeNode();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"SizeNode");
   }
  }
- return 0;
+ return 1;
 tolua_lerror:
- return tolua_PX2_CameraPlayController_UpdateCameraRot00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: UpdateCameraPos of class  CameraPlayController */
-#ifndef TOLUA_DISABLE_tolua_PX2_CameraPlayController_UpdateCameraPos01
-static int tolua_PX2_CameraPlayController_UpdateCameraPos01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"CameraPlayController",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  CameraPlayController* self = (CameraPlayController*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'UpdateCameraPos'", NULL);
-#endif
-  {
-   self->UpdateCameraPos();
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_PX2_CameraPlayController_UpdateCameraPos00(tolua_S);
+ return tolua_PX2_CameraPlayController_GetTouchSizeNode00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -104363,9 +104338,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"SetCameraDist",tolua_PX2_CameraPlayController_SetCameraDist01);
    tolua_function(tolua_S,"GetCameraDist",tolua_PX2_CameraPlayController_GetCameraDist01);
    tolua_function(tolua_S,"GetCurDir",tolua_PX2_CameraPlayController_GetCurDir01);
-   tolua_function(tolua_S,"OnEvent",tolua_PX2_CameraPlayController_OnEvent01);
-   tolua_function(tolua_S,"UpdateCameraRot",tolua_PX2_CameraPlayController_UpdateCameraRot01);
-   tolua_function(tolua_S,"UpdateCameraPos",tolua_PX2_CameraPlayController_UpdateCameraPos01);
+   tolua_function(tolua_S,"SetTouchSizeNode",tolua_PX2_CameraPlayController_SetTouchSizeNode01);
+   tolua_function(tolua_S,"GetTouchSizeNode",tolua_PX2_CameraPlayController_GetTouchSizeNode01);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Renderer","Renderer","",NULL);
   tolua_beginmodule(tolua_S,"Renderer");

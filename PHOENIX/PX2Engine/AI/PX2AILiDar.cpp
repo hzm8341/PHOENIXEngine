@@ -164,8 +164,8 @@ void _LiDarClientConnectorRecvCallback1(uint8_t* buffer, uint32_t numOfBytes)
 {
 	bool beVerboseHere = false;
 
-	UINT32 remainingSpace = sizeof(m_receiveBuffer) - m_numberOfBytesInReceiveBuffer;
-	UINT32 bytesToBeTransferred = numOfBytes;
+	uint32_t remainingSpace = sizeof(m_receiveBuffer) - m_numberOfBytesInReceiveBuffer;
+	uint32_t bytesToBeTransferred = numOfBytes;
 	if (remainingSpace < numOfBytes)
 	{
 		bytesToBeTransferred = remainingSpace;

@@ -10969,15 +10969,12 @@
 			<function name="GetCurDir" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="OnEvent" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
+			<function name="SetTouchSizeNode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="Event *ent" is_retrun="false" type_str="Event" valuename_str="ent" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="SizeNode *frame" is_retrun="false" type_str="SizeNode" valuename_str="frame" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
-			<function name="UpdateCameraRot" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="UpdateCameraPos" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			<function name="GetTouchSizeNode" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="SizeNode *" is_retrun="true" type_str="SizeNode" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 		</class>
 		<class name="UDPNetInfo" parentname="" singletonname="">

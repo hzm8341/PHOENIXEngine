@@ -9,14 +9,12 @@
 		CameraNode *GetCameraNode();
 
 		void SetCameraDistance(float dist);
-		
+
 		void SetCameraDist(float min, float max);
 		void GetCameraDist(float &min, float &max);
 
 		AVector GetCurDir();
 
-		virtual void OnEvent(Event *ent);
-
-		void UpdateCameraRot();
-		void UpdateCameraPos();
+		void SetTouchSizeNode(SizeNode *frame);
+		SizeNode *GetTouchSizeNode();
 	};

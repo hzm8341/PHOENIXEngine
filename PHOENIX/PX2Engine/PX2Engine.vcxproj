@@ -262,6 +262,9 @@ xcopy /DY .\AI\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\AI\*.inl ..\PX2SDK\Include
 
+xcopy /DY .\AI\SkillSystem\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\AI\SkillSystem\*.inl ..\PX2SDK\Include
 xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
@@ -835,9 +838,24 @@ xcopy /DY .\Effect\*.inl ..\PX2SDK\Include
 xcopy /DY .\Terrains\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Terrains\*.inl ..\PX2SDK\Include
+xcopy /DY .\Physics\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Physics\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\AI\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\AI\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\AI\SkillSystem\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\AI\SkillSystem\*.inl ..\PX2SDK\Include
 xcopy /DY .\Logic\*.hpp ..\PX2SDK\Include
 
 xcopy /DY .\Logic\*.inl ..\PX2SDK\Include
+
+xcopy /DY .\Voxel\*.hpp ..\PX2SDK\Include
+
+xcopy /DY .\Voxel\*.inl ..\PX2SDK\Include
 
 xcopy /DY .\Application\*.hpp ..\PX2SDK\Include
 

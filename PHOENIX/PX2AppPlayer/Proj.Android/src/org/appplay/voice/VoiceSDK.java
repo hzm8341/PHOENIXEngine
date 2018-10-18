@@ -31,7 +31,7 @@ abstract public class VoiceSDK {
 	
 	public void OnVoiceRecognizeResults(String strRet, String strJSON)
 	{
-		AppPlayNatives.nativeVoiceRecognizeResults(strRet, strJSON);
+		AppPlayNatives.nativeOnVoiceRecognizeResults(strRet, strJSON);
 	}
 
 	public abstract void speak(String text);
