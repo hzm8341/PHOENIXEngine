@@ -13,7 +13,6 @@ LOCAL_WHOLE_STATIC_LIBRARIES += PX2Engine
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
 $(PX2_ROOT)/ThirdPartiesLibs/OGLES/ \
 $(PX2_ROOT)/PX2AppPlayer/ \
-$(PX2_ROOT)/PX2AppPlayer/AppFrame/ \
 $(PX2_ROOT)/PX2Engine/Unity/AppPlay/ \
 $(PX2_ROOT)/PX2SDK/Include/
 

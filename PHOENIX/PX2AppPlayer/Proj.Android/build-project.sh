@@ -2,8 +2,8 @@
 
 # set params
 NDK_ROOT_LOCAL=/cygdrive/Android/android-ndk-r8e
-ENGINE_ROOT_LOCAL=/cygdrive/D/PHOENIXEngine/trunk/Phoenix
-APPPLAY_MYAPP_BIN_ROOT_LOCAL=/cygdrive/D/PHOENIXEngine/trunk/Bin
+ENGINE_ROOT_LOCAL=/cygdrive/F/GitHub/PHOENIXEngine/PHOENIX
+APPPLAY_MYAPP_BIN_ROOT_LOCAL=/cygdrive/F/GitHub/PHOENIXEngine/Bin
 APPPLAY_MYAPP_DATAFROM=Data
 
 if [ $NDK_ROOT"xyz" != "xyz" ]; then
