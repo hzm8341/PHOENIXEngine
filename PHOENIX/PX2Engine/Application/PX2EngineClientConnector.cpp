@@ -13,6 +13,7 @@
 #include "PX2Application.hpp"
 #include "PX2RobotDatas.hpp"
 #include "PX2Robot.hpp"
+#include "PX2EngineNetDefine.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -42,6 +43,9 @@ mGettingMapIndex(-1)
 
 	RegisterHandler(EngineServerSendMapEndMsgID,
 		(ServerMsgHandleFunc)&EngineClientConnector::OnMapDataEnd);
+
+	RegisterHandler(EngineServerSendLidarMsgID,
+		(ServerMsgHandleFunc)&EngineClientConnector::OnLidarData);
 }
 //----------------------------------------------------------------------------
 EngineClientConnector::~EngineClientConnector()
@@ -104,6 +108,11 @@ int EngineClientConnector::Update(float elapsedSeconds)
 
 			mAutoConnectTiming = 0.0f;
 		}
+	}
+
+	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+	if (Robot::RT_CONNECTOR_CALCULATE == rt)
+	{
 	}
 
 	return ret;
@@ -336,53 +345,91 @@ int EngineClientConnector::OnStringMsg(const void *pbuffer, int buflen)
 //----------------------------------------------------------------------------
 int EngineClientConnector::OnMapDataInfo(const void *pbuffer, int buflen)
 {
-	memcpy(&mRobotMapDataStruct, pbuffer, buflen);
+	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+	if (rt == Robot::RT_CONNECTOR)
+	{
+		memcpy(&mRobotMapDataStruct, pbuffer, buflen);
 
-	PX2_ROBOT.GetCurMapData()->MapStruct = mRobotMapDataStruct;
-	mGettingMap.clear();
+		PX2_ROBOT.GetCurMapData()->MapStruct = mRobotMapDataStruct;
+		mGettingMap.clear();
 
-	PX2_ROBOT.SetSlam2DPosition(mRobotMapDataStruct.CurPos, 
-		mRobotMapDataStruct.CurAngle);
+		PX2_ROBOT.SetSlam2DPosition(mRobotMapDataStruct.CurPos,
+			mRobotMapDataStruct.CurAngle);
 
-	mGettingMapIndex = 0;
+		mGettingMapIndex = 0;
+	}
 
 	return 0;
 }
 //----------------------------------------------------------------------------
 int EngineClientConnector::OnMapData(const void *pbuffer, int buflen)
 {
-	mGettingMapIndex++;
+	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+	if (rt == Robot::RT_CONNECTOR)
+	{
+		mGettingMapIndex++;
 
-	int curSize = mGettingMap.size();
-	mGettingMap.resize(curSize + buflen);
-	memcpy((char*)&(mGettingMap[0]) + curSize, pbuffer, buflen);
+		int curSize = mGettingMap.size();
+		mGettingMap.resize(curSize + buflen);
+		memcpy((char*)&(mGettingMap[0]) + curSize, pbuffer, buflen);
+	}
 
 	return 0;
 }
 //----------------------------------------------------------------------------
 int EngineClientConnector::OnMapDataEnd(const void *pbuffer, int buflen)
 {
-	mGettingMapIndex++;
+	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+	if (rt == Robot::RT_CONNECTOR)
+	{
+		mGettingMapIndex++;
 
-	int curSize = mGettingMap.size();
+		int curSize = mGettingMap.size();
 
-	unsigned long dstSize = 1024 * 1024;
-	std::vector<unsigned char> dstBuf;
-	dstBuf.resize(dstSize);
-	PX2_RM.ZipUnCompress((unsigned char*)&(dstBuf[0]), &dstSize,
-		(const unsigned char*)&(mGettingMap[0]), curSize);
+		if (curSize > 0)
+		{
+			unsigned long dstSize = 1024 * 1024;
+			std::vector<unsigned char> dstBuf;
+			dstBuf.resize(dstSize);
+			PX2_RM.ZipUnCompress((unsigned char*)&(dstBuf[0]), &dstSize,
+				(const unsigned char*)&(mGettingMap[0]), curSize);
 
-	PX2_ROBOT.GetCurMapData()->Map2D.clear();
-	PX2_ROBOT.GetCurMapData()->Map2D = dstBuf;
+			PX2_ROBOT.GetCurMapData()->Map2D.clear();
+			PX2_ROBOT.GetCurMapData()->Map2D = dstBuf;
 
-	PX2_ROBOT.SetSlam2DMap(dstBuf, mRobotMapDataStruct.MapSize,
-		mRobotMapDataStruct.MapResolution);
+			PX2_ROBOT.SetSlam2DMap(dstBuf, mRobotMapDataStruct.MapSize,
+				mRobotMapDataStruct.MapResolution);
 
-	mGettingMap.clear();
+			mGettingMap.clear();
 
-	mGettingMapIndex = false;
+			mGettingMapIndex = -1;
+		}
+	}
 
 	return 0;
+}
+//----------------------------------------------------------------------------
+int EngineClientConnector::OnLidarData(const void *pbuffer, int buflen)
+{
+	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+	if (rt == Robot::RT_CONNECTOR_CALCULATE)
+	{
+		NetLidarData data;
+		memcpy(&data, pbuffer, buflen);
+
+		PX2_ROBOT.GetLidar()->SetLiData(data.Datas);
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+void EngineClientConnector::SendRobotMapInfo()
+{
+	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+	if (rt == Robot::RT_CONNECTOR_CALCULATE)
+	{
+
+	}
 }
 //----------------------------------------------------------------------------
 void EngineClientConnector::_SendHeart()

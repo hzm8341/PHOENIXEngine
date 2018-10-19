@@ -5,6 +5,7 @@
 
 #include "PX2CorePre.hpp"
 #include "PX2Arduino.hpp"
+#include "PX2AILidarData.hpp"
 
 namespace PX2
 {
@@ -13,6 +14,7 @@ namespace PX2
 	const int EngineServerSendMapInfoMsgID = 4;
 	const int EngineServerSendMapMsgID = 5;
 	const int EngineServerSendMapEndMsgID = 6;
+	const int EngineServerSendLidarMsgID = 7;
 
 	const int EngineServerArduinoMsgID = Arduino_SocketTCP_MsgID;
 
@@ -32,6 +34,15 @@ namespace PX2
 	const std::string CMD_PushProject = "pushproject";
 	const std::string CMD_LoadProject = "loadproject";
 	const std::string CMD_CloseProject = "closeproject";
+
+	class PX2_ENGINE_ITEM NetLidarData
+	{
+	public:
+		NetLidarData();
+
+		int Size;
+		std::vector<RslidarDataComplete> Datas;
+	};
 
 }
 

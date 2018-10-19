@@ -101,3 +101,8 @@ inline PathingGraph *Robot::GetPathingGraph()
 	return mPathGraph;
 }
 //----------------------------------------------------------------------------
+inline Robot::RoleType Robot::GetRoleType() const
+{
+	return mRoleType;
+}
+//----------------------------------------------------------------------------

@@ -39,6 +39,8 @@ mIsHasEverSettedDirection(false),
 mIsSlamMapUpdate(true),
 mDegreeAdjust(0.0f)
 {
+	mRoleType = RT_MASTER;
+
 	mBufShare = 0;
 
 #if defined _WIN32 || defined WIN32
@@ -1109,6 +1111,11 @@ void Robot::SetSlam2DPosition(const APoint &pos, float angle)
 
 	mRobotTex->SetAnchorHor(xPos, xPos);
 	mRobotTex->SetAnchorVer(yPos, yPos);
+}
+//----------------------------------------------------------------------------
+void Robot::SetRoleType(RoleType rtType)
+{
+	mRoleType = rtType;
 }
 //----------------------------------------------------------------------------
 void Robot::CreateLidar()

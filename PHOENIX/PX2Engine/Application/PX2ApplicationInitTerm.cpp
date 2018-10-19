@@ -29,6 +29,7 @@
 #include "PX2StringTokenizer.hpp"
 #include "PX2StringHelp.hpp"
 #include "PX2Robot.hpp"
+#include "PX2EngineNetDefine.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------

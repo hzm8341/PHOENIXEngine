@@ -110,6 +110,34 @@ function zo_PadCtrl()
     butUIMode:CreateAddText(""..PX2_LM_APP:GetValue("UIMode"))
 	butUIMode:SetSize(100, 40)
     butUIMode:SetScriptHandler("zo_UIPadCtrlCallback")
+
+    local ledCheck = UICheckButton:New("CheckButton_LED_L")
+    frameAll:AttachChild(ledCheck)
+	ledCheck.LocalTransform:SetTranslateY(-1.0)
+	ledCheck:SetAnchorHor(0.0, 0.0)
+	ledCheck:SetAnchorParamHor(120.0, 120.0)
+    ledCheck:SetAnchorVer(1.0, 1.0)
+    ledCheck:SetAnchorParamVer(-140.0, -140.0)
+    ledCheck:SetPivot(0.5, 0.5)
+    ledCheck:SetSize(80, 80)
+    local fText = ledCheck:CreateAddText("LED_L")
+    fText:GetText():SetFontColor(Float3.BLACK)
+    ledCheck:SetScriptHandler("zo_UIPadCtrlCallback")
+    ledCheck:Check(false, false)
+
+    local ledCheck_R = UICheckButton:New("CheckButton_LED_R")
+    frameAll:AttachChild(ledCheck_R)
+	ledCheck_R.LocalTransform:SetTranslateY(-1.0)
+	ledCheck_R:SetAnchorHor(0.0, 0.0)
+	ledCheck_R:SetAnchorParamHor(280.0, 280.0)
+    ledCheck_R:SetAnchorVer(1.0, 1.0)
+    ledCheck_R:SetAnchorParamVer(-140.0, -140.0)
+    ledCheck_R:SetPivot(0.5, 0.5)
+    ledCheck_R:SetSize(80, 80)
+    local fText = ledCheck_R:CreateAddText("LED_R")
+    fText:GetText():SetFontColor(Float3.BLACK)
+    ledCheck_R:SetScriptHandler("zo_UIPadCtrlCallback")
+    ledCheck_R:Check(false, false)
     
     zo_CreateFrameMode0()
     zo_CreateFrameMode1()
@@ -295,9 +323,9 @@ function zo_UIPadCtrlCallback(ptr,callType)
             zo_UpdateButtonsPress()
         end
         if "BtnFire" == name then
-            if ZERONE_IsFireRobot then
-                PX2_ARDUINO:DigitalWrite(Arduino.P_13, true)
-            end
+            --if ZERONE_IsFireRobot then
+            PX2_ARDUINO:DigitalWrite(Arduino.P_13, true)
+            --end
         end
     elseif UICT_RELEASED ==callType then
         PX2_GR:PlayNormal(obj)        
@@ -331,9 +359,9 @@ function zo_UIPadCtrlCallback(ptr,callType)
         end
 
         if "BtnFire" == name then
-            if ZERONE_IsFireRobot then
-                PX2_ARDUINO:DigitalWrite(Arduino.P_13, false)
-            end
+            --if ZERONE_IsFireRobot then
+            PX2_ARDUINO:DigitalWrite(Arduino.P_13, false)
+            --end
         end
     elseif UICT_RELEASED_NOTPICK == callType then
         PX2_GR:PlayNormal(obj)
@@ -403,6 +431,7 @@ function zo_UIPadCtrlCallback(ptr,callType)
         end
     elseif UICT_SLIDERCHANGED == callType then
         local percent = obj:GetPercent()
+        local pos = 180.0*percent
         if not ZERONE_IsFireRobot then
             if "slider3" == name then
                 ZERONE_SpeedAdjustTurn = percent
@@ -411,6 +440,7 @@ function zo_UIPadCtrlCallback(ptr,callType)
                 ZERONE_SpeedAdjustGo = percent
                 PX2_PROJ:SetConfig("Slider2", ""..percent)
             elseif "slider1"==name then
+                PX2_ARDUINO:ServerWrite(0, pos)
                 PX2_PROJ:SetConfig("Slider1", ""..percent)
             end
         else
@@ -426,6 +456,18 @@ function zo_UIPadCtrlCallback(ptr,callType)
                 PX2_ARDUINO:ServerWrite(1, pos)
                 PX2_PROJ:SetConfig("Slider1", ""..percent)
             end
+        end
+    elseif UICT_CHECKED == callType then
+        if "CheckButton_LED_L"==name then
+            PX2_ARDUINO:DigitalWrite(Arduino.P_11, true)
+        elseif "CheckButton_LED_R"==name then
+            PX2_ARDUINO:DigitalWrite(Arduino.P_12, true)
+        end
+    elseif UICT_DISCHECKED == callType then
+        if "CheckButton_LED_L"==name then
+            PX2_ARDUINO:DigitalWrite(Arduino.P_11, false)
+        elseif "CheckButton_LED_R"==name then
+            PX2_ARDUINO:DigitalWrite(Arduino.P_12, false)
         end
     end
 end

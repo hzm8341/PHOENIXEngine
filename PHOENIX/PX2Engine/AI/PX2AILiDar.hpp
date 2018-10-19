@@ -9,6 +9,7 @@
 #include "PX2Memory.hpp"
 #include "PX2Thread.hpp"
 #include "PX2Timestamp.hpp"
+#include "PX2AILidarData.hpp"
 
 namespace everest
 {
@@ -43,33 +44,6 @@ class SinglePositionSLAM;
 namespace PX2
 {
 
-	class Rover;
-
-	typedef struct _rslidar_data
-	{
-		_rslidar_data()
-		{
-			signal = 0;
-			angle = 0.0;
-			distance = 0.0;
-		}
-		uint8_t signal;
-		float   angle;
-		float   distance;
-
-		static bool LessThan(const _rslidar_data &data0,
-			const _rslidar_data &data1)
-		{
-			if (data0.angle == data1.angle)
-			{
-				return data0.distance < data1.distance;
-			}
-
-			return data0.angle < data1.angle;
-		}
-
-	}RslidarDataComplete;
-
 	enum SopasProtocol
 	{
 		CoLa_A, ///< Command Language ASCI
@@ -99,7 +73,7 @@ namespace PX2
 		LiDarType GetLiDarType() const;
 
 		bool Open(const std::string &portIP, int baudratePort);
-		bool IsOpened();
+		bool IsOpened() const;
 		void Close();
 
 		void SetOffsetDegree(float offsetDegree);
@@ -111,6 +85,7 @@ namespace PX2
 
 		void Update(float appSeconds, float elapsedSeconds);
 
+		void SetLiData(const std::vector<RslidarDataComplete> &datas);
 		std::vector<RslidarDataComplete> GetLiDarData();
 		Timestamp GetLiDarDataTimestamp();
 

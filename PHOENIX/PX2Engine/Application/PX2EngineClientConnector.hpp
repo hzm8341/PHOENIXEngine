@@ -5,7 +5,6 @@
 
 #include "PX2CorePre.hpp"
 #include "PX2NetClientConnector.hpp"
-#include "PX2EngineNetDefine.hpp"
 #include "PX2DatagramSocket.hpp"
 #include "PX2RobotDatas.hpp"
 
@@ -56,6 +55,11 @@ namespace PX2
 		int OnMapDataInfo(const void *pbuffer, int buflen);
 		int OnMapData(const void *pbuffer, int buflen);
 		int OnMapDataEnd(const void *pbuffer, int buflen);
+
+		int OnLidarData(const void *pbuffer, int buflen);
+	
+		void SendRobotMapInfo();
+
 		void _SendHeart();
 
 		bool mIsAutoConnect;

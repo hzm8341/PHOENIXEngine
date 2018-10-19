@@ -128,9 +128,12 @@ function zo_OnStartUp(useSpeed)
         end
     end
 
+    PX2_ARDUINO:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:ServerInit(0, Arduino.P_A0)
+    
     if ZERONE_IsFireRobot then
-        PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
-        PX2_ARDUINO:ServerInit(0, Arduino.P_A0)
         PX2_ARDUINO:ServerInit(1, Arduino.P_A1)
     end
 

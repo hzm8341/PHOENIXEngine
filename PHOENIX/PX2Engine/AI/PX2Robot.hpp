@@ -94,6 +94,17 @@ namespace PX2
 
 		// slam2d
 	public:
+		enum RoleType
+		{
+			RT_MASTER,
+			RT_CONNECTOR,
+			RT_MASTER_ONLY_SENDLIDAR,
+			RT_CONNECTOR_CALCULATE,
+			RT_MAX_TYPE
+		};
+		void SetRoleType(RoleType rtType);
+		RoleType GetRoleType() const;
+
 		void CreateLidar();
 		bool LidarOpen(const std::string &portIP, int baudratePort);
 		LiDar *GetLidar();
@@ -150,6 +161,8 @@ namespace PX2
 		void _SetPixelVal(Texture2D *tex2D, unsigned char *toData, int indexY, int indexX);
 		void _UpdateMapObst();
 		void _SetGraphValue(int x, int y, float val);
+
+		RoleType mRoleType;
 
 		bool mIsInitSlamMap;
 		RobotMapDataPtr mRobotMapData;

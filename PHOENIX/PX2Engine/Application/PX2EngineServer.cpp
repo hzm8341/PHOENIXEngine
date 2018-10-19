@@ -71,7 +71,13 @@ void EngineServer::Run(float elapsedTime)
 	mBroadCastMapTiming += elapsedTime;
 	if (mBroadCastMapTiming > 0.1f)
 	{
-		BroadCastRobotMap();
+		Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+		if (Robot::RT_MASTER == rt)
+			BroadCastRobotMap();
+
+		if (Robot::RT_MASTER_ONLY_SENDLIDAR == rt)
+			BroadCastLidarData();
+
 		mBroadCastMapTiming = 0;
 	}
 }
@@ -138,6 +144,33 @@ void EngineServer::BroadCastRobotMap()
 	{
 		unsigned int clientID = it->first;
 		SendRobotMap(clientID);
+	}
+}
+//----------------------------------------------------------------------------
+void EngineServer::SendLidarData(int clientid)
+{
+	LiDar *liDar = PX2_ROBOT.GetLidar();
+	if (!liDar)
+		return;
+
+	std::vector<RslidarDataComplete> lData = liDar->GetLiDarData();
+	int size = lData.size();
+
+	NetLidarData data;
+	data.Size = size;
+	data.Datas = lData;
+
+	SendMsgToClientBuffer(clientid, EngineServerSendLidarMsgID,
+		(const char *)&data, sizeof(data));
+}
+//----------------------------------------------------------------------------
+void EngineServer::BroadCastLidarData()
+{
+	auto it = mConnections.begin();
+	for (; it != mConnections.end(); it++)
+	{
+		unsigned int clientID = it->first;
+		SendLidarData(clientID);
 	}
 }
 //----------------------------------------------------------------------------

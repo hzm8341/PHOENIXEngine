@@ -1,7 +1,7 @@
 -- ZERONECommon.lua
 
 function zo_UISetTextFont(text, fontSize)
-	text:SetFont("Data/ZERONE/fonts/font.ttf", fontSize, fontSize)
+	text:SetFont("Data/engine/font.ttf", fontSize, fontSize)
 end
 
 function zo_UICreateDlgCommon(frameWidth, frameHeight, titleText)

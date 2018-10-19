@@ -6,7 +6,6 @@
 #include "PX2CorePre.hpp"
 #include "PX2NetServer.hpp"
 #include "PX2Singleton_NeedNew.hpp"
-#include "PX2EngineNetDefine.hpp"
 
 namespace PX2
 {
@@ -36,6 +35,9 @@ namespace PX2
 
 		void SendRobotMap(int clientid);
 		void BroadCastRobotMap();
+
+		void SendLidarData(int clientid);
+		void BroadCastLidarData();
 
 	protected:
 		virtual int OnConnect(unsigned int clientid);

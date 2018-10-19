@@ -1007,6 +1007,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2AIInfluenceMap.hpp" />
     <ClInclude Include="AI\PX2AIInfluenceMapUtilities.hpp" />
     <ClInclude Include="AI\PX2AILiDar.hpp" />
+    <ClInclude Include="AI\PX2AILidarData.hpp" />
     <ClInclude Include="AI\PX2AIMeshUtilities.hpp" />
     <ClInclude Include="AI\PX2AINavigationMesh.hpp" />
     <ClInclude Include="AI\PX2AINavigationUtilities.hpp" />
@@ -2262,6 +2263,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\PX2AIInfluenceMap.cpp" />
     <ClCompile Include="AI\PX2AIInfluenceMapUtilities.cpp" />
     <ClCompile Include="AI\PX2AILiDar.cpp" />
+    <ClCompile Include="AI\PX2AILidarData.cpp" />
     <ClCompile Include="AI\PX2AIMeshUtilities.cpp" />
     <ClCompile Include="AI\PX2AINavigationMesh.cpp" />
     <ClCompile Include="AI\PX2AINavigationUtilities.cpp" />
@@ -2325,6 +2327,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2EngineCanvas.cpp" />
     <ClCompile Include="Application\PX2EngineClientConnector.cpp" />
     <ClCompile Include="Application\PX2EngineNetCmdProcess.cpp" />
+    <ClCompile Include="Application\PX2EngineNetDefine.cpp" />
     <ClCompile Include="Application\PX2EngineNetEvent.cpp" />
     <ClCompile Include="Application\PX2EngineSceneCanvas.cpp" />
     <ClCompile Include="Application\PX2EngineServer.cpp" />

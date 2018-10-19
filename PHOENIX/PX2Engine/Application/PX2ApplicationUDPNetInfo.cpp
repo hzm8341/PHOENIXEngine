@@ -5,6 +5,7 @@
 #include "PX2ApplicationUDPNetInfo.hpp"
 #include "PX2EngineNetCmdProcess.hpp"
 #include "PX2DNS.hpp"
+#include "PX2EngineNetDefine.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------

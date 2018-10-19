@@ -4617,6 +4617,9 @@
     <ClInclude Include="AI\PX2AIPath.hpp">
       <Filter>2.AI\Path</Filter>
     </ClInclude>
+    <ClInclude Include="AI\PX2AILidarData.hpp">
+      <Filter>2.AI\Robot\LiDar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -7876,6 +7879,12 @@
     </ClCompile>
     <ClCompile Include="AI\PX2AIPath.cpp">
       <Filter>2.AI\Path</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2EngineNetDefine.cpp">
+      <Filter>3.Application\Net\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AILidarData.cpp">
+      <Filter>2.AI\Robot\LiDar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

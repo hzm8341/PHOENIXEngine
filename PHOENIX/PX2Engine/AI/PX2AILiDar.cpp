@@ -336,7 +336,7 @@ bool LiDar::_CheckDeviceHealth(int * errorCode)
 #endif
 }
 //----------------------------------------------------------------------------
-bool LiDar::IsOpened()
+bool LiDar::IsOpened() const
 {
 	if (LT_III == mLiDarType)
 	{
@@ -655,6 +655,11 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 	}
 
 	mIsHasDataNew = false;
+}
+//----------------------------------------------------------------------------
+void LiDar::SetLiData(const std::vector<RslidarDataComplete> &datas)
+{
+	mLiDarData = datas;
 }
 //----------------------------------------------------------------------------
 std::vector<RslidarDataComplete> LiDar::GetLiDarData()

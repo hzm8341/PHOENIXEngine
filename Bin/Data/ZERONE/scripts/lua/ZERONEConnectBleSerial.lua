@@ -85,7 +85,7 @@ function zo_ConnectBleSerial()
     fText:GetText():SetFontColor(Float3.BLACK)
     fText:GetText():SetFontScale(0.75)
     motoFireCheck:SetScriptHandler("zo_ButBluetoothSerialFrameCallabck")
-    motoFireCheck:Check(true)
+    motoFireCheck:Check(false)
 
     local motoInitCheck = UICheckButton:New("298NCheckButton")
     uiFrame:AttachChild(motoInitCheck)
@@ -301,6 +301,8 @@ function zo_ButBluetoothSerialFrameCallabck(ptr, callType)
             end
         elseif "FireCheckButton"==name then
             ZERONE_IsFireRobot = true
+            PX2_ARDUINO:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
+            PX2_ARDUINO:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
             PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
             PX2_ARDUINO:ServerInit(0, Arduino.P_A0)
             PX2_ARDUINO:ServerInit(1, Arduino.P_A1)
