@@ -301,6 +301,7 @@ function zo_ButBluetoothSerialFrameCallabck(ptr, callType)
             end
         elseif "FireCheckButton"==name then
             ZERONE_IsFireRobot = true
+            PX2_ARDUINO:PinMode(Arduino.P_10, Arduino.PM_OUTPUT)
             PX2_ARDUINO:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
             PX2_ARDUINO:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
             PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
