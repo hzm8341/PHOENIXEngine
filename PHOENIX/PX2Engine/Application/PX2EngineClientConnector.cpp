@@ -14,6 +14,7 @@
 #include "PX2RobotDatas.hpp"
 #include "PX2Robot.hpp"
 #include "PX2EngineNetDefine.hpp"
+#include "PX2InStream.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -414,10 +415,17 @@ int EngineClientConnector::OnLidarData(const void *pbuffer, int buflen)
 	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
 	if (rt == Robot::RT_CONNECTOR_CALCULATE)
 	{
-		NetLidarData data;
-		memcpy(&data, pbuffer, buflen);
+		InStream inStream;
 
-		PX2_ROBOT.GetLidar()->SetLiData(data.Datas);
+		if (inStream.Load1(buflen, (char*)pbuffer))
+		{
+			NetLidarData *data = DynamicCast<NetLidarData>(
+				inStream.GetObjectAt(0));
+			if (data)
+			{
+				PX2_ROBOT.GetLidar()->SetLiData(data->Datas);
+			}
+		}
 	}
 
 	return 0;

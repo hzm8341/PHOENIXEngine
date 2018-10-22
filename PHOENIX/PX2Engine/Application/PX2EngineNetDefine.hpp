@@ -6,6 +6,7 @@
 #include "PX2CorePre.hpp"
 #include "PX2Arduino.hpp"
 #include "PX2AILidarData.hpp"
+#include "PX2Object.hpp"
 
 namespace PX2
 {
@@ -35,14 +36,19 @@ namespace PX2
 	const std::string CMD_LoadProject = "loadproject";
 	const std::string CMD_CloseProject = "closeproject";
 
-	class PX2_ENGINE_ITEM NetLidarData
+	class PX2_ENGINE_ITEM NetLidarData : public Object
 	{
+		PX2_DECLARE_RTTI;
+		PX2_DECLARE_NAMES;
+		PX2_DECLARE_STREAM(NetLidarData);
+
 	public:
 		NetLidarData();
 
-		int Size;
 		std::vector<RslidarDataComplete> Datas;
 	};
+	PX2_REGISTER_STREAM(NetLidarData);
+	typedef Pointer0<NetLidarData> NetLidarDataPtr;
 
 }
 

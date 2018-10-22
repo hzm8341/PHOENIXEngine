@@ -12,6 +12,7 @@
 #include "PX2Log.hpp"
 #include "PX2Robot.hpp"
 #include "PX2RobotDatas.hpp"
+#include "PX2OutStream.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -156,15 +157,21 @@ void EngineServer::SendLidarData(int clientid)
 	std::vector<RslidarDataComplete> lData = liDar->GetLiDarData();
 	int size = lData.size();
 
+	OutStream outStream;
+
 	NetLidarData data;
-	data.Size = size;
 	data.Datas = lData;
 
-	int dataSize = sizeof(data.Size) + sizeof(RslidarDataComplete) *
-		(int)data.Datas.size();
+	int bufSize = 0;
+	char *buf = 0;
+
+	outStream.Insert(&data);
+	outStream.Save(bufSize, buf);
 
 	SendMsgToClientBuffer(clientid, EngineServerSendLidarMsgID,
-		(const char *)&data, dataSize);
+		buf, bufSize);
+
+	delete1(buf);
 }
 //----------------------------------------------------------------------------
 void EngineServer::BroadCastLidarData()
