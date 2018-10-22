@@ -319,8 +319,8 @@ void LP_Manager::Initlize()
 	mCurlObject->SetCurlWriteCallback(_CurlWriteCallback);
 	mCurlObject->SetCurlProgressCallback(_ProgressCallback);
 
-	mCfgUserName = PX2_APP.GetConfig("UserName");
-	mCfgPassword = PX2_APP.GetConfig("Password");
+	//mCfgUserName = PX2_APP.GetConfig("UserName");
+	//mCfgPassword = PX2_APP.GetConfig("Password");
 
 	if (!mCfgUserName.empty() && !mCfgPassword.empty())
 	{
@@ -914,8 +914,23 @@ void LP_Manager::_OnSend()
 	}
 }
 //----------------------------------------------------------------------------
-void LP_Manager::_SimuApp(const std::string &projName)
+void LP_Manager::_SimuApp(const std::string &folderName)
 {
+	std::string projectName;
+	std::string strIDFolder;
+	int idFolder = 0;
+	StringTokenizer stk(folderName, "_");
+	if (stk.Count() > 1)
+	{
+		projectName = stk[0];
+		strIDFolder = stk[stk.Count() - 1];
+	}
+	else
+	{
+		projectName = folderName;
+	}
+	idFolder = StringHelp::StringToInt(strIDFolder);
+
 	std::string renderTag = Renderer::GetRenderTag();
 	if ("Dx9" == renderTag)
 		renderTag = "";
@@ -926,8 +941,7 @@ void LP_Manager::_SimuApp(const std::string &projName)
 
 	std::string strWidth = "800";
 	std::string strHeight = "600";
-	std::string projXMLPath = "Data/" + projName + "/" +
-		projName + ".px2proj";
+	std::string projXMLPath = "Data/" + folderName + "/" + "project.px2proj";
 	Sizef sz = Project::GetConfigSize(projXMLPath);
 	if (sz.Width != 0.0f && sz.Height != 0.0f)
 	{
@@ -938,7 +952,7 @@ void LP_Manager::_SimuApp(const std::string &projName)
 	std::string strNoWin = mIsStartNoWindow ? StringHelp::IntToString(0) :
 		StringHelp::IntToString(1);
 	std::string strCfg =
-		std::string(" ") + "proj" + std::string("=") + projName +
+		std::string(" ") + "proj" + std::string("=") + folderName +
 		std::string(" ") + "w" + std::string("=") + strWidth +
 		std::string(" ") + "h" + std::string("=") + strHeight +
 		std::string(" ") + "window" + std::string("=") + strNoWin;
@@ -1471,24 +1485,38 @@ UIFrame *LP_Manager::CreateEngineFrame()
 	return mEngineFrame;
 }
 //----------------------------------------------------------------------------
-int LP_Manager::_GetProjType(const std::string &projName, int projectID)
+int LP_Manager::_GetProjType(const std::string &folderName)
 {
-	if ("engine" == projName || "engine_mtls" == projName)
+	// 0 engine engine_mtls
+	// 1 project
+	// 2 plugins
+	if ("engine" == folderName || "engine_mtls" == folderName)
 	{
 		return 0;
 	}
 
-	std::string addStr;
-	if (0 != projectID)
-		addStr = "_" + StringHelp::IntToString(projectID);
+	std::string projectName;
+	std::string strIDFolder;
+	int idFolder = 0;
+	StringTokenizer stk(folderName, "_");
+	if (stk.Count() > 1)
+	{
+		projectName = stk[0];
+		strIDFolder = stk[stk.Count() - 1];
+	}
+	else
+	{
+		projectName = folderName;
+	}
+	idFolder = StringHelp::StringToInt(strIDFolder);
 
-	std::string projPath = "Data/" + projName + addStr;
+	std::string projPath = "Data/" + folderName;
 	if (!PX2_RM.IsFileFloderExist(projPath))
 	{
 		return 0;
 	}
 
-	std::string projFilename = projPath + "/" + projName + ".px2proj";
+	std::string projFilename = projPath + "/" + "project.px2proj";
 	if (!PX2_RM.IsFileFloderExist(projFilename))
 		return 2;
 
@@ -1517,25 +1545,38 @@ void LP_Manager::_RefreshProjectsUI()
 			do
 			{
 				UIItem *item = 0;
-				std::string projName = eachFilename;
-
-					std::string projXMLPath = "Data/" + projName + "/" +
-					projName + ".px2proj";
+				std::string filefolder = eachFilename;
+				std::string projectName;
+				std::string strIDFolder;
+				int idFolder = 0;
+				StringTokenizer stk(filefolder, "_");
+				if (stk.Count() > 1)
+				{
+					projectName = stk[0];
+					strIDFolder = stk[stk.Count() - 1];
+				}
+				else
+				{
+					projectName = filefolder;
+				}
+				idFolder = StringHelp::StringToInt(strIDFolder);
+				
+				std::string projXMLPath = "Data/" + filefolder + "/project.px2proj";
 				int id = Project::GetProjectID(projXMLPath);
 
-				int projType = _GetProjType(projName, id);
+				int projType = _GetProjType(filefolder);
 				if (1 == projType)
 				{
 					LP_ProjectItem *projItem = new0 LP_ProjectItem();
 					AddProject(projItem);
-					item = _AddProjectItem(projName, id, true, projItem);
+					item = _AddProjectItem(filefolder, id, true, projItem);
 				}
 				else if (2 == projType)
 				{
-					item = mPluginList->AddItem(projName);
-					item->SetName(projName);
+					item = mPluginList->AddItem(filefolder);
+					item->SetName(filefolder);
 
-					UICheckButton *cb = UICheckButton::New(projName);
+					UICheckButton *cb = UICheckButton::New(filefolder);
 					item->AttachChild(cb);
 
 					cb->LocalTransform.SetTranslateY(-2.0f);
@@ -1543,14 +1584,14 @@ void LP_Manager::_RefreshProjectsUI()
 					cb->SetAnchorVer(0.5f, 0.5f);
 					cb->SetAnchorParamHor(-20.0f, -20.0f);
 					cb->SetSize(16.0f, 16.0f);
-					cb->Check(boostInfo.IsHasPlugin(projName), false);
+					cb->Check(boostInfo.IsHasPlugin(filefolder), false);
 					cb->AddVisitor(this);
 					cb->SetUserData("IsPlugin", true);
 				}
 
 				if (item)
 				{
-					item->GetFText()->GetText()->SetFontScale(0.85f);
+					item->GetFText()->GetText()->SetFontScale(0.75f);
 				}
 
 			} while (d.GetNext(&eachFilename));
@@ -1570,6 +1611,8 @@ void LP_Manager::_RefreshProjectsUI()
 			cloudItem->TheCloudButton->SetAlpha(0.2f);
 			cloudItem->TheItem->GetFText()->SetAlpha(0.7f);
 			cloudItem->TheCheckButton->Show(false);
+
+			projItem->GetFText()->GetText()->SetFontScale(0.75f);
 		}
 	}
 

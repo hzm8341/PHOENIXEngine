@@ -45,8 +45,8 @@ namespace PX2
 		UIFrame *CreateManyKitFrame();
 		UIFrame *CreateEngineFrame();
 		void _RefreshProjectsUI();
-		int _GetProjType(const std::string &projName, int projectID);
-		void _SimuApp(const std::string &name);
+		int _GetProjType(const std::string &folderName);
+		void _SimuApp(const std::string &folderName);
 		void _OpenEditor();
 		UIItem *_AddProjectItem(const std::string &name, int id, bool isLocalExist,
 			LP_ProjectItem *projItem);

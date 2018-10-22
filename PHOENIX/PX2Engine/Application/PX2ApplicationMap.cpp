@@ -197,7 +197,7 @@ bool Application::LoadProject(const std::string &name, bool doUpdate)
 	}
 
 	mProjectName = name;
-	std::string path = "Data/" + name + "/" + name + ".px2proj";
+	std::string path = "Data/" + name + "/" + "project.px2proj";
 	return PX2_APP.LoadProjectByPath(path);
 }
 //----------------------------------------------------------------------------
@@ -255,7 +255,8 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 	std::string outExt;
 	StringHelp::SplitFullFilename(pathname, outPath, outBaseName, outExt);
 
-	std::string projName = outBaseName;
+	int dataLength = std::string("Data/").length();
+	std::string projName = outPath.substr(dataLength, outPath.length()- dataLength);
 	mProjectName = projName;
 
 #if defined (WIN32) || defined (_WIN32)
@@ -853,8 +854,8 @@ void Application::MakeAProject(const std::string &projName,
 	
 	_CreateScriptFile(pathName, "scripts/lua/editor/", "editor.lua");
 
-	std::string pathword = "Data/" + pathName + projName + ".px2proj";
-	std::string pathward = "Data/" + pathName + projName + "_ui.px2proj";
+	std::string pathword = "Data/" + pathName + "/project.px2proj";
+	std::string pathward = "Data/" + pathName + "/project_ui.px2proj";
 	PX2_APP.NewProject(pathword, projName, so, width, height);
 	PX2_APP.SaveProject();
 	PX2_APP.CloseProject();

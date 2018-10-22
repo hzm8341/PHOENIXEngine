@@ -631,7 +631,7 @@ void N_Frame::DoNewProject()
 			_CreateScriptFile(pathName, "scripts_server/lua/", "stop.lua", "stop");
 			_CreateScriptFile(pathName, "scripts_server/lua/editor/", "editor.lua", "editorstop");
 
-			std::string path = "Data/" + pathName + name + ".px2proj";
+			std::string path = "Data/" + pathName  + "/project.px2proj";
 			PX2_APP.NewProject(path, name, screenOriention, width,
 				height);
 		}
