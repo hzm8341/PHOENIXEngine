@@ -160,8 +160,11 @@ void EngineServer::SendLidarData(int clientid)
 	data.Size = size;
 	data.Datas = lData;
 
+	int dataSize = sizeof(data.Size) + sizeof(RslidarDataComplete) *
+		(int)data.Datas.size();
+
 	SendMsgToClientBuffer(clientid, EngineServerSendLidarMsgID,
-		(const char *)&data, sizeof(data));
+		(const char *)&data, dataSize);
 }
 //----------------------------------------------------------------------------
 void EngineServer::BroadCastLidarData()
