@@ -1,5 +1,5 @@
 <rootnode>
-	<enums num="88">
+	<enums num="89">
 		<enum name="FunParamType">
 			<enum_item itemstr="FPT_NONE"/>
 			<enum_item itemstr="FPT_CHAR"/>
@@ -9223,6 +9223,13 @@
 			</function>
 		</class>
 		<class name="Robot" parentname="" singletonname="">
+			<enum name="RoleType">
+				<enum_item itemstr="RT_MASTER"/>
+				<enum_item itemstr="RT_CONNECTOR"/>
+				<enum_item itemstr="RT_MASTER_ONLY_SENDLIDAR"/>
+				<enum_item itemstr="RT_CONNECTOR_CALCULATE"/>
+				<enum_item itemstr="RT_MAX_TYPE"/>
+			</enum>
 			<function name="Robot" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="Robot" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
 			<function name="StartShareMemory" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
@@ -9296,6 +9303,13 @@
 			</function>
 			<function name="GetVoxelSection" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="VoxelSection *" is_retrun="true" type_str="VoxelSection" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetRoleType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="RoleType rtType" is_retrun="false" type_str="RoleType" valuename_str="rtType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetRoleType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="RoleType " is_retrun="true" type_str="RoleType" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 			<function name="CreateLidar" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>

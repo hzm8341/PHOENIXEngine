@@ -43,6 +43,17 @@
 
 		// slam2d
 	public:
+		enum RoleType
+		{
+			RT_MASTER,
+			RT_CONNECTOR,
+			RT_MASTER_ONLY_SENDLIDAR,
+			RT_CONNECTOR_CALCULATE,
+			RT_MAX_TYPE
+		};
+		void SetRoleType(RoleType rtType);
+		RoleType GetRoleType() const;
+	
 		void CreateLidar();
 		bool LidarOpen(const std::string &port, int baud);
 		LiDar *GetLidar();

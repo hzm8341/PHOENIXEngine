@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 10/18/18 11:12:29.
+** Generated automatically by tolua++-1.0.92 on 10/22/18 18:40:36.
 */
 
 #ifndef __cplusplus
@@ -86438,6 +86438,71 @@ static int tolua_PX2_Robot_GetVoxelSection00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetRoleType of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_SetRoleType00
+static int tolua_PX2_Robot_SetRoleType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
+  Robot::RoleType rtType = ((Robot::RoleType) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetRoleType'", NULL);
+#endif
+  {
+   self->SetRoleType(rtType);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetRoleType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetRoleType of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetRoleType00
+static int tolua_PX2_Robot_GetRoleType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetRoleType'", NULL);
+#endif
+  {
+   Robot::RoleType tolua_ret = (Robot::RoleType)  self->GetRoleType();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetRoleType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: CreateLidar of class  Robot */
 #ifndef TOLUA_DISABLE_tolua_PX2_Robot_CreateLidar00
 static int tolua_PX2_Robot_CreateLidar00(lua_State* tolua_S)
@@ -107285,6 +107350,13 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"CurPoints",tolua_get_Robot_CurPoints,tolua_set_Robot_CurPoints);
    tolua_function(tolua_S,"SetVoxelSection",tolua_PX2_Robot_SetVoxelSection00);
    tolua_function(tolua_S,"GetVoxelSection",tolua_PX2_Robot_GetVoxelSection00);
+   tolua_constant(tolua_S,"RT_MASTER",Robot::RT_MASTER);
+   tolua_constant(tolua_S,"RT_CONNECTOR",Robot::RT_CONNECTOR);
+   tolua_constant(tolua_S,"RT_MASTER_ONLY_SENDLIDAR",Robot::RT_MASTER_ONLY_SENDLIDAR);
+   tolua_constant(tolua_S,"RT_CONNECTOR_CALCULATE",Robot::RT_CONNECTOR_CALCULATE);
+   tolua_constant(tolua_S,"RT_MAX_TYPE",Robot::RT_MAX_TYPE);
+   tolua_function(tolua_S,"SetRoleType",tolua_PX2_Robot_SetRoleType00);
+   tolua_function(tolua_S,"GetRoleType",tolua_PX2_Robot_GetRoleType00);
    tolua_function(tolua_S,"CreateLidar",tolua_PX2_Robot_CreateLidar00);
    tolua_function(tolua_S,"LidarOpen",tolua_PX2_Robot_LidarOpen00);
    tolua_function(tolua_S,"GetLidar",tolua_PX2_Robot_GetLidar00);

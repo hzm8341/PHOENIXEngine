@@ -58,6 +58,7 @@ ZERONEUIFaceCtrl = class(LuaScriptController,
     _btnLiDarCur = nil,
     _btnUIPad = nil,
     _btnMapDraw = nil,
+    _btnChara = nil,
     _isCameraOpen = false,
 
     _musics = {},
@@ -658,6 +659,25 @@ function ZERONEUIFaceCtrl:CreateBtnsSetting()
     comBoxEdit:SetScriptHandler("zo_UICallabck")
     comBoxEdit:Choose(0)
 
+    -- chara
+    local comBoxChara = UIComboBox:New("BtnComboxBoxChara")
+    self._btnChara = comBoxChara
+    self._background:AttachChild(comBoxChara)
+    comBoxChara.LocalTransform:SetTranslateY(-5.0)
+    comBoxChara:AddChooseStr("master")
+    comBoxChara:AddChooseStr("connector")
+    comBoxChara:AddChooseStr("master_sendlidar")
+    comBoxChara:AddChooseStr("master_connector_calculate")
+    comBoxChara:SetChooseListHeightSameWithChooses()
+    comBoxChara:SetAnchorHor(1.0, 1.0)
+    comBoxChara:SetAnchorVer(0.0, 0.0)
+    comBoxChara:SetAnchorParamHor(-220.0, -220.0)
+    comBoxChara:SetAnchorParamVer(160.0, 160.0)
+    comBoxChara:SetSize(240.0, 30.0)
+    comBoxChara:SetPivot(1.0, 0.5)
+    comBoxChara:SetScriptHandler("zo_UICallabck")
+    comBoxChara:Choose(0)
+
     -- check show face
     local checkShowFace = UICheckButton:New("BtnShowFace")
     self._btnShowUI = checkShowFace
@@ -1059,6 +1079,17 @@ function zo_UICallabck(ptr, callType)
                 ZERONE_MAP_DrawType = 1
             elseif 2==select then
                 ZERONE_MAP_DrawType = 2
+            end
+        elseif "BtnComboxBoxChara"==name then
+            local select = ZERONE_UIFace._btnChara:GetChoose()
+            if 0==select then
+                PX2_ROBOT:SetRoleType(Robot.RT_MASTER)
+            elseif 1==select then
+                PX2_ROBOT:SetRoleType(Robot.RT_CONNECTOR)
+            elseif 2==select then
+                PX2_ROBOT:SetRoleType(Robot.RT_MASTER_ONLY_SENDLIDAR)
+            elseif 3==select then
+                PX2_ROBOT:SetRoleType(Robot.RT_CONNECTOR_CALCULATE)
             end
         end  
 	end
