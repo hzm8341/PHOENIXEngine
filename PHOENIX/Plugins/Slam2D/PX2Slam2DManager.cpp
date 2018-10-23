@@ -307,7 +307,8 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 	{
 		Robot::RoleType rt = PX2_ROBOT.GetRoleType();
 		LiDar *liDar = PX2_ROBOT.GetLidar();
-		if (liDar && rt == Robot::RT_MASTER)
+		if (liDar && rt == Robot::RT_MASTER || liDar && 
+			rt == Robot::RT_CONNECTOR_CALCULATE)
 		{
 			liDar->Update(appSeconds, elapsedSeconds);
 
