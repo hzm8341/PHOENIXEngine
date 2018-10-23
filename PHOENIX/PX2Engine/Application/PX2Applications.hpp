@@ -11,5 +11,6 @@
 #include "PX2Actor.hpp"
 #include "PX2ObjCast.hpp"
 #include "PX2CameraPlayController.hpp"
+#include "PX2EngineNetDefine.hpp"
 
 #endif

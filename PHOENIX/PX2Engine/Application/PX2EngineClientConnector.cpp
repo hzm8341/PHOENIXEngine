@@ -417,14 +417,12 @@ int EngineClientConnector::OnLidarData(const void *pbuffer, int buflen)
 	{
 		InStream inStream;
 
-		if (inStream.Load1(buflen, (char*)pbuffer))
+		inStream.Load(buflen, (char*)pbuffer);
+		NetLidarData *data = DynamicCast<NetLidarData>(
+			inStream.GetObjectAt(0));
+		if (data)
 		{
-			NetLidarData *data = DynamicCast<NetLidarData>(
-				inStream.GetObjectAt(0));
-			if (data)
-			{
-				PX2_ROBOT.GetLidar()->SetLiData(data->Datas);
-			}
+			PX2_ROBOT.GetLidar()->SetLiData(data->Datas);
 		}
 	}
 
