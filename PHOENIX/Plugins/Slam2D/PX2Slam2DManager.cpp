@@ -413,9 +413,12 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 #else
 			curY = PX2_ARDUINO.GetCurAxisObj().Y + offsetDegree;
 
-			LiDarSlamData &lsd = lsd0;
-			if (!lsd.Datas.empty())
-				buf.put(lsd.Datas);
+			if (liDar && (rt == Robot::RT_MASTER || rt == Robot::RT_CONNECTOR_CALCULATE))
+			{
+				LiDarSlamData &lsd = lsd0;
+				if (!lsd.Datas.empty())
+					buf.put(lsd.Datas);
+			}
 #endif
 
 			if (1 == _ShowType)

@@ -15,7 +15,7 @@ namespace PX2
 		IOSERVER_WRITE = 2,
 	};
 
-	const int MAX_OVERLAPBUF_ALLSZIE = 4096*4; // 4096
+	const int MAX_OVERLAPBUF_ALLSZIE = 4096; // 4096
 #if defined(_WIN32) || defined(WIN32)
 	const int MAX_OVERLAPBUF_SIZE = MAX_OVERLAPBUF_ALLSZIE - sizeof(OVERLAPPED) - sizeof(WSABUF) - 3 * 4;
 #else

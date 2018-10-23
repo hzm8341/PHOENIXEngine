@@ -223,11 +223,13 @@ namespace PX2
 	private:
 		bool _IsInRightDirection(const AVector &dir);
 		void _UpdateAdjustDirection(const AVector &dir);
+		void _CheckPathUpdateing(float appSeconds, float elapsedSeconds);
 
 		PathingGraphPtr mPathGraph;
 		PathPlanPtr mCurPathPlan;
 		APoint mGoTargetPos;
 		APoint mGoingPos;
+		bool mPathUpdateTiming;
 	};
 
 #include "PX2Robot.inl"

@@ -1412,7 +1412,7 @@ void Arduino::_Send(const std::string &cmdStr)
 			mConnector->SendMsgToServerBuffer(Arduino_SocketTCP_MsgID,
 				mLastSendContentString.c_str(),
 				(int)mLastSendContentString.length());
-			mConnector->Update(0.0f);
+			//mConnector->Update(0.0f);
 		}
 	}
 

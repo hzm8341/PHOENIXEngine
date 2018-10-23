@@ -415,17 +415,16 @@ int EngineClientConnector::OnLidarData(const void *pbuffer, int buflen)
 	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
 	if (rt == Robot::RT_CONNECTOR_CALCULATE)
 	{
-		unsigned long dstSize = buflen*20;
+		unsigned long dstSize = buflen*30;
 		std::vector<unsigned char> dstBuf;
 		dstBuf.resize(dstSize);
-		PX2_RM.ZipUnCompress((unsigned char*)&(dstBuf[0]), &dstSize,
-			(const unsigned char*)pbuffer, buflen);
-
-		if (dstSize > 0)
+		memset(&dstBuf[0], 0, dstSize);
+		if (PX2_RM.ZipUnCompress((unsigned char*)&(dstBuf[0]), &dstSize,
+			(const unsigned char*)pbuffer, buflen))
 		{
 			InStream inStream;
 
-			inStream.Load(dstSize, (char*)dstBuf[0]);
+			inStream.Load((int)dstSize, (char*)(&dstBuf[0]));
 			NetLidarData *data = DynamicCast<NetLidarData>(
 				inStream.GetObjectAt(0));
 			if (data)

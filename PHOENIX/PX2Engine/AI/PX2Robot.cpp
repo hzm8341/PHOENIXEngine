@@ -37,7 +37,8 @@ mFirstMoveDirectionAxisY(0.0f),
 mMoveDirectionDegreeWithFirst(0.0f),
 mIsHasEverSettedDirection(false),
 mIsSlamMapUpdate(true),
-mDegreeAdjust(0.0f)
+mDegreeAdjust(0.0f),
+mPathUpdateTiming(0.0f)
 {
 	mRoleType = RT_MASTER;
 
@@ -529,34 +530,7 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		mLiDar->Update(appseconds, elpasedSeconds);
 	}
 
-	if (mCurPathPlan && PX2_ARDUINO.IsInitlized())
-	{
-		if (mCurPathPlan->CheckForEnd())
-		{
-			PX2_ARDUINO.Run(Arduino::SDT_NONE, 0.0f);
-			PX2_LOG_INFO("Ended");
-
-			mCurPathPlan = 0;
-		}
-		else
-		{
-			APoint curPos = mCurPathPlan->GetCurrentNodePosition();
-
-			AVector toDir = curPos - mPosition;
-			toDir.Normalize();
-			if (!_IsInRightDirection(toDir))
-			{
-				_UpdateAdjustDirection(toDir);
-			}
-			else
-			{
-				PX2_ARDUINO.Run(Arduino::SDT_FORWARD, 120);
-			}
-
-
-			mCurPathPlan->CheckForNextNode(mPosition);
-		}
-	}
+	_CheckPathUpdateing(appseconds, elpasedSeconds);
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;
 	int resolution = mRobotMapData->MapStruct.MapResolution;
@@ -691,6 +665,45 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		//_RefreshVoxelSection(mRobotMapData->Map2D, resolution);
 
 		mIsMapDataChanged = false;
+	}
+}
+//----------------------------------------------------------------------------
+void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
+{
+	mPathUpdateTiming += elapsedSeconds;
+
+	if (mPathUpdateTiming > 0.1f)
+	{
+		if (mCurPathPlan && PX2_ARDUINO.IsInitlized())
+		{
+			if (mCurPathPlan->CheckForEnd())
+			{
+				PX2_ARDUINO.Run(Arduino::SDT_NONE, 0.0f);
+				PX2_LOG_INFO("Ended");
+
+				mCurPathPlan = 0;
+			}
+			else
+			{
+				APoint curPos = mCurPathPlan->GetCurrentNodePosition();
+
+				AVector toDir = curPos - mPosition;
+				toDir.Normalize();
+				if (!_IsInRightDirection(toDir))
+				{
+					_UpdateAdjustDirection(toDir);
+				}
+				else
+				{
+					PX2_ARDUINO.Run(Arduino::SDT_FORWARD, 120);
+				}
+
+
+				mCurPathPlan->CheckForNextNode(mPosition);
+			}
+		}
+
+		mPathUpdateTiming = 0.0f;
 	}
 }
 //----------------------------------------------------------------------------
@@ -1206,6 +1219,7 @@ HMatrix &Robot::GetAxisRotMatrix()
 void Robot::GoTarget(const APoint &targetPos)
 {
 	mGoTargetPos = targetPos;
+	mPathUpdateTiming = 0.0f;
 
 	mCurPathPlan = mPathGraph->FindPath(mPosition, mGoTargetPos);
 	if (mCurPathPlan)

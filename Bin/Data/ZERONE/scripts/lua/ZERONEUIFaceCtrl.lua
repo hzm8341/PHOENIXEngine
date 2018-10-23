@@ -102,7 +102,7 @@ function ZERONEUIFaceCtrl:OnAttached()
     local textPositionCur = UIFText:New()
     self._textPositionCur = textPositionCur
     frame:AttachChild(textPositionCur)
-    textPositionCur.LocalTransform:SetTranslateY(-10.0)
+    textPositionCur.LocalTransform:SetTranslateY(-6.0)
     textPositionCur:GetText():SetFontColor(Float3.WHITE)
     textPositionCur:GetText():SetFontSize(24)
     textPositionCur:SetAnchorVer(1.0, 1.0)
