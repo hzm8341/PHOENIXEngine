@@ -168,8 +168,18 @@ void EngineServer::SendLidarData(int clientid)
 	outStream.Insert(&data);
 	outStream.Save(bufSize, buf);
 
-	SendMsgToClientBuffer(clientid, EngineServerSendLidarMsgID,
-		buf, bufSize);
+	std::vector<unsigned char> dstDatas;
+	dstDatas.resize(bufSize);
+	memset(&dstDatas[0], 0, bufSize);
+
+	unsigned long destLength = bufSize;
+	PX2_RM.ZipCompress(&(dstDatas[0]), &destLength, (const unsigned char*)buf, bufSize);
+
+	if (destLength > 0)
+	{
+		SendMsgToClientBuffer(clientid, EngineServerSendLidarMsgID,
+			(const char *)&(dstDatas[0]), destLength);
+	}
 
 	delete1(buf);
 }
