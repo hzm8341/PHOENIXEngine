@@ -44,6 +44,18 @@ void NetLidarData::Load(InStream& source)
 	Object::Load(source);
 	PX2_VERSION_LOAD(source);
 
+	int numDatas = 0;
+	source.Read(numDatas);
+	Datas.resize(numDatas);
+	for (int i = 0; i < numDatas; i++)
+	{
+		RslidarDataComplete rdc;
+		source.Read(rdc.signal);
+		source.Read(rdc.angle);
+		source.Read(rdc.distance);
+		Datas[i] = rdc;
+	}
+
 	PX2_END_DEBUG_STREAM_LOAD(NetLidarData, source);
 }
 //----------------------------------------------------------------------------
@@ -73,6 +85,15 @@ void NetLidarData::Save(OutStream& target) const
 	Object::Save(target);
 	PX2_VERSION_SAVE(target);
 
+	int numDatas = (int)Datas.size();
+	target.Write(numDatas);
+	for (int i = 0; i < numDatas; i++)
+	{
+		target.Write(Datas[i].signal);
+		target.Write(Datas[i].angle);
+		target.Write(Datas[i].distance);
+	}
+
 	PX2_END_DEBUG_STREAM_SAVE(NetLidarData, target);
 }
 //----------------------------------------------------------------------------
@@ -80,6 +101,15 @@ int NetLidarData::GetStreamingSize(Stream &stream) const
 {
 	int size = Object::GetStreamingSize(stream);
 	size += PX2_VERSION_SIZE(mVersion);
+
+	int numDatas = (int)Datas.size();
+	size += sizeof(numDatas);
+	for (int i = 0; i < numDatas; i++)
+	{
+		size += sizeof(Datas[i].signal);
+		size += sizeof(Datas[i].angle);
+		size += sizeof(Datas[i].distance);
+	}
 
 	return size;
 }

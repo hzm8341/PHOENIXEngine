@@ -305,9 +305,9 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 {
 	if (Project::GetSingletonPtr())
 	{
+		Robot::RoleType rt = PX2_ROBOT.GetRoleType();
 		LiDar *liDar = PX2_ROBOT.GetLidar();
-
-		if (liDar)
+		if (liDar && rt == Robot::RT_MASTER)
 		{
 			liDar->Update(appSeconds, elapsedSeconds);
 

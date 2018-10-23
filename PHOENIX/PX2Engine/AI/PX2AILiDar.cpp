@@ -518,8 +518,7 @@ void LiDar::GetSlamData()
 	{
 		ScopedCS cs(&mMutex);
 		mLidarDatTimestamp = Timestamp();
-		mLiDarData = lidarDataThread;
-		mIsHasDataNew = true;
+		SetLiData(lidarDataThread);
 		isHanNewData = false;
 	}
 }
@@ -660,6 +659,7 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 void LiDar::SetLiData(const std::vector<RslidarDataComplete> &datas)
 {
 	mLiDarData = datas;
+	mIsHasDataNew = true;
 }
 //----------------------------------------------------------------------------
 std::vector<RslidarDataComplete> LiDar::GetLiDarData()

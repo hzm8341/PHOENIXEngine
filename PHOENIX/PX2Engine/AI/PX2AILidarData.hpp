@@ -13,7 +13,7 @@ namespace PX2
 	public:
 		RslidarDataComplete();
 
-		uint8_t signal;
+		int signal;
 		float   angle;
 		float   distance;
 
