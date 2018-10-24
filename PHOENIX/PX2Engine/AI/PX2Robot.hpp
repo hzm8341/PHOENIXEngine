@@ -229,7 +229,7 @@ namespace PX2
 		PathPlanPtr mCurPathPlan;
 		APoint mGoTargetPos;
 		APoint mGoingPos;
-		bool mPathUpdateTiming;
+		float mPathUpdateTiming;
 	};
 
 #include "PX2Robot.inl"
