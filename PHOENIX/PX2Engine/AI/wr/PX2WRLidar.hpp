@@ -6,11 +6,13 @@
 #include "PX2CorePre.hpp"
 #include "PX2UDPServer.hpp"
 #include "PX2AILidarData.hpp"
+#include "PX2DatagramSocket.hpp"
+#include "PX2Runnable.hpp"
 
 namespace PX2
 {
 
-	class PX2_ENGINE_ITEM WRLidar
+	class PX2_ENGINE_ITEM WRLidar : public Runnable
 	{
 	public:
 		WRLidar();
@@ -19,6 +21,8 @@ namespace PX2
 		void Start(const std::string &ip, int port);
 		void Stop();
 		void Update(float appSeconds, float elapsedSeconds);
+
+		virtual void Run();
 		
 		bool Set_scanning_parameters(int iFirstStepIndex, int iLastStepIndex);
 		bool Start_measurement();
@@ -26,10 +30,12 @@ namespace PX2
 		std::vector<RslidarDataComplete> RDCS;
 
 	private:
-		UDPServerPtr mUPDServer;
+		bool mIsStop;
 		std::string mIP;
 		int mPort;
 		SocketAddress mSocketAddress;
+		DatagramSocket mSocket;
+		ThreadPtr mThread;
 		bool is_actived;
 	};
 	typedef Pointer0<WRLidar> WRLidarPtr;

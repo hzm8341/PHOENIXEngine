@@ -301,7 +301,6 @@ bool LiDar::Open(const std::string &portIP, int baudratePort)
 	else if (LT_WR == mLiDarType)
 	{
 		mLiDarWR->Start(portIP, baudratePort);
-		mThread->Start(_ThreadLiDarReadCallback, this);
 		mIsConnected = true;
 	}
 
@@ -535,7 +534,7 @@ void LiDar::GetSlamData()
 		isHanNewData = true;
 	}
 
-	std::sort(lidarDataThread.begin(), lidarDataThread.end(), RslidarDataComplete::LessThan);
+	//std::sort(lidarDataThread.begin(), lidarDataThread.end(), RslidarDataComplete::LessThan);
 
 	if (isHanNewData)
 	{
@@ -621,6 +620,7 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 	if (mLiDarWR && LT_WR == mLiDarType)
 	{
 		mLiDarWR->Update(appSeconds, elapsedSeconds);
+		SetLiData(mLiDarWR->RDCS);
 	}
 
 	// update cur tex
