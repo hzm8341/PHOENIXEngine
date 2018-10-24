@@ -14,8 +14,8 @@ namespace PX2
 		RslidarDataComplete();
 
 		int signal;
-		float   angle;
-		float   distance;
+		float angle;
+		float distance;
 
 		static bool LessThan(const RslidarDataComplete &data0,
 			const RslidarDataComplete &data1)

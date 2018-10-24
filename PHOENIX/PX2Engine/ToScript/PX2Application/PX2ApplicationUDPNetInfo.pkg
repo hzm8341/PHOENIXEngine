@@ -25,7 +25,4 @@
 		bool IsConnected;
 
 		float UpdateTiming;
-
-		static void UDPServerRecvCallback(SocketAddress &address,
-			const std::string &buf);
 	};

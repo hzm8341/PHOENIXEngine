@@ -9,8 +9,8 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-void UDPNetInfo::UDPServerRecvCallback(SocketAddress &address,
-	const std::string &buf)
+void UDPNetInfo::UDPServerRecvCallback(UDPServer *sever, 
+	SocketAddress &address, const std::string &buf, int length)
 {
 	StringTokenizer stk(buf, " ");
 

@@ -11005,11 +11005,6 @@
 			<function name="GetIP" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="const std::string &amp;" is_retrun="true" type_str="std::string" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
-			<function name="UDPServerRecvCallback" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="SocketAddress &amp;address" is_retrun="false" type_str="SocketAddress" valuename_str="address" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
-				<param paramstr="const std::string &amp;buf" is_retrun="false" type_str="std::string" valuename_str="buf" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
 		</class>
 	</classes>
 </rootnode>

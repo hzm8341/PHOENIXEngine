@@ -70,11 +70,12 @@ void UDPServer::Update(float elapsedSeconds)
 	ScopedCS cs(&mMutex);
 	for (int i = 0; i < (int)mRecvBufs.size(); i++)
 	{
-		std::pair<SocketAddress, std::string> &item = mRecvBufs[i];
+		std::pair<SocketAddress, UDPRecvObj> &item = mRecvBufs[i];
 		SocketAddress &sktAddr = item.first;
 
-		std::string strBuf = item.second;
-		OnRecv(sktAddr, strBuf);
+		std::string strBuf = item.second.Buffer;
+		int sz = item.second.Size;
+		OnRecv(sktAddr, strBuf, sz);
 	}
 
 	mRecvBufs.clear();
@@ -96,7 +97,8 @@ void UDPServer::AddRecvCallback(UDPServerRecvCallback callback)
 	mUDPServerRecvCallbacks.push_back(callback);
 }
 //----------------------------------------------------------------------------
-void UDPServer::OnRecv(SocketAddress &address, const std::string &buf)
+void UDPServer::OnRecv(SocketAddress &address, const std::string &buf,
+	int length)
 {
 	std::string ip = address.GetHost().ToString();
 
@@ -105,7 +107,7 @@ void UDPServer::OnRecv(SocketAddress &address, const std::string &buf)
 		UDPServerRecvCallback callBack = mUDPServerRecvCallbacks[i];
 		if (callBack)
 		{
-			callBack(address, buf);
+			callBack(this, address, buf, length);
 		}
 	}
 
@@ -165,14 +167,19 @@ void UDPServer::Run()
 		mReadEvent.Set();
 		if (mSocket.Poll(span, Socket::SELECT_READ))
 		{
-			char buffer[256];
+			char buffer[65535];
 			SocketAddress sender;
 			int n = mSocket.ReceiveFrom(buffer, sizeof(buffer), sender);
-			std::string recvStr(buffer, n);
+			if (n > 0)
+			{
+				UDPRecvObj obj;
+				obj.Size = n;
+				obj.Buffer = std::string(buffer, n);
 
-			ScopedCS cs(&mMutex);
-			mRecvBufs.push_back(
-				std::pair<SocketAddress, std::string>(sender, recvStr));
+				ScopedCS cs(&mMutex);
+				mRecvBufs.push_back(
+					std::pair<SocketAddress, UDPRecvObj>(sender, obj));
+			}
 		}
 	}
 }

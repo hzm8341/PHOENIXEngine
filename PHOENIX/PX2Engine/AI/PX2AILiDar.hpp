@@ -52,6 +52,7 @@ namespace PX2
 	};
 
 	class ClientConnector;
+	class WRLidar;
 
 	class PX2_ENGINE_ITEM LiDar : public Object
 	{
@@ -113,6 +114,8 @@ namespace PX2
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 		rp::standalone::rplidar::RPlidarDriver * mLidar_drv;
 #endif
+
+		WRLidar *mLiDarWR;
 
 		ClientConnector *mClientConnector;
 

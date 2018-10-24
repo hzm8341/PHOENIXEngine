@@ -2,11 +2,29 @@
 
 ZERONEText_SerialLidarConnect = nil
 ZERONESerialList_Lidar = nil
+ZERONEComboBox_LidarType = nil
 function zo_ConnectLidar()
     local uiFrame = UIFrame:New()
 
     uiFrame:SetAnchorHor(0.0, 1.0)
-	uiFrame:SetAnchorVer(0.0, 1.0)
+    uiFrame:SetAnchorVer(0.0, 1.0)
+    
+    local comboxBoxLidarType = UIComboBox:New("BtnComboxBoxLidarType")
+    uiFrame:AttachChild(comboxBoxLidarType)
+    ZERONEComboBox_LidarType = comboxBoxLidarType
+    comboxBoxLidarType.LocalTransform:SetTranslateY(-8.0)
+    comboxBoxLidarType:AddChooseStr("3i")
+    comboxBoxLidarType:AddChooseStr("RP")
+    comboxBoxLidarType:AddChooseStr("WR")
+    comboxBoxLidarType:SetChooseListHeightSameWithChooses()
+    comboxBoxLidarType:SetAnchorHor(0.0, 0.0)
+    comboxBoxLidarType:SetAnchorVer(1.0, 1.0)
+    comboxBoxLidarType:SetAnchorParamHor(90.0, 90.0)
+    comboxBoxLidarType:SetAnchorParamVer(-20.0, -20.0)
+    comboxBoxLidarType:SetSize(120.0, 30.0)
+    comboxBoxLidarType:SetPivot(0.0, 0.5)
+    comboxBoxLidarType:SetScriptHandler("zo_ButFrameCallabck_Lidar")
+    comboxBoxLidarType:Choose(0)
 
     local list = UIList:New("ListLidar")
     uiFrame:AttachChild(list)
@@ -138,11 +156,12 @@ function zo_ScanSerialDevices_Lidar()
 end
 
 function zo_SerialTryToConnect_Lidar()
-    PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_RP)
     local lidarType = PX2_ROBOT:GetLidar():GetLiDarType()
 
     if LiDar.LT_SICK ==lidarType then
         PX2_ROBOT:LidarOpen("169.254.177.161", 2111)
+    elseif LiDar.LT_WR == lidarType then
+        PX2_ROBOT:LidarOpen("192.168.0.10", 2112)
     else
         local item = ZERONESerialList_Lidar:GetSelectedItem()
                     
@@ -199,6 +218,17 @@ function zo_ButFrameCallabck_Lidar(ptr, callType)
     elseif UICT_DISCHECKED == callType then
         if "SlamCheckButton"==name then
             PX2_ROBOT:SetSlamMapUpdate(false)
+        end
+    elseif UICT_COMBOBOX_CHOOSED == callType then
+        if "BtnComboxBoxLidarType"==name then
+            local chooseStr = ZERONEComboBox_LidarType:GetChooseStr()
+            if "3i" == chooseStr then
+                PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
+            elseif "RP"==chooseStr then
+                PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_RP)    
+            elseif "WR"==chooseStr then
+                PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_WR)
+            end
         end
 	end
 end

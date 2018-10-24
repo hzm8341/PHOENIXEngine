@@ -12,6 +12,7 @@
 #include "PX2GraphicsEventType.hpp"
 #include "PX2NetClientConnector.hpp"
 #include "PX2AIES.hpp"
+#include "PX2WRLidar.hpp"
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 #include "rptypes.h"
 #include "rplidar_cmd.h"
@@ -54,6 +55,7 @@ void _ThreadLiDarReadCallback(void* ld)
 LiDar::LiDar():
 mDeviceConnectin(0),
 mLiDarIII(0),
+mLiDarWR(0),
 mIsCurTransformLost(false),
 mIsTransformUpdate(false),
 mIsConnected(false),
@@ -66,9 +68,10 @@ mIsSupportControlMoto(false)
 
 	mOffsetDegree = -90.0f;
 
-	mLiDarType = LT_RP;
+	mLiDarType = LT_WR;
 	mLiDarIII = new everest::hwdrivers::C3iroboticsLidar();
 	mClientConnector = new0 ClientConnector(5);
+	mLiDarWR = new0 WRLidar();
 
 	mThread = new0 Thread();
 	
@@ -124,6 +127,12 @@ LiDar::~LiDar()
 	{
 		delete(mDeviceConnectin);
 		mDeviceConnectin = 0;
+	}
+	if (mLiDarWR)
+	{
+		mLiDarWR->Stop();
+		delete(mLiDarWR);
+		mLiDarWR = 0;
 	}
 
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
@@ -289,6 +298,12 @@ bool LiDar::Open(const std::string &portIP, int baudratePort)
 			mClientConnector->GetSocket().SendBytes(buf.c_str(), buf.length());
 		}
 	}
+	else if (LT_WR == mLiDarType)
+	{
+		mLiDarWR->Start(portIP, baudratePort);
+		mThread->Start(_ThreadLiDarReadCallback, this);
+		mIsConnected = true;
+	}
 
 	return true;
 }
@@ -369,7 +384,7 @@ void LiDar::Close()
 			PX2_EW.BroadcastingLocalEvent(ent);
 		}
 	}
-	else
+	else if (LT_RP == mLiDarType)
 	{
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 		if (mIsConnected) 
@@ -380,6 +395,13 @@ void LiDar::Close()
 			PX2_EW.BroadcastingLocalEvent(ent);
 		}
 #endif
+	}
+	else if (LT_WR == mLiDarType)
+	{
+		mLiDarWR->Stop();
+
+		Event *ent = PX2_CREATEEVENTEX(AIES, LiDarClose);
+		PX2_EW.BroadcastingLocalEvent(ent);
 	}
 
 	mIsHasDataNew = false;
@@ -509,7 +531,8 @@ void LiDar::GetSlamData()
 	}
 	else if (LT_WR == mLiDarType)
 	{
-		/*_*/
+		lidarDataThread = mLiDarWR->RDCS;
+		isHanNewData = true;
 	}
 
 	std::sort(lidarDataThread.begin(), lidarDataThread.end(), RslidarDataComplete::LessThan);
@@ -593,6 +616,11 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 	if (mClientConnector && LT_SICK==mLiDarType)
 	{
 		mClientConnector->Update(appSeconds);
+	}
+
+	if (mLiDarWR && LT_WR == mLiDarType)
+	{
+		mLiDarWR->Update(appSeconds, elapsedSeconds);
 	}
 
 	// update cur tex

@@ -9,6 +9,8 @@
 namespace PX2
 {
 
+	class UDPServer;
+
 	class PX2_ENGINE_ITEM UDPNetInfo
 	{
 	public:
@@ -35,8 +37,8 @@ namespace PX2
 
 		float UpdateTiming;
 
-		static void UDPServerRecvCallback(SocketAddress &address,
-			const std::string &buf);
+		static void UDPServerRecvCallback(UDPServer *sever, SocketAddress &address,
+			const std::string &buf, int length);
 	};
 	typedef Pointer0<UDPNetInfo> UDPNetInfoPtr;
 

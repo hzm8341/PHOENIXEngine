@@ -796,8 +796,8 @@
     <Filter Include="2.AI\Path">
       <UniqueIdentifier>{43ab1cff-3cdc-4029-a5f3-39c69593a53b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\Robot\LiDar\sick">
-      <UniqueIdentifier>{ff3dad4e-0595-42f8-bf65-1ca80c5b6fed}</UniqueIdentifier>
+    <Filter Include="2.AI\Robot\LiDar\wr">
+      <UniqueIdentifier>{22fb0adc-5be5-4853-ae0a-ca558bd9ae11}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -4620,6 +4620,12 @@
     <ClInclude Include="AI\PX2AILidarData.hpp">
       <Filter>2.AI\Robot\LiDar</Filter>
     </ClInclude>
+    <ClInclude Include="AI\wr\PX2WRLidar.hpp">
+      <Filter>2.AI\Robot\LiDar\wr</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\wr\PX2WRConstant.hpp">
+      <Filter>2.AI\Robot\LiDar\wr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -7885,6 +7891,9 @@
     </ClCompile>
     <ClCompile Include="AI\PX2AILidarData.cpp">
       <Filter>2.AI\Robot\LiDar</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\wr\PX2WRLidar.cpp">
+      <Filter>2.AI\Robot\LiDar\wr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

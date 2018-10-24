@@ -333,7 +333,7 @@ int SocketImpl::ReceiveFrom (void* buffer, int length, SocketAddress& address,
 	char abuffer[SocketAddress::MAX_ADDRESS_LENGTH];
 	struct sockaddr* sa = reinterpret_cast<struct sockaddr*>(abuffer);
 	px2_socklen_t saLen = sizeof(abuffer);
-	int rc;
+	int rc = -1;
 	//do
 	{
 		if (mSocket == PX2_INVALID_SOCKET)

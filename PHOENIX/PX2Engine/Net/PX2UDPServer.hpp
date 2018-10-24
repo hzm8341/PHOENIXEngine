@@ -14,8 +14,15 @@
 namespace PX2
 {
 
-	typedef void(*UDPServerRecvCallback) (SocketAddress &address,
-		const std::string &buf);
+	class UDPServer;
+
+	struct UDPRecvObj{
+		int Size;
+		std::string Buffer;
+	};
+
+	typedef void(*UDPServerRecvCallback) (UDPServer *server, SocketAddress &address,
+		const std::string &buf, int size);
 
 	class PX2_ENGINE_ITEM UDPServer : public Object, public Runnable
 	{
@@ -39,7 +46,7 @@ namespace PX2
 
 		bool IsHasRecvCallback(UDPServerRecvCallback callback);
 		void AddRecvCallback(UDPServerRecvCallback callback);
-		void OnRecv(SocketAddress &address, const std::string &buf);
+		void OnRecv(SocketAddress &address, const std::string &buf, int length);
 
 		bool IsHasOnRecvCallback(const std::string &callback) const;
 		bool AddOnRecvCallback(const std::string &callback);
@@ -52,7 +59,7 @@ namespace PX2
 		bool mIsStop;
 
 		Mutex mMutex;
-		std::vector<std::pair<SocketAddress, std::string> > mRecvBufs;
+		std::vector<std::pair<SocketAddress, UDPRecvObj> > mRecvBufs;
 		std::vector<UDPServerRecvCallback> mUDPServerRecvCallbacks;
 
 		std::vector<std::string> mOnRecvCallbacks;
