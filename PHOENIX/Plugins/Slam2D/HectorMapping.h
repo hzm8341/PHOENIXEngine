@@ -20,7 +20,7 @@
 #define ANGLE_MAX_DATA (2*M_PI)
 // m
 #define RANGE_MIN 0.2
-#define RANGE_MAX 6.0
+#define RANGE_MAX 40.0
 #define DEGREE_TO_RAD (M_PI/180.0)
 
 struct Point

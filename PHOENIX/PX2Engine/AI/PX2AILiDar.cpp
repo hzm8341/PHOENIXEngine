@@ -645,7 +645,7 @@ void LiDar::Update(float appSeconds, float elapsedSeconds)
 		}
 
 		// update
-		float maxDist = 6.0f;
+		float maxDist = 40.0f;
 		for (int i = 0; i < (int)lidarDatas.size(); i++)
 		{
 			RslidarDataComplete lidarData = lidarDatas[i];

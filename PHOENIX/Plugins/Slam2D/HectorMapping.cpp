@@ -7,7 +7,7 @@ HectorMapping::HectorMapping(): lastGetMapUpdateIndex(-100)
 {
   mIsUpdateMap = true;
 
-  p_map_resolution_ = 0.02;//0.08;//0.025; // 0.08
+  p_map_resolution_ = 0.05;//0.08;//0.025; // 0.08
   p_map_size_ = 1024;
   p_map_start_x_ = 0.5; 
   p_map_start_y_ = 0.5;
@@ -18,7 +18,7 @@ HectorMapping::HectorMapping(): lastGetMapUpdateIndex(-100)
   p_map_update_angle_threshold_ = 0.2f;
 
   p_sqr_laser_min_dist_ = static_cast<float>(0.35 * 0.35);
-  p_sqr_laser_max_dist_ = static_cast<float>(10 * 10);
+  p_sqr_laser_max_dist_ = static_cast<float>(40 * 40);
   p_laser_z_min_value_ = static_cast<float>(-1.0);
   p_laser_z_max_value_ = static_cast<float>(1.0);
 
