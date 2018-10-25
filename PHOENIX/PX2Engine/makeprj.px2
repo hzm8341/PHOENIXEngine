@@ -80,6 +80,7 @@ INCPATH := \
 	-I ../AI/detour/include/ \
 	-I ../AI/rplidar/include/ \
 	-I ../AI/rplidar/src/ \
+	-I ../AI/wr/ \
 	-I ../AI/SkillSystem/ \
 	-I ../AI/ \
 	-I ../Logic/ \
