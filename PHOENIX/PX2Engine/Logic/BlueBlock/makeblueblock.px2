@@ -1,0 +1,80 @@
+#makeblueblock
+
+CFG ?= Debug
+
+CC := /usr/bin/gcc
+
+CFLAGS := -c -std=c++11 -D__LINUX__ -DLUAPLUS_EXCEPTIONS
+
+ifeq (Debug,$(findstring Debug,$(CFG)))
+CFLAGS += -g -D_DEBUG
+else
+CFLAGS += -O2 -DNDEBUG
+endif
+
+DSTSO := libPX2Engine
+ifeq (ARM,$(findstring ARM,$(CFG)))
+DSTSO := libPX2EngineARM
+endif
+
+LIBPATH := ../../../PX2SDK/Library/$(CFG)
+
+ifeq (Dynamic,$(findstring Dynamic,$(CFG)))
+SOVER = 2
+RELVER = $(SOVER).5
+CFLAGS += -fPIC
+AR := $(CC)
+ARFLAGS := $(LDFLAGS) -L $(LIBPATH) -shared -fPIC -Wl,-soname,$(libPX2Engine).so -o
+LIB := $(LIBPATH)/$(libPX2Engine).so.$(RELVER)
+else
+AR := /usr/bin/ar
+ARFLAGS := rs
+LIB := $(LIBPATH)/$(libPX2Engine).a
+endif
+
+INCPATH := \
+    -I . \
+	-I ../../Core/ \
+	-I ../../Mathematics/ \
+	-I ../../Graphics/ \
+	-I ../../Unity/ \
+	-I ../../Unity/AppPlay/ \
+	-I ../../Unity/Lua/ \
+	-I ../../Unity/ToLua/ \
+	-I ../../Unity/LuaPlus/ \
+	-I ../../Net/ \
+	-I ../../UI/ \
+	-I ../../Effect/ \
+	-I ../../Terrains/ \
+	-I ../../AI/ \
+	-I ../../AI/OpenSteer/ \
+	-I ../../AI/OpenSteer/src/ \
+	-I ../../AI/OpenSteer/include/ \
+	-I ../../AI/OpenSteer/include/OpenSteer/ \
+	-I ../../Application/ \
+	-I ../
+	
+INCDIR := ../../../PX2SDK/Include
+	
+FTINC := $(wildcard *.hpp)
+FTINC := $(notdir $(INC))
+INC := $(FTINC)
+
+SRC := $(wildcard *.cpp)
+SRC := $(notdir $(SRC))
+
+OBJDIR := ../../$(CFG)
+
+FTOBJ := $(SRC:%.cpp=$(OBJDIR)/%.o)
+
+OBJ := $(FTOBJ)
+
+build : $(OBJ)
+	$(AR) $(ARFLAGS) $(LIB) $(OBJDIR)/*.o
+
+$(OBJDIR)/%.o : %.cpp
+	$(CC) $(INCPATH) $(CFLAGS) $< -o $@
+
+clean :
+	rm -rf $(LIB)
+	rm -rf $(OBJDIR)

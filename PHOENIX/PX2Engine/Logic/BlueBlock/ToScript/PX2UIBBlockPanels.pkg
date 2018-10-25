@@ -1,0 +1,13 @@
+// PX2UIBBlockPanels.pkg
+
+	class UIBBlockPanels : public UIFrame
+	{
+	public:
+		UIBBlockPanels();
+		virtual ~UIBBlockPanels();
+		
+		static UIBBlockPanels *New();
+		static UIBBlockPanels *New(const std::string &name);
+
+		void ShowPanel(const std::string &panelName);
+	};
