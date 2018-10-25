@@ -1021,6 +1021,8 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2NavPoint2D.hpp" />
     <ClInclude Include="AI\PX2Robot.hpp" />
     <ClInclude Include="AI\PX2RobotDatas.hpp" />
+    <ClInclude Include="AI\PX2WRConstant.hpp" />
+    <ClInclude Include="AI\PX2WRLidar.hpp" />
     <ClInclude Include="AI\recast\include\Recast.h" />
     <ClInclude Include="AI\recast\include\RecastAlloc.h" />
     <ClInclude Include="AI\recast\include\RecastAssert.h" />
@@ -1067,8 +1069,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\SkillSystem\PX2UISkillBuf.hpp" />
     <ClInclude Include="AI\SkillSystem\PX2UISkill.hpp" />
     <ClInclude Include="AI\SkillSystem\PX2UISkills.hpp" />
-    <ClInclude Include="AI\wr\PX2WRConstant.hpp" />
-    <ClInclude Include="AI\wr\PX2WRLidar.hpp" />
     <ClInclude Include="Application\PX2Actor.hpp" />
     <ClInclude Include="Application\PX2AmbientRegionController.hpp" />
     <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
@@ -2276,6 +2276,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\PX2NavMoveUnit.cpp" />
     <ClCompile Include="AI\PX2Robot.cpp" />
     <ClCompile Include="AI\PX2RobotDatas.cpp" />
+    <ClCompile Include="AI\PX2WRLidar.cpp" />
     <ClCompile Include="AI\recast\src\Recast.cpp" />
     <ClCompile Include="AI\recast\src\RecastAlloc.cpp" />
     <ClCompile Include="AI\recast\src\RecastArea.cpp" />
@@ -2314,7 +2315,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\SkillSystem\PX2UISkillBuf.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2UISkill.cpp" />
     <ClCompile Include="AI\SkillSystem\PX2UISkills.cpp" />
-    <ClCompile Include="AI\wr\PX2WRLidar.cpp" />
     <ClCompile Include="Application\PX2Actor.cpp" />
     <ClCompile Include="Application\PX2AmbientRegionController.cpp" />
     <ClCompile Include="Application\PX2AppBoostInfo.cpp" />

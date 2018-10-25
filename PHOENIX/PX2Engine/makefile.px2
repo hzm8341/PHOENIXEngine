@@ -40,7 +40,6 @@ endif
 	cd AI/detour						; make -f makedetour.px2 CFG=$(CFG)
 	cd AI							 		&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Logic							 	&& make -f ../makeprj.px2 CFG=$(CFG)
-	cd Logic/BlueBlock						;  make -f makeblueblock.px2 CFG=$(CFG)
 	cd Application							&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd ToScript								&& make -f maketoscript.px2 CFG=$(CFG)
 	

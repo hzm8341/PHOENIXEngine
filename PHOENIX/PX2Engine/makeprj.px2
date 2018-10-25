@@ -84,7 +84,6 @@ INCPATH := \
 	-I ../AI/SkillSystem/ \
 	-I ../AI/ \
 	-I ../Logic/ \
-	-I ../Logic/BlueBlock/ \
 	-I ../Application/ \
 	-I ../ToScript/ \
 	-I ../../ThirdPartiesLibs/FMOD/linux/inc/
