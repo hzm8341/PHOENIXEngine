@@ -35,7 +35,6 @@ endif
 	cd AI/OpenSteer						; make -f makeopensteer.px2 CFG=$(CFG)
 	cd AI/iiiroboticslidar2				; make -f makelidar.px2 CFG=$(CFG)
 	cd AI/rplidar						; make -f makerplidar.px2 CFG=$(CFG)
-	cd AI/wr							; make -f makerecast.px2 CFG=$(CFG)
 	cd AI/SkillSystem					; make -f makeskillsystem.px2 CFG=$(CFG)
 	cd AI/recast						; make -f makerecast.px2 CFG=$(CFG)
 	cd AI/detour						; make -f makedetour.px2 CFG=$(CFG)
