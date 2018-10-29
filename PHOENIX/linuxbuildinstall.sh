@@ -1,3 +1,3 @@
 # install
-make CFG=ReleaseARMDynamic -f makefile.px2 install
+make CFG=ReleaseDynamic -f makefile.px2 install
 ldconfig
