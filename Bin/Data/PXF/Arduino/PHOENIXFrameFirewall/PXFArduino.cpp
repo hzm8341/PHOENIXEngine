@@ -596,6 +596,9 @@ void PXFArduino::_MotoSpeedInit(int encorderLA, int encorderLB,
   mPinEncroderRA = encorderRA;
   mPinEncroderRB = encorderRB;
 
+  pinMode(mPinEncroderLB, INPUT);
+  pinMode(mPinEncroderRB, INPUT);
+
   mIsUseSpeedEncorder = true;
 
 #if defined PXF_PID
