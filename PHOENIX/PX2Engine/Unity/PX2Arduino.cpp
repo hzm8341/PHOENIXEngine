@@ -845,7 +845,7 @@ bool Arduino::_NetStr2Bool(const std::string &str)
 //----------------------------------------------------------------------------
 bool Arduino::_HighLow2Bool(const std::string &str)
 {
-	return str=="high" ? true : false;
+	return str=="HIGH" ? true : false;
 }
 //----------------------------------------------------------------------------
 int Arduino::_NetStr2Int(const std::string &str)
