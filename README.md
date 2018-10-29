@@ -93,37 +93,28 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 
 ### Linux
 
-**1.安装依赖库**
+当前目录为PHOENIXEngine/PHOENIX
 
-- 	拷贝FMOD:
-
-	进入目录 PHOENIX/ThirdPartiesLibs/
-
-	sudo cp -fr FMOD /usr/local/lib/ 
-
-	sudo chmod 777 /usr/local/lib/FMOD
+**1.配置**
 	
-	进入目录 /usr/local/lib/FMOD/linux/lib/x86
-	如果是64位系统环境进入 /usr/local/lib/FMOD/linux/lib/x86_64目录
+	sudo sh ./linuxbuildconfig.sh
 
-	sudo cp -f libfmod.so.9 /usr/local/lib/
+**2.编译引擎库libPX2Engine.so(注意这里不需要sudo):**
 
-- 	安装OpenGL:
-
-	sudo apt-get install freeglut3-dev
-
-**2.编译引擎库libPX2Engine.so:**
-
-	在目录PHOENIXEngine/Phoenix中执行:make CFG=ReleaseDynamic -f makefile.px2
+	linuxbuild.sh
 
 **3.安装引擎库:**
 
-	在目录PHOENIXEngine/Phoenix中执行:sudo make CFG=ReleaseDynamic -f makefile.px2 install
+	sudo sh ./linuxbuildinstall.sh
 
-**4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
+**4.如果具体的项目是动态链接库，需要编译c++源文件，例如项目名称为Sample编译项目库为Sample.so
 如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
 
 	在目录PHOENIXEngine/PHOENIX/Projects/Client/Sample中执行:make CFG=ReleaseDynamic -f makefile.px2
+	
+**4.1如果具体的插件是动态链接库，需要编译c++源文件，例如插件名称为Slam2D编译项目库为Slam2D.so
+
+	在目录PHOENIXEngine/PHOENIX/Plugins/Slam2D中执行:make CFG=ReleaseDynamic -f makefile.px2
 
 **5.运行最终的可执行程序**
 	
@@ -161,6 +152,10 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
 
 	在目录PHOENIXEngine/PHOENIX/Projects/Client/Sample中执行:make CFG=ReleaseARMDynamic -f makefile.px2
+	
+**4.1如果具体的插件是动态链接库，需要编译c++源文件，例如插件名称为Slam2D编译项目库为Slam2D.so
+
+	在目录PHOENIXEngine/PHOENIX/Plugins/Slam2D中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
 **5.执行**
 	
