@@ -101,7 +101,7 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 
 **2.编译引擎库libPX2Engine.so(注意这里不需要sudo):**
 
-	linuxbuild.sh
+	sh ./linuxbuild.sh
 
 **3.安装引擎库:**
 
