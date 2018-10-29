@@ -122,31 +122,17 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 	
 ### Linux Raspberry
 
-**1.安装依赖库**
-
-- 拷贝FMOD:
-
-	进入目录 PHOENIX/ThirdPartiesLibs/
-
-	sudo cp -fr FMOD /usr/local/lib/ 
-
-	sudo chmod 777 /usr/local/lib/FMOD
+**1.配置**
 	
-	进入目录 /usr/local/lib/FMOD/linux/lib/armhf
+	sudo sh ./linuxbuildconfigarm.sh
 
-	sudo cp -f libfmod.so.9 /usr/local/lib/
+**2.编译引擎库libPX2Engine.so(注意这里不需要sudo):**
 
-- 	安装OpenGLES
-	
-	sudo apt-get install libgles2-mesa-dev
-
-**2.编译引擎库libARMPX2Engine.so:**
-
-	在目录PHEONIXEngine/Phoenix中执行:make CFG=ReleaseARMDynamic -f makefile.px2
+	sh ./linuxbuildarm.sh
 
 **3.安装引擎库:**
 
-	在目录PHEONIXEngine/Phoenix中执行:sudo make CFG=ReleaseARMDynamic -f makefile.px2 install
+	sudo sh ./linuxbuildinstallarm.sh
 
 **4.如果具体的项目是动态链接库，需要编译c++源文件，例如如果项目名称为Sample编译项目库为Sample.so
 如果想要运行引擎，进行快速查看，可以不需要编译，跳过此项
