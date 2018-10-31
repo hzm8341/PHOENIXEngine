@@ -40,7 +40,7 @@ void PXFArduino::OnCMD(String &cmdStr)
       bool distance = _Str2Bool(mCmdParams[2]);
       int buzzer = _Str2Bool(mCmdParams[3]);
       int light = _Str2Bool(mCmdParams[4]);
-      _SetBabyRobot(moto, diance, buzzer,light );
+      _SetBabyRobot(moto, distance, buzzer, light);
     }
     else if (sOptTypeVal[OT_PM] == cmdCH)
     {
