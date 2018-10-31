@@ -154,6 +154,7 @@ enum OptionType
   OT_AXIS_I,
   OT_RETURN_AXIS,
   OT_SET_TIME,
+  OT_SET_BABYROBOT,
   OT_MC_INTERNAL_LIGHT, // makerclock
   OT_MC_LIGHT,
   OT_MC_SEGMENT,
@@ -263,6 +264,7 @@ public:
   float _ReadHX711(int index);
   void _HXSend(int index, float val);
   void _SetTime();
+  void _SetBabyRobot(bool moto, bool distance, bool buzzer, bool light);
 
 public:
   int mPinEncroderLA;

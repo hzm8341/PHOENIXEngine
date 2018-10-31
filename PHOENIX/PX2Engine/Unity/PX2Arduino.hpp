@@ -178,6 +178,8 @@ namespace PX2
 		float AxisGetRoll() const;
 		float AxisGetYaw() const;
 
+		void BabyRobotSet(bool moto, bool distance, bool buzzer, bool light);
+
 		bool AddArduinoToSendCallback(ArduinoToSendCallback callback);
 		bool IsHasArduinoToSendCallback(ArduinoToSendCallback callback) const;
 
@@ -234,6 +236,7 @@ namespace PX2
 			OT_AXIS_I,
 			OT_RETURN_AXIS,
 			OT_SET_TIME,
+			OT_SET_BABYROBOT,
 			OT_MC_INTERNAL_LIGHT, // makerclock
 			OT_MC_LIGHT,
 			OT_MC_SEGMENT,

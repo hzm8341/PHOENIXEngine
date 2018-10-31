@@ -71,6 +71,7 @@ char PXFArduino::sOptTypeVal[OT_MAX_TYPE] =
     32, //OT_AXIS_I
     33, //OT_RETURN_AXIS
     34, //OT_SET_TIME,
+    35, //OT_SET_BABYROBOT
     500, //OT_MC_INTERNAL_LIGHT
     501, //OT_MC_LIGHT
     502, //OT_MC_SEGMENT
@@ -312,12 +313,10 @@ void PXFArduino::_VehicleStop()
 //----------------------------------------------------------------------------
 void PXFArduino::_WeightInit(int index, PXFPin pinR, PXFPin pinT)
 {
-  
 }
 //----------------------------------------------------------------------------
 void PXFArduino::_WeightTest(int index)
-{
-  
+{ 
 }
 //----------------------------------------------------------------------------
 float PXFArduino::_GetWeight(int index)
@@ -951,6 +950,12 @@ void PXFArduino::_SetTime()
   mSettedTimeMe = millis();
   if (0.0==mSettedTimeMe)
     mSettedTimeMe = 0.001;
+}
+//----------------------------------------------------------------------------
+void PXFArduino::_SetBabyRobot(bool moto, bool distance, bool buzzer, 
+bool light)
+{
+  
 }
 //----------------------------------------------------------------------------
 void PXFArduino::_InitAxis()

@@ -245,6 +245,7 @@ std::string Arduino::sOptTypeStr[OT_MAX_TYPE] =
 	"32", //OT_AXIS_I,
 	"33", //OT_RETURN_AXIS
 	"34", //OT_SET_TIME
+	"35", //OT_SET_BABYROBOT
 	"500", //OT_MC_INTERNAL_LIGHT
 	"501", //OT_MC_LIGHT
 	"502", //OT_MC_SEGMENT
@@ -1285,6 +1286,15 @@ float Arduino::AxisGetYaw() const
 	return mYaw;
 }
 //----------------------------------------------------------------------------
+void Arduino::BabyRobotSet(bool moto, bool distance, bool buzzer, bool light)
+{
+	std::string sendStr = sOptTypeStr[OT_SET_BABYROBOT];
+	sendStr += " " + _Bool2Str(moto) + " " + _Bool2Str(distance)
+		+  " " + _Bool2Str(buzzer) + " " + _Bool2Str(light);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
 bool Arduino::AddArduinoToSendCallback(ArduinoToSendCallback callback)
 {
 	if (IsHasArduinoToSendCallback(callback))
@@ -1412,7 +1422,7 @@ void Arduino::_Send(const std::string &cmdStr)
 			mConnector->SendMsgToServerBuffer(Arduino_SocketTCP_MsgID,
 				mLastSendContentString.c_str(),
 				(int)mLastSendContentString.length());
-			//mConnector->Update(0.0f);
+			mConnector->Update(0.0f);
 		}
 	}
 

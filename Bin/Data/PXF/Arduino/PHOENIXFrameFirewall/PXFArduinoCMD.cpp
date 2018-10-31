@@ -34,6 +34,14 @@ void PXFArduino::OnCMD(String &cmdStr)
     {
       _SetTime();
     }
+    else if (sOptTypeVal[OT_SET_BABYROBOT] == cmdCH)
+    {
+      bool moto = _Str2Bool(mCmdParams[1]);
+      bool distance = _Str2Bool(mCmdParams[2]);
+      int buzzer = _Str2Bool(mCmdParams[3]);
+      int light = _Str2Bool(mCmdParams[4]);
+      _SetBabyRobot(moto, diance, buzzer,light );
+    }
     else if (sOptTypeVal[OT_PM] == cmdCH)
     {
       int pin = _Str2Pin(mCmdParams[1]);
