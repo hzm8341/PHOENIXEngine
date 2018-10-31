@@ -338,6 +338,8 @@ private:
   HX711 mXH711_3;
 #endif
 
+  bool mIsEverSettedBabyRobot;
+
 public:
   void _InitAxis();
 
