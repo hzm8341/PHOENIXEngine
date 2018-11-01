@@ -1,6 +1,6 @@
 <filelist version="0.0.0">
-	<file filename="Data/MToy/MToy.px2proj" md5="ad793e66384366b0308c6bdfb7b4aff6"/>
-	<file filename="Data/MToy/MToy_ui.px2obj" md5="4ec7bbaee9bc456831361818f8bfc930"/>
+	<file filename="Data/MToy/project.px2proj" md5="3dbc7ae4f8a1f18f46b5e90d72e83c10"/>
+	<file filename="Data/MToy/project_ui.px2obj" md5="4ec7bbaee9bc456831361818f8bfc930"/>
 	<file filename="Data/MToy/scripts/lua/editor/editor.lua" md5="c2e10dcc7c8afcf68f4199e922180f82"/>
 	<file filename="Data/MToy/scripts/lua/play.lua" md5="ac0ba2721be92f5a40f16de55157519f"/>
 	<file filename="Data/MToy/scripts/lua/stop.lua" md5="78f6c19c85f48fe8641f435555ffd953"/>

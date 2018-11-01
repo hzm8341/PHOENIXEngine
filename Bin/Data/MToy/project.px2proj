@@ -1,4 +1,4 @@
-<project id="0">
+<project>
 	<general name="MToy" screenorientation="landscape" width="1136" height="640"/>
 	<scene filename=""/>
 	<render_setting/>
