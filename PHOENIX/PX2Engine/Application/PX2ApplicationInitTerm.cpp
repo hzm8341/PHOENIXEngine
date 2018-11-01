@@ -223,7 +223,7 @@ int _ProcessInputString(const std::string &buf)
 				param2 = stk_[2];
 		}
 
-		PX2_SC_LUA->CallString(std::string("project_cmd") + "(\"" + cmd + "\"" +
+		PX2_SC_LUA->CallString(std::string("engine_project_cmd") + "(\"" + cmd + "\"" +
 			", " + "\"" + param0 + "\"" ", " 
 			+ "\"" + param1 + "\"" + ", " 
 			+ "\"" + param2 + "\")");
