@@ -170,7 +170,11 @@ function zo_SerialTryToConnect_Lidar()
             PX2_LOGGER:LogInfo("PHOENIXCode", "NamePath:"..namePath)
             if ""~=namePath then
                 if LiDar.LT_III==lidarType or LiDar.LT_RP==lidarType then
-                    PX2_ROBOT:LidarOpen(namePath, 115200)
+                    if LiDar.LT_III ==lidarType then
+                        PX2_ROBOT:LidarOpen(namePath, 230400)
+                    else
+                        PX2_ROBOT:LidarOpen(namePath, 115200)
+                    end
                     --PX2_ROBOT:LidarOpen(namePath, 230400)
                 end 
             end

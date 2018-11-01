@@ -34,12 +34,20 @@ function engine_project_cmd(cmd, param0, param1, param2)
 	if "robot" == cmd then
 		ZERONE_CurSerialOptType = 1
 		PX2_ARDUINO:Initlize(Arduino.M_SERIAL, param0)
+		PX2_LOGGER:LogInfo("ZERONE", "robot arduino initlized")
 	elseif "lidar"==cmd then
 		ZERONE_CurSerialOptType = 2
-		PX2_ROBOT:LidarOpen(param0, 115200)
+		local lidarType = PX2_ROBOT:GetLidar():GetLiDarType()
+		if LiDar.LT_III ==lidarType then
+			PX2_ROBOT:LidarOpen(param0, 230400)
+		else
+			PX2_ROBOT:LidarOpen(param0, 115200)
+		end
+        PX2_LOGGER:LogInfo("ZERONE", "lidar opened")
 	elseif "raspberry"==cmd then
 		PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
 		PX2_ROBOT:SetRoleType(Robot.RT_MASTER_ONLY_SENDLIDAR)
+		PX2_LOGGER:LogInfo("ZERONE", "raspberry")
 	elseif "1"==cmd then
 		-- left
 		if nil~=ZERONE_UIFace then
