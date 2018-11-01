@@ -37,6 +37,9 @@ function engine_project_cmd(cmd, param0, param1, param2)
 	elseif "lidar"==cmd then
 		ZERONE_CurSerialOptType = 2
 		PX2_ROBOT:LidarOpen(param0, 115200)
+	elseif "raspberry"==cmd then
+		PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
+		PX2_ROBOT:SetRoleType(Robot.RT_MASTER_ONLY_SENDLIDAR)
 	elseif "1"==cmd then
 		-- left
 		if nil~=ZERONE_UIFace then
