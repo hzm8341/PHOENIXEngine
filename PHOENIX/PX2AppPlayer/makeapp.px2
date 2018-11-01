@@ -12,7 +12,7 @@ CFLAGS += -DPX2_USE_OPENGLES
 FMOD_LIB_PATH := ../ThirdPartiesLibs/FMOD/linux/lib/armhf
 else
 CFLAGS += -DPX2_USE_OPENGL
-FMOD_LIB_PATH := ../ThirdPartiesLibs/FMOD/linux/lib/x86_64
+FMOD_LIB_PATH := ../ThirdPartiesLibs/FMOD/linux/lib/x86
 endif
 
 ifeq (Debug,$(findstring Debug,$(CFG)))
