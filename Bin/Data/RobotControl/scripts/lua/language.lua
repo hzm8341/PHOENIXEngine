@@ -31,4 +31,8 @@ function rc_AddLanguage()
 
 	PX2_LM_APP:AddItem1("SaveMap", "保存")
 	PX2_LM_APP:AddItem1("LoadMap", "加载")
+
+	PX2_LM_APP:AddItem1("Control", "控制")
+	PX2_LM_APP:AddItem1("Axis", "陀螺仪")
+	PX2_LM_APP:AddItem1("Voice", "语音")
 end
