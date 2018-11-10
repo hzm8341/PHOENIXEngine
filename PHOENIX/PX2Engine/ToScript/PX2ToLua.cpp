@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 10/24/18 20:01:43.
+** Generated automatically by tolua++-1.0.92 on 11/10/18 18:14:03.
 */
 
 #ifndef __cplusplus
@@ -46886,6 +46886,139 @@ static int tolua_PX2_PlatformSDK_RinGun_IsFiring00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetAccelerator of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_SetAccelerator00
+static int tolua_PX2_PlatformSDK_SetAccelerator00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"PlatformSDK",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  PlatformSDK* self = (PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+  float x = ((float)  tolua_tonumber(tolua_S,2,0));
+  float y = ((float)  tolua_tonumber(tolua_S,3,0));
+  float z = ((float)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetAccelerator'", NULL);
+#endif
+  {
+   self->SetAccelerator(x,y,z);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetAccelerator'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetAcceleratorX of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratorX00
+static int tolua_PX2_PlatformSDK_GetAcceleratorX00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const PlatformSDK",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const PlatformSDK* self = (const PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratorX'", NULL);
+#endif
+  {
+   float tolua_ret = (float)  self->GetAcceleratorX();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetAcceleratorX'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetAcceleratoY of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratoY00
+static int tolua_PX2_PlatformSDK_GetAcceleratoY00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const PlatformSDK",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const PlatformSDK* self = (const PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratoY'", NULL);
+#endif
+  {
+   float tolua_ret = (float)  self->GetAcceleratoY();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetAcceleratoY'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetAcceleratoZ of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratoZ00
+static int tolua_PX2_PlatformSDK_GetAcceleratoZ00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const PlatformSDK",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const PlatformSDK* self = (const PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratoZ'", NULL);
+#endif
+  {
+   float tolua_ret = (float)  self->GetAcceleratoZ();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetAcceleratoZ'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: new of class  Server */
 #ifndef TOLUA_DISABLE_tolua_PX2_Server_new00
 static int tolua_PX2_Server_new00(lua_State* tolua_S)
@@ -75747,6 +75880,164 @@ static int tolua_PX2_UISlider_IsDraging00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'IsDraging'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: CreateAddText of class  UISlider */
+#ifndef TOLUA_DISABLE_tolua_PX2_UISlider_CreateAddText00
+static int tolua_PX2_UISlider_CreateAddText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UISlider",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UISlider* self = (UISlider*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateAddText'", NULL);
+#endif
+  {
+   UIFText* tolua_ret = (UIFText*)  self->CreateAddText();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"UIFText");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'CreateAddText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: CreateAddText of class  UISlider */
+#ifndef TOLUA_DISABLE_tolua_PX2_UISlider_CreateAddText01
+static int tolua_PX2_UISlider_CreateAddText01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UISlider",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  UISlider* self = (UISlider*)  tolua_tousertype(tolua_S,1,0);
+  const std::string text = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateAddText'", NULL);
+#endif
+  {
+   UIFText* tolua_ret = (UIFText*)  self->CreateAddText(text);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"UIFText");
+   tolua_pushcppstring(tolua_S,(const char*)text);
+  }
+ }
+ return 2;
+tolua_lerror:
+ return tolua_PX2_UISlider_CreateAddText00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: CreateAddText of class  UISlider */
+#ifndef TOLUA_DISABLE_tolua_PX2_UISlider_CreateAddText02
+static int tolua_PX2_UISlider_CreateAddText02(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UISlider",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,3,&tolua_err) || !tolua_isusertype(tolua_S,3,"const Float3",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  UISlider* self = (UISlider*)  tolua_tousertype(tolua_S,1,0);
+  const std::string text = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  const Float3* color = ((const Float3*)  tolua_tousertype(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateAddText'", NULL);
+#endif
+  {
+   UIFText* tolua_ret = (UIFText*)  self->CreateAddText(text,*color);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"UIFText");
+   tolua_pushcppstring(tolua_S,(const char*)text);
+  }
+ }
+ return 2;
+tolua_lerror:
+ return tolua_PX2_UISlider_CreateAddText01(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetFText of class  UISlider */
+#ifndef TOLUA_DISABLE_tolua_PX2_UISlider_GetFText00
+static int tolua_PX2_UISlider_GetFText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UISlider",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UISlider* self = (UISlider*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetFText'", NULL);
+#endif
+  {
+   UIFText* tolua_ret = (UIFText*)  self->GetFText();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"UIFText");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetFText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetText of class  UISlider */
+#ifndef TOLUA_DISABLE_tolua_PX2_UISlider_GetText00
+static int tolua_PX2_UISlider_GetText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UISlider",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UISlider* self = (UISlider*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetText'", NULL);
+#endif
+  {
+   UIText* tolua_ret = (UIText*)  self->GetText();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"UIText");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetText'.",&tolua_err);
  return 0;
 #endif
 }
@@ -105433,6 +105724,10 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"RinGun_GetPosX",tolua_PX2_PlatformSDK_RinGun_GetPosX00);
    tolua_function(tolua_S,"RinGun_GetPosY",tolua_PX2_PlatformSDK_RinGun_GetPosY00);
    tolua_function(tolua_S,"RinGun_IsFiring",tolua_PX2_PlatformSDK_RinGun_IsFiring00);
+   tolua_function(tolua_S,"SetAccelerator",tolua_PX2_PlatformSDK_SetAccelerator00);
+   tolua_function(tolua_S,"GetAcceleratorX",tolua_PX2_PlatformSDK_GetAcceleratorX00);
+   tolua_function(tolua_S,"GetAcceleratoY",tolua_PX2_PlatformSDK_GetAcceleratoY00);
+   tolua_function(tolua_S,"GetAcceleratoZ",tolua_PX2_PlatformSDK_GetAcceleratoZ00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Server","Server","Object",tolua_collect_Server);
@@ -106872,6 +107167,11 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"SetContentFrame",tolua_PX2_UISlider_SetContentFrame00);
    tolua_function(tolua_S,"GetContentFrame",tolua_PX2_UISlider_GetContentFrame00);
    tolua_function(tolua_S,"IsDraging",tolua_PX2_UISlider_IsDraging00);
+   tolua_function(tolua_S,"CreateAddText",tolua_PX2_UISlider_CreateAddText00);
+   tolua_function(tolua_S,"CreateAddText",tolua_PX2_UISlider_CreateAddText01);
+   tolua_function(tolua_S,"CreateAddText",tolua_PX2_UISlider_CreateAddText02);
+   tolua_function(tolua_S,"GetFText",tolua_PX2_UISlider_GetFText00);
+   tolua_function(tolua_S,"GetText",tolua_PX2_UISlider_GetText00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"UISizeExtendControl","UISizeExtendControl","Controller",tolua_collect_UISizeExtendControl);

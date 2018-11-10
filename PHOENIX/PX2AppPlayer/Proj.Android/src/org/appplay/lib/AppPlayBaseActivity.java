@@ -592,7 +592,7 @@ public class AppPlayBaseActivity extends Activity
 	}
 	
     /**
-     * 分配端点，IN | OUT，即输入输出；此处我直接用1为OUT端点，0为IN，当然你也可以通过判断
+     * 分配端点，IN | OUT，即输入输出;此处我直接用1为OUT端点，0为IN，当然你也可以通过判断
      */
      //USB_ENDPOINT_XFER_BULK 
      /* 
@@ -1973,9 +1973,11 @@ public class AppPlayBaseActivity extends Activity
             switch (status) {  
             case LocationProvider.AVAILABLE:  
                // Log.d("appplay.lib", "当前GPS状态为可见状态");  
-                break;  
+                
+            	break;  
             // GPS状态为服务区外时  
             case LocationProvider.OUT_OF_SERVICE:  
+            	
                // Log.d("appplay.lib", "当前GPS状态为服务区外状态");  
                 break;  
             // GPS状态为暂停服务时  
@@ -2038,24 +2040,59 @@ public class AppPlayBaseActivity extends Activity
         };  
     };  
     
-    void StartSensor()
+	public static void StartAccelerator()
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					AppPlayBaseActivity.sTheActivity._StartAccelerator();
+				}
+			});
+		}
+	}
+    
+	public void _StartAccelerator()
     {
         // Sensor
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
+	
+	public static void RegistAccelerator()
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					AppPlayBaseActivity.sTheActivity._RegistAccelerator();
+				}
+			});
+		}
+	}
     
-    void RegistSensor()
+    void _RegistAccelerator()
     {
-        mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    	if (null != mSensorManager)
+    		mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
-    void UnRegistSensor()
+    
+	public static void UnRegistAccelerator()
+	{
+		if (null != sTheActivity) {
+			sTheActivity.runOnUiThread(new Runnable() {
+				public void run() {
+					AppPlayBaseActivity.sTheActivity._UnRegistAccelerator();
+				}
+			});
+		}
+	}
+    
+    void _UnRegistAccelerator()
     {
 		if (null !=mSensorManager)
 			mSensorManager.unregisterListener(mSensorEventListener);
     }
     
-    SensorEventListener  mSensorEventListener  = new SensorEventListener()
+    SensorEventListener mSensorEventListener  = new SensorEventListener()
     {
 		@Override
 		public void onSensorChanged(SensorEvent event) {
@@ -2064,12 +2101,13 @@ public class AppPlayBaseActivity extends Activity
 	        float xValue = event.values[0];// Acceleration minus Gx on the x-axis
 	        float yValue = event.values[1];//Acceleration minus Gy on the y-axis
 	        float zValue = event.values[2];//Acceleration minus Gz on the z-axis
+	        
+	        AppPlayNatives.nativeAcceleratorChanged(xValue, yValue, zValue);
 		}
 
 		@Override
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
 			// TODO Auto-generated method stub	
-
 		}
     	
     };

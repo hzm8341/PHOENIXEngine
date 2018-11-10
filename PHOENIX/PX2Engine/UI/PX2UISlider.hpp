@@ -45,6 +45,11 @@ namespace PX2
 
 		bool IsDraging() const;
 
+		UIFText *CreateAddText(const std::string &text = "",
+			const Float3& color = Float3::WHITE);
+		UIFText *GetFText();
+		UIText *GetText();
+
 		virtual void OnBeAttached();
 		virtual void OnBeDetach();
 	
@@ -74,6 +79,8 @@ namespace PX2
 		float mPercent;
 
 		UIFramePtr mContentFrame;
+
+		UIFTextPtr mFText;
 
 		int mPickTouchID;
 	};

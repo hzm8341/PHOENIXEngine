@@ -40,4 +40,10 @@
 		int RinGun_GetPosX() const;
 		int RinGun_GetPosY() const;
 		int RinGun_IsFiring() const;
+		
+	public:
+		void SetAccelerator(float x, float y, float z);
+		float GetAcceleratorX() const;
+		float GetAcceleratoY() const;
+		float GetAcceleratoZ() const;
 	};

@@ -54,4 +54,6 @@ public class AppPlayNatives
 	public static native void nativeHardCameraSendFrame (int width, int height, byte[] strData);
 	
     public static native void nativeUSBSendData(byte[] strData);
+    
+    public static native void nativeAcceleratorChanged(float x, float y, float z);
 }

@@ -612,11 +612,44 @@ extern "C"
 		}
 	}
 	
-	extern void CameraCloseStream()
+	void CameraCloseStream()
 	{
 		JNIMethodInfo t;
 
 		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "CloseCameraStream", "()V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void StartAccelerator()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "StartAccelerator", "()V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void RegistAccelerator()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "RegistAccelerator", "()V"))
+		{
+			t.env->CallStaticVoidMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	}
+
+	void UnRegistAccelerator()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t, "org/appplay/lib/AppPlayBaseActivity", "UnRegistAccelerator", "()V"))
 		{
 			t.env->CallStaticVoidMethod(t.classID, t.methodID);
 			t.env->DeleteLocalRef(t.classID);

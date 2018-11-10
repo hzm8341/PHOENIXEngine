@@ -41,7 +41,10 @@ BuyData::~BuyData()
 PlatformSDK::PlatformSDK() :
 mRinGun_PosX(0),
 mRinGun_PosY(0),
-mRinGun_IsFiring(false)
+mRinGun_IsFiring(false),
+mAcceleratorX(0.5f),
+mAcceleratorY(0.5f),
+mAcceleratorZ(0.5f)
 {
 }
 //----------------------------------------------------------------------------
@@ -342,5 +345,48 @@ int PlatformSDK::RinGun_GetPosY() const
 int PlatformSDK::RinGun_IsFiring() const
 {
 	return mRinGun_IsFiring;
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::StartAccelerator()
+{
+#ifdef __ANDROID__
+	StartAccelerator();
+#endif
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::RegistAccelerator()
+{
+#ifdef __ANDROID__
+	RegistAccelerator();
+#endif
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::UnRegistAccelerator()
+{
+#ifdef __ANDROID__
+	UnRegistAccelerator();
+#endif
+}
+//----------------------------------------------------------------------------
+void PlatformSDK::SetAccelerator(float x, float y, float z)
+{
+	mAcceleratorX = x;
+	mAcceleratorY = y;
+	mAcceleratorZ = z;
+}
+//----------------------------------------------------------------------------
+float PlatformSDK::GetAcceleratorX() const
+{
+	return mAcceleratorX;
+}
+//----------------------------------------------------------------------------
+float PlatformSDK::GetAcceleratoY() const
+{
+	return mAcceleratorY;
+}
+//----------------------------------------------------------------------------
+float PlatformSDK::GetAcceleratoZ() const
+{
+	return mAcceleratorZ;
 }
 //----------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 require("Data/RobotControl/scripts/lua/language.lua")
 require("Data/RobotControl/scripts/lua/homepage.lua")
 require("Data/RobotControl/scripts/lua/gamepadpage.lua")
-require("Data/RobotControl/scripts/lua/axispage.lua")
+require("Data/RobotControl/scripts/lua/acceleratorpage.lua")
 require("Data/RobotControl/scripts/lua/voicepage.lua")
 require("Data/RobotControl/scripts/lua/connect.lua")
 require("Data/RobotControl/scripts/lua/bluetooth.lua")
@@ -20,6 +20,7 @@ function engine_project_play()
 end
 
 function engine_project_update(appseconds, elapsedseconds) 
+    rc_AcceleratorUpdate(appseconds, elapsedseconds)
 end
 
 function engine_project_cmd(cmd, param0, param1, param2) 
@@ -102,13 +103,13 @@ function rc_Play()
     framePad:SetAnchorVer(0.0, 1.0)
     framePad:Show(false)
 
-    local frameAxis = rc_AxisPage()
-    frameRC:AttachChild(frameAxis)
-    rc_FrameAxis = frameAxis
-    frameAxis.LocalTransform:SetTranslateY(-1.0)
-    frameAxis:SetAnchorHor(0.0, 1.0)
-    frameAxis:SetAnchorVer(0.0, 1.0)
-    frameAxis:Show(false)
+    local frameAcceler = rc_AcceleratorPage()
+    frameRC:AttachChild(frameAcceler)
+    rc_FrameAxis = frameAcceler
+    frameAcceler.LocalTransform:SetTranslateY(-1.0)
+    frameAcceler:SetAnchorHor(0.0, 1.0)
+    frameAcceler:SetAnchorVer(0.0, 1.0)
+    frameAcceler:Show(false)
 
     local frameVoice = rc_VoicePage()
     frameRC:AttachChild(frameVoice)
@@ -130,7 +131,10 @@ function rc_Play()
 
     UnRegistAllEventFunctions("VoiceSDKSpace::SpeakText")
     RegistEventFunction("VoiceSDKSpace::SpeakText", function(txt) 
-    end)  
+    end)
+
+    PX2_PFSDK:StartAccelerator()
+    PX2_PFSDK:RegistAccelerator()
 end
 
 function rc_UICallabck(ptr, callType)

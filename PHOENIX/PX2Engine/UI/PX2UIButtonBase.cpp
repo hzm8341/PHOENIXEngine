@@ -485,11 +485,6 @@ void UIButtonBase::OnSizeChanged()
 	}
 }
 //----------------------------------------------------------------------------
-void UIButtonBase::UpdateWorldData(double applicationTime, double elapsedTime)
-{
-	UIFrame::UpdateWorldData(applicationTime, elapsedTime);
-}
-//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // Property

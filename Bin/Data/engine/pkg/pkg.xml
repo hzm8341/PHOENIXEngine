@@ -4961,6 +4961,21 @@
 			<function name="RinGun_IsFiring" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="SetAccelerator" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float x" is_retrun="false" type_str="float" valuename_str="x" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float y" is_retrun="false" type_str="float" valuename_str="y" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="float z" is_retrun="false" type_str="float" valuename_str="z" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetAcceleratorX" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetAcceleratoY" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetAcceleratoZ" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
 		</class>
 		<class name="Server" parentname="Object" singletonname="">
 			<enum name="ServerType">
@@ -8124,6 +8139,17 @@
 			</function>
 			<function name="IsDraging" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="CreateAddText" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIFText *" is_retrun="true" type_str="UIFText" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr='const std::string &amp;text = ""' is_retrun="false" type_str="std::string" valuename_str="text" defaultvalue_Str='""' is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="const Float3&amp; color = Float3::WHITE" is_retrun="false" type_str="Float3" valuename_str="color" defaultvalue_Str="Float3::WHITE" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetFText" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIFText *" is_retrun="true" type_str="UIFText" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetText" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="UIText *" is_retrun="true" type_str="UIText" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 		</class>
 		<class name="UISizeExtendControl" parentname="Controller" singletonname="">

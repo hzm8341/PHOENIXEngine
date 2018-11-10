@@ -447,3 +447,8 @@ void NativeCall::UsbReceive(const char *data, int size)
 		defSerial->OnAndroidUSBReceive(data, size);
 }
 //----------------------------------------------------------------------------
+void NativeCall::SetAccelerator(float x, float y, float z)
+{
+	PX2_PFSDK.SetAccelerator(x, y, z);
+}
+//----------------------------------------------------------------------------

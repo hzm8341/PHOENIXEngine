@@ -85,6 +85,10 @@ extern "C"
 
 	extern void CameraOpenStream(int type); // 0 back, 1 front
 	extern void CameraCloseStream();
+
+	extern void StartAccelerator();
+	extern void RegistAccelerator();
+	extern void UnRegistAccelerator();
 }
 
 #endif

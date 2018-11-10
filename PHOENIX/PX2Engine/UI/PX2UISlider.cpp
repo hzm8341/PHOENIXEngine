@@ -79,6 +79,40 @@ void UISlider::SetContentFrame(UIFrame *contentFrame)
 	}
 }
 //----------------------------------------------------------------------------
+UIFText *UISlider::CreateAddText(const std::string &text,
+	const Float3& color)
+{
+	if (mFText)
+	{
+		DetachChild(mFText);
+		mFText = 0;
+	}
+
+	mFText = new0 UIFText();
+	AttachChild(mFText);
+	mFText->LocalTransform.SetTranslateY(-5.0f);
+	mFText->GetText()->SetFontColor(color);
+	mFText->GetText()->SetText(text);
+	mFText->SetAnchorHor(0.0f, 1.0f);
+	mFText->SetAnchorVer(0.0f, 1.0f);
+	mFText->SetColorSelfCtrled(true);
+
+	return mFText;
+}
+//----------------------------------------------------------------------------
+UIFText *UISlider::GetFText()
+{
+	return mFText;
+}
+//----------------------------------------------------------------------------
+UIText *UISlider::GetText()
+{
+	if (!mFText)
+		return 0;
+
+	return mFText->GetText();
+}
+//----------------------------------------------------------------------------
 void UISlider::_RelativeSizeChangeCallback(SizeNode *tellObject)
 {
 	PX2_UNUSED(tellObject);
@@ -392,6 +426,8 @@ void UISlider::Load(InStream& source)
 
 	source.ReadPointer(mContentFrame);
 
+	source.ReadPointer(mFText);
+
 	PX2_END_DEBUG_STREAM_LOAD(UISlider, source);
 }
 //----------------------------------------------------------------------------
@@ -416,6 +452,11 @@ void UISlider::Link(InStream& source)
 	{
 		source.ResolveLink(mContentFrame);
 	}
+
+	if (mFText)
+	{
+		source.ResolveLink(mFText);
+	}
 }
 //----------------------------------------------------------------------------
 void UISlider::PostLink()
@@ -436,6 +477,11 @@ void UISlider::PostLink()
 	{
 		mContentFrame->PostLink();
 	}
+
+	if (mFText)
+	{
+		mFText->PostLink();
+	}
 }
 //----------------------------------------------------------------------------
 bool UISlider::Register(OutStream& target) const
@@ -447,6 +493,8 @@ bool UISlider::Register(OutStream& target) const
 		target.Register(mButSlider);
 
 		target.Register(mContentFrame);
+
+		target.Register(mFText);
 		
 		return true;
 	}
@@ -472,6 +520,8 @@ void UISlider::Save(OutStream& target) const
 
 	target.WritePointer(mContentFrame);
 
+	target.WritePointer(mFText);
+
 	PX2_END_DEBUG_STREAM_SAVE(UISlider, target);
 }
 //----------------------------------------------------------------------------
@@ -489,6 +539,8 @@ int UISlider::GetStreamingSize(Stream &stream) const
 	size += sizeof(mPercent);
 
 	size += PX2_POINTERSIZE(mContentFrame);
+
+	size += PX2_POINTERSIZE(mFText);
 
 	return size;
 }

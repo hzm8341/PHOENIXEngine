@@ -256,7 +256,7 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 	StringHelp::SplitFullFilename(pathname, outPath, outBaseName, outExt);
 
 	int dataLength = std::string("Data/").length();
-	std::string projName = outPath.substr(dataLength, outPath.length()- dataLength);
+	std::string projName = outPath.substr(dataLength, outPath.length()- dataLength-1);
 	mProjectName = projName;
 
 #if defined (WIN32) || defined (_WIN32)

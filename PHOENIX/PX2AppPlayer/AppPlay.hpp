@@ -89,6 +89,10 @@ namespace appplay
 		// Serial
 	public:
 		static void UsbReceive(const char *data, int size);
+		
+		// Accelerator
+	public:
+		static void SetAccelerator(float x, float y, float z);
 	};
 	
 }

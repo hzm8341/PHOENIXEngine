@@ -327,6 +327,14 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeHardCameraSendF
 JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeUSBSendData
   (JNIEnv *, jclass, jbyteArray);
 
+/*
+ * Class:     org_appplay_lib_AppPlayNatives
+ * Method:    nativeAcceleratorChanged
+ * Signature: (FFF)V
+ */
+JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeAcceleratorChanged
+  (JNIEnv *, jclass, jfloat, jfloat, jfloat);
+
 #ifdef __cplusplus
 }
 #endif

@@ -99,12 +99,27 @@ namespace PX2
 		int RinGun_GetPosY() const;
 		int RinGun_IsFiring() const;
 
-
 	private:
 		std::string mRinGun_CMD;
 		int mRinGun_PosX;
 		int mRinGun_PosY;
 		bool mRinGun_IsFiring;
+
+	public:
+		void StartAccelerator();
+
+		void RegistAccelerator();
+		void UnRegistAccelerator();
+
+		void SetAccelerator(float x, float y, float z);
+		float GetAcceleratorX() const;
+		float GetAcceleratoY() const;
+		float GetAcceleratoZ() const;
+
+	private:
+		float mAcceleratorX;
+		float mAcceleratorY;
+		float mAcceleratorZ;
 	};
 
 #define PX2_PFSDK PlatformSDK::GetSingleton()

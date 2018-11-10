@@ -74,7 +74,6 @@ namespace PX2
 		const Float3 &_GetStateColorWithActivated(ButtonState state) const;
 		float _GetStateAlphaWithActivated(ButtonState state) const;
 		float _GetStateBrightnessWithActivated(ButtonState state) const;
-		virtual void UpdateWorldData(double applicationTime, double elapsedTime);
 
 		ButType mButType;
 
