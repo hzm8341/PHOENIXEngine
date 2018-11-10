@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 11/10/18 18:14:03.
+** Generated automatically by tolua++-1.0.92 on 11/10/18 21:25:00.
 */
 
 #ifndef __cplusplus
@@ -46886,6 +46886,99 @@ static int tolua_PX2_PlatformSDK_RinGun_IsFiring00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: StartAccelerator of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_StartAccelerator00
+static int tolua_PX2_PlatformSDK_StartAccelerator00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"PlatformSDK",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  PlatformSDK* self = (PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'StartAccelerator'", NULL);
+#endif
+  {
+   self->StartAccelerator();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'StartAccelerator'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: RegistAccelerator of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_RegistAccelerator00
+static int tolua_PX2_PlatformSDK_RegistAccelerator00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"PlatformSDK",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  PlatformSDK* self = (PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RegistAccelerator'", NULL);
+#endif
+  {
+   self->RegistAccelerator();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'RegistAccelerator'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: UnRegistAccelerator of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_UnRegistAccelerator00
+static int tolua_PX2_PlatformSDK_UnRegistAccelerator00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"PlatformSDK",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  PlatformSDK* self = (PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'UnRegistAccelerator'", NULL);
+#endif
+  {
+   self->UnRegistAccelerator();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'UnRegistAccelerator'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: SetAccelerator of class  PlatformSDK */
 #ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_SetAccelerator00
 static int tolua_PX2_PlatformSDK_SetAccelerator00(lua_State* tolua_S)
@@ -46955,9 +47048,9 @@ static int tolua_PX2_PlatformSDK_GetAcceleratorX00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: GetAcceleratoY of class  PlatformSDK */
-#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratoY00
-static int tolua_PX2_PlatformSDK_GetAcceleratoY00(lua_State* tolua_S)
+/* method: GetAcceleratorY of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratorY00
+static int tolua_PX2_PlatformSDK_GetAcceleratorY00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -46971,25 +47064,25 @@ static int tolua_PX2_PlatformSDK_GetAcceleratoY00(lua_State* tolua_S)
  {
   const PlatformSDK* self = (const PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratoY'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratorY'", NULL);
 #endif
   {
-   float tolua_ret = (float)  self->GetAcceleratoY();
+   float tolua_ret = (float)  self->GetAcceleratorY();
    tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
   }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetAcceleratoY'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'GetAcceleratorY'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: GetAcceleratoZ of class  PlatformSDK */
-#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratoZ00
-static int tolua_PX2_PlatformSDK_GetAcceleratoZ00(lua_State* tolua_S)
+/* method: GetAcceleratorZ of class  PlatformSDK */
+#ifndef TOLUA_DISABLE_tolua_PX2_PlatformSDK_GetAcceleratorZ00
+static int tolua_PX2_PlatformSDK_GetAcceleratorZ00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -47003,17 +47096,17 @@ static int tolua_PX2_PlatformSDK_GetAcceleratoZ00(lua_State* tolua_S)
  {
   const PlatformSDK* self = (const PlatformSDK*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratoZ'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAcceleratorZ'", NULL);
 #endif
   {
-   float tolua_ret = (float)  self->GetAcceleratoZ();
+   float tolua_ret = (float)  self->GetAcceleratorZ();
    tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
   }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetAcceleratoZ'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'GetAcceleratorZ'.",&tolua_err);
  return 0;
 #endif
 }
@@ -105724,10 +105817,13 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"RinGun_GetPosX",tolua_PX2_PlatformSDK_RinGun_GetPosX00);
    tolua_function(tolua_S,"RinGun_GetPosY",tolua_PX2_PlatformSDK_RinGun_GetPosY00);
    tolua_function(tolua_S,"RinGun_IsFiring",tolua_PX2_PlatformSDK_RinGun_IsFiring00);
+   tolua_function(tolua_S,"StartAccelerator",tolua_PX2_PlatformSDK_StartAccelerator00);
+   tolua_function(tolua_S,"RegistAccelerator",tolua_PX2_PlatformSDK_RegistAccelerator00);
+   tolua_function(tolua_S,"UnRegistAccelerator",tolua_PX2_PlatformSDK_UnRegistAccelerator00);
    tolua_function(tolua_S,"SetAccelerator",tolua_PX2_PlatformSDK_SetAccelerator00);
    tolua_function(tolua_S,"GetAcceleratorX",tolua_PX2_PlatformSDK_GetAcceleratorX00);
-   tolua_function(tolua_S,"GetAcceleratoY",tolua_PX2_PlatformSDK_GetAcceleratoY00);
-   tolua_function(tolua_S,"GetAcceleratoZ",tolua_PX2_PlatformSDK_GetAcceleratoZ00);
+   tolua_function(tolua_S,"GetAcceleratorY",tolua_PX2_PlatformSDK_GetAcceleratorY00);
+   tolua_function(tolua_S,"GetAcceleratorZ",tolua_PX2_PlatformSDK_GetAcceleratorZ00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Server","Server","Object",tolua_collect_Server);

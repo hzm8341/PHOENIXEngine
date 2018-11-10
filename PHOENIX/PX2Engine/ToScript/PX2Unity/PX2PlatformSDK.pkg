@@ -42,8 +42,13 @@
 		int RinGun_IsFiring() const;
 		
 	public:
+		void StartAccelerator();
+
+		void RegistAccelerator();
+		void UnRegistAccelerator();
+	
 		void SetAccelerator(float x, float y, float z);
 		float GetAcceleratorX() const;
-		float GetAcceleratoY() const;
-		float GetAcceleratoZ() const;
+		float GetAcceleratorY() const;
+		float GetAcceleratorZ() const;
 	};

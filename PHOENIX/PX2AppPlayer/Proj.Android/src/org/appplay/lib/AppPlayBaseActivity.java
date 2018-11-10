@@ -2097,7 +2097,6 @@ public class AppPlayBaseActivity extends Activity
 		@Override
 		public void onSensorChanged(SensorEvent event) {
 			// TODO Auto-generated method stub
-			Log.d("linc", "value size: " + event.values.length);
 	        float xValue = event.values[0];// Acceleration minus Gx on the x-axis
 	        float yValue = event.values[1];//Acceleration minus Gy on the y-axis
 	        float zValue = event.values[2];//Acceleration minus Gz on the z-axis

@@ -350,21 +350,21 @@ int PlatformSDK::RinGun_IsFiring() const
 void PlatformSDK::StartAccelerator()
 {
 #ifdef __ANDROID__
-	StartAccelerator();
+	PlatformSDKStartAccelerator();
 #endif
 }
 //----------------------------------------------------------------------------
 void PlatformSDK::RegistAccelerator()
 {
 #ifdef __ANDROID__
-	RegistAccelerator();
+	PlatformSDKRegistAccelerator();
 #endif
 }
 //----------------------------------------------------------------------------
 void PlatformSDK::UnRegistAccelerator()
 {
 #ifdef __ANDROID__
-	UnRegistAccelerator();
+	PlatformSDKUnRegistAccelerator();
 #endif
 }
 //----------------------------------------------------------------------------
@@ -380,12 +380,12 @@ float PlatformSDK::GetAcceleratorX() const
 	return mAcceleratorX;
 }
 //----------------------------------------------------------------------------
-float PlatformSDK::GetAcceleratoY() const
+float PlatformSDK::GetAcceleratorY() const
 {
 	return mAcceleratorY;
 }
 //----------------------------------------------------------------------------
-float PlatformSDK::GetAcceleratoZ() const
+float PlatformSDK::GetAcceleratorZ() const
 {
 	return mAcceleratorZ;
 }

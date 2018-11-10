@@ -1,8 +1,37 @@
 <filelist version="0.0.0">
+	<file filename="Data/RobotControl/images/background.png" md5="9300ca6f2633d128e8a49a68459f60a3"/>
+	<file filename="Data/RobotControl/images/btnblue.png" md5="b839f433373a340f4c21f9d90a95df6f"/>
+	<file filename="Data/RobotControl/images/close.png" md5="6b0151fe86b2ce3abdd9b0739fda3d79"/>
+	<file filename="Data/RobotControl/images/directctrl/btn.png" md5="16f3e527d9d425b0956b43aee598ba10"/>
+	<file filename="Data/RobotControl/images/directctrl/btndown.png" md5="53f39500d9bf8253de97baab2a907d23"/>
+	<file filename="Data/RobotControl/images/directctrl/btndownpress.png" md5="f5706390931b2e1eb1b028afb82887e1"/>
+	<file filename="Data/RobotControl/images/directctrl/btnleft.png" md5="ee681c265faf0aae018977a8faeb10f9"/>
+	<file filename="Data/RobotControl/images/directctrl/btnleftpress.png" md5="b3eef181930bb555c353586522c262af"/>
+	<file filename="Data/RobotControl/images/directctrl/btnright.png" md5="e0f0f175d95db1cf1aa0d78fde0b3dc6"/>
+	<file filename="Data/RobotControl/images/directctrl/btnrightpress.png" md5="a9c2777cabea4158e0a1fdd450a35eb0"/>
+	<file filename="Data/RobotControl/images/directctrl/btnup.png" md5="bf3b3cffc30da1bf4dc1e09a6a0f8bd6"/>
+	<file filename="Data/RobotControl/images/directctrl/btnuppress.png" md5="e2800d8ee32140a43e01d698b07e20a2"/>
+	<file filename="Data/RobotControl/images/directctrl/button.png" md5="e2139a331e1f448d05fd5635072ac32f"/>
+	<file filename="Data/RobotControl/images/directctrl/ctrlbackleftright.png" md5="e3392f5d40af1c350a15865a937742b5"/>
+	<file filename="Data/RobotControl/images/directctrl/ctrlbackupdown.png" md5="decd171fa5523514cc96c7c7968e7245"/>
+	<file filename="Data/RobotControl/images/directctrl/round_in.png" md5="12acfc06386abf6d2a4b09f075443826"/>
+	<file filename="Data/RobotControl/images/directctrl/round_out.png" md5="e2139a331e1f448d05fd5635072ac32f"/>
+	<file filename="Data/RobotControl/images/directctrl/slider0.png" md5="3a2b599e8e80681fb51689cf5927e4e2"/>
+	<file filename="Data/RobotControl/images/directctrl/slider1.png" md5="5ca2b9622a88c7101c4a7904a888cb42"/>
+	<file filename="Data/RobotControl/images/editorback.png" md5="b963c39ea676498a8d7d0e2de9d88fd5"/>
+	<file filename="Data/RobotControl/images/zerone.png" md5="58c265c72164337c09925480f15d1b47"/>
 	<file filename="Data/RobotControl/project.px2proj" md5="9caafee5aa719fe16815c8ee946a8af7"/>
 	<file filename="Data/RobotControl/project_ui.px2obj" md5="4ec7bbaee9bc456831361818f8bfc930"/>
+	<file filename="Data/RobotControl/scripts/lua/acceleratorpage.lua" md5="24b56de6ac0b8b0a604622100b79aee5"/>
+	<file filename="Data/RobotControl/scripts/lua/bluetooth.lua" md5="d504b6d326e2b17b6315d95ac00092e1"/>
+	<file filename="Data/RobotControl/scripts/lua/common.lua" md5="839b523fd45cb05a49b2414148497bf9"/>
+	<file filename="Data/RobotControl/scripts/lua/connect.lua" md5="4b7a0df5967ee03db0e20545ce4e9060"/>
 	<file filename="Data/RobotControl/scripts/lua/editor/editor.lua" md5="c2e10dcc7c8afcf68f4199e922180f82"/>
-	<file filename="Data/RobotControl/scripts/lua/play.lua" md5="ac0ba2721be92f5a40f16de55157519f"/>
-	<file filename="Data/RobotControl/scripts/lua/stop.lua" md5="78f6c19c85f48fe8641f435555ffd953"/>
+	<file filename="Data/RobotControl/scripts/lua/gamepadpage.lua" md5="0c1d9090ba6ff2d631c04c818a633880"/>
+	<file filename="Data/RobotControl/scripts/lua/homepage.lua" md5="d0ff3fafd02a724401da2144bef69706"/>
+	<file filename="Data/RobotControl/scripts/lua/language.lua" md5="84ccda164dd1bda1172b9cfec658108d"/>
+	<file filename="Data/RobotControl/scripts/lua/play.lua" md5="7cecc55a6509207e40c29c3f796d600d"/>
+	<file filename="Data/RobotControl/scripts/lua/stop.lua" md5="131926ea8b424b7f9eefd855da6bc658"/>
+	<file filename="Data/RobotControl/scripts/lua/voicepage.lua" md5="33149b68985a2473dabb7cb6a861ce4e"/>
 </filelist>
 

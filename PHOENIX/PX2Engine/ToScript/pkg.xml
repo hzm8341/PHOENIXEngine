@@ -4961,6 +4961,15 @@
 			<function name="RinGun_IsFiring" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="StartAccelerator" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="RegistAccelerator" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="UnRegistAccelerator" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
 			<function name="SetAccelerator" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="float x" is_retrun="false" type_str="float" valuename_str="x" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -4970,10 +4979,10 @@
 			<function name="GetAcceleratorX" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="GetAcceleratoY" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+			<function name="GetAcceleratorY" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="GetAcceleratoZ" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+			<function name="GetAcceleratorZ" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 		</class>

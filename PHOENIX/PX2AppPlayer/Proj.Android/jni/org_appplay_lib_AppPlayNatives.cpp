@@ -357,7 +357,7 @@ JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeHardCameraSendF
   JNIEXPORT void JNICALL Java_org_appplay_lib_AppPlayNatives_nativeAcceleratorChanged
   (JNIEnv *env, jclass, jfloat xVal, jfloat yVal, jfloat zVal)
   {
-	  
+		appplay::NativeCall::SetAccelerator(xVal, yVal, zVal);
   }
 
 #ifdef __cplusplus

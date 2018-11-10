@@ -90,6 +90,8 @@ UIFText *UISlider::CreateAddText(const std::string &text,
 
 	mFText = new0 UIFText();
 	AttachChild(mFText);
+	mFText->SetWidget(false);
+	mFText->SetDoPick(false);
 	mFText->LocalTransform.SetTranslateY(-5.0f);
 	mFText->GetText()->SetFontColor(color);
 	mFText->GetText()->SetText(text);

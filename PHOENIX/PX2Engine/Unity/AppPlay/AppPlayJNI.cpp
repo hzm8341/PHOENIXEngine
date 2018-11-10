@@ -623,7 +623,7 @@ extern "C"
 		}
 	}
 
-	void StartAccelerator()
+	void PlatformSDKStartAccelerator()
 	{
 		JNIMethodInfo t;
 
@@ -634,7 +634,7 @@ extern "C"
 		}
 	}
 
-	void RegistAccelerator()
+	void PlatformSDKRegistAccelerator()
 	{
 		JNIMethodInfo t;
 
@@ -645,7 +645,7 @@ extern "C"
 		}
 	}
 
-	void UnRegistAccelerator()
+	void PlatformSDKUnRegistAccelerator()
 	{
 		JNIMethodInfo t;
 

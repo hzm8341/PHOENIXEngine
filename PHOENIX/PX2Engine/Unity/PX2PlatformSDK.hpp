@@ -113,8 +113,8 @@ namespace PX2
 
 		void SetAccelerator(float x, float y, float z);
 		float GetAcceleratorX() const;
-		float GetAcceleratoY() const;
-		float GetAcceleratoZ() const;
+		float GetAcceleratorY() const;
+		float GetAcceleratorZ() const;
 
 	private:
 		float mAcceleratorX;
