@@ -31,6 +31,15 @@ rc_FramePad = nil
 rc_FrameAxis = nil
 rc_FrameVoice = nil
 
+PageType = {
+    PT_HOME = 0,
+    PT_CTRL = 1,
+    PT_AXIS = 2,
+    PT_VOICE = 3,
+    PT_MAX_TYPE = 4,
+}
+rc_ThePageType = PageType.PT_HOME
+
 function rc_UISetTextFont(text, fontSize)
 	text:SetFont("Data/engine/font.ttf", fontSize, fontSize)
 end
@@ -66,7 +75,7 @@ function rc_Play()
     btnReturn:SetAnchorParamHor(cornorBtnPos, cornorBtnPos)
     btnReturn:SetAnchorParamVer(-cornorBtnPos, -cornorBtnPos)
     btnReturn:SetSize(60.0, 60.0)
-    btnReturn:CreateAddText("Cnt")
+    btnReturn:CreateAddText("Return")
     btnReturn:SetScriptHandler("rc_UICallabck")
 
     local cntFrame = rc_Connect()
@@ -108,6 +117,20 @@ function rc_Play()
     frameVoice:SetAnchorHor(0.0, 1.0)
     frameVoice:SetAnchorVer(0.0, 1.0)
     frameVoice:Show(false)
+
+    PX2_VOICESDK:EnableAutoSpeak(false)
+    PX2_VOICESDK:EnableAutoSpeakTTS(true)    
+
+    UnRegistAllEventFunctions("VoiceSDKSpace::RecognizeResults")
+    RegistEventFunction("VoiceSDKSpace::RecognizeResults", function(txt, txtJson)
+        PX2_LOGGER:LogInfo("RobotControl", txt)
+        
+        PX2_VOICESDK:Speak(""..txt)
+    end)
+
+    UnRegistAllEventFunctions("VoiceSDKSpace::SpeakText")
+    RegistEventFunction("VoiceSDKSpace::SpeakText", function(txt) 
+    end)  
 end
 
 function rc_UICallabck(ptr, callType)
@@ -116,6 +139,11 @@ function rc_UICallabck(ptr, callType)
 
     if UICT_PRESSED==callType then
         playFrameScale(obj)
+        
+        if "BtnVoiceRecording"==name then
+            PX2_VOICESDK:StartVoiceListening()
+            PX2_LOGGER:LogInfo("RobotControl", "start voice")
+        end
 	elseif UICT_RELEASED==callType then
         playFrameNormal(obj)
 
@@ -124,23 +152,42 @@ function rc_UICallabck(ptr, callType)
         elseif "BtnDlgClose" == name then
             rc_ConnectFrame:Show(false)
         elseif "BtnCtrl" == name then
+            rc_ThePageType = PageType.PT_CTRL
+
             rc_FrameHome:Show(false)
             rc_FramePad:Show(false)
             rc_FrameAxis:Show(false)
             rc_FrameVoice:Show(false)
             rc_FramePad:Show(true)
-        elseif "BtnShake"==name then
+        elseif "BtnAxis"==name then
+            rc_ThePageType = PageType.PT_AXIS
+
             rc_FrameHome:Show(false)
             rc_FramePad:Show(false)
             rc_FrameAxis:Show(false)
             rc_FrameVoice:Show(false)
             rc_FrameAxis:Show(true)
         elseif "BtnVoice"==name then
+            rc_ThePageType = PageType.PT_VOICE
+
             rc_FrameHome:Show(false)
             rc_FramePad:Show(false)
             rc_FrameAxis:Show(false)
             rc_FrameVoice:Show(false)
             rc_FrameVoice:Show(true)
+        elseif "BtnReturn"==name then
+
+            if PageType.PT_HOME ~= rc_ThePageType then
+                rc_FrameHome:Show(true)
+                rc_FramePad:Show(false)
+                rc_FrameAxis:Show(false)
+                rc_FrameVoice:Show(false)
+
+                rc_ThePageType = PageType.PT_HOME
+            end
+        elseif "BtnVoiceRecording"==name then
+            PX2_VOICESDK:EndVoiceListening()
+            PX2_LOGGER:LogInfo("RobotControl", "end voice")
         end
     elseif UICT_CHECKED==callType then  
     elseif UICT_DISCHECKED==callType then

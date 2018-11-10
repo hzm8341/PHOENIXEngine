@@ -15,7 +15,7 @@ function rc_FrameHomePage()
     btnCtrl:CreateAddText(""..PX2_LM_APP:GetValue("Control"))
     btnCtrl:SetScriptHandler("rc_UICallabck")
 
-    local btnShake = UIButton:New("BtnShake")
+    local btnShake = UIButton:New("BtnAxis")
     frameAll:AttachChild(btnShake)
     btnShake.LocalTransform:SetTranslateY(-1.0)
     btnShake:SetAnchorHor(0.5, 0.5)

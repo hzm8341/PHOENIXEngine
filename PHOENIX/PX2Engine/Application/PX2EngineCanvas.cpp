@@ -359,11 +359,12 @@ mLastPickTime(0.0f)
 
 	UIFPicBox *btnBackPic = new0 UIFPicBox();
 	mInfoFrame->AttachChild(btnBackPic);
-	btnBackPic->GetUIPicBox()->SetTexture("Data/engine/infoframeback.png");
-	btnBackPic->AutoMakeSizeFixable();
+	btnBackPic->GetUIPicBox()->SetTexture("Data/engine/white.png");
+	btnBackPic->SetSize(48.0f, 32.0f);
 	btnBackPic->SetAnchorHor(1.0, 1.0);
 	btnBackPic->SetAnchorVer(1.0, 1.0);
 	btnBackPic->SetPivot(1.0, 1.0);
+	btnBackPic->SetAlpha(0.2f);
 	mInfoFrame->SetHeight(btnBackPic->GetHeight());
 
 	UIFTextPtr infoText = new0 UIFText();
@@ -391,7 +392,7 @@ mLastPickTime(0.0f)
 	mEngineBut = new0 UIButton();
 	btnBackPic->AttachChild(mEngineBut);
 	mEngineBut->SetAnchorHor(1.0f, 1.0f);
-	mEngineBut->SetAnchorParamHor(-28.0f, -28.0f);
+	mEngineBut->SetAnchorParamHor(-12.0f, -12.0f);
 	mEngineBut->SetAnchorVer(0.5f, 0.5f);
 	mEngineBut->SetPivot(0.5f, 0.5f);
 	mEngineBut->LocalTransform.SetTranslateY(-1.0f);
@@ -399,6 +400,7 @@ mLastPickTime(0.0f)
 	auto text = mEngineBut->CreateAddText(PX2_LM_ENGINE.V("Engine"));
 	text->SetAnchorParamVer(-25.0f, -25.0f);
 	text->GetText()->SetFontScale(0.7f);
+	text->GetText()->SetFontColor(Float3(0.7f, 0.7f, 0.7f));
 	mEngineBut->AddUICallback(_EngineUICallback);
 	mEngineBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconengine.png");
 	mEngineBut->SetStateColorDefaultWhite();
@@ -406,16 +408,16 @@ mLastPickTime(0.0f)
 
 	mReloadBut = new0 UIButton();
 	btnBackPic->AttachChild(mReloadBut);
-	mReloadBut->SetAnchorParamHor(-28.0f*3.0f, -28.0f*3.0f);
 	mReloadBut->SetAnchorHor(1.0f, 1.0f);
 	mReloadBut->SetAnchorVer(0.5f, 0.5f);
 	mReloadBut->SetPivot(0.5f, 0.5f);
-	mReloadBut->SetAnchorParamHor(-28.0f*3.0f, -28.0f*3.0f);
+	mReloadBut->SetAnchorParamHor(-36.0f, -36.0f);
 	mReloadBut->LocalTransform.SetTranslateY(-1.0f);
 	mReloadBut->SetName("ButReload");
 	auto textReload = mReloadBut->CreateAddText(PX2_LM_ENGINE.V("Reload"));
 	textReload->SetAnchorParamVer(-25.0f, -25.0f);
 	textReload->GetText()->SetFontScale(0.7f);
+	textReload->GetText()->SetFontColor(Float3(0.7f, 0.7f, 0.7f));
 	mReloadBut->AddUICallback(_EngineUICallback);
 	mReloadBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/iconprojectrefresh.png");
 	mReloadBut->SetStateColorDefaultWhite();
@@ -466,7 +468,7 @@ void EngineCanvas::_CreateEngineFrame()
 	UIPicBox *picBox = mEngineFrame->CreateAddBackgroundPicBox();
 	picBox->UseAlphaBlend(true);
 	picBox->SetPicBoxType(UIPicBox::PBT_NINE);
-	picBox->SetTexture("Data/engine/whiteround.png");
+	picBox->SetTexture("Data/engine/white.png");
 	picBox->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 	picBox->SetColor(Float3::MakeColor(180, 180, 180));
 	mEngineFrame->SetAnchorHor(0.0f, 1.0f);
@@ -487,7 +489,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butClose->CreateAddText("X");
 	butClose->GetText()->SetFontColor(Float3::WHITE);
 	butClose->AddUICallback(_EngineUICallback);
-	butClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/whiteround.png");
+	butClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/white.png");
 	butClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
 	picBox->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
@@ -512,12 +514,12 @@ void EngineCanvas::_CreateEngineFrame()
 	mEngineCollapsePanel->SetSliderWidth(40.0f);
 	mEngineCollapsePanel->SetAnchorHor(0.0, 1.0f);
 	mEngineCollapsePanel->SetAnchorVer(0.0, 1.0f);
-	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetTexture("Data/engine/whiteround.png");
+	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetTexture("Data/engine/white.png");
 	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetPicBoxType(UIPicBox::PBT_NINE);
 	mEngineCollapsePanel->GetSlider()->GetFPicBoxBack()->GetUIPicBox()->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 
 	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -526,12 +528,12 @@ void EngineCanvas::_CreateEngineFrame()
 	//UIPicBox *picBoxCollapseItem = new0 UIPicBox();
 	//picBoxCollapseItem->SetPicBoxType(UIPicBox::PBT_NINE);
 	//picBoxCollapseItem->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
-	//picBoxCollapseItem->SetTexture("Data/engine/whiteround.png");
+	//picBoxCollapseItem->SetTexture("Data/engine/white.png");
 	//mEngineCollapsePanel->SetBarPicBox(picBoxCollapseItem);
 	//picBoxCollapseItem->SetColor(Float3::MakeColor(150, 150, 150));
 
 	mEngineCollapsePanel->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 
 	float butHeight = 30.0f;
 	float textHeight = 20.0f;
@@ -569,7 +571,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butProjectOpen->CreateAddText(PX2_LM_ENGINE.V("Open"));
 	butProjectOpen->AddUICallback(_EngineUICallback);
 	butProjectOpen->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	butProjectOpen->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	butProjectOpen->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -588,7 +590,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butProjectClose->CreateAddText(PX2_LM_ENGINE.V("Close"));
 	butProjectClose->AddUICallback(_EngineUICallback);
 	butProjectClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	butProjectClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	butProjectClose->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -607,7 +609,7 @@ void EngineCanvas::_CreateEngineFrame()
 	listProjects->SetAnchorVer(0.0f, 1.0f);
 	listProjects->SetAnchorParamVer(spaceHeight, posVer);
 	listProjects->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	listProjects->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	listProjects->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -818,7 +820,7 @@ void EngineCanvas::_CreateEngineFrame()
 	itemNeightbors->SetContentHeight(100.0f);
 	mEngineUDPNeighbors->SetSliderSize(sliderWidth);
 	mEngineUDPNeighbors->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	mEngineUDPNeighbors->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	mEngineUDPNeighbors->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -851,7 +853,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butBluetoothScan->CreateAddText(PX2_LM_ENGINE.V("Scan"));
 	butBluetoothScan->AddUICallback(_EngineUICallback);
 	butBluetoothScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	butBluetoothScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	butBluetoothScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -870,7 +872,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butBluetoothConnect->CreateAddText(PX2_LM_ENGINE.V("Connect"));
 	butBluetoothConnect->AddUICallback(_EngineUICallback);
 	butBluetoothConnect->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	butBluetoothConnect->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	butBluetoothConnect->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -892,7 +894,7 @@ void EngineCanvas::_CreateEngineFrame()
 	for (int i = 0; i < (int)deviceList.size(); i++)
 		listBle->AddItem(deviceList[i]);
 	listBle->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	listBle->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	listBle->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -925,7 +927,7 @@ void EngineCanvas::_CreateEngineFrame()
 	butSerialScan->CreateAddText(PX2_LM_ENGINE.V("Scan"));
 	butSerialScan->AddUICallback(_EngineUICallback);
 	butSerialScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	butSerialScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	butSerialScan->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -944,7 +946,7 @@ void EngineCanvas::_CreateEngineFrame()
 	listSerial->SetAnchorVer(0.0f, 1.0f);
 	listSerial->SetAnchorParamVer(spaceHeight, posVer);
 	listSerial->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	listSerial->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	listSerial->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -975,7 +977,7 @@ void EngineCanvas::_CreateEngineFrame()
 	infoButClear->CreateAddText(PX2_LM_ENGINE.V("Clear"));
 	infoButClear->AddUICallback(_EngineUICallback);
 	infoButClear->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	infoButClear->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	infoButClear->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
@@ -998,7 +1000,7 @@ void EngineCanvas::_CreateEngineFrame()
 	itemInfos->Expand(false);
 	mEngineInfoList->SetSliderSize(sliderWidth);
 	mEngineInfoList->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
-		->SetTexture("Data/engine/whiteround.png");
+		->SetTexture("Data/engine/white.png");
 	mEngineInfoList->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetPicBoxType(UIPicBox::PBT_NINE);
 	mEngineInfoList->GetSlider()->GetButSlider()->GetPicBoxAtState(UIButtonBase::BS_NORMAL)

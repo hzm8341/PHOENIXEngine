@@ -785,7 +785,7 @@ std::string Arduino::_DirectionType2Str(DirectionType dt)
 //----------------------------------------------------------------------------
 Arduino::Pin Arduino::_NetStr2Pin(const std::string &str)
 {
-	if ("P_0" == str)
+	if ("0" == str)
 		return Arduino::P_0;
 	else if ("1" == str)
 		return Arduino::P_1;

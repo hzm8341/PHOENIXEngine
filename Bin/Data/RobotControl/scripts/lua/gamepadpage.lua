@@ -17,7 +17,7 @@ local rc_LastLeftSpeed = 0.0
 local rc_LastRightType = 0
 local rc_LastRightSpeed = 0.0
 
-local rc_TopBtnsHeight = -140.0
+local rc_TopBtnsHeight = -180.0
 
 local rc_UICtr_UIMode = 1
 
@@ -87,7 +87,7 @@ function rc_FramePadPage()
     butUIMode:SetAnchorHor(0.0, 0.0)
     butUIMode:SetAnchorParamHor(200.0, 200.0)
     butUIMode:SetAnchorVer(1.0, 1.0)
-    butUIMode:SetAnchorParamVer(-50.0, -50.0)
+    butUIMode:SetAnchorParamVer(-70.0, -70.0)
     butUIMode:SetPivot(0.5, 0.5)
     butUIMode:CreateAddText(""..PX2_LM_APP:GetValue("UIMode"))
     butUIMode:SetSize(100, 40)
