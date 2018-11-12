@@ -518,6 +518,10 @@ IPAddress Application::GetLocalAddressWith10_172_192()
 		_RefreshLocalAddress();
 	}
 
+	std::vector<IPAddress> ips10;
+	std::vector<IPAddress> ips172;
+	std::vector<IPAddress> ips192;
+
 	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
 	{
 		std::string ipStr = mLocalAddresses[i].ToString();
@@ -525,7 +529,9 @@ IPAddress Application::GetLocalAddressWith10_172_192()
 		if (stk.Count() > 0)
 		{
 			if ("10" == stk[0])
-				return mLocalAddresses[i];
+			{
+				ips10.push_back(mLocalAddresses[i]);
+			}
 		}
 	}
 	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
@@ -535,7 +541,9 @@ IPAddress Application::GetLocalAddressWith10_172_192()
 		if (stk.Count() > 0)
 		{
 			if ("172" == stk[0])
-				return mLocalAddresses[i];
+			{
+				ips172.push_back(mLocalAddresses[i]);
+			}
 		}
 	}
 	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
@@ -545,8 +553,25 @@ IPAddress Application::GetLocalAddressWith10_172_192()
 		if (stk.Count() > 0)
 		{
 			if ("192" == stk[0])
-				return mLocalAddresses[i];
+			{
+				ips192.push_back(mLocalAddresses[i]);
+			}
 		}
+	}
+
+	if (ips10.size() > 0)
+	{
+		return ips10[ips10.size() - 1];
+	}
+
+	if (ips172.size() > 0)
+	{
+		return ips172[ips172.size() - 1];
+	}
+
+	if (ips192.size() > 0)
+	{
+		return ips192[ips192.size() - 1];
 	}
 
 	return IPAddress();
@@ -639,7 +664,8 @@ UDPServer *Application::CreateEngineUDPServerClient()
 {
 	mEngineUDPServerClient = 0;
 
-	SocketAddress udpAddr(EngineUDPPortClient);
+	IPAddress ipAddr = GetLocalAddressWith10_172_192();
+	SocketAddress udpAddr(ipAddr, EngineUDPPortClient);
 
 	mEngineUDPServerClient = new0 UDPServer(udpAddr);
 	mEngineUDPServerClient->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
