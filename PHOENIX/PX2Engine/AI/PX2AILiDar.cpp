@@ -68,7 +68,7 @@ mIsSupportControlMoto(false)
 
 	mOffsetDegree = -90.0f;
 
-	mLiDarType = LT_WR;
+	mLiDarType = LT_III;
 	mLiDarIII = new everest::hwdrivers::C3iroboticsLidar();
 	mClientConnector = new0 ClientConnector(5);
 	mLiDarWR = new0 WRLidar();
