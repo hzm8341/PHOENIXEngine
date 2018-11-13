@@ -177,8 +177,10 @@ void EngineServer::SendLidarData(int clientid)
 
 	if (destLength > 0)
 	{
+		PX2_LOG_INFO("try to send lidardata: %d", destLength);
 		SendMsgToClientBuffer(clientid, EngineServerSendLidarMsgID,
 			(const char *)&(dstDatas[0]), destLength);
+		PX2_LOG_INFO("end send lidardata");
 	}
 
 	delete1(buf);
