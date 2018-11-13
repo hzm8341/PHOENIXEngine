@@ -1,7 +1,7 @@
 -- ZERONEConnectBleSerial.lua
 
 ZERONE_IsRobotMotoWith298N = false
-ZERONE_IsRobotMotoUseSpeed = false
+ZERONE_IsRobotMotoUseSpeed = true
 
 function zo_ConnectBleSerial()
     local uiFrame = UIFrame:New()

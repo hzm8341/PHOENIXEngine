@@ -33,6 +33,8 @@ end
 function engine_project_cmd(cmd, param0, param1, param2)
 	if "robot" == cmd then
 		ZERONE_CurSerialOptType = 1
+		
+
 		PX2_ARDUINO:Initlize(Arduino.M_SERIAL, param0)
 		PX2_LOGGER:LogInfo("ZERONE", "robot arduino initlized")
 	elseif "lidar"==cmd then
