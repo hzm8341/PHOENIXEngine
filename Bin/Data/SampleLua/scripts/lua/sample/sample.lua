@@ -67,12 +67,16 @@ function sampleLua_Sample()
 	local ctrlBox = ActorCtrl:New({val = 1001, _name="Box"})
 	ctrlBox._val = 1001	
 	model1:AttachController(Cast:ToSC(ctrlBox.__object))
+
+	PX2_LOGGER:LogInfo("script_lua", "end create models")
 	
 	for k, v in pairs(gScriptTable) do
 		PX2_LOGGER:LogInfo("script_lua", "gScriptTable:"..k)
 	end	
 	--local scTable = gScriptTable[ctrlBox:SelfP()]
 	--scTable._val = 1002	
+
+	PX2_LOGGER:LogInfo("script_lua", "end gScriptTable")
 	
 	-- cam model
 	local mainCameraNode = scene:GetMainCameraNode()
@@ -82,6 +86,8 @@ function sampleLua_Sample()
 	cameraPlayCtrl:SetCameraDistance(60.0)
 	cameraPlayCtrl:SetCameraDist(30.0, 60.0)
 	cameraPlayCtrl:ResetPlay()
+
+	PX2_LOGGER:LogInfo("script_lua", "end camera node")
 	
 	if nil~=FBXImporter then
 		-- fbx model
@@ -114,9 +120,13 @@ function sampleLua_Sample()
 	scene:AttachChild(rectangle)
 	rectangle.LocalTransform:SetUniformScale(10.0)
 
+	PX2_LOGGER:LogInfo("script_lua", "end rectangle")
+
 	-- sky
 	local sky = PX2_CREATER:CreateSkyBox("Data/engine/sky/skybox/thickcloudswater/")
 	scene:AttachChild(sky)
+
+	PX2_LOGGER:LogInfo("script_lua", "end sky")
 
 	-- ui
 	local ui = PX2_PROJ:GetUI()
@@ -250,6 +260,8 @@ function sampleLua_Sample()
 	textInfo:SetWidth(700.0)
 	textInfo:GetText():SetFontColor(Float3.WHITE)
 	textInfo:GetText():SetAligns(TEXTALIGN_LEFT+TEXTALIGN_TOP)
+
+	PX2_LOGGER:LogInfo("script_lua", "end sampleLua_Sample")
 end
 -- PrintMsg
 function s_PrintMsg(str)

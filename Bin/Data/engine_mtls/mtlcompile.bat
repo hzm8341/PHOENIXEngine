@@ -1,5 +1,5 @@
 @echo off
 cd /d %cd%
-cd effect/
-..\\..\\..\\FxCompilerD.exe effect.xml
+cd tex2d/
+..\\..\\..\\FxCompilerD.exe tex2d.xml
 pause

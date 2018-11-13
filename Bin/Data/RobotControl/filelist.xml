@@ -22,7 +22,7 @@
 	<file filename="Data/RobotControl/images/zerone.png" md5="58c265c72164337c09925480f15d1b47"/>
 	<file filename="Data/RobotControl/project.px2proj" md5="9caafee5aa719fe16815c8ee946a8af7"/>
 	<file filename="Data/RobotControl/project_ui.px2obj" md5="4ec7bbaee9bc456831361818f8bfc930"/>
-	<file filename="Data/RobotControl/scripts/lua/acceleratorpage.lua" md5="24b56de6ac0b8b0a604622100b79aee5"/>
+	<file filename="Data/RobotControl/scripts/lua/acceleratorpage.lua" md5="76b05e096526e86571817102d4c3c8ec"/>
 	<file filename="Data/RobotControl/scripts/lua/bluetooth.lua" md5="d504b6d326e2b17b6315d95ac00092e1"/>
 	<file filename="Data/RobotControl/scripts/lua/common.lua" md5="839b523fd45cb05a49b2414148497bf9"/>
 	<file filename="Data/RobotControl/scripts/lua/connect.lua" md5="4b7a0df5967ee03db0e20545ce4e9060"/>

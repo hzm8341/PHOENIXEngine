@@ -32,7 +32,7 @@
 				</s>
 				<p>
 					<var type="cg" file="tex2d_cg.fx"/>
-					<var type="gles2" file="effect_gles2_ps.fx"/>
+					<var type="gles2" file="tex2d_gles2_ps.fx"/>
 				</p>
 			</shader>
 			<renderproperty>
