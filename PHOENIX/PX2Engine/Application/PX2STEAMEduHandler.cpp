@@ -11,6 +11,8 @@
 #include "PX2WebSocket.hpp"
 #include "PX2NetException.hpp"
 #include "PX2PlatformSDK.hpp"
+#include "PX2ScopedCS.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -66,6 +68,8 @@ void _StrToPin(const std::string &paramStr, int &pin, bool &isA)
 void Snap_RequestHandler::HandleRequest(HTTPServerRequest& request,
 	HTTPServerResponse& response)
 {
+	ScopedCS cs(&Application::ThreadUpdateMutex);
+
 	// ‘ –ÌøÁ”Ú!
 	std::string url = request.GetURI();
 

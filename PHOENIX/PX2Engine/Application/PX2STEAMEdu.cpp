@@ -35,7 +35,7 @@ void STEAMEduManager::Terminate()
 //----------------------------------------------------------------------------
 void STEAMEduManager::Update()
 {
-
+	
 }
 //----------------------------------------------------------------------------
 void STEAMEduManager::OpenArduino(const std::string &filename)

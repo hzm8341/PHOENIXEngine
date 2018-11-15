@@ -197,6 +197,8 @@ namespace PX2
 		void Update(float appSeconds, float elapsedSeconds);
 		float GetElapsedTime();
 
+		static Mutex ThreadUpdateMutex;
+
 	private:
 		float _CalElapsedTime();
 		double mAppTime;
