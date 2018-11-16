@@ -276,7 +276,6 @@ bool Application::Initlize()
 	InitializeNetwork();
 
 	mInputThread = new0 Thread();
-	mInputThread->Start(_InputThreadProc);
 
 	mDynLibMan = new0 DynLibManager();
 	PX2_UNUSED(mDynLibMan);
@@ -631,6 +630,8 @@ void Application::SetInEditor(bool isInEditor)
 	{
 		GetEngineClientConnector()->Enable(true);
 		CreateEngineUDPServerClient();
+
+		mInputThread->Start(_InputThreadProc);
 	}
 	else
 	{

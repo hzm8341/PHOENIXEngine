@@ -319,8 +319,8 @@ void LP_Manager::Initlize()
 	mCurlObject->SetCurlWriteCallback(_CurlWriteCallback);
 	mCurlObject->SetCurlProgressCallback(_ProgressCallback);
 
-	//mCfgUserName = PX2_APP.GetConfig("UserName");
-	//mCfgPassword = PX2_APP.GetConfig("Password");
+	mCfgUserName = PX2_APP.GetConfig("UserName");
+	mCfgPassword = PX2_APP.GetConfig("Password");
 
 	if (!mCfgUserName.empty() && !mCfgPassword.empty())
 	{
@@ -398,6 +398,10 @@ int LP_Manager::_CurlLogin(const std::string &userName,
 	std::string url = "http://www.manykit.com/res/login?";
 	std::string data = "username=" + userName;
 	data += std::string("&password=") + password;
+	mCurlObject->ClearOptionList();
+	int dataLength = data.length();
+	mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
+	mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
 	int ret = mCurlObject->Post(url, data);
 
 	if (1 == ret)
@@ -453,6 +457,10 @@ void LP_Manager::_GetProjectListCloud(int userID)
 	std::string url = "http://www.manykit.com/res/filelist?";
 	std::string data = "userid=" + strUserID;
 	data += "&type=1";
+	mCurlObject->ClearOptionList();
+	int dataLength = data.length();
+	mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
+	mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
 	int ret = mCurlObject->Post(url, data);
 
 	if (1 == ret)
@@ -536,6 +544,9 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 		data += "&state=1";
 		data += std::string("&files=") + tempStr;
 		
+		int dataLength = data.length();
+		mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
+		mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
 		int ret = mCurlObject->Post("http://www.manykit.com/res/upload", data);
 
 		if (1 == ret)
@@ -742,7 +753,7 @@ void LP_Manager::Visit(Object *obj, int info)
 			}
 			else if ("ButShop" == name)
 			{
-				std::string text = "https://shop194048616.taobao.com";
+				std::string text = "http://shop194048616.taobao.com";
 
 #if defined(_WIN32) || defined(WIN32)
 				WCHAR wszPath[MAX_PATH];
@@ -2179,7 +2190,7 @@ UIFrame *LP_Manager::CreateCodePlayFrame()
 	butShop->SetPivot(0.5f, 1.0f);
 	butShop->SetAnchorParamVer(-5.0f, -5.0f);
 	butShop->SetHeight(20.0f);
-	auto text = butShop->CreateAddText("http://www.manykit.com");
+	auto text = butShop->CreateAddText("https://www.manykit.com");
 	text->GetText()->SetFontScale(0.8f);
 	butShop->AddVisitor(this);
 
