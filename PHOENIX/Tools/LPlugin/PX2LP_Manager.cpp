@@ -544,12 +544,17 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 		data += std::string("&files=") + tempStr;
 		
 		int dataLength = data.length();
+		mCurlObject->ClearOptionList();
 		mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
 		mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
-		int ret = mCurlObject->Post("http://www.manykit.com/res/upload", data);
+		int ret = mCurlObject->Post("http://www.manykit.com/res/upload?", data);
 
 		if (1 == ret)
 		{
+			char *chMem = mCurlObject->GetGettedMemory();
+			int size = mCurlObject->GetGettedMemorySize();
+			std::string retStr = std::string(chMem, size);
+
 			_GetProjectListCloud(mUserID);
 			_RefreshProjectsUI();
 		}
@@ -567,6 +572,10 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 	std::string data = "id=" + StringHelp::IntToString(projectID);
 	data += "&type=1";
 
+	int dataLength = data.length();
+	mCurlObject->ClearOptionList();
+	mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
+	mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
 	int ret = mCurlObject->Post("http://www.manykit.com/res/getfile", data);
 
 	if (1 == ret)
@@ -642,6 +651,10 @@ void LP_Manager::_DeleteProject(LP_ProjectItem *item)
 	std::string data = "userid=" + StringHelp::IntToString(mUserID);
 	data += "&state=5";
 	data += "&id=" + StringHelp::IntToString(projectID);
+	int dataLength = data.length();
+	mCurlObject->ClearOptionList();
+	mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
+	mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
 	int ret = mCurlObject->Post(url, data);
 
 	_GetProjectListCloud(mUserID);
