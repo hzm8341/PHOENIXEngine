@@ -285,19 +285,19 @@ function ZERONEUIFaceCtrl:OnPUpdate()
                 end   
             else
                 if self._IsUpPressed then
-                    self:Move(MoveType.MT_FORWARD, 160)
+                    self:Move(MoveType.MT_FORWARD, 100)
                 end
                 
                 if self._IsDownPressed then
-                    self:Move(MoveType.MT_BACKWARD, 160)
+                    self:Move(MoveType.MT_BACKWARD, 100)
                 end
 
                 if self._IsLeftPressed then
-                    self:Move(MoveType.MT_LEFT, 45)
+                    self:Move(MoveType.MT_LEFT, 30)
                 end
         
                 if self._IsRightPressed then
-                    self:Move(MoveType.MT_RIGHT, 45)
+                    self:Move(MoveType.MT_RIGHT, 30)
                 end     
             end
 		end
