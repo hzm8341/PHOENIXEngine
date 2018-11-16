@@ -526,7 +526,6 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 	int outDeco = 0;
 	std::string zipStrDecode = Base64::Decode(zipStr, outDeco);
 
-
 	if (!zipStr.empty())
 	{
 		XMLData xmlData;
