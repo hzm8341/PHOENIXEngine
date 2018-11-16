@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 11/10/18 21:25:00.
+** Generated automatically by tolua++-1.0.92 on 11/16/18 22:34:41.
 */
 
 #ifndef __cplusplus
@@ -95751,41 +95751,6 @@ static int tolua_PX2_Application_LoadProject00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: LoadProjectByPath of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_LoadProjectByPath00
-static int tolua_PX2_Application_LoadProjectByPath00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
-  const std::string pathname = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'LoadProjectByPath'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->LoadProjectByPath(pathname);
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-   tolua_pushcppstring(tolua_S,(const char*)pathname);
-  }
- }
- return 2;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'LoadProjectByPath'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: SaveProject of class  Application */
 #ifndef TOLUA_DISABLE_tolua_PX2_Application_SaveProject00
 static int tolua_PX2_Application_SaveProject00(lua_State* tolua_S)
@@ -108110,7 +108075,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"WriteBoost",tolua_PX2_Application_WriteBoost00);
    tolua_function(tolua_S,"NewProject",tolua_PX2_Application_NewProject00);
    tolua_function(tolua_S,"LoadProject",tolua_PX2_Application_LoadProject00);
-   tolua_function(tolua_S,"LoadProjectByPath",tolua_PX2_Application_LoadProjectByPath00);
    tolua_function(tolua_S,"SaveProject",tolua_PX2_Application_SaveProject00);
    tolua_function(tolua_S,"SaveProjectAs",tolua_PX2_Application_SaveProjectAs00);
    tolua_function(tolua_S,"CloseProject",tolua_PX2_Application_CloseProject00);

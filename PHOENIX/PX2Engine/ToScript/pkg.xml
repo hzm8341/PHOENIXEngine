@@ -10344,10 +10344,6 @@
 				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 				<param paramstr="bool doUpdate=false" is_retrun="false" type_str="bool" valuename_str="doUpdate" defaultvalue_Str="false" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="LoadProjectByPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::string &amp;pathname" is_retrun="false" type_str="std::string" valuename_str="pathname" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
 			<function name="SaveProject" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>

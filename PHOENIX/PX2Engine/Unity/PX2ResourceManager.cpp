@@ -967,6 +967,23 @@ ResourceManager::LoadState ResourceManager::GetResLoadState(ResHandle handle)
 	return rec.State;
 }
 //----------------------------------------------------------------------------
+void ResourceManager::SetProjectIDStr(const std::string &projName, 
+	const std::string &idStr)
+{
+	mProjectName = projName;
+	mProjectIDStr = idStr;
+}
+//----------------------------------------------------------------------------
+const std::string &ResourceManager::GetProjectName() const
+{
+	return mProjectName;
+}
+//----------------------------------------------------------------------------
+const std::string &ResourceManager::GetProjectIDStr() const
+{
+	return mProjectIDStr;
+}
+//----------------------------------------------------------------------------
 void ResourceManager::SetResourcePath(const std::string &resPath)
 {
 	msResPath = resPath;
@@ -1157,6 +1174,24 @@ ResourceManager::LoadRecord &ResourceManager::InsertRecord(
 #if defined(__ANDROID__) || defined(__IOS__)
 	CheckResourceCCZFile(dstFilename);
 #endif
+
+	if (!mProjectName.empty() && !mProjectIDStr.empty())
+	{
+		std::string projNewPathName = mProjectName + "_" + mProjectIDStr;
+		size_t pos = dstFilename.find(mProjectName);
+
+		if (pos != std::string::npos)
+		{
+			size_t posNew = dstFilename.find(projNewPathName);
+
+			if (posNew == std::string::npos)
+			{
+				std::string strFront = dstFilename.substr(0, pos);
+				std::string strEnd = dstFilename.substr(pos + mProjectName.length(), dstFilename.length() - pos - mProjectName.length());
+				dstFilename = strFront + projNewPathName + strEnd;
+			}
+		}
+	}
 
 	// adjust path
 	bool isHasUpdate = IsHasUpdate(dstFilename, dstFilename);

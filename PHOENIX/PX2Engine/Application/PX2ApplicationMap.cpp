@@ -315,6 +315,14 @@ bool Application::LoadProjectByPath(const std::string &pathname)
 
 	PX2_LOG_INFO("Loaded Project: %s", projName.c_str());
 
+	StringTokenizer stk(mProjectName, "_");
+	if (stk.Count() > 1)
+	{
+		std::string projName = stk[0];
+		std::string idStr = stk[1];
+		PX2_RM.SetProjectIDStr(projName, idStr);
+	}
+
 	return loadResult;
 }
 //----------------------------------------------------------------------------
@@ -479,6 +487,7 @@ void Application::CloseProject()
 
 	Project::Destory();
 	mProjectFilePath.clear();
+	PX2_RM.SetProjectIDStr("", "");
 }
 //----------------------------------------------------------------------------
 std::string Application::GetProjectVersionByPath(const std::string &pathName)

@@ -42,6 +42,10 @@ namespace PX2
 		static std::string GetWriteablePath();
 		static std::string GetResourcePath();
 
+		void SetProjectIDStr(const std::string &projName, const std::string &idStr);
+		const std::string &GetProjectName() const;
+		const std::string &GetProjectIDStr() const;
+
 		/// ×ÊÔ´¼ÓÔØ×´Ì¬
 		enum LoadState
 		{
@@ -163,6 +167,9 @@ namespace PX2
 		std::map < FString, TexPack> mTexPacks;
 		static TexPackElement msIvalidTexPackElement;
 		std::map < FString, TexPackElement> mPackElements;
+
+		std::string mProjectName;
+		std::string mProjectIDStr;
 
 		static std::string msResPath;
 		static std::string mWriteablePath;
