@@ -126,11 +126,7 @@ float Application::_CalElapsedTime()
 //----------------------------------------------------------------------------
 void Application::Update()
 {
-	PX2_LOG_INFO("Update", "0");
-#if defined (_WIN32) || defined (WIN32)
 	ScopedCS cs(&ThreadUpdateMutex);
-#endif
-	PX2_LOG_INFO("Update", "1");
 
 	mAppTime = Time::GetTimeInSeconds();
 	mElapsedTime = _CalElapsedTime();
