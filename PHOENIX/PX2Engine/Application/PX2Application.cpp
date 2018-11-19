@@ -126,7 +126,9 @@ float Application::_CalElapsedTime()
 //----------------------------------------------------------------------------
 void Application::Update()
 {
+#if defined (_WIN32) || defined (WIN32)
 	ScopedCS cs(&ThreadUpdateMutex);
+#endif
 
 	mAppTime = Time::GetTimeInSeconds();
 	mElapsedTime = _CalElapsedTime();
