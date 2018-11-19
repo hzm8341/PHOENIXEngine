@@ -672,7 +672,7 @@ void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
 {
 	mPathUpdateTiming += elapsedSeconds;
 
-	if (mPathUpdateTiming > 0.1f)
+	if (mPathUpdateTiming > 0.2f)
 	{
 		if (mCurPathPlan && PX2_ARDUINO.IsInitlized())
 		{
@@ -695,7 +695,7 @@ void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
 				}
 				else
 				{
-					PX2_ARDUINO.Run(Arduino::SDT_FORWARD, 120);
+					PX2_ARDUINO.Run(Arduino::SDT_FORWARD, 75);
 				}
 
 
@@ -1266,12 +1266,12 @@ void Robot::_UpdateAdjustDirection(const AVector &dir)
 			{
 				// move left
 
-				PX2_ARDUINO.Run(Arduino::SDT_LEFT, 40.0f);
+				PX2_ARDUINO.Run(Arduino::SDT_LEFT, 25.0f);
 			}
 			else
 			{
 				// move right
-				PX2_ARDUINO.Run(Arduino::SDT_RIGHT, 40.0f);
+				PX2_ARDUINO.Run(Arduino::SDT_RIGHT, 25.0f);
 			}
 		}
 	}
