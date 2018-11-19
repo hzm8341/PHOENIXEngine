@@ -625,7 +625,7 @@ void Application::SetInEditor(bool isInEditor)
 	mIsInEditor = isInEditor;
 	PX2_GR.SetInEditor(isInEditor);
 
-#if defined (_WIN32) || defined (WIN32) || defined (__ANDROID__)
+#if defined (_WIN32) || defined (WIN32) || defined (__ANDROID__) || defined(__LINUX__)
 	if (!mIsInEditor)
 	{
 		GetEngineClientConnector()->Enable(true);
