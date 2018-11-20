@@ -578,7 +578,6 @@ void LBlock::CompileAll(std::string &script, int numTable, LFile *file)
 {
 	LogicFilePlatformType pt = file->GetPlatformType();
 
-	const std::string &fileName = file->GetName();
 	const std::string &name = GetName();
 	BlockType bt = GetBlockType();
 	CtrlType ct = GetCtrlType();

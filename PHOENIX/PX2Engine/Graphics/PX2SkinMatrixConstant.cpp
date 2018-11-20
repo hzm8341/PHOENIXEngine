@@ -54,7 +54,7 @@ void SkinMatrixConstant::Update(const ShaderStruct *struc)
 			const HMatrix &mat = mSkinContrl->GetGPUMatrix()[i];
 			const float* source = (const float*)mat;
 			float* target = mData + 12*i;
-			for (int i = 0; i < 12; ++i)
+			for (int j = 0; j < 12; ++j)
 			{
 				*target++ = *source++;
 			}
@@ -65,7 +65,7 @@ void SkinMatrixConstant::Update(const ShaderStruct *struc)
 			const float *source = (const float*)HMatrix::IDENTITY;
 
 			float* target = mData + 12*i;
-			for (int i = 0; i < 12; ++i)
+			for (int j = 0; j < 12; ++j)
 			{
 				*target++ = *source++;
 			}

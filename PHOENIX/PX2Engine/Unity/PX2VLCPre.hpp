@@ -9,7 +9,7 @@
 
 #if defined(_WIN64) || defined(WIN64)
 #else
-#define PX2_USE_VLC 1
+//#define PX2_USE_VLC 1
 #endif
 
 #endif

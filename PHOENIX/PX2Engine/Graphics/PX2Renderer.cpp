@@ -283,7 +283,7 @@ void Renderer::Disable (const VertexFormat* vformat)
 		VertexFormatMap::iterator iter = mVertexFormats.find(vformat);
 		if (iter != mVertexFormats.end())
 		{
-			PdrVertexFormat* pdrVFormat = iter->second;
+			pdrVFormat = iter->second;
 			pdrVFormat->Disable(this);
 		}
 	}
@@ -717,7 +717,7 @@ void Renderer::Disable (const IndexBuffer* ibuffer)
 		IndexBufferMap::iterator iter = mIndexBuffers.find(ibuffer);
 		if (iter != mIndexBuffers.end())
 		{
-			PdrIndexBuffer* pdrIBuffer = iter->second;
+			pdrIBuffer = iter->second;
 			pdrIBuffer->Disable(this);
 		}
 	}

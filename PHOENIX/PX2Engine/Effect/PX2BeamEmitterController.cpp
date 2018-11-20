@@ -113,9 +113,10 @@ bool BeamEmitterController::Update(double applicationTime,
 			AVector seVec = emitEndPos - emitStartPos;
 
 			int numPoints = (int)beamObj.Points.size();
-			for (int i=0; i<int(beamObj.Points.size()); i++)
+			for (int j=0; j<numPoints; j++)
 			{
-				beamObj.Points[i] = beamObj.StartPos + seVec*(float)i/(float)(numPoints-1);
+				beamObj.Points[j] = beamObj.StartPos + 
+					seVec*(float)j/(float)(numPoints-1);
 			}
 		}
 	}
