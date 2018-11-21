@@ -146,6 +146,8 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 **5.执行**
 	
 	在PHEONIXEngine/PHOENIX/Bin目录执行 AppPlayer.ReleaseARMDynamic
+	
+	树莓派图形处理能力很弱，可以直接执行 AppPlayer.ReleaseARMDynamic window=0 运行命令行程序
 
 ### Android
 
