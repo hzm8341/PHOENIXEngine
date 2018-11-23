@@ -20,7 +20,7 @@ QQ交流群：336273110
 
 入门小车：https://v.qq.com/x/page/o074128or8x.html
 
-SLAM小车：<更新中>
+SLAM小车：https://www.bilibili.com/video/av36472703/
 
 “引擎在不断更新演化，相信美好的事情将发生:-D”
 
