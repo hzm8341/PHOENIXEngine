@@ -35,4 +35,7 @@ function rc_AddLanguage()
 	PX2_LM_APP:AddItem1("Control", "控制")
 	PX2_LM_APP:AddItem1("Axis", "陀螺仪")
 	PX2_LM_APP:AddItem1("Voice", "语音")
+
+	PX2_LM_APP:AddItem1("Left", "左")
+	PX2_LM_APP:AddItem1("Right", "右")
 end
