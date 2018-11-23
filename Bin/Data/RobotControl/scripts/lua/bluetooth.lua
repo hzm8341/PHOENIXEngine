@@ -38,7 +38,7 @@ function rc_BluetoothSerial()
     btnLeft:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetPicBoxType(UIPicBox.PBT_NINE)
     local fText = btnLeft:CreateAddText(""..PX2_LM_APP:GetValue("Scan"))
     rc_UISetTextFont(fText:GetText(), 32)
-    btnLeft:SetScriptHandler("zo_ButBluetoothSerialFrameCallabck")
+    btnLeft:SetScriptHandler("rc_ButBluetoothSerialFrameCallabck")
 
 	local btnRight = UIButton:New("BtnDlgRight")
 	uiFrame:AttachChild(btnRight)
@@ -56,7 +56,7 @@ function rc_BluetoothSerial()
 	btnRight:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetPicBoxType(UIPicBox.PBT_NINE)
 	local fText = btnRight:CreateAddText(""..PX2_LM_APP:GetValue("Connect"))
     rc_UISetTextFont(fText:GetText(), 32)
-    btnRight:SetScriptHandler("zo_ButBluetoothSerialFrameCallabck")
+    btnRight:SetScriptHandler("rc_ButBluetoothSerialFrameCallabck")
     ZERONE_BleConnect = btnRight
 
     UnRegistAllEventFunctions("BluetoothES::OnDisocveryNewDevice")
@@ -86,7 +86,7 @@ function rc_BluetoothSerial()
             System:SleepSeconds(2.0)
 
             -- startup
-            zo_OnStartUp(ZERONE_IsRobotMotoUseSpeed)
+            rc_OnStartUp()
         end
     end)
 
@@ -97,24 +97,157 @@ function rc_BluetoothSerial()
         end
     end)
 
-    RegistEventFunction("SerialES::Open", function(tag)
-        if 1==ZERONE_CurSerialOptType then
-            if nil~=ZERONE_BleConnect then
-                ZERONE_BleConnect:GetText():SetText(""..PX2_LM_APP:GetValue("DisConnect"))
-                
-                -- startup
-                zo_OnStartUp(ZERONE_IsRobotMotoUseSpeed)
-            end
+    RegistEventFunction("SerialES::Open", function(tag) 
+        if nil~=ZERONE_BleConnect then
+            ZERONE_BleConnect:GetText():SetText(""..PX2_LM_APP:GetValue("DisConnect"))
+            
+            -- startup
+            rc_OnStartUp()
         end
     end)
 
     RegistEventFunction("SerialES::Close", function(tag)
-        if 1==ZERONE_CurSerialOptType then
-            if nil~=ZERONE_BleConnect then
-                ZERONE_BleConnect:GetText():SetText(""..PX2_LM_APP:GetValue("Connect"))
-            end
+        if nil~=ZERONE_BleConnect then
+            ZERONE_BleConnect:GetText():SetText(""..PX2_LM_APP:GetValue("Connect"))
         end
     end)
 
 	return uiFrame
+end
+
+function rc_ButBluetoothSerialFrameCallabck(ptr, callType)
+    local obj = Cast:ToO(ptr) 
+	local name = obj:GetName()	
+    
+    local platType = PX2_APP:GetPlatformType()
+
+    if UICT_PRESSED==callType then
+        playFrameScale(obj)
+    elseif UICT_RELEASED==callType then
+        playFrameNormal(obj)
+
+        if "BtnDlgLeft"==name then
+            if Application.PLT_WINDOWS==platType or Application.PLT_LINUX==platType then
+                rc_ScanSerialDevices()
+            else
+                rc_ScanBleDevices()
+            end        
+        elseif "BtnDlgRight"==name then
+            if Application.PLT_WINDOWS==platType or Application.PLT_LINUX==platType then
+                if not PX2_ARDUINO:IsInitlized() then
+                    rc_SerialTryToConnect()
+                else
+                    PX2_ARDUINO:Terminate()
+                end
+            else
+                if not PX2_BLUETOOTH:IsConnected() then
+                    rc_BluetoothTryToConnect()
+                else
+                    PX2_BLUETOOTH:DisConnect()
+                end
+            end
+        end
+    elseif UICT_CHECKED == callType then
+     
+	end
+end
+
+function rc_ScanBleDevices()
+    if nil~=rc_BleList then
+
+        rc_BleList:RemoveAllItems()
+        
+        PX2_BLUETOOTH:GetPairedDevices()
+        local numPairedDevices = PX2_BLUETOOTH:GetNumPairedDevices()
+        for i=1, numPairedDevices, 1 do
+            local deviceStr = PX2_BLUETOOTH:GetPairedDevice(i-1)
+            local stk = StringTokenizer(deviceStr, "$")
+
+            if stk:Count() >= 2 then
+                local strName = stk:GetAt(0)
+                local strAddress = stk:GetAt(1)
+
+                local useStrName = strName
+
+                local uiItem = rc_BleList:AddItem(useStrName)
+                
+                local text = UIFText:New()
+                uiItem:AttachChild(text)
+                text.LocalTransform:SetTranslateY(-1.0)
+                text:SetAnchorHor(0.5, 1.0)
+                text:SetAnchorVer(0.0, 1.0)
+                text:GetText():SetFontColor(Float3.WHITE)
+                text:GetText():SetText(""..PX2_LM_APP:GetValue("IsPaired"))
+
+                uiItem:SetUserDataString("NamePath", deviceStr)
+            end
+        end
+    end
+    PX2_BLUETOOTH:DoDiscovery()
+end
+
+function rc_BluetoothTryToConnect()
+    local item = rc_BleList:GetSelectedItem()
+
+    if nil~=item then
+        local namePath = item:GetUserDataString("NamePath")
+        PX2_LOGGER:LogInfo("RobotControl", "NamePath:"..namePath)
+        if ""~=namePath then
+            local stk = StringTokenizer(namePath, "$")
+            if stk:Count() >= 2 then
+                local strName = stk:GetAt(0)
+                local strAddress = stk:GetAt(1)
+                local rssi = stk:GetAt(2)
+
+                if ""~=strAddress then
+                    rc_BlueToConnect(strAddress)
+                end
+            end
+        end
+    end
+end
+
+function rc_BlueToConnect(strAddress)
+    coroutine.wrap(function()
+        PX2_LOGGER:LogInfo("RobotControl", "connect to"..strAddress)
+        PX2_BLUETOOTH:Connect(strAddress)
+    end)()
+end
+
+function rc_ScanSerialDevices()
+    rc_BleList:RemoveAllItems()
+
+    local serial = Serial()
+    serial:GetPortList()
+    local numPorts = serial:GetNumPorts()
+    for i=0, numPorts-1 do
+        local portStr = serial:GetPort(i)
+        local item = rc_BleList:AddItem(portStr)
+        item:SetUserDataString("NamePath", portStr)
+    end  
+end
+
+function rc_SerialTryToConnect()
+    local item = rc_BleList:GetSelectedItem()
+
+    if nil~=item then
+        local namePath = item:GetUserDataString("NamePath")
+        PX2_LOGGER:LogInfo("RobotControl", "NamePath:"..namePath)        
+        if ""~=namePath then
+            PX2_ARDUINO:Initlize(Arduino.M_SERIAL, namePath, 9600)
+        end
+    end
+end
+
+function rc_OnStartUp()
+    -- Arduino
+    PX2_ARDUINO:VehicleInitMotoBoard4567()
+    --PX2_ARDUINO:VehicleSpeedInit(Arduino.P_2, Arduino.P_8, Arduino.P_3, Arduino.P_9)
+
+    PX2_ARDUINO:PinMode(Arduino.P_10, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
+    PX2_ARDUINO:ServerInit(0, Arduino.P_A0)
+    PX2_ARDUINO:ServerInit(1, Arduino.P_A1)
 end

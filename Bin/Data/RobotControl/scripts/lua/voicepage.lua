@@ -13,6 +13,8 @@ function rc_VoicePage ()
     btnVoice:SetAnchorVer(0.5, 0.5)
     btnVoice:SetSize(200.0, 200.0)
     btnVoice:SetScriptHandler("rc_UICallabck")
+    btnVoice:SetStateColorDefaultWhite()
+    btnVoice:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/RobotControl/images/voice.png")
 
     return uiFrame
 end
