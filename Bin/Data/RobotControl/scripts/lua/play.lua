@@ -10,7 +10,7 @@ require("Data/RobotControl/scripts/lua/bluetooth.lua")
 require("Data/RobotControl/scripts/lua/common.lua")
 
 function engine_project_preplay() 
-    PX2_APP:SetShowInfo(true)
+    PX2_APP:SetShowInfo(false)
     PX2_BLUETOOTH:SetDataProtocolHex(false)
     rc_AddLanguage()
 end
@@ -31,6 +31,10 @@ rc_FrameHome = nil
 rc_FramePad = nil
 rc_FrameAxis = nil
 rc_FrameVoice = nil
+rc_SpeakText = nil
+
+rc_TextWidth = 660.0
+rc_TextHeight = 200.0
 
 PageType = {
     PT_HOME = 0,
@@ -127,8 +131,25 @@ function rc_Play()
     UnRegistAllEventFunctions("VoiceSDKSpace::RecognizeResults")
     RegistEventFunction("VoiceSDKSpace::RecognizeResults", function(txt, txtJson)
         PX2_LOGGER:LogInfo("RobotControl", txt)
-        
+
+        rc_SpeakText:GetText():SetText(txt)
+        local fontWidth = rc_SpeakText:GetText():GetTextWidth()
+        if fontWidth < (rc_TextWidth-20.0) then
+            rc_SpeakText:GetText():SetRectUseage(RU_ALIGNS)
+            rc_SpeakText:SetHeight(rc_TextHeight)
+            rc_SpeakText:SetAnchorParamVer(rc_TextHeight*0.5, rc_TextHeight*0.5)
+        else
+            local numHeight = (fontWidth/rc_TextWidth) * 1.0 + 1
+            local height = numHeight * 40
+            rc_SpeakText:GetText():SetRectUseage(RU_CLIPWARP)
+            rc_SpeakText:SetHeight(height)
+            if height>rc_TextHeight then
+                rc_SpeakText:SetAnchorParamVer(height*0.5, height*0.5)
+            end
+        end
+
         PX2_VOICESDK:Speak(""..txt)
+
     end)
 
     UnRegistAllEventFunctions("VoiceSDKSpace::SpeakText")
@@ -189,6 +210,8 @@ function rc_UICallabck(ptr, callType)
                 rc_FrameAxis:Show(false)
                 rc_FrameVoice:Show(false)
 
+                rc_RobotCtrlLeave()
+
                 rc_ThePageType = PageType.PT_HOME
             end
         elseif "BtnVoiceRecording"==name then
@@ -202,4 +225,9 @@ function rc_UICallabck(ptr, callType)
     elseif UICT_ROUND_RELEASEDNOTPICK==callType then
     elseif UICT_COMBOBOX_CHOOSED==callType then 
 	end
+end
+
+function rc_RobotCtrlLeave()
+    PX2_ARDUINO:Run(0, Arduino.DT_NONE, 0)
+    PX2_ARDUINO:Run(1, Arduino.DT_NONE, 0)
 end

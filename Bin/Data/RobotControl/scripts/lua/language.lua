@@ -38,4 +38,10 @@ function rc_AddLanguage()
 
 	PX2_LM_APP:AddItem1("Left", "左")
 	PX2_LM_APP:AddItem1("Right", "右")
+	PX2_LM_APP:AddItem1("LED_L", "左灯")
+	PX2_LM_APP:AddItem1("LED_R", "右灯")
+	PX2_LM_APP:AddItem1("Sound", "声音")
+
+	PX2_LM_APP:AddItem1("Hor", "水平")
+	PX2_LM_APP:AddItem1("Ver", "垂直")
 end
