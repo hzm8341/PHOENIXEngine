@@ -20,7 +20,9 @@ QQ交流群：336273110
 
 入门小车：https://v.qq.com/x/page/o074128or8x.html
 
-SLAM小车：https://www.bilibili.com/video/av36472703/
+SLAM小车：
+安装步骤:https://www.bilibili.com/video/av34671485/?spm_id_from=333.788.videocard.0
+刷系统编程步骤:https://www.bilibili.com/video/av36472703/
 
 “引擎在不断更新演化，相信美好的事情将发生:-D”
 
