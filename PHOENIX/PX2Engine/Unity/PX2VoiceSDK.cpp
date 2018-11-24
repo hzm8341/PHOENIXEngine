@@ -207,23 +207,23 @@ const std::string &VoiceSDK::GetSTTStr() const
 //----------------------------------------------------------------------------
 void VoiceSDK::StartVoiceListening()
 {
-#ifdef __ANDROID__
-	VoiceStartVoiceListening();
-#else
+//#ifdef __ANDROID__
+//	VoiceStartVoiceListening();
+//#else
 
 	PX2_SS.StartRecording(7);
 
 	// 开始录音
 	OnVoiceRecordStart();
 
-#endif
+//#endif
 }
 //----------------------------------------------------------------------------
 void VoiceSDK::EndVoiceListening()
 {
-#ifdef __ANDROID__
-	VoiceEndVoiceListening();
-#else
+//#ifdef __ANDROID__
+//	VoiceEndVoiceListening();
+//#else
 	PX2_SS.StopRecording();
 
 	// 结束录音，请求对话
@@ -264,7 +264,7 @@ void VoiceSDK::EndVoiceListening()
 			PX2_LOG_INFO("%s", voiceJson.c_str());
 		}
 	}
-#endif
+//#endif
 }
 //----------------------------------------------------------------------------
 void VoiceSDK::OnSpeakStart()
@@ -327,9 +327,9 @@ void VoiceSDK::EnableAutoSpeak(bool isAutoSpeakEnable)
 {
 	mIsAutoSpeakEnabled = isAutoSpeakEnable;
 	
-#ifdef __ANDROID__
-	VoiceEnableAutoSpeak(isAutoSpeakEnable);
-#endif
+//#ifdef __ANDROID__
+//	VoiceEnableAutoSpeak(isAutoSpeakEnable);
+//#endif
 }
 //----------------------------------------------------------------------------
 bool VoiceSDK::IsAutoSpeakEnabled() const
@@ -341,9 +341,9 @@ void VoiceSDK::EnableAutoSpeakTTS(bool isAutoSpeakTTSEnable)
 {
 	mIsAutoTTSSpeakEnabled = isAutoSpeakTTSEnable;
 
-#ifdef __ANDROID__
-	VoiceEnableAutoSpeakTTS(isAutoSpeakTTSEnable);
-#endif
+//#ifdef __ANDROID__
+//	VoiceEnableAutoSpeakTTS(isAutoSpeakTTSEnable);
+//#endif
 }
 //----------------------------------------------------------------------------
 bool VoiceSDK::IsAutoSpeakTTSEnabled() const
@@ -355,19 +355,21 @@ void VoiceSDK::Speak(const std::string &text)
 {
 	PX2_UNUSED(text);
 
-#ifdef __ANDROID__
-	VoiceSpeak(text.c_str());
-#else
+//#ifdef __ANDROID__
+//	VoiceSpeak(text.c_str());
+//#else
 	//UrlEncode(text)
 	// 请求百度
 	if (std::string("baidu") == GetSDK_TTS())
 	{
 		std::string url = "http://tsn.baidu.com/text2audio?tex='"
-			+ UrlEncode(text) + "'&lan=zh&per=2&pit=4&spd=7&cuid=11221194&ctp=1&tok=" + mTTS_Token;
+			+ UrlEncode(text) 
+			+ "'&lan=zh&per=2&pit=4&spd=7&cuid=11221194&ctp=1&tok=" 
+			+ mTTS_Token;
 		PX2_SS.PlayASound(url.c_str(), 1.0f, -1.0f);
 		OnSpeakStart();
 	}
-#endif
+//#endif
 }
 //----------------------------------------------------------------------------
 void VoiceSDK::PlayHotMusic()

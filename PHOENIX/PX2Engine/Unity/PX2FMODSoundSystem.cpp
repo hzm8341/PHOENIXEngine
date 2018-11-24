@@ -69,6 +69,10 @@ bool FMODSoundSystem::Initialize(const SoundSystemInitInfo &initInfo)
 	if (version < FMOD_VERSION)
 		return false;
 
+#if defined __ANDROID__
+	mFMODSystem->setOutput(FMOD_OUTPUTTYPE_OPENSL);
+#endif
+
 	if (mFMODSystem->init(initInfo.MaxChannels, FMOD_INIT_NORMAL, 0) != FMOD_OK)
 	{
 		assertion(false, "FMOD::init failed.");
@@ -605,8 +609,11 @@ void FMODSoundSystem::StartRecording(int seconds)
 	FMOD_RESULT result = mFMODSystem->getRecordNumDrivers(NULL, &numDrivers);
 	if (result != FMOD_OK)
 	{
+		PX2_LOG_ERROR("get record drivers failed!");
 		assertion(false, "get record drivers failed!");
 	}
+
+	PX2_LOG_INFO("numDrivers is %d", numDrivers);
 
 	int nativeRate = 0;
 	int nativeChannels = 0;
@@ -614,6 +621,7 @@ void FMODSoundSystem::StartRecording(int seconds)
 		NULL, &nativeRate, NULL, &nativeChannels, NULL);
 	if (result != FMOD_OK)
 	{
+		PX2_LOG_ERROR("getRecordDriverInfo failed!");
 		assertion(false, "getRecordDriverInfo failed!");
 	}
 
@@ -638,6 +646,7 @@ void FMODSoundSystem::StartRecording(int seconds)
 	result = mFMODSystem->recordStart(RECORD_DEVICE_INDEX, sound, false);
 	if (result != FMOD_OK)
 	{
+		PX2_LOG_ERROR("recordStart failed!");
 		assertion(false, "recordStart failed!");
 	}
 
@@ -645,6 +654,7 @@ void FMODSoundSystem::StartRecording(int seconds)
 	result = sound->getLength(&soundLength, FMOD_TIMEUNIT_PCM);
 	if (result != FMOD_OK)
 	{
+		PX2_LOG_ERROR("sound getLength failed!");
 		assertion(false, "sound getLength failed!");
 	}
 }

@@ -158,6 +158,8 @@ function rc_Play()
 
     PX2_PFSDK:StartAccelerator()
     PX2_PFSDK:RegistAccelerator()
+
+    PX2_VOICESDK:Speak("Hi,我是零一机器人")
 end
 
 function rc_UICallabck(ptr, callType)

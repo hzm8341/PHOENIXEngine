@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import android.Manifest;
 import android.R.string;
 import android.provider.Settings;
 
@@ -40,7 +41,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -84,11 +84,14 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -147,6 +150,9 @@ public class AppPlayBaseActivity extends Activity
     private PendingIntent mPermissionIntent;
     private static final String ACTION_USB_PERMISSION =
             "com.demo.xprinter.USB_PERMISSION";
+
+	private static final int REQUEST_LOCATION_PERMISSION = 111;
+	private static final int REQUEST_RECORDING_PERMISSION = 112;
     
 	private UsbManager mUsbManager;
 	private UsbDevice mDeviceFound;
@@ -225,6 +231,12 @@ public class AppPlayBaseActivity extends Activity
 		
 		// ble
 		_BluetoothSetBle(false);
+		
+		if (!isLocationOpen(getApplicationContext())) 
+		{
+            Intent enableLocate = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(enableLocate, REQUEST_LOCATION_PERMISSION);
+        }
 		
 		// wake always
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
@@ -376,6 +388,28 @@ public class AppPlayBaseActivity extends Activity
 			{
 			}
 		}
+		
+		if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (isLocationOpen(getApplicationContext())) {
+                Log.i("fang", " request location permission success");
+                //Android6.0需要动态申请权限
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    //请求权限
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION},
+                           REQUEST_LOCATION_PERMISSION);
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        //判断是否需要解释
+                       
+                    }
+                }
+ 
+            } else {
+            }
+        }
 	}
 
 	@Override
@@ -1137,6 +1171,16 @@ public class AppPlayBaseActivity extends Activity
 			//sTheActivity._BluetoothSetBle(isBle);
 		}
 	}
+	
+	public static boolean isLocationOpen(final Context context){
+        LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        //gps定位
+        boolean isGpsProvider = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //网络定位
+        boolean isNetWorkProvider = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return isGpsProvider|| isNetWorkProvider;
+	}
+	
 	private void _BluetoothSetBle(boolean isBle)
 	{
 		_ShutDownBluetooth();		
