@@ -10,8 +10,6 @@ local rc_IsPressedLeft1 = false
 local rc_IsPressedRight0 = false
 local rc_IsPressedRight1 = false
 
-local rc_SpeedAdjustGo = 1.0
-local rc_SpeedAdjustTurn = 1.0
 local rc_LastLeftType = 0
 local rc_LastLeftSpeed = 0.0
 local rc_LastRightType = 0
@@ -438,19 +436,19 @@ function rc_UIPadCtrlCallback(ptr,callType)
         PX2_GR:PlayScale(obj)
         if "BtnLeft0" == name then
             rc_IsPressedLeft0 = true
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnLeft1" == name then
             rc_IsPressedLeft1 = true
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnRight0" == name then
             rc_IsPressedRight0 = true
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnRight1" == name then
             rc_IsPressedRight1 = true
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
     elseif UICT_RELEASED ==callType then
         PX2_GR:PlayNormal(obj)        
@@ -467,38 +465,38 @@ function rc_UIPadCtrlCallback(ptr,callType)
         
         if "BtnLeft0" == name then
             rc_IsPressedLeft0 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnLeft1" == name then
             rc_IsPressedLeft1 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnRight0" == name then
             rc_IsPressedRight0 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnRight1" == name then
             rc_IsPressedRight1 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
     elseif UICT_RELEASED_NOTPICK == callType then
         PX2_GR:PlayNormal(obj)
 
         if "BtnLeft0" == name then
             rc_IsPressedLeft0 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnLeft1" == name then
             rc_IsPressedLeft1 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnRight0" == name then
             rc_IsPressedRight0 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
         if "BtnRight1" == name then
             rc_IsPressedRight1 = false
-            zo_UpdateButtonsPress()
+            rc_UpdateButtonsPress()
         end
     elseif UICT_ROUND_DRAG == callType then
         if "RoundCtrl" == name then      
@@ -594,7 +592,7 @@ function rc_UIPadCtrlCallback(ptr,callType)
     end
 end
 
-function zo_UpdateButtonsPress()
+function rc_UpdateButtonsPress()
     if rc_IsPressedLeft0 then
         PX2_ARDUINO:Run(0, 2, 255.0 * rc_SpeedAdjustTurn)
         PX2_ARDUINO:Run(1, 1, 255.0 * rc_SpeedAdjustTurn)

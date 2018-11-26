@@ -26,6 +26,7 @@ end
 function engine_project_cmd(cmd, param0, param1, param2) 
 end
 
+rc_ReturnButton = nil
 rc_ConnectFrame = nil
 rc_FrameHome = nil
 rc_FramePad = nil
@@ -35,6 +36,9 @@ rc_SpeakText = nil
 
 rc_TextWidth = 660.0
 rc_TextHeight = 200.0
+
+rc_SpeedAdjustGo = 0.5
+rc_SpeedAdjustTurn = 0.5
 
 PageType = {
     PT_HOME = 0,
@@ -75,6 +79,7 @@ function rc_Play()
 
     local btnReturn = UIButton:New("BtnReturn")
     frameRC:AttachChild(btnReturn)
+    rc_ReturnButton = btnReturn
     btnReturn.LocalTransform:SetTranslateY(-50.0)
     btnReturn:SetAnchorHor(0.0, 0.0)
     btnReturn:SetAnchorVer(1.0, 1.0)
@@ -84,6 +89,7 @@ function rc_Play()
     btnReturn:SetScriptHandler("rc_UICallabck")
     btnReturn:SetStateColorDefaultWhite()
     btnReturn:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/RobotControl/images/return.png")
+    btnReturn:Show(false)
 
     local cntFrame = rc_Connect()
     frameRC:AttachChild(cntFrame)
@@ -125,37 +131,6 @@ function rc_Play()
     frameVoice:SetAnchorVer(0.0, 1.0)
     frameVoice:Show(false)
 
-    PX2_VOICESDK:EnableAutoSpeak(false)
-    PX2_VOICESDK:EnableAutoSpeakTTS(true)    
-
-    UnRegistAllEventFunctions("VoiceSDKSpace::RecognizeResults")
-    RegistEventFunction("VoiceSDKSpace::RecognizeResults", function(txt, txtJson)
-        PX2_LOGGER:LogInfo("RobotControl", txt)
-
-        rc_SpeakText:GetText():SetText(txt)
-        local fontWidth = rc_SpeakText:GetText():GetTextWidth()
-        if fontWidth < (rc_TextWidth-20.0) then
-            rc_SpeakText:GetText():SetRectUseage(RU_ALIGNS)
-            rc_SpeakText:SetHeight(rc_TextHeight)
-            rc_SpeakText:SetAnchorParamVer(rc_TextHeight*0.5, rc_TextHeight*0.5)
-        else
-            local numHeight = (fontWidth/rc_TextWidth) * 1.0 + 1
-            local height = numHeight * 40
-            rc_SpeakText:GetText():SetRectUseage(RU_CLIPWARP)
-            rc_SpeakText:SetHeight(height)
-            if height>rc_TextHeight then
-                rc_SpeakText:SetAnchorParamVer(height*0.5, height*0.5)
-            end
-        end
-
-        PX2_VOICESDK:Speak(""..txt)
-
-    end)
-
-    UnRegistAllEventFunctions("VoiceSDKSpace::SpeakText")
-    RegistEventFunction("VoiceSDKSpace::SpeakText", function(txt) 
-    end)
-
     PX2_PFSDK:StartAccelerator()
     PX2_PFSDK:RegistAccelerator()
 
@@ -188,6 +163,8 @@ function rc_UICallabck(ptr, callType)
             rc_FrameAxis:Show(false)
             rc_FrameVoice:Show(false)
             rc_FramePad:Show(true)
+
+            rc_ReturnButton:Show(true)
         elseif "BtnAxis"==name then
             rc_ThePageType = PageType.PT_AXIS
 
@@ -196,6 +173,8 @@ function rc_UICallabck(ptr, callType)
             rc_FrameAxis:Show(false)
             rc_FrameVoice:Show(false)
             rc_FrameAxis:Show(true)
+
+            rc_ReturnButton:Show(true)
         elseif "BtnVoice"==name then
             rc_ThePageType = PageType.PT_VOICE
 
@@ -204,8 +183,10 @@ function rc_UICallabck(ptr, callType)
             rc_FrameAxis:Show(false)
             rc_FrameVoice:Show(false)
             rc_FrameVoice:Show(true)
-        elseif "BtnReturn"==name then
 
+            rc_ReturnButton:Show(true)
+
+        elseif "BtnReturn"==name then
             if PageType.PT_HOME ~= rc_ThePageType then
                 rc_FrameHome:Show(true)
                 rc_FramePad:Show(false)
@@ -213,6 +194,8 @@ function rc_UICallabck(ptr, callType)
                 rc_FrameVoice:Show(false)
 
                 rc_RobotCtrlLeave()
+
+                rc_ReturnButton:Show(false)
 
                 rc_ThePageType = PageType.PT_HOME
             end
@@ -230,6 +213,5 @@ function rc_UICallabck(ptr, callType)
 end
 
 function rc_RobotCtrlLeave()
-    PX2_ARDUINO:Run(0, Arduino.DT_NONE, 0)
-    PX2_ARDUINO:Run(1, Arduino.DT_NONE, 0)
+    PX2_ARDUINO:Run(Arduino.SDT_NONE, 0)
 end

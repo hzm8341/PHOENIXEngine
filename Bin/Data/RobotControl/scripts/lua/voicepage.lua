@@ -29,5 +29,58 @@ function rc_VoicePage ()
     text:GetText():SetText("你可以按着按钮说话")
     text:SetPivot(0.5, 0.5)
 
+    PX2_VOICESDK:EnableAutoSpeak(false)
+    PX2_VOICESDK:EnableAutoSpeakTTS(true)    
+
+    UnRegistAllEventFunctions("VoiceSDKSpace::RecognizeResults")
+    RegistEventFunction("VoiceSDKSpace::RecognizeResults", function(txt, txtJson)
+        PX2_LOGGER:LogInfo("RobotControl", txt)
+
+        rc_SpeakText:GetText():SetText(txt)
+        local fontWidth = rc_SpeakText:GetText():GetTextWidth()
+        if fontWidth < (rc_TextWidth-20.0) then
+            rc_SpeakText:GetText():SetRectUseage(RU_ALIGNS)
+            rc_SpeakText:SetHeight(rc_TextHeight)
+            rc_SpeakText:SetAnchorParamVer(rc_TextHeight*0.5, rc_TextHeight*0.5)
+        else
+            local numHeight = (fontWidth/rc_TextWidth) * 1.0 + 1
+            local height = numHeight * 40
+            rc_SpeakText:GetText():SetRectUseage(RU_CLIPWARP)
+            rc_SpeakText:SetHeight(height)
+            if height>rc_TextHeight then
+                rc_SpeakText:SetAnchorParamVer(height*0.5, height*0.5)
+            end
+        end
+
+        local strPlayMusic = "播放音乐"
+        local strLen = string.len(strPlayMusic) 
+
+        if string.find(txt, "播放最热音乐") then
+            PX2_VOICESDK:PlayHotMusic()     
+        elseif string.find(txt, strPlayMusic) then
+            local subStr = ""..string.sub(txt, strLen +4, -4)  
+            PX2_VOICESDK:PlayMusic(""..subStr)
+        elseif string.find(txt, "停止音乐") or string.find(txt, "关掉音乐")  then
+            PX2_SS:PlayMusic(0, nil, true, 0.0)
+            PX2_SS:ClearAllSounds()
+        elseif string.find(txt, "机器人前进") then
+            PX2_ARDUINO:Run(Arduino.SDT_FORWARD, 255.0 * rc_SpeedAdjustGo)
+        elseif string.find(txt, "机器人后退") then
+            PX2_ARDUINO:Run(Arduino.SDT_BACKWARD, 255.0 * rc_SpeedAdjustGo)
+        elseif string.find(txt, "机器人左转") then
+            PX2_ARDUINO:Run(Arduino.SDT_LEFT, 255.0 * rc_SpeedAdjustTurn)
+        elseif string.find(txt, "机器人右转") then
+            PX2_ARDUINO:Run(Arduino.SDT_RIGHT, 255.0 * rc_SpeedAdjustTurn)
+        elseif string.find(txt, "机器人停止") then
+            PX2_ARDUINO:Run(Arduino.SDT_NONE, 0)
+        end
+
+        PX2_VOICESDK:Speak(""..txt)
+    end)
+
+    UnRegistAllEventFunctions("VoiceSDKSpace::SpeakText")
+    RegistEventFunction("VoiceSDKSpace::SpeakText", function(txt) 
+    end)
+
     return uiFrame
 end

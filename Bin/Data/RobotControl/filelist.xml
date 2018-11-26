@@ -35,11 +35,11 @@
 	<file filename="Data/RobotControl/scripts/lua/common.lua" md5="839b523fd45cb05a49b2414148497bf9"/>
 	<file filename="Data/RobotControl/scripts/lua/connect.lua" md5="457fad88efcbdc9c3fa0b19b0b0f3c4e"/>
 	<file filename="Data/RobotControl/scripts/lua/editor/editor.lua" md5="c2e10dcc7c8afcf68f4199e922180f82"/>
-	<file filename="Data/RobotControl/scripts/lua/gamepadpage.lua" md5="dc2cb76f00f2e0b739ea9176a34f1be6"/>
+	<file filename="Data/RobotControl/scripts/lua/gamepadpage.lua" md5="87171af27de3279e922725712e93f0a9"/>
 	<file filename="Data/RobotControl/scripts/lua/homepage.lua" md5="260177da206247e889dedf181f3fde04"/>
 	<file filename="Data/RobotControl/scripts/lua/language.lua" md5="6c24c2cc930498e2d47ff33624b5f316"/>
-	<file filename="Data/RobotControl/scripts/lua/play.lua" md5="25c7349ca4f0b5fbc77d4c2a7680ec6e"/>
+	<file filename="Data/RobotControl/scripts/lua/play.lua" md5="a2af561484394450212b2bc5969a86fc"/>
 	<file filename="Data/RobotControl/scripts/lua/stop.lua" md5="131926ea8b424b7f9eefd855da6bc658"/>
-	<file filename="Data/RobotControl/scripts/lua/voicepage.lua" md5="4e7d2ea665565f909ca6c62a948dad36"/>
+	<file filename="Data/RobotControl/scripts/lua/voicepage.lua" md5="9791754375e2cf0bc52dc558041033da"/>
 </filelist>
 
