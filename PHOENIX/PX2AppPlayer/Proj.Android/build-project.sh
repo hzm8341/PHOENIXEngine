@@ -62,13 +62,24 @@ fi
 done
 
 # engine appicon
-for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/engine/appicon/*
+for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/engine/appinfo/appicon/*
 do
 if [ -d $file ]; then
 cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/res
 fi
 if [ -f $file ]; then
 cp $file $APPPLAY_MYAPP_ANDROID_ROOT/res
+fi
+done
+
+# engine values
+for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/engine/appinfo/values/*
+do
+if [ -d $file ]; then
+cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/res/values
+fi
+if [ -f $file ]; then
+cp $file $APPPLAY_MYAPP_ANDROID_ROOT/res/values
 fi
 done
 
@@ -141,7 +152,7 @@ do
 	echo $CATA_NAME
 	
 	if [ $CATA_NAME"xyz" != "xyz" ]; then	
-		for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$CATA_NAME/appicon/*
+		for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$CATA_NAME/appinfo/appicon/*
 		do					
 			if [ -d $file ]; then
 				cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/res
@@ -153,6 +164,25 @@ do
 	fi
 done
 echo "Copy boost project icons end"
+
+cat $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/boost.list | while read line
+do
+	CATA_NAME=$line
+	echo $CATA_NAME
+	
+	if [ $CATA_NAME"xyz" != "xyz" ]; then	
+		for file in $APPPLAY_MYAPP_BIN_ROOT_LOCAL/$APPPLAY_MYAPP_DATAFROM/$CATA_NAME/appinfo/values/*
+		do					
+			if [ -d $file ]; then
+				cp -rf $file $APPPLAY_MYAPP_ANDROID_ROOT/res/values
+			fi
+			if [ -f $file ]; then
+				cp $file $APPPLAY_MYAPP_ANDROID_ROOT/res/values
+			fi
+		done
+	fi
+done
+echo "Copy boost project values end"
 
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/res
 chmod -R 777 $APPPLAY_MYAPP_ANDROID_ROOT/assets
