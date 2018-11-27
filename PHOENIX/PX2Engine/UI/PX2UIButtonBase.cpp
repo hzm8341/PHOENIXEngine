@@ -11,8 +11,8 @@ PX2_IMPLEMENT_DEFAULT_NAMES(UIFrame, UIButtonBase);
 
 //----------------------------------------------------------------------------
 UIButtonBase::UIButtonBase() :
-mButType(BT_COLOR),
-mButtonState(BS_NORMAL),
+	mButType(BT_COLOR),
+	mButtonState(BS_NORMAL),
 mPressedTouchID(-1)
 {
 	mNormalColor = Float3::MakeColor(80, 80, 80);
