@@ -995,6 +995,9 @@ bool light)
       
       if (light)
       {
+        _PinMode(P_12, PM_OUTPUT);
+        _DigitalWrite(P_12, false);
+        
         _PinMode(P_13, PM_OUTPUT);
         _DigitalWrite(P_13, false);
       }
