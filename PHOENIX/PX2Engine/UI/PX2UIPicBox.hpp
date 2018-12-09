@@ -56,7 +56,7 @@ namespace PX2
 		float GetWidth() const;
 		void SetHeight(float height);
 		float GetHeight() const;
-		void MakeSizeWithTex();
+		void MakeSizeWithTex(float scale = 1.0f);
 
 		// cornorsize
 		// LB:LeftButton

@@ -25,11 +25,11 @@ UIFPicBox::~UIFPicBox()
 {
 }
 //----------------------------------------------------------------------------
-void UIFPicBox::AutoMakeSizeFixable()
+void UIFPicBox::AutoMakeSizeFixable(float scale)
 {
 	if (mPicBox)
 	{
-		mPicBox->MakeSizeWithTex();
+		mPicBox->MakeSizeWithTex(scale);
 		const Sizef &size = mPicBox->GetSize();
 		SetSize(size);
 	}

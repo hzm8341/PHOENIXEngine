@@ -1676,8 +1676,8 @@ UIItem *LP_Manager::_AddProjectItem(const std::string &name, int id,
 	cloudBtn->SetStateColorDefaultWhite();
 	cloudBtn->GetPicBoxAtState(UIButtonBase::BS_NORMAL)
 		->SetTexture("Data/LPlugin/images/cloud.png");
-	cloudBtn->SetSize(16.0f, 16.0f);
-	cloudBtn->SetAnchorParamHor(-40.0f, -40.0f);
+	cloudBtn->AutoMakeSizeFixable(0.75f);
+	cloudBtn->SetAnchorParamHor(-20.0f, -20.0f);
 	cloudBtn->SetAnchorHor(1.0f, 1.0f);
 	cloudBtn->Show(projItem->IsCloud);
 	cloudBtn->AddVisitor(this);

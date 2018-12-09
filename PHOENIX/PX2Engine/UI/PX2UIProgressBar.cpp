@@ -126,11 +126,11 @@ void UIProgressBar::SetOverPicBox(UIFPicBox *picBox)
 	AttachChild(mOverPicBox);
 }
 //----------------------------------------------------------------------------
-void UIProgressBar::AutoMakeSizeFixable()
+void UIProgressBar::AutoMakeSizeFixable(float scale)
 {
 	if (mBackPicBox)
 	{
-		mBackPicBox->AutoMakeSizeFixable();
+		mBackPicBox->AutoMakeSizeFixable(scale);
 		const Sizef &sz = mBackPicBox->GetSize();
 		SetSize(sz);
 	}

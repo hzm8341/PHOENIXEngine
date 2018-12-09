@@ -50,8 +50,10 @@ mUICollapsePanel(0)
 	mCheckBut->LocalTransform.SetTranslateY(-4.0f);
 	mCheckBut->Check(false, false);
 	mCheckBut->SetAnchorHor(0.0, 0.0);
-	mCheckBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/triangle.png");
-	mCheckBut->GetPicBoxAtState(UIButtonBase::BS_PRESSED)->SetTexture("Data/engine/trianglea.png");
+	mCheckBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture(
+		"Data/engine/triangle.png");
+	mCheckBut->GetPicBoxAtState(UIButtonBase::BS_PRESSED)->SetTexture(
+		"Data/engine/trianglea.png");
 	mCheckBut->AutoMakeSizeFixable();
 	mCheckBut->SetAnchorParamHor(10.0f, 10.0f);
 }

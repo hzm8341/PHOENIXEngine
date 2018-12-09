@@ -36,7 +36,7 @@ namespace PX2
 		void SetProgressTextNumMax(int max);
 		int GetProgressTextNumMax() const;
 
-		virtual void AutoMakeSizeFixable();
+		virtual void AutoMakeSizeFixable(float scale=1.0f);
 
 		virtual void OnPivotChanged();
 		virtual void OnSizeChanged();

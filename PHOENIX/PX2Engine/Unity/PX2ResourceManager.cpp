@@ -297,8 +297,8 @@ Object *ResourceManager::BlockLoadCopy(const std::string &filename)
 	return 0;
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::BlockLoadShareCopy(const std::string &filename, bool vb,
-	bool ib, bool mi)
+Object *ResourceManager::BlockLoadShareCopy(const std::string &filename, 
+	bool vb, bool ib, bool mi)
 {
 	Object *obj = BlockLoad(filename);
 

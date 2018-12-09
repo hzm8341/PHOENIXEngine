@@ -32,7 +32,7 @@ namespace PX2
 		bool IsUseSkin() const;
 		virtual void ConfigSkinColor();
 
-		virtual void AutoMakeSizeFixable();
+		virtual void AutoMakeSizeFixable(float scale=1.0f);
 
 		virtual void OnChildAttached(Movable *child);
 

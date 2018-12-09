@@ -154,7 +154,7 @@ unsigned char *FontGlyphMapFreeType::GetUnicodeCharBitmap(unsigned short wChar)
 
 	if (mIsDrawUnderLine)
 	{
-		offsetY = mBaseLinePos - mUnderLinePos;
+		offsetY = mBaseLinePos + mUnderLinePos;
 		assertion(mUnderLineThick + offsetY <= mBitmapHeight, "");
 
 		// 绘制下划线

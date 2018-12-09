@@ -71,8 +71,9 @@ void UIFrame::ConfigSkinColor()
 	}
 }
 //----------------------------------------------------------------------------
-void UIFrame::AutoMakeSizeFixable()
+void UIFrame::AutoMakeSizeFixable(float scale)
 {
+	PX2_UNUSED(scale);
 }
 //----------------------------------------------------------------------------
 void UIFrame::OnChildAttached(Movable *child)

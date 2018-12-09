@@ -116,11 +116,11 @@ void UIPicBox::SetHeight(float height)
 	SetSize(Sizef(mSize.Width, height));
 }
 //----------------------------------------------------------------------------
-void UIPicBox::MakeSizeWithTex()
+void UIPicBox::MakeSizeWithTex(float scale)
 {
 	if (!mTexturePackName.empty() && !mElementName.empty())
 	{
-		SetSize((float)mPackEle.W, (float)mPackEle.H);
+		SetSize((float)mPackEle.W*scale, (float)mPackEle.H*scale);
 	}
 	else
 	{
@@ -131,7 +131,8 @@ void UIPicBox::MakeSizeWithTex()
 			Texture2D *tex2D = DynamicCast<Texture2D>(texture);
 			if (tex2D)
 			{
-				SetSize((float)tex2D->GetWidth(), (float)tex2D->GetHeight());
+				SetSize((float)tex2D->GetWidth()*scale,
+					(float)tex2D->GetHeight()*scale);
 			}
 		}
 	}

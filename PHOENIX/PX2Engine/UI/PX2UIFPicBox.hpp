@@ -21,7 +21,7 @@ namespace PX2
 		virtual ~UIFPicBox();
 
 		UIPicBox *GetUIPicBox();
-		virtual void AutoMakeSizeFixable();
+		virtual void AutoMakeSizeFixable(float scale = 1.0f);
 
 		virtual void OnSizeChanged();
 		virtual void OnPivotChanged();

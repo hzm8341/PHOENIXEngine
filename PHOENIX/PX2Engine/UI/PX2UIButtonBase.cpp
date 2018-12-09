@@ -229,25 +229,25 @@ bool UIButtonBase::IsPicBoxSizeSameWithButton() const
 	return mIsPicBoxSizeSameWithButton;
 }
 //----------------------------------------------------------------------------
-void UIButtonBase::AutoMakeSizeFixable()
+void UIButtonBase::AutoMakeSizeFixable(float scale)
 {
 	Sizef sz;
 	if (mPicBoxNormal)
 	{
-		mPicBoxNormal->MakeSizeWithTex();
+		mPicBoxNormal->MakeSizeWithTex(scale);
 		sz = mPicBoxNormal->GetSize();
 	}
 	if (mPicBoxOver)
 	{
-		mPicBoxOver->MakeSizeWithTex();
+		mPicBoxOver->MakeSizeWithTex(scale);
 	}
 	if (mPicBoxDown)
 	{
-		mPicBoxDown->MakeSizeWithTex();
+		mPicBoxDown->MakeSizeWithTex(scale);
 	}
 	if (mPicBoxDisabled)
 	{
-		mPicBoxDisabled->MakeSizeWithTex();
+		mPicBoxDisabled->MakeSizeWithTex(scale);
 	}
 
 	SetSize(sz);

@@ -49,7 +49,7 @@ namespace PX2
 		void SetPicBoxSizeSameWithButton(bool same);
 		bool IsPicBoxSizeSameWithButton() const;
 
-		virtual void AutoMakeSizeFixable();
+		virtual void AutoMakeSizeFixable(float scale=1.0f);
 
 		void SetStateColor(ButtonState state, const Float3 &color);
 		const Float3 &GetStateColor(ButtonState state) const;
