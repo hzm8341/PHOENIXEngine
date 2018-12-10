@@ -327,7 +327,7 @@ void LP_Manager::Initlize()
 		_CurlLogin(mCfgUserName, mCfgPassword);
 	}
 
-	_RefreshProjectsUI();
+	_RefreshProjectsLocal();
 }
 //----------------------------------------------------------------------------
 void LP_Manager::Terminate()
@@ -502,19 +502,32 @@ void LP_Manager::_GetProjectListCloud(int userID)
 		}
 	}
 }
+static int sid = 0;
 //----------------------------------------------------------------------------
-void LP_Manager::_UploadProject(LP_ProjectItem *item)
+void LP_Manager::_UploadProject(LP_ProjectItem *item, bool isAdd)
 {
 	if (!_IsLogined())
 		return;
 
-	const std::string &projName = item->Name;
+	const std::string &projNameAll = item->Name;
+	std::string projNameWithoutID;
+	int projID = 0;
+
+	StringTokenizer stk(projNameAll, "_");
+	if (stk.Count() >= 2)
+	{
+		projNameWithoutID = stk[0];
+		projID = StringHelp::StringToInt(stk[1]);
+	}
+	else
+	{
+		projNameWithoutID = projNameAll;
+	}
 
 #if defined(_WIN32) || defined(WIN32)
-
-	std::string strCmp = "compress_project.bat " + projName;
-	WinExec(strCmp.c_str(), SW_SHOW);
-
+	std::string strCmp = "compress_project.bat " + projNameAll;
+	WinExec(strCmp.c_str(), SW_HIDE);
+	System::SleepSeconds(1.0f); // important
 #endif
 
 	std::string bufStr = PX2_RM.LoadBuffer("tempprojectuploading.7z", true);
@@ -522,9 +535,6 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 
 	std::string zipStr = Base64::Encode(bufStr);
 	int zipStrLength = zipStr.length();
-
-	int outDeco = 0;
-	std::string zipStrDecode = Base64::Decode(zipStr, outDeco);
 
 	if (!zipStr.empty())
 	{
@@ -538,9 +548,20 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 
 		std::string data = "userid=" + StringHelp::IntToString(mUserID);
 		data += "&type=1";
-		data += "&title=" + projName;
+		data += "&title=" + projNameWithoutID;
 		data += std::string("&desc=") + "hello this phoenix project";
-		data += "&state=1";
+		if (isAdd)
+		{
+			data += "&state=1";
+		}
+		else
+		{
+			sid++;
+			data += "&filename=" + projNameWithoutID + StringHelp::IntToString(sid);
+			data += (std::string("&id=") + StringHelp::IntToString(projID));
+			data += "&state=2";
+		}
+	
 		data += std::string("&files=") + tempStr;
 		
 		int dataLength = data.length();
@@ -556,7 +577,7 @@ void LP_Manager::_UploadProject(LP_ProjectItem *item)
 			std::string retStr = std::string(chMem, size);
 
 			_GetProjectListCloud(mUserID);
-			_RefreshProjectsUI();
+			_RefreshProjectsLocal();
 		}
 	}
 }
@@ -576,7 +597,7 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 	mCurlObject->ClearOptionList();
 	mCurlObject->AddOptionListStr("Content-Type: application/x-www-form-urlencoded");
 	mCurlObject->AddOptionListStr("Content-Length: " + StringHelp::IntToString(dataLength));
-	int ret = mCurlObject->Post("http://www.manykit.com/res/getfile", data);
+	int ret = mCurlObject->Post("http://www.manykit.com/res/getfile?", data);
 
 	if (1 == ret)
 	{
@@ -637,9 +658,11 @@ void LP_Manager::_DownloadProject(LP_ProjectItem *item)
 
 		std::string strCmp = "compress_un_project.bat " + projName + "_" + 
 			StringHelp::IntToString(projectID);
-		WinExec(strCmp.c_str(), SW_SHOW);
-
+		WinExec(strCmp.c_str(), SW_HIDE);
+		System::SleepSeconds(1.0f); // important
 #endif
+
+		_RefreshProjectsLocal();
 	}
 }
 //----------------------------------------------------------------------------
@@ -658,7 +681,7 @@ void LP_Manager::_DeleteProject(LP_ProjectItem *item)
 	int ret = mCurlObject->Post(url, data);
 
 	_GetProjectListCloud(mUserID);
-	_RefreshProjectsUI();
+	_RefreshProjectsLocal();
 }
 //----------------------------------------------------------------------------
 void LP_Manager::_CurlLogout()
@@ -735,7 +758,7 @@ void LP_Manager::Visit(Object *obj, int info)
 			}
 			else if ("ButRefresh" == name)
 			{
-				_RefreshProjectsUI();
+				_RefreshProjectsLocal();
 			}
 			else if ("ButNetLoadProject" == name)
 			{
@@ -821,7 +844,18 @@ void LP_Manager::Visit(Object *obj, int info)
 				LP_ProjectItem *projectItem = but->GetUserData<LP_ProjectItem*>("projectitem");
 				if (projectItem)
 				{
-					_UploadProject(projectItem);
+					bool isAdd = false;
+					int id = projectItem->ID;
+					if (0 == id)
+					{
+						isAdd = true;
+					}
+					else
+					{
+						isAdd = false;
+					}
+
+					_UploadProject(projectItem, isAdd);
 				}
 			}
 			else if ("BtnDownload" == name)
@@ -1546,7 +1580,7 @@ int LP_Manager::_GetProjType(const std::string &folderName)
 	return 1;
 }
 //----------------------------------------------------------------------------
-void LP_Manager::_RefreshProjectsUI()
+void LP_Manager::_RefreshProjectsLocal()
 {
 	mProjectList->RemoveAllItems();
 	mPluginList->RemoveAllItems();
@@ -1577,22 +1611,19 @@ void LP_Manager::_RefreshProjectsUI()
 				{
 					projectName = stk[0];
 					strIDFolder = stk[stk.Count() - 1];
+					idFolder = StringHelp::StringToInt(strIDFolder);
 				}
 				else
 				{
 					projectName = filefolder;
 				}
-				idFolder = StringHelp::StringToInt(strIDFolder);
-				
-				std::string projXMLPath = "Data/" + filefolder + "/project.px2proj";
-				int id = Project::GetProjectID(projXMLPath);
 
 				int projType = _GetProjType(filefolder);
 				if (1 == projType)
 				{
 					LP_ProjectItem *projItem = new0 LP_ProjectItem();
 					AddProject(projItem);
-					item = _AddProjectItem(filefolder, id, true, projItem);
+					item = _AddProjectItem(filefolder, idFolder, true, projItem);
 				}
 				else if (2 == projType)
 				{
@@ -1624,14 +1655,14 @@ void LP_Manager::_RefreshProjectsUI()
 	for (int i = 0; i < GetNumProjects_Cloud(); i++)
 	{
 		LP_ProjectItem *cloudItem = GetProjectItem_Cloud(i);
-		if (!IsHasProject(cloudItem->ID))
+		if (!IsHasProject(cloudItem->ID, true))
 		{
 			AddProject(cloudItem);
 
 			UIItem *projItem = _AddProjectItem(cloudItem->Name,
 				cloudItem->ID, false, cloudItem);
 			cloudItem->TheCloudButton->Show(true);
-			cloudItem->TheCloudButton->SetAlpha(0.2f);
+			cloudItem->TheCloudButton->SetColor(Float3::YELLOW);
 			cloudItem->TheItem->GetFText()->SetAlpha(0.7f);
 			cloudItem->TheCheckButton->Show(false);
 
@@ -1657,8 +1688,6 @@ UIItem *LP_Manager::_AddProjectItem(const std::string &name, int id,
 	projItem->Name = name;
 	projItem->IsLocalExist = isLocalExist;
 
-	projItem->IsCloud = IsHasProject_Cloud(id);
-
 	UICheckButton *cb = UICheckButton::New(name);
 	item->AttachChild(cb);
 	cb->LocalTransform.SetTranslateY(-2.0f);
@@ -1681,18 +1710,24 @@ UIItem *LP_Manager::_AddProjectItem(const std::string &name, int id,
 	cloudBtn->SetAnchorHor(1.0f, 1.0f);
 	cloudBtn->Show(projItem->IsCloud);
 	cloudBtn->AddVisitor(this);
+	UIFText *text = cloudBtn->CreateAddText(StringHelp::IntToString(id));
+	text->GetText()->SetFontColor(Float3::BLACK);
+	text->GetText()->SetFontScale(0.6f);
 
-	auto btnUpload = UIButton::New("BtnUpload");
-	item->AttachChild(btnUpload);
-	btnUpload->LocalTransform.SetTranslateY(-2.0f);
-	//btnUpload->SetStateColorDefaultWhite();
-	btnUpload->SetSize(16.0f, 16.0f);
-	btnUpload->SetAnchorParamHor(-60.0f, -60.0f);
-	btnUpload->SetAnchorHor(1.0f, 1.0f);
-	btnUpload->CreateAddText("u");
-	btnUpload->AddVisitor(this);
-	btnUpload->SetUserData("projectname", name);
-	btnUpload->SetUserData("projectitem", projItem);
+	if (!projItem->IsCloud)
+	{
+		auto btnUpload = UIButton::New("BtnUpload");
+		item->AttachChild(btnUpload);
+		btnUpload->LocalTransform.SetTranslateY(-2.0f);
+		//btnUpload->SetStateColorDefaultWhite();
+		btnUpload->SetSize(16.0f, 16.0f);
+		btnUpload->SetAnchorParamHor(-60.0f, -60.0f);
+		btnUpload->SetAnchorHor(1.0f, 1.0f);
+		btnUpload->CreateAddText("u");
+		btnUpload->AddVisitor(this);
+		btnUpload->SetUserData("projectname", name);
+		btnUpload->SetUserData("projectitem", projItem);
+	}
 
 	auto btnDownload = UIButton::New("BtnDownload");
 	item->AttachChild(btnDownload);
@@ -2288,14 +2323,14 @@ void LP_Manager::ClearProjects()
 	mProjects.clear();
 }
 //----------------------------------------------------------------------------
-bool LP_Manager::IsHasProject(int id)
+bool LP_Manager::IsHasProject(int id, bool isCloud)
 {
 	if (0 == id)
 		return false;
 
 	for (int i = 0; i < (int)mProjects.size(); i++)
 	{
-		if (id == mProjects[i]->ID)
+		if (id == mProjects[i]->ID && mProjects[i]->IsCloud==isCloud)
 			return true;
 	}
 
@@ -2304,7 +2339,7 @@ bool LP_Manager::IsHasProject(int id)
 //----------------------------------------------------------------------------
 bool LP_Manager::AddProject(LP_ProjectItem *projItem)
 {
-	if (IsHasProject(projItem->ID))
+	if (IsHasProject(projItem->ID, projItem->IsCloud))
 		return false;
 
 	mProjects.push_back(projItem);

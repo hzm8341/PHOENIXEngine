@@ -159,7 +159,7 @@ void L_App::_StartUpdater(const std::string &appNamePath,
 	#endif
 
 #endif
-		WinExec(appName.c_str(), SW_SHOW);
+		WinExec(appName.c_str(), SW_HIDE);
 #endif
 
 	Exit();

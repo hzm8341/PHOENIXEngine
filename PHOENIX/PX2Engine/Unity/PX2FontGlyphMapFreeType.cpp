@@ -88,8 +88,9 @@ unsigned char *FontGlyphMapFreeType::GetUnicodeCharBitmap(unsigned short wChar)
 {
 	LoadCharGlyph(wChar);
 
-	int offsetY = mBaseLinePos-(int)(mFace->glyph->metrics.horiBearingY/64);
-	int offsetX = (int)(mFace->glyph->metrics.horiBearingX/64);
+	int offsetY = mBaseLinePos-(int)(
+		(float)mFace->glyph->metrics.horiBearingY/64.0f);
+	int offsetX = (int)((float)mFace->glyph->metrics.horiBearingX/64.0f);
 
 	if (offsetX < 0)
 		offsetX = 0;

@@ -44,7 +44,7 @@ namespace PX2
 		UIFrame *AddTabFrame(const std::string &name, const std::string &title);
 		UIFrame *CreateManyKitFrame();
 		UIFrame *CreateEngineFrame();
-		void _RefreshProjectsUI();
+		void _RefreshProjectsLocal();
 		int _GetProjType(const std::string &folderName);
 		void _SimuApp(const std::string &folderName);
 		void _OpenEditor();
@@ -102,7 +102,7 @@ namespace PX2
 	private:
 		int _CurlLogin(const std::string &userName, const std::string &password);
 		void _GetProjectListCloud(int userID);
-		void _UploadProject(LP_ProjectItem *item);
+		void _UploadProject(LP_ProjectItem *item, bool isAdd);
 		void _DownloadProject(LP_ProjectItem *item);
 		void _DeleteProject(LP_ProjectItem *item);
 		void _CurlLogout();
@@ -130,7 +130,7 @@ namespace PX2
 
 	public:
 		void ClearProjects();
-		bool IsHasProject(int id);
+		bool IsHasProject(int id, bool isCloud);
 		bool AddProject(LP_ProjectItem *projItem);
 		int GetNumProjects() const;
 		LP_ProjectItem *GetProjectItem(int index);
