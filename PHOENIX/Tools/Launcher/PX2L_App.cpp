@@ -178,11 +178,11 @@ void _BackgroundFun ()
 	{
 		L_App::msL_App->mIsUpdaterStart = true;
 
-		std::string wwwwAddr = "ftp://182.254.213.85/";
-		L_App::msL_App->_UpdateUpdater(wwwwAddr, "../PHOENIXEngine/Updater");
+		//std::string wwwwAddr = "ftp://182.254.213.85/";
+		//L_App::msL_App->_UpdateUpdater(wwwwAddr, "../PHOENIXEngine/Updater");
 
-		if (L_App::msL_App->mIsDoStartUpdater)
-			L_App::msL_App->_StartUpdater("Updater/Updater", "update_startlauncher");
+		//if (L_App::msL_App->mIsDoStartUpdater)
+		//	L_App::msL_App->_StartUpdater("Updater/Updater", "update_startlauncher");
 	}
 
 	L_App::msL_App->mIsUpdaterOver = true;
