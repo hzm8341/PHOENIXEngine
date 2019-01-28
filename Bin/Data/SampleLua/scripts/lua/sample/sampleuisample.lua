@@ -1,0 +1,83 @@
+-- sampleuisample.lua
+
+function s_createsampleuisample(parent)
+	local frame = UIFrame:New()
+	parent:AttachChild(frame)
+	frame:SetAnchorHor(0.0, 1.0)
+	frame:SetAnchorVer(0.0, 1.0)
+	frame:SetAnchorParamHor(25.0, -25.0)
+	frame:SetAnchorParamVer(25.0, -100.0)
+	
+	local msgFrameWidth = 150.0
+	
+    local frameTabFrame = UITabFrame:New()
+    smapleglobals.FrameTabFrame = frameTabFrame
+	frame:AttachChild(frameTabFrame)
+	frameTabFrame.LocalTransform:SetTranslateY(-10.0)
+	frameTabFrame:SetAnchorParamHor(0.0, -msgFrameWidth)	
+	frameTabFrame:CreateAddBackgroundPicBox(true, Float3:MakeColor(200, 200, 200))
+	frameTabFrame:SetTabBarHeight(40)
+	frameTabFrame:SetTabHeight(35)
+	frameTabFrame:SetTabWidth(50)
+	frameTabFrame:SetFontColor(Float3.WHITE)
+	
+	frameTabFrame:AddTab("About", PX2_LM_APP:GetValue("About"), s_CreateUIFrameAbout())
+	frameTabFrame:AddTab("UIFrame", PX2_LM_APP:GetValue("UIFrame"), s_CreateUIFrame())
+	frameTabFrame:AddTab("UIFPicBox", PX2_LM_APP:GetValue("UIFPicBox"), s_CreateUIFPicBox())
+	frameTabFrame:AddTab("UIFText", PX2_LM_APP:GetValue("UIFText"), s_CreateUIFText())
+	frameTabFrame:AddTab("UIButton", PX2_LM_APP:GetValue("UIButton"), s_CreateUIButton())
+	frameTabFrame:AddTab("UICheckBox", PX2_LM_APP:GetValue("UICheckBox"), s_CreateUICheckBox())
+	frameTabFrame:AddTab("UIComboBox", PX2_LM_APP:GetValue("UIComboBox"), s_CreateUIComboBox())
+	frameTabFrame:AddTab("UIEditBox", PX2_LM_APP:GetValue("UIEditBox"), s_CreateUIEditBox())
+	frameTabFrame:AddTab("UIProgress", PX2_LM_APP:GetValue("UIProgress"), s_CreateUIProgress())
+	frameTabFrame:AddTab("UIColorSelect", PX2_LM_APP:GetValue("UIColorSelect"), s_CreateUIColorSelect())
+	frameTabFrame:AddTab("UIList", PX2_LM_APP:GetValue("UIList"), s_CreateUIList())
+	frameTabFrame:AddTab("UITree", PX2_LM_APP:GetValue("UITree"), s_CreateUITree())
+	frameTabFrame:AddTab("UISplitter", PX2_LM_APP:GetValue("UISplitter"), s_CreateUISplitter())
+	frameTabFrame:AddTab("UISlider", PX2_LM_APP:GetValue("UISlider"), s_CreateUISlider())
+	frameTabFrame:AddTab("UIRound", PX2_LM_APP:GetValue("UIRound"), s_CreateUIRound())
+	--frameTabFrame:AddTab("UIWebFrame", PX2_LM_APP:GetValue("UIWebFrame"), s_CreateUIWebFrame())
+	frameTabFrame:AddTab("Server", PX2_LM_APP:GetValue("Server"), s_CreateUIServer())
+	frameTabFrame:SetActiveTab("About")
+	
+	local rightFrame = UIFrame:New()
+	frame:AttachChild(rightFrame)
+	rightFrame:CreateAddBackgroundPicBox(true)
+	rightFrame:SetSize(msgFrameWidth, 0.0)
+	rightFrame:SetPivot(0.0, 0.5)
+	rightFrame:SetAnchorHor(1.0, 1.0)
+	rightFrame:SetAnchorParamHor(-msgFrameWidth, 0.0)
+	rightFrame:SetAnchorVer(0.0, 1.0)
+	
+	g_s_MsgList = UIList:New()
+	rightFrame:AttachChild(g_s_MsgList)
+	g_s_MsgList:SetAnchorHor(0.0, 1.0)
+	g_s_MsgList:SetAnchorVer(0.0, 1.0)
+	g_s_MsgList:AddItem("msglist")
+		
+	frame:Show(false)	
+	
+	local logo = UIFPicBox:New()
+	frame:AttachChild(logo)
+	logo:SetName("Logo")
+	logo:SetAnchorHor(0.0, 0.0)
+	logo:SetAnchorParamHor(50.0, 50.0)
+	logo:SetAnchorVer(0.0, 0.0)
+	logo:SetAnchorParamVer(50.0, 50.0)
+	logo:SetSize(50.0, 50.0)
+	logo:GetUIPicBox():SetTexture("Data/engine/phoenix.png")
+	
+	local textInfo = UIFText:New()
+	frame:AttachChild(textInfo)
+	textInfo:GetText():SetText("PHOENIXEngine, 像开发游戏一样，开发你的机器人, create your robot like create a game!")
+	textInfo:SetAnchorHor(0.0, 0.0)
+	textInfo:SetAnchorParamHor(100.0, 100.0)
+	textInfo:SetPivot(0.0, 0.5)
+	textInfo:SetAnchorVer(0.0, 0.0)
+	textInfo:SetAnchorParamVer(50.0, 50.0)
+	textInfo:SetWidth(700.0)
+	textInfo:GetText():SetFontColor(Float3.WHITE)
+    textInfo:GetText():SetAligns(TEXTALIGN_LEFT+TEXTALIGN_TOP)
+    
+    return frame
+end
