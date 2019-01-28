@@ -54,7 +54,7 @@ float PXFArduino::_ReadHX711(int index)
 void PXFArduino::_HXSend(int index, float val)
 {
 #if defined PXF_XH711
-    char cmdCh = sOptTypeVal[OT_RETURN_HX711];
+    unsigned char cmdCh = sOptTypeVal[OT_RETURN_HX711];
     char strCMDCh[32];
     memset(strCMDCh, 0, 32);
     itoa(cmdCh, strCMDCh, 10);

@@ -32,10 +32,10 @@ char PXFArduino::PinStr[P_MAX_TYPE] =
   36
 };
 //----------------------------------------------------------------------------
-char PXFArduino::sOptTypeVal[OT_MAX_TYPE] =
+unsigned char PXFArduino::sOptTypeVal[OT_MAX_TYPE] =
 {
-    50, //OT_TOGET_NETID
-    51, //OT_RETRUN_NETID
+    100, //OT_TOGET_NETID
+    101, //OT_RETRUN_NETID
     0,  //OT_PM
     1,  //OT_DW
     2,  //OT_AW
@@ -55,11 +55,9 @@ char PXFArduino::sOptTypeVal[OT_MAX_TYPE] =
     16, //OT_MOTO_I_DRIVER4567
     17, //OT_MOTO_I_DRIVER298N
     18, //OT_MP3_INIT
-    19, //OT_MP3_PLAY
-    20, //OT_MP3_INDEX
-    21, //OT_MP3_NEXT
-    22, //OT_MP3_STOP
-    23, //OT_MP3_VOLUME
+    19, //OT_MP3_DO
+    20, //OT_MP3_PLAYFOLDER
+    21, //OT_MP3_SETVOLUME
     24, //OT_IR_INIT
     25, //OT_IR_SEND
     26, //OT_RETURN_IR
@@ -72,14 +70,30 @@ char PXFArduino::sOptTypeVal[OT_MAX_TYPE] =
     33, //OT_RETURN_AXIS
     34, //OT_SET_TIME,
     35, //OT_SET_BABYROBOT
-    500, //OT_MC_INTERNAL_LIGHT
-    501, //OT_MC_LIGHT
-    502, //OT_MC_SEGMENT
-    503, //OT_MC_MOTO
-    504, //OT_MC_DISTTEST
-    601, //OT_MB_MOTO
-    602, //OT_MB_SEND
-    603 //OT_MB_BUZZER
+    36, //OT_RC_SEND
+    37, //OT_RETRUN_RC
+    38, //OT_DHT_I
+    39, //OT_RETURN_DHTTEMP
+    40, //OT_RETURN_DHTHUMI
+    41, //OT_LEDSTRIP_I
+    42, //OT_LEDSTRIP_SET
+    43, //OT_SEGMENT_I
+    44, //OT_SEGMENT_BRIGHTNESS
+    45, //OT_SEGMENT_CLEAR
+    46, //OT_SEGMENT_DISPLAY
+    47, //OT_LEDMATRIX_I
+    48, //OT_LEDMATRIX_BRIGHTNESS
+    49, //OT_LEDMATRIX_CLEARSCREEN
+    50, //OT_LEDMATRIX_LIGHTAT
+    150, //OT_MC_INTERNAL_LIGHT
+    151, //OT_MC_LIGHT
+    152, //OT_MC_SEGMENT
+    153, //OT_MC_MOTO
+    154, //OT_MC_DISTTEST
+    161, //OT_MB_MOTO
+    162, //OT_MB_SEND
+    163, //OT_MB_BUZZER
+    200 //OT_VERSION
 };
 //----------------------------------------------------------------------------
 PXFArduino::PXFArduino()
@@ -95,6 +109,7 @@ void PXFArduino::Init(bool isReset)
 {
   mIsEverSettedBabyRobot = false;
   mSettedTimeMe = 0;
+  mLastSendVersionTime = 0;
 
   digitalWrite(13, LOW);
 
@@ -150,12 +165,12 @@ void PXFArduino::Init(bool isReset)
   mDisplay = 0;                                                     
 #endif
 
-#if defined PXF_MP3
-  if (isReset && mMP3Serial)
+#if defined PXF_DFMP3
+  if (isReset && mMP3DFSerial)
   {
-    delete mMP3Serial;
+    delete mMP3DFSerial;
   }
-  mMP3Serial = 0;
+  mMP3DFSerial = 0;
 #endif
 
 #if defined PXF_IR
@@ -186,6 +201,10 @@ void PXFArduino::Init(bool isReset)
     delete(mPID1);
   }
   mPID1 = 0;
+#endif
+
+#if defined PXF_DHT
+  mIsInitedDHT = false;
 #endif
 }
 //----------------------------------------------------------------------------
@@ -324,19 +343,6 @@ float PXFArduino::_GetWeight(int index)
   return 0.0f;
 }
 //----------------------------------------------------------------------------
-void PXFArduino::_MP3Init(PXFPin r, PXFPin t)
-{
-    int pinR = PXFPin2Pin(r);
-    int pinT = PXFPin2Pin(t);
-  _MP3Init_(pinR, pinT);
-}
-//----------------------------------------------------------------------------
-void PXFArduino::_IRInit(PXFPin pinR)
-{
-  int p = PXFPin2Pin(pinR);
-  _IRInit_(p);
-}
-//----------------------------------------------------------------------------
 String PXFArduino::I2Str(int val)
 {
   char str[25];
@@ -346,7 +352,7 @@ String PXFArduino::I2Str(int val)
 //----------------------------------------------------------------------------
 void PXFArduino::CalPinVals()
 {
-  char cmdCh = sOptTypeVal[OT_RETURN_DR];
+  unsigned char cmdCh = sOptTypeVal[OT_RETURN_DR];
   char strCMDCh[32];
   memset(strCMDCh, 0, 32);
   itoa(cmdCh, strCMDCh, 10);
@@ -365,7 +371,7 @@ void PXFArduino::CalPinVals()
     }
   }
   
-  char cmdCh1 = sOptTypeVal[OT_RETURN_AR];
+  unsigned char cmdCh1 = sOptTypeVal[OT_RETURN_AR];
   char strCMDCh1[32];
   memset(strCMDCh1, 0, 32);
   itoa(cmdCh1, strCMDCh1, 10);
@@ -392,13 +398,24 @@ void PXFArduino::_SendNetID()
     memset(str, 0, 32);
     itoa(mNetID, str, 10); // 10 is decimal
 
-    char cmdCh = sOptTypeVal[OT_RETURN_NETID];
+    unsigned char cmdCh = sOptTypeVal[OT_RETURN_NETID];
     char strCMDCh[32];
     memset(strCMDCh, 0, 32);
     itoa(cmdCh, strCMDCh, 10);
 
     String sendStr = String(strCMDCh) + " " + str;
     _SendCMD(sendStr);
+}
+//----------------------------------------------------------------------------
+void PXFArduino::_SendVersion()
+{
+    unsigned char cmdCh = sOptTypeVal[OT_VERSION];
+    char strCMDCh[32];
+    memset(strCMDCh, 0, 32);
+    itoa(cmdCh, strCMDCh, 10);
+        
+    Serial.print("0000");
+    Serial.println(String(strCMDCh)); 
 }
 //----------------------------------------------------------------------------
 boolean result;
@@ -424,7 +441,13 @@ void PXFArduino::Tick()
     if(resultR)
       mDurationR = 0;
   }
-#endif 
+#endif
+
+  if (millis()  - mLastSendVersionTime >= 1000)
+  {
+      mLastSendVersionTime = millis();
+      _SendVersion();
+  }
 
   if (mIsEverSettedBabyRobot)
   {
@@ -433,7 +456,7 @@ void PXFArduino::Tick()
          mDistCheckLastTime = millis();
          _DistTest();
 
-        char cmdCh = sOptTypeVal[OT_RETURN_DIST];
+        unsigned char cmdCh = sOptTypeVal[OT_RETURN_DIST];
         char strCMDCh[32];
         memset(strCMDCh, 0, 32);
         itoa(cmdCh, strCMDCh, 10);
@@ -452,9 +475,45 @@ void PXFArduino::Tick()
   if (mIRrecv && mIRrecv->decode(&iresultes))
   {
     int val = iresultes.value;
-    _IRRecv(val);
     mIRrecv->resume();
+    _IRRecv(val);
   }
+#endif
+
+#if defined PXF_RCSWITCH
+ if (mRCSwitch.available()) 
+ {   
+    int value = mRCSwitch.getReceivedValue();
+    
+    if (value == 0) 
+    {
+      //Serial.print("Unknown encoding");
+       Serial.print("0000");
+       Serial.print(String(strCMDCh)); 
+       Serial.print(" ");
+       Serial.println("44");
+    } 
+    else
+    {
+        int recvVal = getReceivedValue();
+
+        unsigned char cmdCh = sOptTypeVal[OT_RETRUN_RC];
+        char strCMDCh[32];
+        memset(strCMDCh, 0, 32);
+        itoa(cmdCh, strCMDCh, 10);
+        
+        Serial.print("0000");
+        Serial.print(String(strCMDCh)); 
+        Serial.print(" ");
+        Serial.println(recvVal);
+    }
+
+    mRCSwitch.resetAvailable();
+  }
+#endif
+
+#if defined PXF_DHT
+  _DHTSendTemperatureHumidity();
 #endif
 }
 void sCalPinValue()

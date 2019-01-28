@@ -22,7 +22,7 @@ void setup()
 
 String recvStr;
 void loop()
-{
+{   
   while (Serial.available())
   {
     char c = Serial.read();

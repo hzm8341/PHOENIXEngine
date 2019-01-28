@@ -25,7 +25,7 @@ void PXFArduino::OnCMD(String &cmdStr)
 
   if (mCMDIndexTemp > 0)
   {
-    char cmdCH = atoi(mCmdParams[0].c_str());
+    unsigned char cmdCH = atoi(mCmdParams[0].c_str());
     if (sOptTypeVal[OT_TOGET_NETID] == cmdCH)
     {
       _SendNetID();
@@ -69,7 +69,7 @@ void PXFArduino::OnCMD(String &cmdStr)
 
       int index = pin - P_0;
       
-      char cmdCh = sOptTypeVal[OT_RETURN_DR];
+      unsigned char cmdCh = sOptTypeVal[OT_RETURN_DR];
       char strCMDCh[32];
       memset(strCMDCh, 0, 32);
       itoa(cmdCh, strCMDCh, 10);
@@ -85,10 +85,9 @@ void PXFArduino::OnCMD(String &cmdStr)
     {
       int pin = _Str2Pin(mCmdParams[1]);
       int val = analogRead(pin);
-      
       int index = pin - P_0;
       
-      char cmdCh = sOptTypeVal[OT_RETURN_AR];
+      unsigned char cmdCh = sOptTypeVal[OT_RETURN_AR];
       char strCMDCh[32];
       memset(strCMDCh, 0, 32);
       itoa(cmdCh, strCMDCh, 10);
@@ -133,7 +132,7 @@ void PXFArduino::OnCMD(String &cmdStr)
          _DistTest(); 
       }
 
-      char cmdCh = sOptTypeVal[OT_RETURN_DIST];
+      unsigned char cmdCh = sOptTypeVal[OT_RETURN_DIST];
       char strCMDCh[32];
       memset(strCMDCh, 0, 32);
       itoa(cmdCh, strCMDCh, 10);
@@ -215,34 +214,28 @@ void PXFArduino::OnCMD(String &cmdStr)
     {
       int pinR = _Str2Pin(mCmdParams[1]);
       int pinT = _Str2Pin(mCmdParams[2]);
-      _MP3Init(pinR, pinT);
+      _MP3Init_(pinR, pinT);
     }
-    else if (sOptTypeVal[OT_MP3_PLAY]==cmdCH)
+    else if (sOptTypeVal[OT_MP3_DO]==cmdCH)
     {
-      _MP3Play();
+      int type = _Str2Int(mCmdParams[1]);
+      _MP3Do(type);
     }
-    else if (sOptTypeVal[OT_MP3_STOP]==cmdCH)
+    else if (sOptTypeVal[OT_MP3_PLAYFOLDER]==cmdCH)
     {
-      _MP3PlayStop();
+      int param0 = _Str2Int(mCmdParams[1]);
+      int param1 = _Str2Int(mCmdParams[2]);
+      _MP3FolderPlay(param0, param1);
     }
-    else if (sOptTypeVal[OT_MP3_VOLUME]==cmdCH)
+    else if (sOptTypeVal[OT_MP3_SETVOLUME]==cmdCH)
     {
-      int volume = _Str2Int(mCmdParams[1]);
-      _MP3SetVolume(volume);
-    }
-    else if (sOptTypeVal[OT_MP3_INDEX]==cmdCH)
-    {
-      int index = _Str2Int(mCmdParams[1]);
-      _MP3PlayIndex(index);
-    }
-    else if (sOptTypeVal[OT_MP3_NEXT]==cmdCH)
-    {
-      _MP3Next();
+      int val = _Str2Int(mCmdParams[1]);
+      _MP3SetVolime(val);
     }
     else if (sOptTypeVal[OT_IR_INIT]==cmdCH)
     {
       int pinR = _Str2Pin(mCmdParams[1]);
-      _IRInit(pinR);      
+      _IRInit_(pinR);      
     }
     else if (sOptTypeVal[OT_IR_SEND]==cmdCH)
     {
@@ -269,6 +262,99 @@ void PXFArduino::OnCMD(String &cmdStr)
       int index = _Str2Int(mCmdParams[1]);
       float val = _ReadHX711(index);
       _HXSend(index, val);
+    }
+    else if (sOptTypeVal[OT_DHT_I]==cmdCH)
+    {
+#if defined PXF_DHT
+      int pin = _Str2Pin(mCmdParams[1]);
+      _DHTInit(pin);
+#endif
+    }
+    else if (sOptTypeVal[OT_LEDSTRIP_I]==cmdCH)
+    {
+#if defined PXF_LEDSTRIP  
+      int pin = _Str2Pin(mCmdParams[1]);
+      int num = _Str2Int(mCmdParams[2]);
+      _RGBLEDInit(pin, num);
+#endif
+    }
+    else if (sOptTypeVal[OT_LEDSTRIP_SET]==cmdCH)
+    {
+#if defined PXF_LEDSTRIP  
+      int index = _Str2Int(mCmdParams[1]);
+      int r = _Str2Int(mCmdParams[2]);
+      int g = _Str2Int(mCmdParams[3]);
+      int b = _Str2Int(mCmdParams[4]);
+      _RGBLEDSetColor(index, r, g, b);
+#endif    
+    }
+    else if (sOptTypeVal[OT_SEGMENT_I]==cmdCH)
+    {
+#if defined PXF_SEGMENT7
+      int pinClk = _Str2Pin(mCmdParams[1]);
+      int pinData = _Str2Pin(mCmdParams[2]);
+      _SegmentInit(pinClk, pinData);
+#endif
+    }
+    else if (sOptTypeVal[OT_SEGMENT_BRIGHTNESS]==cmdCH)
+    {
+#if defined PXF_SEGMENT7
+      int val = _Str2Int(mCmdParams[1]);
+      _SegmentSetBrightness(val);
+#endif
+    }
+    else if (sOptTypeVal[OT_SEGMENT_CLEAR]==cmdCH)
+    {
+#if defined PXF_SEGMENT7
+      _SegmentClear();
+#endif
+    }
+    else if (sOptTypeVal[OT_SEGMENT_DISPLAY]==cmdCH)
+    {
+#if defined PXF_SEGMENT7
+      int type = _Str2Int(mCmdParams[1]);
+      float val = _Str2Float(mCmdParams[2]);
+      if (1 == type)
+      {
+       _SegmentDisplayInt((int)val);
+      }
+      else
+      {
+        _SegmentDisplayFloat(val);
+      }
+#endif
+    }
+    else if (sOptTypeVal[OT_LEDMATRIX_I]==cmdCH)
+    {
+#if defined PXF_LEDMATRIX
+      int pinClk = _Str2Pin(mCmdParams[1]);
+      int pinData = _Str2Pin(mCmdParams[2]);
+      _LEDMatrixInit(pinClk, pinData);
+#endif
+    }
+    else if (sOptTypeVal[OT_LEDMATRIX_BRIGHTNESS]==cmdCH)
+    {
+#if defined PXF_LEDMATRIX
+      int val = _Str2Int(mCmdParams[1]);
+      _LEDMatrixSetBrightness(val);
+#endif
+    }
+    else if (sOptTypeVal[OT_LEDMATRIX_CLEARSCREEN]==cmdCH)
+    {
+#if defined PXF_LEDMATRIX
+      _LEDMatrixClearScreen();
+#endif
+    }
+    else if (sOptTypeVal[OT_LEDMATRIX_LIGHTAT]==cmdCH)
+    {
+#if defined PXF_LEDMATRIX
+      int x = _Str2Int(mCmdParams[1]);
+      int y = _Str2Int(mCmdParams[2]);
+      int width = _Str2Int(mCmdParams[3]);
+      bool onOff = _Str2Bool(mCmdParams[4]);
+
+      _LEDMatrixLightPos(x,y,width,onOff);
+#endif
     }
   }
 }
@@ -324,6 +410,12 @@ int PXFArduino::_Str2Int(String &str)
 {
   int iVal = atoi(str.c_str());
   return iVal; 
+}
+//----------------------------------------------------------------------------
+float PXFArduino::_Str2Float(String &str)
+{
+  float fVal = (float)atof(str.c_str());
+  return fVal;
 }
 //----------------------------------------------------------------------------
 int PXFArduino::_Str2DirType(String &str)

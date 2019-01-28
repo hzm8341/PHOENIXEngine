@@ -4,16 +4,17 @@
 #define PXFARDUINO_H
 
 #include <Arduino.h>
+
+#include "PXFArduinoConfig.h"
+
 #include "PXFTimer.h"
 
 // server
-#define PXF_SERVER 1
 #if defined PXF_SERVER
 #include <Servo.h>
 #endif
 
 // display
-//#define PXF_SSD1306 1
 #if defined PXF_SSD1306
 #include <SPI.h>
 #include <Wire.h>
@@ -21,36 +22,55 @@
 #include "PXFAdafruit_SSD1306.h"
 #endif
 
-//#define PXF_MP3 1
-#if defined PXF_MP3
+#if defined PXF_DFMP3
 #include "PXFDFPlayer_Mini_Mp3.h"
 #include <SoftwareSerial.h>
 #endif
 
-//#define PXF_IR 1
 #if defined PXF_IR
 #include "PXFIRremote.h"
 #endif
 
-//#define PXF_XH711 1
 #if defined PXF_XH711
 #include "PXFHX711.h"
 #endif
 
-//#define PX2_POLOLUBUZZER 1
 #if defined PX2_POLOLUBUZZER
 #include "PXFPololuBuzzer.h"
 #endif
 
-//#define PXF_AXIS 1
 #if defined PXF_AXIS
 #include <Wire.h>
 #include "PXMPU6050.h"
 #endif
 
-#define PXF_PID
 #if defined PXF_PID
 #include "PXFPID_v1.h"
+#endif
+
+#if defined PXF_RCSWITCH
+#include "PXFRCSwitch.h"
+#endif
+
+#if defined PXF_DHT
+#include "PXFDHT.h"
+#define PXF_DHTTYPE DHT11 
+#endif
+
+#if defined PXF_LEDSTRIP
+#include "PXFWS2812.h"
+#endif
+
+#if defined PXF_LEDMATRIX
+#include "PXFLEDMatrix.h"
+#endif
+
+#if defined PXF_SEGMENT7
+#include "PXFSegmentDisplay.h"
+#endif
+
+#if defined PXF_MP3
+#include "PXFMP3_KT403A.h"
 #endif
 
 enum PXFPin
@@ -138,11 +158,9 @@ enum OptionType
   OT_MOTO_I_DRIVER4567,
   OT_MOTO_I_DRIVER298N,
   OT_MP3_INIT,
-  OT_MP3_PLAY,
-  OT_MP3_INDEX,
-  OT_MP3_NEXT,
-  OT_MP3_STOP,
-  OT_MP3_VOLUME,
+  OT_MP3_DO,
+  OT_MP3_PLAYFOLDER,
+  OT_MP3_SETVOLUME,
   OT_IR_INIT,
   OT_IR_SEND,
   OT_RETURN_IR,
@@ -155,6 +173,21 @@ enum OptionType
   OT_RETURN_AXIS,
   OT_SET_TIME,
   OT_SET_BABYROBOT,
+  OT_RC_SEND,
+  OT_RETRUN_RC,
+  OT_DHT_I,
+	OT_RETURN_DHTTEMP,
+	OT_RETURN_DHTHUMI,
+  OT_LEDSTRIP_I,
+  OT_LEDSTRIP_SET,
+  OT_SEGMENT_I,
+  OT_SEGMENT_BRIGHTNESS,
+  OT_SEGMENT_CLEAR,
+  OT_SEGMENT_DISPLAY,
+  OT_LEDMATRIX_I,
+  OT_LEDMATRIX_BRIGHTNESS,
+  OT_LEDMATRIX_CLEARSCREEN,
+  OT_LEDMATRIX_LIGHTAT,
   OT_MC_INTERNAL_LIGHT, // makerclock
   OT_MC_LIGHT,
   OT_MC_SEGMENT,
@@ -163,7 +196,25 @@ enum OptionType
   OT_MB_MOTO,	// mbot
   OT_MB_SEND,
   OT_MB_BUZZER,
+  OT_VERSION,
   OT_MAX_TYPE
+};
+
+enum Mp3PlayType
+{
+  MPT_PLAY,
+  MPT_PAUSE,
+  MPT_STOP,
+  MPT_NEXT,
+  MPT_BEFORE,
+  MPT_RANDOM,
+  MPT_LOOP_SINGLE,
+  MPT_LOOP_SINGLE_CLOSE,
+  MPT_LOOP_ALL,
+  MPT_LOOP_ALL_CLOSE,
+  MPT_VOLUME_INCREASE,
+  MPT_VOLUME_DECREASE,
+  MPT_MAX_TYPE
 };
 
 class PXFArduino
@@ -174,7 +225,7 @@ public:
   static PXFArduino *pxfarduino;
 
   static char PinStr[P_MAX_TYPE];
-  static char sOptTypeVal[OT_MAX_TYPE];
+  static unsigned char sOptTypeVal[OT_MAX_TYPE];
 
   // cmds process
   void OnCMDGroup(String &cmdStr);
@@ -201,8 +252,38 @@ public:
   void _WeightInit(int index, PXFPin pinR, PXFPin pinT);
   void _WeightTest(int index);
   float _GetWeight(int index);
-  void _MP3Init(PXFPin pinR, PXFPin pinT);
-  void _IRInit(PXFPin pinR);
+
+#if defined PXF_DHT
+  void _DHTInit(PXFPin pin);
+  void _DHTSendTemperatureHumidity();
+#endif
+
+#if defined PXF_LEDSTRIP
+  void _RGBLEDInit(PXFPin pin, int num);
+  void _RGBLEDSetColor(int index, int r, int g, int b);
+#endif
+
+#if defined PXF_LEDMATRIX
+  void _LEDMatrixInit(int sckPin, int dinPin);
+  void _LEDMatrixSetBrightness(int brightness);
+  void _LEDMatrixClearScreen();
+  void _LEDMatrixSetColorIndex(int iColor_Number);
+  
+  void _LEDMatrixDrawBitmap(int8_t x, int8_t y, uint8_t bitmap_Width, uint8_t *bitmap);
+  void _LEDMatrixDrawStr(int16_t x_position, int8_t y_position, const char *str);
+  void _LEDMatrixShowClock(uint8_t hour, uint8_t minute, bool isPointON = true);
+  void _LEDMatrixShowNum(float value,uint8_t val= 3);
+
+  void _LEDMatrixLightPos(int8_t x, int8_t y, int width, bool onOff);
+#endif
+
+#if defined PXF_SEGMENT7
+  void _SegmentInit(int clkPin, int dataPin);
+  void _SegmentSetBrightness(int brightness);
+  void _SegmentClear();
+  void _SegmentDisplayInt(int val);
+  void _SegmentDisplayFloat(float val);
+#endif
 
   PXFPMode PinModes[P_MAX_TYPE];
 
@@ -214,6 +295,7 @@ private:
   int PXFPin2Pin(PXFPin pxfPin);
   bool _Str2Bool(String &str);
   int _Str2Int(String &str);
+  float _Str2Float(String &str);
   int _Str2DirType(String &str);
   int _Str2SimpleDirType(String &str);
 
@@ -230,6 +312,7 @@ public:
   void Tick();
 
 public:
+  void _SendVersion();
   void _SendNetID();
   void _DistInit_(int pinTrig, int pinEcho);
   void _DistTest();
@@ -245,15 +328,16 @@ public:
   void _MotoSpeedInit(int encorderLA, int encorderLB, int encorderRA, int encorderRB);
   void _LeftRun(int val, int spd);
   void _RightRun(int val, int spd);
+  
 #if defined PXF_SSD1306
   void _ScreenInit();
 #endif
+
   void _MP3Init_(int pinR, int pinT);
-  void _MP3Play();
-  void _MP3PlayStop();
-  void _MP3SetVolume(int volume);
-  void _MP3PlayIndex(int index);
-  void _MP3Next();
+  void _MP3Do(Mp3PlayType type);
+  void _MP3FolderPlay(int folder, int index);
+  void _MP3SetVolime(int val);
+  
   void _IRInit_(int pinR);
   void _IRSend(int val);
   void _IRRecv(int val);
@@ -295,6 +379,7 @@ public:
 
 private:
   int mNetID;
+  unsigned long mLastSendVersionTime;
   Timer mTimer;
 
 #if defined PXF_SERVER
@@ -322,8 +407,8 @@ private:
   Adafruit_SSD1306 *mDisplay;
 #endif
 
-#if defined PXF_MP3
-  SoftwareSerial *mMP3Serial;
+#if defined PXF_DFMP3
+  SoftwareSerial *mMP3DFSerial;
 #endif
 
 #if defined PXF_IR
@@ -338,6 +423,23 @@ private:
   HX711 mXH711_3;
 #endif
 
+#if defined PXF_DHT
+  PXFDHT mDHT;
+  bool mIsInitedDHT;
+#endif
+
+#if defined PXF_LEDSTRIP
+  WS2812 mWS2812;
+#endif
+
+#if defined PXF_LEDMATRIX
+  LEDMatrix mLEDMatrix;
+#endif
+
+#if defined PXF_MP3
+  MP3 mMP3;
+#endif
+
   bool mIsEverSettedBabyRobot;
 
 public:
@@ -350,6 +452,18 @@ public:
   float mYaw;
   MPU6050 mMPU;
   int mAxisTickEvent;
+#endif
+
+#if defined PXF_RCSWITCH
+public:
+  void _InitRCSwitchReceive(int pinTimerIndex);
+  void _RCSend(int val);
+
+  RCSwitch mRCSwitch;
+#endif
+
+#if defined PXF_SEGMENT7
+  SegmentDisplay mSegmentDisplay;
 #endif
 };
 

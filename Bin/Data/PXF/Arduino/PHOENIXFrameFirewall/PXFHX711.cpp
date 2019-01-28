@@ -1,3 +1,5 @@
+#if defined PXF_XH711
+
 #include <Arduino.h>
 #include "PXFHX711.h"
 
@@ -132,3 +134,5 @@ void HX711::power_down() {
 void HX711::power_up() {
 	digitalWrite(PD_SCK, LOW);
 }
+
+#endif

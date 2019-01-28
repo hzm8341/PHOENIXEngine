@@ -43,6 +43,10 @@
 #ifndef PXFDFPLAYER_MINI_MP3_H
 #define PXFDFPLAYER_MINI_MP3_H
 
+#include "PXFArduinoConfig.h"
+
+#if defined PXF_DFMP3
+
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
@@ -166,6 +170,8 @@ void mp3_DAC (boolean state);
 
 //
 void mp3_random_play (); 
+
+#endif
 
 #endif
 

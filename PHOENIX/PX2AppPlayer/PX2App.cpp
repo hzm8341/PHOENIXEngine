@@ -22,6 +22,7 @@
 #include "PX2GraphicsEventType.hpp"
 #include "PX2GraphicsEventData.hpp"
 #include "PX2ScriptManager.hpp"
+#include "PX2AppInitConfig.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -742,7 +743,8 @@ bool App::Initlize()
 
 	AppBase::Initlize();
 
-	PX2_APP.Initlize();
+	AppInitConfig cfg =  AppInitConfig();
+	PX2_APP.Initlize(&cfg);
 
 	PX2_EW.ComeIn(this);
 

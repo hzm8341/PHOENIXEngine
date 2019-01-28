@@ -1,3 +1,5 @@
+#if defined PXF_XH711
+
 #ifndef PXFHX711_h
 #define PXFHX711_h
 
@@ -75,3 +77,5 @@ class HX711
 };
 
 #endif /* HX711_h */
+
+#endif

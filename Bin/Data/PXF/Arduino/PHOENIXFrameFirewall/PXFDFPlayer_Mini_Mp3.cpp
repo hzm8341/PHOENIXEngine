@@ -39,6 +39,8 @@
 
 #include  "PXFDFPlayer_Mini_Mp3.h"
 
+#if defined PXF_DFMP3
+
 uint8_t send_buf[10] = {
 	0x7E, 0xFF, 06, 00, 00, 00, 00, 00, 00, 0xEF};
 uint8_t recv_buf[10];
@@ -251,4 +253,4 @@ void mp3_random_play () {
 	mp3_send_cmd (0x18);
 }
 
-
+#endif

@@ -5,13 +5,18 @@
 #include "PX2Mathematics.hpp"
 #include "PX2Application.hpp"
 #include "PX2Log.hpp"
+#include "PX2System.hpp"
+#include "PX2AppInitConfig.hpp"
 using namespace PX2;
 
 int main()
 {
 	Application *app = new Application();
+	AppInitConfig cfg;
+	cfg.IsInitSound = false;
+	cfg.IsInitVoice = false;
 
-	if (app->Initlize())
+	if (app->Initlize(&cfg))
 	{
 		Logger *logger = Logger::GetSingletonPtr();
 		logger->CloseLogger();
@@ -27,7 +32,7 @@ int main()
 		while (!app->IsQuit())
 		{
 			app->Update();
-
+			System::SleepSeconds(0.01f);
 		}
 		app->Terminate();
 	}
