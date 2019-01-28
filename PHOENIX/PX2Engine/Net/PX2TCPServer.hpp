@@ -23,6 +23,7 @@ namespace PX2
 		virtual ~TCPServer();
 
 		const TCPServerParams& params() const;
+		TCPServerDispatcher* GetDispatcher();
 
 		void SetSingleThread(bool single);
 		void SingleThreadUpdate();

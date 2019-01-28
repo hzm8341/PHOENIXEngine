@@ -197,7 +197,7 @@ void _LiDarClientConnectorRecvCallback1(uint8_t* buffer, uint32_t numOfBytes)
 		m_numberOfBytesInReceiveBuffer = 0;
 	}
 }
-void _LiDarClientConnectorRecvCallback(const std::string &recvData)
+void _LiDarClientConnectorRecvCallback(ClientConnector *cn, const std::string &recvData)
 {
 	_LiDarClientConnectorRecvCallback1((uint8_t*)recvData.c_str(),
 		(uint32_t)recvData.length());

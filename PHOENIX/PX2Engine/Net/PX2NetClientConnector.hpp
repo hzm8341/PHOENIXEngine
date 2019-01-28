@@ -22,7 +22,8 @@ namespace PX2
 		CONNSTATE_WAITSERVER, //向服务器发送完消息， 等待回复消息
 	};
 
-	typedef void(*ClientConnectorRecvCallback) (const std::string &recvStr);
+	class ClientConnector;
+	typedef void(*ClientConnectorRecvCallback) (ClientConnector *connector, const std::string &recvStr);
 
 	class PX2_ENGINE_ITEM ClientConnector : public Object
 	{

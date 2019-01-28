@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 12/09/18 14:12:08.
+** Generated automatically by tolua++-1.0.92 on 01/19/19 14:48:17.
 */
 
 #ifndef __cplusplus
@@ -43149,9 +43149,9 @@ static int tolua_PX2_Arduino_AnalogRead00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: ServerInit of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_ServerInit00
-static int tolua_PX2_Arduino_ServerInit00(lua_State* tolua_S)
+/* method: ServoInit of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_ServoInit00
+static int tolua_PX2_Arduino_ServoInit00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -43169,24 +43169,24 @@ static int tolua_PX2_Arduino_ServerInit00(lua_State* tolua_S)
   int i = ((int)  tolua_tonumber(tolua_S,2,0));
   Arduino::Pin pin = ((Arduino::Pin) (int)  tolua_tonumber(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ServerInit'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ServoInit'", NULL);
 #endif
   {
-   self->ServerInit(i,pin);
+   self->ServoInit(i,pin);
   }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ServerInit'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'ServoInit'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: ServerWrite of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_ServerWrite00
-static int tolua_PX2_Arduino_ServerWrite00(lua_State* tolua_S)
+/* method: ServoWrite of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_ServoWrite00
+static int tolua_PX2_Arduino_ServoWrite00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -43204,16 +43204,16 @@ static int tolua_PX2_Arduino_ServerWrite00(lua_State* tolua_S)
   int i = ((int)  tolua_tonumber(tolua_S,2,0));
   int val = ((int)  tolua_tonumber(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ServerWrite'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ServoWrite'", NULL);
 #endif
   {
-   self->ServerWrite(i,val);
+   self->ServoWrite(i,val);
   }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ServerWrite'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'ServoWrite'.",&tolua_err);
  return 0;
 #endif
 }
@@ -43628,71 +43628,9 @@ static int tolua_PX2_Arduino_MP3Init00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: MP3Play of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_MP3Play00
-static int tolua_PX2_Arduino_MP3Play00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'MP3Play'", NULL);
-#endif
-  {
-   self->MP3Play();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'MP3Play'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: MP3PlayNext of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_MP3PlayNext00
-static int tolua_PX2_Arduino_MP3PlayNext00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'MP3PlayNext'", NULL);
-#endif
-  {
-   self->MP3PlayNext();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'MP3PlayNext'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: MP3PlayAtIndex of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_MP3PlayAtIndex00
-static int tolua_PX2_Arduino_MP3PlayAtIndex00(lua_State* tolua_S)
+/* method: MP3DO of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_MP3DO00
+static int tolua_PX2_Arduino_MP3DO00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -43706,18 +43644,53 @@ static int tolua_PX2_Arduino_MP3PlayAtIndex00(lua_State* tolua_S)
 #endif
  {
   Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
-  int index = ((int)  tolua_tonumber(tolua_S,2,0));
+  Arduino::MP3PlayType mpt = ((Arduino::MP3PlayType) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'MP3PlayAtIndex'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'MP3DO'", NULL);
 #endif
   {
-   self->MP3PlayAtIndex(index);
+   self->MP3DO(mpt);
   }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'MP3PlayAtIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'MP3DO'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: MP3Play of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_MP3Play00
+static int tolua_PX2_Arduino_MP3Play00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
+  int folder = ((int)  tolua_tonumber(tolua_S,2,0));
+  int index = ((int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'MP3Play'", NULL);
+#endif
+  {
+   self->MP3Play(folder,index);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'MP3Play'.",&tolua_err);
  return 0;
 #endif
 }
@@ -43751,37 +43724,6 @@ static int tolua_PX2_Arduino_MP3SetVolume00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'MP3SetVolume'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: MP3Stop of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_MP3Stop00
-static int tolua_PX2_Arduino_MP3Stop00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'MP3Stop'", NULL);
-#endif
-  {
-   self->MP3Stop();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'MP3Stop'.",&tolua_err);
  return 0;
 #endif
 }
@@ -44060,6 +44002,177 @@ static int tolua_PX2_Arduino_GetMatDist00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: DHTInit of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_DHTInit00
+static int tolua_PX2_Arduino_DHTInit00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
+  Arduino::Pin pin = ((Arduino::Pin) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'DHTInit'", NULL);
+#endif
+  {
+   self->DHTInit(pin);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'DHTInit'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetTemperature of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_GetTemperature00
+static int tolua_PX2_Arduino_GetTemperature00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Arduino",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Arduino* self = (const Arduino*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetTemperature'", NULL);
+#endif
+  {
+   float tolua_ret = (float)  self->GetTemperature();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetTemperature'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetHumidity of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_GetHumidity00
+static int tolua_PX2_Arduino_GetHumidity00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Arduino",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Arduino* self = (const Arduino*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetHumidity'", NULL);
+#endif
+  {
+   float tolua_ret = (float)  self->GetHumidity();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetHumidity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: RGBLEDInit of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_RGBLEDInit00
+static int tolua_PX2_Arduino_RGBLEDInit00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
+  Arduino::Pin pin = ((Arduino::Pin) (int)  tolua_tonumber(tolua_S,2,0));
+  int num = ((int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RGBLEDInit'", NULL);
+#endif
+  {
+   self->RGBLEDInit(pin,num);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'RGBLEDInit'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: RGBLEDSetColor of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_RGBLEDSetColor00
+static int tolua_PX2_Arduino_RGBLEDSetColor00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
+  int index = ((int)  tolua_tonumber(tolua_S,2,0));
+  int r = ((int)  tolua_tonumber(tolua_S,3,0));
+  int g = ((int)  tolua_tonumber(tolua_S,4,0));
+  int b = ((int)  tolua_tonumber(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RGBLEDSetColor'", NULL);
+#endif
+  {
+   self->RGBLEDSetColor(index,r,g,b);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'RGBLEDSetColor'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: AxisInit of class  Arduino */
 #ifndef TOLUA_DISABLE_tolua_PX2_Arduino_AxisInit00
 static int tolua_PX2_Arduino_AxisInit00(lua_State* tolua_S)
@@ -44278,6 +44391,110 @@ static int tolua_PX2_Arduino_AxisGetYaw00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'AxisGetYaw'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: BabyRobotSet of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_BabyRobotSet00
+static int tolua_PX2_Arduino_BabyRobotSet00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,3,0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,4,0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
+  bool moto = ((bool)  tolua_toboolean(tolua_S,2,0));
+  bool distance = ((bool)  tolua_toboolean(tolua_S,3,0));
+  bool buzzer = ((bool)  tolua_toboolean(tolua_S,4,0));
+  bool light = ((bool)  tolua_toboolean(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'BabyRobotSet'", NULL);
+#endif
+  {
+   self->BabyRobotSet(moto,distance,buzzer,light);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'BabyRobotSet'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: RCSend of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_RCSend00
+static int tolua_PX2_Arduino_RCSend00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
+  int val = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RCSend'", NULL);
+#endif
+  {
+   self->RCSend(val);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'RCSend'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetRCReceive of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_GetRCReceive00
+static int tolua_PX2_Arduino_GetRCReceive00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Arduino",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Arduino* self = (const Arduino*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetRCReceive'", NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->GetRCReceive();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetRCReceive'.",&tolua_err);
  return 0;
 #endif
 }
@@ -102630,68 +102847,6 @@ static int tolua_PX2_EngineClientConnector_RemoveOnRecvCallback00(lua_State* tol
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: InitlizeArduino of class  EngineClientConnector */
-#ifndef TOLUA_DISABLE_tolua_PX2_EngineClientConnector_InitlizeArduino00
-static int tolua_PX2_EngineClientConnector_InitlizeArduino00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"EngineClientConnector",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  EngineClientConnector* self = (EngineClientConnector*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'InitlizeArduino'", NULL);
-#endif
-  {
-   self->InitlizeArduino();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'InitlizeArduino'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: TernimateArduino of class  EngineClientConnector */
-#ifndef TOLUA_DISABLE_tolua_PX2_EngineClientConnector_TernimateArduino00
-static int tolua_PX2_EngineClientConnector_TernimateArduino00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"EngineClientConnector",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  EngineClientConnector* self = (EngineClientConnector*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'TernimateArduino'", NULL);
-#endif
-  {
-   self->TernimateArduino();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'TernimateArduino'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: new of class  EngineCanvas */
 #ifndef TOLUA_DISABLE_tolua_PX2_EngineCanvas_new00
 static int tolua_PX2_EngineCanvas_new00(lua_State* tolua_S)
@@ -105564,8 +105719,9 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"SetPlaySameTimeRange",tolua_PX2_SoundSystem_SetPlaySameTimeRange00);
    tolua_function(tolua_S,"GetPlaySameTimeRange",tolua_PX2_SoundSystem_GetPlaySameTimeRange00);
   tolua_endmodule(tolua_S);
-  tolua_constant(tolua_S,"ART_RECT_DIST",ART_RECT_DIST);
+  tolua_constant(tolua_S,"ART_RECV_DIST",ART_RECV_DIST);
   tolua_constant(tolua_S,"ART_RECV_IR",ART_RECV_IR);
+  tolua_constant(tolua_S,"ART_RECV_RC",ART_RECV_RC);
   tolua_constant(tolua_S,"ART_MAXZ_TYPE",ART_MAXZ_TYPE);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Arduino","Arduino","Object",tolua_collect_Arduino);
@@ -105630,8 +105786,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"AnalogWrite",tolua_PX2_Arduino_AnalogWrite00);
    tolua_function(tolua_S,"DigitalRead",tolua_PX2_Arduino_DigitalRead00);
    tolua_function(tolua_S,"AnalogRead",tolua_PX2_Arduino_AnalogRead00);
-   tolua_function(tolua_S,"ServerInit",tolua_PX2_Arduino_ServerInit00);
-   tolua_function(tolua_S,"ServerWrite",tolua_PX2_Arduino_ServerWrite00);
+   tolua_function(tolua_S,"ServoInit",tolua_PX2_Arduino_ServoInit00);
+   tolua_function(tolua_S,"ServoWrite",tolua_PX2_Arduino_ServoWrite00);
    tolua_function(tolua_S,"DistInit",tolua_PX2_Arduino_DistInit00);
    tolua_function(tolua_S,"DistTest",tolua_PX2_Arduino_DistTest00);
    tolua_function(tolua_S,"GetDist",tolua_PX2_Arduino_GetDist00);
@@ -105653,12 +105809,23 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"Run",tolua_PX2_Arduino_Run01);
    tolua_function(tolua_S,"GetSpeed",tolua_PX2_Arduino_GetSpeed00);
    tolua_function(tolua_S,"Stop",tolua_PX2_Arduino_Stop00);
+   tolua_constant(tolua_S,"MPT_PLAY",Arduino::MPT_PLAY);
+   tolua_constant(tolua_S,"MPT_PAUSE",Arduino::MPT_PAUSE);
+   tolua_constant(tolua_S,"MPT_STOP",Arduino::MPT_STOP);
+   tolua_constant(tolua_S,"MPT_NEXT",Arduino::MPT_NEXT);
+   tolua_constant(tolua_S,"MPT_BEFORE",Arduino::MPT_BEFORE);
+   tolua_constant(tolua_S,"MPT_RANDOM",Arduino::MPT_RANDOM);
+   tolua_constant(tolua_S,"MPT_LOOP_SINGLE",Arduino::MPT_LOOP_SINGLE);
+   tolua_constant(tolua_S,"MPT_LOOP_SINGLE_CLOSE",Arduino::MPT_LOOP_SINGLE_CLOSE);
+   tolua_constant(tolua_S,"MPT_LOOP_ALL",Arduino::MPT_LOOP_ALL);
+   tolua_constant(tolua_S,"MPT_LOOP_ALL_CLOSE",Arduino::MPT_LOOP_ALL_CLOSE);
+   tolua_constant(tolua_S,"MPT_VOLUME_INCREASE",Arduino::MPT_VOLUME_INCREASE);
+   tolua_constant(tolua_S,"MPT_VOLUME_DECREASE",Arduino::MPT_VOLUME_DECREASE);
+   tolua_constant(tolua_S,"MPT_MAX_TYPE",Arduino::MPT_MAX_TYPE);
    tolua_function(tolua_S,"MP3Init",tolua_PX2_Arduino_MP3Init00);
+   tolua_function(tolua_S,"MP3DO",tolua_PX2_Arduino_MP3DO00);
    tolua_function(tolua_S,"MP3Play",tolua_PX2_Arduino_MP3Play00);
-   tolua_function(tolua_S,"MP3PlayNext",tolua_PX2_Arduino_MP3PlayNext00);
-   tolua_function(tolua_S,"MP3PlayAtIndex",tolua_PX2_Arduino_MP3PlayAtIndex00);
    tolua_function(tolua_S,"MP3SetVolume",tolua_PX2_Arduino_MP3SetVolume00);
-   tolua_function(tolua_S,"MP3Stop",tolua_PX2_Arduino_MP3Stop00);
    tolua_function(tolua_S,"IRInit",tolua_PX2_Arduino_IRInit00);
    tolua_function(tolua_S,"IRSend",tolua_PX2_Arduino_IRSend00);
    tolua_function(tolua_S,"GetIRReceive",tolua_PX2_Arduino_GetIRReceive00);
@@ -105667,6 +105834,11 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetWeight",tolua_PX2_Arduino_GetWeight00);
    tolua_function(tolua_S,"DistMatInit",tolua_PX2_Arduino_DistMatInit00);
    tolua_function(tolua_S,"GetMatDist",tolua_PX2_Arduino_GetMatDist00);
+   tolua_function(tolua_S,"DHTInit",tolua_PX2_Arduino_DHTInit00);
+   tolua_function(tolua_S,"GetTemperature",tolua_PX2_Arduino_GetTemperature00);
+   tolua_function(tolua_S,"GetHumidity",tolua_PX2_Arduino_GetHumidity00);
+   tolua_function(tolua_S,"RGBLEDInit",tolua_PX2_Arduino_RGBLEDInit00);
+   tolua_function(tolua_S,"RGBLEDSetColor",tolua_PX2_Arduino_RGBLEDSetColor00);
    tolua_function(tolua_S,"AxisInit",tolua_PX2_Arduino_AxisInit00);
    tolua_function(tolua_S,"AxisGetYAxis",tolua_PX2_Arduino_AxisGetYAxis00);
    tolua_function(tolua_S,"AxisGetXAxis",tolua_PX2_Arduino_AxisGetXAxis00);
@@ -105674,6 +105846,9 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"AxisGetPitch",tolua_PX2_Arduino_AxisGetPitch00);
    tolua_function(tolua_S,"AxisGetRoll",tolua_PX2_Arduino_AxisGetRoll00);
    tolua_function(tolua_S,"AxisGetYaw",tolua_PX2_Arduino_AxisGetYaw00);
+   tolua_function(tolua_S,"BabyRobotSet",tolua_PX2_Arduino_BabyRobotSet00);
+   tolua_function(tolua_S,"RCSend",tolua_PX2_Arduino_RCSend00);
+   tolua_function(tolua_S,"GetRCReceive",tolua_PX2_Arduino_GetRCReceive00);
    tolua_function(tolua_S,"GetLastSendContentString",tolua_PX2_Arduino_GetLastSendContentString00);
    tolua_function(tolua_S,"GetLastSendString",tolua_PX2_Arduino_GetLastSendString00);
   tolua_endmodule(tolua_S);
@@ -108378,8 +108553,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"IsHasOnRecvCallback",tolua_PX2_EngineClientConnector_IsHasOnRecvCallback00);
    tolua_function(tolua_S,"AddOnRecvCallback",tolua_PX2_EngineClientConnector_AddOnRecvCallback00);
    tolua_function(tolua_S,"RemoveOnRecvCallback",tolua_PX2_EngineClientConnector_RemoveOnRecvCallback00);
-   tolua_function(tolua_S,"InitlizeArduino",tolua_PX2_EngineClientConnector_InitlizeArduino00);
-   tolua_function(tolua_S,"TernimateArduino",tolua_PX2_EngineClientConnector_TernimateArduino00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"EngineCanvas","EngineCanvas","Canvas",tolua_collect_EngineCanvas);

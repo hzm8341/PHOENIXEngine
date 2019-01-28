@@ -1073,6 +1073,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Application\PX2AmbientRegionController.hpp" />
     <ClInclude Include="Application\PX2AppBoostInfo.hpp" />
     <ClInclude Include="Application\PX2Application.hpp" />
+    <ClInclude Include="Application\PX2AppInitConfig.hpp" />
     <ClInclude Include="Application\PX2Applications.hpp" />
     <ClInclude Include="Application\PX2ApplicationUDPNetInfo.hpp" />
     <ClInclude Include="Application\PX2CameraPlayController.hpp" />
@@ -2318,6 +2319,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Application\PX2Actor.cpp" />
     <ClCompile Include="Application\PX2AmbientRegionController.cpp" />
     <ClCompile Include="Application\PX2AppBoostInfo.cpp" />
+    <ClCompile Include="Application\PX2AppInitConfig.cpp" />
     <ClCompile Include="Application\PX2AppliactionPlay.cpp" />
     <ClCompile Include="Application\PX2Application.cpp" />
     <ClCompile Include="Application\PX2ApplicationInitTerm.cpp" />

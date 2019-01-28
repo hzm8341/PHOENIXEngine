@@ -8,6 +8,8 @@
 #include "PX2ServerPre.hpp"
 #include "PX2Timespan.hpp"
 #include "PX2Log.hpp"
+#include "PX2NetException.hpp"
+#include "PX2Exception.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -269,17 +271,32 @@ int SocketImpl::SendBytes(const void* buffer, int length, int flags)
 	if (mSocket == PX2_INVALID_SOCKET)
 	{
 		assertion(false, "Invalid socket.\n");
+		throw InvalidSocketException();
 	}
 
-	rc = ::send(mSocket, reinterpret_cast<const char*>(buffer), length, flags);
+	//if (_isBrokenTimeout)
+	//{
+	//	if (mSendT.totalMicroseconds() != 0)
+	//	{
+	//		if (!poll(_sndTimeout, SELECT_WRITE))
+	//			throw TimeoutException();
+	//	}
+	//}
 
-	if(rc < 0)
+	do
 	{
-		int err = NetError::LastError();
-		if(err==PX2_EWOULDBLOCK || err==PX2_EINTR) return 0; //继续
-		else return -1; //连接断掉
+		rc = ::send(mSocket, reinterpret_cast<const char*>(buffer), length, flags);
+	} while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
+	if (rc < 0)
+	{
+		NetError::Error();
 	}
-	else return rc;
+	else if (rc == 0)
+	{
+		assertion(false, "fdafda");
+	}
+
+	return rc;
 }
 //----------------------------------------------------------------------------
 int SocketImpl::ReceiveBytes (void* buffer, int length, int flags)
@@ -290,23 +307,36 @@ int SocketImpl::ReceiveBytes (void* buffer, int length, int flags)
 		assertion(false, "Invalid socket.\n");
 	}
 
-	rc = ::recv(mSocket, reinterpret_cast<char*>(buffer), length, flags);
-	
-	if(rc == 0) return -1; //连接被关掉， 需要重连
-	else if(rc < 0)
+	do
 	{
-		int err = NetError::LastError();
-		if(err==PX2_EWOULDBLOCK || err==PX2_EINTR) return 0; //继续
-		else return -1; //连接断掉
+		rc = ::recv(mSocket, reinterpret_cast<char*>(buffer), length, flags);
 	}
-	else return rc;
+	while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
+	
+	if (rc < 0)
+	{
+		int err = GetLastError();
+		if (err == PX2_EAGAIN && !mIsBlocking)
+			;
+		else if (err == PX2_EAGAIN || err == PX2_ETIMEDOUT)
+		{
+			throw TimeoutException(err);
+		}
+		else
+			NetError::Error(err);
+	}
+	else if (rc == 0)
+	{
+		int aa = 0;
+	}
+	return rc;
 }
 //----------------------------------------------------------------------------
 int SocketImpl::SendTo (const void* buffer, int length, 
 	const SocketAddress& address, int flags)
 {
 	int rc;
-	//do
+	do
 	{
 		if (mSocket == PX2_INVALID_SOCKET)
 		{
@@ -317,7 +347,7 @@ int SocketImpl::SendTo (const void* buffer, int length,
 			flags, address.GetAddr(), address.GetAddrLength());
 
 	}	
-	//while (mIsBlocking && rc < 0 && LastError() == PX2_EINTR);
+	while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
 
 	if (rc < 0)
 	{
@@ -334,7 +364,7 @@ int SocketImpl::ReceiveFrom (void* buffer, int length, SocketAddress& address,
 	struct sockaddr* sa = reinterpret_cast<struct sockaddr*>(abuffer);
 	px2_socklen_t saLen = sizeof(abuffer);
 	int rc = -1;
-	//do
+	do
 	{
 		if (mSocket == PX2_INVALID_SOCKET)
 		{
@@ -344,7 +374,7 @@ int SocketImpl::ReceiveFrom (void* buffer, int length, SocketAddress& address,
 		rc = ::recvfrom(mSocket, reinterpret_cast<char*>(buffer), length,
 			flags, sa, &saLen);
 	}
-	//while (mIsBlocking && rc < 0 && LastError() == PX2_EINTR);
+	while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
 
 	if (rc >= 0)
 	{
@@ -352,15 +382,15 @@ int SocketImpl::ReceiveFrom (void* buffer, int length, SocketAddress& address,
 	}
 	else
 	{
-		//int err = LastError();
-		//if (err == PX2_EAGAIN && !mIsBlocking)
-		//	;
-		//else if (err == PX2_EAGAIN || err == PX2_ETIMEDOUT)
-		//{
-		//	assertion(false, "time out.\n");
-		//}
-		//else
-		//	NetError::Error(err);
+		int err = GetLastError();
+		if (err == PX2_EAGAIN && !mIsBlocking)
+			;
+		else if (err == PX2_EAGAIN || err == PX2_ETIMEDOUT)
+		{
+			assertion(false, "time out.\n");
+		}
+		else
+			NetError::Error(err);
 	}
 	return rc;
 }
@@ -530,6 +560,11 @@ bool SocketImpl::Poll(const Timespan& timeout, int mode)
 		}
 	}
 	while (rc < 0 && errorCode == PX2_EINTR);
+
+	if (0 == rc)
+	{
+		::shutdown(sockfd, 2);
+	}
 
 	if (rc < 0)
 		NetError::Error(errorCode);

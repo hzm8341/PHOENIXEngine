@@ -1,0 +1,16 @@
+CFG ?= Debug
+PROJ ?= Slam2D
+
+build :
+	@mkdir -p $(CFG)
+	make -f makeprj.px2 CFG=$(CFG)
+	
+ifeq (ARM,$(findstring ARM,$(CFG)))
+	@cp -fp ./$(CFG)/libARMSlam2D.so ../../../Bin/PluginsCommon/$(PROJ)/
+else
+	@cp -fp ./$(CFG)/libSlam2D.so ../../../Bin/PluginsCommon/$(PROJ)/
+endif
+
+clean :
+	make clean -f makeprj.px2 CFG=$(CFG)
+	@rm -rf $(CFG)

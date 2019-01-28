@@ -96,23 +96,25 @@ mIsIngoreThisTimeAutoSpeech(false)
 
 	SetSDK_AutoSpeech("tuling");
 	SetSDK_TTS("baidu");
-
+}
+//----------------------------------------------------------------------------
+VoiceSDK::~VoiceSDK()
+{
+}
+//----------------------------------------------------------------------------
+void VoiceSDK::Initlize()
+{
 	mCurl = new0 CurlObj();
 	mCurl->SetGetType(CurlObj::GT_MEMORY);
 	mCurl->Initlize();
 	mCurl->SetCurlProgressCallback(_ProgressCallback);
 
 	std::string str = _GetTokenJsonTTS();
-
 	JSONData jsData;
 	if (jsData.LoadBuffer(str))
 	{
 		mTTS_Token = jsData.GetMember("access_token").ToString();
 	}
-}
-//----------------------------------------------------------------------------
-VoiceSDK::~VoiceSDK()
-{
 }
 //----------------------------------------------------------------------------
 void VoiceSDK::SetSDK_AutoSpeech(const std::string &name)
@@ -458,8 +460,10 @@ std::string VoiceSDK::_GetTokenJsonTTS()
 
 	if (std::string("baidu") == GetSDK_TTS())
 	{
-		std::string autoStr = "http://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&";
-		std::string dataStr = std::string("client_id=") + mTTS_ApiStr + "&client_secret=" + mTTS_SecStr;
+		std::string autoStr =
+			"http://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&";
+		std::string dataStr = std::string("client_id=") + mTTS_ApiStr +
+			"&client_secret=" + mTTS_SecStr;
 		allURL = autoStr + dataStr;
 	}
 

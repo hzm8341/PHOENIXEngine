@@ -110,6 +110,7 @@ namespace PX2
 
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, RuntimeException, Exception)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, NotFoundException, RuntimeException)
+	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, TimeoutException, RuntimeException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, IOException, RuntimeException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, DataException, RuntimeException)
 	PX2_DECLARE_EXCEPTION(PX2_ENGINE_ITEM, DataFormatException, DataException)

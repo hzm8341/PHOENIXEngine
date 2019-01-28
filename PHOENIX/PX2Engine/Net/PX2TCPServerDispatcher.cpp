@@ -69,7 +69,9 @@ void TCPServerDispatcher::Run()
 					mConnectionFactory->CreateConnection(tcpNotif->GetSocket());
 
 				BeginConnection();
+
 				connection->Start();
+
 				EndConnection();
 			}
 		}
@@ -80,6 +82,8 @@ void TCPServerDispatcher::Run()
 			--mCurrentThreads;
 			break;
 		}
+
+		std::cout << "4" << std::endl;
 	}
 }
 //----------------------------------------------------------------------------
@@ -126,6 +130,11 @@ int TCPServerDispatcher::GetNumMaxThreads() const
 	ScopedCS lock(&mMutex);
 
 	return mThreadPool->Capacity();
+}
+//----------------------------------------------------------------------------
+ThreadPool *TCPServerDispatcher::GetThreadPool()
+{
+	return mThreadPool;
 }
 //----------------------------------------------------------------------------
 int TCPServerDispatcher::GetNumTotalConnections() const

@@ -10,6 +10,9 @@
 #include "PX2HTTPRequestHandler.hpp"
 #include "PX2HTTPServerResponse.hpp"
 #include "PX2HTTPServerRequest.hpp"
+#include "PX2Arduino.hpp"
+#include "PX2Eventt.hpp"
+#include "PX2Semaphore.hpp"
 
 namespace PX2
 {
@@ -22,13 +25,28 @@ namespace PX2
 
 		void Initlize();
 		void Terminate();
-		void Update();
+		void Update(float elapsedSeconds);
 
 		void OpenArduino(const std::string &filename);
 
+		Arduino *GetArduinoByName(const std::string &name);
+		std::map<std::string, ArduinoPtr> Arduinos;
+
+		void ProcessHttp(HTTPServerRequest& request, HTTPServerResponse& response);
+
+		HTTPServerPtr mHttpServer;
+		Mutex mMutex;
+
+		HTTPServerRequest *CurReq;
+		HTTPServerResponse *CurResp;
+		Semaphore *TheSemaphore;
+		float ProcessSeconds;
+
+	private:
+		std::vector<std::pair<std::string, std::string> > mMCPins;
+
 	private:
 		bool mIsPlaying;
-		HTTPServerPtr mHttpServer;
 	};
 
 #define PX2_STEAMEDU STEAMEduManager::GetSingleton()
@@ -49,9 +67,6 @@ namespace PX2
 
 		virtual void HandleRequest(HTTPServerRequest& request,
 			HTTPServerResponse& response);
-
-	private:
-		std::vector<std::pair<std::string, std::string> > mMCPins;
 	};
 
 	class PX2_ENGINE_ITEM WebSocketRequestHandler : public HTTPRequestHandler

@@ -206,7 +206,7 @@ AVector AIAgent::ForceToAvoidObjects(
 	float predictionTime)
 {
 	const static float MIN_PREDICTION_TIME = 0.1f;
-	const float timeToCollision = std::max(MIN_PREDICTION_TIME, predictionTime);
+	const float timeToCollision = Mathf::Max(MIN_PREDICTION_TIME, predictionTime);
 
 	OpenSteer::ObstacleGroup group;
 	std::vector<AIAgentObject*>::const_iterator it;
@@ -314,7 +314,7 @@ AVector AIAgent::ForceToFollowPath(AIAgentPath& path,
 	{
 		AVector force = _Vec3ToAVector(steerToFollowPath(
 			FORWARD_DIRECTION,
-			std::max(MIN_PREDICTION_TIME, predictionTime),
+			Mathf::Max(MIN_PREDICTION_TIME, predictionTime),
 			path));
 		return force;
 	}
@@ -379,7 +379,7 @@ AVector AIAgent::ForceToStayOnPath(AIAgentPath& path,
 	if (path.GetNumberOfPathPoints())
 	{
 		return _Vec3ToAVector(steerToStayOnPath(
-			std::max(MIN_PREDICTION_TIME, predictionTime), path));
+			Mathf::Max(MIN_PREDICTION_TIME, predictionTime), path));
 	}
 
 	return AVector::ZERO;
@@ -450,7 +450,7 @@ void AIAgent::SetRotate(const HMatrix& mat)
 //----------------------------------------------------------------------------
 void AIAgent::SetHeight(float height)
 {
-	mHeight = std::max(0.0f, height);
+	mHeight = Mathf::Max(0.0f, height);
 
 	if (mRigidBody)
 	{

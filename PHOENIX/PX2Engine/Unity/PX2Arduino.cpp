@@ -16,7 +16,7 @@ const uint8_t STOP_BYTE = 0x13;
 const uint8_t ESCAPE_BYTE = 0x7D;
 
 //----------------------------------------------------------------------------
-void _ArduinoProcessStr1(std::string recvVal)
+void _ArduinoProcessStr1(Arduino *ardu, std::string recvVal)
 {
 	StringTokenizer stk(recvVal, " ");
 	std::string cmdStr;
@@ -48,47 +48,52 @@ void _ArduinoProcessStr1(std::string recvVal)
 	if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DIST] == cmdStr)
 	{
 		float dist = StringHelp::StringToFloat(paramStr);
-		PX2_ARDUINO._SetDist(dist);
+		ardu->_SetDist(dist);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DR] == cmdStr)
 	{
 		int pin = StringHelp::StringToInt(paramStr);
 		int val = StringHelp::StringToInt(paramStr1);
-		PX2_ARDUINO._SetPinVal((Arduino::Pin)(Arduino::P_0 + pin), val);
+		ardu->_SetPinVal((Arduino::Pin)(Arduino::P_0 + pin), val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_AR] == cmdStr)
 	{
 		int pin = StringHelp::StringToInt(paramStr);
 		int val = StringHelp::StringToInt(paramStr1);
-		PX2_ARDUINO._SetPinVal((Arduino::Pin)(Arduino::P_0 + pin), val);
+		ardu->_SetPinVal((Arduino::Pin)(Arduino::P_0 + pin), val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_IR] == cmdStr) 
 	{
 		int val = StringHelp::StringToInt(paramStr);
-		PX2_ARDUINO._SetIRReceive(val);
+		ardu->_SetIRReceive(val);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETRUN_RC] == cmdStr)
+	{
+		int val = StringHelp::StringToInt(paramStr);
+		ardu->_SetRCReceive(val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_NETID] == cmdStr)
 	{
 		int val = StringHelp::StringToInt(paramStr);
-		PX2_ARDUINO.SetNetID(val);
+		ardu->SetNetID(val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_MOTOSPD] == cmdStr)
 	{
 		int speedL = StringHelp::StringToInt(paramStr);
 		int speedR = StringHelp::StringToInt(paramStr1);
-		PX2_ARDUINO._SetSpeedLR(speedL, speedR);
+		ardu->_SetSpeedLR(speedL, speedR);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_HX711] == cmdStr)
 	{
 		int index = StringHelp::StringToInt(paramStr);
 		float val = (float)StringHelp::StringToInt(paramStr1);
-		PX2_ARDUINO._SetWeight(index, val);
+		ardu->_SetWeight(index, val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DSTMAT] == cmdStr)
 	{
 		int index = StringHelp::StringToInt(paramStr);
 		float val = (float)StringHelp::StringToInt(paramStr1);
-		PX2_ARDUINO._SetDistMat(index, val);
+		ardu->_SetDistMat(index, val);
 	}
 	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_AXIS] == cmdStr)
 	{
@@ -106,8 +111,14 @@ void _ArduinoProcessStr1(std::string recvVal)
 		//pitch = 0.0f;
 		//roll = 0.0f;
 		//yaw = 0.0f;
-
-		PX2_ARDUINO._SetAxis(time, yAxis, xAxis, zAxis, pitch, roll, yaw);
+		ardu->_SetAxis(time, yAxis, xAxis, zAxis, pitch, roll, yaw);
+	}
+	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DHTTEMP] == cmdStr)
+	{
+		float temp = StringHelp::StringToFloat(paramStr);
+		float humi = StringHelp::StringToFloat(paramStr1);
+		ardu->_SetTemperature(temp);
+		ardu->_SetHumidity(humi);
 	}
 }
 //----------------------------------------------------------------------------
@@ -163,7 +174,7 @@ void Arduino::_SetAxis(unsigned long timeMilliseconds, float yAxis, float xAxis,
 	}
 }
 //----------------------------------------------------------------------------
-void _Less4Process(std::string recvVal)
+void _Less4Process(Arduino *ardu, std::string recvVal)
 {
 	if (recvVal.empty())
 		return;
@@ -172,7 +183,25 @@ void _Less4Process(std::string recvVal)
 		return;
 
 	std::string useStr = recvVal.substr(4);
-	_ArduinoProcessStr1(useStr);
+	_ArduinoProcessStr1(ardu, useStr);
+}
+//----------------------------------------------------------------------------
+void _Less4ProcessSerial(Serial *ser, std::string recvVal)
+{
+	Arduino *ardu = (Arduino*)(ser->GetUserDataPointer("Arduino"));
+	_Less4Process(ardu, recvVal);
+}
+//----------------------------------------------------------------------------
+void _Less4ProcessClientConnector(ClientConnector *cn, std::string recvVal)
+{
+	Arduino *ardu = (Arduino*)(cn->GetUserDataPointer("Arduino"));
+	_Less4Process(ardu, recvVal);
+}
+//----------------------------------------------------------------------------
+void _Less4ProcessBluetooth(std::string recvVal)
+{
+	Arduino *ardu = (Arduino*)(PX2_BLUETOOTH.GetUserDataPointer("Arduino"));
+	_Less4Process(ardu, recvVal);
 }
 //----------------------------------------------------------------------------
 std::string Arduino::PinStr[P_MAX_TYPE] = 
@@ -208,8 +237,8 @@ std::string Arduino::PModeStr[PM_MAX_TYPE] =
 //---------------------------------------------------------------------------
 std::string Arduino::sOptTypeStr[OT_MAX_TYPE] =
 {
-	"50", //OT_TOGET_NETID
-	"51", //OT_RETRUN_NETID
+	"100", //OT_TOGET_NETID
+	"101", //OT_RETRUN_NETID
 	"0",  //OT_PM
 	"1",  //OT_DW
 	"2",  //OT_AW
@@ -229,11 +258,9 @@ std::string Arduino::sOptTypeStr[OT_MAX_TYPE] =
 	"16", //OT_MOTO_I_DRIVER4567
 	"17", //OT_MOTO_I_DRIVER298N
 	"18", //OT_MP3_INIT
-	"19", //OT_MP3_PLAY
-	"20", //OT_MP3_INDEX
-	"21", //OT_MP3_NEXT
-	"22", //OT_MP3_STOP
-	"23", //OT_MP3_VOLUME
+	"19", //OT_MP3_DO
+	"20", //OT_MP3_PLAYFOLDER
+	"21", //OT_MP3_SETVOLUME
 	"24", //OT_IR_INIT
 	"25", //OT_IR_SEND
 	"26", //OT_RETURN_IR
@@ -246,14 +273,30 @@ std::string Arduino::sOptTypeStr[OT_MAX_TYPE] =
 	"33", //OT_RETURN_AXIS
 	"34", //OT_SET_TIME
 	"35", //OT_SET_BABYROBOT
-	"500", //OT_MC_INTERNAL_LIGHT
-	"501", //OT_MC_LIGHT
-	"502", //OT_MC_SEGMENT
-	"503", //OT_MC_MOTO
-	"504", //OT_MC_DISTTEST
-	"601", //OT_MB_MOTO
-	"602", //OT_MB_SEND
-	"603" //OT_MB_BUZZER
+	"36", //OT_RC_SEND
+	"37", //OT_RETRUN_RC
+	"38", //OT_DHT_I
+	"39", //OT_RETURN_DHTTEMP
+	"40", //OT_RETURN_DHTHUMI
+	"41", //OT_LEDSTRIP_I
+	"42", //OT_LEDSTRIP_SET
+	"43", //OT_SEGMENT_INIT
+	"44", //OT_SEGMENT_BRIGHTNESS
+	"45", //OT_SEGMENT_CLEAR
+	"46", //OT_SEGMENT_DISPLAY
+	"47", // OT_LEDMATRIX_I
+	"48", // OT_LEDMATRIX_BRIGHTNESS
+	"49", // OT_LEDMATRIX_CLEARSCREEN
+	"50", // OT_LEDMATRIX_LIGHTAT
+	"150", //OT_MC_INTERNAL_LIGHT
+	"151", //OT_MC_LIGHT
+	"152", //OT_MC_SEGMENT
+	"153", //OT_MC_MOTO
+	"154", //OT_MC_DISTTEST
+	"161", //OT_MB_MOTO
+	"162", //OT_MB_SEND
+	"163", //OT_MB_BUZZER
+	"200" //OT_VERSION
 };
 //---------------------------------------------------------------------------
 std::string Arduino::sDirectionTypeStr[DT_MAX_TYPE] =
@@ -279,7 +322,7 @@ void Arduino::_SetDist(float dist)
 
 	mDist = dist;
 
-	_OnCallback(ART_RECT_DIST, (int)mDist);
+	_OnCallback(ART_RECV_DIST, (int)mDist);
 
 	mIsBlockLoopDoBreak = true;
 	mBlockLoopUpdateTimes = 0;
@@ -290,6 +333,23 @@ void Arduino::_SetIRReceive(int irReceive)
 	mIRReceive = irReceive;
 
 	_OnCallback(ART_RECV_IR, mIRReceive);
+}
+//---------------------------------------------------------------------------
+void Arduino::_SetRCReceive(int val)
+{
+	mRCReceiveVal = val;
+
+	_OnCallback(ART_RECV_RC, mRCReceiveVal);
+}
+//---------------------------------------------------------------------------
+void Arduino::_SetHumidity(float humi)
+{
+	mDHTHumidity = humi;
+}
+//---------------------------------------------------------------------------
+void Arduino::_SetTemperature(float temp)
+{
+	mDHTTemperature = temp;
 }
 //---------------------------------------------------------------------------
 void Arduino::_SetPinVal(Pin pin, int val)
@@ -343,12 +403,15 @@ mZAxis(0.0f),
 mPitch(0.0f),
 mRoll(0.0f),
 mYaw(0.0f),
+mDHTTemperature(0.0f),
+mDHTHumidity(0.0f),
 mIsEverSetTime(false),
 mEverSetTime(0.0f)
 {
 	mEndStr = "\n";
 
-	mSerial.AddCMDCallback(_Less4Process);
+	mSerial.AddCMDCallback(_Less4ProcessSerial);
+	mSerial.SetUserDataPointer("Arduino", this);
 
 	Reset();
 }
@@ -420,7 +483,8 @@ bool Arduino::Initlize(Mode mode, const std::string &port, int baudrate)
 	{
 		if (0 == mSerial.Open(port, baudrate))
 		{
-			mSerial.AddCMDCallback(_Less4Process);
+			mSerial.SetUserDataPointer("Arduino", this);
+			mSerial.AddCMDCallback(_Less4ProcessSerial);
 
 			return true;
 		}
@@ -433,7 +497,8 @@ bool Arduino::Initlize(Mode mode, const std::string &port, int baudrate)
 	else if (M_BLUETOOTH == mMode)
 	{
 		/*_*/
-		PX2_BLUETOOTH.AddCMDCallback(_Less4Process);
+		PX2_BLUETOOTH.AddCMDCallback(_Less4ProcessBluetooth);
+		PX2_BLUETOOTH.SetUserDataPointer("Arduino", this);
 		PX2_LOG_INFO("Arduino Initlize BLUETOOTH");
 	}
 
@@ -487,10 +552,11 @@ static int _DoConnect(ClientConnector *conn, const char *ip, int port,
 	return 0;
 }
 //---------------------------------------------------------------------------
-static std::string _sNetRecvStr;
-//---------------------------------------------------------------------------
-void _ClientConnectorRecvCallback(const std::string &recvStr)
+void _ClientConnectorRecvCallback(ClientConnector *cn, 
+	const std::string &recvStr)
 {
+	Arduino *ardu = (Arduino*)cn->GetUserDataPointer("Arduino");
+
 	if (recvStr.empty())
 		return;
 
@@ -507,13 +573,13 @@ void _ClientConnectorRecvCallback(const std::string &recvStr)
 		{
 			if (!recvStr.empty())
 			{
-				_Less4Process(_sNetRecvStr);
-				_sNetRecvStr.clear();
+				_Less4ProcessClientConnector(cn, ardu->NetRecvStr);
+				ardu->NetRecvStr.clear();
 			}
 		}
 		else
 		{
-			_sNetRecvStr += chara;
+			ardu->NetRecvStr += chara;
 		}
 	}
 }
@@ -610,6 +676,14 @@ void Arduino::Reset()
 	mDist = 0.0f;
 	mIRReceive = 0;
 
+	mDHTTemperature = 0.0f;
+	mDHTHumidity = 0.0f;
+
+	for (int i = 0; i < NUMSERVO; i++)
+	{
+		mLastServoValue[i] = -1;
+	}
+
 	for (int i = 0; i < P_MAX_TYPE; i++)
 	{
 		mPinValue[i] = 0;
@@ -633,7 +707,8 @@ void Arduino::Reset()
 	Bluetooth *bth = Bluetooth::GetSingletonPtr();
 	if (bth)
 	{
-		bth->AddCMDCallback(_Less4Process);
+		bth->SetUserDataPointer("Arduino", this);
+		bth->AddCMDCallback(_Less4ProcessBluetooth);
 	}
 
 	mIsEverSetTime = false;
@@ -675,7 +750,7 @@ Arduino::AxisObj Arduino::GetCurAxisObj()
 	return mCurAxisObj;
 }
 //---------------------------------------------------------------------------
-void Arduino::_OnCallback(ArduinoRectType type, int value)
+void Arduino::_OnCallback(ArduinoRecvType type, int value)
 {
 	for (int i = 0; i < (int)mCallbacks.size(); i++)
 	{
@@ -833,7 +908,7 @@ Arduino::Pin Arduino::_NetStr2Pin(const std::string &str)
 //----------------------------------------------------------------------------
 Arduino::PMode Arduino::_NetStr2PinMode(const std::string &str)
 {
-	if ("input" == str)
+	if ("INPUT"==str || "input" == str)
 		return Arduino::PM_INPUT;
 
 	return Arduino::PM_OUTPUT;
@@ -841,12 +916,21 @@ Arduino::PMode Arduino::_NetStr2PinMode(const std::string &str)
 //----------------------------------------------------------------------------
 bool Arduino::_NetStr2Bool(const std::string &str)
 {
-	return str=="true" ? true : false;
+	return str == "TRUE" ||str=="true" ? true : false;
 }
 //----------------------------------------------------------------------------
 bool Arduino::_HighLow2Bool(const std::string &str)
 {
-	return str=="HIGH" ? true : false;
+	if ("HIGH" == str || "high" == str)
+		return true;
+	else if ("LOW" == str || "low" == str)
+		return false;
+
+	int intVal = StringHelp::StringToInt(str);
+	if (intVal > 0)
+		return true;
+
+	return false;
 }
 //----------------------------------------------------------------------------
 int Arduino::_NetStr2Int(const std::string &str)
@@ -1073,49 +1157,38 @@ void Arduino::MP3Init(Pin pinR, Pin pinT)
 	_Send(sendStr + mEndStr);
 }
 //----------------------------------------------------------------------------
-void Arduino::MP3Play()
+void Arduino::MP3DO(MP3PlayType mpt)
 {
-	std::string opStr = sOptTypeStr[OT_MP3_PLAY];
+	std::string opStr = sOptTypeStr[OT_MP3_DO];
 
-	_Send(opStr + mEndStr);
+	std::string sendStr = opStr + " " + StringHelp::IntToString((int)mpt);
+
+	_Send(sendStr + mEndStr);
 }
 //----------------------------------------------------------------------------
-void Arduino::MP3PlayNext()
+void Arduino::MP3Play(int folder, int index)
 {
-	std::string opStr = sOptTypeStr[OT_MP3_NEXT];
+	std::string opStr = sOptTypeStr[OT_MP3_PLAYFOLDER];
 
-	_Send(opStr + mEndStr);
-}
-//----------------------------------------------------------------------------
-void Arduino::MP3PlayAtIndex(int index)
-{
-	std::string opStr = sOptTypeStr[OT_MP3_INDEX];
-	std::string indexStr = _Int2Str(index);
-
-	std::string sendStr = opStr + " " + indexStr;
+	std::string sendStr = opStr + " " + StringHelp::IntToString(folder) + 
+		" " + StringHelp::IntToString(index);
 
 	_Send(sendStr + mEndStr);
 }
 //----------------------------------------------------------------------------
 void Arduino::MP3SetVolume(int volume)
 {
-	std::string opStr = sOptTypeStr[OT_MP3_VOLUME];
-	std::string volumeStr = _Int2Str(volume);
+	std::string opStr = sOptTypeStr[OT_MP3_SETVOLUME];
 
-	std::string sendStr = opStr + " " + volumeStr;
+	std::string sendStr = opStr + " " + StringHelp::IntToString(volume);
 
 	_Send(sendStr + mEndStr);
 }
 //----------------------------------------------------------------------------
-void Arduino::MP3Stop()
-{
-	std::string opStr = sOptTypeStr[OT_MP3_STOP];
-
-	_Send(opStr + mEndStr);
-}
-//----------------------------------------------------------------------------
 void Arduino::IRInit(Pin pinR)
 {
+	mIRReceive = 0;
+
 	std::string opStr = sOptTypeStr[OT_IR_INIT];
 	std::string pinRStr = _Pin2Str(pinR);
 	std::string sendStr = opStr + " " + pinRStr;
@@ -1161,9 +1234,9 @@ float Arduino::GetDist() const
 	return mDist;
 }
 //----------------------------------------------------------------------------
-void Arduino::ServerInit(int i, Pin pin)
+void Arduino::ServoInit(int i, Pin pin)
 {
-	if (0 <= i && i < 5)
+	if (0 <= i && i < NUMSERVO)
 	{
 		std::string sendStr = sOptTypeStr[OT_SVR_I];
 		sendStr += " " + StringHelp::IntToString(i) + " " + _Pin2Str(pin);
@@ -1172,10 +1245,15 @@ void Arduino::ServerInit(int i, Pin pin)
 	}
 }
 //----------------------------------------------------------------------------
-void Arduino::ServerWrite(int i, int val)
+void Arduino::ServoWrite(int i, int val)
 {
-	if (0 <= i && i < 5)
+	if (0 <= i && i < NUMSERVO)
 	{
+		if (val == mLastServoValue[i])
+			return;
+
+		mLastServoValue[i] = val;
+
 		std::string sendStr = sOptTypeStr[OT_SVR_W] + " " +
 			StringHelp::IntToString(i) + " " +
 			StringHelp::IntToString(val);
@@ -1242,11 +1320,130 @@ float Arduino::GetMatDist(int i) const
 	return 0.0f;
 }
 //----------------------------------------------------------------------------
+void Arduino::DHTInit(Pin pin)
+{
+	mDHTHumidity = 0.0f;
+	mDHTTemperature = 0.0f;
+
+	std::string sendStr = sOptTypeStr[OT_DHT_I];
+
+	sendStr += " " + _Pin2Str(pin);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+float Arduino::GetHumidity() const
+{
+	return mDHTHumidity;
+}
+//----------------------------------------------------------------------------
+float Arduino::GetTemperature() const
+{
+	return mDHTTemperature;
+}
+//----------------------------------------------------------------------------
+void Arduino::RGBLEDInit(Pin pin, int num)
+{
+	std::string sendStr = sOptTypeStr[OT_LEDSTRIP_I];
+
+	sendStr += " " + _Pin2Str(pin) + " " + StringHelp::IntToString(num);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::RGBLEDSetColor(int index, int r, int g, int b)
+{
+	std::string sendStr = sOptTypeStr[OT_LEDSTRIP_SET];
+
+	sendStr += " " + StringHelp::IntToString(index) +
+		" " + StringHelp::IntToString(r) +
+		" " + StringHelp::IntToString(g) + 
+		" " + StringHelp::IntToString(b);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::SegmentInit(Pin clickPin, Pin dataPin)
+{
+	std::string sendStr = sOptTypeStr[OT_SEGMENT_I];
+
+	sendStr += " " + _Pin2Str(clickPin) + " " + _Pin2Str(dataPin);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::SegmentSetBrightness(int brightness)
+{
+	std::string sendStr = sOptTypeStr[OT_SEGMENT_BRIGHTNESS];
+
+	sendStr += " " + StringHelp::IntToString(brightness);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::SegmentClear()
+{
+	std::string sendStr = sOptTypeStr[OT_SEGMENT_CLEAR];
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::SegmentDisplayInt(int val)
+{
+	std::string sendStr = sOptTypeStr[OT_SEGMENT_DISPLAY];
+	sendStr = sendStr + " " + "1" + " " + StringHelp::IntToString(val);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::SegmentDisplayFloat(float val)
+{
+	std::string sendStr = sOptTypeStr[OT_SEGMENT_DISPLAY];
+	sendStr = sendStr + " " + "2" + " " + StringHelp::FloatToString(val, 4);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::LEDMatrixInit(Pin pinClk, Pin pinData)
+{
+	std::string sendStr = sOptTypeStr[OT_LEDMATRIX_I];
+
+	sendStr += " " + _Pin2Str(pinClk) + " " + _Pin2Str(pinData);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::LEDMatrixSetBrightness(int brightness)
+{
+	std::string sendStr = sOptTypeStr[OT_LEDMATRIX_BRIGHTNESS];
+
+	sendStr += " " + StringHelp::IntToString(brightness);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::LEDMatrixClearScreen()
+{
+	std::string sendStr = sOptTypeStr[OT_LEDMATRIX_CLEARSCREEN];
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::LEDMatrixLightAt(int x, int y, int width, bool onOff)
+{
+	std::string sendStr = sOptTypeStr[OT_LEDMATRIX_LIGHTAT];
+	sendStr = sendStr + " " + StringHelp::IntToString(x) +
+		" " + StringHelp::IntToString(y) + 
+		" " + StringHelp::IntToString(width) + 
+		" " + _Bool2Str(onOff);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
 void Arduino::AxisInit()
 {
 	mYAxis = 0.0f;
 	mXAxis = 0.0f;
-	mZAxis = 0.0f;
+	mZAxis = 0.0f; 
 	mPitch = 0.0f;
 	mRoll = 0.0f;
 	mYaw = 0.0f;
@@ -1293,6 +1490,19 @@ void Arduino::BabyRobotSet(bool moto, bool distance, bool buzzer, bool light)
 		+  " " + _Bool2Str(buzzer) + " " + _Bool2Str(light);
 
 	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+void Arduino::RCSend(int val)
+{
+	std::string sendStr = sOptTypeStr[OT_RC_SEND];
+	sendStr += " " + StringHelp::IntToString(val);
+
+	_Send(sendStr + mEndStr);
+}
+//----------------------------------------------------------------------------
+int Arduino::GetRCReceive() const
+{
+	return mRCReceiveVal;
 }
 //----------------------------------------------------------------------------
 bool Arduino::AddArduinoToSendCallback(ArduinoToSendCallback callback)

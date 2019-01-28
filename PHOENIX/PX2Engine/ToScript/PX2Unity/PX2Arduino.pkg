@@ -1,9 +1,10 @@
 // PX2Arduino.pkg
 	
-	enum ArduinoRectType
+	enum ArduinoRecvType
 	{
-		ART_RECT_DIST,
+		ART_RECV_DIST,
 		ART_RECV_IR,
+		ART_RECV_RC,
 		ART_MAXZ_TYPE
 	};
 	
@@ -83,9 +84,9 @@
 		int DigitalRead(Pin pin);
 		int AnalogRead(Pin pin);
 
-		// server
-		void ServerInit(int i, Pin pin);
-		void ServerWrite(int i, int val);
+		// servo
+		void ServoInit(int i, Pin pin);
+		void ServoWrite(int i, int val);
 
 		// dist
 		void DistInit(Pin pinTrig, Pin pinEcho);
@@ -121,12 +122,26 @@
 		int GetSpeed(int motoIndex) const;
 		void Stop();
 		
+		enum MP3PlayType
+		{
+			MPT_PLAY = 0,
+			MPT_PAUSE,
+			MPT_STOP,
+			MPT_NEXT,
+			MPT_BEFORE,
+			MPT_RANDOM,
+			MPT_LOOP_SINGLE,
+			MPT_LOOP_SINGLE_CLOSE,
+			MPT_LOOP_ALL,
+			MPT_LOOP_ALL_CLOSE,
+			MPT_VOLUME_INCREASE,
+			MPT_VOLUME_DECREASE,
+			MPT_MAX_TYPE
+		};
 		void MP3Init(Pin pinR, Pin pinT);
-		void MP3Play();
-		void MP3PlayNext();
-		void MP3PlayAtIndex(int index);
+		void MP3DO(MP3PlayType mpt);
+		void MP3Play(int folder, int index);
 		void MP3SetVolume(int volume);
-		void MP3Stop();
 		
 		void IRInit(Pin pinReceive);
 		void IRSend(int val);
@@ -139,6 +154,13 @@
 		void DistMatInit(int i, Pin pinTrig, Pin pinEcho);
 		float GetMatDist(int i) const;
 
+		void DHTInit(Pin pin);
+		float GetTemperature() const;
+		float GetHumidity() const;
+
+		void RGBLEDInit(Pin pin, int num);
+		void RGBLEDSetColor(int index, int r, int g, int b);
+		
 		void AxisInit();
 		float AxisGetYAxis() const;
 		float AxisGetXAxis() const;
@@ -146,6 +168,12 @@
 		float AxisGetPitch() const;
 		float AxisGetRoll() const;
 		float AxisGetYaw() const;
+
+		
+		void BabyRobotSet(bool moto, bool distance, bool buzzer, bool light);
+
+		void RCSend(int val);
+		int GetRCReceive() const;
 		
 		const std::string &GetLastSendContentString() const;
 		const std::string &GetLastSendString() const;

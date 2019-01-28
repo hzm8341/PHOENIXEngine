@@ -7,7 +7,6 @@
 #include "PX2Arduino.hpp"
 using namespace PX2;
 
-Mutex Application::ThreadUpdateMutex;
 //----------------------------------------------------------------------------
 Application::Application() :
 mPt_Data(0),
@@ -37,7 +36,6 @@ mUIAuiManager(0),
 mUISkinManager(0),
 mLogicManager(0),
 mCreater(0),
-mArduino(0),
 mVoiceSDK(0),
 mSTEAMEduManager(0),
 mSlam(0),
@@ -126,8 +124,6 @@ float Application::_CalElapsedTime()
 //----------------------------------------------------------------------------
 void Application::Update()
 {
-	ScopedCS cs(&ThreadUpdateMutex);
-
 	mAppTime = Time::GetTimeInSeconds();
 	mElapsedTime = _CalElapsedTime();
 	mLastAppTime = mAppTime;

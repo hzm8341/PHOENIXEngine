@@ -52,6 +52,7 @@ namespace PX2
 	class VoxelManager;
 	class Robot;
 	class PhysicsWorld;
+	class AppInitConfig;
 
 	class PX2_ENGINE_ITEM Application : public Singleton<Application>, public EventHandler
 	{
@@ -88,7 +89,7 @@ namespace PX2
 
 		// init term
 	public:
-		bool Initlize();
+		bool Initlize(AppInitConfig *cfg);
 		void InitlizeDefaultEngineCanvas(Canvas *parentCanvas);
 		Renderer *InitlizeRenderer();
 		Renderer *CreateRenderer(const std::string &name, void *winHandle,
@@ -130,9 +131,6 @@ namespace PX2
 
 		bool Terminate();
 
-	public_internal:
-		void _ProcessArduinoCMDs(const std::string &contentStr, int id=0);
-
 	private:
 		void _UpdateGeneralServerConnectors(float elapseSeconds);
 		void _RefreshLocalAddress();
@@ -171,7 +169,6 @@ namespace PX2
 		LogicManager *mLogicManager;
 		VoxelManager *mVoxelManager;
 		Creater *mCreater;
-		Arduino *mArduino;
 		VoiceSDK *mVoiceSDK;
 		STEAMEduManager *mSTEAMEduManager;
 		Robot *mSlam;
@@ -196,8 +193,6 @@ namespace PX2
 		void Update();
 		void Update(float appSeconds, float elapsedSeconds);
 		float GetElapsedTime();
-
-		static Mutex ThreadUpdateMutex;
 
 	private:
 		float _CalElapsedTime();

@@ -294,7 +294,7 @@ void ClientConnector::_OnRecvCallbacks(const std::string &recvStr)
 		ClientConnectorRecvCallback callback = mCallbacks[i];
 		if (callback)
 		{
-			callback(recvStr);
+			callback(this, recvStr);
 		}
 	}
 }

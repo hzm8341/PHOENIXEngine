@@ -102,6 +102,7 @@ void Exception::rethrow() const
 //----------------------------------------------------------------------------
 PX2_IMPLEMENT_EXCEPTION(RuntimeException, Exception, "Runtime exception")
 PX2_IMPLEMENT_EXCEPTION(NotFoundException, RuntimeException, "Not found")
+PX2_IMPLEMENT_EXCEPTION(TimeoutException, RuntimeException, "Time out")
 PX2_IMPLEMENT_EXCEPTION(IOException, RuntimeException, "I/O error")
 PX2_IMPLEMENT_EXCEPTION(DataException, RuntimeException, "Data error")
 PX2_IMPLEMENT_EXCEPTION(DataFormatException, DataException, "Bad data format")

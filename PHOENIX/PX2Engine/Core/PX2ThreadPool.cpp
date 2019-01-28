@@ -211,6 +211,11 @@ ThreadPool::~ThreadPool()
 	mThreads.clear();
 }
 //----------------------------------------------------------------------------
+Mutex *ThreadPool::GetMutex()
+{
+	return mMutex;
+}
+//----------------------------------------------------------------------------
 void ThreadPool::AddCapacity(int n)
 {
 	ScopedCS cs(mMutex);

@@ -47,9 +47,6 @@ namespace PX2
 		void AddOnRecvCallback(const std::string &callback);
 		void RemoveOnRecvCallback(const std::string &callback);
 
-		void InitlizeArduino();
-		void TernimateArduino();
-
 	protected:
 		int OnStringMsg(const void *pbuffer, int buflen);
 		int OnMapDataInfo(const void *pbuffer, int buflen);

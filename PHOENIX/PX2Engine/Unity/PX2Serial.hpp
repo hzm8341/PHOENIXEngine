@@ -7,6 +7,7 @@
 #include "PX2Runnable.hpp"
 #include "PX2Thread.hpp"
 #include "PX2EventSystem.hpp"
+#include "PX2Object.hpp"
 
 namespace serial
 {
@@ -22,10 +23,12 @@ namespace PX2
 	PX2_EVENT(OpenFailed)
 	PX2_DECLARE_EVENT_END(SerialES)
 
-	typedef void(*SerialCallback) (std::string recvVal);
-	typedef void(*SerialCMDCallback) (std::string recvVal);
+	class Serial;
 
-	class PX2_ENGINE_ITEM Serial
+	typedef void(*SerialCallback) (Serial*, std::string recvVal);
+	typedef void(*SerialCMDCallback) (Serial*, std::string recvVal);
+
+	class PX2_ENGINE_ITEM Serial : public Object
 	{
 	public:
 		static Serial *New();
@@ -77,7 +80,7 @@ namespace PX2
 		void OnAndroidUSBReceive(const char *buf, int size);
 
 	protected:
-		void _ProcessRevBuf(std::string &recvBuf);
+		std::string _ProcessRevBuf(const std::string &recvBuf);
 		void _OnCmd(const std::string &cmd);
 
 		std::vector<SerialCMDCallback> mCMDCallbacks;
@@ -88,7 +91,6 @@ namespace PX2
 		std::string mSerialPortName;
 
 		std::string mRecvStr;
-		std::string mCmdStr;
 
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 		serial::Serial *mSerial;

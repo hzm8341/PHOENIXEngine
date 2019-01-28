@@ -140,12 +140,12 @@ void Serial::Update(float elapsedSeconds)
 	if (mRecvStr.length() > 0)
 	{
 		std::string recvStr = mRecvStr;
-		_ProcessRevBuf(mRecvStr);
+		mRecvStr = _ProcessRevBuf(mRecvStr);
 
 		for (int i = 0; i < (int)mCallbacks.size(); i++)
 		{
 			if (mCallbacks[i])
-				mCallbacks[i](mRecvStr);
+				mCallbacks[i](this, recvStr);
 		}
 
 		if ((int)mScriptHandlers.size() > 0)
@@ -177,14 +177,12 @@ void Serial::Update(float elapsedSeconds)
 	}
 }
 //---------------------------------------------------------------------------
-void Serial::_ProcessRevBuf(std::string &recvBuf)
+std::string Serial::_ProcessRevBuf(const std::string &recvBuf)
 {
-	mCmdStr.clear();
-
-	bool hasN = false;
 	std::string cmdStr;
-	int index = 0;
-	for (index = 0; index < (int)recvBuf.size(); index++)
+	std::string leftRecvBuf = recvBuf;
+
+	for (int index = 0; index < (int)recvBuf.length(); index++)
 	{
 		char chara = recvBuf[index];
 		if ('\r' == chara)
@@ -193,30 +191,29 @@ void Serial::_ProcessRevBuf(std::string &recvBuf)
 		}
 		else if ('\n' == chara)
 		{
-			hasN = true;
-			if (!mCmdStr.empty())
-			{
-				_OnCmd(mCmdStr);
-				mCmdStr.clear();
-			}
+			_OnCmd(cmdStr);
+			cmdStr.clear();
 
-			std::string subStr = recvBuf.substr(index + 1, recvBuf.size() - (index + 1));
-			recvBuf = subStr;
-			_ProcessRevBuf(recvBuf);
+			leftRecvBuf = recvBuf.substr(index + 1);
 		}
 		else
 		{
-			mCmdStr += chara;
+			cmdStr += chara;
 		}
 	}
+
+	return leftRecvBuf;
 }
 //---------------------------------------------------------------------------
 void Serial::_OnCmd(const std::string &cmd)
 {
+	if (cmd.empty())
+		return;
+
 	for (int i = 0; i < (int)mCMDCallbacks.size(); i++)
 	{
 		if (mCMDCallbacks[i])
-			mCMDCallbacks[i](cmd);
+			mCMDCallbacks[i](this, cmd);
 	}
 }
 //----------------------------------------------------------------------------

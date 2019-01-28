@@ -298,16 +298,6 @@ void EngineClientConnector::RemoveOnRecvCallback(const std::string &callback)
 	}
 }
 //----------------------------------------------------------------------------
-void EngineClientConnector::InitlizeArduino()
-{
-	PX2_ARDUINO.InitlizeSocketTCP_Connector(this);
-}
-//----------------------------------------------------------------------------
-void EngineClientConnector::TernimateArduino()
-{
-	PX2_ARDUINO.Terminate();
-}
-//----------------------------------------------------------------------------
 int EngineClientConnector::OnStringMsg(const void *pbuffer, int buflen)
 {
 	std::string strBuf((const char*)pbuffer, buflen);

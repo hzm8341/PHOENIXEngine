@@ -1,0 +1,23 @@
+// PX2UIBBlockCataFrame.pkg
+
+	class UIBBlockCataFrame : public UIFrame
+	{
+	public:
+		UIBBlockCataFrame();
+		virtual ~UIBBlockCataFrame();
+		
+		static UIBBlockCataFrame *New();
+		static UIBBlockCataFrame *New(const std::string &name);	
+		
+		enum CataType
+		{
+			CT_NORMAL,
+			CT_VER,
+			CT_VER_BOTTOM,
+			CT_MAX_TYPE
+		};
+		void SetCataType(CataType cataType);
+		CataType GetCataType() const;
+
+		void CreateCataButs();
+	};

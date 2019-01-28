@@ -63,6 +63,11 @@ const TCPServerParams& TCPServer::params() const
 	return *mDispatcher->params();
 }
 //----------------------------------------------------------------------------
+TCPServerDispatcher* TCPServer::GetDispatcher()
+{
+	return mDispatcher;
+}
+//----------------------------------------------------------------------------
 void TCPServer::SetSingleThread(bool single)
 {
 	mIsSingleThread = single;
@@ -104,6 +109,7 @@ void TCPServer::Run()
 			{
 				try
 				{
+
 					StreamSocket ss = mSocket.AcceptConnection();
 
 					// enabe nodelay per default: OSX really needs that

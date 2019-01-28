@@ -271,7 +271,7 @@ int EngineServer::OnArduinoString(unsigned int clientid,
 {
 	std::string strBuf((const char*)pbuffer, buflen);
 
-	PX2_ARDUINO._Send(strBuf);
+	//PX2_ARDUINO._Send(strBuf);
 
 	return 0;
 }

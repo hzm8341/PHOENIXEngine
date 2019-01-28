@@ -41,73 +41,40 @@ void HTTPServerConnection::Run()
 
 	while (!mIsStopped && session.HasMoreRequests())
 	{
-		try
-		{
-			ScopedCS lock(&mMutex);
-			if (!mIsStopped)
-			{
-				HTTPServerResponseImpl response(session);
-				HTTPServerRequestImpl request(response, session, mParams);
+		HTTPServerResponseImpl response(session);
+		HTTPServerRequestImpl request(response, session, mParams);
 
-				Timestamp now;
-				response.SetDate(now);
-				response.SetVersion(request.GetVersion());
-				response.SetKeepAlive(mParams->GetKeepAlive() && request.GetKeepAlive() && session.CanKeepAlive());
-				if (!server.empty())
-				{
-					response.set("Server", server);
-				}
-				try
-				{
-					HTTPRequestHandlerPtr handler = mFactory->CreateRequestHandler(request);
-					if (handler)
-					{
-						if (request.ExpectContinue())
-							response.SendContinue();
+		Timestamp now;
+		response.SetDate(now);
+		response.SetVersion(request.GetVersion());
+		response.SetKeepAlive(mParams->GetKeepAlive() && request.GetKeepAlive() && session.CanKeepAlive());
+		if (!server.empty())
+		{
+			response.set("Server", server);
+		}
 
-						handler->HandleRequest(request, response);
+		HTTPRequestHandlerPtr handler = mFactory->CreateRequestHandler(request);
+		if (handler)
+		{
+			if (request.ExpectContinue())
+				response.SendContinue();
 
-						bool isKeepAlive = mParams->GetKeepAlive() &&
-							response.GetKeepAlive() && session.CanKeepAlive();
-						session.SetKeepAlive(isKeepAlive);
-					}
-					else
-					{
-						SendErrorResponse(session, HTTPResponse::HTTP_NOT_IMPLEMENTED);
-					}
-				}
-				catch (Exception&)
-				{
-					if (!response.Sent())
-					{
-						try
-						{
-							SendErrorResponse(session, HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
-						}
-						catch (...)
-						{
-						}
-					}
-					throw;
-				}
-			}
+			std::cout << "A" << std::endl;
+
+			handler->HandleRequest(request, response);
+
+			std::cout << "B" << std::endl;
+
+			bool isKeepAlive = mParams->GetKeepAlive() &&
+				response.GetKeepAlive() && session.CanKeepAlive();
+			session.SetKeepAlive(isKeepAlive);
 		}
-		catch (NoMessageException&)
+		else
 		{
-			break;
+			SendErrorResponse(session, HTTPResponse::HTTP_NOT_IMPLEMENTED);
 		}
-		catch (MessageException&)
-		{
-			SendErrorResponse(session, HTTPResponse::HTTP_BAD_REQUEST);
-		}
-		catch (Exception&)
-		{
-			if (session.GetNetworkException())
-			{
-				session.GetNetworkException()->rethrow();
-			}
-			else throw;
-		}
+
+		std::cout << "Z" << std::endl;
 	}
 }
 //----------------------------------------------------------------------------

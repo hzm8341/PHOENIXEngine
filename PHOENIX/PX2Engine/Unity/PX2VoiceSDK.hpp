@@ -17,6 +17,9 @@ namespace PX2
 		VoiceSDK();
 		virtual ~VoiceSDK();
 
+		// you must call this before use tts
+		void Initlize();
+
 		void SetSDK_AutoSpeech(const std::string &name);
 		const std::string &GetSDK_AutoSpeech() const;
 

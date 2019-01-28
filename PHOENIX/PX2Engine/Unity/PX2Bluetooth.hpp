@@ -6,6 +6,7 @@
 #include "PX2UnityPre.hpp"
 #include "PX2Singleton_NeedNew.hpp"
 #include "PX2EventSystem.hpp"
+#include "PX2Object.hpp"
 
 namespace PX2
 {
@@ -20,7 +21,7 @@ namespace PX2
 
 	typedef void(*BluetoothReceiveCallback) (std::string recvVal);
 
-	class PX2_ENGINE_ITEM Bluetooth : public Singleton<Bluetooth>
+	class PX2_ENGINE_ITEM Bluetooth : public Object, public Singleton<Bluetooth>
 	{
 	public:
 		Bluetooth();

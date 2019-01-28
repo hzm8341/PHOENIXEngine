@@ -677,11 +677,10 @@ void ResourceManager::EndDumpDiff(const std::string &filename)
 				refCount = 1;
 			}
 
-			std::vector<std::string>::iterator it = std::find(
+			std::vector<std::string>::iterator it1 = std::find(
 				mBeginDumpDiffFiles.begin(), mBeginDumpDiffFiles.end(),
 				record.Filename);
-
-			if (it == mBeginDumpDiffFiles.end())
+			if (it1 == mBeginDumpDiffFiles.end())
 			{
 				fprintf(outFile, format.c_str(), refCount,
 					(int)record.TheRecordType, record.BufferSize,
@@ -1256,18 +1255,27 @@ void ResourceManager::_LoadTheRecord(LoadRecord &rec)
 		}
 		else if (rec.TheRecordType == LoadRecord::RT_OBJECT)
 		{
+#if defined WIN32 || defined _WIN32
+			rec.Obj = _LoadObject(msResPath + rec.Filename); // for special use
+#else
 			rec.Obj = _LoadObject(rec.Filename);
+#endif
 			rec.LastTouchedTime = Time::GetTimeInSeconds();
 		}
 		else if (rec.TheRecordType == LoadRecord::RT_BUFFER)
 		{
 			char *buffer = 0;
 			int bufferSize = 0;
+#if defined WIN32 || defined _WIN32
+			if (_LoadBuffer(msResPath + rec.Filename, bufferSize, buffer))
+#else
 			if (_LoadBuffer(rec.Filename, bufferSize, buffer))
+#endif
 			{
 				rec.Buffer = buffer;
 				rec.BufferSize = bufferSize;
 			}
+
 			rec.LastTouchedTime = Time::GetTimeInSeconds();
 		}
 

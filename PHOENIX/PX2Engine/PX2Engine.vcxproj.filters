@@ -4623,6 +4623,9 @@
     <ClInclude Include="AI\PX2WRLidar.hpp">
       <Filter>2.AI\Robot\LiDar</Filter>
     </ClInclude>
+    <ClInclude Include="Application\PX2AppInitConfig.hpp">
+      <Filter>3.Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -7891,6 +7894,9 @@
     </ClCompile>
     <ClCompile Include="AI\PX2WRLidar.cpp">
       <Filter>2.AI\Robot\LiDar</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\PX2AppInitConfig.cpp">
+      <Filter>3.Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

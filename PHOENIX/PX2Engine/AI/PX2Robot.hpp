@@ -16,6 +16,7 @@
 #include "PX2Serial.hpp"
 #include "PX2Timestamp.hpp"
 #include "PX2AIPath.hpp"
+#include "PX2Arduino.hpp"
 
 namespace PX2
 {
@@ -163,6 +164,7 @@ namespace PX2
 		void _SetGraphValue(int x, int y, float val);
 
 		RoleType mRoleType;
+		ArduinoPtr mArduino;
 
 		bool mIsInitSlamMap;
 		RobotMapDataPtr mRobotMapData;

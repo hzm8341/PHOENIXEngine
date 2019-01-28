@@ -19,17 +19,19 @@ namespace PX2
 
 	const int Arduino_SocketTCP_MsgID = 7;
 
-	enum ArduinoRectType
+	enum ArduinoRecvType
 	{
-		ART_RECT_DIST,
+		ART_RECV_DIST,
 		ART_RECV_IR,
+		ART_RECV_RC,
 		ART_MAXZ_TYPE
 	};
-	typedef void(*ArduinoReceiveCallback) (ArduinoRectType type, int val);
+	typedef void(*ArduinoReceiveCallback) (ArduinoRecvType type, int val);
 
 	#define NUMDISTMAT 6
+	#define NUMSERVO 5
 	
-	class PX2_ENGINE_ITEM Arduino : public Object, public Singleton<Arduino>
+	class PX2_ENGINE_ITEM Arduino : public Object
 	{
 	public:
 		Arduino();
@@ -111,9 +113,9 @@ namespace PX2
 		int DigitalRead(Pin pin);
 		int AnalogRead(Pin pin);
 
-		// server
-		void ServerInit(int i, Pin pin);
-		void ServerWrite(int i, int val);
+		// servo
+		void ServoInit(int i, Pin pin);
+		void ServoWrite(int i, int val);
 
 		// dist
 		void DistInit(Pin pinTrig, Pin pinEcho);
@@ -152,12 +154,26 @@ namespace PX2
 		int GetSpeed(int motoIndex) const;
 		void Stop();
 
+		enum MP3PlayType
+		{
+			MPT_PLAY = 0,
+			MPT_PAUSE,
+			MPT_STOP,
+			MPT_NEXT,
+			MPT_BEFORE,
+			MPT_RANDOM,
+			MPT_LOOP_SINGLE,
+			MPT_LOOP_SINGLE_CLOSE,
+			MPT_LOOP_ALL,
+			MPT_LOOP_ALL_CLOSE,
+			MPT_VOLUME_INCREASE,
+			MPT_VOLUME_DECREASE,
+			MPT_MAX_TYPE
+		};
 		void MP3Init(Pin pinR, Pin pinT);
-		void MP3Play();
-		void MP3PlayNext();
-		void MP3PlayAtIndex(int index);
+		void MP3DO(MP3PlayType mpt);
+		void MP3Play(int folder, int index);
 		void MP3SetVolume(int volume);
-		void MP3Stop();
 
 		void IRInit(Pin pinReceive);
 		void IRSend(int val);
@@ -170,6 +186,24 @@ namespace PX2
 		void DistMatInit(int i, Pin pinTrig, Pin pinEcho);
 		float GetMatDist(int i) const;
 
+		void DHTInit(Pin pin);
+		float GetTemperature() const;
+		float GetHumidity() const;
+
+		void RGBLEDInit(Pin pin, int num);
+		void RGBLEDSetColor(int index, int r, int g, int b);
+
+		void SegmentInit(Pin clickPin, Pin dataPin);
+		void SegmentSetBrightness(int brightness);
+		void SegmentClear();
+		void SegmentDisplayInt(int val);
+		void SegmentDisplayFloat(float val);
+
+		void LEDMatrixInit(Pin pinClk, Pin pinData);
+		void LEDMatrixSetBrightness(int brightness);
+		void LEDMatrixClearScreen();
+		void LEDMatrixLightAt(int x, int y, int width, bool onOff);
+
 		void AxisInit();
 		float AxisGetYAxis() const;
 		float AxisGetXAxis() const;
@@ -177,6 +211,9 @@ namespace PX2
 		float AxisGetPitch() const;
 		float AxisGetRoll() const;
 		float AxisGetYaw() const;
+
+		void RCSend(int val);
+		int GetRCReceive() const;
 
 		void BabyRobotSet(bool moto, bool distance, bool buzzer, bool light);
 
@@ -196,6 +233,9 @@ namespace PX2
 		void _SetDistMat(int index, float val);
 		void _SetAxis(unsigned long timeMilliseconds, float yAxis, float xAxis, float zAxis, float pitch,
 			float roll, float yaw);
+		void _SetRCReceive(int val);
+		void _SetHumidity(float humi);
+		void _SetTemperature(float temp);
 
 		enum OptionType
 		{
@@ -220,11 +260,9 @@ namespace PX2
 			OT_MOTO_I_DRIVER4567,
 			OT_MOTO_I_DRIVER298N,
 			OT_MP3_INIT,
-			OT_MP3_PLAY,
-			OT_MP3_INDEX,
-			OT_MP3_NEXT,
-			OT_MP3_STOP,
-			OT_MP3_VOLUME,
+			OT_MP3_DO,
+			OT_MP3_PLAYFOLDER,
+			OT_MP3_SETVOLUME,
 			OT_IR_INIT,
 			OT_IR_SEND,
 			OT_RETURN_IR,
@@ -237,6 +275,21 @@ namespace PX2
 			OT_RETURN_AXIS,
 			OT_SET_TIME,
 			OT_SET_BABYROBOT,
+			OT_RC_SEND,
+			OT_RETRUN_RC,
+			OT_DHT_I,
+			OT_RETURN_DHTTEMP,
+			OT_RETURN_DHTHUMI,
+			OT_LEDSTRIP_I,
+			OT_LEDSTRIP_SET,
+			OT_SEGMENT_I,
+			OT_SEGMENT_BRIGHTNESS,
+			OT_SEGMENT_CLEAR,
+			OT_SEGMENT_DISPLAY,
+			OT_LEDMATRIX_I,
+			OT_LEDMATRIX_BRIGHTNESS,
+			OT_LEDMATRIX_CLEARSCREEN,
+			OT_LEDMATRIX_LIGHTAT,
 			OT_MC_INTERNAL_LIGHT, // makerclock
 			OT_MC_LIGHT,
 			OT_MC_SEGMENT,
@@ -245,6 +298,7 @@ namespace PX2
 			OT_MB_MOTO,	// mbot
 			OT_MB_SEND,
 			OT_MB_BUZZER,
+			OT_VERSION,
 			OT_MAX_TYPE
 		};
 		static std::string sOptTypeStr[OT_MAX_TYPE];
@@ -284,8 +338,10 @@ namespace PX2
 		std::vector<AxisObj> &GetAxisObjs();
 		AxisObj GetCurAxisObj();
 
+		std::string NetRecvStr;
+
 	private:
-		void _OnCallback(ArduinoRectType type, int value);
+		void _OnCallback(ArduinoRecvType type, int value);
 		void _OnToSendCallback(const std::string &str);
 		void _SetTime();
 
@@ -317,6 +373,8 @@ namespace PX2
 		float mDist;
 		int mIRReceive;
 
+		int mLastServoValue[NUMSERVO];
+
 		float mWeight[4];
 
 		int mPinValue[P_MAX_TYPE];
@@ -336,6 +394,11 @@ namespace PX2
 		float mRoll;
 		float mYaw;
 
+		int mRCReceiveVal;
+
+		float mDHTTemperature;
+		float mDHTHumidity;
+
 		// makeblock
 	public:
 		void MCSegmentSet(int pin, int val);
@@ -354,8 +417,7 @@ namespace PX2
 		void MBotIsButtonPressed() const;
 		int MBotGetLightSensorValue() const;
 	};
-
-#define PX2_ARDUINO Arduino::GetSingleton()
+	typedef Pointer0<Arduino> ArduinoPtr;
 
 }
 

@@ -30,6 +30,7 @@ namespace PX2
 
 		int CurrentThreads() const;
 		int GetNumMaxThreads() const;
+		ThreadPool *GetThreadPool();
 
 		int GetNumTotalConnections() const;
 		int GetNumCurrentConnections() const;

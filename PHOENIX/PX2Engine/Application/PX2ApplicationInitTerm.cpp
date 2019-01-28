@@ -30,6 +30,7 @@
 #include "PX2StringHelp.hpp"
 #include "PX2Robot.hpp"
 #include "PX2EngineNetDefine.hpp"
+#include "PX2AppInitConfig.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -131,24 +132,6 @@ int _ProcessInputString(const std::string &buf)
 		{
 			PX2_VOICESDK.EndVoiceListening();
 		}
-		else if ("arduino" == cmd)
-		{
-			PX2_APP._ProcessArduinoCMDs(contentStr);
-		}
-		else if ("arduinoid" == cmd)
-		{
-			std::string strParam0;
-			std::string strParam1;
-
-			StringTokenizer stk_(contentStr, ",");
-			if (stk_.Count() > 0)
-				strParam0 = stk_[0];
-			if (stk_.Count() > 1)
-				strParam1 = stk_[1];
-
-			int id = StringHelp::StringToInt(strParam0);
-			PX2_APP._ProcessArduinoCMDs(strParam1, id);
-		}
 		else if ("car" == cmd)
 		{
 			std::string strParam0;
@@ -166,34 +149,34 @@ int _ProcessInputString(const std::string &buf)
 			if (stk_.Count() > 3)
 				strParam3 = stk_[3];
 
-			int id = StringHelp::StringToInt(strParam0);
-			PX2_ARDUINO.SetNetID(id);
+			//int id = StringHelp::StringToInt(strParam0);
+			//PX2_ARDUINO.SetNetID(id);
 
-			if ("move" == strParam1)
-			{
-				int speed = StringHelp::StringToInt(strParam3);
+			//if ("move" == strParam1)
+			//{
+			//	int speed = StringHelp::StringToInt(strParam3);
 
-				if ("left" == strParam2)
-				{
-					PX2_ARDUINO.Run(Arduino::SDT_LEFT, speed);
-				}
-				else if ("right" == strParam2)
-				{
-					PX2_ARDUINO.Run(Arduino::SDT_RIGHT, speed);
-				}
-				else if ("forward" == strParam2)
-				{
-					PX2_ARDUINO.Run(Arduino::SDT_FORWARD, speed);
-				}
-				else if ("backward" == strParam2)
-				{
-					PX2_ARDUINO.Run(Arduino::SDT_BACKWARD, speed);
-				}
-				else if ("none" == strParam2)
-				{
-					PX2_ARDUINO.Run(Arduino::SDT_NONE, speed);
-				}
-			}
+			//	if ("left" == strParam2)
+			//	{
+			//		PX2_ARDUINO.Run(Arduino::SDT_LEFT, speed);
+			//	}
+			//	else if ("right" == strParam2)
+			//	{
+			//		PX2_ARDUINO.Run(Arduino::SDT_RIGHT, speed);
+			//	}
+			//	else if ("forward" == strParam2)
+			//	{
+			//		PX2_ARDUINO.Run(Arduino::SDT_FORWARD, speed);
+			//	}
+			//	else if ("backward" == strParam2)
+			//	{
+			//		PX2_ARDUINO.Run(Arduino::SDT_BACKWARD, speed);
+			//	}
+			//	else if ("none" == strParam2)
+			//	{
+			//		PX2_ARDUINO.Run(Arduino::SDT_NONE, speed);
+			//	}
+			//}
 		}
 		else if ("serial" == cmd)
 		{
@@ -232,7 +215,7 @@ int _ProcessInputString(const std::string &buf)
 	return ret;
 }
 //----------------------------------------------------------------------------
-bool Application::Initlize()
+bool Application::Initlize(AppInitConfig *cfg)
 {
 	time_t ti; time(&ti); srand((unsigned int)ti);
 
@@ -309,7 +292,10 @@ bool Application::Initlize()
 	mFontMan->Initlize();
 	
 	SoundSystemInitInfo info;
-	mSoundSys = SoundSystem::Create(SoundSystem::ST_FMOD, info);
+	if (cfg && cfg->IsInitSound)
+	{
+		mSoundSys = SoundSystem::Create(SoundSystem::ST_FMOD, info);
+	}
 
 	mADMan = new0 AddDeleteManager();
 	PX2_UNUSED(mADMan);
@@ -341,16 +327,24 @@ bool Application::Initlize()
 
 	mCreater = new0 Creater();
 
-	mArduino = new0 Arduino();
-
 	mVoiceSDK = new0 VoiceSDK();
+	if (cfg && cfg->IsInitVoice)
+	{
+		mVoiceSDK->Initlize();
+	}
 
 	mSTEAMEduManager = new0 STEAMEduManager();
 	mSTEAMEduManager->Initlize();
 
 	mSlam = new0 Robot();
 
-	mEngineServer = new0 EngineServer(Server::ST_POLL, EngineServerPort);
+	Server::ServerType st;
+#if defined (WIN32) || defined (_WIN32)
+	st = Server::ST_IOCP;
+#else
+	st = Server::ST_POLL;
+#endif
+	mEngineServer = new0 EngineServer(st, EngineServerPort);
 	mEngineServer->Start();
 	mEngineClient = new0 EngineClientConnector();
 
@@ -384,7 +378,6 @@ bool Application::Initlize()
 	PX2_SC_LUA->SetUserTypePointer("PX2_BLUETOOTH", "Bluetooth", Bluetooth::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_WIFI", "Wifi", Wifi::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_SS", "SoundSystem", SoundSystem::GetSingletonPtr());
-	PX2_SC_LUA->SetUserTypePointer("PX2_ARDUINO", "Arduino", Arduino::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_HARDCAMERA", "HardCamera", HardCamera::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_VOICESDK", "VoiceSDK", VoiceSDK::GetSingletonPtr());
 	PX2_SC_LUA->SetUserTypePointer("PX2_TIMERM", "TimerManager", TimerManager::GetSingletonPtr());
@@ -880,12 +873,6 @@ bool Application::Terminate()
 	{
 		delete0(mCreater);
 		Creater::Set(0);
-	}
-
-	if (mArduino)
-	{
-		delete0(mArduino);
-		Arduino::Set(0);
 	}
 
 	if (mVoiceSDK)
@@ -1420,13 +1407,10 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	PX2_TIMERM.Update((float)appSeconds);
 
 	if (mSTEAMEduManager)
-		mSTEAMEduManager->Update();
+		mSTEAMEduManager->Update((float)elapsedSeconds);
 
 	if (mSlam)
 		mSlam->Update(appSeconds, elapsedSeconds);
-
-	if (mArduino)
-		mArduino->Update((float)elapsedSeconds);
 
 	PX2_BLUETOOTH.Update((float)elapsedSeconds);
 	PX2_WIFI.Update((float)elapsedSeconds);
@@ -1465,197 +1449,5 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	if (mIsInBackground) return;
 
 	PX2_GR.Draw();
-}
-//----------------------------------------------------------------------------
-void Application::_ProcessArduinoCMDs(const std::string &contentStr, int id)
-{
-	PX2_ARDUINO.SetNetID(id);
-
-	std::string strParam0;
-	std::string strParam1;
-	std::string strParam2;
-	std::string strParam3;
-	std::string strParam4;
-	std::string strParam5;
-	std::string strParam6;
-	std::string strParam7;
-	std::string strParam8;
-	std::string strParam9;
-	std::string strParam10;
-
-	StringTokenizer stk_(contentStr, ",");
-	if (stk_.Count() > 0)
-		strParam0 = stk_[0];
-	if (stk_.Count() > 1)
-		strParam1 = stk_[1];
-	if (stk_.Count() > 2)
-		strParam2 = stk_[2];
-	if (stk_.Count() > 3)
-		strParam3 = stk_[3];
-	if (stk_.Count() > 4)
-		strParam4 = stk_[4];
-	if (stk_.Count() > 5)
-		strParam5 = stk_[5];
-	if (stk_.Count() > 6)
-		strParam6 = stk_[6];
-	if (stk_.Count() > 7)
-		strParam7 = stk_[7];
-	if (stk_.Count() > 8)
-		strParam8 = stk_[8];
-	if (stk_.Count() > 9)
-		strParam9 = stk_[9];
-	if (stk_.Count() > 10)
-		strParam10 = stk_[10];
-
-	if (Arduino::sOptTypeStr[Arduino::OT_TOGET_NETID] == strParam0)
-	{
-		PX2_ARDUINO.SendToGetNetID();
-	}
-	if (Arduino::sOptTypeStr[Arduino::OT_PM] == strParam0)
-	{
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		Arduino::PMode pm = Arduino::_NetStr2PinMode(strParam2);
-
-		PX2_ARDUINO.PinMode(pin, pm);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_DW] == strParam0)
-	{
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		bool val = Arduino::_HighLow2Bool(strParam2);
-
-		PX2_ARDUINO.DigitalWrite(pin, val);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_AW] == strParam0)
-	{
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		int val = Arduino::_NetStr2Int(strParam2);
-
-		PX2_ARDUINO.AnalogWrite(pin, val);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DR] == strParam0)
-	{
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		int val = PX2_ARDUINO.DigitalRead(pin);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_AR] == strParam0)
-	{
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		int val = PX2_ARDUINO.AnalogRead(pin);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_SVR_I] == strParam0)
-	{
-		int svrIndex = Arduino::_NetStr2Int(strParam1);
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam2);
-
-		PX2_ARDUINO.ServerInit(svrIndex, pin);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_SVR_W] == strParam0)
-	{
-		int svrIndex = Arduino::_NetStr2Int(strParam1);
-		int val = Arduino::_NetStr2Int(strParam2);
-
-		PX2_ARDUINO.ServerWrite(svrIndex, val);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_DST_I] == strParam0)
-	{
-		Arduino::Pin pinTrigger = Arduino::_NetStr2Pin(strParam1);
-		Arduino::Pin pinEcho = Arduino::_NetStr2Pin(strParam2);
-
-		PX2_ARDUINO.DistInit(pinTrigger, pinEcho);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_DST_T] == strParam0)
-	{
-		PX2_ARDUINO.DistTest();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_DIST] == strParam0)
-	{
-		float dst = PX2_ARDUINO.GetDist();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I] == strParam0)
-	{
-		PX2_ARDUINO.VehicleInitMotoBoard();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_RUN] == strParam0)
-	{
-		int mi = Arduino::_NetStr2Int(strParam1);
-		Arduino::DirectionType dt = Arduino::_NetStr2Dir(strParam2);
-		int speed = Arduino::_NetStr2Int(strParam3);
-		PX2_ARDUINO.Run(mi, dt, speed);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_RUNSIMPLE] == strParam0)
-	{
-		Arduino::SimpleDirectionType sdt = Arduino::_NetStr2SimpleDir(strParam1);
-		int speed = Arduino::_NetStr2Int(strParam2);
-		PX2_ARDUINO.Run(sdt, speed);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_STOP] == strParam0)
-	{
-		PX2_ARDUINO.Stop();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I_SPD] == strParam0)
-	{
-		Arduino::Pin pin0 = Arduino::_NetStr2Pin(strParam1);
-		Arduino::Pin pin1 = Arduino::_NetStr2Pin(strParam2);
-		Arduino::Pin pin2 = Arduino::_NetStr2Pin(strParam3);
-		Arduino::Pin pin3 = Arduino::_NetStr2Pin(strParam4);
-		PX2_ARDUINO.VehicleSpeedInit(pin0, pin1, pin2, pin3);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_RETURN_MOTOSPD] == strParam0)
-	{
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I_DRIVER4567] == strParam0)
-	{
-		PX2_ARDUINO.VehicleInitMotoBoard4567();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MOTO_I_DRIVER298N] == strParam0)
-	{
-		Arduino::Pin pinL0 = Arduino::_NetStr2Pin(strParam1);
-		Arduino::Pin pinL1 = Arduino::_NetStr2Pin(strParam2);
-		Arduino::Pin pinLS = Arduino::_NetStr2Pin(strParam3);
-		Arduino::Pin pinR0 = Arduino::_NetStr2Pin(strParam4);
-		Arduino::Pin pinR1 = Arduino::_NetStr2Pin(strParam5);
-		Arduino::Pin pinRS = Arduino::_NetStr2Pin(strParam6);
-
-		PX2_ARDUINO.VehicleInitMotoBoard298N(pinL0, pinL1, pinLS, pinR0, pinR1, pinRS);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_INIT] == strParam0)
-	{
-		Arduino::Pin pinR = Arduino::_NetStr2Pin(strParam1);
-		Arduino::Pin pinT = Arduino::_NetStr2Pin(strParam2);
-
-		PX2_ARDUINO.MP3Init(pinR, pinT);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_PLAY] == strParam0)
-	{
-		PX2_ARDUINO.MP3Play();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_INDEX] == strParam0)
-	{
-		int index = Arduino::_NetStr2Int(strParam1);
-		PX2_ARDUINO.MP3PlayAtIndex(index);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_NEXT] == strParam0)
-	{
-		PX2_ARDUINO.MP3PlayNext();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_STOP] == strParam0)
-	{
-		PX2_ARDUINO.MP3Stop();
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_MP3_VOLUME] == strParam0)
-	{
-		int volume = Arduino::_NetStr2Int(strParam1);
-		PX2_ARDUINO.MP3SetVolume(volume);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_IR_INIT] == strParam0)
-	{
-		Arduino::Pin pin = Arduino::_NetStr2Pin(strParam1);
-		PX2_ARDUINO.IRInit(pin);
-	}
-	else if (Arduino::sOptTypeStr[Arduino::OT_IR_SEND] == strParam0)
-	{
-		int val = Arduino::_NetStr2Int(strParam1);
-		PX2_ARDUINO.IRSend(val);
-	}
 }
 //----------------------------------------------------------------------------

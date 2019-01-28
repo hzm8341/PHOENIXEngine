@@ -503,7 +503,6 @@ void EffectModule::OnPropertyChanged (const PropertyObject &obj)
 	size_t end = obj.Name.find_first_of("]");
 	if (begin!=std::string::npos && end!=std::string::npos)
 	{	
-		size_t end = obj.Name.find_first_of("]");
 		std::string valStr = obj.Name.substr(begin+1, end-begin);
 		int i = atoi(valStr.c_str());
 

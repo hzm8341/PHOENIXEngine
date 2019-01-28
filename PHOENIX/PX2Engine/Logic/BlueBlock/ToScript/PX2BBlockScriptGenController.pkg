@@ -1,0 +1,25 @@
+// PX2BBlockScriptGenController.pkg
+
+	class BBlockScriptGenController : public Controller
+	{
+		BBlockScriptGenController();
+		virtual ~BBlockScriptGenController();
+		
+		static BBlockScriptGenController *New();
+		static BBlockScriptGenController *New(const std::string &name);
+
+		virtual void SetName(const std::string& name);
+
+		enum GenerateType
+		{
+			GT_ENGINE,
+			GT_ARDUINO,
+			GT_NODEMCU,
+			GT_RASPBERRY,
+			GT_MAX_TYPE
+		};
+		void SetGenerateType(GenerateType at);
+		GenerateType GetGenerateType() const;
+
+		LFile *GetLFile();
+	};

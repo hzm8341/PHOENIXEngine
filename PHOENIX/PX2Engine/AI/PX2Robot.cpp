@@ -98,6 +98,8 @@ mPathUpdateTiming(0.0f)
 
 	mIsInitSlamMap = false;
 	mIsMapDataChanged = true;
+
+	mArduino = new0 Arduino();
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -453,6 +455,11 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	PX2_UNUSED(appseconds);
 	PX2_UNUSED(elpasedSeconds);
 
+	if (mArduino)
+	{
+		mArduino->Update(elpasedSeconds);
+	}
+
 	if (mBufShare)
 	{
 		int bufShareLength = strlen(mBufShare);
@@ -513,7 +520,7 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 	if (mIsHasAxis)
 	{
-		Arduino::AxisObj curAxisObj = PX2_ARDUINO.GetCurAxisObj();
+		Arduino::AxisObj curAxisObj = mArduino->GetCurAxisObj();
 		
 		float rad = curAxisObj.Y * Mathf::DEG_TO_RAD;
 		float x = Mathf::Cos(rad);
@@ -674,11 +681,11 @@ void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
 
 	if (mPathUpdateTiming > 0.2f)
 	{
-		if (mCurPathPlan && PX2_ARDUINO.IsInitlized())
+		if (mCurPathPlan && mArduino->IsInitlized())
 		{
 			if (mCurPathPlan->CheckForEnd())
 			{
-				PX2_ARDUINO.Run(Arduino::SDT_NONE, 0.0f);
+				mArduino->Run(Arduino::SDT_NONE, 0.0f);
 				PX2_LOG_INFO("Ended");
 
 				mCurPathPlan = 0;
@@ -695,7 +702,7 @@ void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
 				}
 				else
 				{
-					PX2_ARDUINO.Run(Arduino::SDT_FORWARD, 75);
+					mArduino->Run(Arduino::SDT_FORWARD, 75);
 				}
 
 
@@ -1065,7 +1072,7 @@ void Robot::SetSlam2DPosition(const APoint &pos, float angle)
 	mRobotMapData->MapStruct.CurPos = pos;
 	mRobotMapData->MapStruct.CurAngle = angle;
 
-	Arduino::AxisObj axisObj = PX2_ARDUINO.GetCurAxisObj();
+	Arduino::AxisObj axisObj = mArduino->GetCurAxisObj();
 	mCurMoveDirectionAxisY = axisObj.Y;
 
 	if (!mIsHasEverSettedDirection && moveDirectionSquare > 0.00000001f)
@@ -1168,7 +1175,7 @@ LiDar *Robot::GetLidar()
 //----------------------------------------------------------------------------
 bool Robot::IsArduinoConnected() const
 {
-	return PX2_ARDUINO.IsInitlized();
+	return mArduino->IsInitlized();
 }
 //----------------------------------------------------------------------------
 void Robot::SetOffsetDegree(float degree)
@@ -1266,12 +1273,12 @@ void Robot::_UpdateAdjustDirection(const AVector &dir)
 			{
 				// move left
 
-				PX2_ARDUINO.Run(Arduino::SDT_LEFT, 25.0f);
+				mArduino->Run(Arduino::SDT_LEFT, 25.0f);
 			}
 			else
 			{
 				// move right
-				PX2_ARDUINO.Run(Arduino::SDT_RIGHT, 25.0f);
+				mArduino->Run(Arduino::SDT_RIGHT, 25.0f);
 			}
 		}
 	}

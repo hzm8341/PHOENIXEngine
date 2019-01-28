@@ -52,6 +52,8 @@ namespace PX2
 			int stackSize = 0);
 		~ThreadPool();
 
+		Mutex *GetMutex();
+
 		void AddCapacity(int n);
 		int Capacity() const;
 		void SetStackSize(int stackSize);
