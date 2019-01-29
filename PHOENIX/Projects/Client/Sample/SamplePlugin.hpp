@@ -91,62 +91,6 @@ namespace PX2
 		// “选择”框
 		void OnCreateUIComboBox();
 
-		// “编辑”框
-		void OnCreateUIEditBox();
-
-		// “进度条”框
-		void OnCreateUIProgress();
-
-		// “颜色选择”框
-		void OnCreateUIColorSelect();
-
-		// “列表”框
-		void OnCreateUIList();
-
-		// “树”框
-		void OnCreateUITree();
-
-		// “分隔线”框
-		void OnCreateUISplitter();
-
-		// “滑动条”框
-		void OnCreateUISlider();
-
-		// “方向盘”框
-		void OnCreateUIRound();
-
-		// “服务器“框
-		void OnCreateUIServer();
-
-		// 创建一个右的浏览框
-		void AddRightUIFrame();
-
-		// 添加其他元素
-		void AddOtherElements();
-
-		void OnCreateButtonA();
-		void OnCreateButtonB();
-		void OnCreateButtonC();
-		void OnCreateButtonD();
-		void OnCreatebuttonE();
-		
-		// 菜单按钮
-		void OnCreateMenu();
-		
-		// 创建按钮
-		void OnCreateNewProject();
-		void SetCircleOutColor(const Float3 &color);
-		void SetCircleOutSize(float size);
-		void SetCircleInColor(const Float3 &color);
-		void SetCircleInSize(float size);
-
-		void SetFaceColor(const Float3 &color);
-		void SetFaceSize(float size);
-		void RobotAction();
-		void RobotStartUp();
-		virtual void RobotFreeze();
-		virtual void RobotIdle();
-		virtual void RobotExcite();
 
 		virtual void Progressmove();
 		

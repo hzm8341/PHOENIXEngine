@@ -286,7 +286,7 @@ int SocketImpl::SendBytes(const void* buffer, int length, int flags)
 	do
 	{
 		rc = ::send(mSocket, reinterpret_cast<const char*>(buffer), length, flags);
-	} while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
+	} while (mIsBlocking && rc < 0 && NetError::LastError() == PX2_EINTR);
 	if (rc < 0)
 	{
 		NetError::Error();
@@ -311,11 +311,11 @@ int SocketImpl::ReceiveBytes (void* buffer, int length, int flags)
 	{
 		rc = ::recv(mSocket, reinterpret_cast<char*>(buffer), length, flags);
 	}
-	while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
+	while (mIsBlocking && rc < 0 && NetError::LastError() == PX2_EINTR);
 	
 	if (rc < 0)
 	{
-		int err = GetLastError();
+		int err = NetError::LastError();
 		if (err == PX2_EAGAIN && !mIsBlocking)
 			;
 		else if (err == PX2_EAGAIN || err == PX2_ETIMEDOUT)
@@ -347,7 +347,7 @@ int SocketImpl::SendTo (const void* buffer, int length,
 			flags, address.GetAddr(), address.GetAddrLength());
 
 	}	
-	while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
+	while (mIsBlocking && rc < 0 && NetError::LastError() == PX2_EINTR);
 
 	if (rc < 0)
 	{
@@ -374,7 +374,7 @@ int SocketImpl::ReceiveFrom (void* buffer, int length, SocketAddress& address,
 		rc = ::recvfrom(mSocket, reinterpret_cast<char*>(buffer), length,
 			flags, sa, &saLen);
 	}
-	while (mIsBlocking && rc < 0 && GetLastError() == PX2_EINTR);
+	while (mIsBlocking && rc < 0 && NetError::LastError() == PX2_EINTR);
 
 	if (rc >= 0)
 	{
@@ -382,7 +382,7 @@ int SocketImpl::ReceiveFrom (void* buffer, int length, SocketAddress& address,
 	}
 	else
 	{
-		int err = GetLastError();
+		int err = NetError::LastError();
 		if (err == PX2_EAGAIN && !mIsBlocking)
 			;
 		else if (err == PX2_EAGAIN || err == PX2_ETIMEDOUT)
