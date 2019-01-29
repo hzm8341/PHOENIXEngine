@@ -104,7 +104,7 @@ function rc_AcceleratorUpdate(appseconds, elapsedseconds)
                 end
             end
             
-            PX2_ARDUINO:Run(simpleMoveType, moveSpeed)
+            rc_Arduino:Run(simpleMoveType, moveSpeed)
         end
 
         rc_AcceUpdateTiming = 0

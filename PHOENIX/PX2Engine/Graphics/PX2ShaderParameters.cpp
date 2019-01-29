@@ -352,7 +352,7 @@ void ShaderParameters::Link (InStream& source)
 				else
 				{
 					mTextures[i] = DynamicCast<Texture>
-						(GraphicsRoot::msUserLoadFun(mTextureResPath[i].c_str()));
+						(GraphicsRoot::msUserLoadFun(resPath.c_str()));
 				}
 			}
 			else

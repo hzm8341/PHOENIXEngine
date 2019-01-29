@@ -131,9 +131,9 @@ namespace PX2
 		LoadRecord &InsertRecord(const FString &filename, bool isBuffer);
 		LoadRecord &InsertRecord(const FString &funName, BackgroundFun fun);
 		void _LoadTheRecord(LoadRecord &rec);
-		Object *_LoadObject(const std::string &filename);
-		bool _LoadBuffer(const std::string &filename, int &bufferSize,
-			char* &buffer);
+		Object *_LoadObject(const std::string &workDirPath, const std::string &filename);
+		bool _LoadBuffer(const std::string &workDirPath, const std::string &filename, 
+			int &bufferSize, char* &buffer);
 		Texture2D *LoadTexFormOtherImagefile(std::string outExt,
 			int bufferSize, const char*buffer);
 		Texture2D *LoadTextureFromDDS(const std::string &filename);

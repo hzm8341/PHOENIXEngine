@@ -64,15 +64,15 @@ function rc_VoicePage ()
             PX2_SS:PlayMusic(0, nil, true, 0.0)
             PX2_SS:ClearAllSounds()
         elseif string.find(txt, "机器人前进") then
-            PX2_ARDUINO:Run(Arduino.SDT_FORWARD, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(Arduino.SDT_FORWARD, 255.0 * rc_SpeedAdjustGo)
         elseif string.find(txt, "机器人后退") then
-            PX2_ARDUINO:Run(Arduino.SDT_BACKWARD, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(Arduino.SDT_BACKWARD, 255.0 * rc_SpeedAdjustGo)
         elseif string.find(txt, "机器人左转") then
-            PX2_ARDUINO:Run(Arduino.SDT_LEFT, 255.0 * rc_SpeedAdjustTurn)
+            rc_Arduino:Run(Arduino.SDT_LEFT, 255.0 * rc_SpeedAdjustTurn)
         elseif string.find(txt, "机器人右转") then
-            PX2_ARDUINO:Run(Arduino.SDT_RIGHT, 255.0 * rc_SpeedAdjustTurn)
+            rc_Arduino:Run(Arduino.SDT_RIGHT, 255.0 * rc_SpeedAdjustTurn)
         elseif string.find(txt, "机器人停止") then
-            PX2_ARDUINO:Run(Arduino.SDT_NONE, 0)
+            rc_Arduino:Run(Arduino.SDT_NONE, 0)
         end
 
         PX2_VOICESDK:Speak(""..txt)

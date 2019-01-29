@@ -132,52 +132,6 @@ int _ProcessInputString(const std::string &buf)
 		{
 			PX2_VOICESDK.EndVoiceListening();
 		}
-		else if ("car" == cmd)
-		{
-			std::string strParam0;
-			std::string strParam1;
-			std::string strParam2;
-			std::string strParam3;
-
-			StringTokenizer stk_(contentStr, ",");
-			if (stk_.Count() > 0)
-				strParam0 = stk_[0];
-			if (stk_.Count() > 1)
-				strParam1 = stk_[1];
-			if (stk_.Count() > 2)
-				strParam2 = stk_[2];
-			if (stk_.Count() > 3)
-				strParam3 = stk_[3];
-
-			//int id = StringHelp::StringToInt(strParam0);
-			//PX2_ARDUINO.SetNetID(id);
-
-			//if ("move" == strParam1)
-			//{
-			//	int speed = StringHelp::StringToInt(strParam3);
-
-			//	if ("left" == strParam2)
-			//	{
-			//		PX2_ARDUINO.Run(Arduino::SDT_LEFT, speed);
-			//	}
-			//	else if ("right" == strParam2)
-			//	{
-			//		PX2_ARDUINO.Run(Arduino::SDT_RIGHT, speed);
-			//	}
-			//	else if ("forward" == strParam2)
-			//	{
-			//		PX2_ARDUINO.Run(Arduino::SDT_FORWARD, speed);
-			//	}
-			//	else if ("backward" == strParam2)
-			//	{
-			//		PX2_ARDUINO.Run(Arduino::SDT_BACKWARD, speed);
-			//	}
-			//	else if ("none" == strParam2)
-			//	{
-			//		PX2_ARDUINO.Run(Arduino::SDT_NONE, speed);
-			//	}
-			//}
-		}
 		else if ("serial" == cmd)
 		{
 			std::string listStr;

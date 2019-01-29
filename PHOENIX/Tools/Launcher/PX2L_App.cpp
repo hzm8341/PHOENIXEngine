@@ -9,6 +9,7 @@
 #include "PX2Memory.hpp"
 #include "PX2UIFrame.hpp"
 #include "PX2GraphicsEventType.hpp"
+#include "PX2AppInitConfig.hpp"
 using namespace PX2;
 using namespace Launcher;
 
@@ -159,7 +160,7 @@ void L_App::_StartUpdater(const std::string &appNamePath,
 	#endif
 
 #endif
-		WinExec(appName.c_str(), SW_HIDE);
+		WinExec(appName.c_str(), SW_SHOW);
 #endif
 
 	Exit();
@@ -178,11 +179,11 @@ void _BackgroundFun ()
 	{
 		L_App::msL_App->mIsUpdaterStart = true;
 
-		//std::string wwwwAddr = "ftp://182.254.213.85/";
-		//L_App::msL_App->_UpdateUpdater(wwwwAddr, "../PHOENIXEngine/Updater");
+		std::string wwwwAddr = "ftp://182.254.213.85/";
+		L_App::msL_App->_UpdateUpdater(wwwwAddr, "../PHOENIXEngine/Updater");
 
-		//if (L_App::msL_App->mIsDoStartUpdater)
-		//	L_App::msL_App->_StartUpdater("Updater/Updater", "update_startlauncher");
+		if (L_App::msL_App->mIsDoStartUpdater)
+			L_App::msL_App->_StartUpdater("Updater/Updater", "update_startlauncher");
 	}
 
 	L_App::msL_App->mIsUpdaterOver = true;
@@ -206,9 +207,11 @@ bool L_App::OnInit()
 
 	Application *app = new Application();
 	PX2_UNUSED(app);
-
+	
 	PX2_APP.SetConfigName("Launcher");
-	PX2_APP.Initlize();
+	
+	AppInitConfig cfg;
+	PX2_APP.Initlize(&cfg);
 	PX2_APP.SetInEditor(true);
 	PX2_EW.ComeIn(this);
 

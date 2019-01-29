@@ -513,13 +513,13 @@ function rc_UIPadCtrlCallback(ptr,callType)
             end
 
             if rc_LastLeftType~=leftMoveType or rc_LastLeftSpeed ~=leftMoveSpeed then
-                PX2_ARDUINO:Run(0, leftMoveType, leftMoveSpeed)
+                rc_Arduino:Run(0, leftMoveType, leftMoveSpeed)
 
                 rc_LastLeftType = leftMoveType
                 rc_LastLeftSpeed = leftMoveSpeed
             end
             if rc_LastRightType~=rightMoveType or rc_LastRightSpeed ~=rightMoveSpeed then
-                PX2_ARDUINO:Run(1, rightMoveType, rightMoveSpeed)
+                rc_Arduino:Run(1, rightMoveType, rightMoveSpeed)
 
                 rc_LastRightType = rightMoveType
                 rc_LastRightSpeed = rightMoveSpeed
@@ -527,8 +527,8 @@ function rc_UIPadCtrlCallback(ptr,callType)
         end
     elseif UICT_ROUND_RELEASED == callType then
         if "RoundCtrl" == name then      
-            PX2_ARDUINO:Run(0, 0, 0)
-            PX2_ARDUINO:Run(1, 0, 0)
+            rc_Arduino:Run(0, 0, 0)
+            rc_Arduino:Run(1, 0, 0)
 
             rc_LastLeftType = 0
             rc_LastLeftSpeed = 0.0
@@ -537,8 +537,8 @@ function rc_UIPadCtrlCallback(ptr,callType)
         end
     elseif UICT_ROUND_RELEASEDNOTPICK == callType then
         if "RoundCtrl" == name then      
-            PX2_ARDUINO:Run(0, 0, 0)
-            PX2_ARDUINO:Run(1, 0, 0)
+            rc_Arduino:Run(0, 0, 0)
+            rc_Arduino:Run(1, 0, 0)
 
             rc_LastLeftType = 0
             rc_LastLeftSpeed = 0.0
@@ -556,7 +556,7 @@ function rc_UIPadCtrlCallback(ptr,callType)
                 rc_SpeedAdjustGo = percent
                 PX2_PROJ:SetConfig("Slider2", ""..percent)
             elseif "slider1"==name then
-                PX2_ARDUINO:ServerWrite(0, pos)
+                rc_Arduino:ServoWrite(0, pos)
                 PX2_PROJ:SetConfig("Slider1", ""..percent)
             end
         else
@@ -566,49 +566,49 @@ function rc_UIPadCtrlCallback(ptr,callType)
                 rc_SpeedAdjustGo = percent
                 PX2_PROJ:SetConfig("Slider3", ""..percent)
             elseif "slider2"==name then
-                PX2_ARDUINO:ServerWrite(0, pos)
+                rc_Arduino:ServoWrite(0, pos)
                 PX2_PROJ:SetConfig("Slider2", ""..percent)
             elseif "slider1"==name then
-                PX2_ARDUINO:ServerWrite(1, pos)
+                rc_Arduino:ServoWrite(1, pos)
                 PX2_PROJ:SetConfig("Slider1", ""..percent)
             end
         end
     elseif UICT_CHECKED == callType then
         if "CheckButton_LED_L"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_11, true)
+            rc_Arduino:DigitalWrite(Arduino.P_11, true)
         elseif "CheckButton_LED_R"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_12, true)
+            rc_Arduino:DigitalWrite(Arduino.P_12, true)
         elseif "CheckButton_Sound"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_10, true)
+            rc_Arduino:DigitalWrite(Arduino.P_10, true)
         end
     elseif UICT_DISCHECKED == callType then
         if "CheckButton_LED_L"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_11, false)
+            rc_Arduino:DigitalWrite(Arduino.P_11, false)
         elseif "CheckButton_LED_R"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_12, false)
+            rc_Arduino:DigitalWrite(Arduino.P_12, false)
         elseif "CheckButton_Sound"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_10, false)
+            rc_Arduino:DigitalWrite(Arduino.P_10, false)
         end
     end
 end
 
 function rc_UpdateButtonsPress()
     if rc_IsPressedLeft0 then
-        PX2_ARDUINO:Run(0, 2, 255.0 * rc_SpeedAdjustTurn)
-        PX2_ARDUINO:Run(1, 1, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(0, 2, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(1, 1, 255.0 * rc_SpeedAdjustTurn)
     elseif rc_IsPressedLeft1 then
-        PX2_ARDUINO:Run(0, 1, 255.0 * rc_SpeedAdjustTurn)
-        PX2_ARDUINO:Run(1, 2, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(0, 1, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(1, 2, 255.0 * rc_SpeedAdjustTurn)
     else
         if rc_IsPressedRight0 then
-            PX2_ARDUINO:Run(0, 1, 255.0 * rc_SpeedAdjustGo)
-            PX2_ARDUINO:Run(1, 1, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(0, 1, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(1, 1, 255.0 * rc_SpeedAdjustGo)
         elseif rc_IsPressedRight1 then
-            PX2_ARDUINO:Run(0, 2, 255.0 * rc_SpeedAdjustGo)
-            PX2_ARDUINO:Run(1, 2, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(0, 2, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(1, 2, 255.0 * rc_SpeedAdjustGo)
         else
-            PX2_ARDUINO:Run(0, 0, 255.0 * rc_SpeedAdjustGo)
-            PX2_ARDUINO:Run(1, 0, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(0, 0, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(1, 0, 255.0 * rc_SpeedAdjustGo)
         end
     end
 end

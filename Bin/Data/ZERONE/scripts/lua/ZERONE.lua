@@ -6,6 +6,9 @@ ZERONE_CurSerialOptType = 0 -- 1 car, 2 lidar, 3 axis
 ZERONE_IsFireRobot = false
 
 function zo_ZERONE()    
+    rc_Arduino = Arduino:New()
+    PX2_PROJ:PoolSet("Arduino", rc_Arduino)
+
     local ui = PX2_PROJ:GetUI()
     
     local frameZERONE = UIFrame:New()
@@ -117,25 +120,25 @@ end
 function zo_OnStartUp(useSpeed)
     -- Arduino
     if not ZERONE_IsRobotMotoWith298N then
-        PX2_ARDUINO:VehicleInitMotoBoard4567()
+        rc_Arduino:VehicleInitMotoBoard4567()
         if useSpeed then
-            PX2_ARDUINO:VehicleSpeedInit(Arduino.P_2, Arduino.P_8, Arduino.P_3, Arduino.P_9)
+            rc_Arduino:VehicleSpeedInit(Arduino.P_2, Arduino.P_8, Arduino.P_3, Arduino.P_9)
         end
     else
-        PX2_ARDUINO:VehicleInitMotoBoard298N(Arduino.P_4, Arduino.P_5, Arduino.P_6, Arduino.P_7, Arduino.P_8, Arduino.P_9)
+        rc_Arduino:VehicleInitMotoBoard298N(Arduino.P_4, Arduino.P_5, Arduino.P_6, Arduino.P_7, Arduino.P_8, Arduino.P_9)
         if useSpeed then
-            PX2_ARDUINO:VehicleSpeedInit(Arduino.P_2, Arduino.P_10, Arduino.P_3, Arduino.P_11)
+            rc_Arduino:VehicleSpeedInit(Arduino.P_2, Arduino.P_10, Arduino.P_3, Arduino.P_11)
         end
     end
 
-    PX2_ARDUINO:PinMode(Arduino.P_10, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:ServerInit(0, Arduino.P_A0)
+    rc_Arduino:PinMode(Arduino.P_10, Arduino.PM_OUTPUT)
+    rc_Arduino:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
+    rc_Arduino:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
+    rc_Arduino:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
+    rc_Arduino:ServoInit(0, Arduino.P_A0)
     
     if ZERONE_IsFireRobot then
-        PX2_ARDUINO:ServerInit(1, Arduino.P_A1)
+        rc_Arduino:ServoInit(1, Arduino.P_A1)
     end
 
     PX2_VOICESDK:Speak("零一机器人已经启动！")

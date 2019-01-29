@@ -33,6 +33,11 @@ namespace PX2
 	
 	class PX2_ENGINE_ITEM Arduino : public Object
 	{
+		PX2_NEW(Arduino);
+		PX2_DECLARE_RTTI;
+		PX2_DECLARE_NAMES;
+		PX2_DECLARE_STREAM(Arduino);
+
 	public:
 		Arduino();
 		virtual ~Arduino();
@@ -417,6 +422,7 @@ namespace PX2
 		void MBotIsButtonPressed() const;
 		int MBotGetLightSensorValue() const;
 	};
+	PX2_REGISTER_STREAM(Arduino);
 	typedef Pointer0<Arduino> ArduinoPtr;
 
 }

@@ -14,6 +14,8 @@ require("Data/ZERONE/scripts/lua/ZERONEServer.lua")
 require("Data/ZERONE/scripts/lua/ZERONEUIFaceCtrl.lua")
 require("Data/ZERONE/scripts/lua/ZERONEUIPadCtrl.lua")
 
+rc_Arduino = nil
+
 function engine_project_preplay()
 	PX2_APP:SetShowInfo(true)
 	zo_AddLanguage()	
@@ -35,7 +37,7 @@ function engine_project_cmd(cmd, param0, param1, param2)
 		ZERONE_CurSerialOptType = 1
 		
 
-		PX2_ARDUINO:Initlize(Arduino.M_SERIAL, param0)
+		rc_Arduino:Initlize(Arduino.M_SERIAL, param0)
 		PX2_LOGGER:LogInfo("ZERONE", "robot arduino initlized")
 	elseif "lidar"==cmd then
 		ZERONE_CurSerialOptType = 2

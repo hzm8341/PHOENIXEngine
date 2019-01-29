@@ -1256,9 +1256,9 @@ void ResourceManager::_LoadTheRecord(LoadRecord &rec)
 		else if (rec.TheRecordType == LoadRecord::RT_OBJECT)
 		{
 #if defined WIN32 || defined _WIN32
-			rec.Obj = _LoadObject(msResPath + rec.Filename); // for special use
+			rec.Obj = _LoadObject(msResPath, rec.Filename); // for special use
 #else
-			rec.Obj = _LoadObject(rec.Filename);
+			rec.Obj = _LoadObject(msResPath, rec.Filename);
 #endif
 			rec.LastTouchedTime = Time::GetTimeInSeconds();
 		}
@@ -1267,9 +1267,9 @@ void ResourceManager::_LoadTheRecord(LoadRecord &rec)
 			char *buffer = 0;
 			int bufferSize = 0;
 #if defined WIN32 || defined _WIN32
-			if (_LoadBuffer(msResPath + rec.Filename, bufferSize, buffer))
+			if (_LoadBuffer(msResPath, rec.Filename, bufferSize, buffer))
 #else
-			if (_LoadBuffer(rec.Filename, bufferSize, buffer))
+			if (_LoadBuffer(msResPath, rec.Filename, bufferSize, buffer))
 #endif
 			{
 				rec.Buffer = buffer;
@@ -1289,7 +1289,8 @@ void ResourceManager::_LoadTheRecord(LoadRecord &rec)
 	}
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::_LoadObject(const std::string &filename)
+Object *ResourceManager::_LoadObject(const std::string &workDirPath, 
+	const std::string &filename)
 {
 	Object *obj = 0;
 
@@ -1304,7 +1305,7 @@ Object *ResourceManager::_LoadObject(const std::string &filename)
 	{
 		obj = LoadTextureFromDDS(filename);
 	}
-	else if (_LoadBuffer(filename, bufferSize, buffer))
+	else if (_LoadBuffer(workDirPath, filename, bufferSize, buffer))
 	{
 		if ("ccz" == outExtention)
 		{
@@ -1334,8 +1335,8 @@ Object *ResourceManager::_LoadObject(const std::string &filename)
 	return obj;
 }
 //----------------------------------------------------------------------------
-bool ResourceManager::_LoadBuffer(const std::string &fn,
-	int &bufferSize, char* &buffer)
+bool ResourceManager::_LoadBuffer(const std::string &workDirPath, 
+	const std::string &fn, int &bufferSize, char* &buffer)
 {
 	std::string dstFilename = fn;
 	if (dstFilename.empty())

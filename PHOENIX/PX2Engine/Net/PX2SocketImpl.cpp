@@ -561,11 +561,6 @@ bool SocketImpl::Poll(const Timespan& timeout, int mode)
 	}
 	while (rc < 0 && errorCode == PX2_EINTR);
 
-	if (0 == rc)
-	{
-		::shutdown(sockfd, 2);
-	}
-
 	if (rc < 0)
 		NetError::Error(errorCode);
 

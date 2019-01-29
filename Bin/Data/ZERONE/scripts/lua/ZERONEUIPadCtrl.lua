@@ -338,7 +338,7 @@ function zo_UIPadCtrlCallback(ptr,callType)
         end
         if "BtnFire" == name then
             --if ZERONE_IsFireRobot then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_13, true)
+            rc_Arduino:DigitalWrite(Arduino.P_13, true)
             --end
         end
     elseif UICT_RELEASED ==callType then
@@ -374,7 +374,7 @@ function zo_UIPadCtrlCallback(ptr,callType)
 
         if "BtnFire" == name then
             --if ZERONE_IsFireRobot then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_13, false)
+            rc_Arduino:DigitalWrite(Arduino.P_13, false)
             --end
         end
     elseif UICT_RELEASED_NOTPICK == callType then
@@ -411,13 +411,13 @@ function zo_UIPadCtrlCallback(ptr,callType)
             end
 
             if ZERONE_LastLeftType~=leftMoveType or ZERONE_LastLeftSpeed ~=leftMoveSpeed then
-                PX2_ARDUINO:Run(0, leftMoveType, leftMoveSpeed)
+                rc_Arduino:Run(0, leftMoveType, leftMoveSpeed)
 
                 ZERONE_LastLeftType = leftMoveType
                 ZERONE_LastLeftSpeed = leftMoveSpeed
             end
             if ZERONE_LastRightType~=rightMoveType or ZERONE_LastRightSpeed ~=rightMoveSpeed then
-                PX2_ARDUINO:Run(1, rightMoveType, rightMoveSpeed)
+                rc_Arduino:Run(1, rightMoveType, rightMoveSpeed)
 
                 ZERONE_LastRightType = rightMoveType
                 ZERONE_LastRightSpeed = rightMoveSpeed
@@ -425,8 +425,8 @@ function zo_UIPadCtrlCallback(ptr,callType)
         end
     elseif UICT_ROUND_RELEASED == callType then
         if "RoundCtrl" == name then      
-            PX2_ARDUINO:Run(0, 0, 0)
-            PX2_ARDUINO:Run(1, 0, 0)
+            rc_Arduino:Run(0, 0, 0)
+            rc_Arduino:Run(1, 0, 0)
 
             ZERONE_LastLeftType = 0
             ZERONE_LastLeftSpeed = 0.0
@@ -435,8 +435,8 @@ function zo_UIPadCtrlCallback(ptr,callType)
         end
     elseif UICT_ROUND_RELEASEDNOTPICK == callType then
         if "RoundCtrl" == name then      
-            PX2_ARDUINO:Run(0, 0, 0)
-            PX2_ARDUINO:Run(1, 0, 0)
+            rc_Arduino:Run(0, 0, 0)
+            rc_Arduino:Run(1, 0, 0)
 
             ZERONE_LastLeftType = 0
             ZERONE_LastLeftSpeed = 0.0
@@ -454,7 +454,7 @@ function zo_UIPadCtrlCallback(ptr,callType)
                 ZERONE_SpeedAdjustGo = percent
                 PX2_PROJ:SetConfig("Slider2", ""..percent)
             elseif "slider1"==name then
-                PX2_ARDUINO:ServerWrite(0, pos)
+                rc_Arduino:ServoWrite(0, pos)
                 PX2_PROJ:SetConfig("Slider1", ""..percent)
             end
         else
@@ -464,49 +464,49 @@ function zo_UIPadCtrlCallback(ptr,callType)
                 ZERONE_SpeedAdjustGo = percent
                 PX2_PROJ:SetConfig("Slider3", ""..percent)
             elseif "slider2"==name then
-                PX2_ARDUINO:ServerWrite(0, pos)
+                rc_Arduino:ServoWrite(0, pos)
                 PX2_PROJ:SetConfig("Slider2", ""..percent)
             elseif "slider1"==name then
-                PX2_ARDUINO:ServerWrite(1, pos)
+                rc_Arduino:ServoWrite(1, pos)
                 PX2_PROJ:SetConfig("Slider1", ""..percent)
             end
         end
     elseif UICT_CHECKED == callType then
         if "CheckButton_LED_L"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_11, true)
+            rc_Arduino:DigitalWrite(Arduino.P_11, true)
         elseif "CheckButton_LED_R"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_12, true)
+            rc_Arduino:DigitalWrite(Arduino.P_12, true)
         elseif "CheckButton_Sound"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_10, true)
+            rc_Arduino:DigitalWrite(Arduino.P_10, true)
         end
     elseif UICT_DISCHECKED == callType then
         if "CheckButton_LED_L"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_11, false)
+            rc_Arduino:DigitalWrite(Arduino.P_11, false)
         elseif "CheckButton_LED_R"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_12, false)
+            rc_Arduino:DigitalWrite(Arduino.P_12, false)
         elseif "CheckButton_Sound"==name then
-            PX2_ARDUINO:DigitalWrite(Arduino.P_10, false)
+            rc_Arduino:DigitalWrite(Arduino.P_10, false)
         end
     end
 end
 
 function zo_UpdateButtonsPress()
     if ZERONE_IsPressedLeft0 then
-        PX2_ARDUINO:Run(0, 2, 255.0 * ZERONE_SpeedAdjustTurn)
-        PX2_ARDUINO:Run(1, 1, 255.0 * ZERONE_SpeedAdjustTurn)
+        rc_Arduino:Run(0, 2, 255.0 * ZERONE_SpeedAdjustTurn)
+        rc_Arduino:Run(1, 1, 255.0 * ZERONE_SpeedAdjustTurn)
     elseif ZERONE_IsPressedLeft1 then
-        PX2_ARDUINO:Run(0, 1, 255.0 * ZERONE_SpeedAdjustTurn)
-        PX2_ARDUINO:Run(1, 2, 255.0 * ZERONE_SpeedAdjustTurn)
+        rc_Arduino:Run(0, 1, 255.0 * ZERONE_SpeedAdjustTurn)
+        rc_Arduino:Run(1, 2, 255.0 * ZERONE_SpeedAdjustTurn)
     else
         if ZERONE_IsPressedRight0 then
-            PX2_ARDUINO:Run(0, 1, 255.0 * ZERONE_SpeedAdjustGo)
-            PX2_ARDUINO:Run(1, 1, 255.0 * ZERONE_SpeedAdjustGo)
+            rc_Arduino:Run(0, 1, 255.0 * ZERONE_SpeedAdjustGo)
+            rc_Arduino:Run(1, 1, 255.0 * ZERONE_SpeedAdjustGo)
         elseif ZERONE_IsPressedRight1 then
-            PX2_ARDUINO:Run(0, 2, 255.0 * ZERONE_SpeedAdjustGo)
-            PX2_ARDUINO:Run(1, 2, 255.0 * ZERONE_SpeedAdjustGo)
+            rc_Arduino:Run(0, 2, 255.0 * ZERONE_SpeedAdjustGo)
+            rc_Arduino:Run(1, 2, 255.0 * ZERONE_SpeedAdjustGo)
         else
-            PX2_ARDUINO:Run(0, 0, 255.0 * ZERONE_SpeedAdjustGo)
-            PX2_ARDUINO:Run(1, 0, 255.0 * ZERONE_SpeedAdjustGo)
+            rc_Arduino:Run(0, 0, 255.0 * ZERONE_SpeedAdjustGo)
+            rc_Arduino:Run(1, 0, 255.0 * ZERONE_SpeedAdjustGo)
         end
     end
 end

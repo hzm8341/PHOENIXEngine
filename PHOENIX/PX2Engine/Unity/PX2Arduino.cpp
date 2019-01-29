@@ -15,6 +15,12 @@ const uint8_t START_BYTE = 0x12;
 const uint8_t STOP_BYTE = 0x13;
 const uint8_t ESCAPE_BYTE = 0x7D;
 
+PX2_IMPLEMENT_RTTI(PX2, Object, Arduino);
+PX2_IMPLEMENT_STREAM(Arduino);
+PX2_IMPLEMENT_DEFAULT_STREAM(Object, Arduino);
+PX2_IMPLEMENT_FACTORY(Arduino);
+PX2_IMPLEMENT_DEFAULT_NAMES(Object, Arduino);
+
 //----------------------------------------------------------------------------
 void _ArduinoProcessStr1(Arduino *ardu, std::string recvVal)
 {

@@ -44,9 +44,9 @@ namespace PX2
 		UIFrame *AddTabFrame(const std::string &name, const std::string &title);
 		UIFrame *CreateManyKitFrame();
 		UIFrame *CreateEngineFrame();
-		void _RefreshProjectsLocal();
-		int _GetProjType(const std::string &folderName);
-		void _SimuApp(const std::string &folderName);
+		void _RefreshProjects();
+		int _GetProjType(const std::string &projName);
+		void _SimuApp(const std::string &name);
 		void _OpenEditor();
 		UIItem *_AddProjectItem(const std::string &name, int id, bool isLocalExist,
 			LP_ProjectItem *projItem);
@@ -101,13 +101,7 @@ namespace PX2
 	
 	private:
 		int _CurlLogin(const std::string &userName, const std::string &password);
-		void _GetProjectListCloud(int userID);
-		void _UploadProject(LP_ProjectItem *item, bool isAdd);
-		void _DownloadProject(LP_ProjectItem *item);
-		void _DeleteProject(LP_ProjectItem *item);
 		void _CurlLogout();
-		int _GetNextID();
-		bool _IsLogined() const;
 
 		int mSceneOrientation;
 		UIEditBox *mCreateProEditbox;
@@ -122,15 +116,13 @@ namespace PX2
 
 		std::string mCfgUserName;
 		std::string mCfgPassword;
-		int mUserID;
-		int mNextID;
 
 	public_internal:
 		Pointer0<Project> TheProject;
 
 	public:
 		void ClearProjects();
-		bool IsHasProject(int id, bool isCloud);
+		bool IsHasProject(int id);
 		bool AddProject(LP_ProjectItem *projItem);
 		int GetNumProjects() const;
 		LP_ProjectItem *GetProjectItem(int index);

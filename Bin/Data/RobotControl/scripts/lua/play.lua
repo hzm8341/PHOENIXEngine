@@ -26,6 +26,8 @@ end
 function engine_project_cmd(cmd, param0, param1, param2) 
 end
 
+rc_Arduino = nil
+
 rc_ReturnButton = nil
 rc_ConnectFrame = nil
 rc_FrameHome = nil
@@ -56,6 +58,9 @@ end
 local cornorBtnPos = 70.0
 
 function rc_Play()
+    rc_Arduino = Arduino:New()
+    PX2_PROJ:PoolSet("Arduino", rc_Arduino)
+
     PX2_ENGINECANVAS:SetClearColor(Float4:MakeColor(63, 72, 204, 255))
     PX2_ENGINESCENECANVAS:SetClearColor(Float4:MakeColor(63, 72, 204, 255))
 
@@ -213,5 +218,5 @@ function rc_UICallabck(ptr, callType)
 end
 
 function rc_RobotCtrlLeave()
-    PX2_ARDUINO:Run(Arduino.SDT_NONE, 0)
+    rc_Arduino:Run(Arduino.SDT_NONE, 0)
 end

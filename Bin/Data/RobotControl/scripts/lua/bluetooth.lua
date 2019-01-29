@@ -134,10 +134,10 @@ function rc_ButBluetoothSerialFrameCallabck(ptr, callType)
             end        
         elseif "BtnDlgRight"==name then
             if Application.PLT_WINDOWS==platType or Application.PLT_LINUX==platType then
-                if not PX2_ARDUINO:IsInitlized() then
+                if not rc_Arduino:IsInitlized() then
                     rc_SerialTryToConnect()
                 else
-                    PX2_ARDUINO:Terminate()
+                    rc_Arduino:Terminate()
                 end
             else
                 if not PX2_BLUETOOTH:IsConnected() then
@@ -234,20 +234,20 @@ function rc_SerialTryToConnect()
         local namePath = item:GetUserDataString("NamePath")
         PX2_LOGGER:LogInfo("RobotControl", "NamePath:"..namePath)        
         if ""~=namePath then
-            PX2_ARDUINO:Initlize(Arduino.M_SERIAL, namePath, 9600)
+            rc_Arduino:Initlize(Arduino.M_SERIAL, namePath, 9600)
         end
     end
 end
 
 function rc_OnStartUp()
     -- Arduino
-    PX2_ARDUINO:VehicleInitMotoBoard4567()
-    --PX2_ARDUINO:VehicleSpeedInit(Arduino.P_2, Arduino.P_8, Arduino.P_3, Arduino.P_9)
+    rc_Arduino:VehicleInitMotoBoard4567()
+    --rc_Arduino:VehicleSpeedInit(Arduino.P_2, Arduino.P_8, Arduino.P_3, Arduino.P_9)
 
-    PX2_ARDUINO:PinMode(Arduino.P_10, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
-    PX2_ARDUINO:ServerInit(0, Arduino.P_A0)
-    PX2_ARDUINO:ServerInit(1, Arduino.P_A1)
+    rc_Arduino:PinMode(Arduino.P_10, Arduino.PM_OUTPUT)
+    rc_Arduino:PinMode(Arduino.P_11, Arduino.PM_OUTPUT)
+    rc_Arduino:PinMode(Arduino.P_12, Arduino.PM_OUTPUT)
+    rc_Arduino:PinMode(Arduino.P_13, Arduino.PM_OUTPUT)
+    rc_Arduino:ServoInit(0, Arduino.P_A0)
+    rc_Arduino:ServoInit(1, Arduino.P_A1)
 end

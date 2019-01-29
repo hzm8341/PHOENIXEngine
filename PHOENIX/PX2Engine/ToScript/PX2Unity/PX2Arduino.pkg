@@ -12,6 +12,9 @@
 	{
 		Arduino();
 		virtual ~Arduino();
+		
+		static Arduino *New();
+		static Arduino *New(const std::string &name);
 
 		enum Mode
 		{

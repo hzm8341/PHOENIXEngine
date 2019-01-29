@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 01/19/19 14:48:17.
+** Generated automatically by tolua++-1.0.92 on 01/29/19 15:53:40.
 */
 
 #ifndef __cplusplus
@@ -42417,6 +42417,60 @@ static int tolua_PX2_Arduino_delete00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: New of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_New00
+static int tolua_PX2_Arduino_New00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   Arduino* tolua_ret = (Arduino*)  Arduino::New();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Arduino");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'New'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: New of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_New01
+static int tolua_PX2_Arduino_New01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Arduino",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  const std::string name = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  {
+   Arduino* tolua_ret = (Arduino*)  Arduino::New(name);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Arduino");
+   tolua_pushcppstring(tolua_S,(const char*)name);
+  }
+ }
+ return 2;
+tolua_lerror:
+ return tolua_PX2_Arduino_New00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -105733,6 +105787,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_PX2_Arduino_new00_local);
    tolua_function(tolua_S,".call",tolua_PX2_Arduino_new00_local);
    tolua_function(tolua_S,"delete",tolua_PX2_Arduino_delete00);
+   tolua_function(tolua_S,"New",tolua_PX2_Arduino_New00);
+   tolua_function(tolua_S,"New",tolua_PX2_Arduino_New01);
    tolua_constant(tolua_S,"M_SERIAL",Arduino::M_SERIAL);
    tolua_constant(tolua_S,"M_BLUETOOTH",Arduino::M_BLUETOOTH);
    tolua_constant(tolua_S,"M_SOCKETUDP_Broadcast",Arduino::M_SOCKETUDP_Broadcast);

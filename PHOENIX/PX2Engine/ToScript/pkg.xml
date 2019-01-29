@@ -4470,6 +4470,13 @@
 			</enum>
 			<function name="Arduino" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="Arduino" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Arduino *" is_retrun="true" type_str="Arduino" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Arduino *" is_retrun="true" type_str="Arduino" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
 			<function name="Reset" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
