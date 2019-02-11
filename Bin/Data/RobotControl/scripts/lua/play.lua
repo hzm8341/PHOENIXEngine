@@ -6,11 +6,12 @@ require("Data/RobotControl/scripts/lua/gamepadpage.lua")
 require("Data/RobotControl/scripts/lua/acceleratorpage.lua")
 require("Data/RobotControl/scripts/lua/voicepage.lua")
 require("Data/RobotControl/scripts/lua/connect.lua")
+require("Data/RobotControl/scripts/lua/question.lua")
 require("Data/RobotControl/scripts/lua/bluetooth.lua")
 require("Data/RobotControl/scripts/lua/common.lua")
 
 function engine_project_preplay() 
-    PX2_APP:SetShowInfo(false)
+    PX2_APP:SetShowInfo(true)
     PX2_BLUETOOTH:SetDataProtocolHex(false)
     rc_AddLanguage()
 end
@@ -30,6 +31,7 @@ rc_Arduino = nil
 
 rc_ReturnButton = nil
 rc_ConnectFrame = nil
+rc_QuestionFrame = nil
 rc_FrameHome = nil
 rc_FramePad = nil
 rc_FrameAxis = nil
@@ -82,6 +84,21 @@ function rc_Play()
     btnConnect:SetStateColorDefaultWhite()
     btnConnect:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/RobotControl/images/bluetooth.png")
 
+    local btnQuestion = UIButton:New("BtnQuestion")
+    frameRC:AttachChild(btnQuestion)
+    btnQuestion.LocalTransform:SetTranslateY(-50.0)
+    btnQuestion:SetAnchorHor(1.0, 1.0)
+    btnQuestion:SetAnchorVer(1.0, 1.0)
+    btnQuestion:SetAnchorParamHor(-cornorBtnPos*2.0, -cornorBtnPos*2.0)
+    btnQuestion:SetAnchorParamVer(-cornorBtnPos, -cornorBtnPos)
+    btnQuestion:SetSize(60.0, 60.0)
+    btnQuestion:SetScriptHandler("rc_UICallabck")
+    btnQuestion:SetStateColorDefaultWhite()
+    btnQuestion:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/RobotControl/images/directctrl/slider1.png")
+    local text = btnQuestion:CreateAddText("?")
+    text:GetText():SetFontColor(Float3.BLACK)
+    text:GetText():SetFontSize(32, 32)
+
     local btnReturn = UIButton:New("BtnReturn")
     frameRC:AttachChild(btnReturn)
     rc_ReturnButton = btnReturn
@@ -103,6 +120,14 @@ function rc_Play()
     cntFrame:SetAnchorHor(0.0, 1.0)
     cntFrame:SetAnchorVer(0.0, 1.0)
     cntFrame:Show(false)
+
+    local questionFrame = rc_Question()
+    frameRC:AttachChild(questionFrame)
+    rc_QuestionFrame = questionFrame
+    questionFrame.LocalTransform:SetTranslateY(-100.0)
+    questionFrame:SetAnchorHor(0.0, 1.0)
+    questionFrame:SetAnchorVer(0.0, 1.0)
+    questionFrame:Show(false)
 
     local frameHome = rc_FrameHomePage()
     frameRC:AttachChild(frameHome)
@@ -158,8 +183,11 @@ function rc_UICallabck(ptr, callType)
 
         if "BtnConnect" == name then
             rc_ConnectFrame:Show(true)
+        elseif "BtnQuestion" == name then
+            rc_QuestionFrame:Show(true)
         elseif "BtnDlgClose" == name then
             rc_ConnectFrame:Show(false)
+            rc_QuestionFrame:Show(false)
         elseif "BtnCtrl" == name then
             rc_ThePageType = PageType.PT_CTRL
 

@@ -77,6 +77,13 @@ function rc_FramePadPage()
         elseif 3==i then
             slider:SetPercent(fVal3, true)
         end
+        if 1 == i then
+            text:GetText():SetText("Servo");
+        elseif 2 == i then
+            text:GetText():SetText("Go");
+        elseif 3==i then
+            text:GetText():SetText("Trun");
+        end
         posVer = posVer + 80.0
     end
 
@@ -450,6 +457,12 @@ function rc_UIPadCtrlCallback(ptr,callType)
             rc_IsPressedRight1 = true
             rc_UpdateButtonsPress()
         end
+        if "BtnRoundLeft" == name then
+            rc_Arduino:DigitalWrite(Arduino.P_8, true)
+        end
+        if "BtnRoundRight" == name then
+            rc_Arduino:DigitalWrite(Arduino.P_9, true)
+        end
     elseif UICT_RELEASED ==callType then
         PX2_GR:PlayNormal(obj)        
         if "BtnClose" == name then
@@ -478,6 +491,12 @@ function rc_UIPadCtrlCallback(ptr,callType)
         if "BtnRight1" == name then
             rc_IsPressedRight1 = false
             rc_UpdateButtonsPress()
+        end
+        if "BtnRoundLeft" == name then
+            rc_Arduino:DigitalWrite(Arduino.P_8, false)
+        end
+        if "BtnRoundRight" == name then
+            rc_Arduino:DigitalWrite(Arduino.P_9, false)
         end
     elseif UICT_RELEASED_NOTPICK == callType then
         PX2_GR:PlayNormal(obj)
@@ -575,19 +594,19 @@ function rc_UIPadCtrlCallback(ptr,callType)
         end
     elseif UICT_CHECKED == callType then
         if "CheckButton_LED_L"==name then
-            rc_Arduino:DigitalWrite(Arduino.P_11, true)
+            rc_Arduino:DigitalWrite(Arduino.P_8, true)
         elseif "CheckButton_LED_R"==name then
-            rc_Arduino:DigitalWrite(Arduino.P_12, true)
+            rc_Arduino:DigitalWrite(Arduino.P_9, true)
         elseif "CheckButton_Sound"==name then
-            rc_Arduino:DigitalWrite(Arduino.P_10, true)
+            rc_Arduino:AnalogWrite(Arduino.P_3, 150);
         end
     elseif UICT_DISCHECKED == callType then
         if "CheckButton_LED_L"==name then
-            rc_Arduino:DigitalWrite(Arduino.P_11, false)
+            rc_Arduino:DigitalWrite(Arduino.P_8, false)
         elseif "CheckButton_LED_R"==name then
-            rc_Arduino:DigitalWrite(Arduino.P_12, false)
+            rc_Arduino:DigitalWrite(Arduino.P_9, false)
         elseif "CheckButton_Sound"==name then
-            rc_Arduino:DigitalWrite(Arduino.P_10, false)
+            rc_Arduino:AnalogWrite(Arduino.P_3, 0);
         end
     end
 end
