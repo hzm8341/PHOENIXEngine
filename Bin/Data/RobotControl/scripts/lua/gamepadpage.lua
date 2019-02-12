@@ -569,8 +569,23 @@ function rc_UIPadCtrlCallback(ptr,callType)
     elseif UICT_ROUND_DRAG == callType then
         if "RoundCtrl" == name then      
             local leftMoveType = obj:GetDragingLeftMoveType()
+            if rc_IsRevertLeft then
+                if 1==leftMoveType then
+                    leftMoveType=2
+                elseif 2==leftMoveType then
+                leftMoveType=1
+                end
+            end
             local leftMoveSpeed = obj:GetDragingLeftMoveSpeed()
+            
             local rightMoveType = obj:GetDragingRightMoveType()
+            if rc_IsRevertRight then
+                if 1==rightMoveType then
+                    rightMoveType=2
+                elseif 2==rightMoveType then
+                    rightMoveType=1
+                end
+            end
             local rightMoveSpeed = obj:GetDragingRightMoveSpeed()
             if leftMoveType == rightMoveType then
                 leftMoveSpeed = leftMoveSpeed * rc_SpeedAdjustGo
@@ -681,10 +696,16 @@ function rc_UpdateButtonsPress()
     if rc_IsRevertLeft then
         rc_leftGo = 2
         rc_leftBack = 1
+    else
+        rc_leftGo = 1
+        rc_leftBack = 2
     end
     if rc_IsRevertRight then
         rc_rightGo = 2
         rc_rightBack = 1
+    else
+        rc_rightGo = 1
+        rc_rightBack = 2
     end
 
     if rc_IsPressedLeft0 then
