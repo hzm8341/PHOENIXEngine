@@ -41,6 +41,8 @@ function rc_AddLanguage()
 	PX2_LM_APP:AddItem1("LED_L", "左灯")
 	PX2_LM_APP:AddItem1("LED_R", "右灯")
 	PX2_LM_APP:AddItem1("Sound", "声音")
+	PX2_LM_APP:AddItem1("RevertLeft", "左反")
+	PX2_LM_APP:AddItem1("RevertRight", "右反")
 
 	PX2_LM_APP:AddItem1("Hor", "水平")
 	PX2_LM_APP:AddItem1("Ver", "垂直")

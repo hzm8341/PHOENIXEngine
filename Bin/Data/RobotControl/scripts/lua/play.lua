@@ -11,7 +11,7 @@ require("Data/RobotControl/scripts/lua/bluetooth.lua")
 require("Data/RobotControl/scripts/lua/common.lua")
 
 function engine_project_preplay() 
-    PX2_APP:SetShowInfo(true)
+    PX2_APP:SetShowInfo(false)
     PX2_BLUETOOTH:SetDataProtocolHex(false)
     rc_AddLanguage()
 end
@@ -43,6 +43,9 @@ rc_TextHeight = 200.0
 
 rc_SpeedAdjustGo = 0.5
 rc_SpeedAdjustTurn = 0.5
+
+rc_IsRevertLeft = false
+rc_IsRevertRight = false
 
 PageType = {
     PT_HOME = 0,

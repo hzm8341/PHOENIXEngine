@@ -46,6 +46,23 @@ function rc_FramePadPage()
         fVal3 = 0.0 + strlCfg3
     end
 
+    local strCfgRevertLeft = PX2_PROJ:GetConfig("RevertLeft")
+    if ""==strCfgRevertLeft then
+        rc_IsRevertLeft = false
+    elseif "true"==strCfgRevertLeft then
+        rc_IsRevertLeft = true
+    elseif "false"==strCfgRevertLeft then
+        rc_IsRevertLeft = false
+    end
+    local strCfgRevertRight = PX2_PROJ:GetConfig("RevertRight")
+    if ""==strCfgRevertRight then
+        rc_IsRevertRight = false
+    elseif "true"==strCfgRevertRight then
+        rc_IsRevertRight = true 
+    elseif "false"==strCfgRevertRight then
+        rc_IsRevertRight = false
+    end
+
     local posVer = 80.0
     for i=1, 3 do
         local name = "slider"..i
@@ -365,6 +382,38 @@ function rc_CreateFrameMode1(parentFrame)
     btnRoundRight:SetSize(130, 130)
     btnRoundRight:SetScriptHandler("rc_UIPadCtrlCallback")
     btnRoundRight:CreateAddText(""..PX2_LM_APP:GetValue("Right"))
+
+    local spdRevertBtnLeft = UICheckButton:New("CheckButton_RevertLeft")
+    uiFrameRight:AttachChild(spdRevertBtnLeft)
+    spdRevertBtnLeft.LocalTransform:SetTranslateY(-10.0)
+    spdRevertBtnLeft:SetAnchorHor(0.0, 0.0)
+    spdRevertBtnLeft:SetAnchorParamHor(40.0, 40.0)
+    spdRevertBtnLeft:SetAnchorVer(0.0, 0.0)
+    spdRevertBtnLeft:SetAnchorParamVer(20, 20)
+    spdRevertBtnLeft:SetPivot(0.5, 0.5)
+    spdRevertBtnLeft:SetSize(40, 40)
+    local fText = spdRevertBtnLeft:CreateAddText(""..PX2_LM_APP:GetValue("RevertLeft"))
+    fText:SetSize(160, 40)
+    fText:GetText():SetFontColor(Float3.WHITE)
+    fText:SetAnchorParamHor(-40.0, -40.0)
+    spdRevertBtnLeft:SetScriptHandler("rc_UIPadCtrlCallback")
+    spdRevertBtnLeft:Check(rc_IsRevertLeft, false)
+
+    local spdRevertBtnRight = UICheckButton:New("CheckButton_RevertRight")
+    uiFrameRight:AttachChild(spdRevertBtnRight)
+    spdRevertBtnRight.LocalTransform:SetTranslateY(-10.0)
+    spdRevertBtnRight:SetAnchorHor(1.0, 1.0)
+    spdRevertBtnRight:SetAnchorParamHor(-40.0, -40.0)
+    spdRevertBtnRight:SetAnchorVer(0.0, 0.0)
+    spdRevertBtnRight:SetAnchorParamVer(20, 20)
+    spdRevertBtnRight:SetPivot(0.5, 0.5)
+    spdRevertBtnRight:SetSize(40, 40)
+    local fText = spdRevertBtnRight:CreateAddText(""..PX2_LM_APP:GetValue("RevertRight"))
+    fText:SetSize(160, 40)
+    fText:GetText():SetFontColor(Float3.WHITE)
+    fText:SetAnchorParamHor(40.0, 40.0)
+    spdRevertBtnRight:SetScriptHandler("rc_UIPadCtrlCallback")
+    spdRevertBtnRight:Check(rc_IsRevertRight, false)
 end
 
 function rc_CreateFrameMode2(parentFrame)
@@ -599,6 +648,12 @@ function rc_UIPadCtrlCallback(ptr,callType)
             rc_Arduino:DigitalWrite(Arduino.P_9, true)
         elseif "CheckButton_Sound"==name then
             rc_Arduino:AnalogWrite(Arduino.P_3, 150);
+        elseif "CheckButton_RevertLeft"==name then
+            rc_IsRevertLeft = true
+            PX2_PROJ:SetConfig("RevertLeft", "true")
+        elseif "CheckButton_RevertRight"==name then
+            rc_IsRevertRight = true
+            PX2_PROJ:SetConfig("RevertRight", "true")
         end
     elseif UICT_DISCHECKED == callType then
         if "CheckButton_LED_L"==name then
@@ -607,24 +662,44 @@ function rc_UIPadCtrlCallback(ptr,callType)
             rc_Arduino:DigitalWrite(Arduino.P_9, false)
         elseif "CheckButton_Sound"==name then
             rc_Arduino:AnalogWrite(Arduino.P_3, 0);
+        elseif "CheckButton_RevertLeft"==name then
+            rc_IsRevertLeft = false 
+            PX2_PROJ:SetConfig("RevertLeft", "false")
+        elseif "CheckButton_RevertRight"==name then
+            rc_IsRevertRight = false 
+            PX2_PROJ:SetConfig("RevertRight", "false")
         end
     end
 end
 
+rc_leftGo = 1
+rc_leftBack = 2
+rc_rightGo = 1
+rc_rightBack = 2
+
 function rc_UpdateButtonsPress()
+    if rc_IsRevertLeft then
+        rc_leftGo = 2
+        rc_leftBack = 1
+    end
+    if rc_IsRevertRight then
+        rc_rightGo = 2
+        rc_rightBack = 1
+    end
+
     if rc_IsPressedLeft0 then
-        rc_Arduino:Run(0, 2, 255.0 * rc_SpeedAdjustTurn)
-        rc_Arduino:Run(1, 1, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(0, rc_leftBack, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(1, rc_rightGo, 255.0 * rc_SpeedAdjustTurn)
     elseif rc_IsPressedLeft1 then
-        rc_Arduino:Run(0, 1, 255.0 * rc_SpeedAdjustTurn)
-        rc_Arduino:Run(1, 2, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(0, rc_leftGo, 255.0 * rc_SpeedAdjustTurn)
+        rc_Arduino:Run(1, rc_rightBack, 255.0 * rc_SpeedAdjustTurn)
     else
         if rc_IsPressedRight0 then
-            rc_Arduino:Run(0, 1, 255.0 * rc_SpeedAdjustGo)
-            rc_Arduino:Run(1, 1, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(0, rc_leftGo, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(1, rc_rightGo, 255.0 * rc_SpeedAdjustGo)
         elseif rc_IsPressedRight1 then
-            rc_Arduino:Run(0, 2, 255.0 * rc_SpeedAdjustGo)
-            rc_Arduino:Run(1, 2, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(0, rc_leftBack, 255.0 * rc_SpeedAdjustGo)
+            rc_Arduino:Run(1, rc_rightBack, 255.0 * rc_SpeedAdjustGo)
         else
             rc_Arduino:Run(0, 0, 255.0 * rc_SpeedAdjustGo)
             rc_Arduino:Run(1, 0, 255.0 * rc_SpeedAdjustGo)
