@@ -111,6 +111,8 @@ void Application::_ProcessReWrite(const std::string &projName)
 //----------------------------------------------------------------------------
 bool Application::LoadProject(const std::string &name, bool doUpdate)
 {
+	PX2_LOG_INFO("LoadProject %s", name.c_str());
+
 	if (name.empty())
 		return false;
 
@@ -203,6 +205,8 @@ bool Application::LoadProject(const std::string &name, bool doUpdate)
 //----------------------------------------------------------------------------
 bool Application::LoadProjectByPath(const std::string &pathname)
 {
+	PX2_LOG_INFO("LoadProjectByPath %s", pathname.c_str());
+
 	bool canDoChange = (Application::PT_NONE == GetPlayType());
 	if (!canDoChange) return false;
 

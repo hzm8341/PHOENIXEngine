@@ -21,6 +21,8 @@ bool AppPlayerApp::Initlize()
 {
 	if (App::Initlize())
 	{
+		PX2_LOG_INFO("App::Initlize() end");
+
 		std::string projectName = PX2_APP.GetBoostProjectName();
 
 		if (!mCmdProjectName.empty())
