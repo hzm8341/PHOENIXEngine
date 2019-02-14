@@ -6,7 +6,7 @@ LOCAL_MODULE := AI
 
 FILE_LIST := $(wildcard $(LOCAL_PATH)/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/OpenSteer/src/*cpp)
-FILE_LIST += $(wildcard $(LOCAL_PATH)/iiiroboticslidar2/*cpp)
+FILE_LIST += $(wildcard $(LOCAL_PATH)/iiiroboticslidar2/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/detour/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/recast/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/SkillSystem/*cpp)
@@ -26,6 +26,7 @@ $(LOCAL_PATH)/recast/include/ \
 $(LOCAL_PATH)/detour/include/ \
 $(LOCAL_PATH)/SkillSystem/ \
 $(LOCAL_PATH)/Slam2D/ \
+$(LOCAL_PATH)/Slam2D/Eigen/ \
 $(PX2_ROOT)/PX2SDK/Include/ \
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
