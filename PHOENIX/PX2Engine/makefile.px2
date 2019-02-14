@@ -38,6 +38,7 @@ endif
 	cd AI/SkillSystem					; make -f makeskillsystem.px2 CFG=$(CFG)
 	cd AI/recast						; make -f makerecast.px2 CFG=$(CFG)
 	cd AI/detour						; make -f makedetour.px2 CFG=$(CFG)
+	cd AI/Slam2D						; make -f makeslam2d.px2 CFG=$(CFG)
 	cd AI							 		&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Logic							 	&& make -f ../makeprj.px2 CFG=$(CFG)
 	cd Application							&& make -f ../makeprj.px2 CFG=$(CFG)
