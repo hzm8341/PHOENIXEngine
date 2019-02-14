@@ -14,6 +14,10 @@
 #include "PX2Arduino.hpp"
 #include "PX2ResourceManager.hpp"
 #include "PX2AIAgentPath.hpp"
+#if defined PX2_USE_SLAM2D
+#include "Slam2DPlugin.hpp"
+#endif
+#include "PX2PluginManager.hpp"
 using namespace PX2;
 
 #if defined _WIN32 || defined WIN32
@@ -100,6 +104,11 @@ mPathUpdateTiming(0.0f)
 	mIsMapDataChanged = true;
 
 	mArduino = new0 Arduino();
+
+#if defined PX2_USE_SLAM2D
+	mSlam2DPlugin = new Slam2DPlugin();
+	PX2_PLUGINMAN.InstallPlugin(mSlam2DPlugin);
+#endif
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -110,6 +119,10 @@ Robot::~Robot()
 	}
 
 	ShutdownShareMenory();
+
+#if defined PX2_USE_SLAM2D
+	PX2_PLUGINMAN.UninstallPlugin(mSlam2DPlugin);
+#endif
 }
 //----------------------------------------------------------------------------
 bool Robot::SaveMap(const std::string &filename)
@@ -1166,11 +1179,6 @@ bool Robot::LidarOpen(const std::string &portIP, int baudratePort)
 	}
 
 	return false;
-}
-//----------------------------------------------------------------------------
-LiDar *Robot::GetLidar()
-{
-	return mLiDar;
 }
 //----------------------------------------------------------------------------
 bool Robot::IsArduinoConnected() const

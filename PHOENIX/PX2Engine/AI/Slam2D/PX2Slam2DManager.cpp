@@ -285,10 +285,10 @@ static int curRDCIndex = 0;
 RslidarDataComplete _GetRDC(float degree,
 	std::vector<RslidarDataComplete> &lData)
 {
-	for (int i = curRDCIndex; i < lData.size(); i++)
+	for (int i = curRDCIndex; i < (int)lData.size(); i++)
 	{
 		int nextI = i + 1;
-		if (nextI > lData.size() - 1)
+		if (nextI >(int)lData.size() - 1)
 			nextI = i;
 
 		if (lData[i].angle <= degree && degree < lData[nextI].angle)
@@ -309,7 +309,7 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 
 		if (liDar)
 		{
-			liDar->Update(appSeconds, elapsedSeconds);
+			liDar->Update((float)appSeconds, (float)elapsedSeconds);
 
 			hector_slam.setUpdateMap(PX2_ROBOT.IsSlamMapUpdate());
 
@@ -334,7 +334,7 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 			{
 				lsd0.Datas[i].angle = lData[i].angle;
 				lsd0.Datas[i].signal = lData[i].signal;
-				lsd0.Datas[i].distance = lData[i].distance * 1000.0;
+				lsd0.Datas[i].distance = lData[i].distance * 1000.0f;
 			}
 
 			float offsetDegree = PX2_ROBOT.GetOffsetDegree();

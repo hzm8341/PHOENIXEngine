@@ -12,9 +12,9 @@
 #include "PX2ScriptManager.hpp"
 #include "PX2LuaPlusContext.hpp"
 
-//#define PX2_USE_BLUEBLOCK_HPP
+//#define PX2_USE_BLUEBLOCK
 
-#if defined PX2_USE_BLUEBLOCK_HPP
+#if defined PX2_USE_BLUEBLOCK
 #include "BlueBlockPlugin.hpp"
 #endif
 #include "PX2PluginManager.hpp"
@@ -27,14 +27,14 @@ mBlueBlockPlugin(0)
 {
 	mPlatformType = PT_EDITOR;
 
-#if defined PX2_USE_BLUEBLOCK_HPP
+#if defined PX2_USE_BLUEBLOCK
 	mBlueBlockPlugin = new BlueBlockPlugin();
 #endif
 }
 //----------------------------------------------------------------------------
 LogicManager::~LogicManager()
 {
-#if defined PX2_USE_BLUEBLOCK_HPP
+#if defined PX2_USE_BLUEBLOCK
 	PX2_PLUGINMAN.UninstallPlugin(mBlueBlockPlugin);
 #endif
 }
@@ -46,7 +46,7 @@ bool LogicManager::Initlize()
 	_InitCtrls();
 	_InitFuns();
 
-#if defined PX2_USE_BLUEBLOCK_HPP
+#if defined PX2_USE_BLUEBLOCK
 	PX2_PLUGINMAN.InstallPlugin(mBlueBlockPlugin);
 #endif
 

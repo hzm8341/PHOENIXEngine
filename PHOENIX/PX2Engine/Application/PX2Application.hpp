@@ -171,7 +171,7 @@ namespace PX2
 		Creater *mCreater;
 		VoiceSDK *mVoiceSDK;
 		STEAMEduManager *mSTEAMEduManager;
-		Robot *mSlam;
+		Robot *mRobot;
 
 		EngineServerPtr mEngineServer;
 		EngineClientConnectorPtr mEngineClient;

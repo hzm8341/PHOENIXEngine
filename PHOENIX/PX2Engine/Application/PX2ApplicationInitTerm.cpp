@@ -290,7 +290,7 @@ bool Application::Initlize(AppInitConfig *cfg)
 	mSTEAMEduManager = new0 STEAMEduManager();
 	mSTEAMEduManager->Initlize();
 
-	mSlam = new0 Robot();
+	mRobot = new0 Robot();
 
 	Server::ServerType st;
 #if defined (WIN32) || defined (_WIN32)
@@ -842,11 +842,11 @@ bool Application::Terminate()
 		STEAMEduManager::Set(0);
 	}
 
-	if (mSlam)
+	if (mRobot)
 	{
-		mSlam->ShutdownShareMenory();
+		mRobot->ShutdownShareMenory();
 
-		delete0(mSlam);
+		delete0(mRobot);
 		Robot::Set(0);
 	}
 
@@ -1363,8 +1363,8 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	if (mSTEAMEduManager)
 		mSTEAMEduManager->Update((float)elapsedSeconds);
 
-	if (mSlam)
-		mSlam->Update(appSeconds, elapsedSeconds);
+	if (mRobot)
+		mRobot->Update(appSeconds, elapsedSeconds);
 
 	PX2_BLUETOOTH.Update((float)elapsedSeconds);
 	PX2_WIFI.Update((float)elapsedSeconds);

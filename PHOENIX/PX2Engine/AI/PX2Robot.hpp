@@ -23,6 +23,11 @@ namespace PX2
 
 	class VoxelSection;
 
+#define PX2_USE_SLAM2D
+#if defined PX2_USE_SLAM2D
+	class Slam2DPlugin;
+#endif
+
 	class PX2_ENGINE_ITEM Robot : public Singleton<Robot>
 	{
 	public:
@@ -109,6 +114,7 @@ namespace PX2
 		void CreateLidar();
 		bool LidarOpen(const std::string &portIP, int baudratePort);
 		LiDar *GetLidar();
+		Arduino *GetArduino();
 
 		bool IsArduinoConnected() const;
 
@@ -185,6 +191,9 @@ namespace PX2
 		float m2DSlameAngle;
 
 		RobotMapData mInitMapData;
+#if defined PX2_USE_SLAM2D
+		Slam2DPlugin *mSlam2DPlugin;
+#endif
 
 		// common
 	public:

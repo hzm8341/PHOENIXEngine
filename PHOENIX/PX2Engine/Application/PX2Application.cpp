@@ -38,7 +38,7 @@ mLogicManager(0),
 mCreater(0),
 mVoiceSDK(0),
 mSTEAMEduManager(0),
-mSlam(0),
+mRobot(0),
 
 mIsInBackground(false),
 mBeforeInBackgroundMusicEnable(true),

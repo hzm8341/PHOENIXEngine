@@ -106,3 +106,13 @@ inline Robot::RoleType Robot::GetRoleType() const
 	return mRoleType;
 }
 //----------------------------------------------------------------------------
+inline LiDar *Robot::GetLidar()
+{
+	return mLiDar;
+}
+//----------------------------------------------------------------------------
+inline Arduino *Robot::GetArduino()
+{
+	return mArduino;
+}
+//----------------------------------------------------------------------------
