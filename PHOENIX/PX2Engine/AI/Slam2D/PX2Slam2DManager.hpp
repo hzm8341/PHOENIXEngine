@@ -13,8 +13,6 @@
 #include "PX2Mutex.hpp"
 #include "PX2ScopedCS.hpp"
 #include "HectorMapping.h"
-#include "flexiport.h"
-#include "buffer.h"
 
 namespace PX2
 {

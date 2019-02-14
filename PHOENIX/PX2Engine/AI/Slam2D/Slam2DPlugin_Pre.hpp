@@ -5,6 +5,7 @@
 
 #include "PX2CorePre.hpp"
 
+#define SLAM2D_DLL_EXPORT
 #if defined(SLAM2D_DLL_EXPORT)
 #define SLAM2D_DLL_ITEM __declspec(dllexport)
 #elif defined(SLAM2D_DLL_IMPORT)

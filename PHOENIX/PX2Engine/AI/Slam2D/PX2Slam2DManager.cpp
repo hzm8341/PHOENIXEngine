@@ -7,7 +7,7 @@
 #include "PX2Robot.hpp"
 #include "PX2Application.hpp"
 #include "PX2DynLibManager.hpp"
-#include "PX2Arduino.hpp"
+#include "PX2Robot.hpp"
 #include <iostream>
 using namespace PX2;
 using namespace std;
@@ -411,7 +411,7 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 			}
 			// end refresh
 #else
-			curY = PX2_ARDUINO.GetCurAxisObj().Y + offsetDegree;
+			curY = PX2_ROBOT.GetArduino()->GetCurAxisObj().Y + offsetDegree;
 
 			LiDarSlamData &lsd = lsd0;
 			if (!lsd.Datas.empty())
