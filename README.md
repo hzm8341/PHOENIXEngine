@@ -118,7 +118,7 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 
 	在目录PHOENIXEngine/PHOENIX/Projects/Client/Sample中执行:make CFG=ReleaseDynamic -f makefile.px2
 	
-**4.1如果具体的插件是动态链接库，需要编译c++源文件，例如插件名称为Slam2D编译项目库为Slam2D.so
+**4.1如果具体的插件是动态链接库，需要编译c++源文件，例如插件名称为Slam2D编译项目库为Slam2D.so（ 新版Slam2D已经移动到引擎本体，所以开发Slam机器人不再需要单独编译Slam2D插件）
 
 	在目录PHOENIXEngine/PHOENIX/Plugins/Slam2D中执行:make CFG=ReleaseDynamic -f makefile.px2
 
@@ -145,7 +145,7 @@ ThirdPartiesLibs.zip：[https://pan.baidu.com/s/1kOyEf1ae9liBbLZNYQ-Y2Q](https:/
 
 	在目录PHOENIXEngine/PHOENIX/Projects/Client/Sample中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 	
-**4.1如果具体的插件是动态链接库，需要编译c++源文件，例如插件名称为Slam2D编译项目库为Slam2D.so
+**4.1如果具体的插件是动态链接库，需要编译c++源文件，例如插件名称为Slam2D编译项目库为Slam2D.so（ 新版Slam2D已经移动到引擎本体，所以开发Slam机器人不再需要单独编译Slam2D插件）
 
 	在目录PHOENIXEngine/PHOENIX/Plugins/Slam2D中执行:make CFG=ReleaseARMDynamic -f makefile.px2
 
