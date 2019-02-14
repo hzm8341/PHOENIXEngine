@@ -70,6 +70,7 @@ INCPATH := ./ \
 	-I ./eigen/src/UmfPackSupport/ \
 	-I ../../../PX2Engine/Unity/ \
 	-I ../../../PX2Engine/AI/ \
+	-I ../../../PX2Engine/Application/ \
     -I ../../../PX2SDK/Include
 	
 INCDIR := ../../../PX2SDK/Include/
