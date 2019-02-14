@@ -71,6 +71,10 @@ INCPATH := ./ \
 	-I ../../../PX2Engine/Unity/ \
 	-I ../../../PX2Engine/AI/ \
 	-I ../../../PX2Engine/Application/ \
+	-I ../../../PX2Engine/Logic/ \
+	-I ../../../PX2Engine/Core/ \
+	-I ../../../PX2Engine/Mathematics/ \
+	-I ../../../PX2Engine/Graphics/ \
     -I ../../../PX2SDK/Include
 	
 INCDIR := ../../../PX2SDK/Include/
