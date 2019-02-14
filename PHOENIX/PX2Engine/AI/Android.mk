@@ -10,6 +10,7 @@ FILE_LIST += $(wildcard $(LOCAL_PATH)/iiiroboticslidar2/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/detour/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/recast/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/SkillSystem/*cpp)
+FILE_LIST += $(wildcard $(LOCAL_PATH)/Slam2D/*cpp)
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%) 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
@@ -24,6 +25,7 @@ $(LOCAL_PATH)/iiiroboticslidar2/ \
 $(LOCAL_PATH)/recast/include/ \
 $(LOCAL_PATH)/detour/include/ \
 $(LOCAL_PATH)/SkillSystem/ \
+$(LOCAL_PATH)/Slam2D/ \
 $(PX2_ROOT)/PX2SDK/Include/ \
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..

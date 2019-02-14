@@ -323,7 +323,6 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 				isHasAlreadyRuned = true;
 			}
 
-
 			curRDCIndex = 0;
 			std::vector<RslidarDataComplete> lData = liDar->GetLiDarData();
 			int size = lData.size();
