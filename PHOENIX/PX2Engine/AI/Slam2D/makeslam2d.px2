@@ -68,6 +68,8 @@ INCPATH := ./ \
 	-I ./eigen/src/SuperLUSupport/ \
 	-I ./eigen/src/SVD/ \
 	-I ./eigen/src/UmfPackSupport/ \
+	-I ../../../PX2Engine/Unity/ \
+	-I ../../../PX2Engine/AI/ \
     -I ../../../PX2SDK/Include
 	
 INCDIR := ../../../PX2SDK/Include/
