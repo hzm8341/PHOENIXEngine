@@ -6,6 +6,8 @@
 #include "LEDScreen.h"
 #include "LEDScreenDlg.h"
 #include "afxdialogex.h"
+#include "LEDGBCODE.h"
+#include "Globals.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,6 +62,7 @@ void CLEDScreenDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EDIT_LOG, mEditLog);
 	DDX_Control(pDX, IDC_IP_SCREEN, mIP);
+	DDX_Control(pDX, IDC_EDIT_TEXTSEND, mEditSend);
 }
 
 BEGIN_MESSAGE_MAP(CLEDScreenDlg, CDialogEx)
@@ -68,6 +71,7 @@ BEGIN_MESSAGE_MAP(CLEDScreenDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_START_SEVER, &CLEDScreenDlg::OnBnClickedButtonStartSever)
 	ON_EN_CHANGE(IDC_EDIT_LOG, &CLEDScreenDlg::OnEnChangeEditLog)
+	ON_BN_CLICKED(IDC_BUTTON_SEND, &CLEDScreenDlg::OnBnClickedButtonSend)
 END_MESSAGE_MAP()
 
 
@@ -103,6 +107,8 @@ BOOL CLEDScreenDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	mIP.SetAddress(192, 168, 1, 149);
+	SetDlgItemText(IDC_EDIT_TEXTSEND, CString("Test"));
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -170,4 +176,57 @@ void CLEDScreenDlg::OnEnChangeEditLog()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
+}
+
+
+void CLEDScreenDlg::OnBnClickedButtonSend()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString str;
+	mIP.GetWindowText(str);		//目标ip
+	CString ip = str;
+
+	mEditSend.GetWindowText(str);	//显示内容
+	CString info = str;
+
+	UINT mateuid = 61;
+	UINT areaW = 64;
+	UINT areaH = 32;
+
+	UINT movestyle = 1;	//显示方式
+	UINT movespeed = 1;	//移动速度
+	UINT fontsize = 1;	//显示字号
+	UINT fontbody = 1;	//显示字体
+	UINT fontcolor = 1;	//显示颜色
+	UINT stoptim = 0;	//停留时间
+	BOOL brownsave = 1;		//掉电保存
+
+	UINT pixelcolor = 0; // 单双基色
+
+	extern filedll qydll;
+	HINSTANCE Ddll = qydll.Ddll;
+	extern CLEDGBCODEudp LEDGBCODEudp;
+	LEDGBCODEudp.ip = ip;
+	LEDGBCODEudp.mateuid = mateuid;
+	LEDGBCODEudp.areaW = areaW;
+	LEDGBCODEudp.areaH = areaH;
+	LEDGBCODEudp.movestyle = movestyle;
+	LEDGBCODEudp.movespeed = movespeed;
+	LEDGBCODEudp.fontsize = fontsize;
+	LEDGBCODEudp.fontbody = fontbody;
+	LEDGBCODEudp.fontcolor = fontcolor;
+	LEDGBCODEudp.stoptim = stoptim;
+	LEDGBCODEudp.brownsave = brownsave;
+	LEDGBCODEudp.pixelcolor = pixelcolor;
+	LEDGBCODEudp.str = info;
+
+	BOOL sign = LEDGBCODEudp.senddt(Ddll);
+	if (sign)
+	{
+		MessageBox(CString("下发成功"));
+	}
+	else
+	{
+		MessageBox(CString("下发失败"));
+	}
 }

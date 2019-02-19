@@ -11,15 +11,17 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------
+filedll::filedll()
+{
+}
+//----------------------------------------------------------------------------
 filedll::filedll(CString dllname)
 {
 	//加载动态链接库
 	Ddll = LoadLibrary(dllname);
 }
-
+//----------------------------------------------------------------------------
 filedll::~filedll()
 {
 	//释放动态链接库
@@ -28,7 +30,7 @@ filedll::~filedll()
 		FreeLibrary(Ddll);	
 	}
 }
-
+//----------------------------------------------------------------------------
 BOOL CLEDGBCODEtcp::openserverC(const HINSTANCE Ddll)
 {
 	bool sign =false;
@@ -39,7 +41,7 @@ BOOL CLEDGBCODEtcp::openserverC(const HINSTANCE Ddll)
 	};	
 	return sign;
 }
-
+//----------------------------------------------------------------------------
 BOOL CLEDGBCODEtcp::closeserverC(const HINSTANCE Ddll)
 {
 	bool sign =false;
@@ -50,7 +52,7 @@ BOOL CLEDGBCODEtcp::closeserverC(const HINSTANCE Ddll)
 	};		 
 	return sign;
 }
-
+//----------------------------------------------------------------------------
 BOOL CLEDGBCODEtcp::senddt(const HINSTANCE Ddll)
 {
 	BOOL sign = false;
@@ -63,7 +65,7 @@ BOOL CLEDGBCODEtcp::senddt(const HINSTANCE Ddll)
 	}
 	return sign;
 }
-
+//----------------------------------------------------------------------------
 BOOL CLEDGBCODEudp::senddt(const HINSTANCE Ddll)
 {
 	BOOL sign = false;
@@ -76,7 +78,7 @@ BOOL CLEDGBCODEudp::senddt(const HINSTANCE Ddll)
 	}
 	return sign;
 }
-
+//----------------------------------------------------------------------------
 BOOL CLEDGBCODEcom::senddt(const HINSTANCE Ddll)
 {
 	const int timOut = 1000;
@@ -92,4 +94,4 @@ BOOL CLEDGBCODEcom::senddt(const HINSTANCE Ddll)
 	}
 	return sign;
 }
-
+//----------------------------------------------------------------------------

@@ -38,4 +38,6 @@ public:
 	CEdit mEditLog;
 	afx_msg void OnEnChangeEditLog();
 	CIPAddressCtrl mIP;
+	CEdit mEditSend;
+	afx_msg void OnBnClickedButtonSend();
 };

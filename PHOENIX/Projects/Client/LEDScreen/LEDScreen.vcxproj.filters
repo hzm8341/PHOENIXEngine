@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="LED">
+      <UniqueIdentifier>{1a9c80ee-cac0-428c-8038-abd236cafbd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +36,15 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LEDGBCODE.h">
+      <Filter>LED</Filter>
+    </ClInclude>
+    <ClInclude Include="lednm.h">
+      <Filter>LED</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>LED</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LEDScreen.cpp">
@@ -43,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LEDGBCODE.cpp">
+      <Filter>LED</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

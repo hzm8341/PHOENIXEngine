@@ -29,6 +29,7 @@ class filedll
 {
 public:	
 	HINSTANCE Ddll;					//QYLED.Dll文件句柄
+	filedll();
 	filedll(CString dllname);		//构造函数
 	~filedll();						//析构函数	
 };
