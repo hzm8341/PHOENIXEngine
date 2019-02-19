@@ -263,7 +263,7 @@ void Slam2DManager::Initlize()
 void Slam2DManager::Terminate()
 {
 	Slam2DManager::IsRun = false;
-	System::SleepSeconds(0.5f);
+	System::SleepSeconds(0.2f);
 
 	if (mThread)
 	{

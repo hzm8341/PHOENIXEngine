@@ -19,7 +19,9 @@ filedll::filedll()
 filedll::filedll(CString dllname)
 {
 	//º”‘ÿ∂ØÃ¨¡¥Ω”ø‚
+	Ddll = 0;
 	Ddll = LoadLibrary(dllname);
+	int a = 0;
 }
 //----------------------------------------------------------------------------
 filedll::~filedll()

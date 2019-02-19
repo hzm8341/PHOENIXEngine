@@ -252,7 +252,6 @@ public class AppPlayBaseActivity extends Activity
 			VoiceSDK.sTheVoiceSDK = VoiceSDKCreater.Create(this);
 		
 		// usb
-		/*
 		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
         IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
         registerReceiver(mUsbReceiver, filter);
@@ -267,8 +266,7 @@ public class AppPlayBaseActivity extends Activity
     		_OpenDevice();
     		_AssignEndpoint();	
         }
-        */
-        
+
 		// camera
 		//DisplayMetrics dm = new DisplayMetrics();
 		//getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -461,7 +459,6 @@ public class AppPlayBaseActivity extends Activity
 		
 		_RemoveBackTask();
 		
-		/*
 		//before
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -478,7 +475,88 @@ public class AppPlayBaseActivity extends Activity
             	setUsbDevice(null);
             }
         }
-        */
+	}
+	
+	private void setUsbDevice(UsbDevice device) 
+	{
+		 mUsbInterfaceFound = null;
+	     mEndpointOut = null;
+	     mEndpointIn = null;
+	     
+	     for (int i = 0; i < device.getInterfaceCount(); i++) 
+	     {      
+	    	 UsbInterface usbif = device.getInterface(i);
+	    	 
+	    	 UsbEndpoint tOut = null;
+	    	 UsbEndpoint tIn = null;
+	
+	    	 int tEndpointCnt = usbif.getEndpointCount();
+	    	 if (tEndpointCnt >= 2) 
+	    	 {
+	    		 for (int j = 0; j < tEndpointCnt; j++)
+	    		 {
+	    			 if (usbif.getEndpoint(j).getType() == UsbConstants.USB_ENDPOINT_XFER_BULK) 
+	    			 {
+	    				 if (usbif.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_OUT) 
+	    				 {
+	    					 tOut = usbif.getEndpoint(j);
+	    				 } 
+	    				 else if (usbif.getEndpoint(j).getDirection() == UsbConstants.USB_DIR_IN)
+	    				 {
+	    					 tIn = usbif.getEndpoint(j);
+	    				 }
+	    			}
+	    		}
+	    		 
+	    		if (tOut != null && tIn != null)
+	    		{
+	    			 // This interface have both USB_DIR_OUT
+	    			 // and USB_DIR_IN of USB_ENDPOINT_XFER_BULK
+	    			 mUsbInterfaceFound = usbif;
+	    			 mEndpointOut = tOut;
+	    			 mEndpointIn = tIn;
+	    		}
+	    	}
+	    }
+	        
+	    if (mUsbInterfaceFound == null)
+	    {
+	    	return;
+	    }
+	
+	    mDeviceFound = device;
+	        
+	    if (device != null) 
+	    {
+	    	UsbDeviceConnection connection = mUsbManager.openDevice(device);
+	    	if (connection != null && 
+	             connection.claimInterface(mUsbInterfaceFound, true)) 
+	    	{
+	    		mUsbDeviceConnection = connection;
+	    		
+	    		//Thread thread = new Thread(this);
+	    		//thread.start();
+	    	}
+	    	else
+	    	{
+	    		mUsbDeviceConnection = null;
+	    	}
+	    }
+	}
+	
+	// usb
+	private void sendCommand(int control) 
+	 {
+		 synchronized (this) 
+		 {
+			 if (mUsbDeviceConnection != null) 
+			 {
+				 byte[] message = new byte[1];
+				 message[0] = (byte)control;
+				 
+				 mUsbDeviceConnection.bulkTransfer(mEndpointOut, message, message.length, 0);
+	         }
+	     }
 	}
 	
 	// timer
