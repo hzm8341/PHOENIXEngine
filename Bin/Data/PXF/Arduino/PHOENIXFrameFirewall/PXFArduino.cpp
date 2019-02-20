@@ -540,10 +540,12 @@ void PXFArduino::_DistTest()
   delayMicroseconds(10);
   digitalWrite(mPinDistTrigger, LOW);
 
-  mDist = pulseIn(mPinDistEcho, HIGH) / 58.0; //将回波时间换算成cm
-  mDist = (int(mDist * 100.0)) / 100.0;       //保留两位小数
-  if (mDist < 6) mDist = 6;
-  if (mDist > 600) mDist = 600;
+  float dist = pulseIn(mPinDistEcho, HIGH) / 58.0; //将回波时间换算成cm
+  dist = (int(dist * 100.0)) / 100.0;       //保留两位小数
+  if (6 <= dist && dist <= 600)
+  {
+    mDist = dist;
+  }
 }
 //----------------------------------------------------------------------------
 void PXFArduino::_MotoInit10111213()
