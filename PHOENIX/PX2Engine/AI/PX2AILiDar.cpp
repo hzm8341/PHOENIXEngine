@@ -131,7 +131,7 @@ LiDar::~LiDar()
 	if (mLiDarWR)
 	{
 		mLiDarWR->Stop();
-		delete(mLiDarWR);
+		delete0(mLiDarWR);
 		mLiDarWR = 0;
 	}
 
