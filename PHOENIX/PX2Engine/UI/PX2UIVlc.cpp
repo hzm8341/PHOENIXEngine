@@ -156,7 +156,7 @@ void UIVlc::SendToGetCameraView(std::string &url, int port)
 
 	std::string strBuf = "getcameraview";
 
-	UDPServer *udpServer = PX2_APP.GetEngineUDPServerClient();
+	UDPServer *udpServer = PX2_APP.GetEngineUDPServer();
 	udpServer->GetSocket().SendTo(strBuf.c_str(),
 		(int)strBuf.length(), skAddr);
 }

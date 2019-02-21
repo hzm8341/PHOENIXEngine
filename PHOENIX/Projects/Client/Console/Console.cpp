@@ -13,8 +13,8 @@ int main()
 {
 	Application *app = new Application();
 	AppInitConfig cfg;
-	cfg.IsInitSound = false;
-	cfg.IsInitVoice = false;
+	//cfg.IsInitSound = false;
+	//cfg.IsInitVoice = false;
 	cfg.IsInitRobot = false;
 
 	if (app->Initlize(&cfg))
@@ -29,6 +29,8 @@ int main()
 		logger->AddConsoleHandler(LT_INFO | LT_ERROR | LT_USER);
 		logger->SetLogFileInfo(false);
 		logger->StartLogger();
+
+		app->SetInEditor(false);
 
 		while (!app->IsQuit())
 		{

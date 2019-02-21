@@ -32,7 +32,7 @@ void _HardCameraCallback(int width, int height, const char* buf, int size)
 	content += std::string(buf, size);
 
 	SocketAddress sktAdr(fromIP, (int16_t)fromPort);
-	PX2_APP.GetEngineUDPServerClient()->GetSocket().SendTo(content.c_str(), 
+	PX2_APP.GetEngineUDPServer()->GetSocket().SendTo(content.c_str(), 
 		content.length(), sktAdr);
 }
 //----------------------------------------------------------------------------

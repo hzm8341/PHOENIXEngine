@@ -145,25 +145,34 @@ int _ProcessInputString(const std::string &buf)
 			}
 			PX2_LOG_INFO("Serial list: %s", listStr.c_str());
 		}
-
-		std::string param0;
-		std::string param1;
-		std::string param2;
-		if (!contentStr.empty())
+		else if ("net" == cmd)
 		{
-			StringTokenizer stk_(contentStr, ",");
-			if (stk_.Count() > 0)
-				param0 = stk_[0];
-			if (stk_.Count() > 1)
-				param1 = stk_[1];
-			if (stk_.Count() > 2)
-				param2 = stk_[2];
+		
 		}
 
-		PX2_SC_LUA->CallString(std::string("engine_project_cmd") + "(\"" + cmd + "\"" +
-			", " + "\"" + param0 + "\"" ", " 
-			+ "\"" + param1 + "\"" + ", " 
-			+ "\"" + param2 + "\")");
+		Project *proj = Project::GetSingletonPtr();
+		if (proj)
+		{
+			std::string param0;
+			std::string param1;
+			std::string param2;
+			if (!contentStr.empty())
+			{
+				StringTokenizer stk_(contentStr, ",");
+				if (stk_.Count() > 0)
+					param0 = stk_[0];
+				if (stk_.Count() > 1)
+					param1 = stk_[1];
+				if (stk_.Count() > 2)
+					param2 = stk_[2];
+			}
+
+			PX2_SC_LUA->CallString(std::string("engine_project_cmd") 
+				+ "(\"" + cmd + "\"" 
+				+ ", " + "\"" + param0 + "\"" ", "
+				+ "\"" + param1 + "\"" + ", "
+				+ "\"" + param2 + "\")");
+		}
 	}
 
 	return ret;
@@ -304,6 +313,7 @@ bool Application::Initlize(AppInitConfig *cfg)
 	mEngineServer = new0 EngineServer(st, EngineServerPort);
 	mEngineServer->Start();
 	mEngineClient = new0 EngineClientConnector();
+	mEngineClient->SetBroadcastInfo(true);
 
 	LuaPlusContext *luaContext = (LuaPlusContext*)PX2_SC_LUA;
 
@@ -544,9 +554,10 @@ void Application::_RefreshLocalAddress()
 //----------------------------------------------------------------------------
 void Application::_ShutdownClientConnectors()
 {
-	for (int i = 0; i < (int)mGeneralClientConnectors.size(); i++)
+	auto it = mGeneralClientConnectors.begin();
+	for (; it != mGeneralClientConnectors.end(); it++)
 	{
-		GeneralClientConnector *cnt = mGeneralClientConnectors[i];
+		GeneralClientConnector *cnt = it->second;
 		if (cnt)
 		{
 			cnt->Disconnect();
@@ -579,7 +590,7 @@ void Application::SetInEditor(bool isInEditor)
 	if (!mIsInEditor)
 	{
 		GetEngineClientConnector()->Enable(true);
-		CreateEngineUDPServerClient();
+		CreateEngineUDPServer();
 
 		mInputThread->Start(_InputThreadProc);
 	}
@@ -611,23 +622,23 @@ EngineClientConnector *Application::GetEngineClientConnector()
 	return mEngineClient;
 }
 //----------------------------------------------------------------------------
-UDPServer *Application::CreateEngineUDPServerClient()
+UDPServer *Application::CreateEngineUDPServer()
 {
-	mEngineUDPServerClient = 0;
+	mEngineUDPServer = 0;
 
 	IPAddress ipAddr = GetLocalAddressWith10_172_192();
 	SocketAddress udpAddr(ipAddr, EngineUDPPortClient);
 
-	mEngineUDPServerClient = new0 UDPServer(udpAddr);
-	mEngineUDPServerClient->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
-	mEngineUDPServerClient->Start();
+	mEngineUDPServer = new0 UDPServer(udpAddr);
+	mEngineUDPServer->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);
+	mEngineUDPServer->Start();
 
-	return mEngineUDPServerClient;
+	return mEngineUDPServer;
 }
 //----------------------------------------------------------------------------
-UDPServer *Application::GetEngineUDPServerClient()
+UDPServer *Application::GetEngineUDPServer()
 {
-	return mEngineUDPServerClient;
+	return mEngineUDPServer;
 }
 //----------------------------------------------------------------------------
 UDPServer *Application::CreateEngineUDPServerEditor()
@@ -683,32 +694,43 @@ bool Application::ShutdownGeneralServer(GeneralServer *generalServer)
 	return false;
 }
 //----------------------------------------------------------------------------
-GeneralClientConnector *Application::CreateGeneralClientConnector()
+GeneralClientConnector *Application::CreateGetGeneralClientConnector(
+	const std::string &name)
 {
-	GeneralClientConnector *clinetConnector = new0 GeneralClientConnector();
-	mGeneralClientConnectors.push_back(clinetConnector);
-	return clinetConnector;
+	GeneralClientConnector *cnt = GetGeneralClientConnector(name);
+	if (cnt)
+		return cnt;
+
+	cnt = new0 GeneralClientConnector();
+	cnt->SetName(name);
+	mGeneralClientConnectors[name] = cnt;
+	return cnt;
 }
 //----------------------------------------------------------------------------
-bool Application::ShutdownGeneralClientConnector(
-	GeneralClientConnector *connector)
+GeneralClientConnector *Application::GetGeneralClientConnector(
+	const std::string &name)
 {
-	if (connector)
+	auto it = mGeneralClientConnectors.find(name);
+	if (it != mGeneralClientConnectors.end())
 	{
-		connector->Disconnect();
-
-		auto it = mGeneralClientConnectors.begin();
-		for (; it != mGeneralClientConnectors.end(); it++)
-		{
-			if (*it == connector)
-			{
-				mGeneralClientConnectors.erase(it);
-				return true;
-			}
-		}
+		return it->second;
 	}
 
-	return false;
+	return 0;
+}
+//----------------------------------------------------------------------------
+bool Application::ShutdownGeneralClientConnector(const std::string &name)
+{
+	auto it = mGeneralClientConnectors.find(name);
+	if (it == mGeneralClientConnectors.end())
+	{
+		return false;
+	}
+
+	it->second->Disconnect();
+	mGeneralClientConnectors.erase(it);
+
+	return true;
 }
 //----------------------------------------------------------------------------
 void Application::_UpdateGeneralServerConnectors(float elapseSeconds)
@@ -722,12 +744,13 @@ void Application::_UpdateGeneralServerConnectors(float elapseSeconds)
 		}
 	}
 
-	for (int i = 0; i < (int)mGeneralClientConnectors.size(); i++)
+	auto it = mGeneralClientConnectors.begin();
+	for (; it != mGeneralClientConnectors.end(); it++)
 	{
-		GeneralClientConnector *connector = mGeneralClientConnectors[i];
-		if (connector)
+		GeneralClientConnector *cnt = it->second;
+		if (cnt)
 		{
-			connector->Update((float)elapseSeconds);
+			cnt->Update((float)elapseSeconds);
 		}
 	}
 }
@@ -810,9 +833,9 @@ bool Application::Terminate()
 		mEngineServer = 0;
 	}
 
-	if (mEngineUDPServerClient)
+	if (mEngineUDPServer)
 	{
-		mEngineUDPServerClient = 0;
+		mEngineUDPServer = 0;
 	}
 
 	if (mEngineDUPServerEditor)
@@ -1383,8 +1406,8 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	if (mEngineClient)
 		mEngineClient->Update((float)elapsedSeconds);
 
-	if (mEngineUDPServerClient)
-		mEngineUDPServerClient->Update((float)elapsedSeconds);
+	if (mEngineUDPServer)
+		mEngineUDPServer->Update((float)elapsedSeconds);
 
 	if (mEngineDUPServerEditor)
 		mEngineDUPServerEditor->Update((float)elapsedSeconds);

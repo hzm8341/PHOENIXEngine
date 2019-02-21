@@ -30,19 +30,20 @@
 		std::string GetLocalAddressStr(int i);
 	
 		EngineServer *GetEngineServer();
-		EngineClientConnector *GetEngineClientConnector();	
-		
-		UDPServer *CreateEngineUDPServerClient();
-		UDPServer *GetEngineUDPServerClient();
-		
+		EngineClientConnector *GetEngineClientConnector();
+
+		UDPServer *CreateEngineUDPServer();
+		UDPServer *GetEngineUDPServer();
+
 		UDPServer *CreateEngineUDPServerEditor();
 		UDPServer *GetEngineUDPServerEditor();
 	
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
 		bool ShutdownGeneralServer(GeneralServer *generalServer);
-		GeneralClientConnector *CreateGeneralClientConnector();
-		bool ShutdownGeneralClientConnector(GeneralClientConnector *connector);
+		GeneralClientConnector *CreateGetGeneralClientConnector(const std::string &name);
+		GeneralClientConnector *GetGeneralClientConnector(const std::string &name);
+		bool ShutdownGeneralClientConnector(const std::string &name);
 
 		// Update
 	public:

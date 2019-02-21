@@ -10305,10 +10305,10 @@
 			<function name="GetEngineClientConnector" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="EngineClientConnector *" is_retrun="true" type_str="EngineClientConnector" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
-			<function name="CreateEngineUDPServerClient" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+			<function name="CreateEngineUDPServer" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="UDPServer *" is_retrun="true" type_str="UDPServer" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
-			<function name="GetEngineUDPServerClient" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+			<function name="GetEngineUDPServer" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="UDPServer *" is_retrun="true" type_str="UDPServer" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 			<function name="CreateEngineUDPServerEditor" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
@@ -10327,12 +10327,17 @@
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="GeneralServer *generalServer" is_retrun="false" type_str="GeneralServer" valuename_str="generalServer" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
-			<function name="CreateGeneralClientConnector" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+			<function name="CreateGetGeneralClientConnector" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="GeneralClientConnector *" is_retrun="true" type_str="GeneralClientConnector" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetGeneralClientConnector" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="GeneralClientConnector *" is_retrun="true" type_str="GeneralClientConnector" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="ShutdownGeneralClientConnector" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="GeneralClientConnector *connector" is_retrun="false" type_str="GeneralClientConnector" valuename_str="connector" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="GetElapsedTime" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>

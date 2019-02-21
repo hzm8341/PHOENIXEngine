@@ -29,7 +29,7 @@ mIsServerConnected(false),
 mAutoConnectIP("127.0.0.1"),
 mAutoConnectPort(EngineServerPort),
 mHeartTiming(0.0f),
-mIsBroadcastInfo(true),
+mIsBroadcastInfo(false),
 mBroadcastTiming(0.0f),
 mGettingMapIndex(-1)
 {

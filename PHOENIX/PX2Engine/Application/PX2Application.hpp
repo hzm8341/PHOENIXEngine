@@ -114,8 +114,8 @@ namespace PX2
 		EngineServer *GetEngineServer();
 		EngineClientConnector *GetEngineClientConnector();
 
-		UDPServer *CreateEngineUDPServerClient();
-		UDPServer *GetEngineUDPServerClient();
+		UDPServer *CreateEngineUDPServer();
+		UDPServer *GetEngineUDPServer();
 
 		UDPServer *CreateEngineUDPServerEditor();
 		UDPServer *GetEngineUDPServerEditor();
@@ -123,8 +123,9 @@ namespace PX2
 		GeneralServer *CreateGeneralServer(int port,
 			int numMaxConnects, int numMaxMsgHandlers);
 		bool ShutdownGeneralServer(GeneralServer *generalServer);
-		GeneralClientConnector *CreateGeneralClientConnector();
-		bool ShutdownGeneralClientConnector(GeneralClientConnector *connector);
+		GeneralClientConnector *CreateGetGeneralClientConnector(const std::string &name);
+		GeneralClientConnector *GetGeneralClientConnector(const std::string &name);
+		bool ShutdownGeneralClientConnector(const std::string &name);
 
 		void WillEnterForeground(bool isFirstTime);
 		void DidEnterBackground();
@@ -175,10 +176,10 @@ namespace PX2
 
 		EngineServerPtr mEngineServer;
 		EngineClientConnectorPtr mEngineClient;
-		UDPServerPtr mEngineUDPServerClient;
+		UDPServerPtr mEngineUDPServer;
 		UDPServerPtr mEngineDUPServerEditor;
 		std::vector<GeneralServerPtr> mGeneralServers;
-		std::vector<GeneralClientConnectorPtr> mGeneralClientConnectors;
+		std::map<std::string, GeneralClientConnectorPtr> mGeneralClientConnectors;
 
 		bool mIsInBackground;
 		bool mBeforeInBackgroundMusicEnable;

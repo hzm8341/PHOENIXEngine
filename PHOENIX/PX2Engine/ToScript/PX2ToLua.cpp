@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 01/29/19 15:53:40.
+** Generated automatically by tolua++-1.0.92 on 02/21/19 11:22:55.
 */
 
 #ifndef __cplusplus
@@ -95191,9 +95191,9 @@ static int tolua_PX2_Application_GetEngineClientConnector00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: CreateEngineUDPServerClient of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_CreateEngineUDPServerClient00
-static int tolua_PX2_Application_CreateEngineUDPServerClient00(lua_State* tolua_S)
+/* method: CreateEngineUDPServer of class  Application */
+#ifndef TOLUA_DISABLE_tolua_PX2_Application_CreateEngineUDPServer00
+static int tolua_PX2_Application_CreateEngineUDPServer00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -95207,25 +95207,25 @@ static int tolua_PX2_Application_CreateEngineUDPServerClient00(lua_State* tolua_
  {
   Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateEngineUDPServerClient'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateEngineUDPServer'", NULL);
 #endif
   {
-   UDPServer* tolua_ret = (UDPServer*)  self->CreateEngineUDPServerClient();
+   UDPServer* tolua_ret = (UDPServer*)  self->CreateEngineUDPServer();
     tolua_pushusertype(tolua_S,(void*)tolua_ret,"UDPServer");
   }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'CreateEngineUDPServerClient'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'CreateEngineUDPServer'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: GetEngineUDPServerClient of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_GetEngineUDPServerClient00
-static int tolua_PX2_Application_GetEngineUDPServerClient00(lua_State* tolua_S)
+/* method: GetEngineUDPServer of class  Application */
+#ifndef TOLUA_DISABLE_tolua_PX2_Application_GetEngineUDPServer00
+static int tolua_PX2_Application_GetEngineUDPServer00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -95239,17 +95239,17 @@ static int tolua_PX2_Application_GetEngineUDPServerClient00(lua_State* tolua_S)
  {
   Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetEngineUDPServerClient'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetEngineUDPServer'", NULL);
 #endif
   {
-   UDPServer* tolua_ret = (UDPServer*)  self->GetEngineUDPServerClient();
+   UDPServer* tolua_ret = (UDPServer*)  self->GetEngineUDPServer();
     tolua_pushusertype(tolua_S,(void*)tolua_ret,"UDPServer");
   }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetEngineUDPServerClient'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'GetEngineUDPServer'.",&tolua_err);
  return 0;
 #endif
 }
@@ -95391,33 +95391,71 @@ static int tolua_PX2_Application_ShutdownGeneralServer00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: CreateGeneralClientConnector of class  Application */
-#ifndef TOLUA_DISABLE_tolua_PX2_Application_CreateGeneralClientConnector00
-static int tolua_PX2_Application_CreateGeneralClientConnector00(lua_State* tolua_S)
+/* method: CreateGetGeneralClientConnector of class  Application */
+#ifndef TOLUA_DISABLE_tolua_PX2_Application_CreateGetGeneralClientConnector00
+static int tolua_PX2_Application_CreateGetGeneralClientConnector00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
   Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
+  const std::string name = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateGeneralClientConnector'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'CreateGetGeneralClientConnector'", NULL);
 #endif
   {
-   GeneralClientConnector* tolua_ret = (GeneralClientConnector*)  self->CreateGeneralClientConnector();
+   GeneralClientConnector* tolua_ret = (GeneralClientConnector*)  self->CreateGetGeneralClientConnector(name);
     tolua_pushusertype(tolua_S,(void*)tolua_ret,"GeneralClientConnector");
+   tolua_pushcppstring(tolua_S,(const char*)name);
   }
  }
- return 1;
+ return 2;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'CreateGeneralClientConnector'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'CreateGetGeneralClientConnector'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetGeneralClientConnector of class  Application */
+#ifndef TOLUA_DISABLE_tolua_PX2_Application_GetGeneralClientConnector00
+static int tolua_PX2_Application_GetGeneralClientConnector00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
+  const std::string name = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetGeneralClientConnector'", NULL);
+#endif
+  {
+   GeneralClientConnector* tolua_ret = (GeneralClientConnector*)  self->GetGeneralClientConnector(name);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"GeneralClientConnector");
+   tolua_pushcppstring(tolua_S,(const char*)name);
+  }
+ }
+ return 2;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetGeneralClientConnector'.",&tolua_err);
  return 0;
 #endif
 }
@@ -95431,7 +95469,7 @@ static int tolua_PX2_Application_ShutdownGeneralClientConnector00(lua_State* tol
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"Application",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"GeneralClientConnector",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
@@ -95439,16 +95477,17 @@ static int tolua_PX2_Application_ShutdownGeneralClientConnector00(lua_State* tol
 #endif
  {
   Application* self = (Application*)  tolua_tousertype(tolua_S,1,0);
-  GeneralClientConnector* connector = ((GeneralClientConnector*)  tolua_tousertype(tolua_S,2,0));
+  const std::string name = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ShutdownGeneralClientConnector'", NULL);
 #endif
   {
-   bool tolua_ret = (bool)  self->ShutdownGeneralClientConnector(connector);
+   bool tolua_ret = (bool)  self->ShutdownGeneralClientConnector(name);
    tolua_pushboolean(tolua_S,(bool)tolua_ret);
+   tolua_pushcppstring(tolua_S,(const char*)name);
   }
  }
- return 1;
+ return 2;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'ShutdownGeneralClientConnector'.",&tolua_err);
@@ -108283,13 +108322,14 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetLocalAddressStr",tolua_PX2_Application_GetLocalAddressStr00);
    tolua_function(tolua_S,"GetEngineServer",tolua_PX2_Application_GetEngineServer00);
    tolua_function(tolua_S,"GetEngineClientConnector",tolua_PX2_Application_GetEngineClientConnector00);
-   tolua_function(tolua_S,"CreateEngineUDPServerClient",tolua_PX2_Application_CreateEngineUDPServerClient00);
-   tolua_function(tolua_S,"GetEngineUDPServerClient",tolua_PX2_Application_GetEngineUDPServerClient00);
+   tolua_function(tolua_S,"CreateEngineUDPServer",tolua_PX2_Application_CreateEngineUDPServer00);
+   tolua_function(tolua_S,"GetEngineUDPServer",tolua_PX2_Application_GetEngineUDPServer00);
    tolua_function(tolua_S,"CreateEngineUDPServerEditor",tolua_PX2_Application_CreateEngineUDPServerEditor00);
    tolua_function(tolua_S,"GetEngineUDPServerEditor",tolua_PX2_Application_GetEngineUDPServerEditor00);
    tolua_function(tolua_S,"CreateGeneralServer",tolua_PX2_Application_CreateGeneralServer00);
    tolua_function(tolua_S,"ShutdownGeneralServer",tolua_PX2_Application_ShutdownGeneralServer00);
-   tolua_function(tolua_S,"CreateGeneralClientConnector",tolua_PX2_Application_CreateGeneralClientConnector00);
+   tolua_function(tolua_S,"CreateGetGeneralClientConnector",tolua_PX2_Application_CreateGetGeneralClientConnector00);
+   tolua_function(tolua_S,"GetGeneralClientConnector",tolua_PX2_Application_GetGeneralClientConnector00);
    tolua_function(tolua_S,"ShutdownGeneralClientConnector",tolua_PX2_Application_ShutdownGeneralClientConnector00);
    tolua_function(tolua_S,"GetElapsedTime",tolua_PX2_Application_GetElapsedTime00);
    tolua_function(tolua_S,"SetScreenSize",tolua_PX2_Application_SetScreenSize00);
