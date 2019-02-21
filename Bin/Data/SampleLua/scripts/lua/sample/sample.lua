@@ -27,17 +27,10 @@ function sampleLua_Sample()
 	local scene = Scene:New()
 	PX2_PROJ:SetScene(scene)
 	
-	--[[
-	local rect = PX2_CREATER:CreateMovable_Rectangle()
-	scene:AttachChild(rect)
-	rect.LocalTransform:SetUniformScale(10.0)
-	]]--
-
 	local box = PX2_CREATER:CreateMovable_Box()
 	scene:AttachChild(box)
 	box.LocalTransform:SetTranslateZ(1.0)
 	box.LocalTransform:SetUniformScale(2.0)
-	
 
 	-- model
 	local model = PX2_CREATER:CreateNode_Model("Data/SampleLua/models/actors/swk/model.px2obj")
@@ -802,7 +795,7 @@ function s_CreateUIServer()
 	butSend:Enable(false)
 
 	-- connector
-	local clientConnector = PX2_APP:CreateGeneralClientConnector()
+	local clientConnector = PX2_APP:CreateGetGeneralClientConnector("Default")
 	g_s_ClientConnector = clientConnector
 	clientConnector:AddOnConnectCallback("OnClientConnectorConnect")
 	clientConnector:AddOnDisconnectCallback("OnClientConnectorDisConnect")
