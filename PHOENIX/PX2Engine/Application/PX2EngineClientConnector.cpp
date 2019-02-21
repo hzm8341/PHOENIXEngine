@@ -111,11 +111,6 @@ int EngineClientConnector::Update(float elapsedSeconds)
 		}
 	}
 
-	Robot::RoleType rt = PX2_ROBOT.GetRoleType();
-	if (Robot::RT_CONNECTOR_CALCULATE == rt)
-	{
-	}
-
 	return ret;
 }
 //----------------------------------------------------------------------------

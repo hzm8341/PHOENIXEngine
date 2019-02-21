@@ -8,6 +8,7 @@ AppInitConfig::AppInitConfig()
 {
 	IsInitVoice = true;
 	IsInitSound = true;
+	IsInitRobot = true;
 }
 //----------------------------------------------------------------------------
 AppInitConfig::~AppInitConfig()

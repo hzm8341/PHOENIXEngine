@@ -69,17 +69,21 @@ void EngineServer::Run(float elapsedTime)
 		}
 	}
 
-	mBroadCastMapTiming += elapsedTime;
-	if (mBroadCastMapTiming > 0.1f)
+	Robot *robot = Robot::GetSingletonPtr();
+	if (robot)
 	{
-		Robot::RoleType rt = PX2_ROBOT.GetRoleType();
-		if (Robot::RT_MASTER == rt)
-			BroadCastRobotMap();
+		mBroadCastMapTiming += elapsedTime;
+		if (mBroadCastMapTiming > 0.1f)
+		{
+			Robot::RoleType rt = robot->GetRoleType();
+			if (Robot::RT_MASTER == rt)
+				BroadCastRobotMap();
 
-		if (Robot::RT_MASTER_ONLY_SENDLIDAR == rt)
-			BroadCastLidarData();
+			if (Robot::RT_MASTER_ONLY_SENDLIDAR == rt)
+				BroadCastLidarData();
 
-		mBroadCastMapTiming = 0;
+			mBroadCastMapTiming = 0;
+		}
 	}
 }
 //----------------------------------------------------------------------------

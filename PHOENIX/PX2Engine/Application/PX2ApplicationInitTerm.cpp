@@ -290,7 +290,10 @@ bool Application::Initlize(AppInitConfig *cfg)
 	mSTEAMEduManager = new0 STEAMEduManager();
 	mSTEAMEduManager->Initlize();
 
-	mRobot = new0 Robot();
+	if (cfg && cfg->IsInitRobot)
+	{
+		mRobot = new0 Robot();
+	}
 
 	Server::ServerType st;
 #if defined (WIN32) || defined (_WIN32)

@@ -17,6 +17,7 @@ namespace PX2
 
 		bool IsInitVoice;
 		bool IsInitSound;
+		bool IsInitRobot;
 	};
 
 }

@@ -15,6 +15,7 @@ int main()
 	AppInitConfig cfg;
 	cfg.IsInitSound = false;
 	cfg.IsInitVoice = false;
+	cfg.IsInitRobot = false;
 
 	if (app->Initlize(&cfg))
 	{
