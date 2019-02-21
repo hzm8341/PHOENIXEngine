@@ -335,6 +335,11 @@ int ClientConnector::SendMsgToServerBuffer(int msgid, const char *buf,
 	return 0;
 }
 //----------------------------------------------------------------------------
+int ClientConnector::SendRawBuffer(const char *buf, int size)
+{
+	return GetSocket().SendBytes(buf, size);
+}
+//----------------------------------------------------------------------------
 int ClientConnector::Update(float elapsedSeconds)
 {
 	mConnStateTime += elapsedSeconds;

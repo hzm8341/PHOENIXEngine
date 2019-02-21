@@ -72,20 +72,48 @@ void _InputThreadProc(void* data)
 	}
 }
 //----------------------------------------------------------------------------
+void _AppClientConnectorRecvCallback(ClientConnector *connector,
+	const std::string &recvStr)
+{
+	std::string name = connector->GetName();
+
+	PX2_LOG_INFO("Name %s: Recved:%s", name.c_str(), recvStr.c_str());
+}
+//----------------------------------------------------------------------------
 int _ProcessInputString(const std::string &buf)
 {
 	int ret = 0;
 	std::string cmd;
-	std::string contentStr;
-	StringTokenizer tokenizer(buf, " ");
-	int count = (int)tokenizer.Count();
+	StringTokenizer stk(buf, " ");
+	int count = (int)stk.Count();
 
 	if (count > 0)
 	{
-		cmd = tokenizer[0];
+		std::string cmd;
+		std::string paramStr;
+		std::string paramStr1;
+		std::string paramStr2;
+		std::string paramStr3;
+		std::string paramStr4;
+		std::string paramStr5;
+		std::string paramStr6;
 
-		if (count > 1)
-			contentStr = tokenizer[1];
+		if (stk.Count() > 0)
+			cmd = stk[0];
+		if (stk.Count() > 1)
+			paramStr = stk[1];
+		if (stk.Count() > 2)
+			paramStr1 = stk[2];
+		if (stk.Count() > 3)
+			paramStr2 = stk[3];
+		if (stk.Count() > 4)
+			paramStr3 = stk[4];
+		if (stk.Count() > 5)
+			paramStr4 = stk[5];
+		if (stk.Count() > 6)
+			paramStr5 = stk[6];
+		if (stk.Count() > 7)
+			paramStr6 = stk[7];
 
 		if ("quit" == cmd && count == 1)
 		{
@@ -93,7 +121,7 @@ int _ProcessInputString(const std::string &buf)
 		}
 		else if ("ask" == cmd)
 		{
-			wchar_t *unic = StringHelp::AnsiToUnicode(contentStr.c_str());
+			wchar_t *unic = StringHelp::AnsiToUnicode(paramStr.c_str());
 			const char *askStr = StringHelp::UnicodeToUTF8(unic);
 
 			std::string strRet = PX2_VOICESDK.GetAnswer(askStr, true);
@@ -106,13 +134,13 @@ int _ProcessInputString(const std::string &buf)
 		}
 		else if ("say" == cmd)
 		{
-			wchar_t *unic = StringHelp::AnsiToUnicode(contentStr.c_str());
+			wchar_t *unic = StringHelp::AnsiToUnicode(paramStr.c_str());
 			const char *sayStr = StringHelp::UnicodeToUTF8(unic);
 			PX2_VOICESDK.Speak(sayStr);
 		}
 		else if ("music" == cmd)
 		{
-			wchar_t *unic = StringHelp::AnsiToUnicode(contentStr.c_str());
+			wchar_t *unic = StringHelp::AnsiToUnicode(paramStr.c_str());
 			const char *sayStr = StringHelp::UnicodeToUTF8(unic);
 			PX2_VOICESDK.PlayMusic(sayStr);
 		}
@@ -147,31 +175,59 @@ int _ProcessInputString(const std::string &buf)
 		}
 		else if ("net" == cmd)
 		{
-		
+			// like this
+			// net testname connect 127.0.0.1 8000
+			std::string name = paramStr;
+
+			if ("connect" == paramStr1)
+			{
+				GeneralClientConnector *cnt = PX2_APP.CreateGetGeneralClientConnector(
+					name);
+				if (cnt)
+				{
+					int port = StringHelp::StringToInt(paramStr3);
+					cnt->ConnectB(paramStr2, port);
+
+					cnt->AddRecvCallback(_AppClientConnectorRecvCallback);
+				}
+			}
+			else if ("disconnect" == paramStr1)
+			{
+				GeneralClientConnector *cnt = PX2_APP.CreateGetGeneralClientConnector(
+					name);
+				if (cnt)
+				{
+					cnt->Disconnect();
+				}
+			}
+			else if ("send" == paramStr1)
+			{
+				GeneralClientConnector *cnt = PX2_APP.CreateGetGeneralClientConnector(
+					name);
+				if (cnt)
+				{
+					cnt->SendString(paramStr2);
+				}
+			}
+			else if ("sendraw" == paramStr1)
+			{
+				GeneralClientConnector *cnt = PX2_APP.CreateGetGeneralClientConnector(
+					name);
+				if (cnt)
+				{
+					cnt->SendRawBuffer(paramStr2.c_str(), paramStr2.length());
+				}
+			}
 		}
 
 		Project *proj = Project::GetSingletonPtr();
 		if (proj)
 		{
-			std::string param0;
-			std::string param1;
-			std::string param2;
-			if (!contentStr.empty())
-			{
-				StringTokenizer stk_(contentStr, ",");
-				if (stk_.Count() > 0)
-					param0 = stk_[0];
-				if (stk_.Count() > 1)
-					param1 = stk_[1];
-				if (stk_.Count() > 2)
-					param2 = stk_[2];
-			}
-
 			PX2_SC_LUA->CallString(std::string("engine_project_cmd") 
 				+ "(\"" + cmd + "\"" 
-				+ ", " + "\"" + param0 + "\"" ", "
-				+ "\"" + param1 + "\"" + ", "
-				+ "\"" + param2 + "\")");
+				+ ", " + "\"" + paramStr + "\"" ", "
+				+ "\"" + paramStr1 + "\"" + ", "
+				+ "\"" + paramStr2 + "\")");
 		}
 	}
 

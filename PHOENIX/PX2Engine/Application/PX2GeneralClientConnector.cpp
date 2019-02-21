@@ -81,6 +81,15 @@ void GeneralClientConnector::SendString(const std::string &str)
 	}
 }
 //----------------------------------------------------------------------------
+void GeneralClientConnector::SendRawString(const std::string &str)
+{
+	if (!str.empty())
+	{
+		SendMsgToServerBuffer(GeneralClientConnectorMsgID, str.c_str(),
+			(int)str.length());
+	}
+}
+//----------------------------------------------------------------------------
 bool GeneralClientConnector::IsHasOnConnectCallback(const std::string &strCallback) const
 {
 	for (int i = 0; i < (int)mOnConnectCallbacks.size(); i++)

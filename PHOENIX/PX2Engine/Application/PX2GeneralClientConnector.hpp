@@ -24,6 +24,7 @@ namespace PX2
 		void OnDisConnectedToServer();
 
 		void SendString(const std::string &str);
+		void SendRawString(const std::string &str);
 
 		bool IsHasOnConnectCallback(const std::string &callback) const;
 		void AddOnConnectCallback(const std::string &callback);

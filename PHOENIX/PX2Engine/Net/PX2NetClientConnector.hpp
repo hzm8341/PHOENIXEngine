@@ -57,6 +57,8 @@ namespace PX2
 
 		int SendMsgToServerBuffer(int msgid, const char *buf, int size);
 
+		int SendRawBuffer(const char *buf, int size);
+
 		virtual int Update(float elapsedSeconds);
 
 	protected:
