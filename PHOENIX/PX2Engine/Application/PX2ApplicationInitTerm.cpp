@@ -218,6 +218,16 @@ int _ProcessInputString(const std::string &buf)
 					cnt->SendRawBuffer(paramStr2.c_str(), paramStr2.length());
 				}
 			}
+			else if ("ledscreen" == paramStr1)
+			{
+				GeneralClientConnector *cnt = PX2_APP.CreateGetGeneralClientConnector(
+					name);
+				if (cnt)
+				{
+					std::string cntStr = "text " + paramStr2;
+					cnt->SendRawBuffer(cntStr.c_str(), cntStr.length());
+				}
+			}
 		}
 
 		Project *proj = Project::GetSingletonPtr();
