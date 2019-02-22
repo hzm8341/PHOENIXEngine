@@ -7,6 +7,24 @@
     <Filter Include="ToScript">
       <UniqueIdentifier>{64fc3aec-e58c-4ea7-a1e3-e09fe15c5279}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EasyPR">
+      <UniqueIdentifier>{4ece6c94-dcdd-4846-90b7-d7cc469bfa56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EasyPR\core">
+      <UniqueIdentifier>{d4ec2b90-f64c-4467-8e5b-b9c39c2c3d09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EasyPR\preprocess">
+      <UniqueIdentifier>{7efb6704-ab38-4bdb-b6b1-cdd3d0c06d05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EasyPR\train">
+      <UniqueIdentifier>{17a2cf18-bff6-4f0f-8ee3-05676a006dda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EasyPR\util">
+      <UniqueIdentifier>{8c5c11ed-7aef-4b25-933e-15177f5246d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EasyPR\thirdparty">
+      <UniqueIdentifier>{8e8dad24-322f-48d7-b49d-4217c5e7863f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ProjectDll.cpp">
@@ -17,6 +35,78 @@
     </ClCompile>
     <ClCompile Include="ProjectToLua.cpp">
       <Filter>ToScript</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\chars_identify.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\chars_recognise.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\chars_segment.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\core_func.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\feature.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\params.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\plate.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\plate_detect.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\plate_judge.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\plate_locate.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\core\plate_recognize.cpp">
+      <Filter>EasyPR\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\util\kv.cpp">
+      <Filter>EasyPR\util</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\util\program_options.cpp">
+      <Filter>EasyPR\util</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\util\util.cpp">
+      <Filter>EasyPR\util</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\train\ann_train.cpp">
+      <Filter>EasyPR\train</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\train\svm_train.cpp">
+      <Filter>EasyPR\train</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\train\train.cpp">
+      <Filter>EasyPR\train</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\preprocess\deface.cpp">
+      <Filter>EasyPR\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\preprocess\gdts.cpp">
+      <Filter>EasyPR\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\preprocess\mc_data.cpp">
+      <Filter>EasyPR\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\LBP\lbp.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\mser\mser2.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\textDetect\erfilter.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\LBP\helper.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

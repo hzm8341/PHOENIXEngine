@@ -23,6 +23,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EasyPR\core\chars_identify.cpp" />
+    <ClCompile Include="EasyPR\core\chars_recognise.cpp" />
+    <ClCompile Include="EasyPR\core\chars_segment.cpp" />
+    <ClCompile Include="EasyPR\core\core_func.cpp" />
+    <ClCompile Include="EasyPR\core\feature.cpp" />
+    <ClCompile Include="EasyPR\core\params.cpp" />
+    <ClCompile Include="EasyPR\core\plate.cpp" />
+    <ClCompile Include="EasyPR\core\plate_detect.cpp" />
+    <ClCompile Include="EasyPR\core\plate_judge.cpp" />
+    <ClCompile Include="EasyPR\core\plate_locate.cpp" />
+    <ClCompile Include="EasyPR\core\plate_recognize.cpp" />
+    <ClCompile Include="EasyPR\preprocess\deface.cpp" />
+    <ClCompile Include="EasyPR\preprocess\gdts.cpp" />
+    <ClCompile Include="EasyPR\preprocess\mc_data.cpp" />
+    <ClCompile Include="EasyPR\thirdparty\LBP\helper.cpp" />
+    <ClCompile Include="EasyPR\thirdparty\LBP\lbp.cpp" />
+    <ClCompile Include="EasyPR\thirdparty\mser\mser2.cpp" />
+    <ClCompile Include="EasyPR\thirdparty\textDetect\erfilter.cpp" />
+    <ClCompile Include="EasyPR\train\ann_train.cpp" />
+    <ClCompile Include="EasyPR\train\svm_train.cpp" />
+    <ClCompile Include="EasyPR\train\train.cpp" />
+    <ClCompile Include="EasyPR\util\kv.cpp" />
+    <ClCompile Include="EasyPR\util\program_options.cpp" />
+    <ClCompile Include="EasyPR\util\util.cpp" />
     <ClCompile Include="ProjectDll.cpp" />
     <ClCompile Include="ProjectPlugin.cpp" />
     <ClCompile Include="ProjectToLua.cpp" />
@@ -33,7 +57,7 @@
     <ClInclude Include="ProjectToLua.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5F13A712-E5E5-4D11-9875-9A1B8938154C}</ProjectGuid>
+    <ProjectGuid>{4AF09062-80A6-4230-952B-537162E599EF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FBXImporter</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
@@ -94,19 +118,19 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>TemplateD</TargetName>
+    <TargetName>EasyPRD</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLDebug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>TemplateOpenGLD</TargetName>
+    <TargetName>EasyPROpenGLD</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenGLESDebug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>TemplateOpenGLESD</TargetName>
+    <TargetName>EasyPROpenGLESD</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -118,7 +142,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>TemplateOpenGL</TargetName>
+    <TargetName>EasyPROpenGL</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,7 +152,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FBXIMPORTER_EXPORTS;WIN32_LEAN_AND_MEAN;PX2_ENGINE_DLL_IMPORT;SAMPLE_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;.\ToLua;.\ToScript;..\..\..\PX2Engine\Unity\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2SDK\Include;..\..\..\ThirdPartiesLibs\FBX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\ToLua;.\ToScript;..\..\..\PX2Engine\Unity\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2SDK\Include;.\EasyPR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
