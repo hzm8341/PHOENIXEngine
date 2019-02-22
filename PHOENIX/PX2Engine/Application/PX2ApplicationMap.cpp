@@ -858,9 +858,6 @@ void Application::MakeAProject(const std::string &projName,
 	PX2_RM.CreateFloder("Data/", pathName + "scripts/");
 	PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/");
 	PX2_RM.CreateFloder("Data/", pathName + "scripts/lua/editor/");
-	PX2_RM.CreateFloder("Data/", pathName + "scripts_server");
-	PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/");
-	PX2_RM.CreateFloder("Data/", pathName + "scripts_server/lua/editor/");
 
 	_CreateScriptFile(pathName, "scripts/lua/", "play.lua");
 	_CreateScriptFile(pathName, "scripts/lua/", "stop.lua");

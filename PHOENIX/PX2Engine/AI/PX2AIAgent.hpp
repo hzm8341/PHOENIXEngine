@@ -90,6 +90,7 @@ namespace PX2
 		APoint PredictFuturePosition(float predictionTime) const;
 
 		void RemovePath();
+		void SetForwarding(const AVector& forward);
 		void SetForward(const AVector& forward);
 		void SetRotate(const HMatrix& mat);
 		void SetHeight(float  height);

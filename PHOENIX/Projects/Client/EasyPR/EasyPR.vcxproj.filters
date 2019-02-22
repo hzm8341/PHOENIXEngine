@@ -25,6 +25,9 @@
     <Filter Include="EasyPR\src\util">
       <UniqueIdentifier>{037f98a0-2bca-49d5-8759-fd0876e4d81d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EasyPR\thirdparty">
+      <UniqueIdentifier>{771963c6-8883-4ed3-bd9f-9a6cb8c7ded8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ProjectDll.cpp">
@@ -92,6 +95,21 @@
     </ClCompile>
     <ClCompile Include="EasyPR\src\preprocess\mc_data.cpp">
       <Filter>EasyPR\src\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\LBP\helper.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\LBP\lbp.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\mser\mser2.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\textDetect\erfilter.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyPR\thirdparty\xmlParser\xmlParser.cpp">
+      <Filter>EasyPR\thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5553,6 +5553,9 @@
     <ClInclude Include="AI\Slam2D\utils.h">
       <Filter>2.AI\Slam2D\Hector</Filter>
     </ClInclude>
+    <ClInclude Include="Mathematics\PX2Smooth.hpp">
+      <Filter>0.Base\Mathematics\Algebra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">

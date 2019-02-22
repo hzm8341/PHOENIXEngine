@@ -419,6 +419,17 @@ void AIAgent::RemovePath()
 	mIsHasPath = false;
 }
 //----------------------------------------------------------------------------
+void AIAgent::SetForwarding(const AVector& forward)
+{
+	AVector vector;
+	if (mRobot && mRobot->GetLidar()->IsOpened() && 
+		mRobot->IsArduinoConnected())
+	{
+	
+	}
+	SetForward(vector);
+}
+//----------------------------------------------------------------------------
 void AIAgent::SetForward(const AVector& forward)
 {
 	if (forward == AVector::ZERO)

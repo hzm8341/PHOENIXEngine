@@ -6,7 +6,7 @@
 	<publish ispublish="false"/>
 	<edit_setting uicamerapercent="1.000000"/>
 	<plugins>
-		<var name="Slam2D"/>
+		<var name=""/>
 	</plugins>
 </project>
 

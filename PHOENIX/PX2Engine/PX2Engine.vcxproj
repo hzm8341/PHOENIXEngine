@@ -526,14 +526,14 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FT2_BUILD_LIBRARY;PX2_ENGINE_DLL_EXPORT;PX2_USE_DX9;PX2_USE_FMOD;PROTOBUF_USE_DLLS;LIBPROTOBUF_EXPORTS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;LUAPLUS_EXCEPTIONS;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Core/TinyJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/rplidar/include;./AI/rplidar;./AI/rplidar/src;./AI/SkillSystem;./AI/recast/include;./AI/detour/include;./AI/OpenSteer/include;./Physics;./Physics/Bullet;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./Core;./Core/RapidXML;./Core/RapidJSON;./Core/TinyJSON;./Mathematics;./Graphics;./Graphics/Renderers/Dx9Renderer;./Unity;./Unity/ZLib;./Unity/ZLib/minzip;./Unity/Lua;./Unity/ToLua;./Unity/LuaPlus;./Unity/SoundFMod;./Unity/ImageLibs/PNG;./Unity/FreeType;./Unity/FreeType/include;./Unity/FreeType/include/freetype;./Unity/FreeType/include/config;./Unity/FreeType/include/internal;./Unity/FreeType/src/base;./Unity/FreeType/src/autofit;./Unity/FreeType/src/cff;./Unity/FreeType/src/pshinter;./Unity/FreeType/src/psnames;./Unity/FreeType/src/truetype;./Unity/FreeType/src/smooth;./Unity/FreeType/src/sfnt;./Unity/FreeType/src/raster;./Unity/curl;./Unity/curl/config;./Unity/curl/config/win32;./Unity/curl/src;./Unity/Edit;./Unity/SQLite;./Unity/Account;./Unity/ModelImporter/FBX;./Unity/AppPlay;./Unity/serial;./Net;./Net/google/vsprojects;./UI;./Effect;./Terrains;./Logic;./Logic/BlueBlock;./Voxel;./AI;./AI/iiiroboticslidar2;./AI/rplidar/include;./AI/rplidar;./AI/rplidar/src;./AI/SkillSystem;./AI/recast/include;./AI/detour/include;./AI/OpenSteer/include;./AI/wr;./AI/Slam2D;./AI/Slam2D/Eigen;./Physics;./Physics/Bullet;./Application;./ToScript;../ThirdPartiesLibs/Microsoft DirectX SDK June 2010/Include;../ThirdPartiesLibs/Awesomium SDK/1.7.5.1/include;../ThirdPartiesLibs/FMOD/win/inc;../ThirdPartiesLibs/DataBase/MySQL/include;../ThirdPartiesLibs/vlc/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod64_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;awesomium.lib;libvlccore.lib;libvlc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;dinput8.lib;dxguid.lib;fmod64_vc.lib;ws2_32.lib;wsock32.lib;Winmm.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\ThirdPartiesLibs\Microsoft DirectX SDK June 2010\Lib\x64;..\ThirdPartiesLibs\FMOD\win\lib;..\ThirdPartiesLibs\Awesomium SDK\1.7.5.1\build\lib;..\ThirdPartiesLibs\vlc\lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -1849,6 +1849,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Mathematics\PX2RVector3.hpp" />
     <ClInclude Include="Mathematics\PX2SingleCurve3.hpp" />
     <ClInclude Include="Mathematics\PX2Size.hpp" />
+    <ClInclude Include="Mathematics\PX2Smooth.hpp" />
     <ClInclude Include="Mathematics\PX2Sphere3.hpp" />
     <ClInclude Include="Mathematics\PX2Surface.hpp" />
     <ClInclude Include="Mathematics\PX2Triangle3.hpp" />

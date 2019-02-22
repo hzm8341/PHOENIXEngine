@@ -1264,7 +1264,7 @@ int LP_Manager::_GetProjType(const std::string &projName)
 		return 0;
 	}
 
-	std::string projFilename = projPath + "/" + projName + ".px2proj";
+	std::string projFilename = projPath + "/project" + ".px2proj";
 	if (!PX2_RM.IsFileFloderExist(projFilename))
 		return 2;
 
@@ -1536,6 +1536,7 @@ void PX2::LP_Manager::_CreateNewProjectFrame()
 	
 	UIFrame* projectFrame = new0 UIFrame();
 	mCreateProjectBackground->AttachChild(projectFrame);
+	projectFrame->LocalTransform.SetTranslateY(-1.0f);
 	projectFrame->SetAnchorHor(0.0f, 1.0f);
 	projectFrame->SetAnchorVer(0.5f, 0.5f);
 	projectFrame->SetHeight(200.0);

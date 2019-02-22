@@ -622,7 +622,6 @@ function ZERONEUIFaceCtrl:CreateBtnsSetting()
     btnVoice:CreateAddText("V")
 
     -- btn 3d
-    --[[
     local btn3D = UIButton:New("Btn3D")
     self._btn3D = btn3D
     self._background:AttachChild(btn3D)
@@ -639,7 +638,6 @@ function ZERONEUIFaceCtrl:CreateBtnsSetting()
     btn3D:SetStateColor(UIButtonBase.BS_HOVERED, Float3:MakeColor(0, 121, 216))
     btn3D:SetScriptHandler("zo_UICallabck")
     btn3D:CreateAddText("3D")
-    ]]--
 
     -- combox
     local comBoxEdit = UIComboBox:New("BtnComboxBoxEdit")
