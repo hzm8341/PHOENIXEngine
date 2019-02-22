@@ -23,30 +23,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EasyPR\core\chars_identify.cpp" />
-    <ClCompile Include="EasyPR\core\chars_recognise.cpp" />
-    <ClCompile Include="EasyPR\core\chars_segment.cpp" />
-    <ClCompile Include="EasyPR\core\core_func.cpp" />
-    <ClCompile Include="EasyPR\core\feature.cpp" />
-    <ClCompile Include="EasyPR\core\params.cpp" />
-    <ClCompile Include="EasyPR\core\plate.cpp" />
-    <ClCompile Include="EasyPR\core\plate_detect.cpp" />
-    <ClCompile Include="EasyPR\core\plate_judge.cpp" />
-    <ClCompile Include="EasyPR\core\plate_locate.cpp" />
-    <ClCompile Include="EasyPR\core\plate_recognize.cpp" />
-    <ClCompile Include="EasyPR\preprocess\deface.cpp" />
-    <ClCompile Include="EasyPR\preprocess\gdts.cpp" />
-    <ClCompile Include="EasyPR\preprocess\mc_data.cpp" />
-    <ClCompile Include="EasyPR\thirdparty\LBP\helper.cpp" />
-    <ClCompile Include="EasyPR\thirdparty\LBP\lbp.cpp" />
-    <ClCompile Include="EasyPR\thirdparty\mser\mser2.cpp" />
-    <ClCompile Include="EasyPR\thirdparty\textDetect\erfilter.cpp" />
-    <ClCompile Include="EasyPR\train\ann_train.cpp" />
-    <ClCompile Include="EasyPR\train\svm_train.cpp" />
-    <ClCompile Include="EasyPR\train\train.cpp" />
-    <ClCompile Include="EasyPR\util\kv.cpp" />
-    <ClCompile Include="EasyPR\util\program_options.cpp" />
-    <ClCompile Include="EasyPR\util\util.cpp" />
+    <ClCompile Include="EasyPR\src\core\chars_identify.cpp" />
+    <ClCompile Include="EasyPR\src\core\chars_recognise.cpp" />
+    <ClCompile Include="EasyPR\src\core\chars_segment.cpp" />
+    <ClCompile Include="EasyPR\src\core\core_func.cpp" />
+    <ClCompile Include="EasyPR\src\core\feature.cpp" />
+    <ClCompile Include="EasyPR\src\core\params.cpp" />
+    <ClCompile Include="EasyPR\src\core\plate_detect.cpp" />
+    <ClCompile Include="EasyPR\src\core\plate_judge.cpp" />
+    <ClCompile Include="EasyPR\src\core\plate_locate.cpp" />
+    <ClCompile Include="EasyPR\src\core\plate_recognize.cpp" />
+    <ClCompile Include="EasyPR\src\preprocess\deface.cpp" />
+    <ClCompile Include="EasyPR\src\preprocess\gdts.cpp" />
+    <ClCompile Include="EasyPR\src\preprocess\mc_data.cpp" />
+    <ClCompile Include="EasyPR\src\train\ann_train.cpp" />
+    <ClCompile Include="EasyPR\src\train\svm_train.cpp" />
+    <ClCompile Include="EasyPR\src\train\train.cpp" />
+    <ClCompile Include="EasyPR\src\util\kv.cpp" />
+    <ClCompile Include="EasyPR\src\util\program_options.cpp" />
+    <ClCompile Include="EasyPR\src\util\util.cpp" />
     <ClCompile Include="ProjectDll.cpp" />
     <ClCompile Include="ProjectPlugin.cpp" />
     <ClCompile Include="ProjectToLua.cpp" />
@@ -150,15 +145,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FBXIMPORTER_EXPORTS;WIN32_LEAN_AND_MEAN;PX2_ENGINE_DLL_IMPORT;SAMPLE_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;WIN32_LEAN_AND_MEAN;PX2_ENGINE_DLL_IMPORT;EASYPR_DLL_EXPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;.\ToLua;.\ToScript;..\..\..\PX2Engine\Unity\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2SDK\Include;.\EasyPR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\ToLua;.\ToScript;..\..\..\PX2Engine\Unity\;..\..\..\PX2Engine\Unity\Lua;..\..\..\PX2Engine\Unity\ToLua;..\..\..\PX2SDK\Include;..\..\..\ThirdPartiesLibs\OpenCV3.2\opencv\build\include;.\EasyPR;.\EasyPR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\..\..\ThirdPartiesLibs\FBX\lib\vs2013\x86\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PX2EngineD.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\..\..\ThirdPartiesLibs\OpenCV3.2\opencv\build\x86\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>PX2EngineD.lib;opencv_world320d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /DY "$(TargetPath)"  ..\..\..\..\Bin\Data\$(ProjectName)\</Command>
