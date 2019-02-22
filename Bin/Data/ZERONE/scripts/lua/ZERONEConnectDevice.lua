@@ -118,7 +118,7 @@ function zo_ConnectDevice()
             clientConnector:SetAutoConnectIP(ip)
             clientConnector:SetAutoConnectPort(9907)
 
-            clientConnector:InitlizeArduino()
+            rc_Arduino:InitlizeSocketTCP_Connector(clientConnector)
         end
     end
 end
