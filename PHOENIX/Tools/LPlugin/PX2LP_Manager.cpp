@@ -54,7 +54,13 @@ void _UICallback (UIFrame *frame, UICallType type)
 	{
 		if ("OpenProject" == name)
 		{
-			//LP_Manager::GetSingleton()._ShowSignIn();
+#if defined(_WIN32) || defined(WIN32)
+			CHAR szPath[MAX_PATH];
+			GetCurrentDirectory(sizeof(szPath), szPath);
+			std::string fullPath = szPath + std::string("\\") + "Data\\RobotControl";
+
+			ShellExecute(0, "open", fullPath.c_str(), 0, 0, SW_SHOW);
+#endif
 		}
 		else if ("NewProject" == name)
 		{
@@ -893,7 +899,7 @@ UIFrame *LP_Manager::CreateEngineFrame()
 	mGitHubBut = UIButton::New("ButGitHub");
 	topFrame->AttachChild(mGitHubBut);
 	mGitHubBut->SetAnchorHor(0.0f, 1.0f);
-	mGitHubBut->SetAnchorParamHor(textWdith + 15.0f,-95.0f);
+	mGitHubBut->SetAnchorParamHor(textWdith + 15.0f,-140.0f);
 	mGitHubBut->SetHeight(20.0f);
 	mGitHubBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
 	mGitHubBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/whitern.png");
@@ -910,7 +916,7 @@ UIFrame *LP_Manager::CreateEngineFrame()
 	topFrame->AttachChild(newProjectBut);
 	newProjectBut->CreateAddText(PX2_LM_APP.GetValue("CreateNewProject"));
 	newProjectBut->SetAnchorHor(1.0f, 1.0f);
-	newProjectBut->SetAnchorParamHor(-70.0f, 0.0f);
+	newProjectBut->SetAnchorParamHor(-115.0f, 0.0f);
 	newProjectBut->SetAnchorVer(0.5f, 0.5f);
 	newProjectBut->SetHeight(20.0f);
 	newProjectBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
@@ -923,7 +929,7 @@ UIFrame *LP_Manager::CreateEngineFrame()
 	topFrame->AttachChild(openProjectBut);
 	openProjectBut->CreateAddText(PX2_LM_APP.GetValue("FileProject"));
 	openProjectBut->SetAnchorHor(1.0f, 1.0f);
-	openProjectBut->SetAnchorParamHor(-25.0f, 0.0f);
+	openProjectBut->SetAnchorParamHor(-70.0f, 0.0f);
 	openProjectBut->SetAnchorVer(0.5f, 0.5f);
 	openProjectBut->SetHeight(20.0f);
 	openProjectBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
@@ -931,6 +937,19 @@ UIFrame *LP_Manager::CreateEngineFrame()
 	openProjectBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
 	openProjectBut->AddUICallback(_UICallback);
 	openProjectBut->GetText()->SetAligns(TEXTALIGN_HCENTER | TEXTALIGN_VCENTER);
+
+	UIButton* packageProjectBut = UIButton::New("PackageProject");
+	topFrame->AttachChild(packageProjectBut);
+	packageProjectBut->CreateAddText(PX2_LM_APP.GetValue("Package"));
+	packageProjectBut->SetAnchorHor(1.0f, 1.0f);
+	packageProjectBut->SetAnchorParamHor(-25.0f, 0.0f);
+	packageProjectBut->SetAnchorVer(0.5f, 0.5f);
+	packageProjectBut->SetHeight(20.0f);
+	packageProjectBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetPicBoxType(UIPicBox::PBT_NINE);
+	packageProjectBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexture("Data/engine/whitern.png");
+	packageProjectBut->GetPicBoxAtState(UIButtonBase::BS_NORMAL)->SetTexCornerSize(12.0f, 12.0f, 12.0f, 12.0f);
+	packageProjectBut->AddUICallback(_UICallback);
+	packageProjectBut->GetText()->SetAligns(TEXTALIGN_HCENTER | TEXTALIGN_VCENTER);
 
 	float butLuancherWidth = 85.0f;
 	float butHeight = 28.0f;

@@ -294,7 +294,7 @@ L_Frame *L_App::CreateMainFrame(const std::string &name)
 #endif
 
 	RenderWindow *rw = PX2_GR.GetMainWindow();
-	rw->SetScreenSize(Sizef(370.0f*1.05f, 600.0f*1.05f));
+	rw->SetScreenSize(Sizef(440.0, 640.0f));
 	rw->SetTitle(title);
 
 	// load dll
