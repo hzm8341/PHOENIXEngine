@@ -111,6 +111,9 @@
     <ClCompile Include="EasyPR\thirdparty\xmlParser\xmlParser.cpp">
       <Filter>EasyPR\thirdparty</Filter>
     </ClCompile>
+    <ClCompile Include="EasyPRManager.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProjectPlugin.hpp">
@@ -119,6 +122,9 @@
     <ClInclude Include="ProjectPre.hpp" />
     <ClInclude Include="ProjectToLua.hpp">
       <Filter>ToScript</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyPRManager.hpp">
+      <Filter>Plugin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
