@@ -72,6 +72,7 @@ function zo_ConnectBleSerial()
     fText:GetText():SetFontColor(Float3.BLACK)
     fText:GetText():SetFontScale(0.75)
     motoSpeedCheck:SetScriptHandler("zo_ButBluetoothSerialFrameCallabck")
+    motoSpeedCheck:Check(ZERONE_IsRobotMotoUseSpeed, false)
 
     local motoFireCheck = UICheckButton:New("FireCheckButton")
     uiFrame:AttachChild(motoFireCheck)
@@ -319,6 +320,7 @@ function zo_ButBluetoothSerialFrameCallabck(ptr, callType)
             end
         elseif "MotoSpeedCheckButton"==name then
             ZERONE_IsRobotMotoUseSpeed = false
+            rc_Arduino:VehicleSpeedInit(Arduino.P_0, Arduino.P_0, Arduino.P_0, Arduino.P_0) -- ternimate speed
         elseif "FireCheckButton"==name then
             ZERONE_IsFireRobot = false
         end

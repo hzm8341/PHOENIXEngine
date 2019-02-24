@@ -351,16 +351,12 @@ function ZERONEUIFaceCtrl:Move(moveType, speed)
 	if moveType == MoveType.MT_NONE then
 		rc_Arduino:Run(Arduino.SDT_NONE, speed)
 	elseif moveType == MoveType.MT_FORWARD then
-		--PX2_VOICESDK:Speak("前进")
 		rc_Arduino:Run(Arduino.SDT_FORWARD, speed)
 	elseif moveType == MoveType.MT_BACKWARD then
-		--PX2_VOICESDK:Speak("后退")
 		rc_Arduino:Run(Arduino.SDT_BACKWARD, speed)
 	elseif moveType == MoveType.MT_LEFT then
-		--PX2_VOICESDK:Speak("左转")
 		rc_Arduino:Run(Arduino.SDT_LEFT, speed)
 	elseif moveType == MoveType.MT_RIGHT then
-		--PX2_VOICESDK:Speak("右转")
 		rc_Arduino:Run(Arduino.SDT_RIGHT, speed)
 	end
 end

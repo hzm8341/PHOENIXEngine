@@ -676,48 +676,78 @@ void PXFArduino::_MotoSpeedInit(int encorderLA, int encorderLB,
   mPinEncroderRA = encorderRA;
   mPinEncroderRB = encorderRB;
 
-  pinMode(mPinEncroderLB, INPUT);
-  pinMode(mPinEncroderRB, INPUT);
-
-  mIsUseSpeedEncorder = true;
+  if (encorderLA == encorderLB && encorderRA==encorderRB)
+  {
+    mIsUseSpeedEncorder = false;
 
 #if defined PXF_PID
-  mEncoder0PinALastL = 0;
-  mEncoder0PinALastR = 0;
-  mDurationL = 0;
-  mDurationR = 0;
-  mAbsDurationL = 0;
-  mAbsDurationR = 0;
-  mValOutputL = 0;
-  mValOutputR = 0;
-  mDirectionL = true;
-  mDirectionR = true;
-
-  if (mPID)
-  {
-    delete(mPID);
-  }
-  mPID = new PID(&mAbsDurationL, &mValOutputL, &mSetPoint_L, Kp, Ki, Kd, DIRECT);
-
-  if (mPID1)
-  {
-    delete(mPID1);
-  }
-  mPID1 = new PID(&mAbsDurationR, &mValOutputR, &mSetPoint_R, Kp, Ki, Kd, DIRECT);
-  
-  mPID->SetMode(AUTOMATIC);
-  mPID->SetSampleTime(100);
-  mPID1->SetMode(AUTOMATIC);
-  mPID1->SetSampleTime(100);
-  
-  mDirectionL = true;
-  pinMode(mPinEncroderLB, INPUT);  
-  attachInterrupt(0, wheelSpeed, CHANGE);
-
-  mDirectionR = true;
-  pinMode(mPinEncroderRB, INPUT);  
-  attachInterrupt(1, wheelSpeedR, CHANGE);
+    if (mPID)
+    {
+      delete(mPID);
+    }
+    mPID = 0;
+    if (mPID1)
+    {
+      delete(mPID1);
+    }
+    mPID1 = 0;
+    mEncoder0PinALastL = 0;
+    mEncoder0PinALastR = 0;
+    mDurationL = 0;
+    mDurationR = 0;
+    mAbsDurationL = 0;
+    mAbsDurationR = 0;
+    mValOutputL = 0;
+    mValOutputR = 0;
+    mDirectionL = true;
+    mDirectionR = true;
 #endif
+  }
+  else
+  {
+    pinMode(mPinEncroderLB, INPUT);
+    pinMode(mPinEncroderRB, INPUT);
+
+    mIsUseSpeedEncorder = true;
+
+#if defined PXF_PID
+    mEncoder0PinALastL = 0;
+    mEncoder0PinALastR = 0;
+    mDurationL = 0;
+    mDurationR = 0;
+    mAbsDurationL = 0;
+    mAbsDurationR = 0;
+    mValOutputL = 0;
+    mValOutputR = 0;
+    mDirectionL = true;
+    mDirectionR = true;
+
+    if (mPID)
+    {
+      delete(mPID);
+    }
+    mPID = new PID(&mAbsDurationL, &mValOutputL, &mSetPoint_L, Kp, Ki, Kd, DIRECT);
+  
+    if (mPID1)
+    {
+      delete(mPID1);
+    }
+    mPID1 = new PID(&mAbsDurationR, &mValOutputR, &mSetPoint_R, Kp, Ki, Kd, DIRECT);
+    
+    mPID->SetMode(AUTOMATIC);
+    mPID->SetSampleTime(100);
+    mPID1->SetMode(AUTOMATIC);
+    mPID1->SetSampleTime(100);
+    
+    mDirectionL = true;
+    pinMode(mPinEncroderLB, INPUT);  
+    attachInterrupt(0, wheelSpeed, CHANGE);
+  
+    mDirectionR = true;
+    pinMode(mPinEncroderRB, INPUT);  
+    attachInterrupt(1, wheelSpeedR, CHANGE);
+#endif 
+  }
 }
 //----------------------------------------------------------------------------
 float PXFArduino::_VehicleGetSpeed(int index)
