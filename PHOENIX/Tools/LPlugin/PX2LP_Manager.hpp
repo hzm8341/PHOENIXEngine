@@ -40,7 +40,7 @@ namespace PX2
 		UIEditBox *GetCreateProjectHeightUIEditBox();
 		UICheckButton *GetCreateProjectLandscapeButton();
 
-	protected:
+	public:
 		UIFrame *AddTabFrame(const std::string &name, const std::string &title);
 		UIFrame *CreateManyKitFrame();
 		UIFrame *CreateEngineFrame();

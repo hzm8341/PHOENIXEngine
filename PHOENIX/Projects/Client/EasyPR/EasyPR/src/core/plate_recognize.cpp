@@ -65,8 +65,8 @@ int CPlateRecognize::plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licens
     channels.push_back(255 - channels[c]);
 
   // Create ERFilter objects with the 1st and 2nd stage default classifiers
-  std::string pathMMmodel_1 = "resources/model/text/trained_classifierNM1.xml";
-  std::string pathMMmodel_2 = "resources/model/text/trained_classifierNM2.xml";
+  std::string pathMMmodel_1 = "Data/EasyPR/resources/model/text/trained_classifierNM1.xml";
+  std::string pathMMmodel_2 = "Data/EasyPR/resources/model/text/trained_classifierNM2.xml";
 
   Ptr<text::ERFilter> er_filter1 = text::createERFilterNM1(text::loadClassifierNM1(pathMMmodel_1), 16, 0.00015f, 0.13f, 0.2f, true, 0.1f);
   Ptr<text::ERFilter> er_filter2 = text::createERFilterNM2(text::loadClassifierNM2(pathMMmodel_2), 0.5);

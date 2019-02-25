@@ -1889,7 +1889,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
       if (0 && showDebug) {
         std::stringstream ss(std::stringstream::in | std::stringstream::out);
-        ss << "resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
+        ss << "Data/EasyPR/resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
         imwrite(ss.str(), result);
       }
       if (1 && showDebug) {
@@ -2081,7 +2081,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
     if (1) {
       std::stringstream ss(std::stringstream::in | std::stringstream::out);
-      ss << "resources/image/tmp/plateDetect/plate_" << img_index << "_" << the_color << ".jpg";
+      ss << "Data/EasyPR/resources/image/tmp/plateDetect/plate_" << img_index << "_" << the_color << ".jpg";
       imwrite(ss.str(), result);
     }
   }

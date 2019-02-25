@@ -173,7 +173,7 @@ namespace easypr {
 
     if (1) {
       std::stringstream ss(std::stringstream::in | std::stringstream::out);
-      ss << "resources/image/tmp/Result/plate_" << img_index << ".jpg";
+      ss << "Data/EasyPR/resources/image/tmp/Result/plate_" << img_index << ".jpg";
       imwrite(ss.str(), img_window);
     }
 

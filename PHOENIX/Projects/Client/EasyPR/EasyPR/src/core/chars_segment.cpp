@@ -260,7 +260,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
   //  int h = input_grey.rows;
   //  Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
   //  int threadHoldV = ThresholdOtsu(tmp);
-  //  // utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
+  //  // utils::imwrite("Data/EasyPR/resources/image/tmp/inputgray2.jpg", input_grey);
 
   //  threshold(input_grey, img_threshold, threadHoldV, 255,
   //            CV_THRESH_BINARY_INV);

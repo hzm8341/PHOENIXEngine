@@ -104,11 +104,6 @@ mPathUpdateTiming(0.0f)
 	mIsMapDataChanged = true;
 
 	mArduino = new0 Arduino();
-
-#if defined PX2_USE_SLAM2D
-	mSlam2DPlugin = new Slam2DPlugin();
-	PX2_PLUGINMAN.InstallPlugin(mSlam2DPlugin);
-#endif
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -121,7 +116,16 @@ Robot::~Robot()
 	ShutdownShareMenory();
 
 #if defined PX2_USE_SLAM2D
-	PX2_PLUGINMAN.UninstallPlugin(mSlam2DPlugin);
+	if (mSlam2DPlugin)
+		PX2_PLUGINMAN.UninstallPlugin(mSlam2DPlugin);
+#endif
+}
+//----------------------------------------------------------------------------
+void Robot::InitSlam2D()
+{
+#if defined PX2_USE_SLAM2D
+	mSlam2DPlugin = new Slam2DPlugin();
+	PX2_PLUGINMAN.InstallPlugin(mSlam2DPlugin);
 #endif
 }
 //----------------------------------------------------------------------------

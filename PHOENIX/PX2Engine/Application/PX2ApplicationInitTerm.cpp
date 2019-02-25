@@ -362,6 +362,8 @@ bool Application::Initlize(AppInitConfig *cfg)
 		mVoiceSDK->Initlize();
 	}
 
+	VLC::Initlize();
+
 	mSTEAMEduManager = new0 STEAMEduManager();
 	mSTEAMEduManager->Initlize();
 
@@ -1080,6 +1082,8 @@ bool Application::Terminate()
 		delete0(mEventWorld);
 		EventWorld::Set(0);
 	}
+
+	VLC::Ternimate();
 
 	if (mTimerMan)
 	{

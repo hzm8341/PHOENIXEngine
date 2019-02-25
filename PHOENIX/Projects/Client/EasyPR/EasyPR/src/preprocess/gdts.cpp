@@ -10,11 +10,11 @@ namespace preprocess {
 // 图片不要多，10-30张就足够了，EasyPR对GDTS数据集的使用不以量为主要指标
 // 只要这些图片足够反映你数据集的主要特征即可
 
-const char* src_path = "F:/data/easypr-data/tmp-1";
+const char* src_path = "easypr-data/tmp-1";
 
 // TODO 将下面的路径改成你希望生成捐赠给GDTS数据存放的新路径
 
-const char* dst_path = "F:/data/easypr-data/tmp-2";
+const char* dst_path = "easypr-data/tmp-2";
 
 int generate_gdts() {
 
@@ -22,7 +22,7 @@ int generate_gdts() {
 
   cv::CascadeClassifier cascade;
   std::string cascadeName =
-      "resources/model/haarcascade_frontalface_alt_tree.xml";
+      "Data/EasyPR/resources/model/haarcascade_frontalface_alt_tree.xml";
 
   ////获取该路径下的所有文件
 

@@ -6,6 +6,8 @@
 #include "PX2ScriptManager.hpp"
 #include "ProjectToLua.hpp"
 #include "EasyPRManager.hpp"
+#include "PX2Time.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -45,6 +47,13 @@ void ProjectPlugin::OnUninstall()
 //----------------------------------------------------------------------------
 void ProjectPlugin::OnUpdate()
 {
+	float time = Time::GetTimeInSeconds();
+	float elapseTime = PX2_APP.GetElapsedTime();
+	EasyPRManager *mgr = EasyPRManager::GetSingletonPtr();
+	if (mgr)
+	{
+		mgr->Update(time, elapseTime);
+	}
 }
 //----------------------------------------------------------------------------
 void ProjectPlugin::OnEvent(Event *event)

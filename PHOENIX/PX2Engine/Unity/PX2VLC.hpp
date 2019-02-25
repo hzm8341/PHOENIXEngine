@@ -25,6 +25,9 @@ namespace PX2
 		VLC();
 		~VLC();
 
+		static void Initlize();
+		static void Ternimate();
+
 		void Start(const std::string &filename);
 		void Pause(bool pause);
 		void Stop();
@@ -52,7 +55,7 @@ namespace PX2
 	private:
 
 #if defined PX2_USE_VLC
-		libvlc_instance_t * mInst;
+		static libvlc_instance_t *sInst;
 		libvlc_media_t *mMedia;
 		libvlc_media_player_t *mMediaPlayer;
 #endif

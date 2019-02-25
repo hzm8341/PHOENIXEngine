@@ -10,19 +10,13 @@ using namespace PX2;
 #include "vlc/vlc.h"
 #endif
 
+libvlc_instance_t *VLC::sInst = 0;
 //----------------------------------------------------------------------------
 VLC::VLC()
 {
 #if defined PX2_USE_VLC
-	mInst = 0;
 	mMediaPlayer = 0;
 	mMedia = 0;
-
-	mInst = libvlc_new(0, 0);
-	if (!mInst)
-	{
-		PX2_LOG_ERROR("libvlc_new %s", libvlc_errmsg());
-	}
 #endif
 }
 //----------------------------------------------------------------------------
@@ -48,8 +42,32 @@ VLC::~VLC()
 		libvlc_media_player_release(mMediaPlayer);
 		mMediaPlayer = 0;
 	}
+#endif
+}
+//----------------------------------------------------------------------------
+void VLC::Initlize()
+{
+#if defined PX2_USE_VLC
+	if (0 == sInst)
+	{
+		sInst = libvlc_new(0, 0);
 
-	libvlc_release(mInst);
+		if (!sInst)
+		{
+			PX2_LOG_ERROR("libvlc_new %s", libvlc_errmsg());
+		}
+	}
+#endif
+}
+//----------------------------------------------------------------------------
+void VLC::Ternimate()
+{
+#if defined PX2_USE_VLC
+	if (sInst)
+	{
+		libvlc_release(sInst);
+		sInst = 0;
+	}
 #endif
 }
 //----------------------------------------------------------------------------
@@ -58,8 +76,8 @@ void VLC::Start(const std::string &filename)
 	PX2_LOG_INFO("vlc start filename %s", filename.c_str());
 
 #if defined PX2_USE_VLC
-	mMedia = libvlc_media_new_location(mInst, filename.c_str());
-	//mMedia = libvlc_media_new_path(mInst, filename.c_str());
+	mMedia = libvlc_media_new_location(sInst, filename.c_str());
+	//mMedia = libvlc_media_new_path(sInst, filename.c_str());
 
 	mMediaPlayer = libvlc_media_player_new_from_media(mMedia);
 	libvlc_media_release(mMedia);

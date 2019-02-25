@@ -48,7 +48,7 @@ cv::Mat detectAndMaskFace(cv::Mat& img, cv::CascadeClassifier& cascade,
 int deface() {
   cv::CascadeClassifier cascade;
   std::string cascadeName =
-      "resources/model/haarcascade_frontalface_default.xml";
+      "Data/EasyPR/resources/model/haarcascade_frontalface_default.xml";
 
   if (!cascade.load(cascadeName)) {
     std::cerr << "ERROR: Could not load classifier cascade" << std::endl;

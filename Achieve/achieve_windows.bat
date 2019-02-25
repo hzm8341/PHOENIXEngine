@@ -13,7 +13,6 @@ mkdir PHOENIXEngine
 
 :: Engine
 XCOPY ..\Bin\PX2EngineOpenGL.dll PHOENIXEngine\ /s
-XCOPY ..\Bin\PX2Engine.dll PHOENIXEngine\ /s
 
 ::locales
 XCOPY ..\Bin\locales\* PHOENIXEngine\locales\ /s
@@ -88,17 +87,13 @@ XCOPY ..\Bin\xinput9_1_0.dll PHOENIXEngine\ /s
 
 :: appplayer
 XCOPY ..\Bin\AppPlayerOpenGL.exe PHOENIXEngine\ /s
-XCOPY ..\Bin\AppPlayer.exe PHOENIXEngine\ /s
-
-:: snap
-XCOPY ..\Bin\Snap-ManyKit.exe PHOENIXEngine\ /s
 
 :: editor
-XCOPY ..\Bin\NIRVANAwxOpenGL.exe PHOENIXEngine\ /s
-XCOPY ..\Bin\NIRVANAwx.exe PHOENIXEngine\ /s
-XCOPY ..\Bin\PX2Editor.dll PHOENIXEngine\ /s
-XCOPY ..\Bin\PX2EditorOpenGL.dll PHOENIXEngine\ /s
-XCOPY ..\Bin\NIRVANAwx.layout.1.0.xml PHOENIXEngine\ /s
+::XCOPY ..\Bin\NIRVANAwxOpenGL.exe PHOENIXEngine\ /s
+::XCOPY ..\Bin\NIRVANAwx.exe PHOENIXEngine\ /s
+::XCOPY ..\Bin\PX2Editor.dll PHOENIXEngine\ /s
+::XCOPY ..\Bin\PX2EditorOpenGL.dll PHOENIXEngine\ /s
+::XCOPY ..\Bin\NIRVANAwx.layout.1.0.xml PHOENIXEngine\ /s
 
 :: tools
 XCOPY ..\Bin\PkgParser.exe PHOENIXEngine\ /s
@@ -116,18 +111,15 @@ XCOPY ..\Bin\Data\SampleLua\* PHOENIXEngine\Data\SampleLua\ /s
 XCOPY ..\Bin\Data\LPlugin\* PHOENIXEngine\Data\LPlugin\ /s
 
 :: data editor
-XCOPY ..\Bin\DataNIRVANAwx\* PHOENIXEngine\DataNIRVANAwx\ /s
+::XCOPY ..\Bin\DataNIRVANAwx\* PHOENIXEngine\DataNIRVANAwx\ /s
 
 :: launcher
 XCOPY ..\Bin\LauncherOpenGL.exe PHOENIXEngine\ /s
-XCOPY ..\Bin\Launcher.exe PHOENIXEngine\ /s
 XCOPY ..\Bin\Write_Launcher\* PHOENIXEngine\Write_Launcher\ /s
 
 :: updater
 XCOPY ..\Bin\PX2EngineOpenGL.dll PHOENIXEngine\Updater\ /s
-XCOPY ..\Bin\PX2Engine.dll PHOENIXEngine\Updater\ /s
 XCOPY ..\Bin\Updater\UpdaterOpenGL.exe PHOENIXEngine\Updater\ /s
-XCOPY ..\Bin\Updater\Updater.exe PHOENIXEngine\Updater\ /s
 
 XCOPY ..\Bin\fmod.dll PHOENIXEngine\Updater\ /s
 XCOPY ..\Bin\awesomium.dll PHOENIXEngine\Updater\ /s

@@ -57,9 +57,17 @@ void _UICallback (UIFrame *frame, UICallType type)
 #if defined(_WIN32) || defined(WIN32)
 			CHAR szPath[MAX_PATH];
 			GetCurrentDirectory(sizeof(szPath), szPath);
-			std::string fullPath = szPath + std::string("\\") + "Data\\RobotControl";
 
-			ShellExecute(0, "open", fullPath.c_str(), 0, 0, SW_SHOW);
+			UIItem *item = LP_Manager::GetSingleton().mProjectList->GetSelectedItem();
+			if (item)
+			{
+				const std::string &name = item->GetName();
+				if (!name.empty())
+				{
+					std::string fullPath = szPath + std::string("\\") + "Data\\" + name;
+					ShellExecute(0, "open", fullPath.c_str(), 0, 0, SW_SHOW);
+				}
+			}
 #endif
 		}
 		else if ("NewProject" == name)
