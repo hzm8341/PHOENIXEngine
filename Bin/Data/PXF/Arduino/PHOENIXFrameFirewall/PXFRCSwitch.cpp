@@ -29,7 +29,7 @@
 
 #if defined PXF_RCSWITCH
 
-#include "RCSwitch.h"
+#include "PXFRCSwitch.h"
 
 #if not defined( RCSwitchDisableReceiving )
 unsigned long RCSwitch::nReceivedValue = NULL;
