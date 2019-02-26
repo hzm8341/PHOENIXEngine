@@ -370,7 +370,6 @@ bool Application::Initlize(AppInitConfig *cfg)
 	if (cfg && cfg->IsInitRobot)
 	{
 		mRobot = new0 Robot();
-		Robot::InitSlam2D();
 	}
 
 	Server::ServerType st;

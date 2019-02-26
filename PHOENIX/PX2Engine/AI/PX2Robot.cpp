@@ -123,11 +123,19 @@ Robot::~Robot()
 #endif
 }
 //----------------------------------------------------------------------------
-void Robot::InitSlam2D()
+void Robot::InitlizeSlam2D()
 {
 #if defined PX2_USE_SLAM2D
 	mSlam2DPlugin = new Slam2DPlugin();
 	PX2_PLUGINMAN.InstallPlugin(mSlam2DPlugin);
+#endif
+}
+//----------------------------------------------------------------------------
+void Robot::TernimateSlam2D()
+{
+#if defined PX2_USE_SLAM2D
+	if (mSlam2DPlugin)
+		PX2_PLUGINMAN.UninstallPlugin(mSlam2DPlugin);
 #endif
 }
 //----------------------------------------------------------------------------

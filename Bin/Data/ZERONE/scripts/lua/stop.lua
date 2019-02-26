@@ -14,5 +14,7 @@ function engine_project_stop()
     PX2_PROJ:PoolSet("Arduino", nil)
 
     PX2_VOICESDK:EnableAutoSpeak(false)
-    PX2_VOICESDK:EnableAutoSpeakTTS(false)   
+    PX2_VOICESDK:EnableAutoSpeakTTS(false)
+	
+	Robot:TernimateSlam2D()
 end

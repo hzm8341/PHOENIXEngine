@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 02/21/19 11:22:55.
+** Generated automatically by tolua++-1.0.92 on 02/26/19 15:47:19.
 */
 
 #ifndef __cplusplus
@@ -87160,6 +87160,60 @@ static int tolua_PX2_Robot_GetRoleType00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: InitlizeSlam2D of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_InitlizeSlam2D00
+static int tolua_PX2_Robot_InitlizeSlam2D00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Robot",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   Robot::InitlizeSlam2D();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'InitlizeSlam2D'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: TernimateSlam2D of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_TernimateSlam2D00
+static int tolua_PX2_Robot_TernimateSlam2D00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Robot",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   Robot::TernimateSlam2D();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'TernimateSlam2D'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: CreateLidar of class  Robot */
 #ifndef TOLUA_DISABLE_tolua_PX2_Robot_CreateLidar00
 static int tolua_PX2_Robot_CreateLidar00(lua_State* tolua_S)
@@ -107958,6 +108012,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_constant(tolua_S,"RT_MAX_TYPE",Robot::RT_MAX_TYPE);
    tolua_function(tolua_S,"SetRoleType",tolua_PX2_Robot_SetRoleType00);
    tolua_function(tolua_S,"GetRoleType",tolua_PX2_Robot_GetRoleType00);
+   tolua_function(tolua_S,"InitlizeSlam2D",tolua_PX2_Robot_InitlizeSlam2D00);
+   tolua_function(tolua_S,"TernimateSlam2D",tolua_PX2_Robot_TernimateSlam2D00);
    tolua_function(tolua_S,"CreateLidar",tolua_PX2_Robot_CreateLidar00);
    tolua_function(tolua_S,"LidarOpen",tolua_PX2_Robot_LidarOpen00);
    tolua_function(tolua_S,"GetLidar",tolua_PX2_Robot_GetLidar00);

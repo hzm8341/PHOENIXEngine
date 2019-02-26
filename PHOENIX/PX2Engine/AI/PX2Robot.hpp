@@ -111,7 +111,8 @@ namespace PX2
 		void SetRoleType(RoleType rtType);
 		RoleType GetRoleType() const;
 
-		static void InitSlam2D();
+		static void InitlizeSlam2D();
+		static void TernimateSlam2D();
 
 		void CreateLidar();
 		bool LidarOpen(const std::string &portIP, int baudratePort);

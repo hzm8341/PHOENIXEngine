@@ -24,6 +24,7 @@ function engine_project_preplay()
 end
 
 function engine_project_play()
+	Robot:InitlizeSlam2D()
 	zo_ZERONE()
 end
 
