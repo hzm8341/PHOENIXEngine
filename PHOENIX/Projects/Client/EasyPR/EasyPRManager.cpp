@@ -74,8 +74,8 @@ bool EasyPRManager::Initlize()
 	mUsingBuffer = &mBuffer0;
 	mPushingBuffer = &mBuffer1;
 
-	SetURL0("192.168.31.203:554");
-	SetURl1("192.168.31.204:554");
+	SetURL0("192.168.31.204:554");
+	SetURl1("192.168.31.203:554");
 
 	mRecognizeThread = new0 Thread();
 	mRecognizeThread->Start(*this);
