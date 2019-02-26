@@ -194,7 +194,7 @@ namespace PX2
 
 		RobotMapData mInitMapData;
 #if defined PX2_USE_SLAM2D
-		Slam2DPlugin *mSlam2DPlugin;
+		static Slam2DPlugin *mSlam2DPlugin;
 #endif
 
 		// common

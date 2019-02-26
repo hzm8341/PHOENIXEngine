@@ -5,6 +5,7 @@
 #include "easypr.h"
 #include "easypr/util/switch.hpp"
 #include "PX2Application.hpp"
+#include "PX2ScopedCS.hpp"
 using namespace PX2;
 
 void _EasyPRUDPServerRecvCallback(UDPServer *sever,
@@ -39,6 +40,8 @@ void _EasyPRVedioServerRecvCallback(UDPServer *sever,
 EasyPRManager::EasyPRManager() :
 	mUDPServer(0)
 {
+	mUsingBuffer = 0;
+	mPushingBuffer = 0;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -50,6 +53,7 @@ bool EasyPRManager::Initlize()
 	IPAddress ipAddr = PX2_APP.GetLocalAddressWith10_172_192();
 	SocketAddress udpAddr(ipAddr, 9808);
 
+	mIsDoStop = false;
 	mUDPServer = new0 UDPServer(udpAddr);
 	mUDPServer->AddRecvCallback(_EasyPRUDPServerRecvCallback);
 	mUDPServer->Start();
@@ -66,6 +70,16 @@ bool EasyPRManager::Initlize()
 	mVLC1 = frameVLC1;
 	frameVLC1->SetAnchorHor(0.5f, 1.0f);
 	frameVLC1->SetAnchorVer(0.0f, 1.0f);
+
+	mUsingBuffer = &mBuffer0;
+	mPushingBuffer = &mBuffer1;
+
+	SetURL0("192.168.31.203:554");
+	SetURl1("192.168.31.204:554");
+
+	mRecognizeThread = new0 Thread();
+	mRecognizeThread->Start(*this);
+	mIsDoStop = false;
 
 	return true;
 }
@@ -84,23 +98,39 @@ void EasyPRManager::SetURl1(const std::string &url1)
 	mVLC1->StartVLC(url);
 }
 //----------------------------------------------------------------------------
+//nH,nW为BYTE*类型图像的高和宽,nFlag为通道数
+bool EasyPRManager::_ByteToMat(char* pImg, int nH, int nW, Mat& outImg)
+{
+	int nByte = nH * nW * 4;
+	int nType = CV_8UC4;
+	outImg = Mat::zeros(nH, nW, nType);
+	memcpy(outImg.data, pImg, nByte);
+	return true;
+}
+//----------------------------------------------------------------------------
 void EasyPRManager::Recognize(const std::string &filename)
 {
 	Mat src = imread(filename);
-
+	_Recognize(src);
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::_Recognize(const Mat &mat)
+{
 	easypr::CPlateRecognize pr;
 	pr.setLifemode(true);
 	pr.setDebug(false);
 	pr.setMaxPlates(4);
-	//pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
 	pr.setDetectType(easypr::PR_DETECT_CMSER);
 
 	vector<easypr::CPlate> plateVec;
-	int result = pr.plateRecognize(src, plateVec);
-	if (result == 0) {
+	int result = pr.plateRecognize(mat, plateVec);
+	if (result == 0) 
+	{
 		size_t num = plateVec.size();
-		for (size_t j = 0; j < num; j++) {
-			cout << "plateRecognize: " << plateVec[j].getPlateStr() << endl;
+		for (size_t j = 0; j < num; j++) 
+		{
+			cout << "plateRecognize: " << plateVec[j].getPlateStr() 
+				<< "  score:" << plateVec[j].getPlateScore() <<endl;
 		}
 	}
 
@@ -109,6 +139,8 @@ void EasyPRManager::Recognize(const std::string &filename)
 //----------------------------------------------------------------------------
 bool EasyPRManager::Ternimate()
 {
+	mIsDoStop = true;
+
 	if (mUDPServer)
 	{
 		mUDPServer = 0;
@@ -117,11 +149,45 @@ bool EasyPRManager::Ternimate()
 	return true;
 }
 //----------------------------------------------------------------------------
+void EasyPRManager::Run()
+{
+	while (!mIsDoStop)
+	{
+		std::vector<char> toUseBuffer;
+		{
+			ScopedCS cs(&mRecogMutex);
+			toUseBuffer = *mUsingBuffer;
+		}
+
+		if (toUseBuffer.size() > 0)
+		{
+			Mat mat;
+			_ByteToMat((char*)&(toUseBuffer)[0], mBufferHeight,
+				mBufferWidth, mat);
+			cvtColor(mat, mat, CV_RGBA2RGB);
+			_Recognize(mat);
+		}
+	}
+}
+//----------------------------------------------------------------------------
 void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 {
+	const std::vector<char> &lastBuffer =
+		mVLC0->GetVLCMemObj()->GetLastBuffer();
+	mBufferWidth = mVLC0->GetVLCMemObj()->GetMediaWidth();
+	mBufferHeight = mVLC0->GetVLCMemObj()->GetMediaHeight();
+	*mPushingBuffer = lastBuffer;
+
 	if (mUDPServer)
 	{
 		mUDPServer->Update(elapsedSeconds);
+	}
+
+	{
+		ScopedCS cs(&mRecogMutex);
+		std::vector<char> *tempBuf = mPushingBuffer;
+		mPushingBuffer = mUsingBuffer;
+		mUsingBuffer = tempBuf;
 	}
 }
 //----------------------------------------------------------------------------

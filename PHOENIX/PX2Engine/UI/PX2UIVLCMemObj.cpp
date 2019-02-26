@@ -47,6 +47,11 @@ int VLCMemObj::GetMediaHeight() const
 	return mMediaHeight;
 }
 //----------------------------------------------------------------------------
+const std::vector<char> &VLCMemObj::GetLastBuffer()
+{
+	return mLastFrameBuf;
+}
+//----------------------------------------------------------------------------
 void VLCMemObj::OnFormatSetup()
 {
 	if (mMediaWidth > 0 && mMediaHeight > 0)
@@ -67,6 +72,8 @@ void VLCMemObj::OnFrameReady(const std::vector<char>* frameBuf)
 	if (mMediaWidth > 0 && mMediaHeight > 0)
 	{
 		const std::vector<char> &fromBufs = *frameBuf;
+		mLastFrameBuf = fromBufs;
+
 		int width = mTex2D->GetWidth();
 		int height = mTex2D->GetHeight();
 		char* pDest = mTex2D->GetData(0);
@@ -134,7 +141,6 @@ void VLCMemObj::OnFrameReady(int width, int height,
 					pDest[offsetDst + 2] = buf[offsetSrc + 2];		// r
 					pDest[offsetDst + 3] = buf[offsetSrc + 3];
 #endif
-
 					offsetSrc += 4;
 					offsetDst += 4;
 				}
