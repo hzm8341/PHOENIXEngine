@@ -275,7 +275,19 @@ int EngineServer::OnArduinoString(unsigned int clientid,
 {
 	std::string strBuf((const char*)pbuffer, buflen);
 
-	//PX2_ARDUINO._Send(strBuf);
+	Robot *robot = Robot::GetSingletonPtr();
+	if (robot)
+	{
+		Arduino *arduino = robot->GetArduino();
+		if (arduino && arduino->IsInitlized())
+		{
+			arduino->_Send(strBuf);
+		}
+		else
+		{
+			PX2_LOG_INFO("arduino is not initlize!");
+		}
+	}
 
 	return 0;
 }
