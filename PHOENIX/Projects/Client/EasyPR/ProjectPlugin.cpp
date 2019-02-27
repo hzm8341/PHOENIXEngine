@@ -47,7 +47,7 @@ void ProjectPlugin::OnUninstall()
 //----------------------------------------------------------------------------
 void ProjectPlugin::OnUpdate()
 {
-	float time = Time::GetTimeInSeconds();
+	float time = (float)Time::GetTimeInSeconds();
 	float elapseTime = PX2_APP.GetElapsedTime();
 	EasyPRManager *mgr = EasyPRManager::GetSingletonPtr();
 	if (mgr)

@@ -6,6 +6,7 @@
 #include "PX2UIVlc.hpp"
 #include "PX2Thread.hpp"
 #include "PX2Runnable.hpp"
+#include "EasyPRRecvObject.hpp"
 
 namespace cv
 {
@@ -35,23 +36,22 @@ namespace PX2
 
 		void Recognize(const std::string &filename);
 
-	private:
+	public:
 		bool _ByteToMat(char* pImg, int nH, int nW, cv::Mat& outImg);
 		void _Recognize(const cv::Mat &mat);
 
+	private:
 		UDPServer *mUDPServer;
 		UIVLCPtr mVLC0;
 		UIVLCPtr mVLC1;
 		ThreadPtr mRecognizeThread;
-		Mutex mRecogMutex;
+
 		bool mIsDoStop;
-		std::vector<char> mBuffer0;
-		std::vector<char> mBuffer1;
-		std::vector<char> *mUsingBuffer;
-		std::vector<char> *mPushingBuffer;
-		int mBufferWidth;
-		int mBufferHeight;
+		EasyPRRecvObjectPtr mEasyPRObject0;
+		EasyPRRecvObjectPtr mEasyPRObject1;
 	};
+
+#define EasyPRM EasyPRManager::GetSingleton()
 
 }
 

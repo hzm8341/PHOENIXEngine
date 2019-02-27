@@ -40,8 +40,6 @@ void _EasyPRVedioServerRecvCallback(UDPServer *sever,
 EasyPRManager::EasyPRManager() :
 	mUDPServer(0)
 {
-	mUsingBuffer = 0;
-	mPushingBuffer = 0;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -71,11 +69,11 @@ bool EasyPRManager::Initlize()
 	frameVLC1->SetAnchorHor(0.5f, 1.0f);
 	frameVLC1->SetAnchorVer(0.0f, 1.0f);
 
-	mUsingBuffer = &mBuffer0;
-	mPushingBuffer = &mBuffer1;
-
 	SetURL0("192.168.31.204:554");
 	SetURl1("192.168.31.203:554");
+
+	mEasyPRObject0 = new0 EasyPRRecvObject(mVLC0);
+	mEasyPRObject1 = new0 EasyPRRecvObject(mVLC1);
 
 	mRecognizeThread = new0 Thread();
 	mRecognizeThread->Start(*this);
@@ -153,41 +151,18 @@ void EasyPRManager::Run()
 {
 	while (!mIsDoStop)
 	{
-		std::vector<char> toUseBuffer;
-		{
-			ScopedCS cs(&mRecogMutex);
-			toUseBuffer = *mUsingBuffer;
-		}
 
-		if (toUseBuffer.size() > 0)
-		{
-			Mat mat;
-			_ByteToMat((char*)&(toUseBuffer)[0], mBufferHeight,
-				mBufferWidth, mat);
-			cvtColor(mat, mat, CV_RGBA2RGB);
-			_Recognize(mat);
-		}
 	}
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 {
-	const std::vector<char> &lastBuffer =
-		mVLC0->GetVLCMemObj()->GetLastBuffer();
-	mBufferWidth = mVLC0->GetVLCMemObj()->GetMediaWidth();
-	mBufferHeight = mVLC0->GetVLCMemObj()->GetMediaHeight();
-	*mPushingBuffer = lastBuffer;
-
 	if (mUDPServer)
 	{
 		mUDPServer->Update(elapsedSeconds);
 	}
 
-	{
-		ScopedCS cs(&mRecogMutex);
-		std::vector<char> *tempBuf = mPushingBuffer;
-		mPushingBuffer = mUsingBuffer;
-		mUsingBuffer = tempBuf;
-	}
+	mEasyPRObject0->Update();
+	mEasyPRObject1->Update();
 }
 //----------------------------------------------------------------------------

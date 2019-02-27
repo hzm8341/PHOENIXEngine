@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EasyPRManager.cpp" />
+    <ClCompile Include="EasyPRRecvObject.cpp" />
     <ClCompile Include="EasyPR\src\core\chars_identify.cpp" />
     <ClCompile Include="EasyPR\src\core\chars_recognise.cpp" />
     <ClCompile Include="EasyPR\src\core\chars_segment.cpp" />
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EasyPRManager.hpp" />
+    <ClInclude Include="EasyPRRecvObject.hpp" />
     <ClInclude Include="ProjectPlugin.hpp" />
     <ClInclude Include="ProjectPre.hpp" />
     <ClInclude Include="ProjectToLua.hpp" />

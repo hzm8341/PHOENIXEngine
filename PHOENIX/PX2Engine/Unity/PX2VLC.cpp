@@ -10,7 +10,9 @@ using namespace PX2;
 #include "vlc/vlc.h"
 #endif
 
+#if defined PX2_USE_VLC
 libvlc_instance_t *VLC::sInst = 0;
+#endif
 //----------------------------------------------------------------------------
 VLC::VLC()
 {
