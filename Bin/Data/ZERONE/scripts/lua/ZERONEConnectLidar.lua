@@ -13,6 +13,7 @@ function zo_ConnectLidar()
     uiFrame:AttachChild(comboxBoxLidarType)
     ZERONEComboBox_LidarType = comboxBoxLidarType
     comboxBoxLidarType.LocalTransform:SetTranslateY(-8.0)
+    comboxBoxLidarType:AddChooseStr("3i_old")
     comboxBoxLidarType:AddChooseStr("3i")
     comboxBoxLidarType:AddChooseStr("RP")
     comboxBoxLidarType:AddChooseStr("WR")
@@ -171,11 +172,15 @@ function zo_SerialTryToConnect_Lidar()
             if ""~=namePath then
                 if LiDar.LT_III==lidarType or LiDar.LT_RP==lidarType then
                     if LiDar.LT_III ==lidarType then
-                        PX2_ROBOT:LidarOpen(namePath, 230400)
+                        local chooseStr = ZERONEComboBox_LidarType:GetChooseStr()
+                        if "3i_old" == chooseStr then
+                            PX2_ROBOT:LidarOpen(namePath, 115200)
+                        else
+                            PX2_ROBOT:LidarOpen(namePath, 230400)
+                        end
                     else
                         PX2_ROBOT:LidarOpen(namePath, 115200)
                     end
-                    --PX2_ROBOT:LidarOpen(namePath, 230400)
                 end 
             end
         end
@@ -226,7 +231,9 @@ function zo_ButFrameCallabck_Lidar(ptr, callType)
     elseif UICT_COMBOBOX_CHOOSED == callType then
         if "BtnComboxBoxLidarType"==name then
             local chooseStr = ZERONEComboBox_LidarType:GetChooseStr()
-            if "3i" == chooseStr then
+            if "3i_old" == chooseStr then
+                PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
+            elseif "3i" == chooseStr then
                 PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
             elseif "RP"==chooseStr then
                 PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_RP)    
