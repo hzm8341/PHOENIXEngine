@@ -1195,6 +1195,11 @@ bool Robot::LidarOpen(const std::string &portIP, int baudratePort)
 	return false;
 }
 //----------------------------------------------------------------------------
+void Robot::SetArduino(Arduino *arduino)
+{
+	mArduino = arduino;
+}
+//----------------------------------------------------------------------------
 bool Robot::IsArduinoConnected() const
 {
 	return mArduino->IsInitlized();

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 02/26/19 15:47:19.
+** Generated automatically by tolua++-1.0.92 on 02/27/19 11:22:14.
 */
 
 #ifndef __cplusplus
@@ -87314,6 +87314,71 @@ static int tolua_PX2_Robot_GetLidar00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetArduino of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_SetArduino00
+static int tolua_PX2_Robot_SetArduino00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Arduino",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
+  Arduino* arduino = ((Arduino*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetArduino'", NULL);
+#endif
+  {
+   self->SetArduino(arduino);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetArduino'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetArduino of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetArduino00
+static int tolua_PX2_Robot_GetArduino00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetArduino'", NULL);
+#endif
+  {
+   Arduino* tolua_ret = (Arduino*)  self->GetArduino();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Arduino");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetArduino'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: GetMapSize of class  Robot */
 #ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetMapSize00
 static int tolua_PX2_Robot_GetMapSize00(lua_State* tolua_S)
@@ -108017,6 +108082,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"CreateLidar",tolua_PX2_Robot_CreateLidar00);
    tolua_function(tolua_S,"LidarOpen",tolua_PX2_Robot_LidarOpen00);
    tolua_function(tolua_S,"GetLidar",tolua_PX2_Robot_GetLidar00);
+   tolua_function(tolua_S,"SetArduino",tolua_PX2_Robot_SetArduino00);
+   tolua_function(tolua_S,"GetArduino",tolua_PX2_Robot_GetArduino00);
    tolua_function(tolua_S,"GetMapSize",tolua_PX2_Robot_GetMapSize00);
    tolua_function(tolua_S,"GetResolution",tolua_PX2_Robot_GetResolution00);
    tolua_function(tolua_S,"SetSlam2DPosition",tolua_PX2_Robot_SetSlam2DPosition00);

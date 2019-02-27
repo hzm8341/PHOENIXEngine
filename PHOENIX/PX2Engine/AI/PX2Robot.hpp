@@ -117,6 +117,7 @@ namespace PX2
 		void CreateLidar();
 		bool LidarOpen(const std::string &portIP, int baudratePort);
 		LiDar *GetLidar();
+		void SetArduino(Arduino *arduino);
 		Arduino *GetArduino();
 
 		bool IsArduinoConnected() const;

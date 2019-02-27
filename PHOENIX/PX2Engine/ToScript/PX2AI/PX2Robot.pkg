@@ -61,6 +61,9 @@
 		bool LidarOpen(const std::string &port, int baud);
 		LiDar *GetLidar();
 		
+		void SetArduino(Arduino *arduino);
+		Arduino *GetArduino();
+		
 		float GetMapSize() const;
 		float GetResolution() const;
 	

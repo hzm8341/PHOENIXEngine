@@ -8,6 +8,7 @@ ZERONE_IsFireRobot = false
 function zo_ZERONE()    
     rc_Arduino = Arduino:New()
     PX2_PROJ:PoolSet("Arduino", rc_Arduino)
+    PX2_ROBOT:SetArduino(rc_Arduino)
 
     local ui = PX2_PROJ:GetUI()
     
