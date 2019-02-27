@@ -279,13 +279,9 @@ int EngineServer::OnArduinoString(unsigned int clientid,
 	if (robot)
 	{
 		Arduino *arduino = robot->GetArduino();
-		if (arduino && arduino->IsInitlized())
+		if (arduino)
 		{
 			arduino->_Send(strBuf);
-		}
-		else
-		{
-			PX2_LOG_INFO("arduino is not initlize!");
 		}
 	}
 
