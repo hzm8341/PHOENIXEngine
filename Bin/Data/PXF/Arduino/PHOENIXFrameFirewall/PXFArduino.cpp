@@ -483,30 +483,17 @@ void PXFArduino::Tick()
 #if defined PXF_RCSWITCH
  if (mRCSwitch.available()) 
  {   
-    int value = mRCSwitch.getReceivedValue();
-    
-    if (value == 0) 
-    {
-      //Serial.print("Unknown encoding");
-       Serial.print("0000");
-       Serial.print(String(strCMDCh)); 
-       Serial.print(" ");
-       Serial.println("44");
-    } 
-    else
-    {
-        int recvVal = getReceivedValue();
+    int recvVal = mRCSwitch.getReceivedValue();
 
-        unsigned char cmdCh = sOptTypeVal[OT_RETRUN_RC];
-        char strCMDCh[32];
-        memset(strCMDCh, 0, 32);
-        itoa(cmdCh, strCMDCh, 10);
-        
-        Serial.print("0000");
-        Serial.print(String(strCMDCh)); 
-        Serial.print(" ");
-        Serial.println(recvVal);
-    }
+    unsigned char cmdCh = sOptTypeVal[OT_RETRUN_RC];
+    char strCMDCh[32];
+    memset(strCMDCh, 0, 32);
+    itoa(cmdCh, strCMDCh, 10);
+    
+    Serial.print("0000");
+    Serial.print(String(strCMDCh)); 
+    Serial.print(" ");
+    Serial.println(recvVal);
 
     mRCSwitch.resetAvailable();
   }

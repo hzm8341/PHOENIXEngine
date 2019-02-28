@@ -27,9 +27,9 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#if defined PXF_RCSWITCH
-
 #include "PXFRCSwitch.h"
+
+#if defined PXF_RCSWITCH
 
 #if not defined( RCSwitchDisableReceiving )
 unsigned long RCSwitch::nReceivedValue = NULL;

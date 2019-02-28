@@ -15,7 +15,7 @@
 
 #define PXF_PID
 
-//#define PXF_RCSWITCH
+#define PXF_RCSWITCH
 
 //#define PXF_DHT
 

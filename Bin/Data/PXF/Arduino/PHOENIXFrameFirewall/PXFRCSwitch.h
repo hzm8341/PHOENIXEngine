@@ -28,6 +28,8 @@
 #ifndef PXF_RCSwitch_h
 #define PXF_RCSwitch_h
 
+#include "PXFArduinoConfig.h"
+
 #if defined PXF_RCSWITCH
 
 #if defined(ARDUINO) && ARDUINO >= 100
