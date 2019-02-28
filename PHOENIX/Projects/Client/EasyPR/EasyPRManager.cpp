@@ -32,9 +32,31 @@ void _EasyPRUDPServerRecvCallback(UDPServer *sever,
 
 	}
 }
-void _EasyPRVedioServerRecvCallback(UDPServer *sever,
-	SocketAddress &address, const std::string &buf, int length)
+//----------------------------------------------------------------------------
+void _AppCmdCallback(
+	const std::string &cmd,
+	const std::string &paramStr,
+	const std::string &paramStr1,
+	const std::string &paramStr2)
 {
+	if ("startvedio" == cmd)
+	{
+		EasyPRM.SetURL0("192.168.31.204:554");
+		EasyPRM.SetURl1("192.168.31.203:554");
+	}
+	else if ("showpic" == cmd)
+	{
+		if ("true" == paramStr)
+		{
+			EasyPRM.mVLC0->ShowPic(true);
+			EasyPRM.mVLC1->ShowPic(true);
+		}
+		else if ("false" == paramStr)
+		{
+			EasyPRM.mVLC0->ShowPic(false);
+			EasyPRM.mVLC1->ShowPic(false);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 EasyPRManager::EasyPRManager() :
@@ -69,15 +91,14 @@ bool EasyPRManager::Initlize()
 	frameVLC1->SetAnchorHor(0.5f, 1.0f);
 	frameVLC1->SetAnchorVer(0.0f, 1.0f);
 
-	SetURL0("192.168.31.204:554");
-	SetURl1("192.168.31.203:554");
-
 	mEasyPRObject0 = new0 EasyPRRecvObject(mVLC0);
 	mEasyPRObject1 = new0 EasyPRRecvObject(mVLC1);
 
 	mRecognizeThread = new0 Thread();
 	mRecognizeThread->Start(*this);
 	mIsDoStop = false;
+
+	PX2_APP.AddAppCmdCallback(_AppCmdCallback);
 
 	return true;
 }
@@ -151,7 +172,8 @@ void EasyPRManager::Run()
 {
 	while (!mIsDoStop)
 	{
-
+		mEasyPRObject0->UpdateRecognize();
+		mEasyPRObject1->UpdateRecognize();
 	}
 }
 //----------------------------------------------------------------------------

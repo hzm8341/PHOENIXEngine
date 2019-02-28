@@ -22,6 +22,8 @@ namespace PX2
 		int GetMediaHeight() const;
 		const std::vector<char> &GetLastBuffer();
 
+		void ShowPic(bool isShow);
+
 		virtual void OnFormatSetup();
 		virtual void OnFrameReady(const std::vector<char>* frameBuf);
 		virtual void OnFrameReady(int width, int height,
@@ -43,6 +45,8 @@ namespace PX2
 		bool mIsTextureUpdated;
 
 		std::vector<char> mLastFrameBuf;
+
+		bool mIsShowPic;
 	};
 	typedef Pointer0<VLCMemObj> VLCMemObjPtr;
 

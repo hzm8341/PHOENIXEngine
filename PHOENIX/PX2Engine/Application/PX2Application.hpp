@@ -54,6 +54,12 @@ namespace PX2
 	class PhysicsWorld;
 	class AppInitConfig;
 
+	typedef void (*AppCmdCallback)(
+		const std::string &cmd,
+		const std::string &paramStr,
+		const std::string &paramStr1,
+		const std::string &paramStr2);
+
 	class PX2_ENGINE_ITEM Application : public Singleton<Application>, public EventHandler
 	{
 	public:
@@ -132,6 +138,14 @@ namespace PX2
 
 		bool Terminate();
 
+		void ClearAppCmdCallback();
+		bool IsHasAppCmdCallback(AppCmdCallback callback);
+		bool AddAppCmdCallback(AppCmdCallback callback);
+		bool RemoveAppCmdCallback(AppCmdCallback callback);
+		void _CMDCallback(const std::string &cmdStr,
+			const std::string &paramStr, const std::string &paramStr1,
+			const std::string &paramStr2);
+
 	private:
 		void _UpdateGeneralServerConnectors(float elapseSeconds);
 		void _RefreshLocalAddress();
@@ -188,6 +202,8 @@ namespace PX2
 		bool mIsQuit;
 
 		std::vector<IPAddress> mLocalAddresses;
+
+		std::vector<AppCmdCallback> mAppCmdCallbacks;
 
 		// Update
 	public:

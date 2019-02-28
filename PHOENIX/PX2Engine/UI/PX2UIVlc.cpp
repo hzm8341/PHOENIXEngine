@@ -91,6 +91,11 @@ UIVlc::Type UIVlc::GetType() const
 	return mType;
 }
 //----------------------------------------------------------------------------
+void UIVlc::ShowPic(bool isShow)
+{
+	mVLCMemObj->ShowPic(isShow);
+}
+//----------------------------------------------------------------------------
 void UIVlc::SetMode(Mode m)
 {
 	mMode = m;

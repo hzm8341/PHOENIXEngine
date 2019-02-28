@@ -8,7 +8,8 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 VLCMemObj::VLCMemObj() :
 mTex2D(0),
-mIsTextureUpdated(true)
+mIsTextureUpdated(true),
+mIsShowPic(true)
 {
 	mFPS = 30;
 	mLastReadyTime = 0.0f;
@@ -52,6 +53,11 @@ const std::vector<char> &VLCMemObj::GetLastBuffer()
 	return mLastFrameBuf;
 }
 //----------------------------------------------------------------------------
+void VLCMemObj::ShowPic(bool isShow)
+{
+	mIsShowPic = isShow;
+}
+//----------------------------------------------------------------------------
 void VLCMemObj::OnFormatSetup()
 {
 	if (mMediaWidth > 0 && mMediaHeight > 0)
@@ -69,43 +75,46 @@ void VLCMemObj::OnFrameReady(const std::vector<char>* frameBuf)
 	if (!_CheckUpdateTime())
 		return;
 
-	if (mMediaWidth > 0 && mMediaHeight > 0)
+	if (mIsShowPic)
 	{
-		const std::vector<char> &fromBufs = *frameBuf;
-		mLastFrameBuf = fromBufs;
-
-		int width = mTex2D->GetWidth();
-		int height = mTex2D->GetHeight();
-		char* pDest = mTex2D->GetData(0);
-
-		int offsetSrc = 0;
-		int offsetDst = 0;
-
-		for (int row = 0; row < width; ++row)
+		if (mMediaWidth > 0 && mMediaHeight > 0)
 		{
-			for (int col = 0; col < height; ++col)
+			const std::vector<char> &fromBufs = *frameBuf;
+			mLastFrameBuf = fromBufs;
+
+			int width = mTex2D->GetWidth();
+			int height = mTex2D->GetHeight();
+			char* pDest = mTex2D->GetData(0);
+
+			int offsetSrc = 0;
+			int offsetDst = 0;
+
+			for (int row = 0; row < width; ++row)
 			{
+				for (int col = 0; col < height; ++col)
+				{
 #if defined (__ANDROID__)
-				pDest[offsetDst] = fromBufs[offsetSrc + 2];
-				pDest[offsetDst + 1] = fromBufs[offsetSrc + 1];
-				pDest[offsetDst + 2] = fromBufs[offsetSrc + 0];
-				pDest[offsetDst + 3] = fromBufs[offsetSrc + 3];
+					pDest[offsetDst] = fromBufs[offsetSrc + 2];
+					pDest[offsetDst + 1] = fromBufs[offsetSrc + 1];
+					pDest[offsetDst + 2] = fromBufs[offsetSrc + 0];
+					pDest[offsetDst + 3] = fromBufs[offsetSrc + 3];
 #else
-				pDest[offsetDst] = fromBufs[offsetSrc + 0];			// b
-				pDest[offsetDst + 1] = fromBufs[offsetSrc + 1];		// g 
-				pDest[offsetDst + 2] = fromBufs[offsetSrc + 2];		// r
-				pDest[offsetDst + 3] = fromBufs[offsetSrc + 3];
+					pDest[offsetDst] = fromBufs[offsetSrc + 0];			// b
+					pDest[offsetDst + 1] = fromBufs[offsetSrc + 1];		// g 
+					pDest[offsetDst + 2] = fromBufs[offsetSrc + 2];		// r
+					pDest[offsetDst + 3] = fromBufs[offsetSrc + 3];
 #endif
 
-				offsetSrc += 4;
-				offsetDst += 4;
-			}
+					offsetSrc += 4;
+					offsetDst += 4;
 		}
 	}
+}
 
-	ScopedCS cs(&mMutex);
-	{
-		mIsTextureUpdated = true;
+		ScopedCS cs(&mMutex);
+		{
+			mIsTextureUpdated = true;
+		}
 	}
 }
 //----------------------------------------------------------------------------

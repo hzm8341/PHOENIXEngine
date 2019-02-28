@@ -239,6 +239,8 @@ int _ProcessInputString(const std::string &buf)
 				+ "\"" + paramStr1 + "\"" + ", "
 				+ "\"" + paramStr2 + "\")");
 		}
+
+		PX2_APP._CMDCallback(cmd, paramStr, paramStr1, paramStr2);
 	}
 
 	return ret;
@@ -1150,6 +1152,61 @@ bool Application::Terminate()
 #endif
 
 	return true;
+}
+//----------------------------------------------------------------------------
+void Application::ClearAppCmdCallback()
+{
+	mAppCmdCallbacks.clear();
+}
+//----------------------------------------------------------------------------
+bool Application::IsHasAppCmdCallback(AppCmdCallback callback)
+{
+	auto it = mAppCmdCallbacks.begin();
+	for (; it != mAppCmdCallbacks.end(); it++)
+	{
+		if (callback == *it)
+			return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool Application::AddAppCmdCallback(AppCmdCallback callback)
+{
+	if (IsHasAppCmdCallback(callback))
+		return false;
+
+	mAppCmdCallbacks.push_back(callback);
+	return true;
+}
+//----------------------------------------------------------------------------
+bool Application::RemoveAppCmdCallback(AppCmdCallback callback)
+{
+	auto it = mAppCmdCallbacks.begin();
+	for (; it != mAppCmdCallbacks.end(); it++)
+	{
+		if (callback == *it)
+		{
+			mAppCmdCallbacks.erase(it);
+			return true;
+		}
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+void Application::_CMDCallback(const std::string &cmdStr,
+	const std::string &paramStr, const std::string &paramStr1,
+	const std::string &paramStr2)
+{
+	auto it = mAppCmdCallbacks.begin();
+	for (; it != mAppCmdCallbacks.end(); it++)
+	{
+		if (*it)
+		{
+			(*it)(cmdStr, paramStr, paramStr1, paramStr2);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 bool Application::LoadBoost(const std::string &filename)

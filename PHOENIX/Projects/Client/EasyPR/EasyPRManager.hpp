@@ -39,11 +39,12 @@ namespace PX2
 	public:
 		bool _ByteToMat(char* pImg, int nH, int nW, cv::Mat& outImg);
 		void _Recognize(const cv::Mat &mat);
+		
+		UIVLCPtr mVLC0;
+		UIVLCPtr mVLC1;
 
 	private:
 		UDPServer *mUDPServer;
-		UIVLCPtr mVLC0;
-		UIVLCPtr mVLC1;
 		ThreadPtr mRecognizeThread;
 
 		bool mIsDoStop;

@@ -31,6 +31,8 @@ namespace PX2
 		void SetType(Type type);
 		Type GetType() const;
 
+		void ShowPic(bool isShow);
+
 		enum Mode
 		{
 			M_NORMAL,
