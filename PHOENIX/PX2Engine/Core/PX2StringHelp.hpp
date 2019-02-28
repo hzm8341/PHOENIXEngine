@@ -67,6 +67,8 @@ namespace PX2
 		static int StringToInt (const std::string &val);
 		static std::string FloatToString (float val, int numPoint=1);
 		static float StringToFloat(const std::string &val);
+		static std::string LongToString(long val);
+		static long StringToLong(const std::string &val);
 		static void StringToXYZ(const std::string &val, float &x, float &y, float &z);
 		static void StringToVal01(const std::string &val, int &val0, int &val1);
 

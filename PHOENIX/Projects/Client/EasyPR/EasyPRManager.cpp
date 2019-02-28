@@ -6,6 +6,7 @@
 #include "easypr/util/switch.hpp"
 #include "PX2Application.hpp"
 #include "PX2ScopedCS.hpp"
+#include "PX2Arduino.hpp"
 using namespace PX2;
 
 void _EasyPRUDPServerRecvCallback(UDPServer *sever,
@@ -39,6 +40,8 @@ void _AppCmdCallback(
 	const std::string &paramStr1,
 	const std::string &paramStr2)
 {
+	Arduino *arduino = EasyPRM.GetArduino();
+
 	if ("startvedio" == cmd)
 	{
 		EasyPRM.SetURL0("192.168.31.204:554");
@@ -56,6 +59,34 @@ void _AppCmdCallback(
 			EasyPRM.mVLC0->ShowPic(false);
 			EasyPRM.mVLC1->ShowPic(false);
 		}
+	}
+	else if ("arduino" == cmd)
+	{
+		if ("connect" == paramStr)
+		{
+			if (arduino->Initlize(Arduino::M_SERIAL, paramStr1))
+			{
+				PX2_LOG_INFO("Connect suc");
+			}
+			else
+			{
+				PX2_LOG_INFO("Connect failed");
+			}
+		}
+	}
+	else if ("rcinit" == cmd)
+	{
+		arduino->RCInit(Arduino::P_11);
+	}
+	else if ("rcsend" == cmd)
+	{
+		long val = StringHelp::StringToLong(paramStr);
+		arduino->RCSend(val);
+	}
+	else if ("digitWrite" == cmd)
+	{
+		int val = StringHelp::StringToInt(paramStr);
+		arduino->DigitalWrite(Arduino::P_13, val==1?true:false);
 	}
 }
 //----------------------------------------------------------------------------
@@ -99,6 +130,8 @@ bool EasyPRManager::Initlize()
 	mIsDoStop = false;
 
 	PX2_APP.AddAppCmdCallback(_AppCmdCallback);
+
+	mArduino = new0 Arduino();
 
 	return true;
 }
@@ -165,7 +198,24 @@ bool EasyPRManager::Ternimate()
 		mUDPServer = 0;
 	}
 
+	if (mArduino)
+	{
+		delete0(mArduino);
+		mArduino = 0;
+	}
+
+	mVLC0 = 0;
+	mVLC1 = 0;
+
+	mEasyPRObject0 = 0;
+	mEasyPRObject1 = 0;
+
 	return true;
+}
+//----------------------------------------------------------------------------
+Arduino *EasyPRManager::GetArduino()
+{
+	return mArduino;
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::Run()
@@ -179,6 +229,11 @@ void EasyPRManager::Run()
 //----------------------------------------------------------------------------
 void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 {
+	if (mArduino)
+	{
+		mArduino->Update(elapsedSeconds);
+	}
+
 	if (mUDPServer)
 	{
 		mUDPServer->Update(elapsedSeconds);

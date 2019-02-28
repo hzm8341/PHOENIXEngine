@@ -350,6 +350,22 @@ float StringHelp::StringToFloat(const std::string &val)
 	return (float)atof(val.c_str());
 }
 //----------------------------------------------------------------------------
+std::string StringHelp::LongToString(long val)
+{
+	char c[64];
+	memset(c, 0, 64 * sizeof(char));
+	ltoa(val, c, 10);
+
+	string str;
+	str = c;
+	return str;
+}
+//----------------------------------------------------------------------------
+long StringHelp::StringToLong(const std::string &val)
+{
+	return atol(val.c_str());
+}
+//----------------------------------------------------------------------------
 void StringHelp::StringToXYZ(const std::string &val, float &x, float &y, float &z)
 {
 	StringTokenizer st(val, ",");

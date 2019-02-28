@@ -10,7 +10,12 @@ void PXFArduino::_InitRCSwitchReceive(int pinTimerIndex)
     mRCSwitch.enableReceive(pinTimerIndex); 
 }
 //----------------------------------------------------------------------------
-void PXFArduino::_RCSend(int val)
+void PXFArduino::_RCInit(int pin)
+{
+  mRCSwitch.enableTransmit(pin);
+}
+//----------------------------------------------------------------------------
+void PXFArduino::_RCSend(long val)
 {
     mRCSwitch.send(val, 24);
 }

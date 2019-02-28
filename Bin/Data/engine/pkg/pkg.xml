@@ -4713,16 +4713,13 @@
 			<function name="AxisGetYaw" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="BabyRobotSet" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+			<function name="RCInit" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool moto" is_retrun="false" type_str="bool" valuename_str="moto" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool distance" is_retrun="false" type_str="bool" valuename_str="distance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool buzzer" is_retrun="false" type_str="bool" valuename_str="buzzer" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool light" is_retrun="false" type_str="bool" valuename_str="light" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Pin pin" is_retrun="false" type_str="Pin" valuename_str="pin" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 			<function name="RCSend" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="int val" is_retrun="false" type_str="int" valuename_str="val" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="long val" is_retrun="false" type_str="long" valuename_str="val" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 			<function name="GetRCReceive" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>

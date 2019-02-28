@@ -9,7 +9,7 @@ void setup()
   // Serial
   Serial.begin(9600);
 
-  manykit.Init(true);
+  manykit.Init(true);             
 
 #if defined PXF_AXIS
   manykit._InitAxis();

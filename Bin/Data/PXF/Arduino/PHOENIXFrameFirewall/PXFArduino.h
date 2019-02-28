@@ -172,7 +172,7 @@ enum OptionType
   OT_AXIS_I,
   OT_RETURN_AXIS,
   OT_SET_TIME,
-  OT_SET_BABYROBOT,
+  OT_RC_INIT,
   OT_RC_SEND,
   OT_RETRUN_RC,
   OT_DHT_I,
@@ -296,6 +296,7 @@ private:
   bool _Str2Bool(String &str);
   int _Str2Int(String &str);
   float _Str2Float(String &str);
+  long _Str2Long(String &str);
   int _Str2DirType(String &str);
   int _Str2SimpleDirType(String &str);
 
@@ -348,7 +349,6 @@ public:
   float _ReadHX711(int index);
   void _HXSend(int index, float val);
   void _SetTime();
-  void _SetBabyRobot(bool moto, bool distance, bool buzzer, bool light);
 
 public:
   int mPinEncroderLA;
@@ -440,8 +440,6 @@ private:
   MP3 mMP3;
 #endif
 
-  bool mIsEverSettedBabyRobot;
-
 public:
   void _InitAxis();
 
@@ -457,7 +455,8 @@ public:
 #if defined PXF_RCSWITCH
 public:
   void _InitRCSwitchReceive(int pinTimerIndex);
-  void _RCSend(int val);
+  void _RCInit(int pin);
+  void _RCSend(long val);
 
   RCSwitch mRCSwitch;
 #endif

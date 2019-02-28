@@ -34,14 +34,6 @@ void PXFArduino::OnCMD(String &cmdStr)
     {
       _SetTime();
     }
-    else if (sOptTypeVal[OT_SET_BABYROBOT] == cmdCH)
-    {
-      bool moto = _Str2Bool(mCmdParams[1]);
-      bool distance = _Str2Bool(mCmdParams[2]);
-      int buzzer = _Str2Bool(mCmdParams[3]);
-      int light = _Str2Bool(mCmdParams[4]);
-      _SetBabyRobot(moto, distance, buzzer, light);
-    }
     else if (sOptTypeVal[OT_PM] == cmdCH)
     {
       int pin = _Str2Pin(mCmdParams[1]);
@@ -263,6 +255,21 @@ void PXFArduino::OnCMD(String &cmdStr)
       float val = _ReadHX711(index);
       _HXSend(index, val);
     }
+    else if (sOptTypeVal[OT_RC_INIT]==cmdCH)
+    {
+      
+#if defined PXF_RCSWITCH
+     int pin = _Str2Pin(mCmdParams[1]);
+    _RCInit(pin);
+#endif
+    }
+   else if (sOptTypeVal[OT_RC_SEND]==cmdCH)
+    {
+  #if defined PXF_RCSWITCH
+      long val = _Str2Long(mCmdParams[1]);
+      _RCSend(val);
+  #endif
+    }
     else if (sOptTypeVal[OT_DHT_I]==cmdCH)
     {
 #if defined PXF_DHT
@@ -416,6 +423,12 @@ float PXFArduino::_Str2Float(String &str)
 {
   float fVal = (float)atof(str.c_str());
   return fVal;
+}
+//----------------------------------------------------------------------------
+long PXFArduino::_Str2Long(String &str)
+{
+  long lVal = (float)atol(str.c_str());
+  return lVal;
 }
 //----------------------------------------------------------------------------
 int PXFArduino::_Str2DirType(String &str)

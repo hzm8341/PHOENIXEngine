@@ -172,10 +172,8 @@
 		float AxisGetRoll() const;
 		float AxisGetYaw() const;
 
-		
-		void BabyRobotSet(bool moto, bool distance, bool buzzer, bool light);
-
-		void RCSend(int val);
+		void RCInit(Pin pin);
+		void RCSend(long val);
 		int GetRCReceive() const;
 		
 		const std::string &GetLastSendContentString() const;

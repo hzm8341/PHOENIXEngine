@@ -278,7 +278,7 @@ std::string Arduino::sOptTypeStr[OT_MAX_TYPE] =
 	"32", //OT_AXIS_I,
 	"33", //OT_RETURN_AXIS
 	"34", //OT_SET_TIME
-	"35", //OT_SET_BABYROBOT
+	"35", //OT_RC_INIT
 	"36", //OT_RC_SEND
 	"37", //OT_RETRUN_RC
 	"38", //OT_DHT_I
@@ -1489,19 +1489,18 @@ float Arduino::AxisGetYaw() const
 	return mYaw;
 }
 //----------------------------------------------------------------------------
-void Arduino::BabyRobotSet(bool moto, bool distance, bool buzzer, bool light)
+void Arduino::RCInit(Pin pin)
 {
-	std::string sendStr = sOptTypeStr[OT_SET_BABYROBOT];
-	sendStr += " " + _Bool2Str(moto) + " " + _Bool2Str(distance)
-		+  " " + _Bool2Str(buzzer) + " " + _Bool2Str(light);
+	std::string sendStr = sOptTypeStr[OT_RC_INIT];
+	sendStr += " " + _Pin2Str(pin);
 
 	_Send(sendStr + mEndStr);
 }
 //----------------------------------------------------------------------------
-void Arduino::RCSend(int val)
+void Arduino::RCSend(long val)
 {
 	std::string sendStr = sOptTypeStr[OT_RC_SEND];
-	sendStr += " " + StringHelp::IntToString(val);
+	sendStr += " " + StringHelp::LongToString(val);
 
 	_Send(sendStr + mEndStr);
 }

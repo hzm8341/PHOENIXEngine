@@ -69,7 +69,7 @@ unsigned char PXFArduino::sOptTypeVal[OT_MAX_TYPE] =
     32, //OT_AXIS_I
     33, //OT_RETURN_AXIS
     34, //OT_SET_TIME,
-    35, //OT_SET_BABYROBOT
+    35, //OT_RC_INIT
     36, //OT_RC_SEND
     37, //OT_RETRUN_RC
     38, //OT_DHT_I
@@ -107,7 +107,6 @@ PXFArduino::PXFArduino()
 //----------------------------------------------------------------------------
 void PXFArduino::Init(bool isReset)
 {
-  mIsEverSettedBabyRobot = false;
   mSettedTimeMe = 0;
   mLastSendVersionTime = 0;
 
@@ -447,25 +446,6 @@ void PXFArduino::Tick()
   {
       mLastSendVersionTime = millis();
       _SendVersion();
-  }
-
-  if (mIsEverSettedBabyRobot)
-  {
-      if(millis() - mDistCheckLastTime > 25)
-      {
-         mDistCheckLastTime = millis();
-         _DistTest();
-
-        unsigned char cmdCh = sOptTypeVal[OT_RETURN_DIST];
-        char strCMDCh[32];
-        memset(strCMDCh, 0, 32);
-        itoa(cmdCh, strCMDCh, 10);
-        
-        Serial.print("0000");
-        Serial.print(String(strCMDCh)); 
-        Serial.print(" ");
-        Serial.println(mDist);
-      }
   }
 
   mTimer.update();
@@ -1048,43 +1028,6 @@ void PXFArduino::_SetTime()
   mSettedTimeMe = millis();
   if (0.0==mSettedTimeMe)
     mSettedTimeMe = 0.001;
-}
-//----------------------------------------------------------------------------
-void PXFArduino::_SetBabyRobot(bool moto, bool distance, bool buzzer, 
-bool light)
-{
-  if (!mIsEverSettedBabyRobot)
-  {
-      mIsEverSettedBabyRobot = true;
-      if (moto)
-      {
-        _MotoInit4567();
-      }
-    
-      if (distance)
-      {
-        _DistInit(P_8, P_9);
-      }
-    
-      if (buzzer)
-      {
-        _PinMode(P_10, PM_OUTPUT);
-      }
-      
-      if (light)
-      {
-        _PinMode(P_12, PM_OUTPUT);
-        _DigitalWrite(P_12, false);
-        
-        _PinMode(P_13, PM_OUTPUT);
-        _DigitalWrite(P_13, false);
-      }
-      
-      _ServerInit(0, P_A0);
-      _ServerInit(1, P_A1);
-      _ServerInit(2, P_A2);
-      _ServerInit(3, P_A3);
-   }
 }
 //----------------------------------------------------------------------------
 void PXFArduino::_InitAxis()

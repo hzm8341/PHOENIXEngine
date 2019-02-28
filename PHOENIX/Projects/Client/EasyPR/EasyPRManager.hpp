@@ -17,6 +17,7 @@ namespace PX2
 {
 
 	class UDPServer;
+	class Arduino;
 
 	class EasyPRManager : public Singleton<EasyPRManager>, public Runnable
 	{
@@ -26,6 +27,8 @@ namespace PX2
 
 		bool Initlize();
 		bool Ternimate();
+
+		Arduino *GetArduino();
 
 		void SetURL0(const std::string &url0);
 		void SetURl1(const std::string &url1);
@@ -50,6 +53,7 @@ namespace PX2
 		bool mIsDoStop;
 		EasyPRRecvObjectPtr mEasyPRObject0;
 		EasyPRRecvObjectPtr mEasyPRObject1;
+		Arduino *mArduino;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

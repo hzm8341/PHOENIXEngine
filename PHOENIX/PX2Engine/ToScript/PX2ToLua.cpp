@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 02/27/19 11:22:14.
+** Generated automatically by tolua++-1.0.92 on 02/28/19 17:58:00.
 */
 
 #ifndef __cplusplus
@@ -44450,40 +44450,34 @@ static int tolua_PX2_Arduino_AxisGetYaw00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: BabyRobotSet of class  Arduino */
-#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_BabyRobotSet00
-static int tolua_PX2_Arduino_BabyRobotSet00(lua_State* tolua_S)
+/* method: RCInit of class  Arduino */
+#ifndef TOLUA_DISABLE_tolua_PX2_Arduino_RCInit00
+static int tolua_PX2_Arduino_RCInit00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"Arduino",0,&tolua_err) ||
-     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
-     !tolua_isboolean(tolua_S,3,0,&tolua_err) ||
-     !tolua_isboolean(tolua_S,4,0,&tolua_err) ||
-     !tolua_isboolean(tolua_S,5,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
   Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
-  bool moto = ((bool)  tolua_toboolean(tolua_S,2,0));
-  bool distance = ((bool)  tolua_toboolean(tolua_S,3,0));
-  bool buzzer = ((bool)  tolua_toboolean(tolua_S,4,0));
-  bool light = ((bool)  tolua_toboolean(tolua_S,5,0));
+  Arduino::Pin pin = ((Arduino::Pin) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'BabyRobotSet'", NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RCInit'", NULL);
 #endif
   {
-   self->BabyRobotSet(moto,distance,buzzer,light);
+   self->RCInit(pin);
   }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'BabyRobotSet'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'RCInit'.",&tolua_err);
  return 0;
 #endif
 }
@@ -44505,7 +44499,7 @@ static int tolua_PX2_Arduino_RCSend00(lua_State* tolua_S)
 #endif
  {
   Arduino* self = (Arduino*)  tolua_tousertype(tolua_S,1,0);
-  int val = ((int)  tolua_tonumber(tolua_S,2,0));
+  long val = ((long)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RCSend'", NULL);
 #endif
@@ -106060,7 +106054,7 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"AxisGetPitch",tolua_PX2_Arduino_AxisGetPitch00);
    tolua_function(tolua_S,"AxisGetRoll",tolua_PX2_Arduino_AxisGetRoll00);
    tolua_function(tolua_S,"AxisGetYaw",tolua_PX2_Arduino_AxisGetYaw00);
-   tolua_function(tolua_S,"BabyRobotSet",tolua_PX2_Arduino_BabyRobotSet00);
+   tolua_function(tolua_S,"RCInit",tolua_PX2_Arduino_RCInit00);
    tolua_function(tolua_S,"RCSend",tolua_PX2_Arduino_RCSend00);
    tolua_function(tolua_S,"GetRCReceive",tolua_PX2_Arduino_GetRCReceive00);
    tolua_function(tolua_S,"GetLastSendContentString",tolua_PX2_Arduino_GetLastSendContentString00);
