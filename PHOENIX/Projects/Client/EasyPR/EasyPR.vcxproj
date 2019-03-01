@@ -43,6 +43,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DistTest.cpp" />
     <ClCompile Include="EasyPRManager.cpp" />
     <ClCompile Include="EasyPRRecvObject.cpp" />
     <ClCompile Include="EasyPR\src\core\chars_identify.cpp" />
@@ -74,6 +75,7 @@
     <ClCompile Include="ProjectToLua.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DistTest.hpp" />
     <ClInclude Include="EasyPRManager.hpp" />
     <ClInclude Include="EasyPRRecvObject.hpp" />
     <ClInclude Include="ProjectPlugin.hpp" />

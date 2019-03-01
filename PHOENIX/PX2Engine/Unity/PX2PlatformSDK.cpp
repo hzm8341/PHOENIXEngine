@@ -243,7 +243,8 @@ void PlatformSDK::OnPayError(const std::string &serial, int error,
 	PX2_EW.BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
-void _PlatformSDKSerialReceiveCallback(Serial *ser, std::string recvVal)
+void _PlatformSDKSerialReceiveCallback(Serial *ser, std::string recvVal,
+	int length)
 {
 	PX2_PFSDK.RinGun_OnReceive(recvVal);
 }

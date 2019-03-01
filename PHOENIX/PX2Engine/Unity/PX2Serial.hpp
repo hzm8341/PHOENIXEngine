@@ -25,7 +25,7 @@ namespace PX2
 
 	class Serial;
 
-	typedef void(*SerialCallback) (Serial*, std::string recvVal);
+	typedef void(*SerialCallback) (Serial*, std::string recvVal, int length);
 	typedef void(*SerialCMDCallback) (Serial*, std::string recvVal);
 
 	class PX2_ENGINE_ITEM Serial : public Object
@@ -45,7 +45,7 @@ namespace PX2
 		bool IsOpened() const;
 
 		std::string GetPort() const;
-		void Update(float elapsedSeconds);
+		void Update();
 
 		int Write(const char *buf_ptr, int size);
 		int Read(char *buf_ptr, int size);
@@ -79,24 +79,29 @@ namespace PX2
 
 		void OnAndroidUSBReceive(const char *buf, int size);
 
+		void SetDoProcessRecv(bool recv);
+		bool IsDoProcessRecv() const;
+
 	protected:
 		std::string _ProcessRevBuf(const std::string &recvBuf);
 		void _OnCmd(const std::string &cmd);
 
 		std::vector<SerialCMDCallback> mCMDCallbacks;
-		std::vector<SerialCMDCallback> mCallbacks;
+		std::vector<SerialCallback> mCallbacks;
 		std::vector<std::string> mScriptHandlers;
 		std::vector<std::string> mScriptHandlersHex;
 
 		std::string mSerialPortName;
 
 		std::string mRecvStr;
+		int mAllRecvSize;
 
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 		serial::Serial *mSerial;
 #endif
 		std::vector<std::string> mPortList;
 
+		bool mIsDoProcessRecv;
 		static Serial *msDefaultSerial;
 	};
 

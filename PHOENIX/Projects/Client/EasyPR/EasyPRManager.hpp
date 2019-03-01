@@ -7,6 +7,8 @@
 #include "PX2Thread.hpp"
 #include "PX2Runnable.hpp"
 #include "EasyPRRecvObject.hpp"
+#include "PX2Serial.hpp"
+#include "DistTest.hpp"
 
 namespace cv
 {
@@ -19,7 +21,7 @@ namespace PX2
 	class UDPServer;
 	class Arduino;
 
-	class EasyPRManager : public Singleton<EasyPRManager>, public Runnable
+	class PROJECT_DLL_ITEM EasyPRManager : public Singleton<EasyPRManager>, public Runnable
 	{
 	public:
 		EasyPRManager();
@@ -54,6 +56,8 @@ namespace PX2
 		EasyPRRecvObjectPtr mEasyPRObject0;
 		EasyPRRecvObjectPtr mEasyPRObject1;
 		Arduino *mArduino;
+
+		DistTestPtr mDistTest;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

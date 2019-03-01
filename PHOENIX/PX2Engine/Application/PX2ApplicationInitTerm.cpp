@@ -1522,7 +1522,7 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	PX2_BLUETOOTH.Update((float)elapsedSeconds);
 	PX2_WIFI.Update((float)elapsedSeconds);
 	Serial *ser = Serial::GetDefaultSerial();
-	if (ser) ser->Update(elapsedSeconds);
+	if (ser) ser->Update();
 
 	// graph
 	PX2_GR.Update(appSeconds, elapsedSeconds);

@@ -117,6 +117,9 @@
     <ClCompile Include="EasyPRRecvObject.cpp">
       <Filter>Plugin</Filter>
     </ClCompile>
+    <ClCompile Include="DistTest.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProjectPlugin.hpp">
@@ -130,6 +133,9 @@
       <Filter>Plugin</Filter>
     </ClInclude>
     <ClInclude Include="EasyPRRecvObject.hpp">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="DistTest.hpp">
       <Filter>Plugin</Filter>
     </ClInclude>
   </ItemGroup>

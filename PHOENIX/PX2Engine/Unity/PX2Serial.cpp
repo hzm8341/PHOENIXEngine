@@ -39,6 +39,9 @@ Serial::Serial()
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 	mSerial = 0;
 #endif
+
+	mIsDoProcessRecv = true;
+	mAllRecvSize = 0;
 }
 //---------------------------------------------------------------------------
 Serial::~Serial()
@@ -121,31 +124,38 @@ void Serial::Close()
 #endif
 }
 //---------------------------------------------------------------------------
-void Serial::Update(float elapsedSeconds)
+void Serial::Update()
 {
-	PX2_UNUSED(elapsedSeconds);
+	std::string readVal;
+	int numAvailable = 0;
 
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 	if (mSerial)
 	{
-		int numAvailable = mSerial->available();
+		numAvailable = mSerial->available();
 		if (numAvailable > 0)
 		{
-			std::string readVal = mSerial->read(numAvailable);
-			mRecvStr += readVal;
+			readVal = mSerial->read(numAvailable);
+			if (mIsDoProcessRecv)
+			{
+				mRecvStr += readVal;
+				mAllRecvSize += numAvailable;
+			}
 		}
 	}
 #endif
 
-	if (mRecvStr.length() > 0)
+	if (mIsDoProcessRecv)
 	{
-		std::string recvStr = mRecvStr;
 		mRecvStr = _ProcessRevBuf(mRecvStr);
+	}
 
+	if (numAvailable > 0)
+	{
 		for (int i = 0; i < (int)mCallbacks.size(); i++)
 		{
 			if (mCallbacks[i])
-				mCallbacks[i](this, recvStr);
+				mCallbacks[i](this, readVal, numAvailable);
 		}
 
 		if ((int)mScriptHandlers.size() > 0)
@@ -155,7 +165,7 @@ void Serial::Update(float elapsedSeconds)
 				const std::string &scriptStr = mScriptHandlers[i];
 				if (!scriptStr.empty())
 				{
-					std::string strBuf = scriptStr + "(\"" + recvStr + "\")";
+					std::string strBuf = scriptStr + "(\"" + readVal + "\")";
 					PX2_SC_LUA->CallString(strBuf);
 				}
 			}
@@ -163,7 +173,7 @@ void Serial::Update(float elapsedSeconds)
 
 		if ((int)mScriptHandlersHex.size() > 0)
 		{
-			std::string hexBuf = StringHelp::StrToHex(recvStr);
+			std::string hexBuf = StringHelp::StrToHex(readVal);
 			for (int i = 0; i < (int)mScriptHandlersHex.size(); i++)
 			{
 				const std::string &scriptStrHex = mScriptHandlersHex[i];
@@ -262,7 +272,7 @@ void Serial::ClearCallbacks()
 	mCallbacks.clear();
 }
 //----------------------------------------------------------------------------
-bool Serial::IsHasCallback(SerialCMDCallback callBack)
+bool Serial::IsHasCallback(SerialCallback callBack)
 {
 	for (int i = 0; i < (int)mCallbacks.size(); i++)
 	{
@@ -380,6 +390,16 @@ void Serial::RemoveScriptHandlerHex(const std::string &scriptHandler)
 void Serial::OnAndroidUSBReceive(const char *buf, int size)
 {
 	mRecvStr = std::string(buf, size);
+}
+//---------------------------------------------------------------------------
+void Serial::SetDoProcessRecv(bool recv)
+{
+	mIsDoProcessRecv = recv;
+}
+//---------------------------------------------------------------------------
+bool Serial::IsDoProcessRecv() const
+{
+	return mIsDoProcessRecv;
 }
 //---------------------------------------------------------------------------
 std::string Serial::GetPort() const

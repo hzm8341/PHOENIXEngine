@@ -810,7 +810,7 @@ void Arduino::Update(float elapsedSeconds)
 
 	if (mSerial.IsOpened())
 	{
-		mSerial.Update(elapsedSeconds);
+		mSerial.Update();
 
 		if (!mIsEverSetTime)
 		{

@@ -93,6 +93,8 @@ void _AppCmdCallback(
 EasyPRManager::EasyPRManager() :
 	mUDPServer(0)
 {
+	mArduino = new0 Arduino();
+	mDistTest = new0 DistTest();
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -131,7 +133,7 @@ bool EasyPRManager::Initlize()
 
 	PX2_APP.AddAppCmdCallback(_AppCmdCallback);
 
-	mArduino = new0 Arduino();
+	mDistTest->Initlize();
 
 	return true;
 }
@@ -209,6 +211,9 @@ bool EasyPRManager::Ternimate()
 
 	mEasyPRObject0 = 0;
 	mEasyPRObject1 = 0;
+
+	mDistTest->Ternimate();
+	mDistTest = 0;
 
 	return true;
 }

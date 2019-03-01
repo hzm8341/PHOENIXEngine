@@ -11,7 +11,7 @@ namespace PX2
 
 	class UIVlc;
 
-	class EasyPRRecvObject
+	class PROJECT_DLL_ITEM EasyPRRecvObject
 	{
 	public:
 		EasyPRRecvObject(UIVlc *vlc);
