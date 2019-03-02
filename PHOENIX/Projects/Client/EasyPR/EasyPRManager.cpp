@@ -73,6 +73,14 @@ void _AppCmdCallback(
 				PX2_LOG_INFO("Connect failed");
 			}
 		}
+		else if ("tcp" == paramStr)
+		{
+			int port = StringHelp::StringToInt(paramStr2);
+			if (arduino->InitlizeESPSocketTCP_Connector(paramStr1, port))
+			{
+
+			}
+		}
 	}
 	else if ("rcinit" == cmd)
 	{
