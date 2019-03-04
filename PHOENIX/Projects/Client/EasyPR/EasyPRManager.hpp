@@ -69,13 +69,27 @@ namespace PX2
 		void SetDoorState(DoorState state);
 		DoorState GetDoorState() const;
 
+		void SetDoorToDist(float dist);
+		bool IsAutoAdjustingDoor() const;
+
+		void SetDoorToPercent(float perc);
+		void SetClosedDist(float dist);
+		void SetOpenedDist(float dist);
+
 		int GetCurDist() const;
 		float GetCurDistFloat() const;
 		void _SetCurDist(int dist);
 
 		DistTestPtr mDistTest;
 		int mCurDist;
+		float mCurDistFloat;
+		float mToDist;
+		
 		DoorState mDoorState;
+		bool mIsAutoAdjustingDoor;
+
+		float mAllClosedDist;
+		float mAllOpenedDist;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

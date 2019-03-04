@@ -127,6 +127,10 @@ EasyPRManager::EasyPRManager() :
 	mDistTest = new0 DistTest();
 
 	mDoorState = DS_NONE;
+	mIsAutoAdjustingDoor = false;
+
+	mAllClosedDist = 0.0f;
+	mAllOpenedDist = 0.0f;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -140,23 +144,68 @@ void EasyPRManager::SetDoorState(DoorState state)
 	if (DS_STOP == mDoorState)
 	{
 		if (mArduino->IsInitlized())
+		{
 			mArduino->RCSend(1069360);
+		}
 	}
 	else if (DS_OPENING == mDoorState)
 	{
 		if (mArduino->IsInitlized())
+		{
 			mArduino->RCSend(1069504);
+		}
 	}
 	else if (DS_CLOSEING == mDoorState)
 	{
 		if (mArduino->IsInitlized())
+		{
 			mArduino->RCSend(1069324);
+		}
 	}
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::SetDoorToDist(float dist)
+{
+	mToDist = dist;
+	mIsAutoAdjustingDoor = true;
+
+	if (mCurDistFloat < mToDist)
+	{
+		SetDoorState(EasyPRManager::DS_OPENING);
+	}
+	else if (mCurDistFloat > mToDist)
+	{
+		SetDoorState(EasyPRManager::DS_CLOSEING);
+	}
+}
+//----------------------------------------------------------------------------
+bool EasyPRManager::IsAutoAdjustingDoor() const
+{
+	return mIsAutoAdjustingDoor;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::DoorState EasyPRManager::GetDoorState() const
 {
 	return mDoorState;
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::SetDoorToPercent(float perc)
+{
+	if (mAllClosedDist == mAllOpenedDist)
+		return;
+
+	float toDist = mAllClosedDist + (mAllOpenedDist - mAllClosedDist)*perc;
+	SetDoorToDist(toDist);
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::SetClosedDist(float dist)
+{
+	mAllClosedDist = dist;
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::SetOpenedDist(float dist)
+{
+	mAllOpenedDist = dist;
 }
 //----------------------------------------------------------------------------
 int EasyPRManager::GetCurDist() const
@@ -166,12 +215,13 @@ int EasyPRManager::GetCurDist() const
 //----------------------------------------------------------------------------
 float EasyPRManager::GetCurDistFloat() const
 {
-	return (float)(mCurDist * 0.01f);
+	return mCurDistFloat;
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::_SetCurDist(int dist)
 {
 	mCurDist = dist;
+	mCurDistFloat = mCurDist * 0.01f;
 }
 //----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
@@ -325,6 +375,17 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 	if (mDistTest)
 	{
 		mDistTest->Update(elapsedSeconds);
+	}
+
+	if (mIsAutoAdjustingDoor)
+	{
+		float dist = mToDist - mCurDistFloat;
+		if (dist <= 0.15f)
+		{
+			SetDoorState(EasyPRManager::DS_STOP);
+
+			mIsAutoAdjustingDoor = false;
+		}
 	}
 }
 //----------------------------------------------------------------------------
