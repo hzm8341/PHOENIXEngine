@@ -46,7 +46,7 @@ _u16 usingScanMode_ = 0;
 void _ThreadLiDarReadCallback(void* ld)
 {
 	LiDar *lidar = (LiDar*)(ld);
-	while (lidar)
+	while (lidar && lidar->IsOpened())
 	{
 		lidar->GetSlamData();
 	}
@@ -456,7 +456,8 @@ void LiDar::GetSlamData()
 		if (!mLiDarIII || !mDeviceConnectin)
 			return;
 
-		if (CDeviceConnection::STATUS_OPEN != mDeviceConnectin->getStatus())
+		int status = mDeviceConnectin->getStatus();
+		if (CDeviceConnection::STATUS_OPEN != status)
 			return;
 
 		TLidarGrabResult result = mLiDarIII->getScanData();

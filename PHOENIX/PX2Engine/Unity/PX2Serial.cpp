@@ -471,6 +471,28 @@ std::vector<std::string> Serial::GetPortList()
 	return list;
 }
 //---------------------------------------------------------------------------
+std::vector<std::string> Serial::GetPortDescList()
+{
+	std::vector<std::string> descList;
+
+#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
+	std::vector<serial::PortInfo> ports = serial::list_ports();
+	for (int i = 0; i < (int)ports.size(); i++)
+	{
+		std::string desc = ports[i].description;
+
+		wchar_t *unicode = StringHelp::AnsiToUnicode(desc.c_str());
+		const char *utf8 = StringHelp::UnicodeToUTF8(unicode);
+
+		descList.push_back(std::string(utf8));
+	}
+#endif
+
+	mPortDesc = descList;
+
+	return descList;
+}
+//---------------------------------------------------------------------------
 int Serial::GetNumPorts() const
 {
 	return (int)mPortList.size();
@@ -480,6 +502,14 @@ std::string Serial::GetPort(int i) const
 {
 	if (0 <= i && i < (int)mPortList.size())
 		return mPortList[i];
+
+	return std::string("");
+}
+//---------------------------------------------------------------------------
+std::string Serial::GetPortDesc(int i) const
+{
+	if (0 <= i && i < (int)mPortDesc.size())
+		return mPortDesc[i];
 
 	return std::string("");
 }

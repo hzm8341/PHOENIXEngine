@@ -12,8 +12,10 @@
 		static Serial *GetDefaultSerial();
 		
 		std::vector<std::string> GetPortList();
+		std::vector<std::string> GetPortDescList();
 		int GetNumPorts() const;
 		std::string GetPort(int i) const;
+		std::string GetPortDesc(int i) const;
 		
 		void ClearScirptHandlers();
 		bool IsHasScriptHandler(const std::string &scriptHandler);

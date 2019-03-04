@@ -61,9 +61,8 @@ bool SerialConnection::close(void)
 {
 	if (mSerial)
 	{
-		mSerial->Close();
-
 		mStatus = STATUS_CLOSED_NORMALLY;
+		mSerial->Close();
 
 		return true;
 	}

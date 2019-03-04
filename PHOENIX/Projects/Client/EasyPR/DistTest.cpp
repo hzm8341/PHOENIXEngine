@@ -4,6 +4,8 @@
 #include "PX2System.hpp"
 #include "PX2UDPServer.hpp"
 #include "PX2Log.hpp"
+#include "PX2StringHelp.hpp"
+#include "EasyPRManager.hpp"
 using namespace PX2;
 
 std::string sRecvStr;
@@ -47,7 +49,13 @@ void DistTest::InitlizeSerial()
 void _UDPServerRecvCallback(UDPServer *sever,
 	SocketAddress &address, const std::string &buf, int length)
 {
-	PX2_LOG_INFO("Recv:%s", buf.c_str());
+	std::string recvStr = buf;
+	int dist = StringHelp::StringToInt(buf);
+
+	EasyPRM._SetCurDist(dist);
+	float distFloat = EasyPRM.GetCurDistFloat();
+
+	PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
 void DistTest::InitlizeUDP()
@@ -98,15 +106,18 @@ std::string DistTest::ProcessRecvStr(std::string &recvBuf, int &length)
 			cmdSize += 1;
 
 			if (cmdSize == 7)
-			{
+			{                                                                                            
 				lowDist = cmdArray[0];
 				highDist = cmdArray[1];
 
 				unsigned short allDist = highDist * 256 + lowDist;
 
-				std::cout << allDist << std::endl;
+				std::cout << lowDist<< " " << highDist << " " << allDist << std::endl;
 
 				processLength = (index+1);
+
+				comIndex = 0;
+				isNewCMD = false;
 			}
 		}
 

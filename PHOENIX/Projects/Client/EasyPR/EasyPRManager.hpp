@@ -58,7 +58,12 @@ namespace PX2
 		Arduino *mArduino;
 
 	public:
+		int GetCurDist() const;
+		float GetCurDistFloat() const;
+		void _SetCurDist(int dist);
+
 		DistTestPtr mDistTest;
+		int mCurDist;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

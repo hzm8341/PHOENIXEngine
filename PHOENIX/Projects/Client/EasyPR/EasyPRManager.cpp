@@ -102,6 +102,10 @@ void _AppCmdCallback(
 		int port = StringHelp::StringToInt(paramStr1);
 		dist->SendToGetData(paramStr, port);
 	}
+	else if ("dist" == cmd)
+	{
+		dist->InitlizeSerial();
+	}
 }
 //----------------------------------------------------------------------------
 EasyPRManager::EasyPRManager() :
@@ -113,6 +117,21 @@ EasyPRManager::EasyPRManager() :
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
 {
+}
+//----------------------------------------------------------------------------
+int EasyPRManager::GetCurDist() const
+{
+	return mCurDist;
+}
+//----------------------------------------------------------------------------
+float EasyPRManager::GetCurDistFloat() const
+{
+	return (float)(mCurDist * 0.01f);
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::_SetCurDist(int dist)
+{
+	mCurDist = dist;
 }
 //----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
