@@ -58,12 +58,24 @@ namespace PX2
 		Arduino *mArduino;
 
 	public:
+		enum DoorState
+		{
+			DS_NONE,
+			DS_STOP,
+			DS_OPENING,
+			DS_CLOSEING,
+			DS_MAX_TYPE
+		};
+		void SetDoorState(DoorState state);
+		DoorState GetDoorState() const;
+
 		int GetCurDist() const;
 		float GetCurDistFloat() const;
 		void _SetCurDist(int dist);
 
 		DistTestPtr mDistTest;
 		int mCurDist;
+		DoorState mDoorState;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

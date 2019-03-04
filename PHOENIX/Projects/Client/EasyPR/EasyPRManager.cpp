@@ -113,10 +113,35 @@ EasyPRManager::EasyPRManager() :
 {
 	mArduino = new0 Arduino();
 	mDistTest = new0 DistTest();
+
+	mDoorState = DS_NONE;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
 {
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::SetDoorState(DoorState state)
+{
+	mDoorState = state;
+
+	if (DS_STOP == mDoorState)
+	{
+		mArduino->RCSend();
+	}
+	else if (DS_OPENING == mDoorState)
+	{
+		mArduino->RCSend();
+	}
+	else if (DS_CLOSEING == mDoorState)
+	{
+		mArduino->RCSend();
+	}
+}
+//----------------------------------------------------------------------------
+EasyPRManager::DoorState EasyPRManager::GetDoorState() const
+{
+	return mDoorState;
 }
 //----------------------------------------------------------------------------
 int EasyPRManager::GetCurDist() const
