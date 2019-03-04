@@ -246,7 +246,7 @@ int PXFArduino::_DigitalRead(PXFPin pin)
 //----------------------------------------------------------------------------
 void PXFArduino::_ServerInit(int index, PXFPin pin)
 {
-#if defined PXF_SERVER
+#if defined PXF_SERVO
   int p = PXFPin2Pin(pin);
   if (0 <= index && index < NumMaxServer)
     mServo[index].attach(p);
@@ -255,7 +255,7 @@ void PXFArduino::_ServerInit(int index, PXFPin pin)
 //----------------------------------------------------------------------------
 void PXFArduino::_ServerWrite(int index, int val)
 {
-#if defined PXF_SERVER
+#if defined PXF_SERVO
   if (0 <= index && index < NumMaxServer)
     mServo[index].write(val);
 #endif

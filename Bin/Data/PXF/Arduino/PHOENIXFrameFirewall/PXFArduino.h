@@ -10,7 +10,7 @@
 #include "PXFTimer.h"
 
 // server
-#if defined PXF_SERVER
+#if defined PXF_SERVO
 #include <Servo.h>
 #endif
 
@@ -382,7 +382,7 @@ private:
   unsigned long mLastSendVersionTime;
   Timer mTimer;
 
-#if defined PXF_SERVER
+#if defined PXF_SERVO
   #define NumMaxServer 5
   Servo mServo[NumMaxServer];
 #endif

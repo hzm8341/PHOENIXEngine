@@ -93,7 +93,7 @@ void PXFArduino::OnCMD(String &cmdStr)
     }
     else if (sOptTypeVal[OT_SVR_I]==cmdCH)
     {
-#if defined PXF_SERVER
+#if defined PXF_SERVO
       int index = _Str2Int(mCmdParams[1]);
       int pin = _Str2Pin(mCmdParams[2]);
       if (0 <= index && index < NumMaxServer)
@@ -102,7 +102,7 @@ void PXFArduino::OnCMD(String &cmdStr)
     }
     else if (sOptTypeVal[OT_SVR_W]==cmdCH)
     {
-#if defined PXF_SERVER
+#if defined PXF_SERVO
       int index = _Str2Int(mCmdParams[1]);
       int val = _Str2Int(mCmdParams[2]);
       if (0 <= index && index < NumMaxServer)
