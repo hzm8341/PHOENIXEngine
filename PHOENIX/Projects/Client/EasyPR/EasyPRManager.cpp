@@ -102,9 +102,21 @@ void _AppCmdCallback(
 		int port = StringHelp::StringToInt(paramStr1);
 		dist->SendToGetData(paramStr, port);
 	}
-	else if ("dist" == cmd)
+	else if ("distserial" == cmd)
 	{
 		dist->InitlizeSerial();
+	}
+	else if ("dooropen" == cmd)
+	{
+		EasyPRM.SetDoorState(EasyPRManager::DS_OPENING);
+	}
+	else if ("doorclose" == cmd)
+	{
+		EasyPRM.SetDoorState(EasyPRManager::DS_CLOSEING);
+	}
+	else if ("doorstop" == cmd)
+	{
+		EasyPRM.SetDoorState(EasyPRManager::DS_STOP);
 	}
 }
 //----------------------------------------------------------------------------
@@ -127,15 +139,18 @@ void EasyPRManager::SetDoorState(DoorState state)
 
 	if (DS_STOP == mDoorState)
 	{
-		mArduino->RCSend();
+		if (mArduino->IsInitlized())
+			mArduino->RCSend(1069360);
 	}
 	else if (DS_OPENING == mDoorState)
 	{
-		mArduino->RCSend();
+		if (mArduino->IsInitlized())
+			mArduino->RCSend(1069504);
 	}
 	else if (DS_CLOSEING == mDoorState)
 	{
-		mArduino->RCSend();
+		if (mArduino->IsInitlized())
+			mArduino->RCSend(1069324);
 	}
 }
 //----------------------------------------------------------------------------
