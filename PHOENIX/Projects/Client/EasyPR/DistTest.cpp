@@ -2,6 +2,8 @@
 
 #include "DistTest.hpp"
 #include "PX2System.hpp"
+#include "PX2UDPServer.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 std::string sRecvStr;
@@ -29,7 +31,7 @@ DistTest::~DistTest()
 {
 }
 //----------------------------------------------------------------------------
-void DistTest::Initlize()
+void DistTest::InitlizeSerial()
 {
 	mIsTestRun = true;
 
@@ -40,6 +42,26 @@ void DistTest::Initlize()
 	mSerialDist.SetDoProcessRecv(false);
 	mSerialDist.SetUserDataPointer("DistTest", this);
 	mSerialDist.AddCallback(_DistTestCallback);
+}
+//----------------------------------------------------------------------------
+void _UDPServerRecvCallback(UDPServer *sever,
+	SocketAddress &address, const std::string &buf, int length)
+{
+	PX2_LOG_INFO("Recv:%s", buf.c_str());
+}
+//----------------------------------------------------------------------------
+void DistTest::InitlizeUDP()
+{
+	mUDPServer = new0 UDPServer();
+	mUDPServer->AddRecvCallback(_UDPServerRecvCallback);
+	mUDPServer->Start();
+}
+//----------------------------------------------------------------------------
+void DistTest::SendToGetData(const std::string &ip, int port)
+{
+	std::string strData = "startdata";
+	SocketAddress skAddr(ip, (int16_t)port);
+	mUDPServer->GetSocket().SendTo(strData.c_str(), strData.length(), skAddr);
 }
 //----------------------------------------------------------------------------
 void DistTest::Ternimate()
@@ -99,6 +121,14 @@ std::string DistTest::ProcessRecvStr(std::string &recvBuf, int &length)
 	length = length - processLength;
 	std::string leftRecvBuf = recvBuf.substr(processLength, length);
 	return leftRecvBuf;
+}
+//----------------------------------------------------------------------------
+void DistTest::Update(float elpasedSeconds)
+{
+	if (mUDPServer)
+	{
+		mUDPServer->Update(elpasedSeconds);
+	}
 }
 //----------------------------------------------------------------------------
 void DistTest::Run()

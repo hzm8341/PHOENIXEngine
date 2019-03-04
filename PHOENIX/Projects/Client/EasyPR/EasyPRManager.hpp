@@ -57,6 +57,7 @@ namespace PX2
 		EasyPRRecvObjectPtr mEasyPRObject1;
 		Arduino *mArduino;
 
+	public:
 		DistTestPtr mDistTest;
 	};
 

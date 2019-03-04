@@ -11,14 +11,18 @@
 namespace PX2
 {
 
+	class UDPServer;
+
 	class PROJECT_DLL_ITEM DistTest : public Runnable
 	{
 	public:
 		DistTest();
 		~DistTest();
 
-		void Initlize();
+		void InitlizeSerial();
 		void Ternimate();
+
+		void Update(float elpasedSeconds);
 
 		virtual void Run();
 
@@ -28,6 +32,13 @@ namespace PX2
 		Serial mSerialDist;
 		ThreadPtr mThreadDist;
 		bool mIsTestRun;
+
+	public:
+		void InitlizeUDP();
+		void SendToGetData(const std::string &ip, int port);
+
+	private:
+		UDPServer *mUDPServer;
 	};
 	typedef Pointer0<DistTest> DistTestPtr;
 

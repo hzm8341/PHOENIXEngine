@@ -41,6 +41,7 @@ void _AppCmdCallback(
 	const std::string &paramStr2)
 {
 	Arduino *arduino = EasyPRM.GetArduino();
+	DistTest *dist = EasyPRM.mDistTest;
 
 	if ("startvedio" == cmd)
 	{
@@ -96,6 +97,11 @@ void _AppCmdCallback(
 		int val = StringHelp::StringToInt(paramStr);
 		arduino->DigitalWrite(Arduino::P_13, val==1?true:false);
 	}
+	else if ("getdist" == cmd)
+	{
+		int port = StringHelp::StringToInt(paramStr1);
+		dist->SendToGetData(paramStr, port);
+	}
 }
 //----------------------------------------------------------------------------
 EasyPRManager::EasyPRManager() :
@@ -119,7 +125,7 @@ bool EasyPRManager::Initlize()
 	mUDPServer->AddRecvCallback(_EasyPRUDPServerRecvCallback);
 	mUDPServer->Start();
 
-	UIFrame *frame = PX2_PROJ.GetUI();	
+	UIFrame *frame = PX2_PROJ.GetUI();
 	UIVlc *frameVLC = new0 UIVlc();
 	mVLC0 = frameVLC;
 	frame->AttachChild(frameVLC);
@@ -141,7 +147,9 @@ bool EasyPRManager::Initlize()
 
 	PX2_APP.AddAppCmdCallback(_AppCmdCallback);
 
-	mDistTest->Initlize();
+	//mDistTest->InitlizeSerial();
+
+	mDistTest->InitlizeUDP();
 
 	return true;
 }
@@ -254,5 +262,10 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 
 	mEasyPRObject0->Update();
 	mEasyPRObject1->Update();
+
+	if (mDistTest)
+	{
+		mDistTest->Update(elapsedSeconds);
+	}
 }
 //----------------------------------------------------------------------------
