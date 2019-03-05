@@ -39,12 +39,7 @@ namespace PX2
 
 		virtual void Run();
 
-		void Recognize(const std::string &filename);
-
-	public:
-		bool _ByteToMat(char* pImg, int nH, int nW, cv::Mat& outImg);
-		void _Recognize(const cv::Mat &mat);
-		
+	public:		
 		UIVLCPtr mVLC0;
 		UIVLCPtr mVLC1;
 

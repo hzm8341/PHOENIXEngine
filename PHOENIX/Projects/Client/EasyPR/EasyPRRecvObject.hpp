@@ -6,6 +6,11 @@
 #include "ProjectPre.hpp"
 #include "PX2SmartPointer.hpp"
 
+namespace cv
+{
+	class Mat;
+}
+
 namespace PX2
 {
 
@@ -29,6 +34,16 @@ namespace PX2
 		std::vector<char> *mPushingBuffer;
 		int mBufferWidth;
 		int mBufferHeight;
+
+	private:
+		bool _ByteToMat(char* pImg, int nH, int nW, cv::Mat& outImg);
+		void Recognize(const std::string &filename);
+		void _Recognize(const cv::Mat &mat);
+
+		std::map<std::string, int> mResultStrs;
+
+		Mutex mResultMutex;
+		std::string mResultStr;
 	};
 
 	typedef Pointer0<EasyPRRecvObject> EasyPRRecvObjectPtr;

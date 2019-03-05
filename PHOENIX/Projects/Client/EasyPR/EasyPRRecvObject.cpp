@@ -5,6 +5,7 @@
 #include "easypr/util/switch.hpp"
 #include "PX2ScopedCS.hpp"
 #include "EasyPRManager.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -39,6 +40,14 @@ void EasyPRRecvObject::Update()
 		mPushingBuffer = mUsingBuffer;
 		mUsingBuffer = tempBuf;
 	}
+
+	std::string retStr;
+	{
+		ScopedCS cs(&mResultMutex);
+		retStr = mResultStr;
+	}
+
+	PX2_LOG_INFO("RetStr:%s", retStr.c_str());
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::UpdateRecognize()
@@ -52,11 +61,82 @@ void EasyPRRecvObject::UpdateRecognize()
 	if (toUseBuffer.size() > 0)
 	{
 		Mat mat;
-		EasyPRM._ByteToMat((char*)&(toUseBuffer)[0], mBufferHeight,
+		_ByteToMat((char*)&(toUseBuffer)[0], mBufferHeight,
 			mBufferWidth, mat);
 		cvtColor(mat, mat, CV_RGBA2RGB);
 
-		EasyPRM._Recognize(mat);
+		_Recognize(mat);
+	}
+}
+//----------------------------------------------------------------------------
+//nH,nW为BYTE*类型图像的高和宽,nFlag为通道数
+bool EasyPRRecvObject::_ByteToMat(char* pImg, int nH, int nW, Mat& outImg)
+{
+	int nByte = nH * nW * 4;
+	int nType = CV_8UC4;
+	outImg = Mat::zeros(nH, nW, nType);
+	memcpy(outImg.data, pImg, nByte);
+	return true;
+}
+//----------------------------------------------------------------------------
+void EasyPRRecvObject::Recognize(const std::string &filename)
+{
+	Mat src = imread(filename);
+	_Recognize(src);
+}
+//----------------------------------------------------------------------------
+void EasyPRRecvObject::_Recognize(const Mat &mat)
+{
+	auto it = mResultStrs.begin();
+	for (; it != mResultStrs.end(); it++)
+	{
+		if (it->second > 0)
+			it->second -= 1;
+	}
+
+	easypr::CPlateRecognize pr;
+	pr.setLifemode(true);
+	pr.setDebug(false);
+	pr.setMaxPlates(4);
+	pr.setDetectType(easypr::PR_DETECT_CMSER);
+
+	vector<easypr::CPlate> plateVec;
+	int result = pr.plateRecognize(mat, plateVec);
+	if (result == 0)
+	{
+		size_t num = plateVec.size();
+		for (size_t j = 0; j < num; j++)
+		{
+			std::string regRet = plateVec[j].getPlateStr();
+			if (!regRet.empty())
+			{
+				if (mResultStrs[regRet] < 10)
+					mResultStrs[regRet] += 2;
+			}
+		}
+	}
+
+	// remove not reg
+	int maxCount = 0;
+	std::string retStr;
+	for (; it != mResultStrs.end(); it++)
+	{
+		if (it->second < 0)
+		{
+			it = mResultStrs.erase(it);
+		}
+		else
+		{
+			if (it->second > maxCount && it->second > 5)
+			{
+				retStr = it->first;
+			}
+		}
+	}
+
+	{
+		ScopedCS cs(&mResultMutex);
+		mResultStr = retStr;
 	}
 }
 //----------------------------------------------------------------------------

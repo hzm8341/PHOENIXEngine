@@ -55,7 +55,7 @@ void _UDPServerRecvCallback(UDPServer *sever,
 	EasyPRM._SetCurDist(dist);
 	float distFloat = EasyPRM.GetCurDistFloat();
 
-	PX2_LOG_INFO("Recv:%.2f", distFloat);
+	//PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
 void DistTest::InitlizeUDP()

@@ -118,6 +118,11 @@ void _AppCmdCallback(
 	{
 		EasyPRM.SetDoorState(EasyPRManager::DS_STOP);
 	}
+	else if ("doorperc" == cmd)
+	{
+		float perc = StringHelp::StringToFloat(paramStr);
+		EasyPRM.SetDoorToPercent(perc);
+	}
 }
 //----------------------------------------------------------------------------
 EasyPRManager::EasyPRManager() :
@@ -194,6 +199,12 @@ void EasyPRManager::SetDoorToPercent(float perc)
 	if (mAllClosedDist == mAllOpenedDist)
 		return;
 
+	if (perc < 0)
+		perc = 0;
+
+	if (perc > 1.0f)
+		perc = 1.0f;
+
 	float toDist = mAllClosedDist + (mAllOpenedDist - mAllClosedDist)*perc;
 	SetDoorToDist(toDist);
 }
@@ -260,6 +271,16 @@ bool EasyPRManager::Initlize()
 
 	mDistTest->InitlizeUDP();
 
+	mArduino->Initlize(Arduino::M_SERIAL, "COM6");
+	System::SleepSeconds(2.0f);
+	mArduino->Update(0.1f);
+	mArduino->RCInit(Arduino::P_11);
+
+	mDistTest->SendToGetData("192.168.31.163", 2333);
+
+	SetClosedDist(0.11f);
+	SetOpenedDist(6.8f);
+
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -275,45 +296,6 @@ void EasyPRManager::SetURl1(const std::string &url1)
 	std::string url = std::string("rtsp://") + url1 +
 		"/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp?real_stream";
 	mVLC1->StartVLC(url);
-}
-//----------------------------------------------------------------------------
-//nH,nW为BYTE*类型图像的高和宽,nFlag为通道数
-bool EasyPRManager::_ByteToMat(char* pImg, int nH, int nW, Mat& outImg)
-{
-	int nByte = nH * nW * 4;
-	int nType = CV_8UC4;
-	outImg = Mat::zeros(nH, nW, nType);
-	memcpy(outImg.data, pImg, nByte);
-	return true;
-}
-//----------------------------------------------------------------------------
-void EasyPRManager::Recognize(const std::string &filename)
-{
-	Mat src = imread(filename);
-	_Recognize(src);
-}
-//----------------------------------------------------------------------------
-void EasyPRManager::_Recognize(const Mat &mat)
-{
-	easypr::CPlateRecognize pr;
-	pr.setLifemode(true);
-	pr.setDebug(false);
-	pr.setMaxPlates(4);
-	pr.setDetectType(easypr::PR_DETECT_CMSER);
-
-	vector<easypr::CPlate> plateVec;
-	int result = pr.plateRecognize(mat, plateVec);
-	if (result == 0) 
-	{
-		size_t num = plateVec.size();
-		for (size_t j = 0; j < num; j++) 
-		{
-			cout << "plateRecognize: " << plateVec[j].getPlateStr() 
-				<< "  score:" << plateVec[j].getPlateScore() <<endl;
-		}
-	}
-
-	if (result != 0) cout << "result:" << result << endl;
 }
 //----------------------------------------------------------------------------
 bool EasyPRManager::Ternimate()
@@ -352,8 +334,11 @@ void EasyPRManager::Run()
 {
 	while (!mIsDoStop)
 	{
+
 		mEasyPRObject0->UpdateRecognize();
+
 		mEasyPRObject1->UpdateRecognize();
+
 	}
 }
 //----------------------------------------------------------------------------
@@ -379,7 +364,7 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 
 	if (mIsAutoAdjustingDoor)
 	{
-		float dist = mToDist - mCurDistFloat;
+		float dist = Mathf::FAbs(mToDist - mCurDistFloat);
 		if (dist <= 0.15f)
 		{
 			SetDoorState(EasyPRManager::DS_STOP);
