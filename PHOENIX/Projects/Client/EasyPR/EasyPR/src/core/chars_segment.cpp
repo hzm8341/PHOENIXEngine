@@ -116,8 +116,8 @@ void CCharsSegment::judgeChinese(Mat in, Mat& out, Color plateType) {
     auto character = CharsIdentify::instance()->identifyChinese(roiAdap, valAdap, isChinese);
   }
 
-  std::cout << "valOstu: " << valOstu << std::endl;
-  std::cout << "valAdap: " << valAdap << std::endl;
+  //std::cout << "valOstu: " << valOstu << std::endl;
+  //std::cout << "valAdap: " << valAdap << std::endl;
 
   if (valOstu >= valAdap) {
     out = roiOstu;

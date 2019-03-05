@@ -47,7 +47,7 @@ void EasyPRRecvObject::Update()
 		retStr = mResultStr;
 	}
 
-	PX2_LOG_INFO("RetStr:%s", retStr.c_str());
+	//PX2_LOG_INFO("RetStr:%s", retStr.c_str());
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::UpdateRecognize()
@@ -90,8 +90,7 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 	auto it = mResultStrs.begin();
 	for (; it != mResultStrs.end(); it++)
 	{
-		if (it->second > 0)
-			it->second -= 1;
+		it->second -= 1;
 	}
 
 	easypr::CPlateRecognize pr;
@@ -119,6 +118,7 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 	// remove not reg
 	int maxCount = 0;
 	std::string retStr;
+	it = mResultStrs.begin();
 	for (; it != mResultStrs.end(); it++)
 	{
 		if (it->second < 0)
