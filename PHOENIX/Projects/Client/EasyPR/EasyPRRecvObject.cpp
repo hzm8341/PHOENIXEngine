@@ -52,7 +52,7 @@ void EasyPRRecvObject::Update(float elapsedSeconds)
 	mUpdateSeconds += elapsedSeconds;
 	if (mUpdateSeconds > 1.0f)
 	{
-		PX2_LOG_INFO("RetStr:%s", retStr.c_str());
+		//PX2_LOG_INFO("RetStr:%s", retStr.c_str());
 
 		EasyPRM.SendScreenStr(retStr);
 
