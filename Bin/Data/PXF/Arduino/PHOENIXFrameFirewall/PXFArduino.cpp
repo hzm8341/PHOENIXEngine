@@ -125,7 +125,7 @@ void PXFArduino::Init(bool isReset)
   mPinDistTrigger = 0;
   mPinDistEcho = 0;
   mDist = 0.0f;
-  mDistCheckLastTime = 0.0;
+  mDistCheckLastTime = 0;
 
   mPinL0 = 0;
   mPinL1 = 0;
@@ -509,7 +509,7 @@ void PXFArduino::_DistTest()
 
   float dist = pulseIn(mPinDistEcho, HIGH) / 58.0; //将回波时间换算成cm
   dist = (int(dist * 100.0)) / 100.0;       //保留两位小数
-  if (6 <= dist && dist <= 600)
+  if (2 <= dist && dist <= 400)
   {
     mDist = dist;
   }
