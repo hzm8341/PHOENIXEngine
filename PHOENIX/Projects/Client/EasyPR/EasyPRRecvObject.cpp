@@ -20,13 +20,15 @@ EasyPRRecvObject::EasyPRRecvObject(UIVlc *vlc)
 
 	mUsingBuffer = &mBuffer0;
 	mPushingBuffer = &mBuffer1;
+
+	mUpdateSeconds = 0;
 }
 //----------------------------------------------------------------------------
 EasyPRRecvObject::~EasyPRRecvObject()
 {
 }
 //----------------------------------------------------------------------------
-void EasyPRRecvObject::Update()
+void EasyPRRecvObject::Update(float elapsedSeconds)
 {
 	const std::vector<char> &lastBuffer =
 		TheVLC->GetVLCMemObj()->GetLastBuffer();
@@ -47,7 +49,15 @@ void EasyPRRecvObject::Update()
 		retStr = mResultStr;
 	}
 
-	//PX2_LOG_INFO("RetStr:%s", retStr.c_str());
+	mUpdateSeconds += elapsedSeconds;
+	if (mUpdateSeconds > 1.0f)
+	{
+		PX2_LOG_INFO("RetStr:%s", retStr.c_str());
+
+		EasyPRM.SendScreenStr(retStr);
+
+		mUpdateSeconds = 0;
+	}
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::UpdateRecognize()
@@ -90,7 +100,7 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 	auto it = mResultStrs.begin();
 	for (; it != mResultStrs.end(); it++)
 	{
-		it->second -= 1;
+		it->second -= 0.1f;
 	}
 
 	easypr::CPlateRecognize pr;
@@ -107,16 +117,16 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 		for (size_t j = 0; j < num; j++)
 		{
 			std::string regRet = plateVec[j].getPlateStr();
+			double score = Mathf::FAbs(plateVec[j].getPlateScore());
 			if (!regRet.empty())
 			{
-				if (mResultStrs[regRet] < 10)
-					mResultStrs[regRet] += 2;
+				mResultStrs[regRet] += score;
 			}
 		}
 	}
 
 	// remove not reg
-	int maxCount = 0;
+	double maxCount = 0;
 	std::string retStr;
 	it = mResultStrs.begin();
 	for (; it != mResultStrs.end(); it++)
@@ -127,8 +137,9 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 		}
 		else
 		{
-			if (it->second > maxCount && it->second > 5)
+			if (it->second > maxCount && it->second > 0.95f)
 			{
+				maxCount = it->second;
 				retStr = it->first;
 			}
 		}
@@ -137,6 +148,11 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 	{
 		ScopedCS cs(&mResultMutex);
 		mResultStr = retStr;
+		if (retStr.empty())
+		{
+			int a = 0;
+			std::cout << 111;
+		}
 	}
 }
 //----------------------------------------------------------------------------

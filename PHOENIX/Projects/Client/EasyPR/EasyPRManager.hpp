@@ -20,6 +20,7 @@ namespace PX2
 
 	class UDPServer;
 	class Arduino;
+	class GeneralClientConnector;
 
 	class PROJECT_DLL_ITEM EasyPRManager : public Singleton<EasyPRManager>, public Runnable
 	{
@@ -85,6 +86,11 @@ namespace PX2
 
 		float mAllClosedDist;
 		float mAllOpenedDist;
+
+	public:
+		void SendScreenStr(const std::string &screen);
+
+		GeneralClientConnector *mGeneralClientConnector;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

@@ -7,6 +7,7 @@
 #include "PX2Application.hpp"
 #include "PX2ScopedCS.hpp"
 #include "PX2Arduino.hpp"
+#include "PX2GeneralClientConnector.hpp"
 using namespace PX2;
 
 void _EasyPRUDPServerRecvCallback(UDPServer *sever,
@@ -136,6 +137,8 @@ EasyPRManager::EasyPRManager() :
 
 	mAllClosedDist = 0.0f;
 	mAllOpenedDist = 0.0f;
+
+	mGeneralClientConnector = 0;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -235,6 +238,12 @@ void EasyPRManager::_SetCurDist(int dist)
 	mCurDistFloat = mCurDist * 0.01f;
 }
 //----------------------------------------------------------------------------
+void EasyPRManager::SendScreenStr(const std::string &screen)
+{
+	std::string setStr = "text " + screen;
+	mGeneralClientConnector->SendRawBuffer(setStr.c_str(), setStr.length());
+}
+//----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
 {
 	IPAddress ipAddr = PX2_APP.GetLocalAddressWith10_172_192();
@@ -281,6 +290,13 @@ bool EasyPRManager::Initlize()
 	SetClosedDist(0.11f);
 	SetOpenedDist(6.8f);
 
+	EasyPRM.SetURL0("192.168.31.204:554");
+	//EasyPRM.SetURl1("192.168.31.203:554");
+
+	mGeneralClientConnector = PX2_APP.CreateGetGeneralClientConnector(
+		"EasyPR");
+	mGeneralClientConnector->ConnectB("127.0.0.1", 8000);
+
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -312,6 +328,8 @@ bool EasyPRManager::Ternimate()
 		delete0(mArduino);
 		mArduino = 0;
 	}
+
+	PX2_APP.ShutdownGeneralClientConnector("EasyPR");
 
 	mVLC0 = 0;
 	mVLC1 = 0;
@@ -354,8 +372,8 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 		mUDPServer->Update(elapsedSeconds);
 	}
 
-	mEasyPRObject0->Update();
-	mEasyPRObject1->Update();
+	mEasyPRObject0->Update(elapsedSeconds);
+	mEasyPRObject1->Update(elapsedSeconds);
 
 	if (mDistTest)
 	{

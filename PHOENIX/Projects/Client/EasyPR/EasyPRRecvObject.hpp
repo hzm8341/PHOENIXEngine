@@ -22,7 +22,7 @@ namespace PX2
 		EasyPRRecvObject(UIVlc *vlc);
 		~EasyPRRecvObject();
 
-		void Update();
+		void Update(float elapsedSeconds);
 		void UpdateRecognize();
 
 		Mutex mRecogMutex;
@@ -40,10 +40,12 @@ namespace PX2
 		void Recognize(const std::string &filename);
 		void _Recognize(const cv::Mat &mat);
 
-		std::map<std::string, int> mResultStrs;
+		std::map<std::string, double> mResultStrs;
 
 		Mutex mResultMutex;
 		std::string mResultStr;
+
+		float mUpdateSeconds;
 	};
 
 	typedef Pointer0<EasyPRRecvObject> EasyPRRecvObjectPtr;
