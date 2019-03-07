@@ -20,6 +20,12 @@ EasyPRRecvObject::EasyPRRecvObject(UIVlc *vlc)
 
 	mUsingBuffer = &mBuffer0;
 	mPushingBuffer = &mBuffer1;
+
+	mUltrasonicDistTest = new0 DistTest();
+	mUltrasonicDistTest->SetDistType(DistTest::DT_ULTR);
+	mUltrasonicDistTest->InitlizeUDP();
+
+	mUltrasonicDistTest->SendToGetData("192.168.31.40", 2333);
 }
 //----------------------------------------------------------------------------
 EasyPRRecvObject::~EasyPRRecvObject()
@@ -39,6 +45,11 @@ void EasyPRRecvObject::Update(float elapsedSeconds)
 		std::vector<char> *tempBuf = mPushingBuffer;
 		mPushingBuffer = mUsingBuffer;
 		mUsingBuffer = tempBuf;
+	}
+
+	if (mUltrasonicDistTest)
+	{
+		mUltrasonicDistTest->Update(elapsedSeconds);
 	}
 }
 //----------------------------------------------------------------------------

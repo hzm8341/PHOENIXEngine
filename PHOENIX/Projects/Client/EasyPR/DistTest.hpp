@@ -19,26 +19,47 @@ namespace PX2
 		DistTest();
 		~DistTest();
 
+		enum DistType
+		{
+			DT_LIDAR,
+			DT_ULTR,
+			DT_MAX_TYPE
+		};
+
+		void SetDistType(DistType type);
+		DistType GetDistType() const;
+
 		void InitlizeSerial_Lidar();
+
+		void InitlizeUDP();
+		
 		void Ternimate();
 
 		void Update(float elpasedSeconds);
 
+
 		virtual void Run();
 
+		void SendToGetData(const std::string &ip, int port);
+		void SetDist(int dist);
 		std::string ProcessRecvStr(std::string &recvStr, int &length);
 
 	private:
 		Serial mSerialDist;
 		ThreadPtr mThreadDist;
 		bool mIsTestRun;
+		DistType mDistType;
+
+		UDPServer *mUDPServer;
+		int mDist;
 
 	public:
-		void InitlizeUDP_Lidar();
-		void SendToGetData(const std::string &ip, int port);
+		void SetRecognizeNormal(int normal);
+		int GetRecognizeNormal() const;
+
 
 	private:
-		UDPServer *mUDPServer;
+		int mRecognizeNormal;
 	};
 	typedef Pointer0<DistTest> DistTestPtr;
 

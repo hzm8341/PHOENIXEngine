@@ -128,6 +128,7 @@ EasyPRManager::EasyPRManager() :
 {
 	mArduino = new0 Arduino();
 	mDistTest = new0 DistTest();
+	mDistTest->SetDistType(DistTest::DT_LIDAR);
 
 	mDoorState = DS_STOP;
 	mIsAutoAdjustingDoor = false;
@@ -256,8 +257,8 @@ void EasyPRManager::_SetCurDist(int dist)
 	mCurDist = dist;
 	mCurDistFloat = mCurDist * 0.01f;
 
-	//float distFloat = EasyPRM.GetCurDistFloat();
-	//PX2_LOG_INFO("Recv:%.2f", distFloat);
+	float distFloat = EasyPRM.GetCurDistFloat();
+	PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::SendScreenStr(const std::string &screen)
@@ -307,11 +308,9 @@ bool EasyPRManager::Initlize()
 
 	PX2_APP.AddAppCmdCallback(_AppCmdCallback);
 
-	//mDistTest->InitlizeSerial();
+	mDistTest->InitlizeUDP();
 
-	mDistTest->InitlizeUDP_Lidar();
-
-	mArduino->Initlize(Arduino::M_SERIAL, "COM6");
+	//mArduino->Initlize(Arduino::M_SERIAL, "COM6");
 	System::SleepSeconds(2.0f);
 	mArduino->Update(0.1f);
 	mArduino->RCInit(Arduino::P_11);

@@ -27,10 +27,23 @@ void _DistTestCallback(Serial *ser, std::string recvVal, int length)
 DistTest::DistTest() :
 	mIsTestRun(true)
 {
+	mDistType = DT_LIDAR;
+	mDist = 0;
+	mRecognizeNormal = 2.0f;
 }
 //----------------------------------------------------------------------------
 DistTest::~DistTest()
 {
+}
+//----------------------------------------------------------------------------
+void DistTest::SetDistType(DistType type)
+{
+	mDistType = type;
+}
+//----------------------------------------------------------------------------
+DistTest::DistType DistTest::GetDistType() const
+{
+	return mDistType;
 }
 //----------------------------------------------------------------------------
 void DistTest::InitlizeSerial_Lidar()
@@ -49,15 +62,19 @@ void DistTest::InitlizeSerial_Lidar()
 void _UDPServerRecvCallback(UDPServer *sever,
 	SocketAddress &address, const std::string &buf, int length)
 {
-	std::string recvStr = buf;
-	int dist = StringHelp::StringToInt(buf);
-
-	EasyPRM._SetCurDist(dist);
+	DistTest *distTest = sever->GetUserData<DistTest*>("DistTest");
+	if (distTest)
+	{
+		std::string recvStr = buf;
+		int dist = StringHelp::StringToInt(buf);
+		distTest->SetDist(dist);
+	}
 }
 //----------------------------------------------------------------------------
-void DistTest::InitlizeUDP_Lidar()
+void DistTest::InitlizeUDP()
 {
 	mUDPServer = new0 UDPServer();
+	mUDPServer->SetUserData("DistTest", this);
 	mUDPServer->AddRecvCallback(_UDPServerRecvCallback);
 	mUDPServer->Start();
 }
@@ -67,6 +84,21 @@ void DistTest::SendToGetData(const std::string &ip, int port)
 	std::string strData = "startdata";
 	SocketAddress skAddr(ip, (int16_t)port);
 	mUDPServer->GetSocket().SendTo(strData.c_str(), strData.length(), skAddr);
+}
+//----------------------------------------------------------------------------
+void DistTest::SetDist(int dist)
+{
+	mDist = dist;
+
+	DistTest::DistType dstType = GetDistType();
+	if (dstType == DistTest::DT_LIDAR)
+	{
+		EasyPRM._SetCurDist(dist);
+	}
+	else if (dstType == DistTest::DT_ULTR)
+	{
+
+	}
 }
 //----------------------------------------------------------------------------
 void DistTest::Ternimate()
@@ -129,6 +161,16 @@ std::string DistTest::ProcessRecvStr(std::string &recvBuf, int &length)
 	length = length - processLength;
 	std::string leftRecvBuf = recvBuf.substr(processLength, length);
 	return leftRecvBuf;
+}
+//----------------------------------------------------------------------------
+void DistTest::SetRecognizeNormal(int normal)
+{
+	mRecognizeNormal = normal;
+}
+//----------------------------------------------------------------------------
+int DistTest::GetRecognizeNormal() const
+{
+	return mRecognizeNormal;
 }
 //----------------------------------------------------------------------------
 void DistTest::Update(float elpasedSeconds)

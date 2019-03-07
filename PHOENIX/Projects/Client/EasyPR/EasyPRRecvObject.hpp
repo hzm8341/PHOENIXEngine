@@ -5,6 +5,7 @@
 
 #include "ProjectPre.hpp"
 #include "PX2SmartPointer.hpp"
+#include "DistTest.hpp"
 
 namespace cv
 {
@@ -53,6 +54,8 @@ namespace PX2
 
 	public:
 
+	private:
+		DistTestPtr mUltrasonicDistTest;
 	};
 
 	typedef Pointer0<EasyPRRecvObject> EasyPRRecvObjectPtr;
