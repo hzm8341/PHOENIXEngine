@@ -53,12 +53,9 @@ void _UDPServerRecvCallback(UDPServer *sever,
 	int dist = StringHelp::StringToInt(buf);
 
 	EasyPRM._SetCurDist(dist);
-	float distFloat = EasyPRM.GetCurDistFloat();
-
-	//PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
-void DistTest::InitlizeUDP()
+void DistTest::InitlizeUDP_Lidar()
 {
 	mUDPServer = new0 UDPServer();
 	mUDPServer->AddRecvCallback(_UDPServerRecvCallback);

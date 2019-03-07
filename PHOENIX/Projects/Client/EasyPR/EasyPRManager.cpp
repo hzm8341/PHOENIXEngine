@@ -251,6 +251,9 @@ void EasyPRManager::_SetCurDist(int dist)
 {
 	mCurDist = dist;
 	mCurDistFloat = mCurDist * 0.01f;
+
+	//float distFloat = EasyPRM.GetCurDistFloat();
+	//PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::SendScreenStr(const std::string &screen)
@@ -300,7 +303,7 @@ bool EasyPRManager::Initlize()
 
 	//mDistTest->InitlizeSerial();
 
-	mDistTest->InitlizeUDP();
+	mDistTest->InitlizeUDP_Lidar();
 
 	mArduino->Initlize(Arduino::M_SERIAL, "COM6");
 	System::SleepSeconds(2.0f);

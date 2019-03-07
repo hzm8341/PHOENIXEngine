@@ -34,7 +34,7 @@ namespace PX2
 		bool mIsTestRun;
 
 	public:
-		void InitlizeUDP();
+		void InitlizeUDP_Lidar();
 		void SendToGetData(const std::string &ip, int port);
 
 	private:
