@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Project
-** Generated automatically by tolua++-1.0.92 on 03/07/19 13:10:04.
+** Generated automatically by tolua++-1.0.92 on 03/08/19 02:27:05.
 */
 
 #ifndef __cplusplus
@@ -1006,7 +1006,6 @@ TOLUA_API int tolua_Project_open (lua_State* tolua_S)
    tolua_function(tolua_S,"SetURl1",tolua_Project_EasyPRManager_SetURl100);
    tolua_function(tolua_S,"Update",tolua_Project_EasyPRManager_Update00);
    tolua_function(tolua_S,"Run",tolua_Project_EasyPRManager_Run00);
-   tolua_constant(tolua_S,"DS_NONE",EasyPRManager::DS_NONE);
    tolua_constant(tolua_S,"DS_STOP",EasyPRManager::DS_STOP);
    tolua_constant(tolua_S,"DS_OPENING",EasyPRManager::DS_OPENING);
    tolua_constant(tolua_S,"DS_CLOSEING",EasyPRManager::DS_CLOSEING);

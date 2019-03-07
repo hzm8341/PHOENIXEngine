@@ -58,7 +58,6 @@ namespace PX2
 	public:
 		enum DoorState
 		{
-			DS_NONE,
 			DS_STOP,
 			DS_OPENING,
 			DS_CLOSEING,

@@ -129,7 +129,7 @@ EasyPRManager::EasyPRManager() :
 	mArduino = new0 Arduino();
 	mDistTest = new0 DistTest();
 
-	mDoorState = DS_NONE;
+	mDoorState = DS_STOP;
 	mIsAutoAdjustingDoor = false;
 
 	mAllClosedDist = 0.0f;
@@ -144,20 +144,22 @@ EasyPRManager::~EasyPRManager()
 //----------------------------------------------------------------------------
 void EasyPRManager::SetDoorState(DoorState state)
 {
-	if (DS_STOP == mDoorState)
+	if (DS_STOP == state)
 	{
 		if (mArduino->IsInitlized())
 		{
 			mArduino->RCSend(1069360);
 		}
+
+		mDoorState = state;
 	}
-	else if (DS_OPENING == mDoorState)
+	else if (DS_OPENING == state)
 	{
 		if (DS_STOP != mDoorState)
 		{
 			SetDoorState(DS_STOP);
 
-			PX2_GR.SendGeneralEvent("dooropening", 1.5f);
+			PX2_GR.SendGeneralEvent("dooropening", 0.5f);
 		}
 		else
 		{
@@ -165,15 +167,17 @@ void EasyPRManager::SetDoorState(DoorState state)
 			{
 				mArduino->RCSend(1069504);
 			}
+
+			mDoorState = state;
 		}
 	}
-	else if (DS_CLOSEING == mDoorState)
+	else if (DS_CLOSEING == state)
 	{
 		if (DS_STOP != mDoorState)
 		{
 			SetDoorState(DS_STOP);
 
-			PX2_GR.SendGeneralEvent("doorcloseing", 1.5f);
+			PX2_GR.SendGeneralEvent("doorcloseing", 0.5f);
 		}
 		else
 		{
@@ -181,10 +185,10 @@ void EasyPRManager::SetDoorState(DoorState state)
 			{
 				mArduino->RCSend(1069324);
 			}
+
+			mDoorState = state;
 		}
 	}
-
-	mDoorState = state;
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::SetDoorToDist(float dist)
@@ -271,6 +275,8 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 //----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
 {
+	PX2_EW.ComeIn(this);
+
 	IPAddress ipAddr = PX2_APP.GetLocalAddressWith10_172_192();
 	SocketAddress udpAddr(ipAddr, 9808);
 
@@ -341,6 +347,8 @@ void EasyPRManager::SetURl1(const std::string &url1)
 //----------------------------------------------------------------------------
 bool EasyPRManager::Ternimate()
 {
+	PX2_EW.GoOut(this);
+
 	mIsDoStop = true;
 
 	if (mUDPServer)
