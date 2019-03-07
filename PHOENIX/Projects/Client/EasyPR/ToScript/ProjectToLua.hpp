@@ -4,7 +4,6 @@
 #define FBXIMPORTERTOLUA_HPP
 
 #include "PX2CorePre.hpp"
-#include "PX2FBXImporter.hpp"
 using namespace PX2;
 
 #define PX2_LUA

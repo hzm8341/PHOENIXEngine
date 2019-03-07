@@ -5,6 +5,8 @@
 
 #include "PX2CorePre.hpp"
 #include "ProjectPre.hpp"
+#include "EasyPRManager.hpp"
+using namespace PX2;
 
 #define PX2_LUA
 

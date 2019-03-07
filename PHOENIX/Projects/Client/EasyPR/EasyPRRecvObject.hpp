@@ -23,6 +23,10 @@ namespace PX2
 		~EasyPRRecvObject();
 
 		void Update(float elapsedSeconds);
+
+		void BeginRecognize();
+		void EndRecognize();
+
 		void UpdateRecognize();
 
 		Mutex mRecogMutex;
@@ -45,7 +49,10 @@ namespace PX2
 		Mutex mResultMutex;
 		std::string mResultStr;
 
-		float mUpdateSeconds;
+		bool mIsBeginRecognize;
+
+	public:
+
 	};
 
 	typedef Pointer0<EasyPRRecvObject> EasyPRRecvObjectPtr;

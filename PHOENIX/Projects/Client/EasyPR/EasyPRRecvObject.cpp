@@ -20,8 +20,6 @@ EasyPRRecvObject::EasyPRRecvObject(UIVlc *vlc)
 
 	mUsingBuffer = &mBuffer0;
 	mPushingBuffer = &mBuffer1;
-
-	mUpdateSeconds = 0;
 }
 //----------------------------------------------------------------------------
 EasyPRRecvObject::~EasyPRRecvObject()
@@ -42,26 +40,32 @@ void EasyPRRecvObject::Update(float elapsedSeconds)
 		mPushingBuffer = mUsingBuffer;
 		mUsingBuffer = tempBuf;
 	}
-
+}
+//----------------------------------------------------------------------------
+void EasyPRRecvObject::BeginRecognize()
+{ 
+	ScopedCS cs(&mResultMutex);
+	mResultStrs.clear();
+	mIsBeginRecognize = true;
+}
+//----------------------------------------------------------------------------
+void EasyPRRecvObject::EndRecognize()
+{
 	std::string retStr;
 	{
 		ScopedCS cs(&mResultMutex);
 		retStr = mResultStr;
+		mIsBeginRecognize = false;
 	}
 
-	mUpdateSeconds += elapsedSeconds;
-	if (mUpdateSeconds > 1.0f)
-	{
-		//PX2_LOG_INFO("RetStr:%s", retStr.c_str());
-
-		EasyPRM.SendScreenStr(retStr);
-
-		mUpdateSeconds = 0;
-	}
+	EasyPRM.SendScreenStr(retStr);
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::UpdateRecognize()
 {
+	if (!mIsBeginRecognize)
+		return;
+
 	std::vector<char> toUseBuffer;
 	{
 		ScopedCS cs(&mRecogMutex);
@@ -148,11 +152,6 @@ void EasyPRRecvObject::_Recognize(const Mat &mat)
 	{
 		ScopedCS cs(&mResultMutex);
 		mResultStr = retStr;
-		if (retStr.empty())
-		{
-			int a = 0;
-			std::cout << 111;
-		}
 	}
 }
 //----------------------------------------------------------------------------

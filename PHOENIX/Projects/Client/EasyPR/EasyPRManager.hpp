@@ -22,7 +22,7 @@ namespace PX2
 	class Arduino;
 	class GeneralClientConnector;
 
-	class PROJECT_DLL_ITEM EasyPRManager : public Singleton<EasyPRManager>, public Runnable
+	class PROJECT_DLL_ITEM EasyPRManager : public Singleton<EasyPRManager>, public Runnable, public EventHandler
 	{
 	public:
 		EasyPRManager();
@@ -39,6 +39,8 @@ namespace PX2
 		virtual void Update(float appSeconds, float elapsedSeconds);
 
 		virtual void Run();
+
+		virtual void OnEvent(Event *event);
 
 	public:		
 		UIVLCPtr mVLC0;

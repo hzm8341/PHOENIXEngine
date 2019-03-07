@@ -33,7 +33,7 @@ DistTest::~DistTest()
 {
 }
 //----------------------------------------------------------------------------
-void DistTest::InitlizeSerial()
+void DistTest::InitlizeSerial_Lidar()
 {
 	mIsTestRun = true;
 

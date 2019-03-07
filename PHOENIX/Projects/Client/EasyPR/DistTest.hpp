@@ -19,7 +19,7 @@ namespace PX2
 		DistTest();
 		~DistTest();
 
-		void InitlizeSerial();
+		void InitlizeSerial_Lidar();
 		void Ternimate();
 
 		void Update(float elpasedSeconds);

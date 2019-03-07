@@ -1,2 +1,3 @@
-// Sample.pkg
+// Project.pkg
 
+$pfile "EasyPRManager.pkg"

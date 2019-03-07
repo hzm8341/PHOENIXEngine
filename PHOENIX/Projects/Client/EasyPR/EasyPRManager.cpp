@@ -8,6 +8,7 @@
 #include "PX2ScopedCS.hpp"
 #include "PX2Arduino.hpp"
 #include "PX2GeneralClientConnector.hpp"
+#include "PX2GraphicsEventType.hpp"
 using namespace PX2;
 
 void _EasyPRUDPServerRecvCallback(UDPServer *sever,
@@ -103,10 +104,6 @@ void _AppCmdCallback(
 		int port = StringHelp::StringToInt(paramStr1);
 		dist->SendToGetData(paramStr, port);
 	}
-	else if ("distserial" == cmd)
-	{
-		dist->InitlizeSerial();
-	}
 	else if ("dooropen" == cmd)
 	{
 		EasyPRM.SetDoorState(EasyPRManager::DS_OPENING);
@@ -147,8 +144,6 @@ EasyPRManager::~EasyPRManager()
 //----------------------------------------------------------------------------
 void EasyPRManager::SetDoorState(DoorState state)
 {
-	mDoorState = state;
-
 	if (DS_STOP == mDoorState)
 	{
 		if (mArduino->IsInitlized())
@@ -158,18 +153,38 @@ void EasyPRManager::SetDoorState(DoorState state)
 	}
 	else if (DS_OPENING == mDoorState)
 	{
-		if (mArduino->IsInitlized())
+		if (DS_STOP != mDoorState)
 		{
-			mArduino->RCSend(1069504);
+			SetDoorState(DS_STOP);
+
+			PX2_GR.SendGeneralEvent("dooropening", 1.5f);
+		}
+		else
+		{
+			if (mArduino->IsInitlized())
+			{
+				mArduino->RCSend(1069504);
+			}
 		}
 	}
 	else if (DS_CLOSEING == mDoorState)
 	{
-		if (mArduino->IsInitlized())
+		if (DS_STOP != mDoorState)
 		{
-			mArduino->RCSend(1069324);
+			SetDoorState(DS_STOP);
+
+			PX2_GR.SendGeneralEvent("doorcloseing", 1.5f);
+		}
+		else
+		{
+			if (mArduino->IsInitlized())
+			{
+				mArduino->RCSend(1069324);
+			}
 		}
 	}
+
+	mDoorState = state;
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::SetDoorToDist(float dist)
@@ -240,8 +255,15 @@ void EasyPRManager::_SetCurDist(int dist)
 //----------------------------------------------------------------------------
 void EasyPRManager::SendScreenStr(const std::string &screen)
 {
-	std::string setStr = "text " + screen;
-	mGeneralClientConnector->SendRawBuffer(setStr.c_str(), setStr.length());
+	if (mGeneralClientConnector && mGeneralClientConnector->IsConnected())
+	{
+		std::string setStr = "text " + screen;
+		mGeneralClientConnector->SendRawBuffer(setStr.c_str(), setStr.length());
+	}
+	else
+	{
+		PX2_LOG_INFO("Is not connected!");
+	}
 }
 //----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
@@ -295,7 +317,7 @@ bool EasyPRManager::Initlize()
 
 	mGeneralClientConnector = PX2_APP.CreateGetGeneralClientConnector(
 		"EasyPR");
-	mGeneralClientConnector->ConnectB("127.0.0.1", 8000);
+	mGeneralClientConnector->ConnectNB("127.0.0.1", 8000);
 
 	return true;
 }
@@ -348,15 +370,29 @@ Arduino *EasyPRManager::GetArduino()
 	return mArduino;
 }
 //----------------------------------------------------------------------------
+void EasyPRManager::OnEvent(Event *event)
+{
+	if (GraphicsES::IsEqual(event, GraphicsES::GeneralString))
+	{
+		std::string dataStr = event->GetDataStr0();
+		if ("dooropening" == dataStr)
+		{
+			SetDoorState(EasyPRManager::DS_OPENING);
+		}
+		else if ("doorcloseing" == dataStr)
+		{
+			SetDoorState(EasyPRManager::DS_CLOSEING);
+		}
+	}
+}
+//----------------------------------------------------------------------------
 void EasyPRManager::Run()
 {
 	while (!mIsDoStop)
 	{
-
 		mEasyPRObject0->UpdateRecognize();
 
 		mEasyPRObject1->UpdateRecognize();
-
 	}
 }
 //----------------------------------------------------------------------------
@@ -388,6 +424,14 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 			SetDoorState(EasyPRManager::DS_STOP);
 
 			mIsAutoAdjustingDoor = false;
+		}
+	}
+
+	if (mGeneralClientConnector)
+	{
+		if (CONNSTATE_CONNECTED == mGeneralClientConnector->GetConnectState())
+		{
+
 		}
 	}
 }

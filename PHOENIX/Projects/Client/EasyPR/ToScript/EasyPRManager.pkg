@@ -1,0 +1,59 @@
+// EasyPRManager.pkg
+
+class EasyPRManager 
+{
+public:
+	EasyPRManager();
+	virtual ~EasyPRManager();
+
+	bool Initlize();
+	bool Ternimate();
+
+	Arduino *GetArduino();
+
+	void SetURL0(const std::string &url0);
+	void SetURl1(const std::string &url1);
+
+	virtual void Update(float appSeconds, float elapsedSeconds);
+
+	virtual void Run();
+
+public:
+	enum DoorState
+	{
+		DS_NONE,
+		DS_STOP,
+		DS_OPENING,
+		DS_CLOSEING,
+		DS_MAX_TYPE
+	};
+	void SetDoorState(DoorState state);
+	DoorState GetDoorState() const;
+
+	void SetDoorToDist(float dist);
+	bool IsAutoAdjustingDoor() const;
+
+	void SetDoorToPercent(float perc);
+	void SetClosedDist(float dist);
+	void SetOpenedDist(float dist);
+
+	int GetCurDist() const;
+	float GetCurDistFloat() const;
+	void _SetCurDist(int dist);
+
+	DistTestPtr mDistTest;
+	int mCurDist;
+	float mCurDistFloat;
+	float mToDist;
+	
+	DoorState mDoorState;
+	bool mIsAutoAdjustingDoor;
+
+	float mAllClosedDist;
+	float mAllOpenedDist;
+
+public:
+	void SendScreenStr(const std::string &screen);
+
+	GeneralClientConnector *mGeneralClientConnector;
+};
