@@ -952,31 +952,31 @@ static int tolua_Project_EasyPRManager_SendScreenStr00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: mGeneralClientConnector of class  EasyPRManager */
+/* get function: mLEDScreenConnector of class  EasyPRManager */
 #ifndef TOLUA_DISABLE_tolua_get_EasyPRManager_mGeneralClientConnector_ptr
 static int tolua_get_EasyPRManager_mGeneralClientConnector_ptr(lua_State* tolua_S)
 {
   EasyPRManager* self = (EasyPRManager*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'mGeneralClientConnector'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'mLEDScreenConnector'",NULL);
 #endif
-   tolua_pushusertype(tolua_S,(void*)self->mGeneralClientConnector,"GeneralClientConnector");
+   tolua_pushusertype(tolua_S,(void*)self->mLEDScreenConnector,"GeneralClientConnector");
  return 1;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: mGeneralClientConnector of class  EasyPRManager */
+/* set function: mLEDScreenConnector of class  EasyPRManager */
 #ifndef TOLUA_DISABLE_tolua_set_EasyPRManager_mGeneralClientConnector_ptr
 static int tolua_set_EasyPRManager_mGeneralClientConnector_ptr(lua_State* tolua_S)
 {
   EasyPRManager* self = (EasyPRManager*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'mGeneralClientConnector'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'mLEDScreenConnector'",NULL);
   if (!tolua_isusertype(tolua_S,2,"GeneralClientConnector",0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->mGeneralClientConnector = ((GeneralClientConnector*)  tolua_tousertype(tolua_S,2,0))
+  self->mLEDScreenConnector = ((GeneralClientConnector*)  tolua_tousertype(tolua_S,2,0))
 ;
  return 0;
 }
@@ -1029,7 +1029,7 @@ TOLUA_API int tolua_Project_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"mAllClosedDist",tolua_get_EasyPRManager_mAllClosedDist,tolua_set_EasyPRManager_mAllClosedDist);
    tolua_variable(tolua_S,"mAllOpenedDist",tolua_get_EasyPRManager_mAllOpenedDist,tolua_set_EasyPRManager_mAllOpenedDist);
    tolua_function(tolua_S,"SendScreenStr",tolua_Project_EasyPRManager_SendScreenStr00);
-   tolua_variable(tolua_S,"mGeneralClientConnector",tolua_get_EasyPRManager_mGeneralClientConnector_ptr,tolua_set_EasyPRManager_mGeneralClientConnector_ptr);
+   tolua_variable(tolua_S,"mLEDScreenConnector",tolua_get_EasyPRManager_mGeneralClientConnector_ptr,tolua_set_EasyPRManager_mGeneralClientConnector_ptr);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;

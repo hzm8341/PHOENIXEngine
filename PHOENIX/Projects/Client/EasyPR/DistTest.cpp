@@ -107,7 +107,11 @@ void DistTest::Ternimate()
 {
 	mIsTestRun = false;
 	System::SleepSeconds(0.5f);
-	mThreadDist->Join();
+	if (mThreadDist)
+	{
+		mThreadDist->Join();
+		mThreadDist = 0;
+	}
 }
 //----------------------------------------------------------------------------
 std::string DistTest::ProcessRecvStr(std::string &recvBuf, int &length)

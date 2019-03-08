@@ -11,30 +11,6 @@
 #include "PX2GraphicsEventType.hpp"
 using namespace PX2;
 
-void _EasyPRUDPServerRecvCallback(UDPServer *sever,
-	SocketAddress &address, const std::string &buf, int length)
-{
-	StringTokenizer stk(buf, " ");
-
-	std::string cmd;
-	std::string param0;
-	std::string param1;
-
-	if (stk.Count() > 0)
-		cmd = stk[0];
-	if (stk.Count() > 1)
-		param0 = stk[1];
-	if (stk.Count() > 2)
-		param1 = stk[2];
-
-	std::string ip = address.GetHost().ToString();
-
-	if ("aa" == cmd)
-	{
-		std::string paramName = param0;
-
-	}
-}
 //----------------------------------------------------------------------------
 void _AppCmdCallback(
 	const std::string &cmd,
@@ -121,10 +97,13 @@ void _AppCmdCallback(
 		float perc = StringHelp::StringToFloat(paramStr);
 		EasyPRM.SetDoorToPercent(perc);
 	}
+	else if ("disconnectaiot" == cmd)
+	{
+		EasyPRM.mAIOTConnector->Disconnect();
+	}
 }
 //----------------------------------------------------------------------------
-EasyPRManager::EasyPRManager() :
-	mUDPServer(0)
+EasyPRManager::EasyPRManager()
 {
 	mArduino = new0 Arduino();
 	mDistTest = new0 DistTest();
@@ -136,7 +115,8 @@ EasyPRManager::EasyPRManager() :
 	mAllClosedDist = 0.0f;
 	mAllOpenedDist = 0.0f;
 
-	mGeneralClientConnector = 0;
+	mLEDScreenConnector = 0;
+	mAIOTConnector = 0;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -268,10 +248,10 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 		return;
 	}
 
-	if (mGeneralClientConnector && mGeneralClientConnector->IsConnected())
+	if (mLEDScreenConnector && mLEDScreenConnector->IsConnected())
 	{
 		std::string setStr = "text " + screen;
-		mGeneralClientConnector->SendRawBuffer(setStr.c_str(), setStr.length());
+		mLEDScreenConnector->SendRawBuffer(setStr.c_str(), setStr.length());
 	}
 	else
 	{
@@ -279,6 +259,23 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 	}
 
 	mLastSendStr = screen;
+}
+//----------------------------------------------------------------------------
+void EasyPRManager::SendAIOT(const std::string &content)
+{
+	if (mAIOTConnector && mAIOTConnector->IsConnected())
+	{
+		mAIOTConnector->SendRawBuffer(content.c_str(), content.length());
+	}
+	else
+	{
+		PX2_LOG_INFO("Is not connected!");
+	}
+}
+//----------------------------------------------------------------------------
+void _AIOTRecvCallback(ClientConnector *connector, const std::string &recvStr)
+{
+	PX2_LOG_INFO("Recv Str:%s", recvStr.c_str());
 }
 //----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
@@ -289,9 +286,6 @@ bool EasyPRManager::Initlize()
 	SocketAddress udpAddr(ipAddr, 9808);
 
 	mIsDoStop = false;
-	mUDPServer = new0 UDPServer(udpAddr);
-	mUDPServer->AddRecvCallback(_EasyPRUDPServerRecvCallback);
-	mUDPServer->Start();
 
 	UIFrame *frame = PX2_PROJ.GetUI();
 	UIVlc *frameVLC = new0 UIVlc();
@@ -324,15 +318,22 @@ bool EasyPRManager::Initlize()
 
 	mDistTest->SendToGetData("192.168.31.163", 2333);
 
+	mTestTimer = 0;
+
 	SetClosedDist(0.11f);
 	SetOpenedDist(6.8f);
 
 	EasyPRM.SetURL0("192.168.31.204:554");
 	//EasyPRM.SetURl1("192.168.31.203:554");
 
-	mGeneralClientConnector = PX2_APP.CreateGetGeneralClientConnector(
+	mLEDScreenConnector = PX2_APP.CreateGetGeneralClientConnector(
 		"EasyPR");
-	mGeneralClientConnector->ConnectNB("127.0.0.1", 8000);
+	mLEDScreenConnector->ConnectNB("127.0.0.1", 8000);
+
+	mAIOTConnector = PX2_APP.CreateGetGeneralClientConnector(
+		"AOIT");
+	mAIOTConnector->ConnectB("127.0.0.1", 9800);
+	mAIOTConnector->AddRecvCallback(_AIOTRecvCallback);
 
 	return true;
 }
@@ -357,11 +358,6 @@ bool EasyPRManager::Ternimate()
 
 	mIsDoStop = true;
 
-	if (mUDPServer)
-	{
-		mUDPServer = 0;
-	}
-
 	if (mArduino)
 	{
 		delete0(mArduino);
@@ -369,6 +365,12 @@ bool EasyPRManager::Ternimate()
 	}
 
 	PX2_APP.ShutdownGeneralClientConnector("EasyPR");
+	PX2_APP.ShutdownGeneralClientConnector("AOIT");
+
+	mLEDScreenConnector = 0;
+	mAIOTConnector = 0;
+
+	System::SleepSeconds(1.0f);
 
 	mVLC0 = 0;
 	mVLC1 = 0;
@@ -420,11 +422,6 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 		mArduino->Update(elapsedSeconds);
 	}
 
-	if (mUDPServer)
-	{
-		mUDPServer->Update(elapsedSeconds);
-	}
-
 	mEasyPRObject0->Update(elapsedSeconds);
 	mEasyPRObject1->Update(elapsedSeconds);
 
@@ -442,6 +439,14 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 
 			mIsAutoAdjustingDoor = false;
 		}
+	}
+
+	mTestTimer += elapsedSeconds;
+	if (mTestTimer > 2.0f)
+	{
+		//SendAIOT("carnumber 34890341");
+
+		mTestTimer = 0.0f;
 	}
 }
 //----------------------------------------------------------------------------

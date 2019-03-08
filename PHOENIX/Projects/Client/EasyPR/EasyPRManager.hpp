@@ -47,7 +47,6 @@ namespace PX2
 		UIVLCPtr mVLC1;
 
 	private:
-		UDPServer *mUDPServer;
 		ThreadPtr mRecognizeThread;
 
 		bool mIsDoStop;
@@ -90,11 +89,15 @@ namespace PX2
 
 	public:
 		void SendScreenStr(const std::string &screen);
+		void SendAIOT(const std::string &content);
 
-		GeneralClientConnector *mGeneralClientConnector;
+		GeneralClientConnector *mLEDScreenConnector;
+		GeneralClientConnector *mAIOTConnector;
 
 	private:
 		std::string mLastSendStr;
+
+		float mTestTimer;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()
