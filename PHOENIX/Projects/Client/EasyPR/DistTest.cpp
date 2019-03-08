@@ -6,6 +6,7 @@
 #include "PX2Log.hpp"
 #include "PX2StringHelp.hpp"
 #include "EasyPRManager.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 
 std::string sRecvStr;
@@ -29,7 +30,7 @@ DistTest::DistTest() :
 {
 	mDistType = DT_LIDAR;
 	mDist = 0;
-	mRecognizeNormal = 2.0f;
+	mRecognizeNormal = 200.0f;
 	mCheckDistTime = 0.0f;
 	mIsDoCheckingDist = false;
 }
@@ -99,7 +100,7 @@ void DistTest::SetDist(int dist)
 	}
 	else if (dstType == DistTest::DT_ULTR)
 	{
-
+		PX2_LOG_INFO("Dist %d", dist);
 	}
 }
 //----------------------------------------------------------------------------

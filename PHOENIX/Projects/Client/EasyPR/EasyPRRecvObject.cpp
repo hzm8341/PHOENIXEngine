@@ -25,7 +25,7 @@ EasyPRRecvObject::EasyPRRecvObject(UIVlc *vlc)
 	mUltrasonicDistTest->SetDistType(DistTest::DT_ULTR);
 	mUltrasonicDistTest->InitlizeUDP();
 
-	mUltrasonicDistTest->SendToGetData("192.168.31.40", 2333);
+	mUltrasonicDistTest->SendToGetData("192.168.31.186", 2333);
 	mRecognizeSeconds = 0.0f;
 }
 //----------------------------------------------------------------------------
