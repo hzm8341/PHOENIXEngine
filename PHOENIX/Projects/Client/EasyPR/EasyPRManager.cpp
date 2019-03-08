@@ -255,7 +255,7 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 	}
 	else
 	{
-		PX2_LOG_INFO("Is not connected!");
+		PX2_LOG_INFO("LEDScreen Is not connected!");
 	}
 
 	mLastSendStr = screen;
