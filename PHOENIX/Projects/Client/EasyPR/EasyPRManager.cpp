@@ -237,8 +237,8 @@ void EasyPRManager::_SetCurDist(int dist)
 	mCurDist = dist;
 	mCurDistFloat = mCurDist * 0.01f;
 
-	float distFloat = EasyPRM.GetCurDistFloat();
-	PX2_LOG_INFO("Recv:%.2f", distFloat);
+	//float distFloat = EasyPRM.GetCurDistFloat();
+	//PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
 void EasyPRManager::SendScreenStr(const std::string &screen)
@@ -301,7 +301,7 @@ bool EasyPRManager::Initlize()
 	frameVLC1->SetAnchorVer(0.0f, 1.0f);
 
 	mEasyPRObject0 = new0 EasyPRRecvObject(mVLC0);
-	mEasyPRObject1 = new0 EasyPRRecvObject(mVLC1);
+	//mEasyPRObject1 = new0 EasyPRRecvObject(mVLC1);
 
 	mRecognizeThread = new0 Thread();
 	mRecognizeThread->Start(*this);
@@ -311,12 +311,12 @@ bool EasyPRManager::Initlize()
 
 	mDistTest->InitlizeUDP();
 
-	//mArduino->Initlize(Arduino::M_SERIAL, "COM6");
+	mArduino->Initlize(Arduino::M_SERIAL, "COM6");
 	System::SleepSeconds(2.0f);
 	mArduino->Update(0.1f);
 	mArduino->RCInit(Arduino::P_11);
 
-	mDistTest->SendToGetData("192.168.31.163", 2333);
+	mDistTest->SendToGetData("192.168.31.193", 2333);
 
 	mTestTimer = 0;
 
@@ -409,9 +409,11 @@ void EasyPRManager::Run()
 {
 	while (!mIsDoStop)
 	{
-		mEasyPRObject0->UpdateRecognize();
+		if (mEasyPRObject0)
+			mEasyPRObject0->UpdateRecognize();
 
-		mEasyPRObject1->UpdateRecognize();
+		if (mEasyPRObject1)
+			mEasyPRObject1->UpdateRecognize();
 	}
 }
 //----------------------------------------------------------------------------
@@ -422,8 +424,11 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 		mArduino->Update(elapsedSeconds);
 	}
 
-	mEasyPRObject0->Update(elapsedSeconds);
-	mEasyPRObject1->Update(elapsedSeconds);
+	if (mEasyPRObject0)
+		mEasyPRObject0->Update(elapsedSeconds);
+
+	if (mEasyPRObject1)
+		mEasyPRObject1->Update(elapsedSeconds);
 
 	if (mDistTest)
 	{
