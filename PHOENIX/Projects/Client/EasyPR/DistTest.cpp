@@ -30,6 +30,8 @@ DistTest::DistTest() :
 	mDistType = DT_LIDAR;
 	mDist = 0;
 	mRecognizeNormal = 2.0f;
+	mCheckDistTime = 0.0f;
+	mIsDoCheckingDist = false;
 }
 //----------------------------------------------------------------------------
 DistTest::~DistTest()
@@ -173,11 +175,57 @@ int DistTest::GetRecognizeNormal() const
 	return mRecognizeNormal;
 }
 //----------------------------------------------------------------------------
+bool DistTest::IsDoRecognize() const
+{
+	return mIsActivateRecoginze;
+}
+//----------------------------------------------------------------------------
 void DistTest::Update(float elpasedSeconds)
 {
 	if (mUDPServer)
 	{
 		mUDPServer->Update(elpasedSeconds);
+	}
+
+	_CheckDist(elpasedSeconds);
+}
+//----------------------------------------------------------------------------
+void DistTest::_CheckDist(float elapsedSeconds)
+{
+	if (mDist < mRecognizeNormal)
+	{
+		mIsDoCheckingDist = true;
+	}
+	else
+	{
+		mIsDoCheckingDist = false;
+	}
+
+	if (mIsDoCheckingDist)
+	{
+		mCheckDistTime += elapsedSeconds;
+	}
+	else
+	{
+		mCheckDistTime -= elapsedSeconds;
+	}
+
+	if (mCheckDistTime > 2.0f)
+	{
+		mCheckDistTime = 2.0f;
+	}
+	if (mCheckDistTime < 0.0f)
+	{
+		mCheckDistTime = 0.0f;
+	}
+
+	if (mCheckDistTime >= 1.5f)
+	{
+		mIsActivateRecoginze = true;
+	}
+	else
+	{
+		mIsActivateRecoginze = false;
 	}
 }
 //----------------------------------------------------------------------------

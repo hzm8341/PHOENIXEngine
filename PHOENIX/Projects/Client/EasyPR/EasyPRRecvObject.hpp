@@ -27,6 +27,7 @@ namespace PX2
 
 		void BeginRecognize();
 		void EndRecognize();
+		void ClearRecognize();
 
 		void UpdateRecognize();
 
@@ -51,8 +52,7 @@ namespace PX2
 		std::string mResultStr;
 
 		bool mIsBeginRecognize;
-
-	public:
+		float mRecognizeSeconds;
 
 	private:
 		DistTestPtr mUltrasonicDistTest;

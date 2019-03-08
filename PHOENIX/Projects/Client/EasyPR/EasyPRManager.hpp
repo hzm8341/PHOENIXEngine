@@ -92,6 +92,9 @@ namespace PX2
 		void SendScreenStr(const std::string &screen);
 
 		GeneralClientConnector *mGeneralClientConnector;
+
+	private:
+		std::string mLastSendStr;
 	};
 
 #define EasyPRM EasyPRManager::GetSingleton()

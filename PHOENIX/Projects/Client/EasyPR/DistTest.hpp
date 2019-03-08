@@ -37,7 +37,6 @@ namespace PX2
 
 		void Update(float elpasedSeconds);
 
-
 		virtual void Run();
 
 		void SendToGetData(const std::string &ip, int port);
@@ -57,9 +56,15 @@ namespace PX2
 		void SetRecognizeNormal(int normal);
 		int GetRecognizeNormal() const;
 
+		bool IsDoRecognize() const;
 
 	private:
+		void _CheckDist(float elapsedSeconds);
+
 		int mRecognizeNormal;
+		bool mIsDoCheckingDist;
+		float mCheckDistTime;
+		bool mIsActivateRecoginze;
 	};
 	typedef Pointer0<DistTest> DistTestPtr;
 

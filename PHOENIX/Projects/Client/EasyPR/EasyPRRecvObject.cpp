@@ -26,6 +26,7 @@ EasyPRRecvObject::EasyPRRecvObject(UIVlc *vlc)
 	mUltrasonicDistTest->InitlizeUDP();
 
 	mUltrasonicDistTest->SendToGetData("192.168.31.40", 2333);
+	mRecognizeSeconds = 0.0f;
 }
 //----------------------------------------------------------------------------
 EasyPRRecvObject::~EasyPRRecvObject()
@@ -47,9 +48,28 @@ void EasyPRRecvObject::Update(float elapsedSeconds)
 		mUsingBuffer = tempBuf;
 	}
 
-	if (mUltrasonicDistTest)
+	mUltrasonicDistTest->Update(elapsedSeconds);
+
+	if (mUltrasonicDistTest->IsDoRecognize())
 	{
-		mUltrasonicDistTest->Update(elapsedSeconds);
+		if (!mIsBeginRecognize)
+		{
+			BeginRecognize();
+		}
+	}
+	else
+	{
+		ClearRecognize();
+	}
+
+	if (mIsBeginRecognize)
+	{
+		mRecognizeSeconds += elapsedSeconds;
+
+		if (mRecognizeSeconds > 2.0f)
+		{
+			EndRecognize();
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -58,6 +78,7 @@ void EasyPRRecvObject::BeginRecognize()
 	ScopedCS cs(&mResultMutex);
 	mResultStrs.clear();
 	mIsBeginRecognize = true;
+	mRecognizeSeconds = 0.0f;
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::EndRecognize()
@@ -70,6 +91,17 @@ void EasyPRRecvObject::EndRecognize()
 	}
 
 	EasyPRM.SendScreenStr(retStr);
+}
+//----------------------------------------------------------------------------
+void EasyPRRecvObject::ClearRecognize()
+{
+	{
+		ScopedCS cs(&mResultMutex);
+		mResultStrs.clear();
+		mResultStr.clear();
+	}
+
+	EasyPRM.SendScreenStr("");
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::UpdateRecognize()

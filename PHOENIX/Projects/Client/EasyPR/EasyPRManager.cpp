@@ -263,6 +263,11 @@ void EasyPRManager::_SetCurDist(int dist)
 //----------------------------------------------------------------------------
 void EasyPRManager::SendScreenStr(const std::string &screen)
 {
+	if (screen == mLastSendStr)
+	{
+		return;
+	}
+
 	if (mGeneralClientConnector && mGeneralClientConnector->IsConnected())
 	{
 		std::string setStr = "text " + screen;
@@ -272,6 +277,8 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 	{
 		PX2_LOG_INFO("Is not connected!");
 	}
+
+	mLastSendStr = screen;
 }
 //----------------------------------------------------------------------------
 bool EasyPRManager::Initlize()
@@ -434,14 +441,6 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 			SetDoorState(EasyPRManager::DS_STOP);
 
 			mIsAutoAdjustingDoor = false;
-		}
-	}
-
-	if (mGeneralClientConnector)
-	{
-		if (CONNSTATE_CONNECTED == mGeneralClientConnector->GetConnectState())
-		{
-
 		}
 	}
 }
