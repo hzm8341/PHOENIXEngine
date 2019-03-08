@@ -100,7 +100,7 @@ void DistTest::SetDist(int dist)
 	}
 	else if (dstType == DistTest::DT_ULTR)
 	{
-		PX2_LOG_INFO("Dist %d", dist);
+		//PX2_LOG_INFO("Dist %d", dist);
 	}
 }
 //----------------------------------------------------------------------------

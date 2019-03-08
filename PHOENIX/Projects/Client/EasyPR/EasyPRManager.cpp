@@ -311,7 +311,7 @@ bool EasyPRManager::Initlize()
 
 	mDistTest->InitlizeUDP();
 
-	//mArduino->Initlize(Arduino::M_SERIAL, "COM6");
+	mArduino->Initlize(Arduino::M_SERIAL, "COM6");
 	System::SleepSeconds(2.0f);
 	mArduino->Update(0.1f);
 	mArduino->RCInit(Arduino::P_11);
