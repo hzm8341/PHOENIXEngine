@@ -21,12 +21,7 @@ void _AppCmdCallback(
 	Arduino *arduino = EasyPRM.GetArduino();
 	DistTest *dist = EasyPRM.mDistTest;
 
-	if ("startvedio" == cmd)
-	{
-		EasyPRM.SetURL0("192.168.31.204:554");
-		EasyPRM.SetURl1("192.168.31.203:554");
-	}
-	else if ("showpic" == cmd)
+	if ("showpic" == cmd)
 	{
 		if ("true" == paramStr)
 		{
@@ -57,7 +52,6 @@ void _AppCmdCallback(
 			int port = StringHelp::StringToInt(paramStr2);
 			if (arduino->InitlizeESPSocketTCP_Connector(paramStr1, port))
 			{
-
 			}
 		}
 	}
@@ -99,7 +93,7 @@ void _AppCmdCallback(
 	}
 	else if ("disconnectaiot" == cmd)
 	{
-		EasyPRM.mAIOTConnector->Disconnect();
+		EasyPRM.mRPConnector->Disconnect();
 	}
 }
 //----------------------------------------------------------------------------
@@ -116,7 +110,8 @@ EasyPRManager::EasyPRManager()
 	mAllOpenedDist = 0.0f;
 
 	mLEDScreenConnector = 0;
-	mAIOTConnector = 0;
+	mRPConnector = 0;
+	mIsRPConnected = false;
 }
 //----------------------------------------------------------------------------
 EasyPRManager::~EasyPRManager()
@@ -241,6 +236,21 @@ void EasyPRManager::_SetCurDist(int dist)
 	//PX2_LOG_INFO("Recv:%.2f", distFloat);
 }
 //----------------------------------------------------------------------------
+GeneralClientConnector *EasyPRManager::GetLEDScreenConnector()
+{
+	return mLEDScreenConnector;
+}
+//----------------------------------------------------------------------------
+GeneralClientConnector *EasyPRManager::GetRPConnector()
+{
+	return mRPConnector;
+}
+//----------------------------------------------------------------------------
+GeneralClientConnector *EasyPRManager::GetNodeConnector()
+{
+	return mNodeConnector;
+}
+//----------------------------------------------------------------------------
 void EasyPRManager::SendScreenStr(const std::string &screen)
 {
 	if (screen == mLastSendStr)
@@ -263,9 +273,9 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 //----------------------------------------------------------------------------
 void EasyPRManager::SendAIOT(const std::string &content)
 {
-	if (mAIOTConnector && mAIOTConnector->IsConnected())
+	if (mRPConnector && mRPConnector->IsConnected())
 	{
-		mAIOTConnector->SendRawBuffer(content.c_str(), content.length());
+		mRPConnector->SendRawBuffer(content.c_str(), content.length());
 	}
 	else
 	{
@@ -273,7 +283,17 @@ void EasyPRManager::SendAIOT(const std::string &content)
 	}
 }
 //----------------------------------------------------------------------------
-void _AIOTRecvCallback(ClientConnector *connector, const std::string &recvStr)
+void _RPRecvCallback(ClientConnector *connector, const std::string &recvStr)
+{
+	EasyPRManager *mgr = connector->GetUserData<EasyPRManager*>(
+		"EasyPRManager");
+	if (mgr)
+	{
+
+	}
+}
+//----------------------------------------------------------------------------
+void _NodeRecvCallback(ClientConnector *connector, const std::string &recvStr)
 {
 	PX2_LOG_INFO("Recv Str:%s", recvStr.c_str());
 }
@@ -287,53 +307,39 @@ bool EasyPRManager::Initlize()
 
 	mIsDoStop = false;
 
-	UIFrame *frame = PX2_PROJ.GetUI();
-	UIVlc *frameVLC = new0 UIVlc();
-	mVLC0 = frameVLC;
-	frame->AttachChild(frameVLC);
-	frameVLC->SetAnchorHor(0.0f, 0.5f);
-	frameVLC->SetAnchorVer(0.0f, 1.0f);
-
-	UIVlc *frameVLC1 = new0 UIVlc();
-	frame->AttachChild(frameVLC1);
-	mVLC1 = frameVLC1;
-	frameVLC1->SetAnchorHor(0.5f, 1.0f);
-	frameVLC1->SetAnchorVer(0.0f, 1.0f);
-
-	mEasyPRObject0 = new0 EasyPRRecvObject(mVLC0);
-	//mEasyPRObject1 = new0 EasyPRRecvObject(mVLC1);
-
-	mRecognizeThread = new0 Thread();
-	mRecognizeThread->Start(*this);
-	mIsDoStop = false;
-
 	PX2_APP.AddAppCmdCallback(_AppCmdCallback);
 
+	// udpdist
 	mDistTest->InitlizeUDP();
+	mDistTest->SendToGetData("192.168.31.193", 2333);
 
+	// opendoor
 	mArduino->Initlize(Arduino::M_SERIAL, "COM6");
 	System::SleepSeconds(2.0f);
 	mArduino->Update(0.1f);
 	mArduino->RCInit(Arduino::P_11);
-
-	mDistTest->SendToGetData("192.168.31.193", 2333);
 
 	mTestTimer = 0;
 
 	SetClosedDist(0.11f);
 	SetOpenedDist(6.8f);
 
-	EasyPRM.SetURL0("192.168.31.204:554");
-	//EasyPRM.SetURl1("192.168.31.203:554");
-
 	mLEDScreenConnector = PX2_APP.CreateGetGeneralClientConnector(
-		"EasyPR");
+		"LEDScreen");
+	mIsLEDScreenConnected = false;
 	mLEDScreenConnector->ConnectNB("127.0.0.1", 8000);
 
-	mAIOTConnector = PX2_APP.CreateGetGeneralClientConnector(
-		"AOIT");
-	mAIOTConnector->ConnectB("127.0.0.1", 9800);
-	mAIOTConnector->AddRecvCallback(_AIOTRecvCallback);
+	mRPConnector = PX2_APP.CreateGetGeneralClientConnector("RP");
+	mRPConnector->AddRecvCallback(_RPRecvCallback);
+	mIsRPConnected = false;
+	mRPConnector->SetUserData("EasyPRManager", this);
+	mRPConnector->ConnectNB("127.0.0.1", 9800);
+
+	mNodeConnector = PX2_APP.CreateGetGeneralClientConnector("Node");
+	mNodeConnector->AddRecvCallback(_NodeRecvCallback);
+	mIsNodeConnected = false;
+	mNodeConnector->SetUserData("EasyPRManager", this);
+	mNodeConnector->ConnectNB("127.0.0.1", 9801);
 
 	return true;
 }
@@ -364,11 +370,11 @@ bool EasyPRManager::Ternimate()
 		mArduino = 0;
 	}
 
-	PX2_APP.ShutdownGeneralClientConnector("EasyPR");
+	PX2_APP.ShutdownGeneralClientConnector("LEDScreen");
 	PX2_APP.ShutdownGeneralClientConnector("AOIT");
 
 	mLEDScreenConnector = 0;
-	mAIOTConnector = 0;
+	mRPConnector = 0;
 
 	System::SleepSeconds(1.0f);
 
@@ -433,6 +439,28 @@ void EasyPRManager::Update(float appSeconds, float elapsedSeconds)
 	if (mDistTest)
 	{
 		mDistTest->Update(elapsedSeconds);
+	}
+
+	if (!mIsLEDScreenConnected && mLEDScreenConnector &&
+		mLEDScreenConnector->IsConnected())
+	{
+		PX2_LOG_INFO("LEDScreenConnected connected!");
+
+		mIsLEDScreenConnected = true;
+	}
+
+	if (!mIsRPConnected && mRPConnector && mRPConnector->IsConnected())
+	{
+		PX2_LOG_INFO("RPConnector connected!");
+
+		mIsRPConnected = true;
+	}
+
+	if (!mIsNodeConnected && mNodeConnector && mNodeConnector->IsConnected())
+	{
+		PX2_LOG_INFO("NodeConnector connected!");
+
+		mIsNodeConnected = true;
 	}
 
 	if (mIsAutoAdjustingDoor)

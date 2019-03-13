@@ -1599,7 +1599,8 @@ void Arduino::_Send(const std::string &cmdStr)
 
 	if (M_SERIAL == mMode)
 	{
-		mSerial.Write(lastCmdStr);
+		if (mSerial.IsOpened())
+			mSerial.Write(lastCmdStr);
 	}
 	else if (M_BLUETOOTH == mMode)
 	{

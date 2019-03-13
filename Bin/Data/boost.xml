@@ -1,7 +1,7 @@
 <boost name="boost">
 	<app>
 		<config>
-			<var width="1136" height="640"/>
+			<var width="640" height="320"/>
 		</config>
 		<play>
 			<var playlogicmode="logic" isshowinfo="true" isdatawrite="false"/>

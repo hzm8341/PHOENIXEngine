@@ -91,7 +91,6 @@ void EasyPRRecvObject::EndRecognize()
 	}
 
 	EasyPRM.SendScreenStr(retStr);
-	EasyPRM.SendAIOT(retStr);
 }
 //----------------------------------------------------------------------------
 void EasyPRRecvObject::ClearRecognize()

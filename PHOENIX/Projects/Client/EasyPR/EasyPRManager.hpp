@@ -42,7 +42,7 @@ namespace PX2
 
 		virtual void OnEvent(Event *event);
 
-	public:		
+	public:
 		UIVLCPtr mVLC0;
 		UIVLCPtr mVLC1;
 
@@ -87,12 +87,22 @@ namespace PX2
 		float mAllClosedDist;
 		float mAllOpenedDist;
 
+		GeneralClientConnector *GetLEDScreenConnector();
+		GeneralClientConnector *GetRPConnector();
+		GeneralClientConnector *GetNodeConnector();
+
 	public:
 		void SendScreenStr(const std::string &screen);
 		void SendAIOT(const std::string &content);
 
 		GeneralClientConnector *mLEDScreenConnector;
-		GeneralClientConnector *mAIOTConnector;
+		bool mIsLEDScreenConnected;
+
+		GeneralClientConnector *mRPConnector;
+		bool mIsRPConnected;
+
+		GeneralClientConnector *mNodeConnector;
+		bool mIsNodeConnected;
 
 	private:
 		std::string mLastSendStr;
