@@ -115,7 +115,6 @@ namespace PX2
 		int GetLocalAddressSize();
 		IPAddress GetLocalAddress(int i);
 		std::string GetLocalAddressStr(int i);
-		IPAddress GetLocalAddressWith10_172_192();
 
 		EngineServer *GetEngineServer();
 		EngineClientConnector *GetEngineClientConnector();

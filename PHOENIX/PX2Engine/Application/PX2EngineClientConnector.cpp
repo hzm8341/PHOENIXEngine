@@ -457,11 +457,15 @@ void EngineClientConnector::BroadcastInfoToLocalNet(int port)
 	std::string name = PX2_APP.GetHostName();
 	std::string bufStr = CMD_EngineUDPInfoTag + " " + name;
 
-	IPAddress ipAddress = PX2_APP.GetLocalAddressWith10_172_192();
+	int addrSize = PX2_APP.GetLocalAddressSize();
+	for (int i = 0; i < addrSize; i++)
+	{
+		IPAddress addr = PX2_APP.GetLocalAddress(i);
 
-	DatagramSocket udpSocket(SocketAddress(ipAddress, port), true);
-	udpSocket.SetBroadcast(true);
-	udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
+		DatagramSocket udpSocket(SocketAddress(addr, port), true);
+		udpSocket.SetBroadcast(true);
+		udpSocket.SendTo(bufStr.c_str(), bufStr.length(), sktAddr);
+	}
     
 #endif
 }

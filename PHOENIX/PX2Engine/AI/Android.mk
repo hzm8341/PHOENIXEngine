@@ -6,7 +6,7 @@ LOCAL_MODULE := AI
 
 FILE_LIST := $(wildcard $(LOCAL_PATH)/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/OpenSteer/src/*cpp)
-FILE_LIST += $(wildcard $(LOCAL_PATH)/iiiroboticslidar2/src/*cpp)
+FILE_LIST += $(wildcard $(LOCAL_PATH)/iiiroboticslidar2/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/detour/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/recast/src/*cpp)
 FILE_LIST += $(wildcard $(LOCAL_PATH)/SkillSystem/*cpp)

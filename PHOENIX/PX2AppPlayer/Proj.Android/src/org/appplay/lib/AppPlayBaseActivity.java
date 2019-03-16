@@ -252,6 +252,7 @@ public class AppPlayBaseActivity extends Activity
 			VoiceSDK.sTheVoiceSDK = VoiceSDKCreater.Create(this);
 		
 		// usb
+		/*
 		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
         IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
         registerReceiver(mUsbReceiver, filter);
@@ -266,6 +267,7 @@ public class AppPlayBaseActivity extends Activity
     		_OpenDevice();
     		_AssignEndpoint();	
         }
+        */
 
 		// camera
 		//DisplayMetrics dm = new DisplayMetrics();

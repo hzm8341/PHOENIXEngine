@@ -540,72 +540,6 @@ std::string Application::GetLocalAddressStr(int i)
 	return GetLocalAddress(i).ToString();
 }
 //----------------------------------------------------------------------------
-IPAddress Application::GetLocalAddressWith10_172_192()
-{
-	if (mLocalAddresses.empty())
-	{
-		_RefreshLocalAddress();
-	}
-
-	std::vector<IPAddress> ips10;
-	std::vector<IPAddress> ips172;
-	std::vector<IPAddress> ips192;
-
-	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
-	{
-		std::string ipStr = mLocalAddresses[i].ToString();
-		StringTokenizer stk(ipStr, ".");
-		if (stk.Count() > 0)
-		{
-			if ("10" == stk[0])
-			{
-				ips10.push_back(mLocalAddresses[i]);
-			}
-		}
-	}
-	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
-	{
-		std::string ipStr = mLocalAddresses[i].ToString();
-		StringTokenizer stk(ipStr, ".");
-		if (stk.Count() > 0)
-		{
-			if ("172" == stk[0])
-			{
-				ips172.push_back(mLocalAddresses[i]);
-			}
-		}
-	}
-	for (int i = 0; i < (int)mLocalAddresses.size(); i++)
-	{
-		std::string ipStr = mLocalAddresses[i].ToString();
-		StringTokenizer stk(ipStr, ".");
-		if (stk.Count() > 0)
-		{
-			if ("192" == stk[0])
-			{
-				ips192.push_back(mLocalAddresses[i]);
-			}
-		}
-	}
-
-	if (ips10.size() > 0)
-	{
-		return ips10[ips10.size() - 1];
-	}
-
-	if (ips172.size() > 0)
-	{
-		return ips172[ips172.size() - 1];
-	}
-
-	if (ips192.size() > 0)
-	{
-		return ips192[ips192.size() - 1];
-	}
-
-	return IPAddress();
-}
-//----------------------------------------------------------------------------
 void Application::_RefreshLocalAddress()
 {
 	mLocalAddresses.clear();
@@ -696,7 +630,7 @@ UDPServer *Application::CreateEngineUDPServer()
 {
 	mEngineUDPServer = 0;
 
-	IPAddress ipAddr = GetLocalAddressWith10_172_192();
+	IPAddress ipAddr;
 	SocketAddress udpAddr(ipAddr, EngineUDPPortClient);
 
 	mEngineUDPServer = new0 UDPServer(udpAddr);
@@ -715,8 +649,7 @@ UDPServer *Application::CreateEngineUDPServerEditor()
 {
 	mEngineDUPServerEditor = 0;
 
-	IPAddress ipAddr = GetLocalAddressWith10_172_192();
-	SocketAddress udpAddr(ipAddr, EngineUDPPortServerEditor);
+	SocketAddress udpAddr(EngineUDPPortServerEditor);
 	
 	mEngineDUPServerEditor = new0 UDPServer(udpAddr);
 	mEngineDUPServerEditor->AddRecvCallback(UDPNetInfo::UDPServerRecvCallback);

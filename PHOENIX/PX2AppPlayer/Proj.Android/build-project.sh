@@ -2,9 +2,9 @@
 # build.sh
 
 # set params
-NDK_ROOT_LOCAL=/cygdrive/Android/android-ndk-r8e
-ENGINE_ROOT_LOCAL=/cygdrive/F/GitHub/PHOENIXEngine/PHOENIX
-APPPLAY_MYAPP_BIN_ROOT_LOCAL=/cygdrive/F/GitHub/PHOENIXEngine/Bin
+NDK_ROOT_LOCAL=/cygdrive/D/Android/android-ndk-r8e
+ENGINE_ROOT_LOCAL=/cygdrive/E/ManyKitGitHub/PHOENIXEngine/PHOENIX
+APPPLAY_MYAPP_BIN_ROOT_LOCAL=/cygdrive/E/ManyKitGitHub/PHOENIXEngine/Bin
 APPPLAY_MYAPP_DATAFROM=Data
 
 if [ $NDK_ROOT"xyz" != "xyz" ]; then

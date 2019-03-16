@@ -196,17 +196,21 @@ void _ThreadProcessDataCallback(void*)
 {
 	while (Slam2DManager::IsRun)
 	{
-		std::vector<sData> data = buf.getSData();
-		if (data.size() > 0)
+		Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+		if (Robot::RT_MASTER == rt || Robot::RT_CONNECTOR_CALCULATE == rt)
 		{
-			std::vector<_sData> dataContainer;
-			hector_slam.scanCallback(data, false, dataContainer);
-			isHasAlreadyRuned = true;
+			std::vector<sData> data = buf.getSData();
+			if (data.size() > 0)
+			{
+				std::vector<_sData> dataContainer;
+				hector_slam.scanCallback(data, false, dataContainer);
+				isHasAlreadyRuned = true;
 
 #if defined PX2_SLAM2D_USE_OPENCV
-			if (showLiDar)
-				showLaserDataInPic(dataContainer);
+				if (showLiDar)
+					showLaserDataInPic(dataContainer);
 #endif
+			}
 		}
 	}
 }
