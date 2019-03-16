@@ -31,4 +31,13 @@ function zo_AddLanguage()
 
 	PX2_LM_APP:AddItem1("SaveMap", "保存")
 	PX2_LM_APP:AddItem1("LoadMap", "加载")
+
+	PX2_LM_APP:AddItem1("master", "a1主机")
+	PX2_LM_APP:AddItem1("connector", "a2连接器")
+	PX2_LM_APP:AddItem1("master_sendlidar", "b1发送数据")
+	PX2_LM_APP:AddItem1("master_connector_calculate", "b2接受数据并计算")
+
+	PX2_LM_APP:AddItem1("ClearObst", "清空障碍")
+	PX2_LM_APP:AddItem1("AddObst", "增加障碍")
+	PX2_LM_APP:AddItem1("RemoveObst", "移除障碍")
 end
