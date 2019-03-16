@@ -93,7 +93,6 @@ namespace PX2
 
 	public:
 		void SendScreenStr(const std::string &screen);
-		void SendAIOT(const std::string &content);
 
 		GeneralClientConnector *mLEDScreenConnector;
 		bool mIsLEDScreenConnected;

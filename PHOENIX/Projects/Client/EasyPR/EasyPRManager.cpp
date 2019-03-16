@@ -271,25 +271,14 @@ void EasyPRManager::SendScreenStr(const std::string &screen)
 	mLastSendStr = screen;
 }
 //----------------------------------------------------------------------------
-void EasyPRManager::SendAIOT(const std::string &content)
-{
-	if (mRPConnector && mRPConnector->IsConnected())
-	{
-		mRPConnector->SendRawBuffer(content.c_str(), content.length());
-	}
-	else
-	{
-		PX2_LOG_INFO("Is not connected!");
-	}
-}
-//----------------------------------------------------------------------------
 void _RPRecvCallback(ClientConnector *connector, const std::string &recvStr)
 {
 	EasyPRManager *mgr = connector->GetUserData<EasyPRManager*>(
 		"EasyPRManager");
 	if (mgr)
 	{
-
+		mgr->GetNodeConnector()->SendRawBuffer(recvStr.c_str(),
+			recvStr.length());
 	}
 }
 //----------------------------------------------------------------------------
