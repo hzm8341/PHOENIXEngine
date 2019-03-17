@@ -20,7 +20,7 @@ function zo_AddLanguage()
 	PX2_LM_APP:AddItem1("Scan", "扫描")
 	PX2_LM_APP:AddItem1("SignDegree", "信号强度")
 	PX2_LM_APP:AddItem1("Lidar", "雷达")
-	PX2_LM_APP:AddItem1("face", "面")
+	PX2_LM_APP:AddItem1("face", "表情")
 	PX2_LM_APP:AddItem1("lidar", "雷达")
 	PX2_LM_APP:AddItem1("lidarcur", "当前雷达")
 	PX2_LM_APP:AddItem1("uictrl", "控制器")
@@ -40,4 +40,14 @@ function zo_AddLanguage()
 	PX2_LM_APP:AddItem1("ClearObst", "清空障碍")
 	PX2_LM_APP:AddItem1("AddObst", "增加障碍")
 	PX2_LM_APP:AddItem1("RemoveObst", "移除障碍")
+
+	PX2_LM_APP:AddItem1("encoder", "编码器")
+	PX2_LM_APP:AddItem1("298N", "298N电驱")
+
+	PX2_LM_APP:AddItem1("MapUpdate", "地图更新")
+
+	PX2_LM_APP:AddItem1("Pos", "位置")
+	PX2_LM_APP:AddItem1("PickPos", "点击位置")
+
+	PX2_LM_APP:AddItem1("MapUpdate", "地图更新")
 end
