@@ -353,7 +353,7 @@ float StringHelp::StringToFloat(const std::string &val)
 std::string StringHelp::LongToString(long val)
 {
 	string str;
-#if defined WIN32 || defined _WIN32 || defined __LINUX__
+#if defined WIN32 || defined _WIN32
 	char c[64];
 	memset(c, 0, 64 * sizeof(char));
 	ltoa(val, c, 10);
