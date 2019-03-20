@@ -56,9 +56,12 @@ namespace PX2
 		void UpdatePortList();
 		std::vector<std::string> GetPortList();
 		std::vector<std::string> GetPortDescList();
+		std::vector<std::string> GetPortHardIDs();
+
 		int GetNumPorts() const;
 		std::string GetPort(int i) const;
 		std::string GetPortDesc(int i) const;
+		std::string GetPortHardID(int i) const;
 
 		void ClearCMDCallbacks();
 		bool IsHasCMDCallback(SerialCMDCallback callBack);
@@ -104,6 +107,7 @@ namespace PX2
 #endif
 		std::vector<std::string> mPortList;
 		std::vector<std::string> mPortDesc;
+		std::vector<std::string> mHardIDs;
 
 		bool mIsDoProcessRecv;
 		static Serial *msDefaultSerial;

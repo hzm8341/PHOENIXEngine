@@ -458,23 +458,30 @@ void Serial::UpdatePortList()
 {
 	std::vector<std::string> list;
 	std::vector<std::string> descList;
+	std::vector<std::string> hardIDs;
 
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
 	std::vector<serial::PortInfo> ports = serial::list_ports();
 	for (int i = 0; i < (int)ports.size(); i++)
 	{
 		std::string desc = ports[i].description;
+		std::string hardIDStr = ports[i].hardware_id;
 
-		wchar_t *unicode = StringHelp::AnsiToUnicode(desc.c_str());
-		const char *utf8 = StringHelp::UnicodeToUTF8(unicode);
+		wchar_t *unicodeDesc = StringHelp::AnsiToUnicode(desc.c_str());
+		const char *utf8Desc = StringHelp::UnicodeToUTF8(unicodeDesc);
+
+		wchar_t *unicodeHardID = StringHelp::AnsiToUnicode(hardIDStr.c_str());
+		const char *utf8HardID = StringHelp::UnicodeToUTF8(unicodeHardID);
 
 		list.push_back(ports[i].port);
-		descList.push_back(std::string(utf8));
+		descList.push_back(std::string(utf8Desc));
+		hardIDs.push_back(std::string(utf8HardID));
 	}
 #endif
 
 	mPortList = list;
 	mPortDesc = descList;
+	mHardIDs = hardIDs;
 }
 //---------------------------------------------------------------------------
 std::vector<std::string> Serial::GetPortList()
@@ -485,6 +492,11 @@ std::vector<std::string> Serial::GetPortList()
 std::vector<std::string> Serial::GetPortDescList()
 {
 	return mPortDesc;
+}
+//---------------------------------------------------------------------------
+std::vector<std::string> Serial::GetPortHardIDs()
+{
+	return mHardIDs;
 }
 //---------------------------------------------------------------------------
 int Serial::GetNumPorts() const
@@ -504,6 +516,14 @@ std::string Serial::GetPortDesc(int i) const
 {
 	if (0 <= i && i < (int)mPortDesc.size())
 		return mPortDesc[i];
+
+	return std::string("");
+}
+//---------------------------------------------------------------------------
+std::string Serial::GetPortHardID(int i) const
+{
+	if (0 <= i && i < (int)mHardIDs.size())
+		return mHardIDs[i];
 
 	return std::string("");
 }

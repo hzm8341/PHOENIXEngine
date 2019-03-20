@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 03/20/19 10:56:12.
+** Generated automatically by tolua++-1.0.92 on 03/20/19 14:39:00.
 */
 
 #ifndef __cplusplus
@@ -40151,6 +40151,48 @@ static int tolua_PX2_Serial_GetPortDescList00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: GetPortHardIDs of class  Serial */
+#ifndef TOLUA_DISABLE_tolua_PX2_Serial_GetPortHardIDs00
+static int tolua_PX2_Serial_GetPortHardIDs00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Serial",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Serial* self = (Serial*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetPortHardIDs'", NULL);
+#endif
+  {
+   std::vector<std::string> tolua_ret = (std::vector<std::string>)  self->GetPortHardIDs();
+   {
+#ifdef __cplusplus
+    void* tolua_obj = Mtolua_new((std::vector<std::string>)(tolua_ret));
+     tolua_pushusertype(tolua_S,tolua_obj,"std::vector<std::string>");
+    tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+#else
+    void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(std::vector<std::string>));
+     tolua_pushusertype(tolua_S,tolua_obj,"std::vector<std::string>");
+    tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+#endif
+   }
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetPortHardIDs'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: GetNumPorts of class  Serial */
 #ifndef TOLUA_DISABLE_tolua_PX2_Serial_GetNumPorts00
 static int tolua_PX2_Serial_GetNumPorts00(lua_State* tolua_S)
@@ -40246,6 +40288,40 @@ static int tolua_PX2_Serial_GetPortDesc00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetPortDesc'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetPortHardID of class  Serial */
+#ifndef TOLUA_DISABLE_tolua_PX2_Serial_GetPortHardID00
+static int tolua_PX2_Serial_GetPortHardID00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const Serial",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const Serial* self = (const Serial*)  tolua_tousertype(tolua_S,1,0);
+  int i = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetPortHardID'", NULL);
+#endif
+  {
+   std::string tolua_ret = (std::string)  self->GetPortHardID(i);
+   tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetPortHardID'.",&tolua_err);
  return 0;
 #endif
 }
@@ -105954,9 +106030,11 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"UpdatePortList",tolua_PX2_Serial_UpdatePortList00);
    tolua_function(tolua_S,"GetPortList",tolua_PX2_Serial_GetPortList00);
    tolua_function(tolua_S,"GetPortDescList",tolua_PX2_Serial_GetPortDescList00);
+   tolua_function(tolua_S,"GetPortHardIDs",tolua_PX2_Serial_GetPortHardIDs00);
    tolua_function(tolua_S,"GetNumPorts",tolua_PX2_Serial_GetNumPorts00);
    tolua_function(tolua_S,"GetPort",tolua_PX2_Serial_GetPort00);
    tolua_function(tolua_S,"GetPortDesc",tolua_PX2_Serial_GetPortDesc00);
+   tolua_function(tolua_S,"GetPortHardID",tolua_PX2_Serial_GetPortHardID00);
    tolua_function(tolua_S,"ClearScirptHandlers",tolua_PX2_Serial_ClearScirptHandlers00);
    tolua_function(tolua_S,"IsHasScriptHandler",tolua_PX2_Serial_IsHasScriptHandler00);
    tolua_function(tolua_S,"AddScriptHandler",tolua_PX2_Serial_AddScriptHandler00);
