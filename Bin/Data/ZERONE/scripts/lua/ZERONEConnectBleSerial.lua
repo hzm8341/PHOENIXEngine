@@ -233,7 +233,8 @@ function zo_ScanSerialDevices()
     for i=0, numPorts-1 do
         local portStr = serial:GetPort(i)
         local portDesc = serial:GetPortDesc(i)
-        local item = ZERONE_BleList:AddItem(portStr.."——"..portDesc)
+        local hardID = serial:GetPortHardID(i)
+        local item = ZERONE_BleList:AddItem(portStr.."-"..portDesc.."-"..hardID)
         item:SetUserDataString("NamePath", portStr)
     end  
 end
