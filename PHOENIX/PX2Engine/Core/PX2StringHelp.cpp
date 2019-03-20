@@ -323,7 +323,7 @@ int StringHelp::StringToInt (const std::string &val)
 //----------------------------------------------------------------------------
 std::string StringHelp::FloatToString (float val, int numPoint)
 {
-	char c[24];
+	char c[24] = { 0 };
 	string str;
 	if (1 == numPoint)
 		sprintf(c, "%.1f", val);
