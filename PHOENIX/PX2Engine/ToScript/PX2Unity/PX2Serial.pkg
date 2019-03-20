@@ -11,6 +11,7 @@
 		
 		static Serial *GetDefaultSerial();
 		
+		void UpdatePortList();
 		std::vector<std::string> GetPortList();
 		std::vector<std::string> GetPortDescList();
 		int GetNumPorts() const;

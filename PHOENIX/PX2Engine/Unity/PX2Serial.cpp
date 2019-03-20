@@ -450,29 +450,13 @@ int Serial::Write(const std::string &buffer)
 }
 //---------------------------------------------------------------------------
 int Serial::Read(std::string &buffer)
-{
+{ 
 	return Read((char*)buffer.c_str(), (int)buffer.size());
 }
 //---------------------------------------------------------------------------
-std::vector<std::string> Serial::GetPortList()
+void Serial::UpdatePortList()
 {
 	std::vector<std::string> list;
-
-#if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
-	std::vector<serial::PortInfo> ports = serial::list_ports();
-	for (int i=0; i<(int)ports.size(); i++)
-	{
-		list.push_back(ports[i].port);
-	}
-#endif
-
-	mPortList = list;
-
-	return list;
-}
-//---------------------------------------------------------------------------
-std::vector<std::string> Serial::GetPortDescList()
-{
 	std::vector<std::string> descList;
 
 #if defined (_WIN32) || defined(WIN32) || defined(__LINUX__)
@@ -484,13 +468,23 @@ std::vector<std::string> Serial::GetPortDescList()
 		wchar_t *unicode = StringHelp::AnsiToUnicode(desc.c_str());
 		const char *utf8 = StringHelp::UnicodeToUTF8(unicode);
 
+		list.push_back(ports[i].port);
 		descList.push_back(std::string(utf8));
 	}
 #endif
 
+	mPortList = list;
 	mPortDesc = descList;
-
-	return descList;
+}
+//---------------------------------------------------------------------------
+std::vector<std::string> Serial::GetPortList()
+{
+	return mPortList;
+}
+//---------------------------------------------------------------------------
+std::vector<std::string> Serial::GetPortDescList()
+{
+	return mPortDesc;
 }
 //---------------------------------------------------------------------------
 int Serial::GetNumPorts() const

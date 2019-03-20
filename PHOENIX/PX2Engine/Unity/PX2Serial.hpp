@@ -53,6 +53,7 @@ namespace PX2
 		int Write(const std::string &buffer);
 		int Read(std::string &buffer);
 
+		void UpdatePortList();
 		std::vector<std::string> GetPortList();
 		std::vector<std::string> GetPortDescList();
 		int GetNumPorts() const;

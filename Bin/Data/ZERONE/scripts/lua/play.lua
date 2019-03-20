@@ -26,18 +26,28 @@ end
 function engine_project_play()
 	Robot:InitlizeSlam2D()
 	zo_ZERONE()
+
+	-- on raspberry we use linux
+	local platType = PX2_APP:GetPlatformType()
+	if Application.PLT_LINUX==platType then
+		--startForRaspberryLidarSender()
+	end
 end
 
 function engine_project_update(appseconds, elapsedseconds)
 	zo_AppUpdateCallback(appseconds, elapsedseconds)
 end
 
+function startForRaspberryLidarSender()
+	PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
+	PX2_ROBOT:SetRoleType(Robot.RT_MASTER_ONLY_SENDLIDAR)
+	PX2_ROBOT:LidarOpen("serial", 230400)
+end
+
 -- cmds default called by PHOENIXEngine
 function engine_project_cmd(cmd, param0, param1, param2)
 	if "robot" == cmd then
 		ZERONE_CurSerialOptType = 1
-		
-
 		rc_Arduino:Initlize(Arduino.M_SERIAL, param0)
 		PX2_LOGGER:LogInfo("ZERONE", "robot arduino initlized")
 	elseif "lidar"==cmd then

@@ -261,6 +261,7 @@ void _EngineUICallback (UIFrame *frame, UICallType type)
 				UIList *list = engineCanvas->GetEngineSerialList();
 				list->RemoveAllItems();
 				Serial serial;
+				serial.UpdatePortList();
 				std::vector<std::string> serials = serial.GetPortList();
 				for (int i = 0; i < (int)serials.size(); i++)
 				{

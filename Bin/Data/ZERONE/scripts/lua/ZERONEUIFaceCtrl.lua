@@ -756,10 +756,10 @@ function ZERONEUIFaceCtrl:CreateBtnsSetting()
     frameTab:SetTabHeight(42.0)
     frameTab:SetFontColor(Float3.WHITE)
 
-    local frame = zo_SettingFrame()
-    frameTab:AddTab("Setting", PX2_LM_APP:GetValue("Setting"), frame)
-    local txt = frameTab:GetTabButton("Setting"):GetText()
-    zo_UISetTextFont(txt, 16)
+    -- local frame = zo_SettingFrame()
+    -- frameTab:AddTab("Setting", PX2_LM_APP:GetValue("Setting"), frame)
+    -- local txt = frameTab:GetTabButton("Setting"):GetText()
+    -- zo_UISetTextFont(txt, 16)
 
     local frameDevice = zo_DeviceFrame()
     frameTab:AddTab("Device", PX2_LM_APP:GetValue("Device"), frameDevice)
@@ -776,7 +776,7 @@ function ZERONEUIFaceCtrl:CreateBtnsSetting()
     local txt = frameTab:GetTabButton("Lidar"):GetText()
     zo_UISetTextFont(txt, 16)
 
-    frameTab:SetActiveTab("Setting")
+    frameTab:SetActiveTab("Device")
 
     -- setting frame
     ZERONE_FrameSetting = uiFrameBack
@@ -1025,8 +1025,8 @@ function zo_UICallabck(ptr, callType)
 
         if "BtnSetting"==name then
             ZERONE_FrameSetting:Show(true)
-            ZERONE_EditBoxName:SetText("".. ZERONE_UIFace:GetName())
-            ZERONE_EditBoxID:SetText("".. ZERONE_UIFace:GetID())
+            -- ZERONE_EditBoxName:SetText("".. ZERONE_UIFace:GetName())
+            -- ZERONE_EditBoxID:SetText("".. ZERONE_UIFace:GetID())
         elseif "BtnCamera"==name then
             local platform = PX2_APP:GetPlatformType()
             if Application.PLT_ANDROID == platform then

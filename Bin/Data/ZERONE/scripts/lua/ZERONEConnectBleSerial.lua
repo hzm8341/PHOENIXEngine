@@ -228,8 +228,7 @@ function zo_ScanSerialDevices()
     ZERONE_BleList:RemoveAllItems()
 
     local serial = Serial()
-    serial:GetPortList()
-    serial:GetPortDescList()
+    serial:UpdatePortList()
     local numPorts = serial:GetNumPorts()
     for i=0, numPorts-1 do
         local portStr = serial:GetPort(i)

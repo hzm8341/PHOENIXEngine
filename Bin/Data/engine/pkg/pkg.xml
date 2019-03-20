@@ -4120,6 +4120,9 @@
 			<function name="GetDefaultSerial" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="Serial *" is_retrun="true" type_str="Serial" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
+			<function name="UpdatePortList" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
 			<function name="GetPortList" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="std::vector&lt;std::string&gt; " is_retrun="true" type_str="std::vector&lt;std::string&gt;" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>

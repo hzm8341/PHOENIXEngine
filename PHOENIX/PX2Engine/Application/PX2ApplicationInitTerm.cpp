@@ -165,11 +165,14 @@ int _ProcessInputString(const std::string &buf)
 			std::string listStr;
 	
 			Serial serial;
+			serial.UpdatePortList();
 			std::vector<std::string> portList = serial.GetPortList();
 			for (int i = 0; i<(int)portList.size(); i++)
 			{
-				std::string portStr = portList[i];
-				listStr += portStr + ", ";
+				std::string port = serial.GetPort(i);
+				std::string desc = serial.GetPortDesc(i);
+
+				listStr += port + ":" + desc + ";";
 			}
 			PX2_LOG_INFO("Serial list: %s", listStr.c_str());
 		}

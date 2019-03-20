@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 03/03/19 17:09:56.
+** Generated automatically by tolua++-1.0.92 on 03/20/19 10:56:12.
 */
 
 #ifndef __cplusplus
@@ -40031,6 +40031,37 @@ static int tolua_PX2_Serial_GetDefaultSerial00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetDefaultSerial'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: UpdatePortList of class  Serial */
+#ifndef TOLUA_DISABLE_tolua_PX2_Serial_UpdatePortList00
+static int tolua_PX2_Serial_UpdatePortList00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Serial",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Serial* self = (Serial*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'UpdatePortList'", NULL);
+#endif
+  {
+   self->UpdatePortList();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'UpdatePortList'.",&tolua_err);
  return 0;
 #endif
 }
@@ -105920,6 +105951,7 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"New",tolua_PX2_Serial_New00);
    tolua_function(tolua_S,"Delete",tolua_PX2_Serial_Delete00);
    tolua_function(tolua_S,"GetDefaultSerial",tolua_PX2_Serial_GetDefaultSerial00);
+   tolua_function(tolua_S,"UpdatePortList",tolua_PX2_Serial_UpdatePortList00);
    tolua_function(tolua_S,"GetPortList",tolua_PX2_Serial_GetPortList00);
    tolua_function(tolua_S,"GetPortDescList",tolua_PX2_Serial_GetPortDescList00);
    tolua_function(tolua_S,"GetNumPorts",tolua_PX2_Serial_GetNumPorts00);
