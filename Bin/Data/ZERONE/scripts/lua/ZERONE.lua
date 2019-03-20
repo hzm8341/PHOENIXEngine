@@ -29,7 +29,6 @@ function zo_ZERONE()
     UnRegistAllEventFunctions("AIES::AxisOpen")
     UnRegistAllEventFunctions("AIES::AxisClose")
 
-
     -- lidar
     PX2_ROBOT:CreateLidar()
 

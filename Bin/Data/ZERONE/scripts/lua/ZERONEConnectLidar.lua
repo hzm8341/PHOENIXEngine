@@ -152,7 +152,8 @@ function zo_ScanSerialDevices_Lidar()
     for i=0, numPorts-1 do
         local portStr = serial:GetPort(i)
         local portDesc = serial:GetPortDesc(i)
-        local item = ZERONESerialList_Lidar:AddItem(portStr.."——"..portDesc)
+        local hardID = serial:GetPortHardID(i)
+        local item = ZERONESerialList_Lidar:AddItem(portStr.."—"..portDesc.."-"..hardID)
         item:SetUserDataString("NamePath", portStr)
     end  
 end
