@@ -467,6 +467,7 @@ void Serial::UpdatePortList()
 		std::string desc = ports[i].description;
 		std::string hardIDStr = ports[i].hardware_id;
 
+#if defined WIN32 || defined _WIN32
 		wchar_t *unicodeDesc = StringHelp::AnsiToUnicode(desc.c_str());
 		const char *utf8Desc = StringHelp::UnicodeToUTF8(unicodeDesc);
 
@@ -476,6 +477,12 @@ void Serial::UpdatePortList()
 		list.push_back(ports[i].port);
 		descList.push_back(std::string(utf8Desc));
 		hardIDs.push_back(std::string(utf8HardID));
+#else
+		list.push_back(ports[i].port);
+		descList.push_back(std::string(desc));
+		hardIDs.push_back(std::string(hardIDStr));
+#endif
+
 	}
 #endif
 
