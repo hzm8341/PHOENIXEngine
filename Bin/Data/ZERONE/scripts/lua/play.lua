@@ -30,7 +30,7 @@ function engine_project_play()
 	-- on raspberry we use linux
 	local platType = PX2_APP:GetPlatformType()
 	if Application.PLT_LINUX==platType then
-		startForRaspberryLidarSender()
+		PX2_GR:SendGeneralEvent("autoconnectlidar", 2.0)
 	end
 end
 
@@ -42,18 +42,22 @@ function startForRaspberryLidarSender()
 	PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
 	PX2_ROBOT:SetRoleType(Robot.RT_MASTER_ONLY_SENDLIDAR)
 
-	local serial = Serial()
+		local serial = Serial()
     serial:UpdatePortList()
     local numPorts = serial:GetNumPorts()
     for i=0, numPorts-1 do
-		local portStr = serial:GetPort(i)
-		local portDesc = serial:GetPortDesc(i)
+			local portStr = serial:GetPort(i)
+			local portDesc = serial:GetPortDesc(i)
 
-		PX2_LOGGER:LidarOpen("ZERONE", portStr)
-		
-		PX2_ROBOT:LidarOpen(portStr, 230400)
+			PX2_LOGGER:LidarOpen("ZERONE", portStr)	
+			PX2_ROBOT:LidarOpen(portStr, 230400)
     end  
 end
+
+UnRegistAllEventFunctions("GraphicsES::autoconnectlidar")
+RegistEventFunction("GraphicsES::autoconnectlidar", function()
+	startForRaspberryLidarSender()
+end)
 
 -- cmds default called by PHOENIXEngine
 function engine_project_cmd(cmd, param0, param1, param2)
