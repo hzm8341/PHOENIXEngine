@@ -23,18 +23,26 @@ function engine_project_preplay()
 	PX2_BLUETOOTH:SetDataProtocolHex(false)
 end
 
+local autoConnectStr = ""
 function engine_project_play()
 	Robot:InitlizeSlam2D()
 	zo_ZERONE()
 
+	local serial = Serial()
+	serial:UpdatePortList()
+	local numPorts = serial:GetNumPorts()
+	if numPorts>0 then
+		autoConnectStr = serial:GetPort(0)
+	end
+
 	-- on raspberry we use linux
 	local platType = PX2_APP:GetPlatformType()
 	if Application.PLT_LINUX==platType then
-		PX2_GR:SendGeneralEvent("autoconnectlidar", 2.0)
+		PX2_GR:SendGeneralEvent("autoconnectlidar", 6.0)
 	end
 end
 
-function engine_project_update(appseconds, elapsedseconds)
+function engine_project_update(appseconLidarOpends, elapsedseconds)
 	zo_AppUpdateCallback(appseconds, elapsedseconds)
 end
 
@@ -42,15 +50,8 @@ function startForRaspberryLidarSender()
 	PX2_ROBOT:GetLidar():SetLiDarType(LiDar.LT_III)
 	PX2_ROBOT:SetRoleType(Robot.RT_MASTER_ONLY_SENDLIDAR)
 
-		local serial = Serial()
-    serial:UpdatePortList()
-    local numPorts = serial:GetNumPorts()
-    for i=0, numPorts-1 do
-			local portStr = serial:GetPort(i)
-			local portDesc = serial:GetPortDesc(i)
-
-			PX2_ROBOT:LidarOpen(portStr, 230400)
-    end  
+	PX2_LOGGER:LogInfo("ZERONE", "autoConnect:"..autoConnectStr)
+	PX2_ROBOT:LidarOpen(autoConnectStr, 230400)
 end
 
 UnRegistAllEventFunctions("GraphicsES::GeneralString")
