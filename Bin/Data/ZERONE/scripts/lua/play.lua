@@ -54,9 +54,11 @@ function startForRaspberryLidarSender()
     end  
 end
 
-UnRegistAllEventFunctions("GraphicsES::autoconnectlidar")
-RegistEventFunction("GraphicsES::autoconnectlidar", function()
-	startForRaspberryLidarSender()
+UnRegistAllEventFunctions("GraphicsES::GeneralString")
+RegistEventFunction("GraphicsES::GeneralString", function(str)
+	if "autoconnectlidar"==str then
+		startForRaspberryLidarSender()
+	end
 end)
 
 -- cmds default called by PHOENIXEngine
