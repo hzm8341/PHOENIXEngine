@@ -49,7 +49,6 @@ function startForRaspberryLidarSender()
 			local portStr = serial:GetPort(i)
 			local portDesc = serial:GetPortDesc(i)
 
-			PX2_LOGGER:LidarOpen("ZERONE", portStr)	
 			PX2_ROBOT:LidarOpen(portStr, 230400)
     end  
 end
