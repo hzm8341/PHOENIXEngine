@@ -12,6 +12,7 @@
 #include "OpenSteer/LocalSpace.h"
 #include "OpenSteer/SteerLibrary.h"
 #include "PX2NavMoveUnit.hpp"
+#include "PX2Smoother.hpp"
 
 namespace PX2
 {
@@ -90,8 +91,8 @@ namespace PX2
 		APoint PredictFuturePosition(float predictionTime) const;
 
 		void RemovePath();
-		void SetForwarding(const AVector& forward);
 		void SetForward(const AVector& forward);
+		void SetForwarding(const AVector& forwarding);
 		void SetRotate(const HMatrix& mat);
 		void SetHeight(float  height);
 		void SetMaxForce(float force);
@@ -187,6 +188,9 @@ namespace PX2
 		APoint mTarget;
 		float mTargetRadius;
 		std::string mTeam;
+
+		AVector mForwarding;
+		Smoother<AVector> *mSmoother;
 	};
 
 	PX2_REGISTER_STREAM(AIAgent);

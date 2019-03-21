@@ -51,6 +51,7 @@
 
 		void RemovePath();
 		void SetForward(const AVector& forward);
+		void SetForwarding(const AVector& forwarding);
 		void SetRotate(const HMatrix& mat);
 		void SetHeight(float  height);
 		void SetMaxForce(float force);

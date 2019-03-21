@@ -12,8 +12,7 @@ namespace PX2
 	class Smoother
 	{
 	public:
-		Smoother(int sampleSize, T zeroValue)
-			:
+		Smoother(int sampleSize, T zeroValue) :
 			mHistory(sampleSize, zeroValue),
 			mZeroValue(zeroValue),
 			mNextUpdateSlot(0),

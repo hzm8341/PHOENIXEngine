@@ -9662,6 +9662,10 @@
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const AVector&amp; forward" is_retrun="false" type_str="AVector" valuename_str="forward" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
+			<function name="SetForwarding" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const AVector&amp; forwarding" is_retrun="false" type_str="AVector" valuename_str="forwarding" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
 			<function name="SetRotate" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const HMatrix&amp; mat" is_retrun="false" type_str="HMatrix" valuename_str="mat" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>

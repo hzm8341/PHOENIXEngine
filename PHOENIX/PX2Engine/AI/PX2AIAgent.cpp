@@ -79,6 +79,9 @@ mTarget(Vector3f::ZERO)
 		RegistToScriptSystem();
 
 	SetForward(Vector3f::UNIT_Y);
+
+	mForwarding = AVector::UNIT_Y;
+	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 AIAgent::AIAgent(Node *node) :
@@ -100,10 +103,17 @@ mTarget(Vector3f::ZERO)
 		RegistToScriptSystem();
 
 	SetForward(Vector3f::UNIT_Y);
+
+	mForwarding = AVector::UNIT_Y;
+	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 AIAgent::~AIAgent()
 {
+	if (mSmoother)
+	{
+		delete0(mSmoother);
+	}
 }
 //----------------------------------------------------------------------------
 void AIAgent::InitializeCapsule()
@@ -419,17 +429,6 @@ void AIAgent::RemovePath()
 	mIsHasPath = false;
 }
 //----------------------------------------------------------------------------
-void AIAgent::SetForwarding(const AVector& forward)
-{
-	AVector vector;
-	if (mRobot && mRobot->GetLidar()->IsOpened() && 
-		mRobot->IsArduinoConnected())
-	{
-	
-	}
-	SetForward(vector);
-}
-//----------------------------------------------------------------------------
 void AIAgent::SetForward(const AVector& forward)
 {
 	if (forward == AVector::ZERO)
@@ -442,6 +441,23 @@ void AIAgent::SetForward(const AVector& forward)
 
 	HMatrix mat(right, dir, up, APoint::ORIGIN, true);
 	SetRotate(mat);
+}
+//----------------------------------------------------------------------------
+void AIAgent::SetForwarding(const AVector& forwarding)
+{
+	mForwarding = forwarding;
+ 	float length = mForwarding.Normalize();
+	if (0.0f == length)
+		return;
+
+	AVector vector;
+	if (mRobot && mRobot->GetLidar()->IsOpened() &&
+		mRobot->IsArduinoConnected())
+	{
+
+	}
+
+	//SetForward(vector);
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetRotate(const HMatrix& mat)
@@ -661,6 +677,13 @@ float AIAgent::GetTargetRadius() const
 void AIAgent::_Update(double applicationTime, double elapsedTime)
 {
 	AIAgentBase::_Update(applicationTime, elapsedTime);
+
+	if (mSmoother)
+	{
+		AVector forward = mSmoother->Update(mForwarding, elapsedTime);
+		forward.Z() = 0.0f;
+		SetForward(forward);
+	}
 
 	if (mRigidBody)
 	{
@@ -892,6 +915,8 @@ void AIAgent::update(const float currentTime, const float elapsedTime)
 AIAgent::AIAgent(LoadConstructor value) :
 AIAgentBase(value)
 {
+	mForwarding = AVector::UNIT_Y;
+	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 void AIAgent::Load(InStream& source)

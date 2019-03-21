@@ -1350,9 +1350,6 @@
     <ClInclude Include="Core\PX2SmartPointer.hpp">
       <Filter>0.Base\Core\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Core\PX2Smoother.hpp">
-      <Filter>0.Base\Core\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="Core\PX2Semaphore.hpp">
       <Filter>0.Base\Core\Thread</Filter>
     </ClInclude>
@@ -5555,6 +5552,9 @@
     </ClInclude>
     <ClInclude Include="Mathematics\PX2Smooth.hpp">
       <Filter>0.Base\Mathematics\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2Smoother.hpp">
+      <Filter>0.Base\Core\Untity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

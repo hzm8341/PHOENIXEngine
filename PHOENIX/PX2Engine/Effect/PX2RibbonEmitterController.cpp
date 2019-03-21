@@ -89,7 +89,7 @@ bool RibbonEmitterController::Update(double applicationTime,
 			float dirLength = moveDir.Normalize();
 
 			mLastPos = curPos;
-			AVector dir = mSmoother->Update(moveDir);
+			AVector dir = mSmoother->Update(moveDir, elapsedTime1);
 			dir.Normalize();
 
 			if (dirLength > 0.0f)

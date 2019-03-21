@@ -27,7 +27,7 @@ function Agent_ApplyPhysicsSteeringForce(agent, steeringForce, deltaTimeInSecond
     local newVelocity = currentVelocity:Add(acceleration:Dot(deltaTimeInSeconds))
     newVelocity:SetZ(0)
     
-    agent:SetForward(newVelocity)
+    agent:SetForwarding(newVelocity)
 end
 
 -- make speed in a fixed range

@@ -9,40 +9,51 @@ namespace PX2
 {
 
 	template <typename T>
-	class Smoother 
+	class Smoother
 	{
 	public:
-		Smoother (int sampleSize, T zeroValue)
-			:
-		mHistory(sampleSize, zeroValue),
+		Smoother(int sampleSize, T zeroValue) :
+			mHistory(sampleSize, zeroValue),
 			mZeroValue(zeroValue),
-			mNextUpdateSlot(0)
+			mNextUpdateSlot(0),
+			mCurUpdateSeconds(0.0f)
 		{
+			mCurValue = mZeroValue;
 		}
-		~Smoother () {}
+		~Smoother() {}
 
-		T Update (const T &mostRecentValue)
+		T Update(const T &mostRecentValue, float elapsedSeconds)
 		{
-			mHistory[mNextUpdateSlot++] = mostRecentValue;
-
-			if (mNextUpdateSlot == (int)mHistory.size())
-				mNextUpdateSlot = 0;
-
-			T sum = mZeroValue;
-
-			typename std::vector<T>::iterator it = mHistory.begin();
-			for (; it!=mHistory.end(); ++it)
+			mCurUpdateSeconds += elapsedSeconds;
+			if (mCurUpdateSeconds > 0.03f)
 			{
-				sum += *it;
+				mHistory[mNextUpdateSlot++] = mostRecentValue;
+
+				if (mNextUpdateSlot == (int)mHistory.size())
+					mNextUpdateSlot = 0;
+
+				T sum = mZeroValue;
+
+				typename std::vector<T>::iterator it = mHistory.begin();
+				for (; it != mHistory.end(); ++it)
+				{
+					sum += *it;
+				}
+
+				mCurUpdateSeconds = 0.0f;
+
+				mCurValue =  sum / (float)mHistory.size();
 			}
 
-			return sum/(float)mHistory.size();
+			return mCurValue;
 		}
 
 	protected:
 		std::vector<T> mHistory;
 		int mNextUpdateSlot;
 		T mZeroValue;
+		float mCurUpdateSeconds;
+		T mCurValue;
 	};
 
 }

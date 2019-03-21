@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 03/20/19 14:39:00.
+** Generated automatically by tolua++-1.0.92 on 03/21/19 21:56:12.
 */
 
 #ifndef __cplusplus
@@ -89664,6 +89664,39 @@ static int tolua_PX2_AIAgent_SetForward00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetForwarding of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetForwarding00
+static int tolua_PX2_AIAgent_SetForwarding00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgent",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const AVector",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgent* self = (AIAgent*)  tolua_tousertype(tolua_S,1,0);
+  const AVector* forwarding = ((const AVector*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetForwarding'", NULL);
+#endif
+  {
+   self->SetForwarding(*forwarding);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetForwarding'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: SetRotate of class  AIAgent */
 #ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetRotate00
 static int tolua_PX2_AIAgent_SetRotate00(lua_State* tolua_S)
@@ -108344,6 +108377,7 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"PredictFuturePosition",tolua_PX2_AIAgent_PredictFuturePosition00);
    tolua_function(tolua_S,"RemovePath",tolua_PX2_AIAgent_RemovePath00);
    tolua_function(tolua_S,"SetForward",tolua_PX2_AIAgent_SetForward00);
+   tolua_function(tolua_S,"SetForwarding",tolua_PX2_AIAgent_SetForwarding00);
    tolua_function(tolua_S,"SetRotate",tolua_PX2_AIAgent_SetRotate00);
    tolua_function(tolua_S,"SetHeight",tolua_PX2_AIAgent_SetHeight00);
    tolua_function(tolua_S,"SetMaxForce",tolua_PX2_AIAgent_SetMaxForce00);
