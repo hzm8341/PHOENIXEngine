@@ -324,6 +324,10 @@ serial::list_ports()
         device_entry.port = device;
         device_entry.description = friendly_name;
         device_entry.hardware_id = hardware_id;
+		
+		std::cout << device << endl;
+		std::cout << friendly_name << endl;
+		std::cout << hardware_id << endl;
 
         results.push_back( device_entry );
 
