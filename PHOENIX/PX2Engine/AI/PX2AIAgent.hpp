@@ -92,6 +92,8 @@ namespace PX2
 
 		void RemovePath();
 		void SetForward(const AVector& forward);
+		void EnableForwarding(bool enable);
+		bool IsForwardingEnabled() const;
 		void SetForwarding(const AVector& forwarding);
 		void SetRotate(const HMatrix& mat);
 		void SetHeight(float  height);
@@ -189,6 +191,7 @@ namespace PX2
 		float mTargetRadius;
 		std::string mTeam;
 
+		bool mIsEnableForwarding;
 		AVector mForwarding;
 		Smoother<AVector> *mSmoother;
 	};

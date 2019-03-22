@@ -45,20 +45,20 @@ function zo_Scene()
     -- actor control
     local followerActorAgent = nil
     -- seek
-    for i=1,1,1 do
-        local actor = PX2_CREATER:CreateActor()
-        scene:AttachChild(actor)
-        local movBox = PX2_CREATER:CreateMovable_Box()
-        actor:AttachChild(movBox)
+    -- for i=1,1,1 do
+    --     local actor = PX2_CREATER:CreateActor()
+    --     scene:AttachChild(actor)
+    --     local movBox = PX2_CREATER:CreateMovable_Box()
+    --     actor:AttachChild(movBox)
         
-		local script = ActorControllerSeek:New()
-        local scriptCtrl = Cast:ToSC(script.__object)
-        actor:AttachController(scriptCtrl)
-        scriptCtrl:ResetPlay()
-    end
+	-- 	local script = ActorControllerSeek:New()
+    --     local scriptCtrl = Cast:ToSC(script.__object)
+    --     actor:AttachController(scriptCtrl)
+    --     scriptCtrl:ResetPlay()
+    -- end
 
     -- path
-    for i=1,2,1 do
+    for i=1,1,1 do
         local actor = PX2_CREATER:CreateActor()
         scene:AttachChild(actor)
         local movBox = PX2_CREATER:CreateMovable_Box()
@@ -75,23 +75,26 @@ function zo_Scene()
         local scriptCtrl = Cast:ToSC(script.__object)
         actor:AttachController(scriptCtrl)
         scriptCtrl:ResetPlay()
+
+        local robot = PX2_ROBOT
+        followerActorAgent:SetRobot(robot)
     end
 
     -- follower
-    if nil~=followerActorAgent then
-        for i=1,4,1 do
-            local actor = PX2_CREATER:CreateActor()
-            scene:AttachChild(actor)
-            local movBox = PX2_CREATER:CreateMovable_Box()
-            actor:AttachChild(movBox)
-            local script = ActorControllerFollower:New()
-            script._leader = followerActorAgent
+    -- if nil~=followerActorAgent then
+    --     for i=1,4,1 do
+    --         local actor = PX2_CREATER:CreateActor()
+    --         scene:AttachChild(actor)
+    --         local movBox = PX2_CREATER:CreateMovable_Box()
+    --         actor:AttachChild(movBox)
+    --         local script = ActorControllerFollower:New()
+    --         script._leader = followerActorAgent
 
-            local scriptCtrl = Cast:ToSC(script.__object)
-            actor:AttachController(scriptCtrl)
-            scriptCtrl:ResetPlay()
-        end     
-    end
+    --         local scriptCtrl = Cast:ToSC(script.__object)
+    --         actor:AttachController(scriptCtrl)
+    --         scriptCtrl:ResetPlay()
+    --     end     
+    -- end
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane()

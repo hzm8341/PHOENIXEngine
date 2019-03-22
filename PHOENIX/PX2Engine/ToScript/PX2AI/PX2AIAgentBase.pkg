@@ -34,5 +34,8 @@
 
 		btRigidBody* GetRigidBody();
 		const btRigidBody* GetRigidBody() const;
+		
+		void SetRobot(Robot *robot);
+		Robot *GetRobot();
 	};
 

@@ -80,6 +80,7 @@ mTarget(Vector3f::ZERO)
 
 	SetForward(Vector3f::UNIT_Y);
 
+	mIsEnableForwarding = true;
 	mForwarding = AVector::UNIT_Y;
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
@@ -104,6 +105,7 @@ mTarget(Vector3f::ZERO)
 
 	SetForward(Vector3f::UNIT_Y);
 
+	mIsEnableForwarding = true;
 	mForwarding = AVector::UNIT_Y;
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
@@ -407,15 +409,23 @@ AVector AIAgent::ForceToWander(float deltaMilliseconds)
 //----------------------------------------------------------------------------
 void AIAgent::ApplyForce(const AVector &force)
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		PhysicsUtilities::ApplyForce(
-			mRigidBody, btVector3(force.X(), force.Y(), force.Z()));
+		if (mRobot->GetLidar()->IsOpened()
+			&& mRobot->IsArduinoConnected())
+		{
+
+		}
+
+		mRobot->FakeGoForce(force);
 	}
-
-	if (mRobot && mRobot->GetLidar()->IsOpened() && mRobot->IsArduinoConnected())
+	else
 	{
-
+		if (mRigidBody)
+		{
+			PhysicsUtilities::ApplyForce(
+				mRigidBody, btVector3(force.X(), force.Y(), force.Z()));
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -427,6 +437,16 @@ APoint AIAgent::PredictFuturePosition(float predictionTime) const
 void AIAgent::RemovePath()
 {
 	mIsHasPath = false;
+}
+//----------------------------------------------------------------------------
+void AIAgent::EnableForwarding(bool enable)
+{
+	mIsEnableForwarding = enable;
+}
+//----------------------------------------------------------------------------
+bool AIAgent::IsForwardingEnabled() const
+{
+	return mIsEnableForwarding;
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetForward(const AVector& forward)
@@ -445,19 +465,23 @@ void AIAgent::SetForward(const AVector& forward)
 //----------------------------------------------------------------------------
 void AIAgent::SetForwarding(const AVector& forwarding)
 {
-	mForwarding = forwarding;
- 	float length = mForwarding.Normalize();
-	if (0.0f == length)
-		return;
-
-	AVector vector;
-	if (mRobot && mRobot->GetLidar()->IsOpened() &&
-		mRobot->IsArduinoConnected())
+	if (mRobot)
 	{
-
+		AVector dir = mRobot->GetDirection();
+		//SetForward(dir);
 	}
+	else
+	{
+		mForwarding = forwarding;
+		float length = mForwarding.Normalize();
+		if (0.0f == length)
+			return;
 
-	//SetForward(vector);
+		if (!mIsEnableForwarding)
+		{
+			SetForward(mForwarding);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetRotate(const HMatrix& mat)
@@ -547,23 +571,33 @@ void AIAgent::SetVelocity(const AVector& velocity)
 //----------------------------------------------------------------------------
 AVector AIAgent::GetRight() const
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		const btQuaternion quaterion = mRigidBody->getOrientation();
-		HQuaternion quat(quaterion.w(), quaterion.x(), quaterion.y(),
-			quaterion.z());
-		HMatrix mat;
-		quat.ToRotationMatrix(mat);
-		AVector right;
-		mat.GetColumn(0, right);
+		AVector dir = mRobot->GetVelocity();
+		AVector right = dir.Cross(AVector::UNIT_Z);
+		right.Normalize();
 		return right;
 	}
-	else if (mNode)
+	else
 	{
-		HMatrix rotMat = mNode->WorldTransform.GetRotate();
-		AVector right;
-		rotMat.GetColumn(0, right);
-		return right;
+		if (mRigidBody)
+		{
+			const btQuaternion quaterion = mRigidBody->getOrientation();
+			HQuaternion quat(quaterion.w(), quaterion.x(), quaterion.y(),
+				quaterion.z());
+			HMatrix mat;
+			quat.ToRotationMatrix(mat);
+			AVector right;
+			mat.GetColumn(0, right);
+			return right;
+		}
+		else if (mNode)
+		{
+			HMatrix rotMat = mNode->WorldTransform.GetRotate();
+			AVector right;
+			rotMat.GetColumn(0, right);
+			return right;
+		}
 	}
 
 	return AVector::UNIT_X;
@@ -571,23 +605,30 @@ AVector AIAgent::GetRight() const
 //----------------------------------------------------------------------------
 AVector AIAgent::GetUp() const
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		const btQuaternion quaterion = mRigidBody->getOrientation();
-		HQuaternion quat(quaterion.w(), quaterion.x(), quaterion.y(),
-			quaterion.z());
-		HMatrix mat;
-		quat.ToRotationMatrix(mat);
-		AVector up;
-		mat.GetColumn(2, up);
-		return up;
+		return AVector::UNIT_Z;
 	}
-	else if (mNode)
+	else
 	{
-		HMatrix rotMat = mNode->WorldTransform.GetRotate();
-		AVector up;
-		rotMat.GetColumn(2, up);
-		return up;
+		if (mRigidBody)
+		{
+			const btQuaternion quaterion = mRigidBody->getOrientation();
+			HQuaternion quat(quaterion.w(), quaterion.x(), quaterion.y(),
+				quaterion.z());
+			HMatrix mat;
+			quat.ToRotationMatrix(mat);
+			AVector up;
+			mat.GetColumn(2, up);
+			return up;
+		}
+		else if (mNode)
+		{
+			HMatrix rotMat = mNode->WorldTransform.GetRotate();
+			AVector up;
+			rotMat.GetColumn(2, up);
+			return up;
+		}
 	}
 
 	return AVector::UNIT_Z;
@@ -595,21 +636,30 @@ AVector AIAgent::GetUp() const
 //----------------------------------------------------------------------------
 AVector AIAgent::GetForward() const
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		const btQuaternion quaterion = mRigidBody->getOrientation();
-
-		HQuaternion quat = HQuaternion(
-			quaterion.w(), quaterion.x(), quaterion.y(), quaterion.z());
-		HMatrix mat;
-		quat.ToRotationMatrix(mat);
-		HPoint col;
-		mat.GetColumn(1, col);
-		return Vector3f(col[0], col[1], col[2]);
+		AVector dir = mRobot->GetVelocity();
+		dir.Normalize();
+		return dir;
 	}
-	else if (mNode)
+	else
 	{
-		return mNode->WorldTransform.GetDirection();
+		if (mRigidBody)
+		{
+			const btQuaternion quaterion = mRigidBody->getOrientation();
+
+			HQuaternion quat = HQuaternion(
+				quaterion.w(), quaterion.x(), quaterion.y(), quaterion.z());
+			HMatrix mat;
+			quat.ToRotationMatrix(mat);
+			HPoint col;
+			mat.GetColumn(1, col);
+			return Vector3f(col[0], col[1], col[2]);
+		}
+		else if (mNode)
+		{
+			return mNode->WorldTransform.GetDirection();
+		}
 	}
 
 	return Vector3f::UNIT_Y;
@@ -642,26 +692,40 @@ float AIAgent::GetMaxSpeed() const
 //----------------------------------------------------------------------------
 float AIAgent::GetSpeed() const
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		const btVector3 velocity = mRigidBody->getLinearVelocity();
-		return Vector3f(velocity.x(), velocity.y(), 0.0f).Length();
+		return mRobot->GetSpeed();
 	}
 	else
 	{
-		return mSpeed;
+		if (mRigidBody)
+		{
+			const btVector3 velocity = mRigidBody->getLinearVelocity();
+			return Vector3f(velocity.x(), velocity.y(), 0.0f).Length();
+		}
+		else
+		{
+			return mSpeed;
+		}
 	}
 }
 //----------------------------------------------------------------------------
 AVector AIAgent::GetVelocity() const
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		const btVector3 velocity = mRigidBody->getLinearVelocity();
-
-		return AVector(velocity.x(), velocity.y(), velocity.z());
+		return mRobot->GetVelocity();
 	}
-	return GetForward() * mSpeed;
+	else
+	{
+		if (mRigidBody)
+		{
+			const btVector3 velocity = mRigidBody->getLinearVelocity();
+
+			return AVector(velocity.x(), velocity.y(), velocity.z());
+		}
+		return GetForward() * mSpeed;
+	}
 }
 //----------------------------------------------------------------------------
 APoint AIAgent::GetTarget() const
@@ -678,17 +742,24 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 {
 	AIAgentBase::_Update(applicationTime, elapsedTime);
 
-	if (mSmoother)
+	if (mRobot)
 	{
-		AVector forward = mSmoother->Update(mForwarding, elapsedTime);
-		forward.Z() = 0.0f;
-		SetForward(forward);
-	}
 
-	if (mRigidBody)
+	}
+	else
 	{
-		const btVector3 velocity = mRigidBody->getLinearVelocity();
-		SetSpeed(Vector3f(velocity.x(), velocity.y(), 0.0f).Length());
+		if (mSmoother && mIsEnableForwarding)
+		{
+			AVector forward = mSmoother->Update(mForwarding, elapsedTime);
+			forward.Z() = 0.0f;
+			SetForward(forward);
+		}
+
+		if (mRigidBody)
+		{
+			const btVector3 velocity = mRigidBody->getLinearVelocity();
+			SetSpeed(Vector3f(velocity.x(), velocity.y(), 0.0f).Length());
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -935,6 +1006,7 @@ void AIAgent::Load(InStream& source)
 	source.ReadAggregate(mTarget);
 	source.Read(mTargetRadius);
 	source.ReadString(mTeam);
+	source.ReadBool(mIsEnableForwarding);
 
 	PX2_END_DEBUG_STREAM_LOAD(AIAgent, source);
 }
@@ -975,6 +1047,7 @@ void AIAgent::Save(OutStream& target) const
 	target.WriteAggregate(mTarget);
 	target.Write(mTargetRadius);
 	target.WriteString(mTeam);
+	target.WriteBool(mIsEnableForwarding);
 
 	PX2_END_DEBUG_STREAM_SAVE(AIAgent, target);
 }
@@ -993,6 +1066,7 @@ int AIAgent::GetStreamingSize(Stream &stream) const
 	size += sizeof(mTarget);
 	size += sizeof(mTargetRadius);
 	size += PX2_STRINGSIZE(mTeam);
+	size += PX2_BOOLSIZE(mIsEnableForwarding);
 
 	return size;
 }

@@ -207,7 +207,7 @@ namespace PX2
 		AVector mRight;
 		HMatrix mMatrix;
 
-		AVector mMoveDirection;
+		AVector mMapSlam2DMoveDirection;
 
 		bool mIsHasEverSettedDirection;
 		AVector mFirstMoveDirection;
@@ -235,16 +235,33 @@ namespace PX2
 
 		void GoTarget(const APoint &targetPos);
 
+		void AdjustToDirection(const AVector &dir);
+
 	private:
 		bool _IsInRightDirection(const AVector &dir);
 		void _UpdateAdjustDirection(const AVector &dir);
 		void _CheckPathUpdateing(float appSeconds, float elapsedSeconds);
 
+		bool mIsGoPathPlan;
 		PathingGraphPtr mPathGraph;
 		PathPlanPtr mCurPathPlan;
 		APoint mGoTargetPos;
 		APoint mGoingPos;
 		float mPathUpdateTiming;
+		bool mIsAdjustToDirection;
+		AVector mAdjustToDirection;
+
+	public:
+		void FakeGoForce(const AVector &force);
+
+		float GetSpeed() const;
+		AVector GetVelocity() const;
+
+	private:
+		AVector mFakeForce;
+		bool mIsUseFakeForce;
+		float mFakeSpeed;
+		AVector mFackVelocity;
 	};
 
 #include "PX2Robot.inl"

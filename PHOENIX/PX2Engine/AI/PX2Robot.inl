@@ -63,7 +63,7 @@ inline float Robot::GetSlam2DDegree() const
 //----------------------------------------------------------------------------
 inline const AVector &Robot::GetMoveDirection() const
 {
-	return mMoveDirection;
+	return mMapSlam2DMoveDirection;
 }
 //----------------------------------------------------------------------------
 inline float Robot::GetMoveDirectionDegree() const

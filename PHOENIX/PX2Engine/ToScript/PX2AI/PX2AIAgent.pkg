@@ -83,5 +83,4 @@
 
 		AVector GetUp() const;
 		AVector GetVelocity() const;
-
 	};

@@ -100,12 +100,17 @@ mPathUpdateTiming(0.0f)
 	tex->SetPivot(0.5f, 0.5f);
 	tex->SetAlphaSelfCtrled(true);
 
+	mIsGoPathPlan = false;
 	mPathGraph = new0 PathingGraph();
 
 	mIsInitSlamMap = false;
 	mIsMapDataChanged = true;
 
 	mArduino = new0 Arduino();
+
+	mFakeSpeed = 1.0f;
+	mIsAdjustToDirection = false;
+	mIsUseFakeForce = false;
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -564,7 +569,39 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		mLiDar->Update(appseconds, elpasedSeconds);
 	}
 
-	_CheckPathUpdateing(appseconds, elpasedSeconds);
+	if (mIsGoPathPlan)
+		_CheckPathUpdateing(appseconds, elpasedSeconds);
+
+	if (mIsAdjustToDirection)
+	{
+		if (!_IsInRightDirection(mAdjustToDirection))
+		{
+			_UpdateAdjustDirection(mAdjustToDirection);
+		}
+		else
+		{
+			mIsAdjustToDirection = false;
+			
+			if (mArduino && mArduino->IsInitlized())
+				mArduino->Run(Arduino::SDT_FORWARD, 75);
+		}
+	}
+
+	if (mIsUseFakeForce)
+	{
+		float mass = 90.7f;
+		AVector a = mFakeForce / mass;
+		mFackVelocity += a*elpasedSeconds;
+		float length = mFackVelocity.Normalize();
+		if (length > 5.0f)
+			length = 5.0f;
+		mFakeSpeed = length;
+		mFackVelocity = mFackVelocity * length;
+		mDirection = mFackVelocity;
+		mDirection.Normalize();
+
+		mPosition += mFackVelocity * elpasedSeconds;
+	}
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;
 	int resolution = mRobotMapData->MapStruct.MapResolution;
@@ -723,15 +760,8 @@ void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
 
 				AVector toDir = curPos - mPosition;
 				toDir.Normalize();
-				if (!_IsInRightDirection(toDir))
-				{
-					_UpdateAdjustDirection(toDir);
-				}
-				else
-				{
-					mArduino->Run(Arduino::SDT_FORWARD, 75);
-				}
 
+				AdjustToDirection(toDir);
 
 				mCurPathPlan->CheckForNextNode(mPosition);
 			}
@@ -739,6 +769,28 @@ void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
 
 		mPathUpdateTiming = 0.0f;
 	}
+}
+//----------------------------------------------------------------------------
+void Robot::FakeGoForce(const AVector &force)
+{
+	mFakeForce = force;
+	mIsUseFakeForce = true;
+}
+//----------------------------------------------------------------------------
+float Robot::GetSpeed() const
+{
+	return mFakeSpeed;
+}
+//----------------------------------------------------------------------------
+AVector Robot::GetVelocity() const
+{
+	return mFackVelocity;
+}
+//----------------------------------------------------------------------------
+void Robot::AdjustToDirection(const AVector &dir)
+{
+	mIsAdjustToDirection = true;
+	mAdjustToDirection = dir;
 }
 //----------------------------------------------------------------------------
 Float3 Robot::_FromString(const std::string &str)
@@ -1089,10 +1141,10 @@ void Robot::SetSlam2DPosition(const APoint &pos, float angle)
 	if (mPosition == pos && m2DSlameAngle == angle)
 		return;
 
-	mMoveDirection = pos - mPosition;
-	float moveDirectionSquare = mMoveDirection.SquaredLength();
+	mMapSlam2DMoveDirection = pos - mPosition;
+	float moveDirectionSquare = mMapSlam2DMoveDirection.SquaredLength();
 	if (moveDirectionSquare > 0.00000001f)
-		mMoveDirection.Normalize();
+		mMapSlam2DMoveDirection.Normalize();
 	mPosition = pos;
 	m2DSlameAngle = angle;
 
@@ -1107,18 +1159,18 @@ void Robot::SetSlam2DPosition(const APoint &pos, float angle)
 		PX2_LOG_INFO("Has Ever setted Direction");
 
 		mFirstMoveDirectionAxisY = axisObj.Y + mOffsetDegree;
-		mFirstMoveDirection = mMoveDirection;
+		mFirstMoveDirection = mMapSlam2DMoveDirection;
 
 		mIsHasEverSettedDirection = true;
 	}
 
 	if (mIsHasEverSettedDirection)
 	{
-		float dotVal = mFirstMoveDirection.Dot(mMoveDirection);
+		float dotVal = mFirstMoveDirection.Dot(mMapSlam2DMoveDirection);
 		float rad = Mathf::ACos(dotVal);
 		float degree = rad * Mathf::RAD_TO_DEG;
 
-		AVector cross = mFirstMoveDirection.Cross(mMoveDirection);
+		AVector cross = mFirstMoveDirection.Cross(mMapSlam2DMoveDirection);
 		if (cross.Z() > 0)
 		{
 		}
@@ -1252,6 +1304,7 @@ HMatrix &Robot::GetAxisRotMatrix()
 //----------------------------------------------------------------------------
 void Robot::GoTarget(const APoint &targetPos)
 {
+	mIsGoPathPlan = true;
 	mGoTargetPos = targetPos;
 	mPathUpdateTiming = 0.0f;
 
@@ -1299,7 +1352,6 @@ void Robot::_UpdateAdjustDirection(const AVector &dir)
 			if (right.Z() > 0.0f)
 			{
 				// move left
-
 				mArduino->Run(Arduino::SDT_LEFT, 25.0f);
 			}
 			else

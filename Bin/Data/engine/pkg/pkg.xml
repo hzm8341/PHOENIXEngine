@@ -9541,6 +9541,13 @@
 			<function name="GetRigidBody" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="const btRigidBody* " is_retrun="true" type_str="btRigidBody" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="true"/>
 			</function>
+			<function name="SetRobot" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Robot *robot" is_retrun="false" type_str="Robot" valuename_str="robot" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetRobot" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="Robot *" is_retrun="true" type_str="Robot" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
 		</class>
 		<class name="AIAgent" parentname="AIAgentBase" singletonname="">
 			<function name="AIAgent" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>

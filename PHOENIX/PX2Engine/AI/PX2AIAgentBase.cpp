@@ -6,6 +6,7 @@
 #include "PX2AIAgentUtilities.hpp"
 #include "PX2BtPhysicsUtilities.hpp"
 #include "PX2AIAgentWorld.hpp"
+#include "PX2Robot.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -50,7 +51,7 @@ void AIAgentBase::SetMass(float mass)
 	if (mRigidBody)
 	{
 		PhysicsUtilities::SetRigidBodyMass(
-			mRigidBody, std::max(0.0f, mass));
+			mRigidBody,  Mathf::Max(0.0f, mass));
 	}
 
 	mMass = mass;
@@ -91,28 +92,42 @@ HQuaternion AIAgentBase::GetOrientation() const
 //----------------------------------------------------------------------------
 void AIAgentBase::SetPosition(const APoint& position)
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		PhysicsUtilities::SetRigidBodyPosition(
-			mRigidBody, PhysicsUtilities::Vector3ToBtVector3(position));
-	}
 
-	if (mNode)
+	}
+	else
 	{
-		AIAgentUtilities::SetWorldTansform(mNode, position);
+		if (mRigidBody)
+		{
+			PhysicsUtilities::SetRigidBodyPosition(
+				mRigidBody, PhysicsUtilities::Vector3ToBtVector3(position));
+		}
+
+		if (mNode)
+		{
+			AIAgentUtilities::SetWorldTansform(mNode, position);
+		}
 	}
 }
 //----------------------------------------------------------------------------
 APoint AIAgentBase::GetPosition() const
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		return PhysicsUtilities::BtVector3ToVector3(
-			mRigidBody->getCenterOfMassPosition());
+		return mRobot->GetPosition();
 	}
-	else if (mNode)
+	else
 	{
-		return mNode->WorldTransform.GetTranslate();
+		if (mRigidBody)
+		{
+			return PhysicsUtilities::BtVector3ToVector3(
+				mRigidBody->getCenterOfMassPosition());
+		}
+		else if (mNode)
+		{
+			return mNode->WorldTransform.GetTranslate();
+		}
 	}
 
 	return APoint::ORIGIN;
@@ -198,7 +213,23 @@ void AIAgentBase::_InitUpdate(double applicationTime, double elapsedTime)
 //----------------------------------------------------------------------------
 void AIAgentBase::_Update(double applicationTime, double elapsedTime)
 {
-	AIAgentUtilities::UpdateWorldTransform(this);
+	if (mRobot)
+	{
+		APoint pos = mRobot->GetPosition();
+		AVector dir = mRobot->GetDirection();
+
+		AVector right = dir.Cross(AVector::UNIT_Z);
+		right.Normalize();
+		AVector up = AVector::UNIT_Z;
+		HMatrix mat = HMatrix(right, dir, up, pos, true);
+
+		Node* node = GetNode();
+		AIAgentUtilities::SetWorldTansform(node, pos, mat);
+	}
+	else
+	{
+		AIAgentUtilities::UpdateWorldTransform(this);
+	}
 }
 //----------------------------------------------------------------------------
 void AIAgentBase::SetRobot(Robot *robot)
