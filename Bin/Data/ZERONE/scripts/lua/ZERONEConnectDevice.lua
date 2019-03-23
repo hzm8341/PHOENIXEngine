@@ -78,7 +78,9 @@ function zo_ButDeviceFrameCallabck(ptr, callType)
             zo_RefreshDevices()
         elseif "BtnDlgRight"==name then
             local clientConnector = PX2_APP:GetEngineClientConnector()
-            if clientConnector:IsConnected() then
+            local isconnected = clientConnector:IsConnected()
+            PX2_LOGGER:LogInfo("ZERONE", "isconnected:"..isconnected)
+            if isconnected then
                 zo_DisconnectDevice()                
             else
                 zo_ConnectDevice()
