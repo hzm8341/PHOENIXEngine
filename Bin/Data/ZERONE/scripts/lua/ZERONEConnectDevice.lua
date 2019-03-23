@@ -1,7 +1,7 @@
 -- ZERONEConnectDevice.lua
 
 g_ZERONEList_Device = nil
-g_ZERONEText_DeviceConnect = nil
+g_ZERONE_DeviceConnect = nil
 function zo_DeviceFrame()
     local uiFrame = UIFrame:New()
 
@@ -54,9 +54,9 @@ function zo_DeviceFrame()
 	btnRight:SetStateColor(UIButtonBase.BS_PRESSED, Float3:MakeColor(190, 190, 190))
 	btnRight:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/ZERONE/images/btnblue.png")
 	btnRight:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetPicBoxType(UIPicBox.PBT_NINE)
-	local fText = btnRight:CreateAddText(""..PX2_LM_APP:GetValue("Connect"))
+    g_ZERONE_DeviceConnect = btnRight
+    local fText = btnRight:CreateAddText(""..PX2_LM_APP:GetValue("Connect"))
     zo_UISetTextFont(fText:GetText(), 32)
-    g_ZERONEText_DeviceConnect = fText
     btnRight:SetScriptHandler("zo_ButDeviceFrameCallabck")
 
     return uiFrame
@@ -77,7 +77,12 @@ function zo_ButDeviceFrameCallabck(ptr, callType)
         if "BtnDlgLeft"==name then
             zo_RefreshDevices()
         elseif "BtnDlgRight"==name then
-            zo_ConnectDevice()
+            local clientConnector = PX2_APP:GetEngineClientConnector()
+            if not clientConnector:IsConnected() then
+                zo_ConnectDevice()
+            else
+                zo_DisconnectDevice()
+            end
         end
 	end
 end
@@ -105,6 +110,14 @@ function zo_RefreshDevices()
     end
 end
 
+function zo_OnDeviceConnect(connector)
+    g_ZERONE_DeviceConnect:GetText():SetText(""..PX2_LM_APP:GetValue("DisConnect"))
+end
+
+function zo_OnDeviceDisconnect(connector)
+    g_ZERONE_DeviceConnect:GetText():SetText(""..PX2_LM_APP:GetValue("Connect"))
+end
+
 function zo_ConnectDevice()
     local item = g_ZERONEList_Device:GetSelectedItem()
 
@@ -113,6 +126,8 @@ function zo_ConnectDevice()
 
         local clientConnector = PX2_APP:GetEngineClientConnector()
         if nil~=clientConnector then
+            clientConnector:AddOnConnectCallback("zo_OnDeviceConnect")
+            clientConnector:AddOnDisconnectCallback("zo_OnDeviceDisconnect")
             clientConnector:ConnectB(ip, 9907)
             clientConnector:SetAutoConnect(true)
             clientConnector:SetAutoConnectIP(ip)
@@ -121,4 +136,8 @@ function zo_ConnectDevice()
             rc_Arduino:InitlizeSocketTCP_Connector(clientConnector)
         end
     end
+end
+
+function  zo_DisconnectDevice()
+    -- body
 end
