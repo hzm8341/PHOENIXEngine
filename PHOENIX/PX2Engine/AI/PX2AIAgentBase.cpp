@@ -90,6 +90,21 @@ HQuaternion AIAgentBase::GetOrientation() const
 		rotation.w(), rotation.x(), rotation.y(), rotation.z());
 }
 //----------------------------------------------------------------------------
+void AIAgentBase::SetRotate(const HMatrix& mat)
+{
+	HQuaternion orie(mat);
+	if (mRigidBody)
+	{
+		PhysicsUtilities::SetRigidBodyOrientation(
+			mRigidBody, PhysicsUtilities::QuaterionToBtQuaternion(orie));
+	}
+
+	if (mNode)
+	{
+		AIAgentUtilities::SetWorldTansform(mNode, mat);
+	}
+}
+//----------------------------------------------------------------------------
 void AIAgentBase::SetPosition(const APoint& position)
 {
 	if (mRobot)

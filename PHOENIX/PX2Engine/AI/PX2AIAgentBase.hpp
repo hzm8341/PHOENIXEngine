@@ -45,6 +45,9 @@ namespace PX2
 		// Set Physics also set position
 		virtual void SetOrientation(const HQuaternion& quaternion);
 		HQuaternion GetOrientation() const;
+
+		virtual void SetRotate(const HMatrix& mat);
+
 		virtual void SetPosition(const APoint& position);
 		APoint GetPosition() const;
 

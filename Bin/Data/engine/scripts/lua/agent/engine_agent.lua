@@ -22,12 +22,12 @@ function Agent_ApplyPhysicsSteeringForce(agent, steeringForce, deltaTimeInSecond
 
 	-- cal speed
 	-- 计算速度
-    local acceleration = steeringForce:Over(agent:GetMass())
-    local currentVelocity = agent:GetVelocity()
-    local newVelocity = currentVelocity:Add(acceleration:Dot(deltaTimeInSeconds))
-    newVelocity:SetZ(0)
+    -- local acceleration = steeringForce:Over(agent:GetMass())
+    -- local currentVelocity = agent:GetVelocity()
+    -- local newVelocity = currentVelocity:Add(acceleration:Dot(deltaTimeInSeconds))
+    -- newVelocity:SetZ(0)
     
-    agent:SetForwarding(newVelocity)
+    -- agent:SetForwarding(newVelocity)
 end
 
 -- make speed in a fixed range

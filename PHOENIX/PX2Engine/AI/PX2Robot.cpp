@@ -589,18 +589,16 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 	if (mIsUseFakeForce)
 	{
-		float mass = 90.7f;
-		AVector a = mFakeForce / mass;
-		mFackVelocity += a*elpasedSeconds;
-		float length = mFackVelocity.Normalize();
-		if (length > 5.0f)
-			length = 5.0f;
-		mFakeSpeed = length;
-		mFackVelocity = mFackVelocity * length;
-		mDirection = mFackVelocity;
-		mDirection.Normalize();
+		//float mass = 90.7f;
+		//AVector a = mFakeForce / mass;
+		//mFackVelocity += a*elpasedSeconds;
+		//float length = mFackVelocity.Normalize();
+		//if (length > 5.0f)
+		//	length = 5.0f;
+		//mFakeSpeed = length;
+		//mFackVelocity = mFackVelocity * length;
 
-		mPosition += mFackVelocity * elpasedSeconds;
+		//mPosition += mFackVelocity * elpasedSeconds;
 	}
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;

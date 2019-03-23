@@ -467,8 +467,7 @@ void AIAgent::SetForwarding(const AVector& forwarding)
 {
 	if (mRobot)
 	{
-		AVector dir = mRobot->GetDirection();
-		//SetForward(dir);
+		/*_*/
 	}
 	else
 	{
@@ -481,21 +480,6 @@ void AIAgent::SetForwarding(const AVector& forwarding)
 		{
 			SetForward(mForwarding);
 		}
-	}
-}
-//----------------------------------------------------------------------------
-void AIAgent::SetRotate(const HMatrix& mat)
-{
-	HQuaternion orie(mat);
-	if (mRigidBody)
-	{
-		PhysicsUtilities::SetRigidBodyOrientation(
-			mRigidBody, PhysicsUtilities::QuaterionToBtQuaternion(orie));
-	}
-
-	if (mNode)
-	{
-		AIAgentUtilities::SetWorldTansform(mNode, mat);
 	}
 }
 //----------------------------------------------------------------------------
