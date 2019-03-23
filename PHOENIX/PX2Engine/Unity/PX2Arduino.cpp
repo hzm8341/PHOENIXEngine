@@ -622,7 +622,8 @@ bool Arduino::InitlizeSocketTCP_Connector(ClientConnector *clientConnector)
 
 	mMode = M_SOCKETTCP_Connector;
 
-	if (mConnector)
+	int state = mConnector->GetConnectState();
+	if (mConnector && (state == CONNSTATE_CONNECTED))
 	{
 		mConnector->Disconnect();
 		mConnector = 0;
