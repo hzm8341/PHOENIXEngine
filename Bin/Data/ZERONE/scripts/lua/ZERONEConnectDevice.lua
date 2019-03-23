@@ -129,7 +129,7 @@ function zo_ConnectDevice()
             clientConnector:AddOnConnectCallback("zo_OnDeviceConnect")
             clientConnector:AddOnDisconnectCallback("zo_OnDeviceDisconnect")
             clientConnector:ConnectB(ip, 9907)
-            clientConnector:SetAutoConnect(true)
+            clientConnector:SetAutoConnect(false)
             clientConnector:SetAutoConnectIP(ip)
             clientConnector:SetAutoConnectPort(9907)
 
@@ -139,5 +139,8 @@ function zo_ConnectDevice()
 end
 
 function  zo_DisconnectDevice()
-    -- body
+    local clientConnector = PX2_APP:GetEngineClientConnector()
+    if nil~=clientConnector then
+        clientConnector:Disconnect()
+    end
 end
