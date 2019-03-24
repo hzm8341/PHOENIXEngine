@@ -339,8 +339,11 @@ OpenSteer::Vec3
 OpenSteer::SteerLibraryMixin<Super>::
 steerForSeek (const Vec3& target)
 {
-    const Vec3 desiredVelocity = target - position();
-    return desiredVelocity - velocity();
+	Vec3 pos = position();
+	Vec3 vec = velocity();
+    const Vec3 desiredVelocity = target - pos;
+    Vec3 vecD = desiredVelocity - vec;
+	return vecD;
 }
 
 

@@ -107,11 +107,11 @@ void AIAgentBase::SetRotate(const HMatrix& mat)
 //----------------------------------------------------------------------------
 void AIAgentBase::SetPosition(const APoint& position)
 {
-	if (mRobot)
-	{
+	//if (mRobot)
+	//{
 
-	}
-	else
+	//}
+	//else
 	{
 		if (mRigidBody)
 		{

@@ -262,6 +262,7 @@ namespace PX2
 		bool mIsUseFakeForce;
 		float mFakeSpeed;
 		AVector mFackVelocity;
+		float mFakeFoceTimer;
 	};
 
 #include "PX2Robot.inl"

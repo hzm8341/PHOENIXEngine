@@ -557,10 +557,7 @@ AVector AIAgent::GetRight() const
 {
 	if (mRobot)
 	{
-		AVector dir = mRobot->GetVelocity();
-		AVector right = dir.Cross(AVector::UNIT_Z);
-		right.Normalize();
-		return right;
+		return mRobot->GetRight();
 	}
 	else
 	{
@@ -622,7 +619,7 @@ AVector AIAgent::GetForward() const
 {
 	if (mRobot)
 	{
-		AVector dir = mRobot->GetVelocity();
+		AVector dir = mRobot->GetDirection();
 		dir.Normalize();
 		return dir;
 	}
@@ -678,7 +675,7 @@ float AIAgent::GetSpeed() const
 {
 	if (mRobot)
 	{
-		return mRobot->GetSpeed();
+		return mSpeed;
 	}
 	else
 	{
@@ -728,7 +725,9 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 
 	if (mRobot)
 	{
-
+		AVector vec = mRobot->GetVelocity();
+		float length = vec.Length();
+		SetSpeed(length);
 	}
 	else
 	{

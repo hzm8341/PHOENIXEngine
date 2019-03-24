@@ -142,6 +142,8 @@ btConvexHullShape* PhysicsUtilities::CreateSimplifiedConvexHull(
 	btConvexHullShape* const shape = new btConvexHullShape();
 	shape->setMargin(0.01f);
 	shape->setSafeMargin(0.01f);
+	float scale = mesh->WorldTransform.GetUniformScale();
+	shape->setLocalScaling(btVector3(scale, scale, scale));
 
 	VertexBufferAccessor vba(mesh);
 	for (int i = 0; i < mesh->GetNumTriangles(); i++)

@@ -108,6 +108,7 @@ mPathUpdateTiming(0.0f)
 
 	mArduino = new0 Arduino();
 
+	mFakeFoceTimer = 0.0f;
 	mFakeSpeed = 1.0f;
 	mIsAdjustToDirection = false;
 	mIsUseFakeForce = false;
@@ -589,16 +590,42 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 	if (mIsUseFakeForce)
 	{
-		//float mass = 90.7f;
-		//AVector a = mFakeForce / mass;
-		//mFackVelocity += a*elpasedSeconds;
-		//float length = mFackVelocity.Normalize();
-		//if (length > 5.0f)
-		//	length = 5.0f;
-		//mFakeSpeed = length;
-		//mFackVelocity = mFackVelocity * length;
+		mFakeFoceTimer += elpasedSeconds;
+		if (mFakeFoceTimer > 0.15f)
+		{
+			AVector force = mFakeForce;
+			float forceLength = force.Normalize();
 
-		//mPosition += mFackVelocity * elpasedSeconds;
+			PX2_LOG_INFO("force:%.2f,%.2f,%.2f", force.X(), force.Y(), force.Z());
+
+			if (forceLength > 1.0f)
+			{
+				float dotVal = mDirection.Dot(force);
+
+				AVector crossVal = force.Cross(mDirection);
+				float forceVal = forceLength * 0.5f;
+				mFackVelocity = mDirection * 0.2f;
+
+				if (crossVal.Z() > 0.0f)
+				{
+					// right
+					mArduino->Run(0, Arduino::DT_FORWARD, forceVal);
+					mArduino->Run(1, Arduino::DT_FORWARD, forceVal * dotVal * dotVal);
+				}
+				else
+				{
+					// left
+					mArduino->Run(0, Arduino::DT_FORWARD, forceVal * dotVal * dotVal);
+					mArduino->Run(1, Arduino::DT_FORWARD, forceVal);
+				}
+			}
+			else
+			{
+				mArduino->Stop();
+			}
+
+			mFakeFoceTimer = 0.0f;
+		}
 	}
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;
@@ -1186,6 +1213,7 @@ void Robot::SetSlam2DPosition(const APoint &pos, float angle)
 	AVector dir = AVector(xDir, yDir, 0.0f);
 	dir.Normalize();
 	mDirection = dir;
+	mDirection.Normalize();
 	mRight = mDirection.Cross(AVector::UNIT_Z);
 	mUp = AVector::UNIT_Z;
 

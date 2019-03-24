@@ -54,7 +54,7 @@ void Actor::SetPhysicsShapeType(Actor::PhysicsShapeType type,
 	Movable *meshMov)
 {
 	mPhysicsShapeType = type;
-	mPhysicsMovable = meshMov;;
+	mPhysicsMovable = meshMov;
 }
 //----------------------------------------------------------------------------
 void Actor::_CreatePhysics()
@@ -74,6 +74,8 @@ void Actor::_CreatePhysics()
 	}
 	else if (mPhysicsShapeType == PST_MESH)
 	{
+		UpdateWorldData(0.0f, 0.0f);
+
 		AIAgentObject *agentObject = DynamicCast<AIAgentObject>(mAgentBase);
 		if (agentObject)
 			agentObject->InitializeMesh(mPhysicsMovable);

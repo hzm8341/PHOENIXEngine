@@ -90,7 +90,8 @@ void AIAgentUtilities::CreateRigidBodyInfinitePlane(AIAgentObject *agentObject,
 	rigidBody->setUserPointer(agentObject);
 	agentObject->SetRigidBody(rigidBody);
 
-	rigidBody->activate(agentObject->IsEnable());
+	bool isEnable = agentObject->IsEnable();
+	rigidBody->activate(isEnable);
 
 	AIAgentWorld *aiAgentWorld = agentObject->GetAIAgentWorld();
 	if (aiAgentWorld && aiAgentWorld->GetPhysicsWorld())
@@ -129,6 +130,7 @@ void AIAgentUtilities::SetWorldTansform(Movable *movable, const APoint &pos)
 		HMatrix inverTrans = parent->WorldTransform.Inverse();
 		APoint posLocal = inverTrans * pos;
 		movable->LocalTransform.SetTranslate(posLocal);
+		movable->Update();
 	}
 	else
 	{
