@@ -140,6 +140,10 @@ function zo_ConnectBleSerial()
         end
     end)
 
+    RegistEventFunction("EngineNetES::OnEngineServerBeConnected", function(clientID, ip)
+        zo_OnStartUp(ZERONE_IsRobotMotoUseSpeed)
+    end)
+
     RegistEventFunction("SerialES::Open", function(tag)
         if 1==ZERONE_CurSerialOptType then
             if nil~=ZERONE_BleConnect then
