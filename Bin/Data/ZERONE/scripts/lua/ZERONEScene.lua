@@ -77,7 +77,7 @@ function zo_Scene()
         scriptCtrl:ResetPlay()
 
         local robot = PX2_ROBOT
-        followerActorAgent:SetRobot(robot)
+        --followerActorAgent:SetRobot(robot)
     end
 
     -- follower
