@@ -68,10 +68,10 @@ namespace PX2
 		void SetAgentWorld(AIAgentWorld *agentWorld);
 		void SetRigidBody(btRigidBody* rigidBody);
 
+		void _RefreshRigidValue();
 	protected:
 		virtual void _InitUpdate(double applicationTime, double elapsedTime);
 		virtual void _Update(double applicationTime, double elapsedTime);
-		void _RefreshRigidValue();
 
 		AgentType mAgentType;
 

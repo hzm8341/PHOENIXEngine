@@ -1,6 +1,8 @@
 // PX2BtPhysicsDebugDraw.cpp
 
 #include "PX2BtPhysicsDebugDraw.hpp"
+#include "PX2BtPhysicsUtilities.hpp"
+#include "PX2EngineCanvas.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -24,6 +26,10 @@ void PhysicsDebugDraw::draw3dText(
 void PhysicsDebugDraw::drawLine(
 	const btVector3& from, const btVector3& to, const btVector3& color)
 {
+	APoint fromP = PhysicsUtilities::BtVector3ToVector3(from);
+	APoint toP = PhysicsUtilities::BtVector3ToVector3(to);
+	EngineSceneCanvas::GetSingleton().AddDebugLine(fromP, toP, Float4::RED);
+
 	//DebugDrawer::getSingleton().drawLine(
 	//	Ogre::Vector3(from.m_floats[0], from.m_floats[1], from.m_floats[2]),
 	//	Ogre::Vector3(to.m_floats[0], to.m_floats[1], to.m_floats[2]),

@@ -51,8 +51,8 @@ void PhysicsWorld::Initialize()
 
 	mDebugDraw = new PhysicsDebugDraw();
 	mDynamicsWorld->setDebugDrawer(mDebugDraw);
-	mDebugDraw->setDebugMode(btIDebugDraw::DBG_DrawWireframe |
-		btIDebugDraw::DBG_DrawAabb);
+	// btIDebugDraw::DBG_DrawAabb
+	mDebugDraw->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 }
 //----------------------------------------------------------------------------
 void PhysicsWorld::AddRigidBody(btRigidBody* rigidBody)

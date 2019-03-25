@@ -7,6 +7,7 @@
 #include "PX2Project.hpp"
 #include "PX2GraphicsRoot.hpp"
 #include "PX2ScriptManager.hpp"
+#include "PX2VertexColor4Material.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Canvas, EngineSceneCanvas);
@@ -67,6 +68,8 @@ void EngineSceneCanvas::OnSizeChanged()
 void EngineSceneCanvas::UpdateWorldData(double applicationTime,
 	double elapsedTime)
 {
+	ClearDebugLine();
+
 	Project *proj = Project::GetSingletonPtr();
 	if (proj)
 	{
@@ -339,12 +342,17 @@ void EngineSceneCanvas::_UpdateBloomParams()
 //----------------------------------------------------------------------------
 void EngineSceneCanvas::Draw(Renderer *renderer)
 {
+	CameraPtr senseMainCamera;
+
 	Project *proj = Project::GetSingletonPtr();
 	if (proj)
 	{
 		Scene *scene = proj->GetScene();
 		if (scene)
+		{
 			PX2_GR.SetCurEnvirParamController(scene->GetEnvirParamController());
+			senseMainCamera = scene->GetMainCameraNode()->GetCamera();
+		}
 	}
 
 	Canvas::Draw(renderer);
@@ -512,6 +520,10 @@ void EngineSceneCanvas::_Draw(Camera *camera, Renderer *renderer,
 		{
 			_DoClear(renderer, camera);
 			renderer->Draw(visibleSet);
+
+			int numSeg = mDebugPoly->GetNumSegments();
+			if (numSeg > 0)
+				renderer->Draw(mDebugPoly);
 
 			// cameradrawcallback
 			CameraDrawCallback callback = camera->GetCameraDrawCallback();

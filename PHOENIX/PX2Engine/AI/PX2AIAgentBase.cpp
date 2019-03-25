@@ -77,7 +77,7 @@ void AIAgentBase::SetOrientation(const HQuaternion& quaternion)
 
 	if (mRigidBody)
 	{
-		AIAgentUtilities::UpdateWorldTransform(this);
+		AIAgentUtilities::UpdateWorldTransTo(this);
 	}
 }
 //----------------------------------------------------------------------------
@@ -243,7 +243,7 @@ void AIAgentBase::_Update(double applicationTime, double elapsedTime)
 	}
 	else
 	{
-		AIAgentUtilities::UpdateWorldTransform(this);
+		AIAgentUtilities::UpdateWorldTransTo(this);
 	}
 }
 //----------------------------------------------------------------------------

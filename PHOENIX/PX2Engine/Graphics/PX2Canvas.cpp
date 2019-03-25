@@ -1430,7 +1430,7 @@ void Canvas::PostLink()
 {
 	SizeNode::PostLink();
 
-	VertexFormat *vfPoly = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
+	VertexFormat *vfPoly = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
 	mDebugPolyVB = new0 VertexBuffer(1000, vfPoly->GetStride(), Buffer::BU_DYNAMIC);
 	mDebugPoly = new0 Polysegment(vfPoly, mDebugPolyVB, false);
 	mDebugPoly->SetNumSegments(0);

@@ -28,6 +28,7 @@ namespace PX2
 		static void CreateRigidBodyInfinitePlane(AIAgentObject *agentObject,
 			const AVector &normal, float originOffset);
 
+		static void UpdateWorldTransTo(AIAgentBase* agentBase);
 		static void UpdateWorldTransform(AIAgentBase* agentBase);
 
 		static void SetWorldTansform(Movable *movable, const APoint &pos);

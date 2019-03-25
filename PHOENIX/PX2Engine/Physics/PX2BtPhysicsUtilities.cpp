@@ -49,10 +49,14 @@ btRigidBody* PhysicsUtilities::CreateCapsule(
 {
 	// Since the height of
 	btCapsuleShape* const capsuleShape = new btCapsuleShape(
-		radius, height - radius * 2);
+		radius, height);
+
+	//btTransform btTrans;
+	//btQuaternion btQuatRot;
+	//btQuatRot.setEuler(Mathf::HALF_PI, 0.0f, 0.0f);
+	//btTrans.setRotation(btQuatRot);
 
 	btDefaultMotionState* const capsuleMotionState = new btDefaultMotionState();
-
 	btVector3 localInertia(0, 0, 0);
 	capsuleShape->calculateLocalInertia(1.0f, localInertia);
 

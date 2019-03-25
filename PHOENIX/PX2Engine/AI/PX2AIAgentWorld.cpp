@@ -18,6 +18,8 @@ mPhysicsWorld(0)
 {
 	mPhysicsWorld = new0 PhysicsWorld();
 	mPhysicsWorld->Initialize();
+
+	mIsDrawPhysicsWorld = true;
 }
 //----------------------------------------------------------------------------
 AIAgentWorld::~AIAgentWorld()

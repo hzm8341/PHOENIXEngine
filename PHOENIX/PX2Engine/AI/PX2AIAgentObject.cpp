@@ -57,7 +57,7 @@ void AIAgentObject::SetOrientation(const HQuaternion& quaternion)
 		btQuaternion(quaternion.X(), quaternion.Y(), quaternion.Z(), 
 		quaternion.W()));
 
-	AIAgentUtilities::UpdateWorldTransform(this);
+	AIAgentUtilities::UpdateWorldTransTo(this);
 }
 //----------------------------------------------------------------------------
 HQuaternion AIAgentObject::GetOrientation() const

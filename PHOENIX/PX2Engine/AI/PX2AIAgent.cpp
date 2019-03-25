@@ -726,8 +726,7 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 	if (mRobot)
 	{
 		AVector vec = mRobot->GetVelocity();
-		float length = vec.Length();
-		SetSpeed(length);
+		SetVelocity(vec);
 	}
 	else
 	{

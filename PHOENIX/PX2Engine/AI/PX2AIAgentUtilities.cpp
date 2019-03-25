@@ -32,7 +32,6 @@ void AIAgentUtilities::CreateRigidBodyCapsule(AIAgent* agent)
 
 	rigidBody->setAngularFactor(btVector3(0, 0.0f, 0));
 	agent->SetRigidBody(rigidBody);
-
 	rigidBody->activate(agent->IsEnable());
 
 	AIAgentWorld *aiAgentWorld = agent->GetAIAgentWorld();
@@ -99,8 +98,7 @@ void AIAgentUtilities::CreateRigidBodyInfinitePlane(AIAgentObject *agentObject,
 		aiAgentWorld->GetPhysicsWorld()->AddRigidBody(rigidBody);
 	}
 }
-//----------------------------------------------------------------------------
-void AIAgentUtilities::UpdateWorldTransform(AIAgentBase* agentBase)
+void AIAgentUtilities::UpdateWorldTransTo(AIAgentBase* agentBase)
 {
 	btRigidBody* rigidBody = agentBase->GetRigidBody();
 	if (rigidBody)
@@ -120,6 +118,10 @@ void AIAgentUtilities::UpdateWorldTransform(AIAgentBase* agentBase)
 
 		SetWorldTansform(node, pos, rotMat);
 	}
+}
+//----------------------------------------------------------------------------
+void AIAgentUtilities::UpdateWorldTransform(AIAgentBase* agentBase)
+{
 }
 //----------------------------------------------------------------------------
 void AIAgentUtilities::SetWorldTansform(Movable *movable, const APoint &pos)
