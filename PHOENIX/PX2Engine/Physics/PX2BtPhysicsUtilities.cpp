@@ -48,27 +48,30 @@ btRigidBody* PhysicsUtilities::CreateCapsule(
 	const btScalar height, btScalar radius)
 {
 	// Since the height of
-	btCapsuleShape* const capsuleShape = new btCapsuleShape(
+	btCollisionShape* const capsuleShape = new btCapsuleShape(
 		radius, height);
 
-	//btTransform btTrans;
+	btTransform trans;                  
+	trans.setIdentity();
+	trans.setOrigin(btVector3(0, 10, 0)); 
+
+	//btTransform btTrans(btTransform::getIdentity());
 	//btQuaternion btQuatRot;
-	//btQuatRot.setEuler(Mathf::HALF_PI, 0.0f, 0.0f);
+	//btQuatRot.setEuler(0.0f, Mathf::HALF_PI, 0.0f);
 	//btTrans.setRotation(btQuatRot);
 
-	btDefaultMotionState* const capsuleMotionState = new btDefaultMotionState();
 	btVector3 localInertia(0, 0, 0);
 	capsuleShape->calculateLocalInertia(1.0f, localInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo
-		capsuleRigidBodyCI(
+	btDefaultMotionState* const capsuleMotionState =
+		new btDefaultMotionState(trans);
+	btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(
 		1.0f, capsuleMotionState, capsuleShape, localInertia);
 
 	// Prevent rolling forever.
 	capsuleRigidBodyCI.m_rollingFriction = 0.2f;
 
 	btRigidBody* const rigidBody = new btRigidBody(capsuleRigidBodyCI);
-
 	rigidBody->setCcdMotionThreshold(0.5f);
 	rigidBody->setCcdSweptSphereRadius(radius);
 

@@ -28,7 +28,8 @@ void AIAgentUtilities::CreateRigidBodyCapsule(AIAgent* agent)
 	assert(!agent->GetRigidBody());
 
 	btRigidBody* rigidBody =
-		PhysicsUtilities::CreateCapsule(agent->GetHeight(), agent->GetRadius());
+		PhysicsUtilities::CreateCapsule(agent->GetHeight(),
+			agent->GetRadius());
 
 	rigidBody->setAngularFactor(btVector3(0, 0.0f, 0));
 	agent->SetRigidBody(rigidBody);

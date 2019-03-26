@@ -34,7 +34,8 @@ mIsBloomConfigChanged(true)
 	SetPickPosRecal(true);
 	SetName("EngineSceneCanvas");
 
-	PX2_SC_LUA->SetUserTypePointer("PX2_ENGINESCENECANVAS", "EngineSceneCanvas", this);
+	PX2_SC_LUA->SetUserTypePointer("PX2_ENGINESCENECANVAS", 
+		"EngineSceneCanvas", this);
 
 	ComeInEventWorld();
 }
@@ -76,7 +77,8 @@ void EngineSceneCanvas::UpdateWorldData(double applicationTime,
 		Scene *scene = proj->GetScene();
 		if (scene)
 		{
-			PX2_GR.SetCurEnvirParamController(scene->GetEnvirParamController());
+			PX2_GR.SetCurEnvirParamController(
+				scene->GetEnvirParamController());
 			CameraNode *mainCameraNode = scene->GetMainCameraNode();
 			PX2_GR.SetCurUpdateCamera(mainCameraNode->GetCamera());
 		}
@@ -523,7 +525,10 @@ void EngineSceneCanvas::_Draw(Camera *camera, Renderer *renderer,
 
 			int numSeg = mDebugPoly->GetNumSegments();
 			if (numSeg > 0)
+			{
+				renderer->UpdateAll(mDebugPolyVB);
 				renderer->Draw(mDebugPoly);
+			}
 
 			// cameradrawcallback
 			CameraDrawCallback callback = camera->GetCameraDrawCallback();

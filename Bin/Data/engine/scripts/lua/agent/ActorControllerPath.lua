@@ -9,7 +9,11 @@ ActorControllerPath = class(ActorController,
 function ActorControllerPath:OnAttached()
 	ActorController.OnAttached(self)
 
-	self._agent:SetRadius(0.8)
+	self._agent:SetMaxForce(200.0)
+	self._agent:SetMass(10.0)
+	self._agent:SetRadius(0.1)
+	self._agent:SetHeight(1.0)
+	self._agent:SetMaxSpeed(0.2)
     self._agent:ResetPlay()
 end
 
@@ -17,10 +21,9 @@ function ActorControllerPath:OnInitUpdate()
 	if 1 == self._direction then
 		local agentPath = AIAgentPath()
 		agentPath:AddPoint(APoint(0.0, 0.0, 0.0))
-		agentPath:AddPoint(APoint(30.0, 0.0, 0.0))
-		agentPath:AddPoint(APoint(30.0, 30.0, 0.0))
-		agentPath:AddPoint(APoint(0.0, 30.0, 0.0))
-		agentPath:ConfigPoints(0.5, true)
+		agentPath:AddPoint(APoint(0.0, 4.7, 0.0))
+		agentPath:AddPoint(APoint(1.0, 4.7, 0.0))
+		agentPath:ConfigPoints(0.01, false)
 		self._agent:SetPath(agentPath)
 	elseif 2 == self._direction then
 		local agentPath = AIAgentPath()
@@ -28,7 +31,7 @@ function ActorControllerPath:OnInitUpdate()
 		agentPath:AddPoint(APoint(30.0, 30.0, 0.0))
 		agentPath:AddPoint(APoint(30.0, 0.0, 0.0))
 		agentPath:AddPoint(APoint(0.0, 0.0, 0.0))
-		agentPath:ConfigPoints(0.5, true)
+		agentPath:ConfigPoints(0.2, true)
 		self._agent:SetPath(agentPath)
 	end
 end
@@ -55,7 +58,7 @@ function ActorControllerPath:OnPUpdate()
 	-- avoid
 	local avoidAgentForce = self._agent:ForceToAvoidAgents(3.5)
     local avoidObjectForce = self._agent:ForceToAvoidObjects(3.5)
-	local avoidanceMultiplier = 3
+	local avoidanceMultiplier = 8
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	

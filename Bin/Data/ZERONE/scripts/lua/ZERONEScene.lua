@@ -43,19 +43,25 @@ function zo_Scene()
     cameraPlayCtrl:SetTouchSizeNode(frameTouch)
     
     -- actor control
-    local followerActorAgent = nil
+    -- local followerActorAgent = nil
+    -- local actorBox = PX2_CREATER:CreateActorBox()
+    -- scene:AttachChild(actorBox)
+    -- actorBox.LocalTransform:SetTranslateY(2.0)
+    --actorBox.LocalTransform:SetUniformScale(0.6)
+
     -- seek
-    -- for i=1,1,1 do
-    --     local actor = PX2_CREATER:CreateActor()
-    --     scene:AttachChild(actor)
-    --     local movBox = PX2_CREATER:CreateMovable_Box()
-    --     actor:AttachChild(movBox)
-        
-	-- 	local script = ActorControllerSeek:New()
-    --     local scriptCtrl = Cast:ToSC(script.__object)
-    --     actor:AttachController(scriptCtrl)
-    --     scriptCtrl:ResetPlay()
-    -- end
+    for i=1,1,1 do
+         local actor = PX2_CREATER:CreateActor()
+         scene:AttachChild(actor)
+         local movBox = PX2_CREATER:CreateMovable_Box()
+         actor:AttachChild(movBox)
+         movBox.LocalTransform:SetUniformScale(0.2)
+    
+         local script = ActorControllerSeek:New()
+         local scriptCtrl = Cast:ToSC(script.__object)
+         actor:AttachController(scriptCtrl)
+         scriptCtrl:ResetPlay()
+     end
 
     -- path
     for i=1,1,1 do
@@ -63,6 +69,7 @@ function zo_Scene()
         scene:AttachChild(actor)
         local movBox = PX2_CREATER:CreateMovable_Box()
         actor:AttachChild(movBox)
+        movBox.LocalTransform:SetUniformScale(0.2)
         local script = ActorControllerPath:New()
         if 1==i then
             followerActorAgent = actor:GetAIAgent()
@@ -81,25 +88,25 @@ function zo_Scene()
     end
 
     -- follower
-    -- if nil~=followerActorAgent then
-    --     for i=1,4,1 do
-    --         local actor = PX2_CREATER:CreateActor()
-    --         scene:AttachChild(actor)
-    --         local movBox = PX2_CREATER:CreateMovable_Box()
-    --         actor:AttachChild(movBox)
-    --         local script = ActorControllerFollower:New()
-    --         script._leader = followerActorAgent
+    --  if nil~=followerActorAgent then
+    --      for i=1,4,1 do
+    --          local actor = PX2_CREATER:CreateActor()
+    --          scene:AttachChild(actor)
+    --          local movBox = PX2_CREATER:CreateMovable_Box()
+    --          actor:AttachChild(movBox)
+    --          local script = ActorControllerFollower:New()
+    --          script._leader = followerActorAgent
 
-    --         local scriptCtrl = Cast:ToSC(script.__object)
-    --         actor:AttachController(scriptCtrl)
+    --          local scriptCtrl = Cast:ToSC(script.__object)
+    --          actor:AttachController(scriptCtrl)
     --         scriptCtrl:ResetPlay()
-    --     end     
-    -- end
+    --      end     
+    --  end
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane()
+    actorRect.LocalTransform:SetTranslateZ(-1.0)
     scene:AttachChild(actorRect)
-    actorRect.LocalTransform:SetTranslateZ(-0.2)
 
     --[[
     -- voxel

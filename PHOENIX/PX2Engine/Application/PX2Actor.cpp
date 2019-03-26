@@ -111,6 +111,8 @@ void Actor::OnBeAttached()
 {
 	Node::OnBeAttached();
 
+	UpdateWorldData(0.0f, 0.0f);
+
 	_CreatePhysics();
 
 	Scene *scene = GetFirstParentDerivedFromType<Scene>();
