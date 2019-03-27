@@ -105,7 +105,7 @@ function zo_Scene()
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane()
-    actorRect.LocalTransform:SetTranslateZ(-1.0)
+    actorRect.LocalTransform:SetTranslateZ(-2.0)
     scene:AttachChild(actorRect)
 
     --[[

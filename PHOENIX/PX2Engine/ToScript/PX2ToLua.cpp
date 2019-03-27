@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 03/22/19 16:52:52.
+** Generated automatically by tolua++-1.0.92 on 03/27/19 20:24:03.
 */
 
 #ifndef __cplusplus
@@ -90200,6 +90200,71 @@ static int tolua_PX2_AIAgent_GetHealth00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetPhysicsRadius of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetPhysicsRadius00
+static int tolua_PX2_AIAgent_SetPhysicsRadius00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgent",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgent* self = (AIAgent*)  tolua_tousertype(tolua_S,1,0);
+  float radius = ((float)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetPhysicsRadius'", NULL);
+#endif
+  {
+   self->SetPhysicsRadius(radius);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetPhysicsRadius'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetPhysicsRadius of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_GetPhysicsRadius00
+static int tolua_PX2_AIAgent_GetPhysicsRadius00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const AIAgent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const AIAgent* self = (const AIAgent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetPhysicsRadius'", NULL);
+#endif
+  {
+   float tolua_ret = (float)  self->GetPhysicsRadius();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetPhysicsRadius'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: SetRadius of class  AIAgent */
 #ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetRadius00
 static int tolua_PX2_AIAgent_SetRadius00(lua_State* tolua_S)
@@ -108458,6 +108523,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetForward",tolua_PX2_AIAgent_GetForward00);
    tolua_function(tolua_S,"SetHealth",tolua_PX2_AIAgent_SetHealth00);
    tolua_function(tolua_S,"GetHealth",tolua_PX2_AIAgent_GetHealth00);
+   tolua_function(tolua_S,"SetPhysicsRadius",tolua_PX2_AIAgent_SetPhysicsRadius00);
+   tolua_function(tolua_S,"GetPhysicsRadius",tolua_PX2_AIAgent_GetPhysicsRadius00);
    tolua_function(tolua_S,"SetRadius",tolua_PX2_AIAgent_SetRadius00);
    tolua_function(tolua_S,"GetRadius",tolua_PX2_AIAgent_GetRadius00);
    tolua_function(tolua_S,"GetHeight",tolua_PX2_AIAgent_GetHeight00);

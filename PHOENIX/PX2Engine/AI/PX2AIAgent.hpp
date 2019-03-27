@@ -112,6 +112,9 @@ namespace PX2
 		void SetHealth(float health);
 		float GetHealth() const;
 
+		void SetPhysicsRadius(float radius);
+		float GetPhysicsRadius() const;
+
 		void SetRadius(float radius);
 		virtual float GetRadius() const;
 
@@ -182,6 +185,7 @@ namespace PX2
 
 		float mHealth;
 		float mHeight;
+		float mPhysicsRaduis;
 		float mRadius;
 		float mMaxForce;
 		float mMaxSpeed;

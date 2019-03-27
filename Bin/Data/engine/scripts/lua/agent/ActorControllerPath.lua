@@ -11,8 +11,9 @@ function ActorControllerPath:OnAttached()
 
 	self._agent:SetMaxForce(200.0)
 	self._agent:SetMass(10.0)
-	self._agent:SetRadius(0.1)
-	self._agent:SetHeight(1.0)
+	self._agent:SetRadius(0.15)
+	self._agent:SetPhysicsRadius(0.1)
+	self._agent:SetHeight(0.5)
 	self._agent:SetMaxSpeed(0.2)
     self._agent:ResetPlay()
 end
@@ -45,7 +46,7 @@ function ActorControllerPath:OnPUpdate()
 	local radius = self._agent:GetRadius()
     
 	-- follow path
-	local followForce = self._agent:ForceToFollowPath(1.25)
+	local followForce = self._agent:ForceToFollowPath(7.25)
 	followForce:Normalize()
 	local stayForce = self._agent:ForceToStayOnPath(0.5)
 	stayForce:Normalize()

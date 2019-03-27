@@ -41,7 +41,7 @@ function ActorController:OnPUpdate()
 	-- target
 	local destination = self._agent:GetTarget()
 	local seekForce = self._agent:ForceToPosition(destination)
-    local targetRadius = self._agent:GetTargetRadius()
+	local targetRadius = self._agent:GetTargetRadius()
 	
 	-- avoid
 	local avoidAgentForce = self._agent:ForceToAvoidAgents(1.5)

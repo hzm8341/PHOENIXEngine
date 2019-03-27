@@ -29,7 +29,7 @@ void AIAgentUtilities::CreateRigidBodyCapsule(AIAgent* agent)
 
 	btRigidBody* rigidBody =
 		PhysicsUtilities::CreateCapsule(agent->GetHeight(),
-			agent->GetRadius());
+			agent->GetPhysicsRadius());
 
 	rigidBody->setAngularFactor(btVector3(0, 0.0f, 0));
 	agent->SetRigidBody(rigidBody);
@@ -99,6 +99,7 @@ void AIAgentUtilities::CreateRigidBodyInfinitePlane(AIAgentObject *agentObject,
 		aiAgentWorld->GetPhysicsWorld()->AddRigidBody(rigidBody);
 	}
 }
+//----------------------------------------------------------------------------
 void AIAgentUtilities::UpdateWorldTransTo(AIAgentBase* agentBase)
 {
 	btRigidBody* rigidBody = agentBase->GetRigidBody();
@@ -159,20 +160,23 @@ void AIAgentUtilities::SetWorldTansform(Movable *movable, const HMatrix &rot)
 void AIAgentUtilities::SetWorldTansform(Movable *movable, const APoint &pos,
 	const HMatrix &rot)
 {
-	Movable *parent = movable->GetParent();
-	if (parent)
-	{
-		HMatrix inverTrans = parent->WorldTransform.Inverse();
-		HMatrix inversRot = parent->WorldTransform.GetRotate().Inverse();
-		APoint posLocal = inverTrans * pos;
-		HMatrix rotLocal = inversRot * rot;
-		movable->LocalTransform.SetTranslate(posLocal);
-		movable->LocalTransform.SetRotate(rotLocal);
-	}
-	else
-	{
-		movable->LocalTransform.SetTranslate(pos);
-		movable->LocalTransform.SetRotate(rot);
-	}
+	//Movable *parent = movable->GetParent();
+	//if (parent)
+	//{
+	//	HMatrix inverTrans = parent->WorldTransform.Inverse();
+	//	HMatrix inversRot = parent->WorldTransform.GetRotate().Inverse();
+	//	APoint posLocal = inverTrans * pos;
+	//	HMatrix rotLocal = inversRot * rot;
+	//	movable->LocalTransform.SetTranslate(posLocal);
+	//	movable->LocalTransform.SetRotate(rotLocal);
+	//}
+	//else
+	//{
+	//	movable->LocalTransform.SetTranslate(pos);
+	//	movable->LocalTransform.SetRotate(rot);
+	//}
+
+	movable->LocalTransform.SetTranslate(pos);
+	movable->LocalTransform.SetRotate(rot);
 }
 //----------------------------------------------------------------------------

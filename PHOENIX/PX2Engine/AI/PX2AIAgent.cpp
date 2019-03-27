@@ -68,6 +68,7 @@ mIsHasPath(false),
 mMaxForce(DEFAULT_AGENT_MAX_FORCE),
 mMaxSpeed(DEFAULT_AGENT_MAX_SPEED),
 mRadius(DEFAULT_AGENT_RADIUS),
+mPhysicsRaduis(DEFAULT_AGENT_RADIUS),
 mSpeed(DEFAULT_AGENT_SPEED),
 mTargetRadius(DEFAULT_AGENT_TARGET_RADIUS),
 mTeam(DEFAULT_AGENT_TEAM),
@@ -401,8 +402,8 @@ AVector AIAgent::ForceToTargetSpeed(const float speed)
 {
 	return _Vec3ToAVector(steerForTargetSpeed(float(speed)));
 }
-//----------------------------------------------------------------------------
-AVector AIAgent::ForceToWander(float deltaMilliseconds)
+
+AVector AIAgent::ForceToWander(float deltaMilliseconds)//----------------------------------------------------------------------------
 {
 	return _Vec3ToAVector(steerForWander(deltaMilliseconds));
 }
@@ -509,17 +510,24 @@ void AIAgent::SetPath(const AIAgentPath& path)
 	mIsHasPath = true;
 }
 //----------------------------------------------------------------------------
-void AIAgent::SetRadius(float radius)
+void AIAgent::SetPhysicsRadius(float radius)
 {
-	if (mNode)
-	{
-		mRadius = Mathf::Max(0.0f, radius);
-	}
+	mPhysicsRaduis = Mathf::Max(0.0f, radius);
 
 	if (mRigidBody)
 	{
 		AIAgentUtilities::UpdateRigidBodyCapsule(this);
 	}
+}
+//----------------------------------------------------------------------------
+float AIAgent::GetPhysicsRadius() const
+{
+	return mPhysicsRaduis;
+}
+//----------------------------------------------------------------------------
+void AIAgent::SetRadius(float radius)
+{
+	mRadius = Mathf::Max(0.0f, radius);
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetSpeed(float speed)

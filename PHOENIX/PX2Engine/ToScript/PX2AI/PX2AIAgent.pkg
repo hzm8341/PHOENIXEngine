@@ -67,6 +67,9 @@
 
 		void SetHealth(float health);
 		float GetHealth() const;
+		
+		void SetPhysicsRadius(float radius);
+		float GetPhysicsRadius() const;
 
 		void SetRadius(float radius);
 		virtual float GetRadius() const;

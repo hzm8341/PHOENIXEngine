@@ -11,6 +11,7 @@
 #include "Bullet/BulletCollision/CollisionShapes/btConvexHullShape.h"
 #include "Bullet/BulletCollision/CollisionShapes/btCompoundShape.h"
 #include "Bullet/BulletCollision/CollisionShapes/btShapeHull.h"
+#include "Bullet/BulletCollision/CollisionShapes/btBoxShape.h"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -48,23 +49,13 @@ btRigidBody* PhysicsUtilities::CreateCapsule(
 	const btScalar height, btScalar radius)
 {
 	// Since the height of
-	btCollisionShape* const capsuleShape = new btCapsuleShape(
-		radius, height);
-
-	btTransform trans;                  
-	trans.setIdentity();
-	trans.setOrigin(btVector3(0, 10, 0)); 
-
-	//btTransform btTrans(btTransform::getIdentity());
-	//btQuaternion btQuatRot;
-	//btQuatRot.setEuler(0.0f, Mathf::HALF_PI, 0.0f);
-	//btTrans.setRotation(btQuatRot);
+	btCollisionShape* const capsuleShape = new btCapsuleShapeZ(radius, height);
 
 	btVector3 localInertia(0, 0, 0);
 	capsuleShape->calculateLocalInertia(1.0f, localInertia);
 
 	btDefaultMotionState* const capsuleMotionState =
-		new btDefaultMotionState(trans);
+		new btDefaultMotionState();
 	btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(
 		1.0f, capsuleMotionState, capsuleShape, localInertia);
 
