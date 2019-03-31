@@ -16,6 +16,8 @@
 		// set get
 		virtual void SetMass(float mass);
 		float GetMass() const;
+		void SetMassZeroAvoid(bool avoid);
+		bool IsMassZeroAvoid() const;
 
 		virtual void SetOrientation(const HQuaternion& quaternion);
 		HQuaternion GetOrientation() const;
@@ -23,8 +25,9 @@
 		virtual void SetPosition(const APoint& position);
 		APoint GetPosition() const;
 
+		void SetRadius(float radius);
 		virtual float GetRadius() const;
-
+		
 		// world
 		AIAgentWorld* GetAIAgentWorld();
 		const AIAgentWorld* GetAIAgentWorld() const;

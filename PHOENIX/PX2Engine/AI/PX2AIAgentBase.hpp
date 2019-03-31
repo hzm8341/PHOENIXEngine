@@ -24,6 +24,7 @@ namespace PX2
 		PX2_DECLARE_PROPERTY;
 
 		static const float DEFAULT_AGENT_MASS;
+		static const float DEFAULT_AGENT_RADIUS;
 
 	public:
 		enum AgentType
@@ -41,6 +42,8 @@ namespace PX2
 		// set get
 		virtual void SetMass(float mass);
 		float GetMass() const;
+		void SetMassZeroAvoid(bool avoid);
+		bool IsMassZeroAvoid() const;
 
 		// Set Physics also set position
 		virtual void SetOrientation(const HQuaternion& quaternion);
@@ -51,6 +54,7 @@ namespace PX2
 		virtual void SetPosition(const APoint& position);
 		APoint GetPosition() const;
 
+		void SetRadius(float radius);
 		virtual float GetRadius() const;
 
 		// world
@@ -79,6 +83,8 @@ namespace PX2
 		btRigidBody* mRigidBody;
 		Node *mNode;
 		float mMass;
+		bool mIsMassZeroAvoid;
+		float mRadius;
 
 		// Robot
 	public:

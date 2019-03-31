@@ -424,6 +424,8 @@ steerToStayOnPath(const float predictionTime, Old::Pathway& path)
     }
 }
 
+static bool isPathOver = false;
+
 
 template<class Super>
 OpenSteer::Vec3
@@ -439,15 +441,19 @@ steerToFollowPath (const int direction,
     const Vec3 futurePosition = predictFuturePosition (predictionTime);
 
     // measure distance along path of our current and predicted positions
+	int index0 = 0;
     const float nowPathDistance =
-        path.mapPointToPathDistance (position ());
+        path.mapPointToPathDistance (position (), index0);
+	int index1 = 0;
     const float futurePathDistance =
-        path.mapPointToPathDistance (futurePosition);
+        path.mapPointToPathDistance (futurePosition, index1);
 
     // are we facing in the correction direction?
-    const bool rightway = ((pathDistanceOffset > 0) ?
+    bool rightway = ((pathDistanceOffset > 0) ?
                            (nowPathDistance < futurePathDistance) :
                            (nowPathDistance > futurePathDistance));
+
+	float const targetPathDistance = nowPathDistance + pathDistanceOffset;
 
     // find the point on the path nearest the predicted future position
     // XXX need to improve calling sequence, maybe change to return a
@@ -459,6 +465,8 @@ steerToFollowPath (const int direction,
                                              // output arguments:
                                              tangent,
                                              outside);
+
+	rightway = true;
 
     // no steering is required if (a) our future position is inside
     // the path tube and (b) we are facing in the correct direction
@@ -472,7 +480,6 @@ steerToFollowPath (const int direction,
         // otherwise we need to steer towards a target point obtained
         // by adding pathDistanceOffset to our current path position
 
-        float const targetPathDistance = nowPathDistance + pathDistanceOffset;
         Vec3 const target = path.mapPathDistanceToPoint (targetPathDistance);
 
         annotatePathFollowing (futurePosition, onPath, target, outside);
@@ -680,9 +687,12 @@ predictNearestApproachTime (AbstractVehicle& otherVehicle)
     // Take the unit tangent along the other vehicle's path
     const Vec3 relTangent = relVelocity / relSpeed;
 
+	Vec3 myPos = position();
+	Vec3 otherPos = otherVehicle.position();
+
     // find distance from its path to origin (compute offset from
     // other to us, find length of projection onto path)
-    const Vec3 relPosition = position() - otherVehicle.position();
+    const Vec3 relPosition = myPos - otherPos;
     const float projection = relTangent.dot(relPosition);
 
     return projection / relSpeed;

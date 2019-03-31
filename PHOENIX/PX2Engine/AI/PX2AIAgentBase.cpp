@@ -16,6 +16,7 @@ PX2_IMPLEMENT_FACTORY(AIAgentBase);
 PX2_IMPLEMENT_DEFAULT_NAMES(Controller, AIAgentBase);
 //----------------------------------------------------------------------------
 const float AIAgentBase::DEFAULT_AGENT_MASS = 90.7f;  // kilograms (200 lbs)
+const float AIAgentBase::DEFAULT_AGENT_RADIUS = 0.3f;  // meters (1.97 feet)
 //----------------------------------------------------------------------------
 AIAgentBase::AIAgentBase(Node *node, AgentType at) :
 mNode(node),
@@ -23,6 +24,8 @@ mAgentType(at),
 mAgentWorld(0),
 mRigidBody(0),
 mMass(DEFAULT_AGENT_MASS),
+mIsMassZeroAvoid(false),
+mRadius(DEFAULT_AGENT_RADIUS),
 mRobot(0)
 {
 }
@@ -67,6 +70,16 @@ float AIAgentBase::GetMass() const
 	{
 		return mMass;
 	}
+}
+//----------------------------------------------------------------------------
+void AIAgentBase::SetMassZeroAvoid(bool avoid)
+{
+	mIsMassZeroAvoid = avoid;
+}
+//----------------------------------------------------------------------------
+bool AIAgentBase::IsMassZeroAvoid() const
+{
+	return mIsMassZeroAvoid;
 }
 //----------------------------------------------------------------------------
 void AIAgentBase::SetOrientation(const HQuaternion& quaternion)
@@ -136,21 +149,29 @@ APoint AIAgentBase::GetPosition() const
 	{
 		if (mRigidBody)
 		{
-			return PhysicsUtilities::BtVector3ToVector3(
+			APoint bodyPos = PhysicsUtilities::BtVector3ToVector3(
 				mRigidBody->getCenterOfMassPosition());
+			return bodyPos;
 		}
 		else if (mNode)
 		{
-			return mNode->WorldTransform.GetTranslate();
+			APoint pos = mNode->WorldTransform.GetTranslate();
+			pos.Z() = 0.0f;
+			return pos;
 		}
 	}
 
 	return APoint::ORIGIN;
 }
 //----------------------------------------------------------------------------
+void AIAgentBase::SetRadius(float radius)
+{
+	mRadius = Mathf::Max(0.0f, radius);
+}
+//----------------------------------------------------------------------------
 float AIAgentBase::GetRadius() const
 {
-	return PhysicsUtilities::GetRigidBodyRadius(mRigidBody);
+	return mRadius;
 }
 //----------------------------------------------------------------------------
 void AIAgentBase::SetRigidBody(btRigidBody* rigidBody)
@@ -273,6 +294,7 @@ void AIAgentBase::RegistProperties()
 	AddPropertyEnum("AgentType", (int)mAgentType, atTypes, false);
 
 	AddProperty("Mass", Object::PT_FLOAT, mMass);
+	AddProperty("Radius", Object::PT_FLOAT, mRadius);
 }
 //----------------------------------------------------------------------------
 void AIAgentBase::OnPropertyChanged(const PropertyObject &obj)
@@ -282,6 +304,10 @@ void AIAgentBase::OnPropertyChanged(const PropertyObject &obj)
 	if (obj.Name == "Mass")
 	{
 		SetMass(PX2_ANY_AS(obj.Data, float));
+	}
+	else if (obj.Name == "Radius")
+	{
+		SetRadius(PX2_ANY_AS(obj.Data, float));
 	}
 }
 //----------------------------------------------------------------------------
@@ -307,6 +333,7 @@ void AIAgentBase::Load(InStream& source)
 
 	source.ReadEnum(mAgentType);
 	source.Read(mMass);
+	source.Read(mRadius);
 
 	PX2_END_DEBUG_STREAM_LOAD(AIAgentBase, source);
 }
@@ -340,6 +367,7 @@ void AIAgentBase::Save(OutStream& target) const
 
 	target.WriteEnum(mAgentType);
 	target.Write(mMass);
+	target.Write(mRadius);
 
 	PX2_END_DEBUG_STREAM_SAVE(AIAgentBase, target);
 }
@@ -351,6 +379,7 @@ int AIAgentBase::GetStreamingSize(Stream &stream) const
 
 	size += PX2_ENUMSIZE(mAgentType);
 	size += sizeof(mMass);
+	size += sizeof(mRadius);
 
 	return size;
 }

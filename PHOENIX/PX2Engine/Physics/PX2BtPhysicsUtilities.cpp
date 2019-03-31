@@ -111,6 +111,7 @@ btRigidBody* PhysicsUtilities::CreateRigidBodyFromNode(
 	Movable *mov, const btVector3& position, const btScalar mass)
 {
 	btCompoundShape* compoundShape = new btCompoundShape();
+	compoundShape->setLocalScaling(btVector3(0.2f, 0.2f, 0.2f));
 	Any data(compoundShape);
 
 	Node::TravelExecute(mov, _TravelExecuteFun, &data);

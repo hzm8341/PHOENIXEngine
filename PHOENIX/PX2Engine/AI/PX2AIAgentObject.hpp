@@ -46,10 +46,13 @@ namespace PX2
 		float GetRigidBodyRadius() const;
 
 	public_internal:
-		OpenSteer::Vec3 _GetPosition() const;
+		OpenSteer::Vec3 _GetPosition(float zetZ) const;
 		OpenSteer::Vec3 _SteerToAvoid(
 			const OpenSteer::AbstractVehicle& vehicle,
 			const float minTimeToCollision) const;
+
+	protected:
+		virtual void _Update(double applicationTime, double elapsedTime);
 
 	private:
 		float mLastWorldPosZ;

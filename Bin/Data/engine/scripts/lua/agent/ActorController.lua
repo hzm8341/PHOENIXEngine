@@ -44,9 +44,9 @@ function ActorController:OnPUpdate()
 	local targetRadius = self._agent:GetTargetRadius()
 	
 	-- avoid
-	local avoidAgentForce = self._agent:ForceToAvoidAgents(1.5)
-    local avoidObjectForce = self._agent:ForceToAvoidObjects(1.5)
-	local avoidanceMultiplier = 3
+	local avoidAgentForce = self._agent:ForceToAvoidAgents(2.5)
+    local avoidObjectForce = self._agent:ForceToAvoidObjects(2.5)
+	local avoidanceMultiplier = 10
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	local force0 = seekForce:Add(agentForce)

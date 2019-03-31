@@ -53,7 +53,6 @@ const float AIAgent::DEFAULT_AGENT_HEALTH = 100.0f;
 const float AIAgent::DEFAULT_AGENT_HEIGHT = 1.6f;  // meters (5.2 feet)
 const float AIAgent::DEFAULT_AGENT_MAX_FORCE = 1000.0f;  // newtons (kg*_/s^2)
 const float AIAgent::DEFAULT_AGENT_MAX_SPEED = 7.0f;  // m/s (23.0 ft/s)
-const float AIAgent::DEFAULT_AGENT_RADIUS = 0.3f;  // meters (1.97 feet)
 const float AIAgent::DEFAULT_AGENT_SPEED = 0.0f;  // m/s (0 ft/s)
 const float AIAgent::DEFAULT_AGENT_TARGET_RADIUS = 0.5f;  // meters (1.64 feet)
 const float AIAgent::DEFAULT_AGENT_WALKABLE_CLIMB = DEFAULT_AGENT_RADIUS / 2.0f;
@@ -67,7 +66,6 @@ mHeight(DEFAULT_AGENT_HEIGHT),
 mIsHasPath(false),
 mMaxForce(DEFAULT_AGENT_MAX_FORCE),
 mMaxSpeed(DEFAULT_AGENT_MAX_SPEED),
-mRadius(DEFAULT_AGENT_RADIUS),
 mPhysicsRaduis(DEFAULT_AGENT_RADIUS),
 mSpeed(DEFAULT_AGENT_SPEED),
 mTargetRadius(DEFAULT_AGENT_TARGET_RADIUS),
@@ -93,7 +91,6 @@ mHeight(DEFAULT_AGENT_HEIGHT),
 mIsHasPath(false),
 mMaxForce(DEFAULT_AGENT_MAX_FORCE),
 mMaxSpeed(DEFAULT_AGENT_MAX_SPEED),
-mRadius(DEFAULT_AGENT_RADIUS),
 mSpeed(DEFAULT_AGENT_SPEED),
 mTargetRadius(DEFAULT_AGENT_TARGET_RADIUS),
 mTeam(DEFAULT_AGENT_TEAM),
@@ -136,7 +133,6 @@ void AIAgent::RegistProperties()
 
 	AddProperty("Health", Object::PT_FLOAT, mHealth);
 	AddProperty("Height", Object::PT_FLOAT, mHeight);
-	AddProperty("Radius", Object::PT_FLOAT, mRadius);
 	AddProperty("MaxForce", Object::PT_FLOAT, mMaxForce);
 	AddProperty("MaxSpeed", Object::PT_FLOAT, mMaxSpeed);
 	AddProperty("Speed", Object::PT_FLOAT, mSpeed);
@@ -155,10 +151,6 @@ void AIAgent::OnPropertyChanged(const PropertyObject &obj)
 	else if (obj.Name == "Height")
 	{
 		SetHeight(PX2_ANY_AS(obj.Data, float));
-	}
-	else if (obj.Name == "Radius")
-	{
-		SetRadius(PX2_ANY_AS(obj.Data, float));
 	}
 	else if (obj.Name == "MaxForce")
 	{
@@ -230,7 +222,7 @@ AVector AIAgent::ForceToAvoidObjects(
 	{
 		AIAgentObject* const object = (*it);
 
-		if (object->GetMass() > 0)
+		if (object->GetMass() > 0 || object->IsMassZeroAvoid())
 		{
 			avoidForce += object->_SteerToAvoid(*this, timeToCollision);
 		}
@@ -402,9 +394,10 @@ AVector AIAgent::ForceToTargetSpeed(const float speed)
 {
 	return _Vec3ToAVector(steerForTargetSpeed(float(speed)));
 }
-
-AVector AIAgent::ForceToWander(float deltaMilliseconds)//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+AVector AIAgent::ForceToWander(float deltaMilliseconds)
 {
+	//return AVector::ZERO;
 	return _Vec3ToAVector(steerForWander(deltaMilliseconds));
 }
 //----------------------------------------------------------------------------
@@ -510,6 +503,18 @@ void AIAgent::SetPath(const AIAgentPath& path)
 	mIsHasPath = true;
 }
 //----------------------------------------------------------------------------
+bool AIAgent::GetPathGoPercent() const
+{
+	APoint curPos = GetPosition();
+	return mPath.GetPathGoPercent(curPos);
+}
+//----------------------------------------------------------------------------
+bool AIAgent::IsPathOver() const
+{
+	APoint curPos = GetPosition();
+	return mPath.IsPathOver(curPos);
+}
+//----------------------------------------------------------------------------
 void AIAgent::SetPhysicsRadius(float radius)
 {
 	mPhysicsRaduis = Mathf::Max(0.0f, radius);
@@ -523,11 +528,6 @@ void AIAgent::SetPhysicsRadius(float radius)
 float AIAgent::GetPhysicsRadius() const
 {
 	return mPhysicsRaduis;
-}
-//----------------------------------------------------------------------------
-void AIAgent::SetRadius(float radius)
-{
-	mRadius = Mathf::Max(0.0f, radius);
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetSpeed(float speed)
@@ -664,11 +664,6 @@ float AIAgent::GetHealth() const
 	return mHealth;
 }
 //----------------------------------------------------------------------------
-float AIAgent::GetRadius() const
-{
-	return mRadius;
-}
-//----------------------------------------------------------------------------
 float AIAgent::GetMaxForce() const
 {
 	return mMaxForce;
@@ -709,8 +704,7 @@ AVector AIAgent::GetVelocity() const
 	{
 		if (mRigidBody)
 		{
-			const btVector3 velocity = mRigidBody->getLinearVelocity();
-
+			btVector3 velocity = mRigidBody->getLinearVelocity();
 			return AVector(velocity.x(), velocity.y(), velocity.z());
 		}
 		return GetForward() * mSpeed;
@@ -751,6 +745,8 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 			SetSpeed(Vector3f(velocity.x(), velocity.y(), 0.0f).Length());
 		}
 	}
+
+	mPath.Update(elapsedTime);
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetAIAgentWorld(AIAgentWorld *agentWorld)
@@ -806,7 +802,9 @@ OpenSteer::Vec3 AIAgent::setForward(OpenSteer::Vec3 f)
 //----------------------------------------------------------------------------
 OpenSteer::Vec3 AIAgent::position(void) const
 {
-	return _APointToVec3(GetPosition());
+	APoint pos = GetPosition();
+	pos.Z() = 0.0f;
+	return _APointToVec3(pos);
 }
 //----------------------------------------------------------------------------
 OpenSteer::Vec3 AIAgent::setPosition(OpenSteer::Vec3 p)
@@ -991,7 +989,6 @@ void AIAgent::Load(InStream& source)
 	source.Read(mHeight);
 	source.Read(mMaxForce);
 	source.Read(mMaxSpeed);
-	source.Read(mRadius);
 	source.Read(mSpeed);
 	source.ReadAggregate(mTarget);
 	source.Read(mTargetRadius);
@@ -1032,7 +1029,6 @@ void AIAgent::Save(OutStream& target) const
 	target.Write(mHeight);
 	target.Write(mMaxForce);
 	target.Write(mMaxSpeed);
-	target.Write(mRadius);
 	target.Write(mSpeed);
 	target.WriteAggregate(mTarget);
 	target.Write(mTargetRadius);
@@ -1051,7 +1047,6 @@ int AIAgent::GetStreamingSize(Stream &stream) const
 	size += sizeof(mHeight);
 	size += sizeof(mMaxForce);
 	size += sizeof(mMaxSpeed);
-	size += sizeof(mRadius);
 	size += sizeof(mSpeed);
 	size += sizeof(mTarget);
 	size += sizeof(mTargetRadius);

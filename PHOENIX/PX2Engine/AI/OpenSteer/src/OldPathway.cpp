@@ -151,6 +151,7 @@ OpenSteer::Old::PolylinePathway::mapPointToPath (const Vec3& point,
     Vec3 onPath;
 
     // loop over all segments, find the one nearest to the given point
+	int minI = 0;
     for (int i = 1; i < pointCount; i++)
     {
         segmentLength = lengths[i];
@@ -161,11 +162,13 @@ OpenSteer::Old::PolylinePathway::mapPointToPath (const Vec3& point,
             minDistance = d;
             onPath = chosen;
             tangent = segmentNormal;
+			minI = i;
         }
     }
 
     // measure how far original point is outside the Pathway's "tube"
-    outside = Vec3::distance (onPath, point) - radius;
+	float dist = Vec3::distance(onPath, point);
+    outside = dist - radius;
 
     // return point on path
     return onPath;
@@ -177,7 +180,8 @@ OpenSteer::Old::PolylinePathway::mapPointToPath (const Vec3& point,
 
 
 float 
-OpenSteer::Old::PolylinePathway::mapPointToPathDistance (const Vec3& point)
+OpenSteer::Old::PolylinePathway::mapPointToPathDistance (const Vec3& point,
+	int &pointIndex)
 {
     float d;
     float minDistance = FLT_MAX;
@@ -189,8 +193,9 @@ OpenSteer::Old::PolylinePathway::mapPointToPathDistance (const Vec3& point)
         segmentLength = lengths[i];
         segmentNormal = normals[i];
         d = pointToSegmentDistance (point, points[i-1], points[i]);
-        if (d < minDistance)
+		if (d < minDistance)
         {
+			pointIndex = i;
             minDistance = d;
             pathDistance = segmentLengthTotal + segmentProjection;
         }
@@ -217,8 +222,10 @@ OpenSteer::Old::PolylinePathway::mapPathDistanceToPoint (float pathDistance)
     }
     else
     {
-        if (pathDistance < 0) return points[0];
-        if (pathDistance >= totalPathLength) return points [pointCount-1];
+        if (pathDistance < 0) 
+			return points[0];
+        if (pathDistance >= totalPathLength) 
+			return points [pointCount-1];
     }
 
     // step through segments, subtracting off segment lengths until

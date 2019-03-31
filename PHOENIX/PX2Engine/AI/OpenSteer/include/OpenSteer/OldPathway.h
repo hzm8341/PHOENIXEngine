@@ -58,8 +58,10 @@ namespace OpenSteer {
         class Pathway
         {
         public:
-            Pathway() { }
+			Pathway() { pointCount = 0; }
             virtual ~Pathway() { }
+
+			int pointCount;
 
             // Given an arbitrary point ("A"), returns the nearest point ("P") on
             // this path.  Also returns, via output arguments, the path tangent at
@@ -73,7 +75,7 @@ namespace OpenSteer {
             virtual Vec3 mapPathDistanceToPoint (float pathDistance) = 0;
 
             // Given an arbitrary point, convert it to a distance along the path.
-            virtual float mapPointToPathDistance (const Vec3& point) = 0;
+            virtual float mapPointToPathDistance (const Vec3& point, int &iIndex) = 0;
 
             // is the given point inside the path tube?
             bool isInsidePath (const Vec3& point)
@@ -105,12 +107,11 @@ namespace OpenSteer {
         {
         public:
 
-            int pointCount;
             Vec3* points;
             float radius;
             bool cyclic;
 
-            PolylinePathway (void) {}
+			PolylinePathway(void) { }
             virtual ~PolylinePathway() { }
 
             // construct a PolylinePathway given the number of points (vertices),
@@ -143,7 +144,7 @@ namespace OpenSteer {
 
 
             // given an arbitrary point, convert it to a distance along the path
-            float mapPointToPathDistance (const Vec3& point);
+            float mapPointToPathDistance (const Vec3& point, int &pointIndex);
 
             // given a distance along the path, convert it to a point on the path
             Vec3 mapPathDistanceToPoint (float pathDistance);

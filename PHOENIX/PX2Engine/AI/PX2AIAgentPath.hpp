@@ -38,8 +38,13 @@ namespace PX2
 		APoint GetNearestPointOnPath(const APoint& position) const;
 		APoint GetPointOnPath(const float distance) const;
 
+		bool GetPathGoPercent(const APoint& pos) const;
+		bool IsPathOver(const APoint& pos) const;
+
 		float GetRadius() const;
 		unsigned int GetSegmentCount() const;
+
+		void Update(float elapsedSeconds);
 
 	private:
 		std::vector<APoint> mPoints;

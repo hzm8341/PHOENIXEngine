@@ -78,7 +78,9 @@ void Actor::_CreatePhysics()
 
 		AIAgentObject *agentObject = DynamicCast<AIAgentObject>(mAgentBase);
 		if (agentObject)
+		{
 			agentObject->InitializeMesh(mPhysicsMovable);
+		}
 	}
 }
 //----------------------------------------------------------------------------

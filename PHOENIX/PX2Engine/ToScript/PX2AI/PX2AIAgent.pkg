@@ -57,6 +57,9 @@
 		void SetMaxForce(float force);
 		void SetMaxSpeed(float speed);
 		void SetPath(const AIAgentPath& path);
+		bool GetPathGoPercent() const;
+		bool IsPathOver() const;
+				
 		void SetSpeed(float speed);
 		void SetTarget(const APoint& target);
 		void SetTargetRadius(float radius);
@@ -70,9 +73,6 @@
 		
 		void SetPhysicsRadius(float radius);
 		float GetPhysicsRadius() const;
-
-		void SetRadius(float radius);
-		virtual float GetRadius() const;
 
 		float GetHeight() const;
 

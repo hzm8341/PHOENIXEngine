@@ -43,24 +43,54 @@ function zo_Scene()
     cameraPlayCtrl:SetTouchSizeNode(frameTouch)
     
     -- actor control
-    -- local followerActorAgent = nil
     -- local actorBox = PX2_CREATER:CreateActorBox()
+    -- --actorBox.LocalTransform:SetTranslateY(4.0)
+    -- actorBox.LocalTransform:SetUniformScale(0.6)
+    -- local actorBoxAgentBase = actorBox:GetAIAgentBase()
+    -- actorBoxAgentBase:SetMass(0)
+    -- actorBoxAgentBase:SetMassZeroAvoid(true)
+    -- actorBoxAgentBase:SetRadius(0.7)
+    -- actorBoxAgentBase:SetPosition(APoint(-0.3, 2.0, 0.0))
     -- scene:AttachChild(actorBox)
-    -- actorBox.LocalTransform:SetTranslateY(2.0)
-    --actorBox.LocalTransform:SetUniformScale(0.6)
+    -- actorBoxAgentBase:ResetPlay()
 
+    local followerActorAgent = nil
     -- seek
     for i=1,1,1 do
-         local actor = PX2_CREATER:CreateActor()
-         scene:AttachChild(actor)
-         local movBox = PX2_CREATER:CreateMovable_Box()
-         actor:AttachChild(movBox)
-         movBox.LocalTransform:SetUniformScale(0.2)
-    
-         local script = ActorControllerSeek:New()
-         local scriptCtrl = Cast:ToSC(script.__object)
-         actor:AttachController(scriptCtrl)
-         scriptCtrl:ResetPlay()
+        local actor = PX2_CREATER:CreateActor()
+        actor.LocalTransform:SetTranslate(APoint(0.0, 6.0, 0.4))
+        scene:AttachChild(actor)
+        local movBox = PX2_CREATER:CreateMovable_Box()
+        actor:AttachChild(movBox)
+        movBox.LocalTransform:SetUniformScale(0.2)
+        local agentBase = actor:GetAIAgentBase()
+        agentBase:SetMaxForce(200.0)
+        agentBase:SetMass(0.0)
+        agentBase:SetRadius(0.3)
+        agentBase:SetPhysicsRadius(0.15)
+        agentBase:SetHeight(0.5)
+        agentBase:SetMaxSpeed(0.8)
+        agentBase:ResetPlay()
+
+        local actor = PX2_CREATER:CreateActor()
+        actor.LocalTransform:SetTranslate(APoint(4.0, 8.0, 0.4))
+        scene:AttachChild(actor)
+        local movBox = PX2_CREATER:CreateMovable_Box()
+        actor:AttachChild(movBox)
+        movBox.LocalTransform:SetUniformScale(0.2)
+        local agentBase = actor:GetAIAgentBase()
+        agentBase:SetMaxForce(200.0)
+        agentBase:SetMass(0.0)
+        agentBase:SetRadius(0.3)
+        agentBase:SetPhysicsRadius(0.15)
+        agentBase:SetHeight(0.5)
+        agentBase:SetMaxSpeed(0.8)
+        agentBase:ResetPlay()
+
+    --     local script = ActorControllerSeek:New()
+    --     local scriptCtrl = Cast:ToSC(script.__object)
+    --     actor:AttachController(scriptCtrl)
+    --     scriptCtrl:ResetPlay()
      end
 
     -- path
@@ -105,7 +135,7 @@ function zo_Scene()
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane()
-    actorRect.LocalTransform:SetTranslateZ(-2.0)
+    --actorRect.LocalTransform:SetTranslateZ(-2.0)
     scene:AttachChild(actorRect)
 
     --[[

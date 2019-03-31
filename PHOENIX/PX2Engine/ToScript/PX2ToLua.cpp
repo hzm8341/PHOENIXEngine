@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 03/27/19 20:24:03.
+** Generated automatically by tolua++-1.0.92 on 03/31/19 17:06:11.
 */
 
 #ifndef __cplusplus
@@ -88149,6 +88149,71 @@ static int tolua_PX2_AIAgentBase_GetMass00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: SetMassZeroAvoid of class  AIAgentBase */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentBase_SetMassZeroAvoid00
+static int tolua_PX2_AIAgentBase_SetMassZeroAvoid00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgentBase",0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgentBase* self = (AIAgentBase*)  tolua_tousertype(tolua_S,1,0);
+  bool avoid = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetMassZeroAvoid'", NULL);
+#endif
+  {
+   self->SetMassZeroAvoid(avoid);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetMassZeroAvoid'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: IsMassZeroAvoid of class  AIAgentBase */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentBase_IsMassZeroAvoid00
+static int tolua_PX2_AIAgentBase_IsMassZeroAvoid00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const AIAgentBase",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const AIAgentBase* self = (const AIAgentBase*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'IsMassZeroAvoid'", NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->IsMassZeroAvoid();
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'IsMassZeroAvoid'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: SetOrientation of class  AIAgentBase */
 #ifndef TOLUA_DISABLE_tolua_PX2_AIAgentBase_SetOrientation00
 static int tolua_PX2_AIAgentBase_SetOrientation00(lua_State* tolua_S)
@@ -88294,6 +88359,39 @@ static int tolua_PX2_AIAgentBase_GetPosition00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetRadius of class  AIAgentBase */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentBase_SetRadius00
+static int tolua_PX2_AIAgentBase_SetRadius00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgentBase",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgentBase* self = (AIAgentBase*)  tolua_tousertype(tolua_S,1,0);
+  float radius = ((float)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetRadius'", NULL);
+#endif
+  {
+   self->SetRadius(radius);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetRadius'.",&tolua_err);
  return 0;
 #endif
 }
@@ -89927,6 +90025,70 @@ static int tolua_PX2_AIAgent_SetPath00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: GetPathGoPercent of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_GetPathGoPercent00
+static int tolua_PX2_AIAgent_GetPathGoPercent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const AIAgent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const AIAgent* self = (const AIAgent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetPathGoPercent'", NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->GetPathGoPercent();
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetPathGoPercent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: IsPathOver of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_IsPathOver00
+static int tolua_PX2_AIAgent_IsPathOver00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const AIAgent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const AIAgent* self = (const AIAgent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'IsPathOver'", NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->IsPathOver();
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'IsPathOver'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: SetSpeed of class  AIAgent */
 #ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetSpeed00
 static int tolua_PX2_AIAgent_SetSpeed00(lua_State* tolua_S)
@@ -90260,71 +90422,6 @@ static int tolua_PX2_AIAgent_GetPhysicsRadius00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetPhysicsRadius'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: SetRadius of class  AIAgent */
-#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetRadius00
-static int tolua_PX2_AIAgent_SetRadius00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"AIAgent",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  AIAgent* self = (AIAgent*)  tolua_tousertype(tolua_S,1,0);
-  float radius = ((float)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetRadius'", NULL);
-#endif
-  {
-   self->SetRadius(radius);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'SetRadius'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetRadius of class  AIAgent */
-#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_GetRadius00
-static int tolua_PX2_AIAgent_GetRadius00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const AIAgent",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const AIAgent* self = (const AIAgent*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetRadius'", NULL);
-#endif
-  {
-   float tolua_ret = (float)  self->GetRadius();
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetRadius'.",&tolua_err);
  return 0;
 #endif
 }
@@ -91395,6 +91492,74 @@ static int tolua_PX2_AIAgentPath_GetPointOnPath00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetPointOnPath'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetPathGoPercent of class  AIAgentPath */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentPath_GetPathGoPercent00
+static int tolua_PX2_AIAgentPath_GetPathGoPercent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const AIAgentPath",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const APoint",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const AIAgentPath* self = (const AIAgentPath*)  tolua_tousertype(tolua_S,1,0);
+  const APoint* pos = ((const APoint*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetPathGoPercent'", NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->GetPathGoPercent(*pos);
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetPathGoPercent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: IsPathOver of class  AIAgentPath */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentPath_IsPathOver00
+static int tolua_PX2_AIAgentPath_IsPathOver00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"const AIAgentPath",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const APoint",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const AIAgentPath* self = (const AIAgentPath*)  tolua_tousertype(tolua_S,1,0);
+  const APoint* pos = ((const APoint*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'IsPathOver'", NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->IsPathOver(*pos);
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'IsPathOver'.",&tolua_err);
  return 0;
 #endif
 }
@@ -108458,10 +108623,13 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"delete",tolua_PX2_AIAgentBase_delete00);
    tolua_function(tolua_S,"SetMass",tolua_PX2_AIAgentBase_SetMass00);
    tolua_function(tolua_S,"GetMass",tolua_PX2_AIAgentBase_GetMass00);
+   tolua_function(tolua_S,"SetMassZeroAvoid",tolua_PX2_AIAgentBase_SetMassZeroAvoid00);
+   tolua_function(tolua_S,"IsMassZeroAvoid",tolua_PX2_AIAgentBase_IsMassZeroAvoid00);
    tolua_function(tolua_S,"SetOrientation",tolua_PX2_AIAgentBase_SetOrientation00);
    tolua_function(tolua_S,"GetOrientation",tolua_PX2_AIAgentBase_GetOrientation00);
    tolua_function(tolua_S,"SetPosition",tolua_PX2_AIAgentBase_SetPosition00);
    tolua_function(tolua_S,"GetPosition",tolua_PX2_AIAgentBase_GetPosition00);
+   tolua_function(tolua_S,"SetRadius",tolua_PX2_AIAgentBase_SetRadius00);
    tolua_function(tolua_S,"GetRadius",tolua_PX2_AIAgentBase_GetRadius00);
    tolua_function(tolua_S,"GetAIAgentWorld",tolua_PX2_AIAgentBase_GetAIAgentWorld00);
    tolua_function(tolua_S,"GetAIAgentWorld",tolua_PX2_AIAgentBase_GetAIAgentWorld01);
@@ -108515,6 +108683,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"SetMaxForce",tolua_PX2_AIAgent_SetMaxForce00);
    tolua_function(tolua_S,"SetMaxSpeed",tolua_PX2_AIAgent_SetMaxSpeed00);
    tolua_function(tolua_S,"SetPath",tolua_PX2_AIAgent_SetPath00);
+   tolua_function(tolua_S,"GetPathGoPercent",tolua_PX2_AIAgent_GetPathGoPercent00);
+   tolua_function(tolua_S,"IsPathOver",tolua_PX2_AIAgent_IsPathOver00);
    tolua_function(tolua_S,"SetSpeed",tolua_PX2_AIAgent_SetSpeed00);
    tolua_function(tolua_S,"SetTarget",tolua_PX2_AIAgent_SetTarget00);
    tolua_function(tolua_S,"SetTargetRadius",tolua_PX2_AIAgent_SetTargetRadius00);
@@ -108525,8 +108695,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetHealth",tolua_PX2_AIAgent_GetHealth00);
    tolua_function(tolua_S,"SetPhysicsRadius",tolua_PX2_AIAgent_SetPhysicsRadius00);
    tolua_function(tolua_S,"GetPhysicsRadius",tolua_PX2_AIAgent_GetPhysicsRadius00);
-   tolua_function(tolua_S,"SetRadius",tolua_PX2_AIAgent_SetRadius00);
-   tolua_function(tolua_S,"GetRadius",tolua_PX2_AIAgent_GetRadius00);
    tolua_function(tolua_S,"GetHeight",tolua_PX2_AIAgent_GetHeight00);
    tolua_function(tolua_S,"GetMaxForce",tolua_PX2_AIAgent_GetMaxForce00);
    tolua_function(tolua_S,"GetMaxSpeed",tolua_PX2_AIAgent_GetMaxSpeed00);
@@ -108577,6 +108745,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetDistanceAlongPath",tolua_PX2_AIAgentPath_GetDistanceAlongPath00);
    tolua_function(tolua_S,"GetNearestPointOnPath",tolua_PX2_AIAgentPath_GetNearestPointOnPath00);
    tolua_function(tolua_S,"GetPointOnPath",tolua_PX2_AIAgentPath_GetPointOnPath00);
+   tolua_function(tolua_S,"GetPathGoPercent",tolua_PX2_AIAgentPath_GetPathGoPercent00);
+   tolua_function(tolua_S,"IsPathOver",tolua_PX2_AIAgentPath_IsPathOver00);
    tolua_function(tolua_S,"GetRadius",tolua_PX2_AIAgentPath_GetRadius00);
    tolua_function(tolua_S,"GetSegmentCount",tolua_PX2_AIAgentPath_GetSegmentCount00);
   tolua_endmodule(tolua_S);

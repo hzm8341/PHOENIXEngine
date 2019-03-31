@@ -69,11 +69,11 @@ HQuaternion AIAgentObject::GetOrientation() const
 		rotation.w(), rotation.x(), rotation.y(), rotation.z());
 }
 //----------------------------------------------------------------------------
-OpenSteer::Vec3 AIAgentObject::_GetPosition() const
+OpenSteer::Vec3 AIAgentObject::_GetPosition(float zetZ) const
 {
 	const btVector3& position = mRigidBody->getCenterOfMassPosition();
 	return OpenSteer::Vec3(
-		position.m_floats[0], position.m_floats[1], position.m_floats[2]);
+		position.m_floats[0], position.m_floats[1], zetZ);
 }
 //----------------------------------------------------------------------------
 float AIAgentObject::GetRigidBodyRadius() const
@@ -90,10 +90,13 @@ OpenSteer::Vec3 AIAgentObject::_SteerToAvoid(
 	const float minDistanceToCenter = minDistanceToCollision + GetRadius();
 
 	// contact distance: sum of radii of obstacle and vehicle
-	const float totalRadius = GetRadius() + v.radius();
+	float radius = GetRadius();
+	const float totalRadius = radius + v.radius();
 
 	// obstacle center relative to vehicle position
-	const OpenSteer::Vec3 localOffset = _GetPosition() - v.position();
+	OpenSteer::Vec3 vPos = v.position();
+	vPos.z = 0.0f;
+	const OpenSteer::Vec3 localOffset = _GetPosition(0.0f) - vPos;
 
 	// distance along vehicle's forward axis to obstacle's center
 	const float forwardComponent = localOffset.dot(v.forward());
@@ -116,6 +119,11 @@ OpenSteer::Vec3 AIAgentObject::_SteerToAvoid(
 	{
 		return OpenSteer::Vec3::zero;
 	}
+}
+//----------------------------------------------------------------------------
+void AIAgentObject::_Update(double applicationTime, double elapsedTime)
+{
+	AIAgentBase::_Update(applicationTime, elapsedTime);
 }
 //----------------------------------------------------------------------------
 

@@ -40,7 +40,6 @@ namespace PX2
 		static const float DEFAULT_AGENT_HEIGHT;
 		static const float DEFAULT_AGENT_MAX_FORCE;
 		static const float DEFAULT_AGENT_MAX_SPEED;
-		static const float DEFAULT_AGENT_RADIUS;
 		static const float DEFAULT_AGENT_SPEED;
 		static const float DEFAULT_AGENT_TARGET_RADIUS;
 		static const float DEFAULT_AGENT_WALKABLE_CLIMB;
@@ -99,6 +98,9 @@ namespace PX2
 		void SetMaxForce(float force);
 		void SetMaxSpeed(float speed);
 		void SetPath(const AIAgentPath& path);
+		bool GetPathGoPercent() const;
+		bool IsPathOver() const;
+
 		void SetSpeed(float speed);
 		void SetTarget(const APoint& target);
 		void SetTargetRadius(float radius);
@@ -114,9 +116,6 @@ namespace PX2
 
 		void SetPhysicsRadius(float radius);
 		float GetPhysicsRadius() const;
-
-		void SetRadius(float radius);
-		virtual float GetRadius() const;
 
 		float GetHeight() const;
 
@@ -186,7 +185,6 @@ namespace PX2
 		float mHealth;
 		float mHeight;
 		float mPhysicsRaduis;
-		float mRadius;
 		float mMaxForce;
 		float mMaxSpeed;
 		float mSpeed;

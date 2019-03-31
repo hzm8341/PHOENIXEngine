@@ -45,8 +45,9 @@ void AIAgentUtilities::CreateRigidBodyCapsule(AIAgent* agent)
 void AIAgentUtilities::CreateRigidBodyMesh(AIAgentObject* agentObject,
 	Movable *mov)
 {
+	APoint pos = mov->WorldTransform.GetTranslate();
 	btRigidBody* const rigidBody = PhysicsUtilities::CreateRigidBodyFromNode(
-		mov, btVector3(0, 0, 0), 1.0f);
+		mov, btVector3(pos.X(), pos.Y(), pos.Z()), agentObject->GetMass());
 
 	rigidBody->setUserPointer(agentObject);
 	agentObject->SetRigidBody(rigidBody);
