@@ -52,7 +52,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(AIAgentBase, AIAgent);
 const float AIAgent::DEFAULT_AGENT_HEALTH = 100.0f;
 const float AIAgent::DEFAULT_AGENT_HEIGHT = 1.6f;  // meters (5.2 feet)
 const float AIAgent::DEFAULT_AGENT_MAX_FORCE = 1000.0f;  // newtons (kg*_/s^2)
-const float AIAgent::DEFAULT_AGENT_MAX_SPEED = 7.0f;  // m/s (23.0 ft/s)
+const float AIAgent::DEFAULT_AGENT_MAX_SPEED = 7.0f;  // _/s (23.0 ft/s)
 const float AIAgent::DEFAULT_AGENT_SPEED = 0.0f;  // m/s (0 ft/s)
 const float AIAgent::DEFAULT_AGENT_TARGET_RADIUS = 0.5f;  // meters (1.64 feet)
 const float AIAgent::DEFAULT_AGENT_WALKABLE_CLIMB = DEFAULT_AGENT_RADIUS / 2.0f;
@@ -250,7 +250,8 @@ AVector AIAgent::ForceToAvoidAgents(float predictionTime)
 			}
 		}
 
-		return ForceToAvoidAgents(aliveAgents, predictionTime);
+		AVector avoidForce = ForceToAvoidAgents(aliveAgents, predictionTime);
+		return avoidForce;
 	}
 
 	return AVector::ZERO;
@@ -552,10 +553,17 @@ void AIAgent::SetTeam(const std::string& team)
 //----------------------------------------------------------------------------
 void AIAgent::SetVelocity(const AVector& velocity)
 {
-	if (mRigidBody)
+	if (mRobot)
 	{
-		PhysicsUtilities::SetRigidBodyVelocity(
-			mRigidBody, PhysicsUtilities::Vector3ToBtVector3(velocity));
+
+	}
+	else
+	{
+		if (mRigidBody)
+		{
+			PhysicsUtilities::SetRigidBodyVelocity(
+				mRigidBody, PhysicsUtilities::Vector3ToBtVector3(velocity));
+		}
 	}
 
 	SetSpeed(Vector3f(velocity.X(), velocity.Y(), 0.0f).Length());

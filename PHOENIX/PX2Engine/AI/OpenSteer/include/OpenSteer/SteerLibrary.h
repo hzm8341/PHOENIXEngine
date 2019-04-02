@@ -562,8 +562,8 @@ steerToAvoidNeighbors (const float minTimeToCollision,
                        const AVGroup& others)
 {
     // first priority is to prevent immediate interpenetration
-    const Vec3 separation = steerToAvoidCloseNeighbors (0, others);
-    if (separation != Vec3::zero) return separation;
+    //const Vec3 separation = steerToAvoidCloseNeighbors (0, others);
+    //if (separation != Vec3::zero) return separation;
 
     // otherwise, go on to consider potential future collisions
     float steer = 0;
@@ -611,11 +611,15 @@ steerToAvoidNeighbors (const float minTimeToCollision,
         }
     }
 
+	Vec3 vecSide = side();
+
     // if a potential collision was found, compute steering to avoid
     if (threat != NULL)
     {
+		Vec3 thisForward = forward();
+		Vec3 theatForward = threat->forward();
         // parallel: +1, perpendicular: 0, anti-parallel: -1
-        float parallelness = forward().dot(threat->forward());
+        float parallelness = thisForward.dot(theatForward);
         float angle = 0.707f;
 
         if (parallelness < -angle)
@@ -623,7 +627,7 @@ steerToAvoidNeighbors (const float minTimeToCollision,
             // anti-parallel "head on" paths:
             // steer away from future threat position
             Vec3 offset = xxxThreatPositionAtNearestApproach - position();
-            float sideDot = offset.dot(side());
+            float sideDot = offset.dot(vecSide);
             steer = (sideDot > 0) ? -1.0f : 1.0f;
         }
         else
@@ -632,7 +636,7 @@ steerToAvoidNeighbors (const float minTimeToCollision,
             {
                 // parallel paths: steer away from threat
                 Vec3 offset = threat->position() - position();
-                float sideDot = offset.dot(side());
+                float sideDot = offset.dot(vecSide);
                 steer = (sideDot > 0) ? -1.0f : 1.0f;
             }
             else
@@ -641,7 +645,7 @@ steerToAvoidNeighbors (const float minTimeToCollision,
                 // (only the slower of the two does this)
                 if (threat->speed() <= speed())
                 {
-                    float sideDot = side().dot(threat->velocity());
+                    float sideDot = vecSide.dot(threat->velocity());
                     steer = (sideDot > 0) ? -1.0f : 1.0f;
                 }
             }
@@ -653,7 +657,7 @@ steerToAvoidNeighbors (const float minTimeToCollision,
                                xxxThreatPositionAtNearestApproach);
     }
 
-    return side() * steer;
+    return vecSide * steer;
 }
 
 

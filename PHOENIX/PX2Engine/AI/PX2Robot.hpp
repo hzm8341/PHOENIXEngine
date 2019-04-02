@@ -202,6 +202,7 @@ namespace PX2
 		// common
 	public:
 		APoint mPosition;
+		APoint mLastPostion;
 		AVector mDirection;
 		AVector mUp;
 		AVector mRight;

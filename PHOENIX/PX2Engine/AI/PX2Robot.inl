@@ -31,11 +31,6 @@ inline const HMatrix &Robot::GetCameraMatrix() const
 	return mCameraMatrix;
 }
 //----------------------------------------------------------------------------
-inline const APoint &Robot::GetPosition() const
-{
-	return mPosition;
-}
-//----------------------------------------------------------------------------
 inline const AVector &Robot::GetDirection() const
 {
 	return mDirection;

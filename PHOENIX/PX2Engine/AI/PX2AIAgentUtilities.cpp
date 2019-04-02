@@ -161,23 +161,24 @@ void AIAgentUtilities::SetWorldTansform(Movable *movable, const HMatrix &rot)
 void AIAgentUtilities::SetWorldTansform(Movable *movable, const APoint &pos,
 	const HMatrix &rot)
 {
-	//Movable *parent = movable->GetParent();
-	//if (parent)
-	//{
-	//	HMatrix inverTrans = parent->WorldTransform.Inverse();
-	//	HMatrix inversRot = parent->WorldTransform.GetRotate().Inverse();
-	//	APoint posLocal = inverTrans * pos;
-	//	HMatrix rotLocal = inversRot * rot;
-	//	movable->LocalTransform.SetTranslate(posLocal);
-	//	movable->LocalTransform.SetRotate(rotLocal);
-	//}
-	//else
-	//{
-	//	movable->LocalTransform.SetTranslate(pos);
-	//	movable->LocalTransform.SetRotate(rot);
-	//}
+	Movable *parent = movable->GetParent();
+	if (parent)
+	{
+		HMatrix inverTrans = parent->WorldTransform.Inverse();
+		HMatrix inversRot = parent->WorldTransform.GetRotate().Inverse();
+		APoint posLocal = inverTrans * pos;
+		HMatrix rotLocal = inversRot * rot;
+		movable->LocalTransform.SetTranslate(posLocal);
+		movable->LocalTransform.SetRotate(rotLocal);
+		movable->LocalTransform.SetUniformScale(1.0f);
+	}
+	else
+	{
+		movable->LocalTransform.SetTranslate(pos);
+		movable->LocalTransform.SetRotate(rot);
+	}
 
-	movable->LocalTransform.SetTranslate(pos);
-	movable->LocalTransform.SetRotate(rot);
+	//movable->LocalTransform.SetTranslate(pos);
+	//movable->LocalTransform.SetRotate(rot);
 }
 //----------------------------------------------------------------------------

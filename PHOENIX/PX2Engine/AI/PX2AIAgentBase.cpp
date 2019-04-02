@@ -84,13 +84,20 @@ bool AIAgentBase::IsMassZeroAvoid() const
 //----------------------------------------------------------------------------
 void AIAgentBase::SetOrientation(const HQuaternion& quaternion)
 {
-	PhysicsUtilities::SetRigidBodyOrientation(
-		mRigidBody,
-		PhysicsUtilities::QuaterionToBtQuaternion(quaternion));
-
-	if (mRigidBody)
+	if (mRobot)
 	{
-		AIAgentUtilities::UpdateWorldTransTo(this);
+
+	}
+	else
+	{
+		PhysicsUtilities::SetRigidBodyOrientation(
+			mRigidBody,
+			PhysicsUtilities::QuaterionToBtQuaternion(quaternion));
+
+		if (mRigidBody)
+		{
+			AIAgentUtilities::UpdateWorldTransTo(this);
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -120,22 +127,15 @@ void AIAgentBase::SetRotate(const HMatrix& mat)
 //----------------------------------------------------------------------------
 void AIAgentBase::SetPosition(const APoint& position)
 {
-	//if (mRobot)
-	//{
-
-	//}
-	//else
+	if (mRigidBody)
 	{
-		if (mRigidBody)
-		{
-			PhysicsUtilities::SetRigidBodyPosition(
-				mRigidBody, PhysicsUtilities::Vector3ToBtVector3(position));
-		}
+		PhysicsUtilities::SetRigidBodyPosition(
+			mRigidBody, PhysicsUtilities::Vector3ToBtVector3(position));
+	}
 
-		if (mNode)
-		{
-			AIAgentUtilities::SetWorldTansform(mNode, position);
-		}
+	if (mNode)
+	{
+		AIAgentUtilities::SetWorldTansform(mNode, position);
 	}
 }
 //----------------------------------------------------------------------------
@@ -253,11 +253,11 @@ void AIAgentBase::_Update(double applicationTime, double elapsedTime)
 	{
 		APoint pos = mRobot->GetPosition();
 		AVector dir = mRobot->GetDirection();
-
+		dir.Normalize();
 		AVector right = dir.Cross(AVector::UNIT_Z);
 		right.Normalize();
 		AVector up = AVector::UNIT_Z;
-		HMatrix mat = HMatrix(right, dir, up, pos, true);
+		HMatrix mat = HMatrix(right, dir, up, APoint::ORIGIN, true);
 
 		Node* node = GetNode();
 		AIAgentUtilities::SetWorldTansform(node, pos, mat);

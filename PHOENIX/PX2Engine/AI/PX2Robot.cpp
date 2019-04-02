@@ -321,6 +321,11 @@ void Robot::_SetGraphValue(int x, int y, float val)
 	}
 }
 //----------------------------------------------------------------------------
+inline const APoint &Robot::GetPosition() const
+{
+	return mPosition;
+}
+//----------------------------------------------------------------------------
 RobotMapData &Robot::GetInitMapData()
 {
 	return mInitMapData;
@@ -593,35 +598,66 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		mFakeFoceTimer += elpasedSeconds;
 		if (mFakeFoceTimer > 0.15f)
 		{
+			AVector moveDir = mPosition - mLastPostion;
+			mLastPostion = mPosition;
+			float moveLength = moveDir.Length();
+			float moveSpeed = moveLength / mFakeFoceTimer;
+
 			AVector force = mFakeForce;
 			float forceLength = force.Normalize();
+			float forcePerc = forceLength / 10.0f;
+			if (forcePerc > 1.0f)
+				forcePerc = 1.0f;
+			float power = forcePerc * 80.0f;
 
-			PX2_LOG_INFO("force:%.2f,%.2f,%.2f", force.X(), force.Y(), force.Z());
-
-			if (forceLength > 1.0f)
+			//if (forceLength > 0.01f)
 			{
-				float dotVal = mDirection.Dot(force);
+				float adjustValue0 = 0.7f;
 
+				float dotVal = mDirection.Dot(force);
 				AVector crossVal = force.Cross(mDirection);
-				float forceVal = forceLength * 0.5f;
-				mFackVelocity = mDirection * 0.2f;
+
+				mFackVelocity = mDirection * moveSpeed;
+				mFakeSpeed = moveSpeed;
 
 				if (crossVal.Z() > 0.0f)
 				{
-					// right
-					mArduino->Run(0, Arduino::DT_FORWARD, forceVal);
-					mArduino->Run(1, Arduino::DT_FORWARD, forceVal * dotVal * dotVal);
+					if (dotVal > adjustValue0)
+					{
+						float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
+
+						// right
+						mArduino->Run(0, Arduino::DT_FORWARD, power);
+						mArduino->Run(1, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
+					}
+					else
+					{
+						// right
+						mArduino->Run(0, Arduino::DT_FORWARD, power * 0.5f);
+						mArduino->Run(1, Arduino::DT_BACKWARD, power * 0.5);
+					}
 				}
 				else
 				{
-					// left
-					mArduino->Run(0, Arduino::DT_FORWARD, forceVal * dotVal * dotVal);
-					mArduino->Run(1, Arduino::DT_FORWARD, forceVal);
+					if (dotVal > adjustValue0)
+					{
+						float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
+
+						// left
+						mArduino->Run(0, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
+						mArduino->Run(1, Arduino::DT_FORWARD, power);
+					}
+					else
+					{
+
+						mArduino->Run(0, Arduino::DT_BACKWARD, power * 0.5);
+						mArduino->Run(1, Arduino::DT_FORWARD, power * 0.5);
+					}
 				}
 			}
-			else
+			//else
 			{
-				mArduino->Stop();
+				//mArduino->Stop();
 			}
 
 			mFakeFoceTimer = 0.0f;
