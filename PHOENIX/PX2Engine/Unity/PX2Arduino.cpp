@@ -1121,6 +1121,26 @@ void Arduino::Run(int motoIndex, DirectionType dt, int speed)
 	}
 }
 //----------------------------------------------------------------------------
+void Arduino::RunSpeed(int motoIndex, int speed)
+{
+	DirectionType type = DT_NONE;
+	if (speed == 0)
+	{
+		type = DT_NONE;
+	}
+	else if (speed > 0)
+	{
+		type = DT_FORWARD;
+	}
+	else if (speed < 0)
+	{
+		type = DT_BACKWARD;
+	}
+
+	int spdVal = Mathf::FAbs(speed);
+	Run(motoIndex, type, spdVal);
+}
+//----------------------------------------------------------------------------
 void Arduino::Run(SimpleDirectionType dt, int speed)
 {
 	std::string optStr = sOptTypeStr[OT_MOTO_RUNSIMPLE];

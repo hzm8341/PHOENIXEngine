@@ -57,7 +57,7 @@ function zo_Scene()
     -- seek
     for i=1,1,1 do
         local actor = PX2_CREATER:CreateActor()
-        actor.LocalTransform:SetTranslate(APoint(0.0, 1.0, 0.0))
+        actor.LocalTransform:SetTranslate(APoint(0.0, 1.0, 0.05))
         scene:AttachChild(actor)
         local movBox = PX2_CREATER:CreateMovable_Box()
         actor:AttachChild(movBox)

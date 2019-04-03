@@ -3,7 +3,7 @@
 function Agent_ApplyPhysicsSteeringForce(agent, steeringForce, deltaTimeInSeconds)
 	-- 微小的力去除
 	local forceLength = steeringForce:SquaredLength()
-	if forceLength < 0.0001 then
+	if forceLength < 0.00001 then
         return
     end
 	

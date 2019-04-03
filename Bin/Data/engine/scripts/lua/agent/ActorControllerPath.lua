@@ -14,9 +14,9 @@ function ActorControllerPath:OnAttached()
 
 	self._agent:SetMaxForce(10.0)
 	self._agent:SetMass(2.0)
-	self._agent:SetRadius(0.3)
+	self._agent:SetRadius(0.15)
 	self._agent:SetPhysicsRadius(0.001)
-	self._agent:SetHeight(0.5)
+	self._agent:SetHeight(0.1)
 	self._agent:SetMaxSpeed(0.2)
     self._agent:ResetPlay()
 end
@@ -28,7 +28,7 @@ function ActorControllerPath:OnInitUpdate()
 		agentPath:AddPoint(APoint(0.0, 0.0, 0.0))
 		agentPath:AddPoint(APoint(0.0, 2.0, 0.0))
 		agentPath:AddPoint(APoint(2, 2.0, 0.0))
-		agentPath:ConfigPoints(0.1, false)
+		agentPath:ConfigPoints(0.05, false)
 		self._agent:SetPath(agentPath)
 		self._curPath = 0
 
@@ -36,7 +36,7 @@ function ActorControllerPath:OnInitUpdate()
 		agentPath1:AddPoint(APoint(2, 2.0, 0.0))
 		agentPath1:AddPoint(APoint(0.0, 2.0, 0.0))
 		agentPath1:AddPoint(APoint(0.0, 0.0, 0.0))
-		agentPath1:ConfigPoints(0.1, false)
+		agentPath1:ConfigPoints(0.05, false)
 		self._path1 = agentPath1
 	elseif 2 == self._direction then
 		local agentPath = AIAgentPath()
@@ -44,7 +44,7 @@ function ActorControllerPath:OnInitUpdate()
 		agentPath:AddPoint(APoint(10.0, 10.0, 0.0))
 		agentPath:AddPoint(APoint(10.0, 0.0, 0.0))
 		agentPath:AddPoint(APoint(0.0, 0.0, 0.0))
-		agentPath:ConfigPoints(0.2, true)
+		agentPath:ConfigPoints(0.05, true)
 		self._agent:SetPath(agentPath)
 	end
 end
@@ -58,23 +58,23 @@ function ActorControllerPath:OnPUpdate()
 	local radius = self._agent:GetRadius()
     
 	-- follow path
-	local followForce = self._agent:ForceToFollowPath(2)
+	local followForce = self._agent:ForceToFollowPath(3)
 	followForce:Normalize()
 	local followForce1 = followForce:Dot(1.0)
 
-	local stayForce = self._agent:ForceToStayOnPath(2)
+	local stayForce = self._agent:ForceToStayOnPath(3)
 	stayForce:Normalize()
 	-- local wanderForce = self._agent:ForceToWander(elapsedSeconds*1000.0)
 	-- wanderForce:Normalize()
 	
-	local followForceAll0 = followForce1:Add(stayForce:Dot(0.5))
+	local followForceAll0 = followForce1:Add(stayForce:Dot(1.0))
 	--local followForceAll1 = followForceAll0:Add(wanderForce:Dot(0.25))
 	local followForceAll1 = followForceAll0
 	
 	-- avoid
-	local avoidAgentForce = self._agent:ForceToAvoidAgents(1.3)
-    local avoidObjectForce = self._agent:ForceToAvoidObjects(1.3)
-	local avoidanceMultiplier = 2.5
+	local avoidAgentForce = self._agent:ForceToAvoidAgents(2.5)
+    local avoidObjectForce = self._agent:ForceToAvoidObjects(2.5)
+	local avoidanceMultiplier = 2.0
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	

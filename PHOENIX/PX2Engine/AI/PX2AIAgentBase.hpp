@@ -39,6 +39,9 @@ namespace PX2
 		
 		virtual void Enable(bool enable);
 
+		void UsePhysics(bool usePhysics);
+		bool IsUsePhysics() const;
+
 		// set get
 		virtual void SetMass(float mass);
 		float GetMass() const;
@@ -79,6 +82,7 @@ namespace PX2
 
 		AgentType mAgentType;
 
+		bool mIsUsePhysics;
 		AIAgentWorld* mAgentWorld;
 		btRigidBody* mRigidBody;
 		Node *mNode;

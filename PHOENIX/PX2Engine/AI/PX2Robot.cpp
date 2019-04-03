@@ -44,7 +44,11 @@ mMoveDirectionDegreeWithFirst(0.0f),
 mIsHasEverSettedDirection(false),
 mIsSlamMapUpdate(true),
 mDegreeAdjust(0.0f),
-mPathUpdateTiming(0.0f)
+mPathUpdateTiming(0.0f),
+mDragingLeftMoveType(0),
+mDragingLeftMoveSpeed(0.0f),
+mDragingRightMoveType(0),
+mDragingRightMoveSpeed(0.0f)
 {
 	mRoleType = RT_MASTER;
 
@@ -596,69 +600,92 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	if (mIsUseFakeForce)
 	{
 		mFakeFoceTimer += elpasedSeconds;
-		if (mFakeFoceTimer > 0.15f)
+		if (mFakeFoceTimer > 0.1f)
 		{
-			AVector moveDir = mPosition - mLastPostion;
-			mLastPostion = mPosition;
-			float moveLength = moveDir.Length();
-			float moveSpeed = moveLength / mFakeFoceTimer;
+			_UpdateVirtualRobot(mFakeFoceTimer);
 
-			AVector force = mFakeForce;
-			float forceLength = force.Normalize();
-			float forcePerc = forceLength / 10.0f;
-			if (forcePerc > 1.0f)
-				forcePerc = 1.0f;
-			float power = forcePerc * 80.0f;
+			//AVector moveDir = mPosition - mLastPostion;
+			//mLastPostion = mPosition;
+			//float moveLength = moveDir.Length();
+			//float moveSpeed = moveLength / mFakeFoceTimer;
 
-			//if (forceLength > 0.01f)
-			{
-				float adjustValue0 = 0.7f;
+			//AVector force = mFakeForce;
+			//float forceLength = force.Normalize();
+			//float forcePerc = forceLength / 10.0f;
+			//if (forcePerc > 1.0f)
+			//	forcePerc = 1.0f;
+			//float power = forcePerc * 80.0f;
 
-				float dotVal = mDirection.Dot(force);
-				AVector crossVal = force.Cross(mDirection);
-
-				mFackVelocity = mDirection * moveSpeed;
-				mFakeSpeed = moveSpeed;
-
-				if (crossVal.Z() > 0.0f)
-				{
-					if (dotVal > adjustValue0)
-					{
-						float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
-
-						// right
-						mArduino->Run(0, Arduino::DT_FORWARD, power);
-						mArduino->Run(1, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
-					}
-					else
-					{
-						// right
-						mArduino->Run(0, Arduino::DT_FORWARD, power * 0.5f);
-						mArduino->Run(1, Arduino::DT_BACKWARD, power * 0.5);
-					}
-				}
-				else
-				{
-					if (dotVal > adjustValue0)
-					{
-						float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
-
-						// left
-						mArduino->Run(0, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
-						mArduino->Run(1, Arduino::DT_FORWARD, power);
-					}
-					else
-					{
-
-						mArduino->Run(0, Arduino::DT_BACKWARD, power * 0.5);
-						mArduino->Run(1, Arduino::DT_FORWARD, power * 0.5);
-					}
-				}
-			}
+			//float dotVal = mDirection.Dot(force);
+			//AVector crossVal = force.Cross(mDirection);
+			//float degree = Mathf::ACos(dotVal);
+			//Vector2f dir2d;
+			//if (crossVal.Z() > 0.0f)
+			//{
+			//	dir2d = Vector2f(Mathf::Sin(degree), Mathf::Cos(degree));
+			//}
 			//else
-			{
-				//mArduino->Stop();
-			}
+			//{
+			//	dir2d = Vector2f(-Mathf::Sin(degree), Mathf::Cos(degree));
+			//}
+
+			//_CalSpeed(dir2d, forcePerc);
+			//mArduino->RunSpeed(0, mDragingLeftMoveSpeed);
+			//mArduino->RunSpeed(1, mDragingRightMoveSpeed);
+
+			//_MoveTypeCal(dir2d, power);
+			//mArduino->Run(0, (Arduino::DirectionType)mDragingLeftMoveType, mDragingLeftMoveSpeed);
+			//mArduino->Run(1, (Arduino::DirectionType)mDragingRightMoveType, mDragingRightMoveSpeed);
+
+			////if (forceLength > 0.01f)
+			//{
+			//	float adjustValue0 = 0.7f;
+
+			//	float dotVal = mDirection.Dot(force);
+			//	AVector crossVal = force.Cross(mDirection);
+
+			//	mFackVelocity = mDirection * moveSpeed;
+			//	mFakeSpeed = moveSpeed;
+
+			//	if (crossVal.Z() > 0.0f)
+			//	{
+			//		if (dotVal > adjustValue0)
+			//		{
+			//			float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
+
+			//			// right
+			//			mArduino->Run(0, Arduino::DT_FORWARD, power);
+			//			mArduino->Run(1, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
+			//		}
+			//		else
+			//		{
+			//			// right
+			//			mArduino->Run(0, Arduino::DT_FORWARD, power * 0.5f);
+			//			mArduino->Run(1, Arduino::DT_BACKWARD, power * 0.5);
+			//		}
+			//	}
+			//	else
+			//	{
+			//		if (dotVal > adjustValue0)
+			//		{
+			//			float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
+
+			//			// left
+			//			mArduino->Run(0, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
+			//			mArduino->Run(1, Arduino::DT_FORWARD, power);
+			//		}
+			//		else
+			//		{
+
+			//			mArduino->Run(0, Arduino::DT_BACKWARD, power * 0.5);
+			//			mArduino->Run(1, Arduino::DT_FORWARD, power * 0.5);
+			//		}
+			//	}
+			//}
+			////else
+			//{
+			//	//mArduino->Stop();
+			//}
 
 			mFakeFoceTimer = 0.0f;
 		}
@@ -1362,6 +1389,273 @@ AVector &Robot::GetAxisDirection()
 HMatrix &Robot::GetAxisRotMatrix()
 {
 	return mAxisRotMatrix;
+}
+//----------------------------------------------------------------------------
+void Robot::_CalSpeed(const Vector2f &dir, float power)
+{
+	float absX = Mathf::FAbs(dir.X());
+	if (absX < 0.1)
+	{
+		if (dir.X() == 0)
+		{
+			mDragingLeftMoveSpeed += 20;
+			mDragingRightMoveSpeed += 20;
+		}	}
+
+		else if (dir.X() < 0)
+		{
+			mDragingLeftMoveSpeed += 20;
+			mDragingRightMoveSpeed += 30;
+		}
+		else if (dir.X() > 0)
+		{
+			mDragingLeftMoveSpeed += 30;
+			mDragingRightMoveSpeed += 20;
+		}
+	else
+	{
+		if (dir.X() < 0)
+		{
+			mDragingLeftMoveSpeed -= 20;
+		}
+		else if (dir.X() > 0)
+		{
+			mDragingRightMoveSpeed -= 20;
+		}
+	}
+
+	if (mDragingLeftMoveSpeed > 80)
+		mDragingLeftMoveSpeed = 80;
+
+	if (mDragingLeftMoveSpeed < -80)
+		mDragingLeftMoveSpeed = -80;
+
+	if (mDragingRightMoveSpeed > 80)
+		mDragingRightMoveSpeed = 80;
+
+	if (mDragingRightMoveSpeed < -80)
+		mDragingRightMoveSpeed = -80;
+}
+//----------------------------------------------------------------------------
+void Robot::_MoveTypeCal(const Vector2f &dir, float strength)
+{
+	const Vector2f dragDir = dir;
+	float dragingStrength = strength;
+	float absX = Mathf::FAbs(dragDir.X());
+	float signX = Mathf::Sign(dragDir.X());
+	float absY = Mathf::FAbs(dragDir.Y());
+	float signY = Mathf::Sign(dragDir.Y());
+	float param = 1.0f;
+
+	if (0.0f == absX && 0.0f == absY)
+	{
+		mDragingLeftMoveType = 0;
+		mDragingLeftMoveSpeed = 0.0f;
+		mDragingRightMoveType = 0;
+		mDragingRightMoveSpeed = 0.0f;
+	}
+	else
+	{
+		if (absY > absX)
+		{
+			if (signY > 0.0f)
+			{
+				mDragingLeftMoveType = 1;
+				mDragingRightMoveType = 1;
+				if (signX < 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = dragingStrength;
+				}
+				else if (signX > 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength;
+					mDragingRightMoveSpeed = dragingStrength  * Lerp<float, float>(0, 1, param);
+				}
+			}
+			else if (signY < 0.0f)
+			{
+				mDragingLeftMoveType = 2;
+				mDragingRightMoveType = 2;
+
+				float param = 1.0f;
+				if (signX < 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength;
+					mDragingRightMoveSpeed = dragingStrength * Lerp<float, float>(0, 1, param);
+				}
+				else if (signX > 0)
+				{
+					param = (45.0f - Mathf::ATan((float)absX / (float)absY) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength  * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = dragingStrength;
+				}
+			}
+		}
+		else if (absY < absX)
+		{
+			if (signX > 0.0f)
+			{
+				mDragingLeftMoveType = 1;
+				mDragingRightMoveType = 2;
+
+				if (signY > 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength;
+					mDragingRightMoveSpeed = dragingStrength  * Lerp<float, float>(0, 1, param);
+				}
+				else if (signY < 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = dragingStrength;
+				}
+			}
+			else if (signX < 0.0f)
+			{
+				mDragingLeftMoveType = 2;
+				mDragingRightMoveType = 1;
+
+				if (signY > 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength * Lerp<float, float>(0, 1, param);
+					mDragingRightMoveSpeed = dragingStrength;
+				}
+				else if (signY < 0.0f)
+				{
+					param = (45.0f - Mathf::ATan((float)absY / (float)absX) * Mathf::RAD_TO_DEG) / 45.0f;
+					mDragingLeftMoveSpeed = dragingStrength;
+					mDragingRightMoveSpeed = dragingStrength * Lerp<float, float>(0, 1, param);
+				}
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------
+static float rad = 0.0f;
+static float leftSpeed = 0.0f;
+static float rightSpeed = 0.0f;
+static bool isDoRot = false;
+static bool isDoRotShortGo = false;
+static AVector lastNeedForce;
+static float lastForceTimer = 0.0f;
+static float rotRightDirTimer = 0.0f;
+void Robot::_UpdateVirtualRobot(float elaplseSeconds)
+{
+	mFakeForce.Normalize();
+	AVector forceA = mFakeForce * 0.2f;
+	float dirVal = mFakeForce.Dot(mDirection);
+	float spdVal = forceA.Dot(mDirection);
+
+	if (isDoRot)
+	{
+		if (isDoRotShortGo)
+		{
+			rotRightDirTimer += elaplseSeconds;
+			if (rotRightDirTimer > 0.6f)
+			{
+				isDoRot = false;
+				rotRightDirTimer = 0.0f;
+			}
+		}
+		else
+		{
+			float dotVal1 = mFakeForce.Dot(mDirection);
+			if (dotVal1 >= 0.7f)
+			{
+				isDoRotShortGo = true;
+				leftSpeed = 0.2f;
+				rightSpeed = 0.2f;
+				rotRightDirTimer = 0.0f;
+			}
+		}
+	}
+	else
+	{
+		if (dirVal <= 0.0f)
+		{
+			lastNeedForce = mFakeForce;
+			isDoRot = true;
+		}
+
+		float allSpdA = spdVal * 2.0f;
+
+		float radForce = Mathf::ACos(dirVal);
+
+		AVector cross = forceA.Cross(mDirection);
+		float leftSpeedA = 0.0f;
+		float rightSpeedA = 0.0f;
+		if (cross.Z() > 0.0f)
+		{
+			float sinVal = Mathf::Sin(radForce);
+			float forceVal = 0.2f * sinVal *1.5f;
+
+			// go right
+			rightSpeedA = (allSpdA - forceVal) / 2.0f;
+			leftSpeedA = rightSpeedA + forceVal;
+
+			if (isDoRot)
+			{
+				leftSpeed = 0.2f;
+				rightSpeed = -0.2f;
+			}
+		}
+		else
+		{
+			float sinVal = Mathf::Sin(radForce);
+			float forceVal = 0.2f * sinVal * 1.5f;
+
+			// go left
+			leftSpeedA = (allSpdA - forceVal) / 2.0f;
+			rightSpeedA = leftSpeedA + forceVal;
+
+			if (isDoRot)
+			{
+				leftSpeed = -0.2f;
+				rightSpeed = 0.2f;
+			}
+		}
+
+		if (isDoRot)
+		{
+		}
+		else
+		{
+			leftSpeed = leftSpeedA;
+			rightSpeed = rightSpeedA;
+		}
+
+		//if (leftSpeed > 0.4f)
+		//	leftSpeed = 0.4f;
+		//if (leftSpeed < -0.4f)
+		//	leftSpeed = -0.4f;
+
+		//if (rightSpeed > 0.4f)
+		//	rightSpeed = 0.4f;
+		//if (rightSpeed < -0.4f)
+		//	rightSpeed = -0.4f;
+	}
+
+	float width = 1;
+	float rotSpeed = rightSpeed - leftSpeed;
+	float rotDist = rotSpeed * elaplseSeconds;
+	float rotRad = (rotDist / (width*Mathf::PI) ) * Mathf::TWO_PI;
+	rad += rotRad;
+
+	float spd = (leftSpeed + rightSpeed) * 0.5f;
+
+	mDirection = AVector(-Mathf::Sin(rad), Mathf::Cos(rad), 0.0f);
+	mDirection.Normalize();
+
+	mFakeSpeed = spd;
+	mFackVelocity = mDirection * mFakeSpeed;
+	
+	mPosition += mFackVelocity * elaplseSeconds;
 }
 //----------------------------------------------------------------------------
 void Robot::GoTarget(const APoint &targetPos)

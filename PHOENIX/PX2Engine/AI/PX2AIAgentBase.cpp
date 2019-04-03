@@ -26,7 +26,8 @@ mRigidBody(0),
 mMass(DEFAULT_AGENT_MASS),
 mIsMassZeroAvoid(false),
 mRadius(DEFAULT_AGENT_RADIUS),
-mRobot(0)
+mRobot(0),
+mIsUsePhysics(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -47,6 +48,16 @@ void AIAgentBase::Enable(bool enable)
 	{
 		mRigidBody->activate(enable);
 	}
+}
+//----------------------------------------------------------------------------
+void AIAgentBase::UsePhysics(bool usePhysics)
+{
+	mIsUsePhysics = usePhysics;
+}
+//----------------------------------------------------------------------------
+bool AIAgentBase::IsUsePhysics() const
+{
+	return mIsUsePhysics;
 }
 //----------------------------------------------------------------------------
 void AIAgentBase::SetMass(float mass)

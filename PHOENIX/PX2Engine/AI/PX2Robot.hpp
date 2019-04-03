@@ -264,6 +264,16 @@ namespace PX2
 		float mFakeSpeed;
 		AVector mFackVelocity;
 		float mFakeFoceTimer;
+
+	private:
+		void _CalSpeed(const Vector2f &dir, float power);
+		void _MoveTypeCal(const Vector2f &dir, float strength);
+		void _UpdateVirtualRobot(float elaplseSeconds);
+
+		int mDragingLeftMoveType;
+		float mDragingLeftMoveSpeed;
+		int mDragingRightMoveType;
+		float mDragingRightMoveSpeed;
 	};
 
 #include "PX2Robot.inl"

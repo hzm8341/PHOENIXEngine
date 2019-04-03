@@ -155,6 +155,7 @@ namespace PX2
 		static std::string sSimpleDirectionTypeStr[SDT_MAX_TYPE];
 
 		void Run(int motoIndex, DirectionType type, int speed);
+		void RunSpeed(int motoIndex, int speed);
 		void Run(SimpleDirectionType dt, int speed);
 		int GetSpeed(int motoIndex) const;
 		void Stop();
