@@ -1540,108 +1540,58 @@ void Robot::_MoveTypeCal(const Vector2f &dir, float strength)
 static float rad = 0.0f;
 static float leftSpeed = 0.0f;
 static float rightSpeed = 0.0f;
-static bool isDoRot = false;
-static bool isDoRotShortGo = false;
 static AVector lastNeedForce;
 static float lastForceTimer = 0.0f;
 static float rotRightDirTimer = 0.0f;
 void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 {
 	mFakeForce.Normalize();
+	float maxForce = 0.2f;
 	float dirVal = mFakeForce.Dot(mDirection);
-	AVector forceA = mFakeForce * 0.2f;
-	float allForce = 0.2f;
-	float allSpdFront = 0.2f * dirVal;
+	AVector forceA = mFakeForce * maxForce;
+	float allForce = maxForce;
+	float allSpdFront = maxForce * dirVal;
 	float radForce = Mathf::ACos(dirVal);
 	float sinVal = Mathf::Sin(radForce);
 	float cosVal = Mathf::Cos(radForce);
-	float allSpdHor = 0.2f * sinVal;
+	float allSpdHor = maxForce * sinVal * 4.0f;
+	allSpdHor = Mathf::Clamp(allSpdHor, 0.0f, maxForce);
 
-	if (isDoRot)
+	AVector cross = mFakeForce.Cross(mDirection);
+
+	float leftSpeedA = 0.0f;
+	float rightSpeedA = 0.0f;
+	if (cross.Z() > 0.0f)
 	{
-		if (isDoRotShortGo)
+		if (dirVal >= 0.0f)
 		{
-			rotRightDirTimer += elaplseSeconds;
-			if (rotRightDirTimer > 0.5f)
-			{
-				isDoRot = false;
-				rotRightDirTimer = 0.0f;
-			}
+			// go right
+			rightSpeedA = (allForce - allSpdHor);
+			leftSpeedA = rightSpeedA + allSpdHor;
 		}
 		else
 		{
-			float dotVal1 = mFakeForce.Dot(mDirection);
-			if (dotVal1 >= 0.8f)
-			{
-				isDoRotShortGo = true;
-				leftSpeed = 0.2f;
-				rightSpeed = 0.2f;
-				rotRightDirTimer = 0.0f;
-			}
+			rightSpeedA = -maxForce;
+			leftSpeedA = maxForce;
 		}
 	}
 	else
 	{
-		//if (dirVal <= -0.9f)
-		//{
-		//	lastNeedForce = mFakeForce;
-		//	isDoRot = true;
-		//}
-
-		AVector cross = mFakeForce.Cross(mDirection);
-
-		float leftSpeedA = 0.0f;
-		float rightSpeedA = 0.0f;
-		if (cross.Z() > 0.0f)
+		if (dirVal >= 0.0f)
 		{
-			if (dirVal >= 0.0f)
-			{
-				// go right
-				rightSpeedA = (allForce - allSpdHor);
-				leftSpeedA = rightSpeedA + allSpdHor;
-			}
-			else
-			{
-				rightSpeedA = -(allForce - allSpdHor);
-				leftSpeedA = 0.2f;
-			}
-
-			if (isDoRot)
-			{
-				leftSpeed = 0.2f;
-				rightSpeed = -0.2f;
-			}
+			// go left
+			leftSpeedA = (allForce - allSpdHor);
+			rightSpeedA = leftSpeedA + allSpdHor;
 		}
 		else
 		{
-			if (dirVal >= 0.0f)
-			{
-				// go left
-				leftSpeedA = (allForce - allSpdHor);
-				rightSpeedA = leftSpeedA + allSpdHor;
-			}
-			else
-			{
-				leftSpeedA = -(allForce - allSpdHor);
-				rightSpeedA = 0.2f;
-			}
-
-			if (isDoRot)
-			{
-				leftSpeed = -0.2f;
-				rightSpeed = 0.2f;
-			}
-		}
-
-		if (isDoRot)
-		{
-		}
-		else
-		{
-			leftSpeed = leftSpeedA;
-			rightSpeed = rightSpeedA;
+			leftSpeedA = -maxForce;
+			rightSpeedA = maxForce;
 		}
 	}
+
+	leftSpeed = leftSpeedA;
+	rightSpeed = rightSpeedA;
 
 	float width = 1;
 	float rotSpeed = rightSpeed - leftSpeed;

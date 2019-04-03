@@ -58,11 +58,11 @@ function ActorControllerPath:OnPUpdate()
 	local radius = self._agent:GetRadius()
     
 	-- follow path
-	local followForce = self._agent:ForceToFollowPath(3)
+	local followForce = self._agent:ForceToFollowPath(3.0)
 	followForce:Normalize()
 	local followForce1 = followForce:Dot(1.0)
 
-	local stayForce = self._agent:ForceToStayOnPath(3)
+	local stayForce = self._agent:ForceToStayOnPath(3.0)
 	stayForce:Normalize()
 	-- local wanderForce = self._agent:ForceToWander(elapsedSeconds*1000.0)
 	-- wanderForce:Normalize()
@@ -72,9 +72,9 @@ function ActorControllerPath:OnPUpdate()
 	local followForceAll1 = followForceAll0
 	
 	-- avoid
-	local avoidAgentForce = self._agent:ForceToAvoidAgents(2.0)
-    local avoidObjectForce = self._agent:ForceToAvoidObjects(2.0)
-	local avoidanceMultiplier = 1.0
+	local avoidAgentForce = self._agent:ForceToAvoidAgents(3)
+    local avoidObjectForce = self._agent:ForceToAvoidObjects(3)
+	local avoidanceMultiplier = 2.2
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	
