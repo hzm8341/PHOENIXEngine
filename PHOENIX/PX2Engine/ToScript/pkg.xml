@@ -9669,6 +9669,10 @@
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const AVector &amp;force" is_retrun="false" type_str="AVector" valuename_str="force" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
+			<function name="ApplyForcing" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const AVector &amp;force" is_retrun="false" type_str="AVector" valuename_str="force" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
 			<function name="PredictFuturePosition" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="APoint " is_retrun="true" type_str="APoint" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="float predictionTime" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 04/03/19 13:02:55.
+** Generated automatically by tolua++-1.0.92 on 04/03/19 21:21:23.
 */
 
 #ifndef __cplusplus
@@ -89719,6 +89719,39 @@ static int tolua_PX2_AIAgent_ApplyForce00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: ApplyForcing of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_ApplyForcing00
+static int tolua_PX2_AIAgent_ApplyForcing00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgent",0,&tolua_err) ||
+     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"const AVector",0,&tolua_err)) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgent* self = (AIAgent*)  tolua_tousertype(tolua_S,1,0);
+  const AVector* force = ((const AVector*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ApplyForcing'", NULL);
+#endif
+  {
+   self->ApplyForcing(*force);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ApplyForcing'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: PredictFuturePosition of class  AIAgent */
 #ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_PredictFuturePosition00
 static int tolua_PX2_AIAgent_PredictFuturePosition00(lua_State* tolua_S)
@@ -108674,6 +108707,7 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"ForceToAvoidAgents",tolua_PX2_AIAgent_ForceToAvoidAgents01);
    tolua_function(tolua_S,"ForceToAvoidObjects",tolua_PX2_AIAgent_ForceToAvoidObjects01);
    tolua_function(tolua_S,"ApplyForce",tolua_PX2_AIAgent_ApplyForce00);
+   tolua_function(tolua_S,"ApplyForcing",tolua_PX2_AIAgent_ApplyForcing00);
    tolua_function(tolua_S,"PredictFuturePosition",tolua_PX2_AIAgent_PredictFuturePosition00);
    tolua_function(tolua_S,"RemovePath",tolua_PX2_AIAgent_RemovePath00);
    tolua_function(tolua_S,"SetForward",tolua_PX2_AIAgent_SetForward00);

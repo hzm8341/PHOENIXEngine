@@ -46,6 +46,7 @@
 		AVector ForceToAvoidObjects(float predictionTime = 2.0f);
 		
 		void ApplyForce(const AVector &force);
+		void ApplyForcing(const AVector &force);
 		
 		APoint PredictFuturePosition(float predictionTime) const;
 

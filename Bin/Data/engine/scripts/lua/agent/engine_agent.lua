@@ -18,7 +18,7 @@ function Agent_ApplyPhysicsSteeringForce(agent, steeringForce, deltaTimeInSecond
 	steeringForce:SetZ(0)
 	steeringForce:Normalize()
     steeringForce = steeringForce:Dot(agent:GetMaxForce())
-    agent:ApplyForce(steeringForce);
+    agent:ApplyForcing(steeringForce);
 
     local robot = agent:GetRobot()
     if nil==robot then

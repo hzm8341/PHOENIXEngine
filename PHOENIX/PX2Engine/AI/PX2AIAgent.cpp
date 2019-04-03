@@ -82,6 +82,9 @@ mTarget(Vector3f::ZERO)
 	mIsEnableForwarding = true;
 	mForwarding = AVector::UNIT_Y;
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
+
+	mForcing = AVector::UNIT_Y;
+	mSmootherForcing = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 AIAgent::AIAgent(Node *node) :
@@ -106,6 +109,9 @@ mTarget(Vector3f::ZERO)
 	mIsEnableForwarding = true;
 	mForwarding = AVector::UNIT_Y;
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
+
+	mForcing = AVector::UNIT_Y;
+	mSmootherForcing = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 AIAgent::~AIAgent()
@@ -113,6 +119,11 @@ AIAgent::~AIAgent()
 	if (mSmoother)
 	{
 		delete0(mSmoother);
+	}
+
+	if (mSmootherForcing)
+	{
+		delete0(mSmootherForcing);
 	}
 }
 //----------------------------------------------------------------------------
@@ -422,6 +433,11 @@ void AIAgent::ApplyForce(const AVector &force)
 				mRigidBody, btVector3(force.X(), force.Y(), force.Z()));
 		}
 	}
+}
+//----------------------------------------------------------------------------
+void AIAgent::ApplyForcing(const AVector &force)
+{
+	mForcing = force;
 }
 //----------------------------------------------------------------------------
 APoint AIAgent::PredictFuturePosition(float predictionTime) const
@@ -737,6 +753,12 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 	{
 		AVector vec = mRobot->GetVelocity();
 		SetVelocity(vec);
+
+		if (mSmootherForcing)
+		{
+			AVector force = mSmootherForcing->Update(mForcing, elapsedTime);
+			ApplyForce(force);
+		}
 	}
 	else
 	{
@@ -745,6 +767,12 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 			AVector forward = mSmoother->Update(mForwarding, elapsedTime);
 			forward.Z() = 0.0f;
 			SetForward(forward);
+		}
+
+		if (mSmootherForcing)
+		{
+			AVector force = mSmootherForcing->Update(mForcing, elapsedTime);
+			ApplyForce(force);
 		}
 
 		if (mRigidBody)
@@ -984,6 +1012,9 @@ AIAgentBase(value)
 {
 	mForwarding = AVector::UNIT_Y;
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
+
+	mForcing = AVector::UNIT_Y;
+	mSmootherForcing = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 void AIAgent::Load(InStream& source)

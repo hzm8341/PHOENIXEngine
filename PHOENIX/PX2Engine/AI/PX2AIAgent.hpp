@@ -86,6 +86,7 @@ namespace PX2
 		AVector ForceToAvoidObjects(float predictionTime = 2.0f);
 
 		void ApplyForce(const AVector &force);
+		void ApplyForcing(const AVector &force);
 
 		APoint PredictFuturePosition(float predictionTime) const;
 
@@ -195,6 +196,9 @@ namespace PX2
 		bool mIsEnableForwarding;
 		AVector mForwarding;
 		Smoother<AVector> *mSmoother;
+
+		AVector mForcing;
+		Smoother<AVector> *mSmootherForcing;
 	};
 
 	PX2_REGISTER_STREAM(AIAgent);
