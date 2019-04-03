@@ -586,7 +586,7 @@ steerToAvoidNeighbors (const float minTimeToCollision,
         if (&other != this)
         {	
             // avoid when future positions are this close (or less)
-            const float collisionDangerThreshold = radius() * 2;
+            const float collisionDangerThreshold = radius() + other.radius();
 
             // predicted time until nearest approach of "this" and "other"
             const float time = predictNearestApproachTime (other);

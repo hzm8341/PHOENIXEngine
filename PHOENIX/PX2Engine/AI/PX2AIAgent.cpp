@@ -84,7 +84,7 @@ mTarget(Vector3f::ZERO)
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 
 	mForcing = AVector::UNIT_Y;
-	mSmootherForcing = new0 Smoother<AVector>(16, AVector::UNIT_Y);
+	mSmootherForcing = new0 Smoother<AVector>(24, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 AIAgent::AIAgent(Node *node) :
@@ -111,7 +111,7 @@ mTarget(Vector3f::ZERO)
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 
 	mForcing = AVector::UNIT_Y;
-	mSmootherForcing = new0 Smoother<AVector>(16, AVector::UNIT_Y);
+	mSmootherForcing = new0 Smoother<AVector>(24, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 AIAgent::~AIAgent()
@@ -1014,7 +1014,7 @@ AIAgentBase(value)
 	mSmoother = new0 Smoother<AVector>(16, AVector::UNIT_Y);
 
 	mForcing = AVector::UNIT_Y;
-	mSmootherForcing = new0 Smoother<AVector>(16, AVector::UNIT_Y);
+	mSmootherForcing = new0 Smoother<AVector>(24, AVector::UNIT_Y);
 }
 //----------------------------------------------------------------------------
 void AIAgent::Load(InStream& source)

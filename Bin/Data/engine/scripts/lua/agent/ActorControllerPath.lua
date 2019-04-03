@@ -14,7 +14,7 @@ function ActorControllerPath:OnAttached()
 
 	self._agent:SetMaxForce(10.0)
 	self._agent:SetMass(2.0)
-	self._agent:SetRadius(0.15)
+	self._agent:SetRadius(0.1)
 	self._agent:SetPhysicsRadius(0.001)
 	self._agent:SetHeight(0.1)
 	self._agent:SetMaxSpeed(0.2)
@@ -74,7 +74,7 @@ function ActorControllerPath:OnPUpdate()
 	-- avoid
 	local avoidAgentForce = self._agent:ForceToAvoidAgents(3)
     local avoidObjectForce = self._agent:ForceToAvoidObjects(3)
-	local avoidanceMultiplier = 2.2
+	local avoidanceMultiplier = 1
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	
