@@ -74,7 +74,7 @@ function ActorControllerPath:OnPUpdate()
 	-- avoid
 	local avoidAgentForce = self._agent:ForceToAvoidAgents(2.5)
     local avoidObjectForce = self._agent:ForceToAvoidObjects(2.5)
-	local avoidanceMultiplier = 2.0
+	local avoidanceMultiplier = 1.0
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	
