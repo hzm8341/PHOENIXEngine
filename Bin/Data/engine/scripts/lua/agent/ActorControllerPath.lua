@@ -72,8 +72,8 @@ function ActorControllerPath:OnPUpdate()
 	local followForceAll1 = followForceAll0
 	
 	-- avoid
-	local avoidAgentForce = self._agent:ForceToAvoidAgents(2.5)
-    local avoidObjectForce = self._agent:ForceToAvoidObjects(2.5)
+	local avoidAgentForce = self._agent:ForceToAvoidAgents(2.0)
+    local avoidObjectForce = self._agent:ForceToAvoidObjects(2.0)
 	local avoidanceMultiplier = 1.0
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)

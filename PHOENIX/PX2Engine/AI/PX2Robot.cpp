@@ -1550,7 +1550,12 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	mFakeForce.Normalize();
 	float dirVal = mFakeForce.Dot(mDirection);
 	AVector forceA = mFakeForce * 0.2f;
-	float allSpdA = forceA.Dot(mDirection)*2;
+	float allForce = 0.2f;
+	float allSpdFront = 0.2f * dirVal;
+	float radForce = Mathf::ACos(dirVal);
+	float sinVal = Mathf::Sin(radForce);
+	float cosVal = Mathf::Cos(radForce);
+	float allSpdHor = 0.2f * sinVal;
 
 	if (isDoRot)
 	{
@@ -1583,20 +1588,23 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		//	isDoRot = true;
 		//}
 
-		float radForce = Mathf::ACos(dirVal);
-
 		AVector cross = mFakeForce.Cross(mDirection);
 
 		float leftSpeedA = 0.0f;
 		float rightSpeedA = 0.0f;
 		if (cross.Z() > 0.0f)
 		{
-			float sinVal = Mathf::Sin(radForce);
-			float forceVal = 0.4f * sinVal;
-
-			// go right
-			rightSpeedA = (allSpdA - forceVal) / 2.0f;
-			leftSpeedA = rightSpeedA + forceVal;
+			if (dirVal >= 0.0f)
+			{
+				// go right
+				rightSpeedA = (allForce - allSpdHor);
+				leftSpeedA = rightSpeedA + allSpdHor;
+			}
+			else
+			{
+				rightSpeedA = -(allForce - allSpdHor);
+				leftSpeedA = 0.2f;
+			}
 
 			if (isDoRot)
 			{
@@ -1606,12 +1614,17 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		}
 		else
 		{
-			float sinVal = Mathf::Sin(radForce);
-			float forceVal = 0.4f * sinVal;
-
-			// go left
-			leftSpeedA = (allSpdA - forceVal) / 2.0f;
-			rightSpeedA = leftSpeedA + forceVal;
+			if (dirVal >= 0.0f)
+			{
+				// go left
+				leftSpeedA = (allForce - allSpdHor);
+				rightSpeedA = leftSpeedA + allSpdHor;
+			}
+			else
+			{
+				leftSpeedA = -(allForce - allSpdHor);
+				rightSpeedA = 0.2f;
+			}
 
 			if (isDoRot)
 			{

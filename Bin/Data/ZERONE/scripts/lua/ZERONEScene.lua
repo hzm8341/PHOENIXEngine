@@ -31,7 +31,7 @@ function zo_Scene()
     nodeScene:AttachController(cameraPlayCtrl)
     cameraPlayCtrl:SetCameraNode(mainCameraNode)
     cameraPlayCtrl:SetCameraDistance(40.0)
-    cameraPlayCtrl:SetCameraDist(5.0, 60.0)
+    cameraPlayCtrl:SetCameraDist(1.0, 60.0)
     cameraPlayCtrl:ResetPlay()
 
     -- cam touchFrame
