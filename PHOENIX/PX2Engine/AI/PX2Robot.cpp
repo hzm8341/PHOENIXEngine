@@ -1592,7 +1592,7 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		if (cross.Z() > 0.0f)
 		{
 			float sinVal = Mathf::Sin(radForce);
-			float forceVal = 0.2f * sinVal;
+			float forceVal = 0.4f * sinVal;
 
 			// go right
 			rightSpeedA = (allSpdA - forceVal) / 2.0f;
@@ -1607,7 +1607,7 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		else
 		{
 			float sinVal = Mathf::Sin(radForce);
-			float forceVal = 0.2f * sinVal;
+			float forceVal = 0.4f * sinVal;
 
 			// go left
 			leftSpeedA = (allSpdA - forceVal) / 2.0f;
@@ -1628,16 +1628,6 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 			leftSpeed = leftSpeedA;
 			rightSpeed = rightSpeedA;
 		}
-
-		//if (leftSpeed > 0.4f)
-		//	leftSpeed = 0.4f;
-		//if (leftSpeed < -0.4f)
-		//	leftSpeed = -0.4f;
-
-		//if (rightSpeed > 0.4f)
-		//	rightSpeed = 0.4f;
-		//if (rightSpeed < -0.4f)
-		//	rightSpeed = -0.4f;
 	}
 
 	float width = 1;
