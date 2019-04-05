@@ -13,7 +13,6 @@
 #include "PX2Renderer.hpp"
 #include "PX2Arduino.hpp"
 #include "PX2ResourceManager.hpp"
-#include "PX2AIAgentPath.hpp"
 #if defined PX2_USE_SLAM2D
 #include "Slam2DPlugin.hpp"
 #endif

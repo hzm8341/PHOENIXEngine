@@ -211,23 +211,8 @@
     <Filter Include="2.AI\Agent">
       <UniqueIdentifier>{9e89d000-80c9-4048-96fa-135152e765c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\Agent\Path">
-      <UniqueIdentifier>{6eb0be79-0494-40e6-85e7-ec78282f80c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2.AI\Agent\Utilities">
       <UniqueIdentifier>{e63669ec-2f6f-434f-9d7b-9842761b7ecc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer">
-      <UniqueIdentifier>{acaf74e3-92e0-4a52-95e0-6b21fe41cf64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer\include">
-      <UniqueIdentifier>{3f2390f9-5844-47b9-a393-ab40a0a2c79c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer\include\OpenSteer">
-      <UniqueIdentifier>{62ee4787-d9cd-4fc9-b21f-8b1b7a7713f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\OpenSteer\src">
-      <UniqueIdentifier>{6fe48de0-6720-49b0-97c6-a425e310f9f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="2.AI\SkillSystem">
       <UniqueIdentifier>{a9b85f28-e02d-4713-8e91-10f4b9558e10}</UniqueIdentifier>
@@ -3699,9 +3684,6 @@
     <ClInclude Include="AI\PX2AIAgent.hpp">
       <Filter>2.AI\Agent</Filter>
     </ClInclude>
-    <ClInclude Include="AI\PX2AIAgentGroup.hpp">
-      <Filter>2.AI\Agent</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\Bullet\LinearMath\btAabbUtil2.h">
       <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClInclude>
@@ -4434,9 +4416,6 @@
     <ClInclude Include="Unity\PX2SoundWav.hpp">
       <Filter>0.Base\Unity\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="AI\PX2AIAgentPath.hpp">
-      <Filter>2.AI\Agent\Path</Filter>
-    </ClInclude>
     <ClInclude Include="AI\PX2AIAgentWorldUtilities.hpp">
       <Filter>2.AI\Agent\Utilities</Filter>
     </ClInclude>
@@ -4565,102 +4544,6 @@
     </ClInclude>
     <ClInclude Include="AI\PX2AIAgentBase.hpp">
       <Filter>2.AI\Agent</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\AbstractVehicle.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Annotation.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Camera.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Clock.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Color.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\LocalSpace.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\lq.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Obstacle.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\OldPathway.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Path.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Pathway.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PlugIn.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPath.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySegmentRadii.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\PolylineSegmentedPathwaySingleRadius.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Proximity.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlike.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeBaseDataExtractionPolicies.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeMappings.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\QueryPathAlikeUtilities.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPath.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathAlikeUtilities.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SegmentedPathway.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SharedPointer.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SimpleVehicle.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\StandardTypes.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\SteerLibrary.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\UnusedParameter.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Utilities.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\include\OpenSteer\Vec3Utilities.h">
-      <Filter>2.AI\OpenSteer\include\OpenSteer</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\OpenSteer\src\TerrainRayTest.h">
-      <Filter>2.AI\OpenSteer\src</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Engine.hpp">
       <Filter>3.Application\Exports</Filter>
@@ -8096,9 +7979,6 @@
     <ClCompile Include="AI\PX2AIAgent.cpp">
       <Filter>2.AI\Agent</Filter>
     </ClCompile>
-    <ClCompile Include="AI\PX2AIAgentGroup.cpp">
-      <Filter>2.AI\Agent</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Bullet\LinearMath\btAlignedAllocator.cpp">
       <Filter>1.Ext\Physics\Bullet\LinearMath</Filter>
     </ClCompile>
@@ -8648,9 +8528,6 @@
     <ClCompile Include="Unity\PX2SoundWav.cpp">
       <Filter>0.Base\Unity\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="AI\PX2AIAgentPath.cpp">
-      <Filter>2.AI\Agent\Path</Filter>
-    </ClCompile>
     <ClCompile Include="AI\PX2AIAgentWorldUtilities.cpp">
       <Filter>2.AI\Agent\Utilities</Filter>
     </ClCompile>
@@ -8743,60 +8620,6 @@
     </ClCompile>
     <ClCompile Include="AI\PX2AIAgentBase.cpp">
       <Filter>2.AI\Agent</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Camera.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Clock.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Color.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\lq.c">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Obstacle.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\OldPathway.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Path.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Pathway.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PlugIn.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPath.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySegmentRadii.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\PolylineSegmentedPathwaySingleRadius.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\SegmentedPath.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\SegmentedPathway.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\SimpleVehicle.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\TerrainRayTest.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Vec3.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\OpenSteer\src\Vec3Utilities.cpp">
-      <Filter>2.AI\OpenSteer\src</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Engine.cpp">
       <Filter>3.Application\Exports</Filter>

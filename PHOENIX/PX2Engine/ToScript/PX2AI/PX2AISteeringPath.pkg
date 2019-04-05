@@ -1,0 +1,24 @@
+// PX2AIAgentPath.pkg
+
+	class AIAgentPath
+	{
+	public:
+		AIAgentPath();
+		~AIAgentPath();
+
+		Vector3f CurrentWaypoint() const;
+		bool Finished();
+		void SetNextWaypoint();
+
+		void LoopOn();
+		void LoopOff();
+
+		void AddWayPoint (const APoint &new_point);
+
+		void Set (std::list<Vector3f> new_path);
+		void Set (const AIAgentPath& path);
+
+		void Clear();
+
+		std::list<Vector3f> GetPath() const;
+	};

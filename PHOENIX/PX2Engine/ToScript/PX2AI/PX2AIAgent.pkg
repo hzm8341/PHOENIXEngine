@@ -6,49 +6,6 @@
 		AIAgent();
 		AIAgent(Node *node);
 		virtual ~AIAgent();
-		
-		AVector ForceToAlign(float maxDistance, float maxAngle, 
-			const AIAgentGroup& group);
-		AVector ForceToAvoidAgents(const std::vector<AIAgent*>& agents,
-			float predictionTime = 2.0f);
-		AVector ForceToAvoidObjects(
-			const std::vector<AIAgentObject*>& objects,
-			float predictionTime = 2.0f);
-			
-		AVector ForceToCombine(float maxDistance, float maxAngle,
-			AIAgent *agent);
-		AVector ForceToCombine(float maxDistance, float maxAngle,
-			const AIAgentGroup& group);
-		AVector ForceToCombine(float maxDistance, float maxAngle, 
-			const std::vector<AIAgent*>& agents);
-			
-		AVector ForceToFleePosition(const APoint& position);
-		AVector ForceToFollowPath(float predictionTime = 2.0f);
-		AVector ForceToFollowPath(AIAgentPath& path, 
-			float predictionTime = 2.0f);
-		AVector ForceToPosition(const APoint& position);
-		
-		AVector ForceToSeparateAgents(float maxDistance, float maxAngle);
-		AVector ForceToSeparate(float maxDistance, float maxAngle,
-			const AIAgentGroup& group);
-		AVector ForceToSeparate(float maxDistance, float maxAngle,
-			std::vector<AIAgent*> agents);
-		AVector ForceToSeparate(float maxDistance, float maxAngle,
-			AIAgent *agent);	
-			
-		AVector ForceToStayOnPath(float predictionTime = 2.0f);
-		AVector ForceToStayOnPath(AIAgentPath& path, 
-			float predictionTime = 2.0f);
-		AVector ForceToTargetSpeed(const float speed);
-		AVector ForceToWander(float deltaMilliseconds);
-
-		AVector ForceToAvoidAgents(float predictionTime = 2.0f);
-		AVector ForceToAvoidObjects(float predictionTime = 2.0f);
-		
-		void ApplyForce(const AVector &force);
-		void ApplyForcing(const AVector &force);
-		
-		APoint PredictFuturePosition(float predictionTime) const;
 
 		void RemovePath();
 		void SetForward(const AVector& forward);
@@ -58,7 +15,6 @@
 		void SetMaxForce(float force);
 		void SetMaxSpeed(float speed);
 		void SetPath(const AIAgentPath& path);
-		bool GetPathGoPercent() const;
 		bool IsPathOver() const;
 				
 		void SetSpeed(float speed);
@@ -67,6 +23,8 @@
 		void SetTeam(const std::string& team);
 		void SetVelocity(const AVector& velocity);
 
+		AVector GetRight() const;
+		AVector GetUp() const;
 		AVector GetForward() const;
 
 		void SetHealth(float health);
@@ -85,6 +43,5 @@
 		APoint GetTarget() const;
 		float GetTargetRadius() const;
 
-		AVector GetUp() const;
 		AVector GetVelocity() const;
 	};

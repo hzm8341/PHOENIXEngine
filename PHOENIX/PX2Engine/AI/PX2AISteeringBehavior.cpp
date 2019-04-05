@@ -5,6 +5,7 @@
 #include "PX2AIAgentObject.hpp"
 #include "PX2AIAgentWorld.hpp"
 #include "PX2AISteeringParamLoader.hpp"
+#include "PX2AIPath.hpp"
 using namespace PX2;
 using namespace std;
 
@@ -49,13 +50,11 @@ SteeringBehavior::SteeringBehavior(AIAgent* agent):
 		m_dWanderRadius * Mathf::Sin(theta), 0.0f);
 
 	//create a Path
-	m_pPath = new Path();
-	m_pPath->LoopOn();
+	mPath.LoopOn();
 }
 //------------------------------------------------------------------------
 SteeringBehavior::~SteeringBehavior()
 {
-	delete m_pPath; 
 }
 //------------------------------------------------------------------------
 Vector3f SteeringBehavior::Calculate()
@@ -585,7 +584,7 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 		++curOb;
 	}
 
-	Vector3f SteeringForce;
+	AVector SteeringForce;
 	if (closestIntersectingObstacle)
 	{
 		//the closer the agent is to an object, the stronger the 
@@ -989,22 +988,22 @@ Vector3f SteeringBehavior::FollowPath()
 {
 	//move to next target if close enough to current target (working in
 	//distance squared space)
-	Vector3f vec = m_pPath->CurrentWaypoint() - mVehicle->GetPosition();
+	Vector3f vec = mPath.CurrentWaypoint() - mVehicle->GetPosition();
 	float lengthSquare = vec.SquaredLength();
 
 	if (lengthSquare < m_dWaypointSeekDistSq)
 	{
-		m_pPath->SetNextWaypoint();
+		mPath.SetNextWaypoint();
 	}
 
-	if (!m_pPath->Finished())
+	if (!mPath.Finished())
 	{
-		return Seek(m_pPath->CurrentWaypoint());
+		return Seek(mPath.CurrentWaypoint());
 	}
 
 	else
 	{
-		return Arrive(m_pPath->CurrentWaypoint(), normal);
+		return Arrive(mPath.CurrentWaypoint(), normal);
 	}
 }
 
@@ -1017,9 +1016,9 @@ Vector3f SteeringBehavior::OffsetPursuit(const AIAgent* leader,
 			leader->GetUp(), leader->GetPosition(), true);
 
 	//calculate the offset's position in world space
-	Vector3f worldOffsetPos = localMat * offset;
+	APoint worldOffsetPos = localMat * APoint(offset.X(), offset.Y(), offset.Z());
 
-	Vector3f ToOffset = worldOffsetPos - mVehicle->GetPosition();
+	Vector3f ToOffset = worldOffsetPos.To3() - mVehicle->GetPosition();
 
 	float lookAheadTime = ToOffset.Length() /
 		(mVehicle->GetMaxSpeed() + leader->GetSpeed());
@@ -1187,7 +1186,7 @@ void SteeringBehavior::RenderAids()
 	////render path info
 	//if (On(follow_path) && mVehicle->World()->RenderPath())
 	//{
-	//	m_pPath->Render();
+	//	mPath.Render();
 	//}
 
 

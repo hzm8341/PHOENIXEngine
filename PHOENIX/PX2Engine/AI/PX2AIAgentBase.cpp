@@ -246,6 +246,9 @@ const Node *AIAgentBase::GetNode() const
 //----------------------------------------------------------------------------
 void AIAgentBase::_InitUpdate(double applicationTime, double elapsedTime)
 {
+	PX2_UNUSED(applicationTime);
+	PX2_UNUSED(elapsedTime);
+
 	Movable *mov = DynamicCast<Movable>(GetControlledable());
 	if (mov)
 	{
@@ -261,6 +264,9 @@ void AIAgentBase::_InitUpdate(double applicationTime, double elapsedTime)
 //----------------------------------------------------------------------------
 void AIAgentBase::_Update(double applicationTime, double elapsedTime)
 {
+	PX2_UNUSED(applicationTime);
+	PX2_UNUSED(elapsedTime);
+
 	if (mRobot)
 	{
 		APoint pos = mRobot->GetPosition();

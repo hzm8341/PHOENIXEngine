@@ -29,7 +29,7 @@ NavigationMesh::NavigationMesh(
 NavigationMesh::~NavigationMesh()
 {
 	NavigationUtilities::DestroyNavMesh(*navMesh_);
-	navMesh_ = NULL;
+	navMesh_ = 0;
 
 	NavigationUtilities::DestroyNavMeshQuery(*query_);
 }

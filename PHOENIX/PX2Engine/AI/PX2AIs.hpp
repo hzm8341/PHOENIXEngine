@@ -15,6 +15,5 @@
 
 #include "PX2AIAgent.hpp"
 #include "PX2AIAgentObject.hpp"
-#include "PX2AIAgentGroup.hpp"
 
 #endif

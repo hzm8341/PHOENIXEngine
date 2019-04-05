@@ -1,7 +1,7 @@
 // PX2SteeringBehavior.hpp
 
 #ifndef PX2STEERINGBEHAVIOR_HPP
-#define PX2STERRINGBEHAVIOR_HPP
+#define PX2STEERINGBEHAVIOR_HPP
 
 #include "PX2CorePre.hpp"
 #include "PX2Vector3.hpp"
@@ -14,10 +14,10 @@ namespace PX2
 	class AIAgentObject;
 	class Wall2D;
 
-	const float WanderRad = 1.2;
-	const float WanderDist = 2.0;
-	const float WanderJitterPerSec = 80.0;
-	const float WaypointSeekDist = 20;
+	const float WanderRad = 1.2f;
+	const float WanderDist = 2.0f;
+	const float WanderJitterPerSec = 80.0f;
+	const float WaypointSeekDist = 20.0f;
 
 	class PX2_ENGINE_ITEM SteeringBehavior
 	{
@@ -90,7 +90,7 @@ namespace PX2
 		float        m_dViewDistance;
 
 		//pointer to any current path
-		Path* m_pPath;
+		AIAgentPath mPath;
 
 		float        m_dWaypointSeekDistSq;
 		Vector3f     m_vOffset;
@@ -153,7 +153,7 @@ namespace PX2
 		void SetTargetAgent2(AIAgent* Agent) { m_pTargetAgent2 = Agent; }
 		void SetOffset(const Vector3f offset) { m_vOffset = offset; }
 		Vector3f GetOffset()const { return m_vOffset; }
-		void SetPath(std::list<Vector3f> new_path) { m_pPath->Set(new_path); }
+		void SetPath(std::list<Vector3f> new_path) { mPath.Set(new_path); }
 
 		Vector3f Force()const { return m_vSteeringForce; }
 

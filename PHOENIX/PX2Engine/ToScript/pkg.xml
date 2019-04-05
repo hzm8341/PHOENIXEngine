@@ -9566,117 +9566,6 @@
 				<param paramstr="Node *node" is_retrun="false" type_str="Node" valuename_str="node" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 			<function name="AIAgent" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
-			<function name="ForceToAlign" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const AIAgentGroup&amp; group" is_retrun="false" type_str="AIAgentGroup" valuename_str="group" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ForceToAvoidAgents" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::vector&lt;AIAgent*&gt;&amp; agents" is_retrun="false" type_str="std::vector&lt;AIAgent" valuename_str="&gt;&amp;agents" defaultvalue_Str="" is_pointer="true" is_ref="true" is_const="true"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToAvoidObjects" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::vector&lt;AIAgentObject*&gt;&amp; objects" is_retrun="false" type_str="std::vector&lt;AIAgentObject" valuename_str="&gt;&amp;objects" defaultvalue_Str="" is_pointer="true" is_ref="true" is_const="true"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToCombine" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="AIAgent *agent" is_retrun="false" type_str="AIAgent" valuename_str="agent" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToCombine" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const AIAgentGroup&amp; group" is_retrun="false" type_str="AIAgentGroup" valuename_str="group" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ForceToCombine" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const std::vector&lt;AIAgent*&gt;&amp; agents" is_retrun="false" type_str="std::vector&lt;AIAgent" valuename_str="&gt;&amp;agents" defaultvalue_Str="" is_pointer="true" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ForceToFleePosition" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint&amp; position" is_retrun="false" type_str="APoint" valuename_str="position" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ForceToFollowPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToFollowPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="AIAgentPath&amp; path" is_retrun="false" type_str="AIAgentPath" valuename_str="path" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToPosition" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint&amp; position" is_retrun="false" type_str="APoint" valuename_str="position" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ForceToSeparateAgents" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToSeparate" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const AIAgentGroup&amp; group" is_retrun="false" type_str="AIAgentGroup" valuename_str="group" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ForceToSeparate" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="std::vector&lt;AIAgent*&gt; agents" is_retrun="false" type_str="std::vector&lt;AIAgent" valuename_str="&gt;agents" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToSeparate" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxDistance" is_retrun="false" type_str="float" valuename_str="maxDistance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float maxAngle" is_retrun="false" type_str="float" valuename_str="maxAngle" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="AIAgent *agent" is_retrun="false" type_str="AIAgent" valuename_str="agent" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToStayOnPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToStayOnPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="AIAgentPath&amp; path" is_retrun="false" type_str="AIAgentPath" valuename_str="path" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToTargetSpeed" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const float speed" is_retrun="false" type_str="float" valuename_str="speed" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="true"/>
-			</function>
-			<function name="ForceToWander" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float deltaMilliseconds" is_retrun="false" type_str="float" valuename_str="deltaMilliseconds" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToAvoidAgents" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ForceToAvoidObjects" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float predictionTime = 2.0f" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="2.0f" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ApplyForce" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const AVector &amp;force" is_retrun="false" type_str="AVector" valuename_str="force" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="ApplyForcing" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const AVector &amp;force" is_retrun="false" type_str="AVector" valuename_str="force" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="PredictFuturePosition" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="APoint " is_retrun="true" type_str="APoint" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float predictionTime" is_retrun="false" type_str="float" valuename_str="predictionTime" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
 			<function name="RemovePath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
@@ -9708,9 +9597,6 @@
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const AIAgentPath&amp; path" is_retrun="false" type_str="AIAgentPath" valuename_str="path" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
-			<function name="GetPathGoPercent" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
 			<function name="IsPathOver" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
@@ -9733,6 +9619,12 @@
 			<function name="SetVelocity" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const AVector&amp; velocity" is_retrun="false" type_str="AVector" valuename_str="velocity" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetRight" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetUp" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 			<function name="GetForward" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -9768,9 +9660,6 @@
 			</function>
 			<function name="GetTargetRadius" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="GetUp" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 			<function name="GetVelocity" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="AVector " is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -9808,63 +9697,39 @@
 		</class>
 		<class name="AIAgentPath" parentname="" singletonname="">
 			<function name="AIAgentPath" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
-			<function name="AIAgentPath" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="const std::vector&lt;APoint&gt; &amp;points" is_retrun="false" type_str="std::vector&lt;APoint&gt;" valuename_str="points" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-				<param paramstr="float radius" is_retrun="false" type_str="float" valuename_str="radius" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool cyclic" is_retrun="false" type_str="bool" valuename_str="cyclic" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			<function name="AIAgentPath" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="CurrentWaypoint" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="Vector3f " is_retrun="true" type_str="Vector3f" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
-			<function name="AIAgentPath" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
-			<function name="AIAgentPath" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+			<function name="Finished" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetNextWaypoint" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="LoopOn" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="LoopOff" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="AddWayPoint" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;new_point" is_retrun="false" type_str="APoint" valuename_str="new_point" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="Set" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="std::list&lt;Vector3f&gt; new_path" is_retrun="false" type_str="std::list&lt;Vector3f&gt;" valuename_str="new_path" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="Set" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const AIAgentPath&amp; path" is_retrun="false" type_str="AIAgentPath" valuename_str="path" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
-			<function name="=" funtype="class_member" is_operator="true" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="AIAgentPath&amp; " is_retrun="true" type_str="AIAgentPath" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
-				<param paramstr="const AIAgentPath&amp; path" is_retrun="false" type_str="AIAgentPath" valuename_str="path" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="AddPoint" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+			<function name="Clear" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint &amp;pt" is_retrun="false" type_str="APoint" valuename_str="pt" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
-			<function name="ConfigPoints" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="float radius" is_retrun="false" type_str="float" valuename_str="radius" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool cyclic" is_retrun="false" type_str="bool" valuename_str="cyclic" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="GetNumberOfPathPoints" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="GetPathLength" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="GetPathPoints" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="std::vector&lt;APoint&gt;&amp; outPoints" is_retrun="false" type_str="std::vector&lt;APoint&gt;" valuename_str="outPoints" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
-			</function>
-			<function name="GetDistanceAlongPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint&amp; position" is_retrun="false" type_str="APoint" valuename_str="position" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetNearestPointOnPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="APoint " is_retrun="true" type_str="APoint" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint&amp; position" is_retrun="false" type_str="APoint" valuename_str="position" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetPointOnPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="APoint " is_retrun="true" type_str="APoint" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const float distance" is_retrun="false" type_str="float" valuename_str="distance" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="true"/>
-			</function>
-			<function name="GetPathGoPercent" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint&amp; pos" is_retrun="false" type_str="APoint" valuename_str="pos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="IsPathOver" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="const APoint&amp; pos" is_retrun="false" type_str="APoint" valuename_str="pos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetRadius" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="float " is_retrun="true" type_str="float" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="GetSegmentCount" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="unsigned int " is_retrun="true" type_str="unsigned int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			<function name="GetPath" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="std::list&lt;Vector3f&gt; " is_retrun="true" type_str="std::list&lt;Vector3f&gt;" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 		</class>
 		<class name="LogicManager" parentname="" singletonname="">

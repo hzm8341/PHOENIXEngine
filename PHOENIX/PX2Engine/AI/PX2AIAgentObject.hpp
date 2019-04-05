@@ -6,7 +6,6 @@
 #include "PX2CorePre.hpp"
 #include "PX2Object.hpp"
 #include "PX2HQuaternion.hpp"
-#include "OpenSteer/Obstacle.h"
 #include "PX2Controller.hpp"
 #include "PX2Movable.hpp"
 #include "PX2AIAgentBase.hpp"
@@ -18,7 +17,7 @@ namespace PX2
 	class AIAgentWorld;
 	class Node;
 
-	class PX2_ENGINE_ITEM AIAgentObject : public AIAgentBase, public OpenSteer::SphereObstacle
+	class PX2_ENGINE_ITEM AIAgentObject : public AIAgentBase
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_NAMES;
@@ -44,14 +43,6 @@ namespace PX2
 		HQuaternion GetOrientation() const;
 
 		float GetRigidBodyRadius() const;
-
-	public_internal:
-		OpenSteer::Vec3 _GetPosition(float zetZ) const;
-		float _SteerToAvoidDist(const OpenSteer::AbstractVehicle& vehicle,
-			const float minTimeToCollision) const;
-		OpenSteer::Vec3 _SteerToAvoid(
-			const OpenSteer::AbstractVehicle& vehicle,
-			const float minTimeToCollision) const;
 
 	protected:
 		virtual void _Update(double applicationTime, double elapsedTime);

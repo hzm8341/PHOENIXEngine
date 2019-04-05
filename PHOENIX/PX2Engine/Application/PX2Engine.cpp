@@ -28,17 +28,3 @@ Actor *Engine::CreateActorBox()
 	return actor;
 }
 //----------------------------------------------------------------------------
-void Engine::AIRemoveAllActions()
-{
-}
-//----------------------------------------------------------------------------
-void Engine::AIGoToPosition(Actor *actor, const APoint &pos)
-{
-
-}
-//----------------------------------------------------------------------------
-void Engine::AIGoPath(Actor *actor, const AIAgentPath &path)
-{
-
-}
-//----------------------------------------------------------------------------

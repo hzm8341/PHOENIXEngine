@@ -5,49 +5,51 @@
 
 #include "PX2CorePre.hpp"
 #include "PX2Vector3.hpp"
+#include "PX2APoint.hpp"
 
 namespace PX2
 {
 
-	class PX2_ENGINE_ITEM Path
+	class PX2_ENGINE_ITEM AIAgentPath
 	{
 	public:
-		Path() :m_bLooped(false) {}
+		AIAgentPath() :m_bLooped(false) {}
+		~AIAgentPath() {}
 
 		Vector3f CurrentWaypoint()const { return *curWaypoint; }
-		bool Finished() { return !(curWaypoint != m_WayPoints.end()); }
+		bool Finished() { return !(curWaypoint != mWayPoints.end()); }
 		inline void SetNextWaypoint();
 
 		void LoopOn() { m_bLooped = true; }
 		void LoopOff() { m_bLooped = false; }
 
-		void AddWayPoint(Vector3f new_point);
+		void AddWayPoint(const APoint &new_point);
 
-		void Set(std::list<Vector3f> new_path) { m_WayPoints = new_path; curWaypoint = m_WayPoints.begin(); }
-		void Set(const Path& path) { m_WayPoints = path.GetPath(); curWaypoint = m_WayPoints.begin(); }
+		void Set(std::list<Vector3f> new_path) { mWayPoints = new_path; curWaypoint = mWayPoints.begin(); }
+		void Set(const AIAgentPath& path) { mWayPoints = path.GetPath(); curWaypoint = mWayPoints.begin(); }
 
-		void Clear() { m_WayPoints.clear(); }
+		void Clear() { mWayPoints.clear(); }
 
-		std::list<Vector3f> GetPath()const { return m_WayPoints; }
+		std::list<Vector3f> GetPath()const { return mWayPoints; }
 
 		void Render()const;
 
 	private:
-		std::list<Vector3f> m_WayPoints;
+		std::list<Vector3f> mWayPoints;
 		std::list<Vector3f>::iterator  curWaypoint;
 		bool m_bLooped;
 
 	};
 	//----------------------------------------------------------------------------
-	inline void Path::SetNextWaypoint()
+	inline void AIAgentPath::SetNextWaypoint()
 	{
-		assert(m_WayPoints.size() > 0);
+		assert(mWayPoints.size() > 0);
 
-		if (++curWaypoint == m_WayPoints.end())
+		if (++curWaypoint == mWayPoints.end())
 		{
 			if (m_bLooped)
 			{
-				curWaypoint = m_WayPoints.begin();
+				curWaypoint = mWayPoints.begin();
 			}
 		}
 	}

@@ -6,21 +6,26 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-void Path::Render()const
+void AIAgentPath::AddWayPoint(const APoint &new_point)
+{
+	mWayPoints.push_back(Vector3f(new_point.X(), new_point.Y(), 0.0f));
+}
+//----------------------------------------------------------------------------
+void AIAgentPath::Render()const
 {
 	//gdi->OrangePen();
 
-	//std::list<Vector3f>::const_iterator it = m_WayPoints.begin();
+	//std::list<Vector3f>::const_iterator it = mWayPoints.begin();
 
 	//Vector3f wp = *it++;
 
-	//while (it != m_WayPoints.end())
+	//while (it != mWayPoints.end())
 	//{
 	//	gdi->Line(wp, *it);
 
 	//	wp = *it++;
 	//}
 
-	//if (m_bLooped) gdi->Line(*(--it), *m_WayPoints.begin());
+	//if (m_bLooped) gdi->Line(*(--it), *mWayPoints.begin());
 }
 //----------------------------------------------------------------------------
