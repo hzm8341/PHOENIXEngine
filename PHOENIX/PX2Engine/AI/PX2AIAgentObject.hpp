@@ -47,6 +47,8 @@ namespace PX2
 
 	public_internal:
 		OpenSteer::Vec3 _GetPosition(float zetZ) const;
+		float _SteerToAvoidDist(const OpenSteer::AbstractVehicle& vehicle,
+			const float minTimeToCollision) const;
 		OpenSteer::Vec3 _SteerToAvoid(
 			const OpenSteer::AbstractVehicle& vehicle,
 			const float minTimeToCollision) const;

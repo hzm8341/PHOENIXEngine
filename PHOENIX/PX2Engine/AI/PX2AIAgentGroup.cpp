@@ -28,7 +28,7 @@ AIAgentGroup& AIAgentGroup::operator=(const AIAgentGroup& group)
 	return *this;
 }
 //----------------------------------------------------------------------------
-void AIAgentGroup::AddAgent(const AIAgent* agent)
+void AIAgentGroup::AddAgent(const AIAgentBase* agent)
 {
 	if (!ContainsAgent(agent))
 	{
@@ -36,7 +36,7 @@ void AIAgentGroup::AddAgent(const AIAgent* agent)
 	}
 }
 //----------------------------------------------------------------------------
-bool AIAgentGroup::ContainsAgent(const AIAgent* agent) const
+bool AIAgentGroup::ContainsAgent(const AIAgentBase* agent) const
 {
 	std::vector<OpenSteer::AbstractVehicle*>::const_iterator it;
 
@@ -51,7 +51,7 @@ bool AIAgentGroup::ContainsAgent(const AIAgent* agent) const
 	return false;
 }
 //----------------------------------------------------------------------------
-bool AIAgentGroup::RemoveAgent(const AIAgent* agent)
+bool AIAgentGroup::RemoveAgent(const AIAgentBase* agent)
 {
 	auto it = begin();
 

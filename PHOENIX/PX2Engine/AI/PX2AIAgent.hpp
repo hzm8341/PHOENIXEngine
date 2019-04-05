@@ -199,6 +199,8 @@ namespace PX2
 
 		AVector mForcing;
 		Smoother<AVector> *mSmootherForcing;
+
+		AIAgentObject *mLastMinObject;
 	};
 
 	PX2_REGISTER_STREAM(AIAgent);

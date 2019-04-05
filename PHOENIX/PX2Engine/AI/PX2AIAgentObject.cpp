@@ -81,8 +81,7 @@ float AIAgentObject::GetRigidBodyRadius() const
 	return PhysicsUtilities::GetRigidBodyRadius(mRigidBody);
 }
 //----------------------------------------------------------------------------
-OpenSteer::Vec3 AIAgentObject::_SteerToAvoid(
-	const OpenSteer::AbstractVehicle& v,
+float AIAgentObject::_SteerToAvoidDist(const OpenSteer::AbstractVehicle& v,
 	const float minTimeToCollision) const
 {
 	// minimum distance to obstacle before avoidance is required
@@ -112,6 +111,8 @@ OpenSteer::Vec3 AIAgentObject::_SteerToAvoid(
 	// test to see if sphere overlaps with obstacle-free corridor
 	float length = offForwardOffset.length();
 
+	float dist = length + forwardComponent;
+
 	const bool inCylinder = length < totalRadius;
 	const bool isInRadius = localOffsetLength < totalRadius;
 	const bool nearby = forwardComponent < minDistanceToCenter;
@@ -123,13 +124,71 @@ OpenSteer::Vec3 AIAgentObject::_SteerToAvoid(
 	// if all three conditions are met, steer away from sphere center
 	if (inCylinder && nearby && inFront)
 	{
+		return length;
+	}
+	else
+	{
+		return 10000.0f;
+	}
+}
+//----------------------------------------------------------------------------
+OpenSteer::Vec3 AIAgentObject::_SteerToAvoid(
+	const OpenSteer::AbstractVehicle& v,
+	const float minTimeToCollision) const
+{
+	// minimum distance to obstacle before avoidance is required
+	const float minDistanceToCollision = minTimeToCollision * v.maxSpeed();
+	const float minDistanceToCenter = minDistanceToCollision + GetRadius();
+
+	// contact distance: sum of radii of obstacle and vehicle
+	float radius = GetRadius();
+	const float totalRadius = radius + v.radius();
+
+	float sepForce = 2.0f;
+
+	// obstacle center relative to vehicle position
+	OpenSteer::Vec3 vPos = v.position();
+	vPos.z = 0.0f;
+	const OpenSteer::Vec3 localOffset = _GetPosition(0.0f) - vPos;
+	float localOffsetLength = localOffset.length();
+	float distPerc = localOffsetLength / totalRadius;
+
+	// distance along vehicle's forward axis to obstacle's center
+	const float forwardComponent = localOffset.dot(v.forward());
+	const OpenSteer::Vec3 forwardOffset = forwardComponent * v.forward();
+	float forwardOffsetLength = forwardOffset.length();
+
+	// offset from forward axis to obstacle's center
+	const OpenSteer::Vec3 offForwardOffset = localOffset - forwardOffset;
+
+	// test to see if sphere overlaps with obstacle-free corridor
+	float length = offForwardOffset.length();
+
+	float dist = length + forwardComponent;
+
+	const bool inCylinder = length < totalRadius;
+	const bool isInRadius = localOffsetLength < totalRadius;
+	const bool nearby = forwardComponent < minDistanceToCenter;
+	const bool inFront = forwardComponent > 0;
+
+	OpenSteer::Vec3 vSide = v.side();
+	float offForwardOffsetLength = offForwardOffset.length();
+
+	double multiplier = 1.0 + (minDistanceToCenter - forwardOffsetLength) /
+		minDistanceToCollision;
+
+	OpenSteer::Vec3 allForce;
+
+	// if all three conditions are met, steer away from sphere center
+	if (inCylinder && nearby && inFront)
+	{
 		if (length == 0.0f)
 		{
-			return vSide;
+			allForce = vSide;// *(radius - offForwardOffsetLength) * multiplier;
 		}
 		else
 		{
-			return offForwardOffset * -1;
+			allForce = offForwardOffset * -1;// *(radius - offForwardOffsetLength) * multiplier;
 		}
 	}
 	else

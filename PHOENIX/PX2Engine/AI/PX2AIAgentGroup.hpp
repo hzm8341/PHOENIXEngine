@@ -5,14 +5,14 @@
 
 #include "PX2CorePre.hpp"
 #include "OpenSteer/AbstractVehicle.h"
-#include "PX2AIAgent.hpp"
+#include "PX2AIAgentBase.hpp"
 
 namespace PX2
 {
 
-	class PX2_ENGINE_ITEM AIAgentGroup : private OpenSteer::AVGroup
+	class PX2_ENGINE_ITEM AIAgentGroup : public OpenSteer::AVGroup
 	{
-		friend class AIAgent;
+		friend class AIAgentBase;
 
 	public:
 		AIAgentGroup();
@@ -21,10 +21,10 @@ namespace PX2
 
 		AIAgentGroup& operator=(const AIAgentGroup& group);
 
-		void AddAgent(const AIAgent* agent);
+		void AddAgent(const AIAgentBase* agent);
 
-		bool ContainsAgent(const AIAgent* agent) const;
-		bool RemoveAgent(const AIAgent* agent);
+		bool ContainsAgent(const AIAgentBase* agent) const;
+		bool RemoveAgent(const AIAgentBase* agent);
 		void RemoveAgents();
 		size_t Size() const;
 	};

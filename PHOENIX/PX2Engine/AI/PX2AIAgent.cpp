@@ -85,6 +85,8 @@ mTarget(Vector3f::ZERO)
 
 	mForcing = AVector::UNIT_Y;
 	mSmootherForcing = new0 Smoother<AVector>(24, AVector::UNIT_Y);
+
+	mLastMinObject = 0;
 }
 //----------------------------------------------------------------------------
 AIAgent::AIAgent(Node *node) :
@@ -112,6 +114,8 @@ mTarget(Vector3f::ZERO)
 
 	mForcing = AVector::UNIT_Y;
 	mSmootherForcing = new0 Smoother<AVector>(24, AVector::UNIT_Y);
+
+	mLastMinObject = 0;
 }
 //----------------------------------------------------------------------------
 AIAgent::~AIAgent()
@@ -229,14 +233,31 @@ AVector AIAgent::ForceToAvoidObjects(
 
 	OpenSteer::Vec3 avoidForce = OpenSteer::Vec3::zero;
 
+	AIAgentObject *obj = 0;
+	float minDist = 10000.0f;
 	for (it = objects.begin(); it != objects.end(); ++it)
 	{
 		AIAgentObject* const object = (*it);
 
 		if (object->GetMass() > 0 || object->IsMassZeroAvoid())
 		{
-			avoidForce += object->_SteerToAvoid(*this, timeToCollision);
+			float dist = object->_SteerToAvoidDist(*this, timeToCollision);
+			if (dist < minDist)
+			{
+				minDist = dist;
+				obj = object;
+			}
 		}
+	}
+
+	if (obj != mLastMinObject)
+	{
+		mLastMinObject = obj;
+	}
+
+	if (mLastMinObject)
+	{
+		avoidForce = mLastMinObject->_SteerToAvoid(*this, timeToCollision);
 	}
 
 	return _Vec3ToAVector(avoidForce);
@@ -295,7 +316,9 @@ AVector AIAgent::ForceToCombine(float maxDistance, float maxAngle,
 	float rad = maxAngle * Mathf::DEG_TO_RAD;
 	float cosVal = Mathf::Cos(rad);
 
-	return _Vec3ToAVector(steerForCohesion(maxDistance, cosVal, group));
+	const OpenSteer::AVGroup &avg = group;
+
+	return _Vec3ToAVector(steerForCohesion(maxDistance, cosVal, avg));
 }
 //----------------------------------------------------------------------------
 AVector AIAgent::ForceToCombine(float maxDistance, float maxAngle,
