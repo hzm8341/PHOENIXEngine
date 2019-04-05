@@ -18,6 +18,7 @@
 #include "Slam2DPlugin.hpp"
 #endif
 #include "PX2PluginManager.hpp"
+#include "PX2AIAgent.hpp"
 using namespace PX2;
 
 #if defined _WIN32 || defined WIN32
@@ -48,7 +49,8 @@ mPathUpdateTiming(0.0f),
 mDragingLeftMoveType(0),
 mDragingLeftMoveSpeed(0.0f),
 mDragingRightMoveType(0),
-mDragingRightMoveSpeed(0.0f)
+mDragingRightMoveSpeed(0.0f),
+mAgent(0)
 {
 	mRoleType = RT_MASTER;
 
@@ -573,6 +575,10 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		mAxisRight = mAxisDirection.Cross(mAxisUp);
 		mAxisRotMatrix = HMatrix(mAxisRight, mAxisDirection, mAxisUp, APoint::ORIGIN, true);
 	}
+
+	mRight = mDirection.Cross(AVector::UNIT_Z);
+	mUp = AVector::UNIT_Z;
+	mMatrix = HMatrix(mRight, mDirection, mUp, mPosition, true);
 
 	if (mLiDar)
 	{
@@ -1277,9 +1283,9 @@ void Robot::SetSlam2DPosition(const APoint &pos, float angle)
 	dir.Normalize();
 	mDirection = dir;
 	mDirection.Normalize();
+
 	mRight = mDirection.Cross(AVector::UNIT_Z);
 	mUp = AVector::UNIT_Z;
-
 	mMatrix = HMatrix(mRight, mDirection, mUp, mPosition, true);
 
 	if (mLiDar)
@@ -1601,13 +1607,26 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 
 	float spd = (leftSpeed + rightSpeed) * 0.5f;
 
-	mDirection = AVector(-Mathf::Sin(rad), Mathf::Cos(rad), 0.0f);
-	mDirection.Normalize();
+	if (mArduino->IsInitlized())
+	{
+		int iLeftSpeed = (int)((leftSpeed / 0.2f) * 80);
+		int iRightSpeed = (int)((rightSpeed / 0.2f) * 80);
+		mArduino->RunSpeed(0, iLeftSpeed);
+		mArduino->RunSpeed(1, iRightSpeed);
 
-	mFakeSpeed = spd;
-	mFackVelocity = mDirection * mFakeSpeed;
-	
-	mPosition += mFackVelocity * elaplseSeconds;
+		mFakeSpeed = spd;
+		mFackVelocity = mDirection * mFakeSpeed;
+	}
+	else
+	{
+		mDirection = AVector(-Mathf::Sin(rad), Mathf::Cos(rad), 0.0f);
+		mDirection.Normalize();
+
+		mFakeSpeed = spd;
+		mFackVelocity = mDirection * mFakeSpeed;
+
+		mPosition += mFackVelocity * elaplseSeconds;
+	}
 }
 //----------------------------------------------------------------------------
 void Robot::GoTarget(const APoint &targetPos)
@@ -1631,6 +1650,16 @@ void Robot::GoTarget(const APoint &targetPos)
 
 		mCurPathPlan->ResetPath();
 	}
+}
+//----------------------------------------------------------------------------
+void Robot::_SetAIAgent(AIAgentBase *agent)
+{
+	mAgent = agent;
+}
+//----------------------------------------------------------------------------
+AIAgentBase *Robot::GetAIAgent()
+{
+	return mAgent;
 }
 //----------------------------------------------------------------------------
 bool Robot::_IsInRightDirection(const AVector &dir)

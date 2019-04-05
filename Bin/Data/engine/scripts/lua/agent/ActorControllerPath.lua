@@ -14,7 +14,7 @@ function ActorControllerPath:OnAttached()
 
 	self._agent:SetMaxForce(10.0)
 	self._agent:SetMass(2.0)
-	self._agent:SetRadius(0.1)
+	self._agent:SetRadius(0.15)
 	self._agent:SetPhysicsRadius(0.001)
 	self._agent:SetHeight(0.1)
 	self._agent:SetMaxSpeed(0.2)
@@ -27,13 +27,13 @@ function ActorControllerPath:OnInitUpdate()
 		self._path0 = agentPath
 		agentPath:AddPoint(APoint(0.0, 0.0, 0.0))
 		agentPath:AddPoint(APoint(0.0, 2.0, 0.0))
-		agentPath:AddPoint(APoint(2, 2.0, 0.0))
+		agentPath:AddPoint(APoint(1.0, 2.0, 0.0))
 		agentPath:ConfigPoints(0.05, false)
 		self._agent:SetPath(agentPath)
 		self._curPath = 0
 
 		local agentPath1 = AIAgentPath()
-		agentPath1:AddPoint(APoint(2, 2.0, 0.0))
+		agentPath1:AddPoint(APoint(1.0, 2.0, 0.0))
 		agentPath1:AddPoint(APoint(0.0, 2.0, 0.0))
 		agentPath1:AddPoint(APoint(0.0, 0.0, 0.0))
 		agentPath1:ConfigPoints(0.05, false)
@@ -74,7 +74,7 @@ function ActorControllerPath:OnPUpdate()
 	-- avoid
 	local avoidAgentForce = self._agent:ForceToAvoidAgents(3)
     local avoidObjectForce = self._agent:ForceToAvoidObjects(3)
-	local avoidanceMultiplier = 1
+	local avoidanceMultiplier = 2
 	local agentForce = avoidAgentForce:Dot(avoidanceMultiplier)
 	local objForce = avoidObjectForce:Dot(avoidanceMultiplier)
 	
@@ -105,8 +105,8 @@ function ActorControllerPath:OnPUpdate()
 		local targetSpeed = 0.2;
 		-- Accelerate pathing agents to a minimum speed.
 		if (self._agent:GetSpeed() < targetSpeed) then
-			local speedForce = self._agent:ForceToTargetSpeed(targetSpeed)
-			steeringForces = steeringForces:Add(speedForce)
+			--local speedForce = self._agent:ForceToTargetSpeed(targetSpeed)
+			--steeringForces = steeringForces:Add(speedForce)
 		end
 	end
 		
@@ -114,8 +114,8 @@ function ActorControllerPath:OnPUpdate()
 	 	local targetSpeed = 0.2;
 	 	-- Accelerate pathing agents to a minimum speed.
 	 	if (self._agent:GetSpeed() < targetSpeed) then
-	 		local speedForce = self._agent:ForceToTargetSpeed(targetSpeed)
-	 		steeringForces = steeringForces:Add(speedForce)
+	 		--local speedForce = self._agent:ForceToTargetSpeed(targetSpeed)
+	 		--steeringForces = steeringForces:Add(speedForce)
 	 	end
 	end
 	

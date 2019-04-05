@@ -435,7 +435,7 @@ steerToFollowPath (const int direction,
 				   Old::Pathway& path)
 {
     // our goal will be offset from our path distance by this amount
-    const float pathDistanceOffset = direction * predictionTime * speed();
+    const float pathDistanceOffset = direction * predictionTime * maxSpeed();
 
     // predict our future position
     const Vec3 futurePosition = predictFuturePosition (predictionTime);
@@ -562,8 +562,9 @@ steerToAvoidNeighbors (const float minTimeToCollision,
                        const AVGroup& others)
 {
     // first priority is to prevent immediate interpenetration
-    //const Vec3 separation = steerToAvoidCloseNeighbors (0, others);
-    //if (separation != Vec3::zero) return separation;
+    const Vec3 separation = steerToAvoidCloseNeighbors (0, others);
+    if (separation != Vec3::zero)
+		return separation;
 
     // otherwise, go on to consider potential future collisions
     float steer = 0;

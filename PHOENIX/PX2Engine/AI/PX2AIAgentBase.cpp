@@ -282,6 +282,10 @@ void AIAgentBase::_Update(double applicationTime, double elapsedTime)
 void AIAgentBase::SetRobot(Robot *robot)
 {
 	mRobot = robot;
+	if (mRobot)
+	{
+		mRobot->_SetAIAgent(this);
+	}
 }
 //----------------------------------------------------------------------------
 Robot *AIAgentBase::GetRobot()

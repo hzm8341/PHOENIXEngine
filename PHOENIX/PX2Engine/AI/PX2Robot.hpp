@@ -28,6 +28,8 @@ namespace PX2
 	class Slam2DPlugin;
 #endif
 
+	class AIAgentBase;
+
 	class PX2_ENGINE_ITEM Robot : public Singleton<Robot>
 	{
 	public:
@@ -238,6 +240,10 @@ namespace PX2
 
 		void AdjustToDirection(const AVector &dir);
 
+	public_internal:
+		void _SetAIAgent(AIAgentBase *agent);
+		AIAgentBase *GetAIAgent();
+
 	private:
 		bool _IsInRightDirection(const AVector &dir);
 		void _UpdateAdjustDirection(const AVector &dir);
@@ -259,6 +265,7 @@ namespace PX2
 		AVector GetVelocity() const;
 
 	private:
+		AIAgentBase *mAgent;
 		AVector mFakeForce;
 		bool mIsUseFakeForce;
 		float mFakeSpeed;

@@ -303,7 +303,7 @@ Actor *Creater::CreateActorBox()
 
 	Movable *mov = CreateMovable_Box();
 	actor->AttachChild(mov);
-	mov->LocalTransform.SetUniformScale(0.2f);
+	mov->LocalTransform.SetUniformScale(0.1f);
 
 	actor->SetPhysicsShapeType(Actor::PST_MESH, mov);
 
