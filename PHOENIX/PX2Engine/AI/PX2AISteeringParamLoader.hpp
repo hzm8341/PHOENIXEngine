@@ -15,7 +15,7 @@ namespace PX2
 	{
 	private:
 
-		ParamLoader() :iniFileLoaderBase("params.ini")
+		ParamLoader() :iniFileLoaderBase("Data/ZERONE/cfg/params.ini")
 		{
 			NumAgents = GetNextParameterInt();
 			NumObstacles = GetNextParameterInt();

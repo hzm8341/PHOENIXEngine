@@ -465,9 +465,42 @@ float AIAgent::GetTargetRadius() const
 	return mTargetRadius;
 }
 //----------------------------------------------------------------------------
+void AIAgent::ApplyForce(const AVector &force)
+{
+	if (mRobot)
+	{
+		if (mRobot->GetLidar()->IsOpened()
+			&& mRobot->IsArduinoConnected())
+		{
+
+		}
+
+		mRobot->FakeGoForce(force);
+	}
+	else
+	{
+		if (mRigidBody)
+		{
+			PhysicsUtilities::ApplyForce(
+				mRigidBody, btVector3(force.X(), force.Y(), force.Z()));
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void AIAgent::ApplyForcing(const AVector &force)
+{
+	mForcing = force;
+}
+//----------------------------------------------------------------------------
 void AIAgent::_Update(double applicationTime, double elapsedTime)
 {
 	AIAgentBase::_Update(applicationTime, elapsedTime);
+
+	if (mSteeringBehavior)
+	{
+		AVector force = mSteeringBehavior->Calculate();
+		ApplyForcing(force);
+	}
 
 	if (mRobot)
 	{
@@ -477,7 +510,7 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 		if (mSmootherForcing)
 		{
 			AVector force = mSmootherForcing->Update(mForcing, elapsedTime);
-			//ApplyForce(force);
+			ApplyForce(force);
 		}
 	}
 	else

@@ -44,22 +44,37 @@ namespace PX2
 		static const std::string DEFAULT_AGENT_TEAM;
 
 	public:	
-		void RemovePath();
 		void SetForward(const AVector& forward);
 		void EnableForwarding(bool enable);
 		bool IsForwardingEnabled() const;
 		void SetForwarding(const AVector& forwarding);
+
 		void SetHeight(float  height);
+		float GetHeight() const;
+
 		void SetMaxForce(float force);
+		float GetMaxForce() const;
+
 		void SetMaxSpeed(float speed);
+		float GetMaxSpeed() const;
+
 		void SetPath(const AIAgentPath& path);
+		void RemovePath();
 		bool IsPathOver() const;
 
 		void SetSpeed(float speed);
+		float GetSpeed() const;
+
 		void SetTarget(const APoint& target);
+		APoint GetTarget() const;
+
 		void SetTargetRadius(float radius);
+		float GetTargetRadius() const;
+
 		void SetTeam(const std::string& team);
+
 		void SetVelocity(const AVector& velocity);
+		AVector GetVelocity() const;
 
 		AVector GetRight() const;
 		AVector GetUp() const;
@@ -71,17 +86,9 @@ namespace PX2
 		void SetPhysicsRadius(float radius);
 		float GetPhysicsRadius() const;
 
-		float GetHeight() const;
-
-		float GetMaxForce() const;
-		float GetMaxSpeed() const;
-
-		float GetSpeed() const;
-
-		APoint GetTarget() const;
-		float GetTargetRadius() const;
-
-		AVector GetVelocity() const;
+	public:
+		void ApplyForce(const AVector &force);
+		void ApplyForcing(const AVector &force);
 
 	public_internal:
 		void SetAIAgentWorld(AIAgentWorld *agentWorld);

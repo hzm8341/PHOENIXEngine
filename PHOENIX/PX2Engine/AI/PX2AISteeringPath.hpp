@@ -32,7 +32,7 @@ namespace PX2
 
 		std::list<Vector3f> GetPath()const { return mWayPoints; }
 
-		void Render()const;
+		void Update();
 
 	private:
 		std::list<Vector3f> mWayPoints;

@@ -49,66 +49,66 @@ namespace PX2
 		};
 
 	private:
-		AIAgent*     mVehicle;
+		AIAgent*     mAgent;
 
 		Vector3f    m_vSteeringForce;
 
-		AIAgent*     m_pTargetAgent1;
-		AIAgent*     m_pTargetAgent2;
+		AIAgent*     mTargetAgent1;
+		AIAgent*     mTargetAgent2;
 
 		Vector3f    m_vTarget;
 
 		float                 mDBoxLength;
 
-		std::vector<Vector3f> m_Feelers;
+		std::vector<Vector3f> mFeelers;
 
 		//the length of the 'feeler/s' used in wall detection
-		float                 m_dWallDetectionFeelerLength;
+		float                 mWallDetectionFeelerLength;
 
 		Vector3f     m_vWanderTarget;
 
-		float        m_dWanderJitter;
-		float        m_dWanderRadius;
-		float        m_dWanderDistance;
+		float        mWanderJitter;
+		float        mWanderRadius;
+		float        mWanderDistance;
 
-		float        m_dWeightSeparation;
-		float        m_dWeightCohesion;
-		float        m_dWeightAlignment;
-		float        m_dWeightWander;
-		float        m_dWeightObstacleAvoidance;
-		float        m_dWeightWallAvoidance;
-		float        m_dWeightSeek;
-		float        m_dWeightFlee;
-		float        m_dWeightArrive;
-		float        m_dWeightPursuit;
-		float        m_dWeightOffsetPursuit;
-		float        m_dWeightInterpose;
-		float        m_dWeightHide;
-		float        m_dWeightEvade;
-		float        m_dWeightFollowPath;
+		float        mWeightSeparation;
+		float        mWeightCohesion;
+		float        mWeightAlignment;
+		float        mWeightWander;
+		float        mWeightObstacleAvoidance;
+		float        mWeightWallAvoidance;
+		float        mWeightSeek;
+		float        mWeightFlee;
+		float        mWeightArrive;
+		float        mWeightPursuit;
+		float        mWeightOffsetPursuit;
+		float        mWeightInterpose;
+		float        mWeightHide;
+		float        mWeightEvade;
+		float        mWeightFollowPath;
 
-		float        m_dViewDistance;
+		float        mViewDistance;
 
 		//pointer to any current path
 		AIAgentPath mPath;
 
-		float        m_dWaypointSeekDistSq;
+		float        mWaypointSeekDistSq;
 		Vector3f     m_vOffset;
 
 		//binary flags to indicate whether or not a behavior should be active
-		int           m_iFlags;
+		int           mFlags;
 
 		enum Deceleration { slow = 3, normal = 2, fast = 1 };
 
-		Deceleration m_Deceleration;
+		Deceleration mDeceleration;
 
-		bool          m_bCellSpaceOn;
+		bool          mCellSpaceOn;
 
-		summing_method  m_SummingMethod;
+		summing_method  mSummingMethod;
 
-		bool      On(behavior_type bt) { return (m_iFlags & bt) == bt; }
+		bool On(behavior_type bt) { return (mFlags & bt) == bt; }
 
-		bool      AccumulateForce(Vector3f &sf, Vector3f forceToAdd);
+		bool AccumulateForce(Vector3f &sf, Vector3f forceToAdd);
 
 		Vector3f Seek(Vector3f TargetPos);
 		Vector3f Flee(Vector3f TargetPos);
@@ -149,51 +149,51 @@ namespace PX2
 		void RenderAids();
 
 		void SetTarget(const Vector3f t) { m_vTarget = t; }
-		void SetTargetAgent1(AIAgent* Agent) { m_pTargetAgent1 = Agent; }
-		void SetTargetAgent2(AIAgent* Agent) { m_pTargetAgent2 = Agent; }
+		void SetTargetAgent1(AIAgent* Agent) { mTargetAgent1 = Agent; }
+		void SetTargetAgent2(AIAgent* Agent) { mTargetAgent2 = Agent; }
 		void SetOffset(const Vector3f offset) { m_vOffset = offset; }
 		Vector3f GetOffset()const { return m_vOffset; }
 		void SetPath(std::list<Vector3f> new_path) { mPath.Set(new_path); }
 
 		Vector3f Force()const { return m_vSteeringForce; }
 
-		void ToggleSpacePartitioningOnOff() { m_bCellSpaceOn = !m_bCellSpaceOn; }
-		bool IsSpacePartitioningOn()const { return m_bCellSpaceOn; }
+		void ToggleSpacePartitioningOnOff() { mCellSpaceOn = !mCellSpaceOn; }
+		bool IsSpacePartitioningOn()const { return mCellSpaceOn; }
 
-		void SetSummingMethod(summing_method sm) { m_SummingMethod = sm; }
+		void SetSummingMethod(summing_method sm) { mSummingMethod = sm; }
 
-		void FleeOn() { m_iFlags |= flee; }
-		void SeekOn() { m_iFlags |= seek; }
-		void ArriveOn() { m_iFlags |= arrive; }
-		void WanderOn() { m_iFlags |= wander; }
-		void PursuitOn(AIAgent* v) { m_iFlags |= pursuit; m_pTargetAgent1 = v; }
-		void EvadeOn(AIAgent* v) { m_iFlags |= evade; m_pTargetAgent1 = v; }
-		void CohesionOn() { m_iFlags |= cohesion; }
-		void SeparationOn() { m_iFlags |= separation; }
-		void AlignmentOn() { m_iFlags |= allignment; }
-		void ObstacleAvoidanceOn() { m_iFlags |= obstacle_avoidance; }
-		void WallAvoidanceOn() { m_iFlags |= wall_avoidance; }
-		void FollowPathOn() { m_iFlags |= follow_path; }
-		void InterposeOn(AIAgent* v1, AIAgent* v2) { m_iFlags |= interpose; m_pTargetAgent1 = v1; m_pTargetAgent2 = v2; }
-		void HideOn(AIAgent* v) { m_iFlags |= hide; m_pTargetAgent1 = v; }
-		void OffsetPursuitOn(AIAgent* v1, const Vector3f offset) { m_iFlags |= offset_pursuit; m_vOffset = offset; m_pTargetAgent1 = v1; }
+		void FleeOn() { mFlags |= flee; }
+		void SeekOn() { mFlags |= seek; }
+		void ArriveOn() { mFlags |= arrive; }
+		void WanderOn() { mFlags |= wander; }
+		void PursuitOn(AIAgent* v) { mFlags |= pursuit; mTargetAgent1 = v; }
+		void EvadeOn(AIAgent* v) { mFlags |= evade; mTargetAgent1 = v; }
+		void CohesionOn() { mFlags |= cohesion; }
+		void SeparationOn() { mFlags |= separation; }
+		void AlignmentOn() { mFlags |= allignment; }
+		void ObstacleAvoidanceOn() { mFlags |= obstacle_avoidance; }
+		void WallAvoidanceOn() { mFlags |= wall_avoidance; }
+		void FollowPathOn() { mFlags |= follow_path; }
+		void InterposeOn(AIAgent* v1, AIAgent* v2) { mFlags |= interpose; mTargetAgent1 = v1; mTargetAgent2 = v2; }
+		void HideOn(AIAgent* v) { mFlags |= hide; mTargetAgent1 = v; }
+		void OffsetPursuitOn(AIAgent* v1, const Vector3f offset) { mFlags |= offset_pursuit; m_vOffset = offset; mTargetAgent1 = v1; }
 		void FlockingOn() { CohesionOn(); AlignmentOn(); SeparationOn(); WanderOn(); }
 
-		void FleeOff() { if (On(flee))   m_iFlags ^= flee; }
-		void SeekOff() { if (On(seek))   m_iFlags ^= seek; }
-		void ArriveOff() { if (On(arrive)) m_iFlags ^= arrive; }
-		void WanderOff() { if (On(wander)) m_iFlags ^= wander; }
-		void PursuitOff() { if (On(pursuit)) m_iFlags ^= pursuit; }
-		void EvadeOff() { if (On(evade)) m_iFlags ^= evade; }
-		void CohesionOff() { if (On(cohesion)) m_iFlags ^= cohesion; }
-		void SeparationOff() { if (On(separation)) m_iFlags ^= separation; }
-		void AlignmentOff() { if (On(allignment)) m_iFlags ^= allignment; }
-		void ObstacleAvoidanceOff() { if (On(obstacle_avoidance)) m_iFlags ^= obstacle_avoidance; }
-		void WallAvoidanceOff() { if (On(wall_avoidance)) m_iFlags ^= wall_avoidance; }
-		void FollowPathOff() { if (On(follow_path)) m_iFlags ^= follow_path; }
-		void InterposeOff() { if (On(interpose)) m_iFlags ^= interpose; }
-		void HideOff() { if (On(hide)) m_iFlags ^= hide; }
-		void OffsetPursuitOff() { if (On(offset_pursuit)) m_iFlags ^= offset_pursuit; }
+		void FleeOff() { if (On(flee))   mFlags ^= flee; }
+		void SeekOff() { if (On(seek))   mFlags ^= seek; }
+		void ArriveOff() { if (On(arrive)) mFlags ^= arrive; }
+		void WanderOff() { if (On(wander)) mFlags ^= wander; }
+		void PursuitOff() { if (On(pursuit)) mFlags ^= pursuit; }
+		void EvadeOff() { if (On(evade)) mFlags ^= evade; }
+		void CohesionOff() { if (On(cohesion)) mFlags ^= cohesion; }
+		void SeparationOff() { if (On(separation)) mFlags ^= separation; }
+		void AlignmentOff() { if (On(allignment)) mFlags ^= allignment; }
+		void ObstacleAvoidanceOff() { if (On(obstacle_avoidance)) mFlags ^= obstacle_avoidance; }
+		void WallAvoidanceOff() { if (On(wall_avoidance)) mFlags ^= wall_avoidance; }
+		void FollowPathOff() { if (On(follow_path)) mFlags ^= follow_path; }
+		void InterposeOff() { if (On(interpose)) mFlags ^= interpose; }
+		void HideOff() { if (On(hide)) mFlags ^= hide; }
+		void OffsetPursuitOff() { if (On(offset_pursuit)) mFlags ^= offset_pursuit; }
 		void FlockingOff() { CohesionOff(); AlignmentOff(); SeparationOff(); WanderOff(); }
 
 		bool isFleeOn() { return On(flee); }
@@ -213,15 +213,15 @@ namespace PX2
 		bool isOffsetPursuitOn() { return On(offset_pursuit); }
 
 		float DBoxLength()const { return mDBoxLength; }
-		const std::vector<Vector3f>& GetFeelers()const { return m_Feelers; }
+		const std::vector<Vector3f>& GetFeelers()const { return mFeelers; }
 
-		float WanderJitter()const { return m_dWanderJitter; }
-		float WanderDistance()const { return m_dWanderDistance; }
-		float WanderRadius()const { return m_dWanderRadius; }
+		float WanderJitter()const { return mWanderJitter; }
+		float WanderDistance()const { return mWanderDistance; }
+		float WanderRadius()const { return mWanderRadius; }
 
-		float SeparationWeight()const { return m_dWeightSeparation; }
-		float AlignmentWeight()const { return m_dWeightAlignment; }
-		float CohesionWeight()const { return m_dWeightCohesion; }
+		float SeparationWeight()const { return mWeightSeparation; }
+		float AlignmentWeight()const { return mWeightAlignment; }
+		float CohesionWeight()const { return mWeightCohesion; }
 	};
 
 }

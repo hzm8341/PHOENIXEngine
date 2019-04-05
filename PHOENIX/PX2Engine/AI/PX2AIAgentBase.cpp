@@ -267,6 +267,7 @@ void AIAgentBase::_Update(double applicationTime, double elapsedTime)
 	PX2_UNUSED(applicationTime);
 	PX2_UNUSED(elapsedTime);
 
+
 	if (mRobot)
 	{
 		APoint pos = mRobot->GetPosition();

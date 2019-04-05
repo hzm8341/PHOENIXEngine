@@ -11,46 +11,49 @@ using namespace std;
 
 //------------------------------------------------------------------------
 SteeringBehavior::SteeringBehavior(AIAgent* agent):
-	mVehicle(agent),
-	m_iFlags(0),
+	mAgent(agent),
+	mFlags(0),
 	mDBoxLength(Prm.MinDetectionBoxLength),
-	m_dWeightCohesion(Prm.CohesionWeight),
-	m_dWeightAlignment(Prm.AlignmentWeight),
-	m_dWeightSeparation(Prm.SeparationWeight),
-	m_dWeightObstacleAvoidance(Prm.ObstacleAvoidanceWeight),
-	m_dWeightWander(Prm.WanderWeight),
-	m_dWeightWallAvoidance(Prm.WallAvoidanceWeight),
-	m_dViewDistance(Prm.ViewDistance),
-	m_dWallDetectionFeelerLength(Prm.WallDetectionFeelerLength),
-	m_Feelers(3),
-	m_Deceleration(normal),
-	m_pTargetAgent1(0),
-	m_pTargetAgent2(0),
-	m_dWanderDistance(WanderDist),
-	m_dWanderJitter(WanderJitterPerSec),
-	m_dWanderRadius(WanderRad),
-	m_dWaypointSeekDistSq(WaypointSeekDist*WaypointSeekDist),
-	m_dWeightSeek(Prm.SeekWeight),
-	m_dWeightFlee(Prm.FleeWeight),
-	m_dWeightArrive(Prm.ArriveWeight),
-	m_dWeightPursuit(Prm.PursuitWeight),
-	m_dWeightOffsetPursuit(Prm.OffsetPursuitWeight),
-	m_dWeightInterpose(Prm.InterposeWeight),
-	m_dWeightHide(Prm.HideWeight),
-	m_dWeightEvade(Prm.EvadeWeight),
-	m_dWeightFollowPath(Prm.FollowPathWeight),
-	m_bCellSpaceOn(false),
-	m_SummingMethod(prioritized)
+	mWeightCohesion(Prm.CohesionWeight),
+	mWeightAlignment(Prm.AlignmentWeight),
+	mWeightSeparation(Prm.SeparationWeight),
+	mWeightObstacleAvoidance(Prm.ObstacleAvoidanceWeight),
+	mWeightWander(Prm.WanderWeight),
+	mWeightWallAvoidance(Prm.WallAvoidanceWeight),
+	mViewDistance(Prm.ViewDistance),
+	mWallDetectionFeelerLength(Prm.WallDetectionFeelerLength),
+	mFeelers(3),
+	mDeceleration(normal),
+	mTargetAgent1(0),
+	mTargetAgent2(0),
+	mWanderDistance(WanderDist),
+	mWanderJitter(WanderJitterPerSec),
+	mWanderRadius(WanderRad),
+	mWaypointSeekDistSq(WaypointSeekDist*WaypointSeekDist),
+	mWeightSeek(Prm.SeekWeight),
+	mWeightFlee(Prm.FleeWeight),
+	mWeightArrive(Prm.ArriveWeight),
+	mWeightPursuit(Prm.PursuitWeight),
+	mWeightOffsetPursuit(Prm.OffsetPursuitWeight),
+	mWeightInterpose(Prm.InterposeWeight),
+	mWeightHide(Prm.HideWeight),
+	mWeightEvade(Prm.EvadeWeight),
+	mWeightFollowPath(Prm.FollowPathWeight),
+	mCellSpaceOn(false),
+	mSummingMethod(prioritized)
 {
 	//stuff for the wander behavior
 	float theta = Mathf::UnitRandom() * Mathf::TWO_PI;
 
 	//create a vector to a target position on the wander circle
-	m_vWanderTarget = Vector3f(m_dWanderRadius * Mathf::Cos(theta),
-		m_dWanderRadius * Mathf::Sin(theta), 0.0f);
+	m_vWanderTarget = Vector3f(mWanderRadius * Mathf::Cos(theta),
+		mWanderRadius * Mathf::Sin(theta), 0.0f);
 
 	//create a Path
 	mPath.LoopOn();
+
+	FollowPathOn();
+	ObstacleAvoidanceOn();
 }
 //------------------------------------------------------------------------
 SteeringBehavior::~SteeringBehavior()
@@ -59,6 +62,8 @@ SteeringBehavior::~SteeringBehavior()
 //------------------------------------------------------------------------
 Vector3f SteeringBehavior::Calculate()
 {
+	mPath.Update();
+
 	//reset the steering force
 	m_vSteeringForce = Vector3f::ZERO;
 
@@ -69,7 +74,7 @@ Vector3f SteeringBehavior::Calculate()
 		//tag neighbors if any of the following 3 group behaviors are switched on
 		if (On(separation) || On(allignment) || On(cohesion))
 		{
-			mVehicle->GetAIAgentWorld()->TagVehiclesWithinViewRange(mVehicle, m_dViewDistance);
+			mAgent->GetAIAgentWorld()->TagVehiclesWithinViewRange(mAgent, mViewDistance);
 		}
 	}
 	else
@@ -78,11 +83,11 @@ Vector3f SteeringBehavior::Calculate()
 		//behaviors are switched on
 		if (On(separation) || On(allignment) || On(cohesion))
 		{
-			mVehicle->GetAIAgentWorld()->CellSpace()->CalculateNeighbors(mVehicle->GetPosition(), m_dViewDistance);
+			mAgent->GetAIAgentWorld()->CellSpace()->CalculateNeighbors(mAgent->GetPosition(), mViewDistance);
 		}
 	}
 
-	switch (m_SummingMethod)
+	switch (mSummingMethod)
 	{
 	case weighted_average:
 
@@ -101,19 +106,19 @@ Vector3f SteeringBehavior::Calculate()
 //------------------------------------------------------------------------
 float SteeringBehavior::ForwardComponent()
 {
-	return mVehicle->GetForward().Dot(m_vSteeringForce);
+	return mAgent->GetForward().Dot(m_vSteeringForce);
 }
 //------------------------------------------------------------------------
 float SteeringBehavior::SideComponent()
 {
-	return mVehicle->GetRight().Dot(m_vSteeringForce);
+	return mAgent->GetRight().Dot(m_vSteeringForce);
 }
 //------------------------------------------------------------------------
 bool SteeringBehavior::AccumulateForce(Vector3f &runningTot,
 	Vector3f forceToAdd)
 {
 	float magnitudeSoFar = runningTot.Length();
-	float magnitudeRemaining = mVehicle->GetMaxForce() - 
+	float magnitudeRemaining = mAgent->GetMaxForce() - 
 		magnitudeSoFar;
 
 	if (magnitudeRemaining <= 0.0) return false;
@@ -139,25 +144,25 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 	if (On(wall_avoidance))
 	{
-		force = WallAvoidance(mVehicle->GetAIAgentWorld()->GetWalls()) *
-			m_dWeightWallAvoidance;
+		force = WallAvoidance(mAgent->GetAIAgentWorld()->GetWalls()) *
+			mWeightWallAvoidance;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(obstacle_avoidance))
 	{
-		force = ObstacleAvoidance(mVehicle->GetAIAgentWorld()->GetObjects()) *
-			m_dWeightObstacleAvoidance;
+		force = ObstacleAvoidance(mAgent->GetAIAgentWorld()->GetObjects()) *
+			mWeightObstacleAvoidance;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(evade))
 	{
-		assert(m_pTargetAgent1 && "Evade target not assigned");
+		assert(mTargetAgent1 && "Evade target not assigned");
 
-		force = Evade(m_pTargetAgent1) * m_dWeightEvade;
+		force = Evade(mTargetAgent1) * mWeightEvade;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
@@ -165,7 +170,7 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 	if (On(flee))
 	{
-		force = Flee(mVehicle->GetTarget()) * m_dWeightFlee;
+		force = Flee(mAgent->GetTarget()) * mWeightFlee;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
@@ -174,21 +179,21 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 	{
 		if (On(separation))
 		{
-			force = Separation(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightSeparation;
+			force = Separation(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightSeparation;
 
 			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 		}
 
 		if (On(allignment))
 		{
-			force = Alignment(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightAlignment;
+			force = Alignment(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightAlignment;
 
 			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 		}
 
 		if (On(cohesion))
 		{
-			force = Cohesion(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightCohesion;
+			force = Cohesion(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightCohesion;
 
 			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 		}
@@ -198,21 +203,21 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 		if (On(separation))
 		{
-			force = SeparationPlus(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightSeparation;
+			force = SeparationPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightSeparation;
 
 			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 		}
 
 		if (On(allignment))
 		{
-			force = AlignmentPlus(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightAlignment;
+			force = AlignmentPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightAlignment;
 
 			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 		}
 
 		if (On(cohesion))
 		{
-			force = CohesionPlus(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightCohesion;
+			force = CohesionPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightCohesion;
 
 			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 		}
@@ -220,7 +225,7 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 	if (On(seek))
 	{
-		force = Seek(mVehicle->GetTarget()) * m_dWeightSeek;
+		force = Seek(mAgent->GetTarget()) * mWeightSeek;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
@@ -228,51 +233,51 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 	if (On(arrive))
 	{
-		force = Arrive(mVehicle->GetTarget(), m_Deceleration) * m_dWeightArrive;
+		force = Arrive(mAgent->GetTarget(), mDeceleration) * mWeightArrive;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(wander))
 	{
-		force = Wander() * m_dWeightWander;
+		force = Wander() * mWeightWander;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(pursuit))
 	{
-		assert(m_pTargetAgent1 && "pursuit target not assigned");
+		assert(mTargetAgent1 && "pursuit target not assigned");
 
-		force = Pursuit(m_pTargetAgent1) * m_dWeightPursuit;
+		force = Pursuit(mTargetAgent1) * mWeightPursuit;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(offset_pursuit))
 	{
-		assert(m_pTargetAgent1 && "pursuit target not assigned");
+		assert(mTargetAgent1 && "pursuit target not assigned");
 		assert(Vector3f::ZERO != m_vOffset && "No offset assigned");
 
-		force = OffsetPursuit(m_pTargetAgent1, m_vOffset);
+		force = OffsetPursuit(mTargetAgent1, m_vOffset);
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(interpose))
 	{
-		assert(m_pTargetAgent1 && m_pTargetAgent2 && "Interpose agents not assigned");
+		assert(mTargetAgent1 && mTargetAgent2 && "Interpose agents not assigned");
 
-		force = Interpose(m_pTargetAgent1, m_pTargetAgent2) * m_dWeightInterpose;
+		force = Interpose(mTargetAgent1, mTargetAgent2) * mWeightInterpose;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
 
 	if (On(hide))
 	{
-		assert(m_pTargetAgent1 && "Hide target not assigned");
+		assert(mTargetAgent1 && "Hide target not assigned");
 
-		force = Hide(m_pTargetAgent1, mVehicle->GetAIAgentWorld()->GetObjects()) * m_dWeightHide;
+		force = Hide(mTargetAgent1, mAgent->GetAIAgentWorld()->GetObjects()) * mWeightHide;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
@@ -280,7 +285,7 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 	if (On(follow_path))
 	{
-		force = FollowPath() * m_dWeightFollowPath;
+		force = FollowPath() * mWeightFollowPath;
 
 		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
 	}
@@ -293,118 +298,118 @@ Vector3f SteeringBehavior::CalculateWeightedSum()
 	if (On(wall_avoidance))
 	{
 		m_vSteeringForce += WallAvoidance(
-			mVehicle->GetAIAgentWorld()->GetWalls()) * m_dWeightWallAvoidance;
+			mAgent->GetAIAgentWorld()->GetWalls()) * mWeightWallAvoidance;
 	}
 
 	if (On(obstacle_avoidance))
 	{
 		m_vSteeringForce += ObstacleAvoidance(
-			mVehicle->GetAIAgentWorld()->GetObjects()) * 
-			m_dWeightObstacleAvoidance;
+			mAgent->GetAIAgentWorld()->GetObjects()) * 
+			mWeightObstacleAvoidance;
 	}
 
 	if (On(evade))
 	{
-		assert(m_pTargetAgent1 && "Evade target not assigned");
+		assert(mTargetAgent1 && "Evade target not assigned");
 
-		m_vSteeringForce += Evade(m_pTargetAgent1) * m_dWeightEvade;
+		m_vSteeringForce += Evade(mTargetAgent1) * mWeightEvade;
 	}
 
 	if (!IsSpacePartitioningOn())
 	{
 		if (On(separation))
 		{
-			m_vSteeringForce += Separation(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightSeparation;
+			m_vSteeringForce += Separation(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightSeparation;
 		}
 
 		if (On(allignment))
 		{
-			m_vSteeringForce += Alignment(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightAlignment;
+			m_vSteeringForce += Alignment(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightAlignment;
 		}
 
 		if (On(cohesion))
 		{
-			m_vSteeringForce += Cohesion(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightCohesion;
+			m_vSteeringForce += Cohesion(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightCohesion;
 		}
 	}
 	else
 	{
 		if (On(separation))
 		{
-			m_vSteeringForce += SeparationPlus(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightSeparation;
+			m_vSteeringForce += SeparationPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightSeparation;
 		}
 
 		if (On(allignment))
 		{
-			m_vSteeringForce += AlignmentPlus(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightAlignment;
+			m_vSteeringForce += AlignmentPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightAlignment;
 		}
 
 		if (On(cohesion))
 		{
-			m_vSteeringForce += CohesionPlus(mVehicle->GetAIAgentWorld()->GetAgents()) * m_dWeightCohesion;
+			m_vSteeringForce += CohesionPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightCohesion;
 		}
 	}
 
 
 	if (On(wander))
 	{
-		m_vSteeringForce += Wander() * m_dWeightWander;
+		m_vSteeringForce += Wander() * mWeightWander;
 	}
 
 	if (On(seek))
 	{
-		m_vSteeringForce += Seek(mVehicle->GetTarget()) * m_dWeightSeek;
+		m_vSteeringForce += Seek(mAgent->GetTarget()) * mWeightSeek;
 	}
 
 	if (On(flee))
 	{
-		m_vSteeringForce += Flee(mVehicle->GetTarget()) * m_dWeightFlee;
+		m_vSteeringForce += Flee(mAgent->GetTarget()) * mWeightFlee;
 	}
 
 	if (On(arrive))
 	{
-		m_vSteeringForce += Arrive(mVehicle->GetTarget(), m_Deceleration) * m_dWeightArrive;
+		m_vSteeringForce += Arrive(mAgent->GetTarget(), mDeceleration) * mWeightArrive;
 	}
 
 	if (On(pursuit))
 	{
-		assert(m_pTargetAgent1 && "pursuit target not assigned");
+		assert(mTargetAgent1 && "pursuit target not assigned");
 
-		m_vSteeringForce += Pursuit(m_pTargetAgent1) * m_dWeightPursuit;
+		m_vSteeringForce += Pursuit(mTargetAgent1) * mWeightPursuit;
 	}
 
 	if (On(offset_pursuit))
 	{
-		assert(m_pTargetAgent1 && "pursuit target not assigned");
+		assert(mTargetAgent1 && "pursuit target not assigned");
 		assert(m_vOffset!=Vector3f::ZERO && "No offset assigned");
 
-		m_vSteeringForce += OffsetPursuit(m_pTargetAgent1, m_vOffset) * m_dWeightOffsetPursuit;
+		m_vSteeringForce += OffsetPursuit(mTargetAgent1, m_vOffset) * mWeightOffsetPursuit;
 	}
 
 	if (On(interpose))
 	{
-		assert(m_pTargetAgent1 && m_pTargetAgent2 && "Interpose agents not assigned");
+		assert(mTargetAgent1 && mTargetAgent2 && "Interpose agents not assigned");
 
-		m_vSteeringForce += Interpose(m_pTargetAgent1, m_pTargetAgent2) * m_dWeightInterpose;
+		m_vSteeringForce += Interpose(mTargetAgent1, mTargetAgent2) * mWeightInterpose;
 	}
 
 	if (On(hide))
 	{
-		assert(m_pTargetAgent1 && "Hide target not assigned");
+		assert(mTargetAgent1 && "Hide target not assigned");
 
-		m_vSteeringForce += Hide(m_pTargetAgent1, mVehicle->GetAIAgentWorld()->GetObjects()) * m_dWeightHide;
+		m_vSteeringForce += Hide(mTargetAgent1, mAgent->GetAIAgentWorld()->GetObjects()) * mWeightHide;
 	}
 
 	if (On(follow_path))
 	{
-		m_vSteeringForce += FollowPath() * m_dWeightFollowPath;
+		m_vSteeringForce += FollowPath() * mWeightFollowPath;
 	}
 
 	float length = m_vSteeringForce.Length();
-	if (length > mVehicle->GetMaxForce())
+	if (length > mAgent->GetMaxForce())
 	{
 		m_vSteeringForce.Normalize();
-		m_vSteeringForce = m_vSteeringForce *  mVehicle->GetMaxForce();
+		m_vSteeringForce = m_vSteeringForce *  mAgent->GetMaxForce();
 	}
 
 	return m_vSteeringForce;
@@ -412,26 +417,26 @@ Vector3f SteeringBehavior::CalculateWeightedSum()
 //----------------------------------------------------------------------------
 Vector3f SteeringBehavior::Seek(Vector3f targetPos)
 {
-	Vector3f dir = targetPos - mVehicle->GetPosition();
+	Vector3f dir = targetPos - mAgent->GetPosition();
 	dir.Normalize();
-	Vector3f desiredVelocity = dir * mVehicle->GetMaxSpeed();
+	Vector3f desiredVelocity = dir * mAgent->GetMaxSpeed();
 
-	return desiredVelocity - mVehicle->GetVelocity();
+	return desiredVelocity - mAgent->GetVelocity();
 }
 //----------------------------------------------------------------------------
 Vector3f SteeringBehavior::Flee(Vector3f targetPos)
 {
-	Vector3f dir = mVehicle->GetPosition().To3() - targetPos;
+	Vector3f dir = mAgent->GetPosition().To3() - targetPos;
 	dir.Normalize();
-	Vector3f desiredVelocity = dir * mVehicle->GetMaxSpeed();
+	Vector3f desiredVelocity = dir * mAgent->GetMaxSpeed();
 
-	return (desiredVelocity - mVehicle->GetVelocity());
+	return (desiredVelocity - mAgent->GetVelocity());
 }
 //------------------------------------------------------------------------
 Vector3f SteeringBehavior::Arrive(Vector3f targetPos,
 	Deceleration deceleration)
 {
-	Vector3f toTarget = targetPos - mVehicle->GetPosition();
+	Vector3f toTarget = targetPos - mAgent->GetPosition();
 	float dist = toTarget.Length();
 
 	if (dist > 0)
@@ -445,14 +450,14 @@ Vector3f SteeringBehavior::Arrive(Vector3f targetPos,
 		float speed = dist / ((float)deceleration * DecelerationTweaker);
 
 		//make sure the velocity does not exceed the max
-		speed = Mathf::Min(speed, mVehicle->GetMaxSpeed());
+		speed = Mathf::Min(speed, mAgent->GetMaxSpeed());
 
 		//from here proceed just like Seek except we don't need to normalize 
 		//the toTarget vector because we have already gone to the trouble
 		//of calculating its length: dist. 
 		Vector3f desiredVelocity = toTarget * speed / dist;
 
-		return desiredVelocity - mVehicle->GetVelocity();
+		return desiredVelocity - mAgent->GetVelocity();
 	}
 
 	return Vector3f::ZERO;
@@ -461,19 +466,19 @@ Vector3f SteeringBehavior::Arrive(Vector3f targetPos,
 Vector3f SteeringBehavior::Pursuit(const AIAgent* evader)
 {
 	Vector3f toEvader = evader->GetPosition() 
-		- mVehicle->GetPosition();
+		- mAgent->GetPosition();
 
 	float relativeHeading = 
-		mVehicle->GetForward().Dot(evader->GetForward());
+		mAgent->GetForward().Dot(evader->GetForward());
 
-	if ((toEvader.Dot(mVehicle->GetForward()) > 0) &&
+	if ((toEvader.Dot(mAgent->GetForward()) > 0) &&
 		(relativeHeading < -0.95))  //acos(0.95)=18 degs
 	{
 		return Seek(evader->GetPosition());
 	}
 
 	float lookAheadTime = toEvader.Length() /
-		(mVehicle->GetMaxSpeed() + evader->GetSpeed());
+		(mAgent->GetMaxSpeed() + evader->GetSpeed());
 
 	return Seek(evader->GetPosition() +
 		evader->GetVelocity() * lookAheadTime);
@@ -484,7 +489,7 @@ Vector3f SteeringBehavior::Evade(const AIAgent* pursuer)
 	/* Not necessary to include the check for facing direction this time */
 
 	Vector3f toPursuer = pursuer->GetPosition() -
-		mVehicle->GetPosition();
+		mAgent->GetPosition();
 
 	//uncomment the following two lines to have Evade only consider pursuers 
 	//within a 'threat range'
@@ -495,7 +500,7 @@ Vector3f SteeringBehavior::Evade(const AIAgent* pursuer)
 	//and the pursuer; and is inversely proportional to the sum of the
 	//agents' velocities
 	float lookAheadTime = toPursuer.Length() /
-		(mVehicle->GetMaxSpeed() + pursuer->GetSpeed());
+		(mAgent->GetMaxSpeed() + pursuer->GetSpeed());
 
 	//now flee away from predicted future position of the pursuer
 	return Flee(pursuer->GetPosition() +
@@ -512,10 +517,10 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 	const std::vector<AIAgentObject*>& obstacles)
 {
 	mDBoxLength = Prm.MinDetectionBoxLength +
-		(mVehicle->GetSpeed() / mVehicle->GetMaxSpeed()) *
+		(mAgent->GetSpeed() / mAgent->GetMaxSpeed()) *
 		Prm.MinDetectionBoxLength;
 
-	mVehicle->GetAIAgentWorld()->TagObstaclesWithinViewRange(mVehicle,
+	mAgent->GetAIAgentWorld()->TagObstaclesWithinViewRange(mAgent,
 		mDBoxLength);
 
 	AIAgentObject* closestIntersectingObstacle = NULL;
@@ -532,8 +537,8 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 		if ((*curOb)->IsTagged())
 		{
 			HMatrix localMat =
-				HMatrix(mVehicle->GetRight(), mVehicle->GetForward(),
-					mVehicle->GetUp(), mVehicle->GetPosition(), true);
+				HMatrix(mAgent->GetRight(), mAgent->GetForward(),
+					mAgent->GetUp(), mAgent->GetPosition(), true);
 
 			APoint curObjPos = (*curOb)->GetPosition();
 			Vector3f localPos = localMat.Inverse() * curObjPos;
@@ -545,7 +550,7 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 				//if the distance from the x axis to the object's position is less
 				//than its radius + half the width of the detection box then there
 				//is a potential intersection.
-				float ExpandedRadius = (*curOb)->GetRadius() + mVehicle->GetRadius();
+				float ExpandedRadius = (*curOb)->GetRadius() + mAgent->GetRadius();
 
 				if (fabs(localPos.Y()) < ExpandedRadius)
 				{
@@ -607,8 +612,8 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 
 	//finally, convert the steering vector from local to world space
 	HMatrix mat =
-		HMatrix(mVehicle->GetRight(), mVehicle->GetForward(),
-			mVehicle->GetUp(), APoint::ORIGIN, true);
+		HMatrix(mAgent->GetRight(), mAgent->GetForward(),
+			mAgent->GetUp(), APoint::ORIGIN, true);
 
 	AVector vec = mat * SteeringForce;
 	return vec;
@@ -670,13 +675,13 @@ Vector3f SteeringBehavior::WallAvoidance(const std::vector<Wall2D>& walls)
 		ClosestPoint;  //holds the closest intersection point
 
 					   //examine each feeler in turn
-	for (unsigned int flr = 0; flr<m_Feelers.size(); ++flr)
+	for (unsigned int flr = 0; flr<mFeelers.size(); ++flr)
 	{
 		//run through each wall checking for any intersection points
 		for (unsigned int w = 0; w<walls.size(); ++w)
 		{
-			if (LineIntersection2D(mVehicle->GetPosition(),
-				m_Feelers[flr],
+			if (LineIntersection2D(mAgent->GetPosition(),
+				mFeelers[flr],
 				_Vec2To3(walls[w].From()),
 				_Vec2To3(walls[w].To()),
 				DistToThisIP,
@@ -701,7 +706,7 @@ Vector3f SteeringBehavior::WallAvoidance(const std::vector<Wall2D>& walls)
 		{
 			//calculate by what distance the projected position of the agent
 			//will overshoot the wall
-			Vector3f OverShoot = m_Feelers[flr] - ClosestPoint;
+			Vector3f OverShoot = mFeelers[flr] - ClosestPoint;
 
 			//create a force in the direction of the wall normal, with a 
 			//magnitude of the overshoot
@@ -721,10 +726,10 @@ Vector3f SteeringBehavior::Separation(const vector<AIAgent*> &neighbors)
 
 	for (unsigned int a = 0; a<neighbors.size(); ++a)
 	{
-		if ((neighbors[a] != mVehicle) && neighbors[a]->IsTagged() &&
-			(neighbors[a] != m_pTargetAgent1))
+		if ((neighbors[a] != mAgent) && neighbors[a]->IsTagged() &&
+			(neighbors[a] != mTargetAgent1))
 		{
-			Vector3f ToAgent = mVehicle->GetPosition() 
+			Vector3f ToAgent = mAgent->GetPosition() 
 				- neighbors[a]->GetPosition();
 
 			float length = ToAgent.Normalize();
@@ -749,8 +754,8 @@ Vector3f SteeringBehavior::Alignment(const vector<AIAgent*>& neighbors)
 		//make sure *this* agent isn't included in the calculations and that
 		//the agent being examined  is close enough ***also make sure it doesn't
 		//include any evade target ***
-		if ((neighbors[a] != mVehicle) && neighbors[a]->IsTagged() &&
-			(neighbors[a] != m_pTargetAgent1))
+		if ((neighbors[a] != mAgent) && neighbors[a]->IsTagged() &&
+			(neighbors[a] != mTargetAgent1))
 		{
 			AverageHeading += neighbors[a]->GetForward();
 
@@ -764,7 +769,7 @@ Vector3f SteeringBehavior::Alignment(const vector<AIAgent*>& neighbors)
 	{
 		AverageHeading /= (float)NeighborCount;
 
-		AverageHeading -= mVehicle->GetForward();
+		AverageHeading -= mAgent->GetForward();
 	}
 
 	return AverageHeading;
@@ -783,8 +788,8 @@ Vector3f SteeringBehavior::Cohesion(const vector<AIAgent*> &neighbors)
 		//make sure *this* agent isn't included in the calculations and that
 		//the agent being examined is close enough ***also make sure it doesn't
 		//include the evade target ***
-		if ((neighbors[a] != mVehicle) && neighbors[a]->IsTagged() &&
-			(neighbors[a] != m_pTargetAgent1))
+		if ((neighbors[a] != mAgent) && neighbors[a]->IsTagged() &&
+			(neighbors[a] != mTargetAgent1))
 		{
 			CenterOfMass += neighbors[a]->GetPosition();
 
@@ -812,13 +817,13 @@ Vector3f SteeringBehavior::SeparationPlus(
 	Vector3f SteeringForce;
 
 	//iterate through the neighbors and sum up all the position vectors
-	for (AIAgentBase* pV = mVehicle->GetAIAgentWorld()->CellSpace()->Begin();
-		!mVehicle->GetAIAgentWorld()->CellSpace()->End();
-		pV = mVehicle->GetAIAgentWorld()->CellSpace()->Next())
+	for (AIAgentBase* pV = mAgent->GetAIAgentWorld()->CellSpace()->Begin();
+		!mAgent->GetAIAgentWorld()->CellSpace()->End();
+		pV = mAgent->GetAIAgentWorld()->CellSpace()->Next())
 	{
-		if (pV != mVehicle)
+		if (pV != mAgent)
 		{
-			Vector3f ToAgent = mVehicle->GetPosition() - 
+			Vector3f ToAgent = mAgent->GetPosition() - 
 				pV->GetPosition();
 
 			float length = ToAgent.Normalize();
@@ -840,13 +845,13 @@ Vector3f SteeringBehavior::AlignmentPlus(const vector<AIAgent*> &neighbors)
 	float    NeighborCount = 0.0;
 
 	//iterate through the neighbors and sum up all the position vectors
-	for (AIAgent* pV = mVehicle->GetAIAgentWorld()->CellSpace()->Begin();
-		!mVehicle->GetAIAgentWorld()->CellSpace()->End();
-		pV = mVehicle->GetAIAgentWorld()->CellSpace()->Next())
+	for (AIAgent* pV = mAgent->GetAIAgentWorld()->CellSpace()->Begin();
+		!mAgent->GetAIAgentWorld()->CellSpace()->End();
+		pV = mAgent->GetAIAgentWorld()->CellSpace()->Next())
 	{
 		//make sure *this* agent isn't included in the calculations and that
 		//the agent being examined  is close enough
-		if (pV != mVehicle)
+		if (pV != mAgent)
 		{
 			AverageHeading += pV->GetForward();
 
@@ -861,7 +866,7 @@ Vector3f SteeringBehavior::AlignmentPlus(const vector<AIAgent*> &neighbors)
 	{
 		AverageHeading /= NeighborCount;
 
-		AverageHeading -= mVehicle->GetForward();
+		AverageHeading -= mAgent->GetForward();
 	}
 
 	return AverageHeading;
@@ -875,13 +880,13 @@ Vector3f SteeringBehavior::CohesionPlus(const vector<AIAgent*> &neighbors)
 	int NeighborCount = 0;
 
 	//iterate through the neighbors and sum up all the position vectors
-	for (AIAgent* pV = mVehicle->GetAIAgentWorld()->CellSpace()->Begin();
-		!mVehicle->GetAIAgentWorld()->CellSpace()->End();
-		pV = mVehicle->GetAIAgentWorld()->CellSpace()->Next())
+	for (AIAgent* pV = mAgent->GetAIAgentWorld()->CellSpace()->Begin();
+		!mAgent->GetAIAgentWorld()->CellSpace()->End();
+		pV = mAgent->GetAIAgentWorld()->CellSpace()->Next())
 	{
 		//make sure *this* agent isn't included in the calculations and that
 		//the agent being examined is close enough
-		if (pV != mVehicle)
+		if (pV != mAgent)
 		{
 			CenterOfMass += pV->GetPosition();
 
@@ -909,10 +914,10 @@ Vector3f SteeringBehavior::Interpose(const AIAgent* agentA,
 	Vector3f midPoint = (agentA->GetPosition() +
 		agentB->GetPosition()) / 2.0;
 
-	Vector3f vecDist = mVehicle->GetPosition().To3() - midPoint;
+	Vector3f vecDist = mAgent->GetPosition().To3() - midPoint;
 	float length = vecDist.Length();
 
-	float TimeToReachMidPoint = length / mVehicle->GetMaxSpeed();
+	float TimeToReachMidPoint = length / mAgent->GetMaxSpeed();
 
 	Vector3f APos = agentA->GetPosition() + agentA->GetVelocity() * TimeToReachMidPoint;
 	Vector3f BPos = agentB->GetPosition() + agentB->GetVelocity() * TimeToReachMidPoint;
@@ -940,7 +945,7 @@ Vector3f SteeringBehavior::Hide(const AIAgent* hunter,
 
 		//work in distance-squared space to find the closest hiding
 		//spot to the agent
-		Vector3f vecDist = HidingSpot - mVehicle->GetPosition();
+		Vector3f vecDist = HidingSpot - mAgent->GetPosition();
 		float dist = vecDist.Length();
 
 		if (dist < DistToClosest)
@@ -988,10 +993,10 @@ Vector3f SteeringBehavior::FollowPath()
 {
 	//move to next target if close enough to current target (working in
 	//distance squared space)
-	Vector3f vec = mPath.CurrentWaypoint() - mVehicle->GetPosition();
+	Vector3f vec = mPath.CurrentWaypoint() - mAgent->GetPosition();
 	float lengthSquare = vec.SquaredLength();
 
-	if (lengthSquare < m_dWaypointSeekDistSq)
+	if (lengthSquare < mWaypointSeekDistSq)
 	{
 		mPath.SetNextWaypoint();
 	}
@@ -1018,10 +1023,10 @@ Vector3f SteeringBehavior::OffsetPursuit(const AIAgent* leader,
 	//calculate the offset's position in world space
 	APoint worldOffsetPos = localMat * APoint(offset.X(), offset.Y(), offset.Z());
 
-	Vector3f ToOffset = worldOffsetPos.To3() - mVehicle->GetPosition();
+	Vector3f ToOffset = worldOffsetPos.To3() - mAgent->GetPosition();
 
 	float lookAheadTime = ToOffset.Length() /
-		(mVehicle->GetMaxSpeed() + leader->GetSpeed());
+		(mAgent->GetMaxSpeed() + leader->GetSpeed());
 
 	//now Arrive at the predicted future position of the offset
 	return Arrive(worldOffsetPos + leader->GetVelocity() * lookAheadTime, fast);
@@ -1034,61 +1039,61 @@ void SteeringBehavior::RenderAids()
 
 	//int NextSlot = 0; int SlotSize = 20;
 
-	//if (KEYDOWN(VK_INSERT)) { mVehicle->SetMaxForce(mVehicle->MaxForce() + 1000.0f*mVehicle->TimeElapsed()); }
-	//if (KEYDOWN(VK_DELETE)) { if (mVehicle->MaxForce() > 0.2f) mVehicle->SetMaxForce(mVehicle->MaxForce() - 1000.0f*mVehicle->TimeElapsed()); }
-	//if (KEYDOWN(VK_HOME)) { mVehicle->SetMaxSpeed(mVehicle->MaxSpeed() + 50.0f*mVehicle->TimeElapsed()); }
-	//if (KEYDOWN(VK_END)) { if (mVehicle->MaxSpeed() > 0.2f) mVehicle->SetMaxSpeed(mVehicle->MaxSpeed() - 50.0f*mVehicle->TimeElapsed()); }
+	//if (KEYDOWN(VK_INSERT)) { mAgent->SetMaxForce(mAgent->MaxForce() + 1000.0f*mAgent->TimeElapsed()); }
+	//if (KEYDOWN(VK_DELETE)) { if (mAgent->MaxForce() > 0.2f) mAgent->SetMaxForce(mAgent->MaxForce() - 1000.0f*mAgent->TimeElapsed()); }
+	//if (KEYDOWN(VK_HOME)) { mAgent->SetMaxSpeed(mAgent->MaxSpeed() + 50.0f*mAgent->TimeElapsed()); }
+	//if (KEYDOWN(VK_END)) { if (mAgent->MaxSpeed() > 0.2f) mAgent->SetMaxSpeed(mAgent->MaxSpeed() - 50.0f*mAgent->TimeElapsed()); }
 
-	//if (mVehicle->MaxForce() < 0) mVehicle->SetMaxForce(0.0f);
-	//if (mVehicle->MaxSpeed() < 0) mVehicle->SetMaxSpeed(0.0f);
+	//if (mAgent->MaxForce() < 0) mAgent->SetMaxForce(0.0f);
+	//if (mAgent->MaxSpeed() < 0) mAgent->SetMaxSpeed(0.0f);
 
-	//if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "MaxForce(Ins/Del):"); gdi->TextAtPos(160, NextSlot, ttos(mVehicle->MaxForce() / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
-	//if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "MaxSpeed(Home/End):"); gdi->TextAtPos(160, NextSlot, ttos(mVehicle->MaxSpeed())); NextSlot += SlotSize; }
+	//if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "MaxForce(Ins/Del):"); gdi->TextAtPos(160, NextSlot, ttos(mAgent->MaxForce() / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
+	//if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "MaxSpeed(Home/End):"); gdi->TextAtPos(160, NextSlot, ttos(mAgent->MaxSpeed())); NextSlot += SlotSize; }
 
 	////render the steering force
-	//if (mVehicle->World()->RenderSteeringForce())
+	//if (mAgent->World()->RenderSteeringForce())
 	//{
 	//	gdi->RedPen();
 	//	Vector3f F = (m_vSteeringForce / Prm.SteeringForceTweaker) * Prm.VehicleScale;
-	//	gdi->Line(mVehicle->Pos(), mVehicle->Pos() + F);
+	//	gdi->Line(mAgent->Pos(), mAgent->Pos() + F);
 	//}
 
 	////render wander stuff if relevant
-	//if (On(wander) && mVehicle->World()->RenderWanderCircle())
+	//if (On(wander) && mAgent->World()->RenderWanderCircle())
 	//{
-	//	if (KEYDOWN('F')) { m_dWanderJitter += 1.0f*mVehicle->TimeElapsed(); Clamp(m_dWanderJitter, 0.0f, 100.0f); }
-	//	if (KEYDOWN('V')) { m_dWanderJitter -= 1.0f*mVehicle->TimeElapsed(); Clamp(m_dWanderJitter, 0.0f, 100.0f); }
-	//	if (KEYDOWN('G')) { m_dWanderDistance += 2.0f*mVehicle->TimeElapsed(); Clamp(m_dWanderDistance, 0.0f, 50.0f); }
-	//	if (KEYDOWN('B')) { m_dWanderDistance -= 2.0f*mVehicle->TimeElapsed(); Clamp(m_dWanderDistance, 0.0f, 50.0f); }
-	//	if (KEYDOWN('H')) { m_dWanderRadius += 2.0f*mVehicle->TimeElapsed(); Clamp(m_dWanderRadius, 0.0f, 100.0f); }
-	//	if (KEYDOWN('N')) { m_dWanderRadius -= 2.0f*mVehicle->TimeElapsed(); Clamp(m_dWanderRadius, 0.0f, 100.0f); }
+	//	if (KEYDOWN('F')) { mWanderJitter += 1.0f*mAgent->TimeElapsed(); Clamp(mWanderJitter, 0.0f, 100.0f); }
+	//	if (KEYDOWN('V')) { mWanderJitter -= 1.0f*mAgent->TimeElapsed(); Clamp(mWanderJitter, 0.0f, 100.0f); }
+	//	if (KEYDOWN('G')) { mWanderDistance += 2.0f*mAgent->TimeElapsed(); Clamp(mWanderDistance, 0.0f, 50.0f); }
+	//	if (KEYDOWN('B')) { mWanderDistance -= 2.0f*mAgent->TimeElapsed(); Clamp(mWanderDistance, 0.0f, 50.0f); }
+	//	if (KEYDOWN('H')) { mWanderRadius += 2.0f*mAgent->TimeElapsed(); Clamp(mWanderRadius, 0.0f, 100.0f); }
+	//	if (KEYDOWN('N')) { mWanderRadius -= 2.0f*mAgent->TimeElapsed(); Clamp(mWanderRadius, 0.0f, 100.0f); }
 
 
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Jitter(F/V): "); gdi->TextAtPos(160, NextSlot, ttos(m_dWanderJitter)); NextSlot += SlotSize; }
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Distance(G/B): "); gdi->TextAtPos(160, NextSlot, ttos(m_dWanderDistance)); NextSlot += SlotSize; }
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Radius(H/N): "); gdi->TextAtPos(160, NextSlot, ttos(m_dWanderRadius)); NextSlot += SlotSize; }
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Jitter(F/V): "); gdi->TextAtPos(160, NextSlot, ttos(mWanderJitter)); NextSlot += SlotSize; }
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Distance(G/B): "); gdi->TextAtPos(160, NextSlot, ttos(mWanderDistance)); NextSlot += SlotSize; }
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Radius(H/N): "); gdi->TextAtPos(160, NextSlot, ttos(mWanderRadius)); NextSlot += SlotSize; }
 
 
 	//	//calculate the center of the wander circle
-	//	Vector3f m_vTCC = PointToWorldSpace(Vector3f(m_dWanderDistance*mVehicle->GetRadius(), 0),
-	//		mVehicle->Heading(),
-	//		mVehicle->Side(),
-	//		mVehicle->Pos());
+	//	Vector3f m_vTCC = PointToWorldSpace(Vector3f(mWanderDistance*mAgent->GetRadius(), 0),
+	//		mAgent->Heading(),
+	//		mAgent->Side(),
+	//		mAgent->Pos());
 	//	//draw the wander circle
 	//	gdi->GreenPen();
 	//	gdi->HollowBrush();
-	//	gdi->Circle(m_vTCC, m_dWanderRadius*mVehicle->GetRadius());
+	//	gdi->Circle(m_vTCC, mWanderRadius*mAgent->GetRadius());
 
 	//	//draw the wander target
 	//	gdi->RedPen();
-	//	gdi->Circle(PointToWorldSpace((m_vWanderTarget + Vector3f(m_dWanderDistance, 0))*mVehicle->GetRadius(),
-	//		mVehicle->Heading(),
-	//		mVehicle->Side(),
-	//		mVehicle->Pos()), 3);
+	//	gdi->Circle(PointToWorldSpace((m_vWanderTarget + Vector3f(mWanderDistance, 0))*mAgent->GetRadius(),
+	//		mAgent->Heading(),
+	//		mAgent->Side(),
+	//		mAgent->Pos()), 3);
 	//}
 
 	////render the detection box if relevant
-	//if (mVehicle->World()->RenderDetectionBox())
+	//if (mAgent->World()->RenderDetectionBox())
 	//{
 	//	gdi->GreyPen();
 
@@ -1096,24 +1101,24 @@ void SteeringBehavior::RenderAids()
 	//	static std::vector<Vector3f> box(4);
 
 	//	float length = Prm.MinDetectionBoxLength +
-	//		(mVehicle->Speed() / mVehicle->MaxSpeed()) *
+	//		(mAgent->Speed() / mAgent->MaxSpeed()) *
 	//		Prm.MinDetectionBoxLength;
 
 	//	//verts for the detection box buffer
-	//	box[0] = Vector3f(0, mVehicle->GetRadius());
-	//	box[1] = Vector3f(length, mVehicle->GetRadius());
-	//	box[2] = Vector3f(length, -mVehicle->GetRadius());
-	//	box[3] = Vector3f(0, -mVehicle->GetRadius());
+	//	box[0] = Vector3f(0, mAgent->GetRadius());
+	//	box[1] = Vector3f(length, mAgent->GetRadius());
+	//	box[2] = Vector3f(length, -mAgent->GetRadius());
+	//	box[3] = Vector3f(0, -mAgent->GetRadius());
 
 
-	//	if (!mVehicle->isSmoothingOn())
+	//	if (!mAgent->isSmoothingOn())
 	//	{
-	//		box = WorldTransform(box, mVehicle->Pos(), mVehicle->Heading(), mVehicle->Side());
+	//		box = WorldTransform(box, mAgent->Pos(), mAgent->Heading(), mAgent->Side());
 	//		gdi->ClosedShape(box);
 	//	}
 	//	else
 	//	{
-	//		box = WorldTransform(box, mVehicle->Pos(), mVehicle->SmoothedHeading(), mVehicle->SmoothedHeading().Perp());
+	//		box = WorldTransform(box, mAgent->Pos(), mAgent->SmoothedHeading(), mAgent->SmoothedHeading().Perp());
 	//		gdi->ClosedShape(box);
 	//	}
 
@@ -1121,11 +1126,11 @@ void SteeringBehavior::RenderAids()
 	//	//////////////////////////////////////////////////////////////////////////
 	//	//the detection box length is proportional to the agent's velocity
 	//	mDBoxLength = Prm.MinDetectionBoxLength +
-	//		(mVehicle->Speed() / mVehicle->MaxSpeed()) *
+	//		(mAgent->Speed() / mAgent->MaxSpeed()) *
 	//		Prm.MinDetectionBoxLength;
 
 	//	//tag all obstacles within range of the box for processing
-	//	mVehicle->World()->TagObstaclesWithinViewRange(mVehicle, mDBoxLength);
+	//	mAgent->World()->TagObstaclesWithinViewRange(mAgent, mDBoxLength);
 
 	//	//this will keep track of the closest intersecting obstacle (CIB)
 	//	BaseGameEntity* closestIntersectingObstacle = NULL;
@@ -1136,18 +1141,18 @@ void SteeringBehavior::RenderAids()
 	//	//this will record the transformed local coordinates of the CIB
 	//	Vector3f LocalPosOfClosestObstacle;
 
-	//	std::vector<BaseGameEntity*>::const_iterator curOb = mVehicle->World()->Obstacles().begin();
+	//	std::vector<BaseGameEntity*>::const_iterator curOb = mAgent->World()->Obstacles().begin();
 
-	//	while (curOb != mVehicle->World()->Obstacles().end())
+	//	while (curOb != mAgent->World()->Obstacles().end())
 	//	{
 	//		//if the obstacle has been tagged within range proceed
 	//		if ((*curOb)->IsTagged())
 	//		{
 	//			//calculate this obstacle's position in local space
 	//			Vector3f localPos = PointToLocalSpace((*curOb)->Pos(),
-	//				mVehicle->Heading(),
-	//				mVehicle->Side(),
-	//				mVehicle->Pos());
+	//				mAgent->Heading(),
+	//				mAgent->Side(),
+	//				mAgent->Pos());
 
 	//			//if the local position has a negative x value then it must lay
 	//			//behind the agent. (in which case it can be ignored)
@@ -1156,7 +1161,7 @@ void SteeringBehavior::RenderAids()
 	//				//if the distance from the x axis to the object's position is less
 	//				//than its radius + half the width of the detection box then there
 	//				//is a potential intersection.
-	//				if (fabs(localPos.Y()) < ((*curOb)->GetRadius() + mVehicle->GetRadius()))
+	//				if (fabs(localPos.Y()) < ((*curOb)->GetRadius() + mAgent->GetRadius()))
 	//				{
 	//					gdi->ThickRedPen();
 	//					gdi->ClosedShape(box);
@@ -1172,19 +1177,19 @@ void SteeringBehavior::RenderAids()
 	//}
 
 	////render the wall avoidnace feelers
-	//if (On(wall_avoidance) && mVehicle->World()->RenderFeelers())
+	//if (On(wall_avoidance) && mAgent->World()->RenderFeelers())
 	//{
 	//	gdi->OrangePen();
 
-	//	for (unsigned int flr = 0; flr<m_Feelers.size(); ++flr)
+	//	for (unsigned int flr = 0; flr<mFeelers.size(); ++flr)
 	//	{
 
-	//		gdi->Line(mVehicle->Pos(), m_Feelers[flr]);
+	//		gdi->Line(mAgent->Pos(), mFeelers[flr]);
 	//	}
 	//}
 
 	////render path info
-	//if (On(follow_path) && mVehicle->World()->RenderPath())
+	//if (On(follow_path) && mAgent->World()->RenderPath())
 	//{
 	//	mPath.Render();
 	//}
@@ -1192,34 +1197,34 @@ void SteeringBehavior::RenderAids()
 
 	//if (On(separation))
 	//{
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Separation(S/X):"); gdi->TextAtPos(160, NextSlot, ttos(m_dWeightSeparation / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Separation(S/X):"); gdi->TextAtPos(160, NextSlot, ttos(mWeightSeparation / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
 
-	//	if (KEYDOWN('S')) { m_dWeightSeparation += 200 * mVehicle->TimeElapsed(); Clamp(m_dWeightSeparation, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
-	//	if (KEYDOWN('X')) { m_dWeightSeparation -= 200 * mVehicle->TimeElapsed(); Clamp(m_dWeightSeparation, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
+	//	if (KEYDOWN('S')) { mWeightSeparation += 200 * mAgent->TimeElapsed(); Clamp(mWeightSeparation, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
+	//	if (KEYDOWN('X')) { mWeightSeparation -= 200 * mAgent->TimeElapsed(); Clamp(mWeightSeparation, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
 	//}
 
 	//if (On(allignment))
 	//{
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Alignment(A/Z):"); gdi->TextAtPos(160, NextSlot, ttos(m_dWeightAlignment / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Alignment(A/Z):"); gdi->TextAtPos(160, NextSlot, ttos(mWeightAlignment / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
 
-	//	if (KEYDOWN('A')) { m_dWeightAlignment += 200 * mVehicle->TimeElapsed(); Clamp(m_dWeightAlignment, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
-	//	if (KEYDOWN('Z')) { m_dWeightAlignment -= 200 * mVehicle->TimeElapsed(); Clamp(m_dWeightAlignment, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
+	//	if (KEYDOWN('A')) { mWeightAlignment += 200 * mAgent->TimeElapsed(); Clamp(mWeightAlignment, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
+	//	if (KEYDOWN('Z')) { mWeightAlignment -= 200 * mAgent->TimeElapsed(); Clamp(mWeightAlignment, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
 	//}
 
 	//if (On(cohesion))
 	//{
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Cohesion(D/C):"); gdi->TextAtPos(160, NextSlot, ttos(m_dWeightCohesion / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
-	//	if (KEYDOWN('D')) { m_dWeightCohesion += 200 * mVehicle->TimeElapsed(); Clamp(m_dWeightCohesion, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
-	//	if (KEYDOWN('C')) { m_dWeightCohesion -= 200 * mVehicle->TimeElapsed(); Clamp(m_dWeightCohesion, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "Cohesion(D/C):"); gdi->TextAtPos(160, NextSlot, ttos(mWeightCohesion / Prm.SteeringForceTweaker)); NextSlot += SlotSize; }
+	//	if (KEYDOWN('D')) { mWeightCohesion += 200 * mAgent->TimeElapsed(); Clamp(mWeightCohesion, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
+	//	if (KEYDOWN('C')) { mWeightCohesion -= 200 * mAgent->TimeElapsed(); Clamp(mWeightCohesion, 0.0f, 50.0f * Prm.SteeringForceTweaker); }
 	//}
 
 	//if (On(follow_path))
 	//{
-	//	float sd = sqrt(m_dWaypointSeekDistSq);
-	//	if (mVehicle->ID() == 0) { gdi->TextAtPos(5, NextSlot, "SeekDistance(D/C):"); gdi->TextAtPos(160, NextSlot, ttos(sd)); NextSlot += SlotSize; }
+	//	float sd = sqrt(mWaypointSeekDistSq);
+	//	if (mAgent->ID() == 0) { gdi->TextAtPos(5, NextSlot, "SeekDistance(D/C):"); gdi->TextAtPos(160, NextSlot, ttos(sd)); NextSlot += SlotSize; }
 
-	//	if (KEYDOWN('D')) { m_dWaypointSeekDistSq += 1.0; }
-	//	if (KEYDOWN('C')) { m_dWaypointSeekDistSq -= 1.0; Clamp(m_dWaypointSeekDistSq, 0.0f, 400.0f); }
+	//	if (KEYDOWN('D')) { mWaypointSeekDistSq += 1.0; }
+	//	if (KEYDOWN('C')) { mWaypointSeekDistSq -= 1.0; Clamp(mWaypointSeekDistSq, 0.0f, 400.0f); }
 	//}
 }
 
