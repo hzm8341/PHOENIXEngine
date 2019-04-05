@@ -892,6 +892,9 @@
     <Filter Include="0.Base\Unity\Wifi">
       <UniqueIdentifier>{4472b59f-4f8e-438c-9a20-cf94bcfda375}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2.AI\Steer">
+      <UniqueIdentifier>{8c0bee7e-d750-4376-b015-4601634d6bac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\PX2Core.hpp">
@@ -5556,6 +5559,24 @@
     <ClInclude Include="Core\PX2Smoother.hpp">
       <Filter>0.Base\Core\Untity</Filter>
     </ClInclude>
+    <ClInclude Include="AI\PX2AISteeringBehavior.hpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PX2iniFileLoader.hpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AISteeringParamLoader.hpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AISteeringWall2D.hpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2CellSpaceT.hpp">
+      <Filter>2.AI\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2AISteeringPath.hpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -8846,6 +8867,21 @@
     <ClCompile Include="AI\Slam2D\timeout.cpp">
       <Filter>2.AI\Slam2D\Hector</Filter>
     </ClCompile>
+    <ClCompile Include="AI\PX2AISteeringBehavior.cpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PX2iniFileLoader.cpp">
+      <Filter>0.Base\Core\Untity</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AISteeringParamLoader.cpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AISteeringWall2D.cpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2AISteeringPath.cpp">
+      <Filter>2.AI\Steer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\PX2GraphicsRoot.inl">
@@ -9699,6 +9735,9 @@
     </None>
     <None Include="AI\Slam2D\Eigen\UmfPackSupport">
       <Filter>2.AI\Slam2D\Eigen</Filter>
+    </None>
+    <None Include="AI\PX2CellSpaceT.inl">
+      <Filter>2.AI\Agent</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -1013,6 +1013,10 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2AINavigationUtilities.hpp" />
     <ClInclude Include="AI\PX2AIPath.hpp" />
     <ClInclude Include="AI\PX2AIs.hpp" />
+    <ClInclude Include="AI\PX2AISteeringParamLoader.hpp" />
+    <ClInclude Include="AI\PX2AISteeringPath.hpp" />
+    <ClInclude Include="AI\PX2AISteeringWall2D.hpp" />
+    <ClInclude Include="AI\PX2CellSpaceT.hpp" />
     <ClInclude Include="AI\PX2NavBitArray.hpp" />
     <ClInclude Include="AI\PX2NavGridMap.hpp" />
     <ClInclude Include="AI\PX2NavHeapNode.hpp" />
@@ -1021,6 +1025,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2NavPoint2D.hpp" />
     <ClInclude Include="AI\PX2Robot.hpp" />
     <ClInclude Include="AI\PX2RobotDatas.hpp" />
+    <ClInclude Include="AI\PX2AISteeringBehavior.hpp" />
     <ClInclude Include="AI\PX2WRConstant.hpp" />
     <ClInclude Include="AI\PX2WRLidar.hpp" />
     <ClInclude Include="AI\recast\include\Recast.h" />
@@ -1430,6 +1435,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Core\PX2GeneralAlloctorObject.hpp" />
     <ClInclude Include="Core\PX2HashTable.hpp" />
     <ClInclude Include="Core\PX2Helps.hpp" />
+    <ClInclude Include="Core\PX2iniFileLoader.hpp" />
     <ClInclude Include="Core\PX2InitTerm.hpp" />
     <ClInclude Include="Core\PX2InStream.hpp" />
     <ClInclude Include="Core\PX2JSONData.hpp" />
@@ -2549,12 +2555,16 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\PX2AINavigationMesh.cpp" />
     <ClCompile Include="AI\PX2AINavigationUtilities.cpp" />
     <ClCompile Include="AI\PX2AIPath.cpp" />
+    <ClCompile Include="AI\PX2AISteeringParamLoader.cpp" />
+    <ClCompile Include="AI\PX2AISteeringPath.cpp" />
+    <ClCompile Include="AI\PX2AISteeringWall2D.cpp" />
     <ClCompile Include="AI\PX2NavBitArray.cpp" />
     <ClCompile Include="AI\PX2NavGridMap.cpp" />
     <ClCompile Include="AI\PX2NavMoveManager.cpp" />
     <ClCompile Include="AI\PX2NavMoveUnit.cpp" />
     <ClCompile Include="AI\PX2Robot.cpp" />
     <ClCompile Include="AI\PX2RobotDatas.cpp" />
+    <ClCompile Include="AI\PX2AISteeringBehavior.cpp" />
     <ClCompile Include="AI\PX2WRLidar.cpp" />
     <ClCompile Include="AI\recast\src\Recast.cpp" />
     <ClCompile Include="AI\recast\src\RecastAlloc.cpp" />
@@ -2674,6 +2684,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Core\PX2FunObject.cpp" />
     <ClCompile Include="Core\PX2GeneralAlloctor.cpp" />
     <ClCompile Include="Core\PX2HashTable.cpp" />
+    <ClCompile Include="Core\PX2iniFileLoader.cpp" />
     <ClCompile Include="Core\PX2InitTerm.cpp" />
     <ClCompile Include="Core\PX2InStream.cpp" />
     <ClCompile Include="Core\PX2JSONData.cpp" />
@@ -3597,6 +3608,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="AI\PX2AIAgent.inl" />
+    <None Include="AI\PX2CellSpaceT.inl" />
     <None Include="AI\PX2NavBitArray.inl" />
     <None Include="AI\PX2NavGridMap.inl" />
     <None Include="AI\PX2NavMoveManager.inl" />

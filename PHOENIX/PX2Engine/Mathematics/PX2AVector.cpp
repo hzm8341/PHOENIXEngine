@@ -260,6 +260,11 @@ AVector AVector::UnitCross (const AVector& vec) const
 	return cross;
 }
 //----------------------------------------------------------------------------
+Vector2f AVector::To2()
+{
+	return Vector2f(mTuple[0], mTuple[1]);
+}
+//----------------------------------------------------------------------------
 void AVector::Orthonormalize (AVector& vec0, AVector& vec1, AVector& vec2)
 {
 	// 输入的向量为v0，v1，v2，按照下面的方式进行Gram-Schmidt正交化

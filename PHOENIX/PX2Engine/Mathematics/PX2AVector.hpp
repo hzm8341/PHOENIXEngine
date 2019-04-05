@@ -7,6 +7,7 @@
 #include "PX2HPoint.hpp"
 #include "PX2Float3.hpp"
 #include "PX2Vector3.hpp"
+#include "PX2Vector2.hpp"
 
 namespace PX2
 {
@@ -64,6 +65,8 @@ namespace PX2
 		AVector &Truncate (float max);
 		AVector Cross (const AVector& vec) const;
 		AVector UnitCross (const AVector& vec) const;
+
+		Vector2f To2();
 
 		// Gram-SchmidtÕý½»»¯¡£
 		/*

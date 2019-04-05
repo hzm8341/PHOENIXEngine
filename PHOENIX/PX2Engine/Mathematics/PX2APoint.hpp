@@ -5,6 +5,7 @@
 
 #include "PX2MathematicsPre.hpp"
 #include "PX2AVector.hpp"
+#include "PX2Vector2.hpp"
 
 namespace PX2
 {
@@ -71,6 +72,9 @@ namespace PX2
 		* Dot(N,P)。在函数中，w被忽略，APoint被当做一个向量处理。
 		*/
 		float Dot (const AVector& vec) const;
+
+		Vector2f To2();
+		Vector3f To3();
 
 		// 特定值
 		static const APoint ORIGIN;  // (0,0,0,1)
