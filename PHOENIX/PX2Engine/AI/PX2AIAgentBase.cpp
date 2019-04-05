@@ -27,7 +27,8 @@ mMass(DEFAULT_AGENT_MASS),
 mIsMassZeroAvoid(false),
 mRadius(DEFAULT_AGENT_RADIUS),
 mRobot(0),
-mIsUsePhysics(false)
+mIsUsePhysics(false),
+mIsTag(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -335,7 +336,8 @@ Controller(value),
 mAgentWorld(0),
 mRigidBody(0),
 mNode(0),
-mRobot(0)
+mRobot(0),
+mIsTag(false)
 {
 }
 //----------------------------------------------------------------------------

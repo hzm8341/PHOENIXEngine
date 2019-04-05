@@ -70,6 +70,10 @@ namespace PX2
 		btRigidBody* GetRigidBody();
 		const btRigidBody* GetRigidBody() const;
 
+		bool IsTagged() const { return mIsTag; }
+		void Tag() { mIsTag = true; }
+		void UnTag() { mIsTag = false; }
+
 	public_internal:
 		void SetNode(Node *node);
 		void SetAgentWorld(AIAgentWorld *agentWorld);
@@ -89,6 +93,8 @@ namespace PX2
 		float mMass;
 		bool mIsMassZeroAvoid;
 		float mRadius;
+
+		bool mIsTag;
 
 		// Robot
 	public:

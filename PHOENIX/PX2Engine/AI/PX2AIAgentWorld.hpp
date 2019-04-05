@@ -5,15 +5,44 @@
 
 #include "PX2AxisAlignedBox3.hpp"
 #include "PX2Controller.hpp"
+#include "PX2AISteeringWall2D.hpp"
+#include "PX2AIAgent.hpp"
+#include "PX2AIAgentObject.hpp"
+#include "PX2CellSpaceT.hpp"
 
 namespace PX2
 {
 
-	class AIAgent;
-	class AIAgentObject;
 	class PhysicsWorld;
 	class NavigationMesh;
 	class Node;
+
+	//------------------------------------------------------------------------
+	template <class T, class conT>
+	void TagNeighbors(const T& entity, conT& containerOfEntities, double radius)
+	{
+		for (typename conT::iterator curEntity = containerOfEntities.begin();
+			curEntity != containerOfEntities.end();
+			++curEntity)
+		{
+			//first clear any current tag
+			(*curEntity)->UnTag();
+
+			Vector2f to = (*curEntity)->GetPosition().To2() - entity->GetPosition().To2();
+
+			//the bounding radius of the other is taken into account by adding it 
+			//to the range
+			double range = radius + (*curEntity)->GetRadius();
+
+			//if entity within range, tag for further consideration. (working in
+			//distance-squared space to avoid sqrts)
+			if (((*curEntity) != entity) && (to.SquaredLength() < range*range))
+			{
+				(*curEntity)->Tag();
+			}
+
+		}//next entity
+	}
 
 	class PX2_ENGINE_ITEM AIAgentWorld : public Controller
 	{
@@ -43,6 +72,7 @@ namespace PX2
 		const AIAgent* GetAgent(int agentID) const;
 		std::vector<AIAgent*>& GetAgents();
 		const std::vector<AIAgent*>& GetAgents() const;
+		CellSpaceT<AIAgent*>* CellSpace() { return mCellSpace; }
 
 		void AddAgentObject(AIAgentObject* agentObject);
 		void RemoveAgentObject(AIAgentObject* agentObject);
@@ -51,6 +81,18 @@ namespace PX2
 		const std::vector<AIAgentObject*>& GetObjects() const;
 
 		void AddNavigationMesh(const std::string& name, NavigationMesh *navMesh);
+
+		const std::vector<Wall2D>& GetWalls();
+
+		void TagVehiclesWithinViewRange(AIAgentBase* pVehicle, double range)
+		{
+			TagNeighbors(pVehicle, mAgents, range);
+		}
+
+		void TagObstaclesWithinViewRange(AIAgentBase* pVehicle, double range)
+		{
+			TagNeighbors(pVehicle, mObjects, range);
+		}
 
 	public_internal:
 		void SetNode(Node *sceneNode);
@@ -63,10 +105,14 @@ namespace PX2
 
 		PhysicsWorld* mPhysicsWorld;
 		bool mIsDrawPhysicsWorld;
+
 		std::vector<AIAgent*> mAgents;
+		CellSpaceT<AIAgent*>* mCellSpace;
 
 		std::vector<AIAgentObject*> mObjects;
 		std::map<std::string, NavigationMesh*> mNavMeshes;
+
+		std::vector<Wall2D> mWalls;
 	};
 
 	PX2_REGISTER_STREAM(AIAgentWorld);

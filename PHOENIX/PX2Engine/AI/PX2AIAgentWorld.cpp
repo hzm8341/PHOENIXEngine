@@ -5,6 +5,8 @@
 #include "PX2AIAgentObject.hpp"
 #include "PX2AIAgent.hpp"
 #include "PX2Node.hpp"
+#include "PX2AISteeringWall2D.hpp"
+#include "PX2AISteeringParamLoader.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -18,6 +20,9 @@ mPhysicsWorld(0)
 {
 	mPhysicsWorld = new0 PhysicsWorld();
 	mPhysicsWorld->Initialize();
+
+	mCellSpace = new CellSpaceT<AIAgent*>((double)10.0, (double)10.0,
+		Prm.NumCellsX, Prm.NumCellsY, Prm.NumAgents);
 
 	mIsDrawPhysicsWorld = true;
 }
@@ -218,6 +223,11 @@ void AIAgentWorld::AddNavigationMesh(const std::string& name,
 	}
 
 	mNavMeshes[name] = navMesh;
+}
+//----------------------------------------------------------------------------
+const std::vector<Wall2D>& AIAgentWorld::GetWalls()
+{
+	return mWalls;
 }
 //----------------------------------------------------------------------------
 void AIAgentWorld::_Update(double applicationTime, double elapsedTime)

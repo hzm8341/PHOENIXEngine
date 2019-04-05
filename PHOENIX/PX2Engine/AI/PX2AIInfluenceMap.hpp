@@ -54,7 +54,7 @@ namespace PX2
 		float boundaryMax[3];
 	};
 
-	class InfluenceMap
+	class PX2_ENGINE_ITEM InfluenceMap
 	{
 	public:
 		InfluenceMap(
