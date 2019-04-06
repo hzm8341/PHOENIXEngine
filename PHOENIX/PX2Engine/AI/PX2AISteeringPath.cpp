@@ -14,20 +14,23 @@ void AIAgentPath::AddWayPoint(const APoint &new_point)
 //----------------------------------------------------------------------------
 void AIAgentPath::Update()
 {
-	std::list<Vector3f>::const_iterator it = mWayPoints.begin();
-	Vector3f wp = *it++;
-	while (it != mWayPoints.end())
+	if ((int)mWayPoints.size() > 0)
 	{
-		EngineSceneCanvas::GetSingleton().AddDebugLine(wp, *it,
-			Float4::RED);
+		std::list<Vector3f>::const_iterator it = mWayPoints.begin();
+		Vector3f wp = *it++;
+		while (it != mWayPoints.end())
+		{
+			EngineSceneCanvas::GetSingleton().AddDebugLine(wp, *it,
+				Float4::RED);
 
-		wp = *it++;
-	}
+			wp = *it++;
+		}
 
-	if (m_bLooped)
-	{
-		EngineSceneCanvas::GetSingleton().AddDebugLine(*(--it), 
-			*mWayPoints.begin(), Float4::RED);
+		if (m_bLooped)
+		{
+			EngineSceneCanvas::GetSingleton().AddDebugLine(*(--it),
+				*mWayPoints.begin(), Float4::RED);
+		}
 	}
 }
 //----------------------------------------------------------------------------

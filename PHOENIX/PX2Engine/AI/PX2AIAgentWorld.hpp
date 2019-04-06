@@ -36,7 +36,8 @@ namespace PX2
 
 			//if entity within range, tag for further consideration. (working in
 			//distance-squared space to avoid sqrts)
-			if (((*curEntity) != entity) && (to.SquaredLength() < range*range))
+			if (((*curEntity) != entity) && (to.SquaredLength() < range*range) &&
+				((*curEntity)->GetMass()>0.0f || (*curEntity)->IsMassZeroAvoid()))
 			{
 				(*curEntity)->Tag();
 			}

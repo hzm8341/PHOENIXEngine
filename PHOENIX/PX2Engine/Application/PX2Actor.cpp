@@ -69,8 +69,11 @@ void Actor::_CreatePhysics()
 	{
 		AIAgentObject *agentObject = DynamicCast<AIAgentObject>(mAgentBase);
 		if (agentObject)
+		{
+			agentObject->SetMass(0.0f);
 			agentObject->InitializeInfinitePlane(AVector::UNIT_Z,
-			this->WorldTransform.GetTranslate().Z());
+				this->WorldTransform.GetTranslate().Z());
+		}
 	}
 	else if (mPhysicsShapeType == PST_MESH)
 	{

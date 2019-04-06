@@ -529,8 +529,6 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 	Vector3f LocalPosOfClosestObstacle;
 	std::vector<AIAgentObject*>::const_iterator curOb = obstacles.begin();
 
-
-
 	while (curOb != obstacles.end())
 	{
 		//if the obstacle has been tagged within range proceed
@@ -991,6 +989,9 @@ Vector3f SteeringBehavior::GetHidingPosition(const Vector3f& posOb,
 //------------------------------------------------------------------------
 Vector3f SteeringBehavior::FollowPath()
 {
+	if (mPath.GetPath().size() == 0)
+		return Vector3f::ZERO;
+
 	//move to next target if close enough to current target (working in
 	//distance squared space)
 	Vector3f vec = mPath.CurrentWaypoint() - mAgent->GetPosition();
