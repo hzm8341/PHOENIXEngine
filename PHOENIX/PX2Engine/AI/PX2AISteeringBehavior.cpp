@@ -101,6 +101,7 @@ Vector3f SteeringBehavior::Calculate()
 
 	}//end switch
 
+	m_vSteeringForce.Z() = 0.0f;
 	return m_vSteeringForce;
 }
 //------------------------------------------------------------------------
@@ -147,7 +148,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 		force = WallAvoidance(mAgent->GetAIAgentWorld()->GetWalls()) *
 			mWeightWallAvoidance;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 	if (On(obstacle_avoidance))
@@ -155,7 +157,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 		force = ObstacleAvoidance(mAgent->GetAIAgentWorld()->GetObjects()) *
 			mWeightObstacleAvoidance;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force)) 
+			return m_vSteeringForce;
 	}
 
 	if (On(evade))
@@ -164,7 +167,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 		force = Evade(mTargetAgent1) * mWeightEvade;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 
@@ -172,7 +176,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 	{
 		force = Flee(mAgent->GetTarget()) * mWeightFlee;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 	if (!IsSpacePartitioningOn())
@@ -181,21 +186,24 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 		{
 			force = Separation(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightSeparation;
 
-			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+			if (!AccumulateForce(m_vSteeringForce, force))
+				return m_vSteeringForce;
 		}
 
 		if (On(allignment))
 		{
 			force = Alignment(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightAlignment;
 
-			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+			if (!AccumulateForce(m_vSteeringForce, force)) 
+				return m_vSteeringForce;
 		}
 
 		if (On(cohesion))
 		{
 			force = Cohesion(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightCohesion;
 
-			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+			if (!AccumulateForce(m_vSteeringForce, force)) 
+				return m_vSteeringForce;
 		}
 	}
 	else
@@ -205,21 +213,24 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 		{
 			force = SeparationPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightSeparation;
 
-			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+			if (!AccumulateForce(m_vSteeringForce, force))
+				return m_vSteeringForce;
 		}
 
 		if (On(allignment))
 		{
 			force = AlignmentPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightAlignment;
 
-			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+			if (!AccumulateForce(m_vSteeringForce, force)) 
+				return m_vSteeringForce;
 		}
 
 		if (On(cohesion))
 		{
 			force = CohesionPlus(mAgent->GetAIAgentWorld()->GetAgents()) * mWeightCohesion;
 
-			if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+			if (!AccumulateForce(m_vSteeringForce, force)) 
+				return m_vSteeringForce;
 		}
 	}
 
@@ -227,7 +238,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 	{
 		force = Seek(mAgent->GetTarget()) * mWeightSeek;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force)) 
+			return m_vSteeringForce;
 	}
 
 
@@ -235,7 +247,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 	{
 		force = Arrive(mAgent->GetTarget(), mDeceleration) * mWeightArrive;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 	if (On(wander))
@@ -251,7 +264,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 		force = Pursuit(mTargetAgent1) * mWeightPursuit;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 	if (On(offset_pursuit))
@@ -261,7 +275,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 		force = OffsetPursuit(mTargetAgent1, m_vOffset);
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 	if (On(interpose))
@@ -270,7 +285,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 		force = Interpose(mTargetAgent1, mTargetAgent2) * mWeightInterpose;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force))
+			return m_vSteeringForce;
 	}
 
 	if (On(hide))
@@ -279,7 +295,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 
 		force = Hide(mTargetAgent1, mAgent->GetAIAgentWorld()->GetObjects()) * mWeightHide;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force)) 
+			return m_vSteeringForce;
 	}
 
 
@@ -287,7 +304,8 @@ Vector3f SteeringBehavior::CalculatePrioritized()
 	{
 		force = FollowPath() * mWeightFollowPath;
 
-		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+		if (!AccumulateForce(m_vSteeringForce, force)) 
+			return m_vSteeringForce;
 	}
 
 	return m_vSteeringForce;
@@ -526,7 +544,7 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 	AIAgentObject* closestIntersectingObstacle = NULL;
 	float distToClosestIP = Mathf::MAX_REAL;
 
-	Vector3f LocalPosOfClosestObstacle;
+	Vector3f localPosOfClosestObstacle;
 	std::vector<AIAgentObject*>::const_iterator curOb = obstacles.begin();
 
 	while (curOb != obstacles.end())
@@ -543,14 +561,14 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 
 			//if the local position has a negative x value then it must lay
 			//behind the agent. (in which case it can be ignored)
-			if (localPos.X() >= 0)
+			if (localPos.Y() >= 0)
 			{
 				//if the distance from the x axis to the object's position is less
 				//than its radius + half the width of the detection box then there
 				//is a potential intersection.
-				float ExpandedRadius = (*curOb)->GetRadius() + mAgent->GetRadius();
+				float expandedRadius = (*curOb)->GetRadius() + mAgent->GetRadius();
 
-				if (fabs(localPos.Y()) < ExpandedRadius)
+				if (fabs(localPos.X()) < expandedRadius)
 				{
 					//now to do a line/circle intersection test. The center of the 
 					//circle is represented by (cX, cY). The intersection points are 
@@ -561,13 +579,13 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 					float cY = localPos.Y();
 
 					//we only need to calculate the sqrt part of the above equation once
-					float SqrtPart = sqrt(ExpandedRadius*ExpandedRadius - cY*cY);
+					float sqrtPart = sqrt(expandedRadius*expandedRadius - cX*cX);
 
-					float ip = cX - SqrtPart;
+					float ip = cY - sqrtPart;
 
 					if (ip <= 0.0)
 					{
-						ip = cX + SqrtPart;
+						ip = cY + sqrtPart;
 					}
 
 					//test to see if this is the closest so far. If it is keep a
@@ -578,7 +596,7 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 
 						closestIntersectingObstacle = *curOb;
 
-						LocalPosOfClosestObstacle = localPos;
+						localPosOfClosestObstacle = localPos;
 					}
 				}
 			}
@@ -592,19 +610,19 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 	{
 		//the closer the agent is to an object, the stronger the 
 		//steering force should be
-		float multiplier = 1.0 + (mDBoxLength - LocalPosOfClosestObstacle.X()) /
+		float multiplier = 1.0 + (mDBoxLength - localPosOfClosestObstacle.Y()) /
 			mDBoxLength;
 
 		//calculate the lateral force
-		SteeringForce.Y() = (closestIntersectingObstacle->GetRadius() -
-			LocalPosOfClosestObstacle.Y())  * multiplier;
-
+		SteeringForce.X() = (closestIntersectingObstacle->GetRadius() -
+			localPosOfClosestObstacle.X())  * multiplier;
+	
 		//apply a braking force proportional to the obstacles distance from
 		//the vehicle. 
-		const float BrakingWeight = 0.2;
+		const float BrakingWeight = 0.3;
 
-		SteeringForce.X() = (closestIntersectingObstacle->GetRadius() -
-			LocalPosOfClosestObstacle.X()) *
+		SteeringForce.Y() = (closestIntersectingObstacle->GetRadius() -
+			localPosOfClosestObstacle.Y()) *
 			BrakingWeight;
 	}
 
@@ -994,7 +1012,8 @@ Vector3f SteeringBehavior::FollowPath()
 
 	//move to next target if close enough to current target (working in
 	//distance squared space)
-	Vector3f vec = mPath.CurrentWaypoint() - mAgent->GetPosition();
+	APoint curWayPoint = mPath.CurrentWaypoint();
+	Vector3f vec = curWayPoint - mAgent->GetPosition();
 	float lengthSquare = vec.SquaredLength();
 
 	if (lengthSquare < mWaypointSeekDistSq)
@@ -1004,12 +1023,14 @@ Vector3f SteeringBehavior::FollowPath()
 
 	if (!mPath.Finished())
 	{
-		return Seek(mPath.CurrentWaypoint());
+		APoint curWayPoint = mPath.CurrentWaypoint();
+		return Seek(curWayPoint);
 	}
 
 	else
 	{
-		return Arrive(mPath.CurrentWaypoint(), normal);
+		APoint curWayPoint = mPath.CurrentWaypoint();
+		return Arrive(curWayPoint, normal);
 	}
 }
 
@@ -1140,7 +1161,7 @@ void SteeringBehavior::RenderAids()
 	//	float distToClosestIP = MaxDouble;
 
 	//	//this will record the transformed local coordinates of the CIB
-	//	Vector3f LocalPosOfClosestObstacle;
+	//	Vector3f localPosOfClosestObstacle;
 
 	//	std::vector<BaseGameEntity*>::const_iterator curOb = mAgent->World()->Obstacles().begin();
 

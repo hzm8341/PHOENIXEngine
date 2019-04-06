@@ -302,6 +302,8 @@ void AIAgent::SetVelocity(const AVector& velocity)
 		}
 	}
 
+	mVelocity = velocity;
+
 	SetSpeed(Vector3f(velocity.X(), velocity.Y(), 0.0f).Length());
 }
 //----------------------------------------------------------------------------
@@ -455,6 +457,11 @@ AVector AIAgent::GetVelocity() const
 	}
 }
 //----------------------------------------------------------------------------
+AVector AIAgent::GetVelocityNoPhysics() const
+{
+	return mVelocity;
+}
+//----------------------------------------------------------------------------
 APoint AIAgent::GetTarget() const
 {
 	return mTarget;
@@ -499,43 +506,32 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 	if (mSteeringBehavior)
 	{
 		AVector force = mSteeringBehavior->Calculate();
-		ApplyForcing(force);
-	}
+		ApplyForce(force);
 
-	if (mRobot)
-	{
-		AVector vec = mRobot->GetVelocity();
-		SetVelocity(vec);
-
-		if (mSmootherForcing)
+		if (!mRobot)
 		{
-			AVector force = mSmootherForcing->Update(mForcing, elapsedTime);
-			ApplyForce(force);
+			float mass = GetMass();
+			float maxSpeed = GetMaxSpeed();
+
+			AVector acce = force / mass;
+			AVector curVelocity = GetVelocityNoPhysics();
+			curVelocity.Z() = 0.0f;
+
+			AVector newVelocity = curVelocity + acce * elapsedTime;
+			newVelocity.Z() = 0.0f;	
+
+			AVector newVelocityNormalize = newVelocity;
+			newVelocityNormalize.Normalize();
+
+			float newSpeed = newVelocity.Length();
+			if (newSpeed > maxSpeed)
+			{
+				newVelocity = newVelocityNormalize * maxSpeed;
+			}
+			SetVelocity(newVelocity);
+			SetForward(newVelocityNormalize);
 		}
 	}
-	else
-	{
-		if (mSmoother && mIsEnableForwarding)
-		{
-			AVector forward = mSmoother->Update(mForwarding, elapsedTime);
-			forward.Z() = 0.0f;
-			SetForward(forward);
-		}
-
-		if (mSmootherForcing)
-		{
-			AVector force = mSmootherForcing->Update(mForcing, elapsedTime);
-			//ApplyForce(force);
-		}
-
-		if (mRigidBody)
-		{
-			const btVector3 velocity = mRigidBody->getLinearVelocity();
-			SetSpeed(Vector3f(velocity.x(), velocity.y(), 0.0f).Length());
-		}
-	}
-
-	//mPath.Update(elapsedTime);
 }
 //----------------------------------------------------------------------------
 void AIAgent::SetAIAgentWorld(AIAgentWorld *agentWorld)

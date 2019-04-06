@@ -155,7 +155,9 @@ APoint AIAgentBase::GetPosition() const
 {
 	if (mRobot)
 	{
-		return mRobot->GetPosition();
+		APoint pos = mRobot->GetPosition();
+		pos.Z() = 0.0f;
+		return pos;
 	}
 	else
 	{
@@ -163,6 +165,7 @@ APoint AIAgentBase::GetPosition() const
 		{
 			APoint bodyPos = PhysicsUtilities::BtVector3ToVector3(
 				mRigidBody->getCenterOfMassPosition());
+			bodyPos.Z() = 0.0f;
 			return bodyPos;
 		}
 		else if (mNode)

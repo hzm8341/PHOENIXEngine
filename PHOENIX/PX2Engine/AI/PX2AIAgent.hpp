@@ -75,6 +75,7 @@ namespace PX2
 
 		void SetVelocity(const AVector& velocity);
 		AVector GetVelocity() const;
+		AVector GetVelocityNoPhysics() const;
 
 		AVector GetRight() const;
 		AVector GetUp() const;
@@ -105,6 +106,7 @@ namespace PX2
 		float mPhysicsRaduis;
 		float mMaxForce;
 		float mMaxSpeed;
+		AVector mVelocity;
 		float mSpeed;
 		APoint mTarget;
 		float mTargetRadius;
