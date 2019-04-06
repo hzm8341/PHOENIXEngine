@@ -18,6 +18,8 @@
 #endif
 #include "PX2PluginManager.hpp"
 #include "PX2AIAgent.hpp"
+#include "PX2EngineSceneCanvas.hpp"
+#include "PX2AISteeringPath.hpp"
 using namespace PX2;
 
 #if defined _WIN32 || defined WIN32
@@ -1626,6 +1628,37 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 
 		mPosition += mFackVelocity * elaplseSeconds;
 	}
+
+	if (mCurPathPlan)
+	{
+		mAIAgentPath.Clear();
+
+		std::vector<PathingNode*> vec;
+		std::list<PathingNode*> list = mCurPathPlan->m_path;
+		auto it = list.begin();
+		while (it != list.end())
+		{
+			PathingNode *pathNode = *it;
+			APoint pos = pathNode->GetPos();
+
+			mAIAgentPath.AddWayPoint(pos);
+
+			vec.push_back(*it);
+			it++;
+		}
+
+		for (int i = 0; i < vec.size()-1; i++)
+		{
+			PathingNode *node = vec[i];
+			PathingNode *nodeNext = vec[i + 1];
+
+			Vector3f curPos = node->GetPos();
+			Vector3f nextPos = nodeNext->GetPos();
+
+			EngineSceneCanvas::GetSingleton().AddDebugLine(curPos, nextPos,
+				Float4::BLUE);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Robot::GoTarget(const APoint &targetPos)
@@ -1633,6 +1666,8 @@ void Robot::GoTarget(const APoint &targetPos)
 	mIsGoPathPlan = true;
 	mGoTargetPos = targetPos;
 	mPathUpdateTiming = 0.0f;
+
+
 
 	mCurPathPlan = mPathGraph->FindPath(mPosition, mGoTargetPos);
 	if (mCurPathPlan)

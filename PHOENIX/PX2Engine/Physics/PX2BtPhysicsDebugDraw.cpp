@@ -28,7 +28,7 @@ void PhysicsDebugDraw::drawLine(
 {
 	APoint fromP = PhysicsUtilities::BtVector3ToVector3(from);
 	APoint toP = PhysicsUtilities::BtVector3ToVector3(to);
-	EngineSceneCanvas::GetSingleton().AddDebugLine(fromP, toP, Float4::RED);
+	//EngineSceneCanvas::GetSingleton().AddDebugLine(fromP, toP, Float4::RED);
 
 	//DebugDrawer::getSingleton().drawLine(
 	//	Ogre::Vector3(from.m_floats[0], from.m_floats[1], from.m_floats[2]),

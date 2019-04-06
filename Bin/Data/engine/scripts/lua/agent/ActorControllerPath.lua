@@ -2,9 +2,7 @@
 
 ActorControllerPath = class(ActorController,
 {
-	_name = "ActorControllerPath",
-	_direction = 1,
-	_path0 = 0,
+	_name = "ActorControllerPath"
 })
 
 function ActorControllerPath:OnAttached()
@@ -20,12 +18,12 @@ function ActorControllerPath:OnAttached()
 end
 
 function ActorControllerPath:OnInitUpdate()
-	local agentPath = AIAgentPath()
-	self._path0 = agentPath
-	agentPath:AddWayPoint(APoint(0.0, 0.0, 0.0))
-	agentPath:AddWayPoint(APoint(0.0, 2.0, 0.0))
-	agentPath:AddWayPoint(APoint(1.0, 2.0, 0.0))
-	self._agent:SetPath(agentPath)
+	--local agentPath = AIAgentPath()
+	--self._path0 = agentPath
+	--agentPath:AddWayPoint(APoint(0.0, 0.0, 0.0))
+	--agentPath:AddWayPoint(APoint(0.0, 2.0, 0.0))
+	--agentPath:AddWayPoint(APoint(1.0, 2.0, 0.0))
+	--self._agent:SetPath(agentPath)
 end
 
 function ActorControllerPath:OnPUpdate()

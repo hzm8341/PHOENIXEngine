@@ -1453,6 +1453,9 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	if (mSTEAMEduManager)
 		mSTEAMEduManager->Update((float)elapsedSeconds);
 
+	// graph
+	PX2_GR.Update(appSeconds, elapsedSeconds);
+
 	if (mRobot)
 		mRobot->Update(appSeconds, elapsedSeconds);
 
@@ -1460,9 +1463,6 @@ void Application::Update(float appSeconds, float elapsedSeconds)
 	PX2_WIFI.Update((float)elapsedSeconds);
 	Serial *ser = Serial::GetDefaultSerial();
 	if (ser) ser->Update();
-
-	// graph
-	PX2_GR.Update(appSeconds, elapsedSeconds);
 
 	if (mEngineServer)
 		mEngineServer->Run((float)elapsedSeconds);

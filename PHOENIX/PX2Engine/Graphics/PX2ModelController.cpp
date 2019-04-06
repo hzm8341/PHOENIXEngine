@@ -157,10 +157,10 @@ void ModelController::_CalSkins()
 		{
 			bool hasSkinCtrl = false;
 
-			for (int i = 0; i < triMesh->GetNumControllers(); i++)
+			for (int j = 0; j < triMesh->GetNumControllers(); j++)
 			{
 				SkinController *skinCtrl = DynamicCast<SkinController>(
-					triMesh->GetController(i));
+					triMesh->GetController(j));
 				if (skinCtrl)
 				{
 					hasSkinCtrl = true;
@@ -179,9 +179,9 @@ void ModelController::_CalSkins()
 				TriMesh *mesh = DynamicCast<TriMesh>(node->GetChild(i));
 				if (mesh)
 				{
-					for (int i = 0; i < mesh->GetNumControllers(); i++)
+					for (int j = 0; j < mesh->GetNumControllers(); j++)
 					{
-						SkinController *skinCtrl = DynamicCast<SkinController>(mesh->GetController(i));
+						SkinController *skinCtrl = DynamicCast<SkinController>(mesh->GetController(j));
 						if (skinCtrl)
 						{
 							hasSkinCtrl = true;

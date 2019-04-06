@@ -233,7 +233,7 @@ function zo_Scene()
         scriptCtrl:ResetPlay()
 
         local robot = PX2_ROBOT
-        --followerActorAgent:SetRobot(robot)
+        followerActorAgent:SetRobot(robot)
     end
 
     -- follower
@@ -254,7 +254,7 @@ function zo_Scene()
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane()
-    --actorRect.LocalTransform:SetTranslateZ(-2.0)
+    actorRect.LocalTransform:SetTranslateZ(-0.1)
     scene:AttachChild(actorRect)
 
     --[[

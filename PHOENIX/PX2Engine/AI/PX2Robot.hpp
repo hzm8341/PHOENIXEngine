@@ -252,6 +252,7 @@ namespace PX2
 		bool mIsGoPathPlan;
 		PathingGraphPtr mPathGraph;
 		PathPlanPtr mCurPathPlan;
+		AIAgentPath mAIAgentPath;
 		APoint mGoTargetPos;
 		APoint mGoingPos;
 		float mPathUpdateTiming;
