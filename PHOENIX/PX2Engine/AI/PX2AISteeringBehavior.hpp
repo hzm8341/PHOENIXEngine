@@ -63,7 +63,7 @@ namespace PX2
 		std::vector<Vector3f> mFeelers;
 
 		//the length of the 'feeler/s' used in wall detection
-		float                 mWallDetectionFeelerLength;
+		float mWallDetectionFeelerLength;
 
 		Vector3f     m_vWanderTarget;
 
@@ -222,6 +222,9 @@ namespace PX2
 		float SeparationWeight()const { return mWeightSeparation; }
 		float AlignmentWeight()const { return mWeightAlignment; }
 		float CohesionWeight()const { return mWeightCohesion; }
+
+		bool IsGoingToCollide(const std::vector<AIAgentObject*>& obstacles,
+			float length);
 	};
 
 }

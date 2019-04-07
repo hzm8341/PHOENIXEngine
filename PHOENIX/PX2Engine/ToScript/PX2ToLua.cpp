@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 04/07/19 01:29:30.
+** Generated automatically by tolua++-1.0.92 on 04/07/19 20:46:50.
 */
 
 #ifndef __cplusplus
@@ -87969,6 +87969,37 @@ static int tolua_PX2_Robot_SetValueAtPos00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: UpdateSceneObstacles of class  Robot */
+#ifndef TOLUA_DISABLE_tolua_PX2_Robot_UpdateSceneObstacles00
+static int tolua_PX2_Robot_UpdateSceneObstacles00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'UpdateSceneObstacles'", NULL);
+#endif
+  {
+   self->UpdateSceneObstacles();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'UpdateSceneObstacles'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: GoTarget of class  Robot */
 #ifndef TOLUA_DISABLE_tolua_PX2_Robot_GoTarget00
 static int tolua_PX2_Robot_GoTarget00(lua_State* tolua_S)
@@ -107478,6 +107509,7 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"LoadMap",tolua_PX2_Robot_LoadMap00);
    tolua_function(tolua_S,"LoadMap",tolua_PX2_Robot_LoadMap01);
    tolua_function(tolua_S,"SetValueAtPos",tolua_PX2_Robot_SetValueAtPos00);
+   tolua_function(tolua_S,"UpdateSceneObstacles",tolua_PX2_Robot_UpdateSceneObstacles00);
    tolua_function(tolua_S,"GoTarget",tolua_PX2_Robot_GoTarget00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus

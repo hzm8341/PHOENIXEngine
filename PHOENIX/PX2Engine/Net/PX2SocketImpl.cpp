@@ -164,7 +164,7 @@ int SocketImpl::Bind(const SocketAddress& address, bool reuseAddress)
 
 	if (rc != 0)
 	{
-		NetError::Error(address.ToString());
+		//NetError::Error(address.ToString());
 	}
 
 	return rc;

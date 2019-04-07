@@ -519,6 +519,18 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 
 	if (mSteeringBehavior)
 	{
+		std::vector<AIAgentObject*> objs = mAgentWorld->GetObjects();
+		bool isGoingToCollide = mSteeringBehavior->IsGoingToCollide(objs,
+			0.3f);
+		if (isGoingToCollide)
+		{
+
+		}
+		else
+		{
+
+		}
+
 		AVector force = mSteeringBehavior->Calculate();
 		ApplyForce(force);
 
@@ -544,6 +556,11 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 			}
 			SetVelocity(newVelocity);
 			SetForward(newVelocityNormalize);
+		}
+		else
+		{
+			AVector velocity = mRobot->GetVelocity();
+			SetVelocity(velocity);
 		}
 	}
 }

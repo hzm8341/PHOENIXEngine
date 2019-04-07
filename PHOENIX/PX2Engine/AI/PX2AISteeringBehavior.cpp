@@ -49,9 +49,6 @@ SteeringBehavior::SteeringBehavior(AIAgent* agent):
 	m_vWanderTarget = Vector3f(mWanderRadius * Mathf::Cos(theta),
 		mWanderRadius * Mathf::Sin(theta), 0.0f);
 
-	//create a Path
-	mPath.LoopOn();
-
 	FollowPathOn();
 	ObstacleAvoidanceOn();
 }
@@ -535,8 +532,10 @@ Vector3f SteeringBehavior::Wander()
 Vector3f SteeringBehavior::ObstacleAvoidance(
 	const std::vector<AIAgentObject*>& obstacles)
 {
-	mDBoxLength = Prm.MinDetectionBoxLength +
-		(mAgent->GetSpeed() / mAgent->GetMaxSpeed()) *
+	float speed = mAgent->GetSpeed();
+	float maxSpeed = mAgent->GetMaxSpeed();
+
+	mDBoxLength = Prm.MinDetectionBoxLength + (speed / maxSpeed) *
 		Prm.MinDetectionBoxLength;
 
 	mAgent->GetAIAgentWorld()->TagObstaclesWithinViewRange(mAgent,
@@ -637,6 +636,71 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 
 	AVector vec = mat * SteeringForce;
 	return vec;
+}
+//------------------------------------------------------------------------
+bool SteeringBehavior::IsGoingToCollide(
+	const std::vector<AIAgentObject*>& obstacles, float length)
+{
+	mAgent->GetAIAgentWorld()->TagObstaclesWithinViewRange(mAgent,
+		length);
+
+	AIAgentObject* closestIntersectingObstacle = 0;
+	float distToClosestIP = Mathf::MAX_REAL;
+
+	Vector3f localPosOfClosestObstacle;
+	std::vector<AIAgentObject*>::const_iterator curOb = obstacles.begin();
+
+	while (curOb != obstacles.end())
+	{
+		if ((*curOb)->IsTagged())
+		{
+			HMatrix localMat =
+				HMatrix(mAgent->GetRight(), mAgent->GetForward(),
+					mAgent->GetUp(), mAgent->GetPosition(), true);
+
+			APoint curObjPos = (*curOb)->GetPosition();
+			Vector3f localPos = localMat.Inverse() * curObjPos;
+
+			if (localPos.Y() >= 0)
+			{
+				float expandedRadius = (*curOb)->GetRadius() + mAgent->GetRadius();
+
+				if (fabs(localPos.X()) < expandedRadius)
+				{
+					float cX = localPos.X();
+					float cY = localPos.Y();
+
+					//we only need to calculate the sqrt part of the above equation once
+					float sqrtPart = sqrt(expandedRadius*expandedRadius - cX*cX);
+
+					float ip = cY - sqrtPart;
+
+					if (ip <= 0.0)
+					{
+						ip = cY + sqrtPart;
+					}
+
+					if (ip < distToClosestIP)
+					{
+						distToClosestIP = ip;
+
+						closestIntersectingObstacle = *curOb;
+
+						localPosOfClosestObstacle = localPos;
+					}
+				}
+			}
+		}
+
+		++curOb;
+	}
+
+	if (closestIntersectingObstacle)
+	{
+		return true;
+	}
+
+	return false;
 }
 //------------------------------------------------------------------------
 inline bool LineIntersection2D(Vector3f A, Vector3f B, Vector3f C,
@@ -1016,13 +1080,16 @@ Vector3f SteeringBehavior::FollowPath()
 
 	//move to next target if close enough to current target (working in
 	//distance squared space)
-	APoint curWayPoint = mPath.CurrentWaypoint();
-	Vector3f vec = curWayPoint - mAgent->GetPosition();
-	float lengthSquare = vec.SquaredLength();
-
-	if (lengthSquare < mWaypointSeekDistSq)
+	if (!mPath.Finished())
 	{
-		mPath.SetNextWaypoint();
+		APoint curWayPoint = mPath.CurrentWaypoint();
+		Vector3f vec = curWayPoint - mAgent->GetPosition();
+		float lengthSquare = vec.SquaredLength();
+
+		if (lengthSquare < mWaypointSeekDistSq)
+		{
+			mPath.SetNextWaypoint();
+		}
 	}
 
 	if (!mPath.Finished())
@@ -1030,11 +1097,9 @@ Vector3f SteeringBehavior::FollowPath()
 		APoint curWayPoint = mPath.CurrentWaypoint();
 		return Seek(curWayPoint);
 	}
-
 	else
 	{
-		APoint curWayPoint = mPath.CurrentWaypoint();
-		return Arrive(curWayPoint, normal);
+		return AVector::ZERO;
 	}
 }
 

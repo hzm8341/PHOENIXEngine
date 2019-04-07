@@ -9483,6 +9483,9 @@
 				<param paramstr="float range = 0.1f" is_retrun="false" type_str="float" valuename_str="range" defaultvalue_Str="0.1f" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="int val=1.0f" is_retrun="false" type_str="int" valuename_str="val" defaultvalue_Str="1.0f" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
+			<function name="UpdateSceneObstacles" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
 			<function name="GoTarget" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const APoint &amp;targetPos" is_retrun="false" type_str="APoint" valuename_str="targetPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>

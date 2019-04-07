@@ -18,8 +18,8 @@ Slam3DPoint::~Slam3DPoint()
 //----------------------------------------------------------------------------
 RobotMapDataStruct::RobotMapDataStruct()
 {
-	MapSize = 1024;
-	MapResolution = 0.08f;
+	MapSize = 256;
+	MapResolution = 0.1f;
 	IndexX = 0;
 	IndexY = 0;
 	CurAngle = 0.0f;

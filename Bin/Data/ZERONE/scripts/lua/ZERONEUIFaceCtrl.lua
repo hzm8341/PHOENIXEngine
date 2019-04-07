@@ -30,8 +30,8 @@ ZERONEUIFaceCtrl = class(LuaScriptController,
     _ctrlable = nil,
     _background = nil,
     _content = nil,
+    _MapFrame = nil,
     _lidarFrame = nil,
-    _lidarFrameCur = nil,
 
     _name = "零一",
     _id = 1,
@@ -370,7 +370,7 @@ end
 -- lidar frame
 function ZERONEUIFaceCtrl:CreateLidarFrame()
     local lidarFrame = UIFrame:New()
-    self._lidarFrame = lidarFrame
+    self._MapFrame = lidarFrame
     self._background:AttachChild(lidarFrame)
     lidarFrame.LocalTransform:SetTranslateY(-2.0)
     lidarFrame:SetAnchorHor(0.0, 1.0)
@@ -390,7 +390,7 @@ function ZERONEUIFaceCtrl:CreateLidarFrame()
 
     -- cur
     local lidarFrameCur = UIFrame:New()
-    self._lidarFrameCur = lidarFrameCur
+    self._lidarFrame = lidarFrameCur
     self._background:AttachChild(lidarFrameCur)
     lidarFrameCur.LocalTransform:SetTranslateY(-2.0)
     lidarFrameCur:SetAnchorHor(0.0, 1.0)
@@ -1051,9 +1051,9 @@ function zo_UICallabck(ptr, callType)
         if "BtnShowFace"==name then
             ZERONE_UIFace._content:Show(true)
         elseif "BtnLidar"==name then
-            ZERONE_UIFace._lidarFrame:Show(true)
+            ZERONE_UIFace._MapFrame:Show(true)
         elseif "BtnLidarCur"==name then
-            ZERONE_UIFace._lidarFrameCur:Show(true)
+            ZERONE_UIFace._lidarFrame:Show(true)
         elseif "BtnUICtrl"==name then
             ZERONE_FrameUICtrl:Show(true)
         end    
@@ -1061,9 +1061,9 @@ function zo_UICallabck(ptr, callType)
         if "BtnShowFace"==name then
             ZERONE_UIFace._content:Show(false)
         elseif "BtnLidar"==name then
-            ZERONE_UIFace._lidarFrame:Show(false)
+            ZERONE_UIFace._MapFrame:Show(false)
         elseif "BtnLidarCur"==name then
-            ZERONE_UIFace._lidarFrameCur:Show(false)
+            ZERONE_UIFace._lidarFrame:Show(false)
         elseif "BtnUICtrl"==name then
             ZERONE_FrameUICtrl:Show(false)
         end

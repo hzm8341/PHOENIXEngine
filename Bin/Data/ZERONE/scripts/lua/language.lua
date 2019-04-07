@@ -31,6 +31,7 @@ function zo_AddLanguage()
 
 	PX2_LM_APP:AddItem1("SaveMap", "保存")
 	PX2_LM_APP:AddItem1("LoadMap", "加载")
+	PX2_LM_APP:AddItem1("UpdateObs", "更新障碍")
 
 	PX2_LM_APP:AddItem1("master", "a1主机")
 	PX2_LM_APP:AddItem1("connector", "a2连接器")

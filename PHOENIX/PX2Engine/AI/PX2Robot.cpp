@@ -20,6 +20,8 @@
 #include "PX2AIAgent.hpp"
 #include "PX2EngineSceneCanvas.hpp"
 #include "PX2AISteeringPath.hpp"
+#include "PX2Creater.hpp"
+#include "PX2Actor.hpp"
 using namespace PX2;
 
 #if defined _WIN32 || defined WIN32
@@ -222,6 +224,8 @@ bool Robot::LoadMap(const std::string &filename, const APoint &initPos,
 		InitSlamMap(mRobotMapData->MapStruct.MapSize,
 			mRobotMapData->MapStruct.MapResolution);
 
+		UpdateSceneObstacles();
+
 		_UpdateMapObst();
 
 		return true;
@@ -238,7 +242,9 @@ int _Roundle(float number)
 void Robot::_UpdateMapObst()
 {
 	int mapSize = mRobotMapData->MapStruct.MapSize;
+	float halfMapSize = mapSize * 0.5f;
 	float resolution = mRobotMapData->MapStruct.MapResolution;
+	float mapWidth = mapSize * resolution;
 	std::vector<unsigned char> map = mRobotMapData->Map2D;
 	std::vector<unsigned char> maskData;
 	maskData.resize(map.size());
@@ -296,6 +302,27 @@ void Robot::_UpdateMapObst()
 		{
 			isHasObst = false;
 		}
+
+		//if (isHasObst)
+		//{
+		//	Scene *scene = PX2_PROJ.GetScene();
+		//	if (scene)
+		//	{
+		//		Actor *actor = PX2_CREATER.CreateActorBox();
+		//		actor->LocalTransform.SetTranslateY(4.0);
+		//		AIAgentBase *actorBoxAgentBase = actor->GetAIAgentBase();
+		//		actorBoxAgentBase->SetMass(0);
+		//		actorBoxAgentBase->SetMassZeroAvoid(true);
+		//		actorBoxAgentBase->SetRadius(0.12);
+
+		//		float xPos = mapWidth * (x- halfMapSize);
+		//		float yPos = mapWidth * (y- halfMapSize);
+
+		//		actorBoxAgentBase->SetPosition(APoint(xPos, yPos, 0.0));
+		//		scene->AttachChild(actor);
+		//		actorBoxAgentBase->ResetPlay();
+		//	}
+		//}
 
 		int graphMapSize = mPathGraph->GetMapSize();
 		float xPercent = (float)x / (float)mapSize;
@@ -404,6 +431,27 @@ void Robot::SetValueAtPos(const APoint &pos, float range, int val)
 	}
 
 	mIsMapDataChanged = true;
+}
+//----------------------------------------------------------------------------
+void Robot::UpdateSceneObstacles()
+{
+	if (!mAgent)
+		return;
+
+	AIAgentWorld *agentWorld = mAgent->GetAIAgentWorld();
+	std::vector<AIAgentObject*> objs = agentWorld->GetObjects();
+
+	for (int i = 0; i < (int)objs.size(); i++)
+	{
+		AIAgentObject *obj = objs[i];
+		float mass = obj->GetMass();
+		if (mass > 0.0f || obj->IsMassZeroAvoid())
+		{
+			APoint pos = obj->GetPosition();
+			float radius = obj->GetRadius();
+			SetValueAtPos(pos, radius, 0);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Robot::SetLineValueAtPos(const APoint &pos, float range, int val)
@@ -748,7 +796,8 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 			}
 		}
 
-		//_LargerMapObst(mTextureMapSmaller);
+		//_LargerMapObst(mTextureMap);
+		//_LargerMapObst(mTextureMap);
 
 		if (mTextureMap && mapSize > 0)
 			Renderer::UpdateAll(mTextureMap, 0);
@@ -1528,8 +1577,6 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 
 	if (mCurPathPlan)
 	{
-		mAIAgentPath.Clear();
-
 		std::vector<PathingNode*> vec;
 		std::list<PathingNode*> list = mCurPathPlan->m_path;
 		auto it = list.begin();
@@ -1537,8 +1584,6 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		{
 			PathingNode *pathNode = *it;
 			APoint pos = pathNode->GetPos();
-
-			mAIAgentPath.AddWayPoint(pos);
 
 			vec.push_back(*it);
 			it++;
@@ -1578,7 +1623,7 @@ void Robot::GoTarget(const APoint &targetPos)
 			APoint pos = node->GetPos();
 			mAIAgentPath.AddWayPoint(pos);
 
-			SetLineValueAtPos(node->GetPos(), 0.1f, 200.0f);
+			SetLineValueAtPos(node->GetPos(), 0.05f, 200.0f);
 		}
 
 		mCurPathPlan->ResetPath();

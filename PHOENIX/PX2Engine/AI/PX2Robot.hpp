@@ -164,6 +164,7 @@ namespace PX2
 		// 10 none
 		// 200 space can go
 		void SetValueAtPos(const APoint &pos, float range = 0.1f, int val=1.0f);
+		void UpdateSceneObstacles();
 
 		void SetLineValueAtPos(const APoint &pos, float range = 0.1f, int val = 1.0f);
 
