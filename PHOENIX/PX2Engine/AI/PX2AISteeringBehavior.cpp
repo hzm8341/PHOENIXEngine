@@ -122,7 +122,8 @@ bool SteeringBehavior::AccumulateForce(Vector3f &runningTot,
 	float magnitudeRemaining = mAgent->GetMaxForce() - 
 		magnitudeSoFar;
 
-	if (magnitudeRemaining <= 0.0) return false;
+	if (magnitudeRemaining <= 0.0) 
+		return false;
 
 	float magnitudeToAdd = forceToAdd.Length();
 
@@ -610,8 +611,11 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 	{
 		//the closer the agent is to an object, the stronger the 
 		//steering force should be
-		float multiplier = 1.0 + (mDBoxLength - localPosOfClosestObstacle.Y()) /
-			mDBoxLength;
+		float distVal = (mDBoxLength - localPosOfClosestObstacle.Y());
+		if (distVal < 0.0f)
+			distVal = 0.0f;
+
+		float multiplier = 1.0 + distVal / mDBoxLength;
 
 		//calculate the lateral force
 		SteeringForce.X() = (closestIntersectingObstacle->GetRadius() -

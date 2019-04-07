@@ -17,6 +17,7 @@
 #include "PX2Timestamp.hpp"
 #include "PX2AIPath.hpp"
 #include "PX2Arduino.hpp"
+#include "PX2Smoother.hpp"
 
 namespace PX2
 {
@@ -270,6 +271,11 @@ namespace PX2
 		float mFakeSpeed;
 		AVector mFackVelocity;
 		float mFakeFoceTimer;
+
+		float mLeftSpeed;
+		Smoother<float> *mLeftSmoother;
+		float mRightSpeed;
+		Smoother<float> *mRightSmoother;
 
 	private:
 		void _CalSpeed(const Vector2f &dir, float power);

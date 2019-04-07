@@ -117,6 +117,12 @@ mAgent(0)
 	mFakeSpeed = 1.0f;
 	mIsAdjustToDirection = false;
 	mIsUseFakeForce = false;
+
+	mLeftSpeed = 0.0f;
+	mRightSpeed = 0.0f;
+
+	mLeftSmoother = new Smoother<float>(16, 0.0f);
+	mRightSmoother = new Smoother<float>(16, 0.0f);
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -124,6 +130,16 @@ Robot::~Robot()
 	if (mLiDar)
 	{
 		delete0(mLiDar);
+	}
+
+	if (mLeftSmoother)
+	{
+		delete0(mLeftSmoother);
+	}
+
+	if (mRightSmoother)
+	{
+		delete0(mRightSmoother);
 	}
 
 	ShutdownShareMenory();
@@ -1422,23 +1438,24 @@ void Robot::_MoveTypeCal(const Vector2f &dir, float strength)
 }
 //----------------------------------------------------------------------------
 static float rad = 0.0f;
-static float leftSpeed = 0.0f;
-static float rightSpeed = 0.0f;
 static AVector lastNeedForce;
 static float lastForceTimer = 0.0f;
 static float rotRightDirTimer = 0.0f;
 void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 {
 	mFakeForce.Normalize();
+	mDirection.Normalize();
+
 	float maxForce = 0.2f;
 	float dirVal = mFakeForce.Dot(mDirection);
 	AVector forceA = mFakeForce * maxForce;
 	float allForce = maxForce;
 	float allSpdFront = maxForce * dirVal;
 	float radForce = Mathf::ACos(dirVal);
+	float degree = radForce * Mathf::RAD_TO_DEG;
 	float sinVal = Mathf::Sin(radForce);
 	float cosVal = Mathf::Cos(radForce);
-	float allSpdHor = maxForce * sinVal * 4.0f;
+	float allSpdHor = maxForce * sinVal;
 	allSpdHor = Mathf::Clamp(allSpdHor, 0.0f, maxForce);
 
 	AVector cross = mFakeForce.Cross(mDirection);
@@ -1474,21 +1491,24 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		}
 	}
 
-	leftSpeed = leftSpeedA;
-	rightSpeed = rightSpeedA;
+	mLeftSpeed = leftSpeedA;
+	mRightSpeed = rightSpeedA;
+
+	mLeftSpeed = mLeftSmoother->Update(mLeftSpeed, elaplseSeconds);
+	mRightSpeed = mRightSmoother->Update(mRightSpeed, elaplseSeconds);
 
 	float width = 1;
-	float rotSpeed = rightSpeed - leftSpeed;
+	float rotSpeed = mRightSpeed - mLeftSpeed;
 	float rotDist = rotSpeed * elaplseSeconds;
 	float rotRad = (rotDist / (width*Mathf::PI) ) * Mathf::TWO_PI;
 	rad += rotRad;
 
-	float spd = (leftSpeed + rightSpeed) * 0.5f;
+	float spd = (mLeftSpeed + mRightSpeed) * 0.5f;
 
 	if (mArduino->IsInitlized())
 	{
-		int iLeftSpeed = (int)((leftSpeed / 0.2f) * 80);
-		int iRightSpeed = (int)((rightSpeed / 0.2f) * 80);
+		int iLeftSpeed = (int)((mLeftSpeed / 0.2f) * 60);
+		int iRightSpeed = (int)((mRightSpeed / 0.2f) * 60);
 		mArduino->RunSpeed(0, iLeftSpeed);
 		mArduino->RunSpeed(1, iRightSpeed);
 

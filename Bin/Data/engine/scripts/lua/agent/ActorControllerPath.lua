@@ -8,8 +8,8 @@ ActorControllerPath = class(ActorController,
 function ActorControllerPath:OnAttached()
 	ActorController.OnAttached(self)
 
-	self._agent:SetMaxForce(40.0)
-	self._agent:SetMass(20.0)
+	self._agent:SetMaxForce(2.0)
+	self._agent:SetMass(2.0)
 	self._agent:SetRadius(0.12)
 	self._agent:SetPhysicsRadius(0.00001)
 	self._agent:SetHeight(0.1)
