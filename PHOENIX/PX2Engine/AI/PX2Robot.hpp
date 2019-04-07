@@ -241,21 +241,19 @@ namespace PX2
 		void AdjustToDirection(const AVector &dir);
 
 	public_internal:
-		void _SetAIAgent(AIAgentBase *agent);
-		AIAgentBase *GetAIAgent();
+		void _SetAIAgent(AIAgent *agent);
+		AIAgent *GetAIAgent();
 
 	private:
 		bool _IsInRightDirection(const AVector &dir);
 		void _UpdateAdjustDirection(const AVector &dir);
-		void _CheckPathUpdateing(float appSeconds, float elapsedSeconds);
 
-		bool mIsGoPathPlan;
 		PathingGraphPtr mPathGraph;
 		PathPlanPtr mCurPathPlan;
 		AIAgentPath mAIAgentPath;
 		APoint mGoTargetPos;
 		APoint mGoingPos;
-		float mPathUpdateTiming;
+
 		bool mIsAdjustToDirection;
 		AVector mAdjustToDirection;
 
@@ -266,7 +264,7 @@ namespace PX2
 		AVector GetVelocity() const;
 
 	private:
-		AIAgentBase *mAgent;
+		AIAgent *mAgent;
 		AVector mFakeForce;
 		bool mIsUseFakeForce;
 		float mFakeSpeed;

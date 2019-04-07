@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 04/05/19 20:58:32.
+** Generated automatically by tolua++-1.0.92 on 04/07/19 01:29:30.
 */
 
 #ifndef __cplusplus
@@ -88618,71 +88618,6 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: SetRobot of class  AIAgentBase */
-#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentBase_SetRobot00
-static int tolua_PX2_AIAgentBase_SetRobot00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"AIAgentBase",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  AIAgentBase* self = (AIAgentBase*)  tolua_tousertype(tolua_S,1,0);
-  Robot* robot = ((Robot*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetRobot'", NULL);
-#endif
-  {
-   self->SetRobot(robot);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'SetRobot'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetRobot of class  AIAgentBase */
-#ifndef TOLUA_DISABLE_tolua_PX2_AIAgentBase_GetRobot00
-static int tolua_PX2_AIAgentBase_GetRobot00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"AIAgentBase",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  AIAgentBase* self = (AIAgentBase*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetRobot'", NULL);
-#endif
-  {
-   Robot* tolua_ret = (Robot*)  self->GetRobot();
-    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Robot");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetRobot'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: new of class  AIAgent */
 #ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_new00
 static int tolua_PX2_AIAgent_new00(lua_State* tolua_S)
@@ -89775,6 +89710,71 @@ static int tolua_PX2_AIAgent_GetVelocity00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetVelocity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: SetRobot of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_SetRobot00
+static int tolua_PX2_AIAgent_SetRobot00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgent",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Robot",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgent* self = (AIAgent*)  tolua_tousertype(tolua_S,1,0);
+  Robot* robot = ((Robot*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetRobot'", NULL);
+#endif
+  {
+   self->SetRobot(robot);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetRobot'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: GetRobot of class  AIAgent */
+#ifndef TOLUA_DISABLE_tolua_PX2_AIAgent_GetRobot00
+static int tolua_PX2_AIAgent_GetRobot00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"AIAgent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  AIAgent* self = (AIAgent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetRobot'", NULL);
+#endif
+  {
+   Robot* tolua_ret = (Robot*)  self->GetRobot();
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Robot");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'GetRobot'.",&tolua_err);
  return 0;
 #endif
 }
@@ -107509,8 +107509,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetNode",tolua_PX2_AIAgentBase_GetNode01);
    tolua_function(tolua_S,"GetRigidBody",tolua_PX2_AIAgentBase_GetRigidBody00);
    tolua_function(tolua_S,"GetRigidBody",tolua_PX2_AIAgentBase_GetRigidBody01);
-   tolua_function(tolua_S,"SetRobot",tolua_PX2_AIAgentBase_SetRobot00);
-   tolua_function(tolua_S,"GetRobot",tolua_PX2_AIAgentBase_GetRobot00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"AIAgent","AIAgent","AIAgentBase",tolua_collect_AIAgent);
@@ -107553,6 +107551,8 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetTarget",tolua_PX2_AIAgent_GetTarget00);
    tolua_function(tolua_S,"GetTargetRadius",tolua_PX2_AIAgent_GetTargetRadius00);
    tolua_function(tolua_S,"GetVelocity",tolua_PX2_AIAgent_GetVelocity00);
+   tolua_function(tolua_S,"SetRobot",tolua_PX2_AIAgent_SetRobot00);
+   tolua_function(tolua_S,"GetRobot",tolua_PX2_AIAgent_GetRobot00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"AIAgentObject","AIAgentObject","AIAgentBase",tolua_collect_AIAgentObject);

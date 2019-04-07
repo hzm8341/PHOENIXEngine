@@ -87,6 +87,11 @@ namespace PX2
 		void SetPhysicsRadius(float radius);
 		float GetPhysicsRadius() const;
 
+		// Robot
+	public:
+		void SetRobot(Robot *robot);
+		Robot *GetRobot();
+
 	public:
 		void ApplyForce(const AVector &force);
 		void ApplyForcing(const AVector &force);

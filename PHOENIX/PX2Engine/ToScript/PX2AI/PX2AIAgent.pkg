@@ -44,4 +44,9 @@
 		float GetTargetRadius() const;
 
 		AVector GetVelocity() const;
+		
+		// Robot
+	public:
+		void SetRobot(Robot *robot);
+		Robot *GetRobot();
 	};

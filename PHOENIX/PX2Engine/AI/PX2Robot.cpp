@@ -46,7 +46,6 @@ mMoveDirectionDegreeWithFirst(0.0f),
 mIsHasEverSettedDirection(false),
 mIsSlamMapUpdate(true),
 mDegreeAdjust(0.0f),
-mPathUpdateTiming(0.0f),
 mDragingLeftMoveType(0),
 mDragingLeftMoveSpeed(0.0f),
 mDragingRightMoveType(0),
@@ -107,7 +106,6 @@ mAgent(0)
 	tex->SetPivot(0.5f, 0.5f);
 	tex->SetAlphaSelfCtrled(true);
 
-	mIsGoPathPlan = false;
 	mPathGraph = new0 PathingGraph();
 
 	mIsInitSlamMap = false;
@@ -586,9 +584,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		mLiDar->Update(appseconds, elpasedSeconds);
 	}
 
-	if (mIsGoPathPlan)
-		_CheckPathUpdateing(appseconds, elpasedSeconds);
-
 	if (mIsAdjustToDirection)
 	{
 		if (!_IsInRightDirection(mAdjustToDirection))
@@ -598,9 +593,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		else
 		{
 			mIsAdjustToDirection = false;
-			
-			if (mArduino && mArduino->IsInitlized())
-				mArduino->Run(Arduino::SDT_FORWARD, 75);
 		}
 	}
 
@@ -610,89 +602,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		if (mFakeFoceTimer > 0.1f)
 		{
 			_UpdateVirtualRobot(mFakeFoceTimer);
-
-			//AVector moveDir = mPosition - mLastPostion;
-			//mLastPostion = mPosition;
-			//float moveLength = moveDir.Length();
-			//float moveSpeed = moveLength / mFakeFoceTimer;
-
-			//AVector force = mFakeForce;
-			//float forceLength = force.Normalize();
-			//float forcePerc = forceLength / 10.0f;
-			//if (forcePerc > 1.0f)
-			//	forcePerc = 1.0f;
-			//float power = forcePerc * 80.0f;
-
-			//float dotVal = mDirection.Dot(force);
-			//AVector crossVal = force.Cross(mDirection);
-			//float degree = Mathf::ACos(dotVal);
-			//Vector2f dir2d;
-			//if (crossVal.Z() > 0.0f)
-			//{
-			//	dir2d = Vector2f(Mathf::Sin(degree), Mathf::Cos(degree));
-			//}
-			//else
-			//{
-			//	dir2d = Vector2f(-Mathf::Sin(degree), Mathf::Cos(degree));
-			//}
-
-			//_CalSpeed(dir2d, forcePerc);
-			//mArduino->RunSpeed(0, mDragingLeftMoveSpeed);
-			//mArduino->RunSpeed(1, mDragingRightMoveSpeed);
-
-			//_MoveTypeCal(dir2d, power);
-			//mArduino->Run(0, (Arduino::DirectionType)mDragingLeftMoveType, mDragingLeftMoveSpeed);
-			//mArduino->Run(1, (Arduino::DirectionType)mDragingRightMoveType, mDragingRightMoveSpeed);
-
-			////if (forceLength > 0.01f)
-			//{
-			//	float adjustValue0 = 0.7f;
-
-			//	float dotVal = mDirection.Dot(force);
-			//	AVector crossVal = force.Cross(mDirection);
-
-			//	mFackVelocity = mDirection * moveSpeed;
-			//	mFakeSpeed = moveSpeed;
-
-			//	if (crossVal.Z() > 0.0f)
-			//	{
-			//		if (dotVal > adjustValue0)
-			//		{
-			//			float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
-
-			//			// right
-			//			mArduino->Run(0, Arduino::DT_FORWARD, power);
-			//			mArduino->Run(1, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
-			//		}
-			//		else
-			//		{
-			//			// right
-			//			mArduino->Run(0, Arduino::DT_FORWARD, power * 0.5f);
-			//			mArduino->Run(1, Arduino::DT_BACKWARD, power * 0.5);
-			//		}
-			//	}
-			//	else
-			//	{
-			//		if (dotVal > adjustValue0)
-			//		{
-			//			float adjustDotValue = (dotVal - adjustValue0) / (1.0f - adjustValue0);
-
-			//			// left
-			//			mArduino->Run(0, Arduino::DT_FORWARD, power * adjustDotValue * adjustDotValue * adjustDotValue * adjustDotValue);
-			//			mArduino->Run(1, Arduino::DT_FORWARD, power);
-			//		}
-			//		else
-			//		{
-
-			//			mArduino->Run(0, Arduino::DT_BACKWARD, power * 0.5);
-			//			mArduino->Run(1, Arduino::DT_FORWARD, power * 0.5);
-			//		}
-			//	}
-			//}
-			////else
-			//{
-			//	//mArduino->Stop();
-			//}
 
 			mFakeFoceTimer = 0.0f;
 		}
@@ -831,38 +740,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		//_RefreshVoxelSection(mRobotMapData->Map2D, resolution);
 
 		mIsMapDataChanged = false;
-	}
-}
-//----------------------------------------------------------------------------
-void Robot::_CheckPathUpdateing(float appSeconds, float elapsedSeconds)
-{
-	mPathUpdateTiming += elapsedSeconds;
-
-	if (mPathUpdateTiming > 0.2f)
-	{
-		if (mCurPathPlan && mArduino->IsInitlized())
-		{
-			if (mCurPathPlan->CheckForEnd())
-			{
-				mArduino->Run(Arduino::SDT_NONE, 0.0f);
-				PX2_LOG_INFO("Ended");
-
-				mCurPathPlan = 0;
-			}
-			else
-			{
-				APoint curPos = mCurPathPlan->GetCurrentNodePosition();
-
-				AVector toDir = curPos - mPosition;
-				toDir.Normalize();
-
-				AdjustToDirection(toDir);
-
-				mCurPathPlan->CheckForNextNode(mPosition);
-			}
-		}
-
-		mPathUpdateTiming = 0.0f;
 	}
 }
 //----------------------------------------------------------------------------
@@ -1663,12 +1540,10 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 //----------------------------------------------------------------------------
 void Robot::GoTarget(const APoint &targetPos)
 {
-	mIsGoPathPlan = true;
 	mGoTargetPos = targetPos;
-	mPathUpdateTiming = 0.0f;
 
-
-
+	std::vector<PathingNode*> vec;
+	mAIAgentPath.Clear();
 	mCurPathPlan = mPathGraph->FindPath(mPosition, mGoTargetPos);
 	if (mCurPathPlan)
 	{
@@ -1679,19 +1554,28 @@ void Robot::GoTarget(const APoint &targetPos)
 		for (; it != list.end(); it++)
 		{
 			PathingNode *node = *it;
+
+			APoint pos = node->GetPos();
+			mAIAgentPath.AddWayPoint(pos);
+
 			SetLineValueAtPos(node->GetPos(), 0.1f, 200.0f);
 		}
 
 		mCurPathPlan->ResetPath();
 	}
+
+	if (mAgent)
+	{
+		mAgent->SetPath(mAIAgentPath);
+	}
 }
 //----------------------------------------------------------------------------
-void Robot::_SetAIAgent(AIAgentBase *agent)
+void Robot::_SetAIAgent(AIAgent *agent)
 {
 	mAgent = agent;
 }
 //----------------------------------------------------------------------------
-AIAgentBase *Robot::GetAIAgent()
+AIAgent *Robot::GetAIAgent()
 {
 	return mAgent;
 }

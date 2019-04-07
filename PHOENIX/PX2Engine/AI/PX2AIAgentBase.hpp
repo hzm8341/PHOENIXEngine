@@ -97,11 +97,6 @@ namespace PX2
 
 		bool mIsTag;
 
-		// Robot
-	public:
-		void SetRobot(Robot *robot);
-		Robot *GetRobot();
-
 	protected:
 		Robot *mRobot;
 	};

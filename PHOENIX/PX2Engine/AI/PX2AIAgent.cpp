@@ -267,6 +267,20 @@ float AIAgent::GetPhysicsRadius() const
 	return mPhysicsRaduis;
 }
 //----------------------------------------------------------------------------
+void AIAgent::SetRobot(Robot *robot)
+{
+	mRobot = robot;
+	if (mRobot)
+	{
+		mRobot->_SetAIAgent(this);
+	}
+}
+//----------------------------------------------------------------------------
+Robot *AIAgent::GetRobot()
+{
+	return mRobot;
+}
+//----------------------------------------------------------------------------
 void AIAgent::SetSpeed(float speed)
 {
 	mSpeed = speed;
