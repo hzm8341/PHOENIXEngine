@@ -239,6 +239,75 @@ int _Roundle(float number)
 	return (number > 0.0) ? floor(number + 0.5f) : ceil(number - 0.5f);
 } 
 //----------------------------------------------------------------------------
+void Robot::_UpdateMapObstDyn(const APoint &pos)
+{
+	int mapSize = mRobotMapData->MapStruct.MapSize;
+	int mapAllSize = mapSize * mapSize;
+	std::vector<unsigned char> map = mRobotMapData->Map2D;
+
+	int robotindex = 0;
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < mapAllSize; i++)
+	{
+		x = (i + mapSize) % mapSize;
+		y = ((mapSize - 1) - i / mapSize);
+
+		bool isHasObst = false;
+		int mapVal = 200;
+		if (!map.empty())
+		{
+			mapVal = map[i];
+
+			if (mapVal == 100)
+			{
+				// robot pos
+				robotindex = i;
+			}
+			else if (mapVal == 10)
+			{
+			}
+			else if (mapVal == 200)
+			{
+				// space can go
+			}
+			else
+			{
+				if (0 == mapVal)
+				{
+					// obst
+					isHasObst = true;
+				}
+				else
+				{
+				}
+			}
+		}
+
+		int adjustVal = mRobotMapData->SelfDrawMapData2D[i];
+		if (0 == adjustVal)
+		{
+			isHasObst = true;
+		}
+		else if (200 == adjustVal)
+		{
+		}
+		else if (201 == adjustVal)
+		{
+			isHasObst = false;
+		}
+
+		if (isHasObst)
+		{
+
+		}
+		else
+		{
+
+		}
+	}
+}
+//----------------------------------------------------------------------------
 void Robot::_UpdateMapObst()
 {
 	int mapSize = mRobotMapData->MapStruct.MapSize;
@@ -303,26 +372,26 @@ void Robot::_UpdateMapObst()
 			isHasObst = false;
 		}
 
-		//if (isHasObst)
-		//{
-		//	Scene *scene = PX2_PROJ.GetScene();
-		//	if (scene)
-		//	{
-		//		Actor *actor = PX2_CREATER.CreateActorBox();
-		//		actor->LocalTransform.SetTranslateY(4.0);
-		//		AIAgentBase *actorBoxAgentBase = actor->GetAIAgentBase();
-		//		actorBoxAgentBase->SetMass(0);
-		//		actorBoxAgentBase->SetMassZeroAvoid(true);
-		//		actorBoxAgentBase->SetRadius(0.12);
+		if (isHasObst)
+		{
+			Scene *scene = PX2_PROJ.GetScene();
+			if (scene)
+			{
+				Actor *actor = PX2_CREATER.CreateActorBox();
+				actor->LocalTransform.SetTranslateY(4.0);
+				AIAgentBase *actAgentBase = actor->GetAIAgentBase();
+				actAgentBase->SetMass(0);
+				actAgentBase->SetMassZeroAvoid(true);
+				actAgentBase->SetRadius(0.12);
 
-		//		float xPos = mapWidth * (x- halfMapSize);
-		//		float yPos = mapWidth * (y- halfMapSize);
+				float xPos = (x - halfMapSize) * resolution;
+				float yPos = (y - halfMapSize) * resolution;
 
-		//		actorBoxAgentBase->SetPosition(APoint(xPos, yPos, 0.0));
-		//		scene->AttachChild(actor);
-		//		actorBoxAgentBase->ResetPlay();
-		//	}
-		//}
+				actAgentBase->SetPosition(APoint(xPos, yPos, 0.0));
+				scene->AttachChild(actor);
+				actAgentBase->ResetPlay();
+			}
+		}
 
 		int graphMapSize = mPathGraph->GetMapSize();
 		float xPercent = (float)x / (float)mapSize;
@@ -335,22 +404,22 @@ void Robot::_UpdateMapObst()
 
 		if (isHasObst)
 		{
-			_SetGraphValue(xIndex, yIndex, 1000.0f);
-			_SetGraphValue(xIndex - 1, yIndex, 1000.0f);
-			_SetGraphValue(xIndex + 1, yIndex, 1000.0f);
-			_SetGraphValue(xIndex, yIndex - 1, 1000.0f);
-			_SetGraphValue(xIndex, yIndex + 1, 1000.0f);
+			//_SetGraphValue(xIndex, yIndex, 1000.0f);
+			//_SetGraphValue(xIndex - 1, yIndex, 1000.0f);
+			//_SetGraphValue(xIndex + 1, yIndex, 1000.0f);
+			//_SetGraphValue(xIndex, yIndex - 1, 1000.0f);
+			//_SetGraphValue(xIndex, yIndex + 1, 1000.0f);
 
-			_SetGraphValue(xIndex - 1, yIndex - 1, 1000.0f);
-			_SetGraphValue(xIndex + 1, yIndex + 1, 1000.0f);
-			_SetGraphValue(xIndex - 1, yIndex + 1, 1000.0f);
-			_SetGraphValue(xIndex + 1, yIndex - 1, 1000.0f);
+			//_SetGraphValue(xIndex - 1, yIndex - 1, 1000.0f);
+			//_SetGraphValue(xIndex + 1, yIndex + 1, 1000.0f);
+			//_SetGraphValue(xIndex - 1, yIndex + 1, 1000.0f);
+			//_SetGraphValue(xIndex + 1, yIndex - 1, 1000.0f);
 			
 			maskData[i] = 1;
 		}
 		else
 		{
-			_SetGraphValue(xIndex, yIndex, PATHING_DEFAULT_ARC_WEIGHT);
+			//_SetGraphValue(xIndex, yIndex, PATHING_DEFAULT_ARC_WEIGHT);
 
 			maskData[i] = 0;
 		}
@@ -621,8 +690,8 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	}
 	else
 	{
-		_RefreshVoxelSection(AllPoints, 1);
-		_RefreshVoxelSection(CurPoints, 2);
+		//_RefreshVoxelSection(AllPoints, 1);
+		//_RefreshVoxelSection(CurPoints, 2);
 	}
 
 	if (mIsHasAxis)
@@ -1589,7 +1658,7 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 			it++;
 		}
 
-		for (int i = 0; i < vec.size()-1; i++)
+		for (int i = 0; i < (int)vec.size()-1; i++)
 		{
 			PathingNode *node = vec[i];
 			PathingNode *nodeNext = vec[i + 1];

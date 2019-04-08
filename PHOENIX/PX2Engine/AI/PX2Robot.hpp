@@ -175,6 +175,7 @@ namespace PX2
 		void _LargerMapObst(Texture2D *tex2D);
 		void _SetPixelVal(Texture2D *tex2D, unsigned char *toData, int indexY, int indexX);
 		void _UpdateMapObst();
+		void _UpdateMapObstDyn(const APoint &pos);
 		void _SetGraphValue(int x, int y, float val);
 
 		RoleType mRoleType;
