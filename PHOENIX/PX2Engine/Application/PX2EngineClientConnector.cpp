@@ -380,8 +380,8 @@ int EngineClientConnector::OnMapDataEnd(const void *pbuffer, int buflen)
 			PX2_RM.ZipUnCompress((unsigned char*)&(dstBuf[0]), &dstSize,
 				(const unsigned char*)&(mGettingMap[0]), curSize);
 
-			PX2_ROBOT.GetCurMapData()->Map2D.clear();
-			PX2_ROBOT.GetCurMapData()->Map2D = dstBuf;
+			PX2_ROBOT.GetCurMapData()->Map2DOrigin.clear();
+			PX2_ROBOT.GetCurMapData()->Map2DOrigin = dstBuf;
 
 			PX2_ROBOT.SetSlam2DMap(dstBuf, mRobotMapDataStruct.MapSize,
 				mRobotMapDataStruct.MapResolution);

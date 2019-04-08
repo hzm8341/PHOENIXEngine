@@ -87,7 +87,7 @@ mAgent(0)
 		Shader::SF_NEAREST);
 
 	mRobotMapData = new0 RobotMapData();
-	_RecreateMapTex(mRobotMapData->MapStruct.MapSize, mRobotMapData->MapStruct.MapSize/2);
+	_RecreateMapTex(mRobotMapData->MapStruct.MapSize);
 
 	mRobotTex = new0 UIFPicBox();
 	mPicBoxMap->AttachChild(mRobotTex);
@@ -242,8 +242,16 @@ int _Roundle(float number)
 void Robot::_UpdateMapObstDyn(const APoint &pos)
 {
 	int mapSize = mRobotMapData->MapStruct.MapSize;
+	float halfMapSize = mapSize * 0.5f;
+	float resolution = mRobotMapData->MapStruct.MapResolution;
+	float mapWidth = mapSize * resolution;
+
 	int mapAllSize = mapSize * mapSize;
-	std::vector<unsigned char> map = mRobotMapData->Map2D;
+	std::vector<unsigned char> map = mRobotMapData->Map2DUsing;
+
+	float minDist = Mathf::MAX_REAL;
+	int minX = Mathf::MAX_REAL;
+	int minY = Mathf::MAX_REAL;
 
 	int robotindex = 0;
 	int x = 0;
@@ -299,11 +307,59 @@ void Robot::_UpdateMapObstDyn(const APoint &pos)
 
 		if (isHasObst)
 		{
+			float xPos = (x - halfMapSize) * resolution;
+			float yPos = (y - halfMapSize) * resolution;
+			APoint curPos(xPos, yPos, 0.0f);
+			AVector distVec = curPos - pos;
+			float lengthSquare = distVec.SquaredLength();
 
+			float adjustDist = 2.5f;
+			if (lengthSquare < adjustDist)
+			{
+				if (lengthSquare < minDist)
+				{
+					minX = x;
+					minY = y;
+					minDist = lengthSquare;
+				}
+			}
 		}
-		else
-		{
+	}
 
+	Scene *scene = PX2_PROJ.GetScene();
+	if (scene)
+	{
+		if (!mObstacleNode)
+		{
+			mObstacleNode = new0 Node();
+			scene->AttachChild(mObstacleNode);
+		}
+
+		if (minDist < 1000)
+		{
+			std::pair<int, int> key;
+			key.first = minX;
+			key.second = minY;
+
+			auto it = mObstacles.find(key);
+			if (it == mObstacles.end())
+			{
+				float xPos = (minX - halfMapSize) * resolution;
+				float yPos = (halfMapSize - minY) * resolution;
+
+				Actor *actor = PX2_CREATER.CreateActorBox();
+				mObstacleNode->AttachChild(actor);
+				actor->LocalTransform.SetTranslateY(4.0);
+				AIAgentBase *actAgentBase = actor->GetAIAgentBase();
+				actAgentBase->SetMass(0);
+				actAgentBase->SetMassZeroAvoid(true);
+				actAgentBase->SetRadius(0.15);
+				actAgentBase->SetPosition(APoint(xPos, yPos, 0.0));
+				mObstacleNode->AttachChild(actor);
+				actAgentBase->ResetPlay();
+
+				mObstacles[key] = actor;
+			}
 		}
 	}
 }
@@ -314,7 +370,7 @@ void Robot::_UpdateMapObst()
 	float halfMapSize = mapSize * 0.5f;
 	float resolution = mRobotMapData->MapStruct.MapResolution;
 	float mapWidth = mapSize * resolution;
-	std::vector<unsigned char> map = mRobotMapData->Map2D;
+	std::vector<unsigned char> map = mRobotMapData->Map2DUsing;
 	std::vector<unsigned char> maskData;
 	maskData.resize(map.size());
 	memset(&maskData[0], 0, maskData.size());
@@ -359,39 +415,18 @@ void Robot::_UpdateMapObst()
 			}
 		}
 
-		int adjustVal = mRobotMapData->SelfDrawMapData2D[i];
-		if (0 == adjustVal)
-		{
-			isHasObst = true;
-		}
-		else if (200 == adjustVal)
-		{
-		}
-		else if (201 == adjustVal)
-		{
-			isHasObst = false;
-		}
-
-		if (isHasObst)
-		{
-			Scene *scene = PX2_PROJ.GetScene();
-			if (scene)
-			{
-				Actor *actor = PX2_CREATER.CreateActorBox();
-				actor->LocalTransform.SetTranslateY(4.0);
-				AIAgentBase *actAgentBase = actor->GetAIAgentBase();
-				actAgentBase->SetMass(0);
-				actAgentBase->SetMassZeroAvoid(true);
-				actAgentBase->SetRadius(0.12);
-
-				float xPos = (x - halfMapSize) * resolution;
-				float yPos = (y - halfMapSize) * resolution;
-
-				actAgentBase->SetPosition(APoint(xPos, yPos, 0.0));
-				scene->AttachChild(actor);
-				actAgentBase->ResetPlay();
-			}
-		}
+		//int adjustVal = mRobotMapData->SelfDrawMapData2D[i];
+		//if (0 == adjustVal)
+		//{
+		//	isHasObst = true;
+		//}
+		//else if (200 == adjustVal)
+		//{
+		//}
+		//else if (201 == adjustVal)
+		//{
+		//	isHasObst = false;
+		//}
 
 		int graphMapSize = mPathGraph->GetMapSize();
 		float xPercent = (float)x / (float)mapSize;
@@ -404,22 +439,22 @@ void Robot::_UpdateMapObst()
 
 		if (isHasObst)
 		{
-			//_SetGraphValue(xIndex, yIndex, 1000.0f);
-			//_SetGraphValue(xIndex - 1, yIndex, 1000.0f);
-			//_SetGraphValue(xIndex + 1, yIndex, 1000.0f);
-			//_SetGraphValue(xIndex, yIndex - 1, 1000.0f);
-			//_SetGraphValue(xIndex, yIndex + 1, 1000.0f);
+			_SetGraphValue(xIndex, yIndex, 1000.0f);
+			_SetGraphValue(xIndex - 1, yIndex, 1000.0f);
+			_SetGraphValue(xIndex + 1, yIndex, 1000.0f);
+			_SetGraphValue(xIndex, yIndex - 1, 1000.0f);
+			_SetGraphValue(xIndex, yIndex + 1, 1000.0f);
 
-			//_SetGraphValue(xIndex - 1, yIndex - 1, 1000.0f);
-			//_SetGraphValue(xIndex + 1, yIndex + 1, 1000.0f);
-			//_SetGraphValue(xIndex - 1, yIndex + 1, 1000.0f);
-			//_SetGraphValue(xIndex + 1, yIndex - 1, 1000.0f);
+			_SetGraphValue(xIndex - 1, yIndex - 1, 1000.0f);
+			_SetGraphValue(xIndex + 1, yIndex + 1, 1000.0f);
+			_SetGraphValue(xIndex - 1, yIndex + 1, 1000.0f);
+			_SetGraphValue(xIndex + 1, yIndex - 1, 1000.0f);
 			
 			maskData[i] = 1;
 		}
 		else
 		{
-			//_SetGraphValue(xIndex, yIndex, PATHING_DEFAULT_ARC_WEIGHT);
+			_SetGraphValue(xIndex, yIndex, PATHING_DEFAULT_ARC_WEIGHT);
 
 			maskData[i] = 0;
 		}
@@ -559,7 +594,7 @@ void Robot::SetLineValueAtPos(const APoint &pos, float range, int val)
 	mIsMapDataChanged = true;
 }
 //----------------------------------------------------------------------------
-void Robot::_RecreateMapTex(int mapSize, int smallMapSize)
+void Robot::_RecreateMapTex(int mapSize)
 {
 	Texture::Format formatLidar = Texture::TF_A8R8G8B8;
 	mTextureMap = new0 Texture2D(formatLidar, mapSize, mapSize, 1);
@@ -712,6 +747,8 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	mUp = AVector::UNIT_Z;
 	mMatrix = HMatrix(mRight, mDirection, mUp, mPosition, true);
 
+	//_UpdateMapObstDyn(mPosition);
+
 	if (mLiDar)
 	{
 		mLiDar->Update(appseconds, elpasedSeconds);
@@ -742,7 +779,7 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;
 	int resolution = mRobotMapData->MapStruct.MapResolution;
-	std::vector<unsigned char> map = mRobotMapData->Map2D;
+	std::vector<unsigned char> map2DUsing = mRobotMapData->Map2DUsing;
 
 	if (mIsMapDataChanged && mIsInitSlamMap)
 	{
@@ -770,9 +807,9 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 			bool isHasObst = false;
 			int mapVal = 200;
-			if (!map.empty())
+			if (!map2DUsing.empty())
 			{
-				mapVal = map[i];
+				mapVal = map2DUsing[i];
 
 				if (mapVal == 100)
 				{
@@ -868,10 +905,11 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		//_LargerMapObst(mTextureMap);
 		//_LargerMapObst(mTextureMap);
 
+		mUsingRunningMap2D.resize(mapAllSize);
+		memcpy(&mUsingRunningMap2D[0], mTextureMap->GetData(0), mapAllSize);
+
 		if (mTextureMap && mapSize > 0)
 			Renderer::UpdateAll(mTextureMap, 0);
-
-		//_RefreshVoxelSection(mRobotMapData->Map2D, resolution);
 
 		mIsMapDataChanged = false;
 	}
@@ -1095,7 +1133,7 @@ void Robot::InitSlamMap(int mapSize, float resolution)
 
 	if (isNeedReCreateMapTex)
 	{
-		_RecreateMapTex(mapSize, mapSize / 2);
+		_RecreateMapTex(mapSize);
 	}
 
 	mIsInitSlamMap = true;
@@ -1110,7 +1148,7 @@ void Robot::SetSlam2DMap(std::vector<unsigned char> &map, int mapSize,
 
 	if (!map.empty())
 	{
-		mRobotMapData->Map2D = map;
+		mRobotMapData->Map2DOrigin = map;
 		mIsMapDataChanged = true;
 	}
 	mRobotMapData->MapStruct.MapSize = mapSize;

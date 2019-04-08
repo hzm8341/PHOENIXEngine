@@ -114,7 +114,7 @@ void EngineServer::SendRobotMap(int clientid)
 	SendMsgToClientBuffer(clientid, EngineServerSendMapInfoMsgID,
 		(const char *)&stru, sizeof(stru));
 
-	std::vector<unsigned char> mapDatas = curMapData->Map2D;
+	std::vector<unsigned char> mapDatas = curMapData->Map2DOrigin;
 	std::vector<unsigned char> dstDatas;
 	dstDatas.resize(mapDatas.size());
 	memset(&dstDatas[0], 0, (int)dstDatas.size());

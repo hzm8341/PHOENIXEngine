@@ -7,6 +7,7 @@
 #include "PX2AIAgentWorld.hpp"
 #include "PX2ResourceManager.hpp"
 #include "PX2Scene.hpp"
+#include "PX2Robot.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Node, Actor);

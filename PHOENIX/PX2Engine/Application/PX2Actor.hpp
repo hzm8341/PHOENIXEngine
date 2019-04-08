@@ -6,12 +6,12 @@
 #include "PX2Node.hpp"
 #include "PX2AIAgentBase.hpp"
 #include "PX2TriMesh.hpp"
-#include "PX2Robot.hpp"
 
 namespace PX2
 {
 	class AIAgent;
 	class Scene;
+	class Robot;
 
 	class PX2_ENGINE_ITEM Actor : public Node
 	{

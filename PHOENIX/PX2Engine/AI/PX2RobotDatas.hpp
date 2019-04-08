@@ -45,13 +45,20 @@ namespace PX2
 		RobotMapData();
 		virtual ~RobotMapData();
 
-		void CopyDataFrom(RobotMapData *data);
+		void ConvertOriginToUsing();
 
 	public:
+		std::vector<unsigned char> _ExtendLarger(
+			std::vector<unsigned char> &mapping, bool usSelfDraw);
+		void _SetMapUsingData(std::vector<unsigned char> &maping, 
+			int x, int y, int val);
+
 		RobotMapDataStruct MapStruct;
-		std::vector<unsigned char> Map2D;
+		std::vector<unsigned char> Map2DOrigin;
 		std::vector<unsigned char> SelfDrawMapData2D;
 		std::vector<unsigned char> LineDrawMapData2D;
+
+		std::vector<unsigned char> Map2DUsing;
 	};
 
 	PX2_REGISTER_STREAM(RobotMapData);

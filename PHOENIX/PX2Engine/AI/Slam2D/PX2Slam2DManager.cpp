@@ -196,20 +196,25 @@ void _ThreadProcessDataCallback(void*)
 {
 	while (Slam2DManager::IsRun)
 	{
-		Robot::RoleType rt = PX2_ROBOT.GetRoleType();
-		if (Robot::RT_MASTER == rt || Robot::RT_CONNECTOR_CALCULATE == rt)
+		LiDar *lidar = PX2_ROBOT.GetLidar();
+		if (lidar)
 		{
-			std::vector<sData> data = buf.getSData();
-			if (data.size() > 0)
+			Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+			if ((Robot::RT_MASTER == rt &&lidar->IsOpened())
+				|| Robot::RT_CONNECTOR_CALCULATE == rt)
 			{
-				std::vector<_sData> dataContainer;
-				hector_slam.scanCallback(data, false, dataContainer);
-				isHasAlreadyRuned = true;
+				std::vector<sData> data = buf.getSData();
+				if (data.size() > 0)
+				{
+					std::vector<_sData> dataContainer;
+					hector_slam.scanCallback(data, false, dataContainer);
+					isHasAlreadyRuned = true;
 
 #if defined PX2_SLAM2D_USE_OPENCV
-				if (showLiDar)
-					showLaserDataInPic(dataContainer);
+					if (showLiDar)
+						showLaserDataInPic(dataContainer);
 #endif
+				}
 			}
 		}
 	}
@@ -317,14 +322,19 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 
 			hector_slam.setUpdateMap(PX2_ROBOT.IsSlamMapUpdate());
 
-			if (!PX2_ROBOT.GetInitMapData().Map2D.empty())
+			Robot::RoleType rt = PX2_ROBOT.GetRoleType();
+			if ((Robot::RT_MASTER == rt &&liDar->IsOpened())
+				|| Robot::RT_CONNECTOR_CALCULATE == rt)
 			{
-				APoint curPos = PX2_ROBOT.GetInitMapData().MapStruct.CurPos;
-				float curAngle = PX2_ROBOT.GetInitMapData().MapStruct.CurAngle;
-				Eigen::Vector3f hitPos = Eigen::Vector3f(curPos[0], curPos[1], curAngle);
-				hector_slam.setMap(PX2_ROBOT.GetInitMapData().Map2D, hitPos);
-				PX2_ROBOT.ClearInitMapData();
-				isHasAlreadyRuned = true;
+				if (!PX2_ROBOT.GetInitMapData().Map2DOrigin.empty())
+				{
+					APoint curPos = PX2_ROBOT.GetInitMapData().MapStruct.CurPos;
+					float curAngle = PX2_ROBOT.GetInitMapData().MapStruct.CurAngle;
+					Eigen::Vector3f hitPos = Eigen::Vector3f(curPos[0], curPos[1], curAngle);
+					hector_slam.setMap(PX2_ROBOT.GetInitMapData().Map2DOrigin, hitPos);
+					PX2_ROBOT.ClearInitMapData();
+					isHasAlreadyRuned = true;
+				}
 			}
 
 			curRDCIndex = 0;

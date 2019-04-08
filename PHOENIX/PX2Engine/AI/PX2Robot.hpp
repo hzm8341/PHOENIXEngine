@@ -18,6 +18,8 @@
 #include "PX2AIPath.hpp"
 #include "PX2Arduino.hpp"
 #include "PX2Smoother.hpp"
+#include "PX2SmartPointer.hpp"
+#include "PX2Actor.hpp"
 
 namespace PX2
 {
@@ -169,7 +171,7 @@ namespace PX2
 		void SetLineValueAtPos(const APoint &pos, float range = 0.1f, int val = 1.0f);
 
 	private:
-		void _RecreateMapTex(int mapSize, int smallMapSize);
+		void _RecreateMapTex(int mapSize);
 		void _RefreshVoxelSection(std::vector<unsigned char> &map,
 			float resolution);
 		void _LargerMapObst(Texture2D *tex2D);
@@ -193,11 +195,14 @@ namespace PX2
 
 		Texture2DPtr mTextureMap;
 		UIFPicBoxPtr mPicBoxMap;
+		std::vector<unsigned char> mUsingRunningMap2D;
 
 		UIFPicBoxPtr mRobotTex;
 		int mRobotMapX;
 		int mRobotMapY;
 		float m2DSlameAngle;
+		NodePtr mObstacleNode;
+		std::map< std::pair<int, int>, Pointer0<Actor> > mObstacles;
 
 		RobotMapData mInitMapData;
 #if defined PX2_USE_SLAM2D
