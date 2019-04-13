@@ -16,7 +16,7 @@ PX2_IMPLEMENT_FACTORY(AIAgentBase);
 PX2_IMPLEMENT_DEFAULT_NAMES(Controller, AIAgentBase);
 //----------------------------------------------------------------------------
 const float AIAgentBase::DEFAULT_AGENT_MASS = 90.7f;  // kilograms (200 lbs)
-const float AIAgentBase::DEFAULT_AGENT_RADIUS = 0.3f;  // meters (1.97 feet)
+const float AIAgentBase::DEFAULT_AGENT_RADIUS = 0.1f;  // meters (1.97 feet)
 //----------------------------------------------------------------------------
 AIAgentBase::AIAgentBase(Node *node, AgentType at) :
 mNode(node),

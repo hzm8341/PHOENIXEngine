@@ -115,10 +115,10 @@ mAgent(0)
 
 	mArduino = new0 Arduino();
 
-	mFakeFoceTimer = 0.0f;
-	mFakeSpeed = 1.0f;
+	mForceTimer = 0.0f;
+	mSpeed = 1.0f;
 	mIsAdjustToDirection = false;
-	mIsUseFakeForce = false;
+	mIsUseForce = false;
 
 	mLeftSpeed = 0.0f;
 	mRightSpeed = 0.0f;
@@ -473,7 +473,7 @@ void Robot::_SetGraphValue(int x, int y, float val)
 	}
 }
 //----------------------------------------------------------------------------
-inline const APoint &Robot::GetPosition() const
+const APoint &Robot::GetPosition() const
 {
 	return mPosition;
 }
@@ -766,14 +766,14 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		}
 	}
 
-	if (mIsUseFakeForce)
+	if (mIsUseForce)
 	{
-		mFakeFoceTimer += elpasedSeconds;
-		if (mFakeFoceTimer > 0.1f)
+		mForceTimer += elpasedSeconds;
+		if (mForceTimer > 0.1f)
 		{
-			_UpdateVirtualRobot(mFakeFoceTimer);
+			_UpdateVirtualRobot(mForceTimer);
 
-			mFakeFoceTimer = 0.0f;
+			mForceTimer = 0.0f;
 		}
 	}
 
@@ -917,18 +917,18 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 //----------------------------------------------------------------------------
 void Robot::FakeGoForce(const AVector &force)
 {
-	mFakeForce = force;
-	mIsUseFakeForce = true;
+	mForce = force;
+	mIsUseForce = true;
 }
 //----------------------------------------------------------------------------
 float Robot::GetSpeed() const
 {
-	return mFakeSpeed;
+	return mSpeed;
 }
 //----------------------------------------------------------------------------
 AVector Robot::GetVelocity() const
 {
-	return mFackVelocity;
+	return mVelocity;
 }
 //----------------------------------------------------------------------------
 void Robot::AdjustToDirection(const AVector &dir)
@@ -1599,51 +1599,73 @@ static float lastForceTimer = 0.0f;
 static float rotRightDirTimer = 0.0f;
 void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 {
-	mFakeForce.Normalize();
+	if (!mAgent)
+		return;
+
+	float forceVal = mForce.Normalize();
+
+	float agentMaxForce = mAgent->GetMaxForce();
+	float forcePercent = forceVal / agentMaxForce;
+
+
 	mDirection.Normalize();
 
-	float maxForce = 0.2f;
-	float dirVal = mFakeForce.Dot(mDirection);
-	AVector forceA = mFakeForce * maxForce;
-	float allForce = maxForce;
-	float allSpdFront = maxForce * dirVal;
-	float radForce = Mathf::ACos(dirVal);
+	float forceGo = 0.2f;
+	float turnRoundSpeed = 0.2f;
+	float turnRoundDegree = 30;
+	float turnRoundVal = Mathf::Cos(turnRoundDegree);
+
+	float forceDotDirVal = mForce.Dot(mDirection);
+	float forceDotDirValABS = Mathf::FAbs(forceDotDirVal);
+
+	float radForce = Mathf::ACos(forceDotDirVal);
 	float degree = radForce * Mathf::RAD_TO_DEG;
 	float sinVal = Mathf::Sin(radForce);
 	float cosVal = Mathf::Cos(radForce);
-	float allSpdHor = maxForce * sinVal;
-	allSpdHor = Mathf::Clamp(allSpdHor, 0.0f, maxForce);
 
-	AVector cross = mFakeForce.Cross(mDirection);
+	float allSpdHor = forceGo * sinVal;
+	allSpdHor = Mathf::FAbs(allSpdHor);
+
+	AVector cross = mForce.Cross(mDirection);
 
 	float leftSpeedA = 0.0f;
 	float rightSpeedA = 0.0f;
 	if (cross.Z() > 0.0f)
 	{
-		if (dirVal >= 0.0f)
+		if (forceDotDirValABS < 0.001f)
+		{
+			rightSpeedA = 0.0f;
+			leftSpeedA = 0.0f;
+		}
+		else if (forceDotDirVal >= turnRoundVal)
 		{
 			// go right
-			rightSpeedA = (allForce - allSpdHor);
+			rightSpeedA = forceGo - allSpdHor;
 			leftSpeedA = rightSpeedA + allSpdHor;
 		}
 		else
 		{
-			rightSpeedA = -maxForce;
-			leftSpeedA = maxForce;
+			rightSpeedA = -turnRoundSpeed;
+			leftSpeedA = turnRoundSpeed;
 		}
 	}
 	else
 	{
-		if (dirVal >= 0.0f)
+		if (forceDotDirValABS < 0.001f)
+		{
+			rightSpeedA = 0.0f;
+			leftSpeedA = 0.0f;
+		}
+		else if (forceDotDirVal >= turnRoundVal)
 		{
 			// go left
-			leftSpeedA = (allForce - allSpdHor);
+			leftSpeedA = forceGo - allSpdHor;
 			rightSpeedA = leftSpeedA + allSpdHor;
 		}
 		else
 		{
-			leftSpeedA = -maxForce;
-			rightSpeedA = maxForce;
+			leftSpeedA = -turnRoundSpeed;
+			rightSpeedA = turnRoundSpeed;
 		}
 	}
 
@@ -1663,23 +1685,23 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 
 	if (mArduino->IsInitlized())
 	{
-		int iLeftSpeed = (int)((mLeftSpeed / 0.2f) * 60);
-		int iRightSpeed = (int)((mRightSpeed / 0.2f) * 60);
+		int iLeftSpeed = (int)((mLeftSpeed / forceGo) * 60);
+		int iRightSpeed = (int)((mRightSpeed / forceGo) * 60);
 		mArduino->RunSpeed(0, iLeftSpeed);
 		mArduino->RunSpeed(1, iRightSpeed);
 
-		mFakeSpeed = spd;
-		mFackVelocity = mDirection * mFakeSpeed;
+		mSpeed = spd;
+		mVelocity = mDirection * mSpeed;
 	}
 	else
 	{
 		mDirection = AVector(-Mathf::Sin(rad), Mathf::Cos(rad), 0.0f);
 		mDirection.Normalize();
 
-		mFakeSpeed = spd;
-		mFackVelocity = mDirection * mFakeSpeed;
+		mSpeed = spd;
+		mVelocity = mDirection * mSpeed;
 
-		mPosition += mFackVelocity * elaplseSeconds;
+		mPosition += mVelocity * elaplseSeconds;
 	}
 
 	if (mCurPathPlan)

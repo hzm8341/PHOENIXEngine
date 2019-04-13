@@ -273,11 +273,11 @@ namespace PX2
 
 	private:
 		AIAgent *mAgent;
-		AVector mFakeForce;
-		bool mIsUseFakeForce;
-		float mFakeSpeed;
-		AVector mFackVelocity;
-		float mFakeFoceTimer;
+		AVector mForce;
+		bool mIsUseForce;
+		float mSpeed;
+		AVector mVelocity;
+		float mForceTimer;
 
 		float mLeftSpeed;
 		Smoother<float> *mLeftSmoother;
