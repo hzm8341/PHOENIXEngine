@@ -157,9 +157,9 @@ bool VoxelSection::SetBlock(const APoint &worldPos, int mtlType,
 	const HMatrix &transInverse = WorldTransform.Inverse();
 	APoint localPos = transInverse * worldPos;
 
-	int xIndex = (int)(Math<float>::Floor(localPos.X() / (float)VOXEL_TITLE_SIZE));
-	int yIndex = (int)(Math<float>::Floor(localPos.Y() / (float)VOXEL_TITLE_SIZE));
-	int zIndex = (int)(Math<float>::Floor(localPos.Z() / (float)VOXEL_TITLE_SIZE));
+	int xIndex = (int)(Math<float>::Floor(localPos.X() / (float)(VOXEL_TITLE_SIZE * V_SIZE)));
+	int yIndex = (int)(Math<float>::Floor(localPos.Y() / (float)(VOXEL_TITLE_SIZE * V_SIZE)));
+	int zIndex = (int)(Math<float>::Floor(localPos.Z() / (float)(VOXEL_TITLE_SIZE * V_SIZE)));
 
 	if (get)
 	{
@@ -170,9 +170,9 @@ bool VoxelSection::SetBlock(const APoint &worldPos, int mtlType,
 	}
 
 	APoint titleLocalPos;
-	titleLocalPos.X() = localPos.X() - xIndex * VOXEL_TITLE_SIZE;
-	titleLocalPos.Y() = localPos.Y() - yIndex * VOXEL_TITLE_SIZE;
-	titleLocalPos.Z() = localPos.Z() - zIndex * VOXEL_TITLE_SIZE;
+	titleLocalPos.X() = localPos.X() - xIndex * VOXEL_TITLE_SIZE * V_SIZE;
+	titleLocalPos.Y() = localPos.Y() - yIndex * VOXEL_TITLE_SIZE * V_SIZE;
+	titleLocalPos.Z() = localPos.Z() - zIndex * VOXEL_TITLE_SIZE * V_SIZE;
 
 	VoxelTitle *title = GetTitleFromMap(Vector3f((float)xIndex, 
 		(float)yIndex, (float)zIndex));
@@ -409,9 +409,9 @@ void VoxelSection::SetActorCenterPos(const APoint &pos)
 {
 	mCenterPos = pos;
 
-	int xIndex = (int)(Math<float>::Floor(mCenterPos.X() / (float)VOXEL_TITLE_SIZE));
-	int yIndex = (int)(Math<float>::Floor(mCenterPos.Y() / (float)VOXEL_TITLE_SIZE));
-	int zIndex = (int)(Math<float>::Floor(mCenterPos.Z() / (float)VOXEL_TITLE_SIZE));
+	int xIndex = (int)(Math<float>::Floor(mCenterPos.X() / (float)(VOXEL_TITLE_SIZE * V_SIZE)));
+	int yIndex = (int)(Math<float>::Floor(mCenterPos.Y() / (float)(VOXEL_TITLE_SIZE * V_SIZE)));
+	int zIndex = (int)(Math<float>::Floor(mCenterPos.Z() / (float)(VOXEL_TITLE_SIZE * V_SIZE)));
 
 	mCenterIndexXYZ.X() = (float)xIndex;
 	mCenterIndexXYZ.Y() = (float)yIndex;
@@ -469,8 +469,8 @@ void VoxelSection::GenTitles(int maxZ, int mtlType)
 		{
 			for (int iZ = startIndexZ; iZ <= endIndexZ; iZ++)
 			{
-				APoint offset((float)iX*VOXEL_TITLE_SIZE,
-					(float)iY*VOXEL_TITLE_SIZE, (float)iZ*VOXEL_TITLE_SIZE);
+				APoint offset((float)iX*VOXEL_TITLE_SIZE * V_SIZE,
+					(float)iY*VOXEL_TITLE_SIZE * V_SIZE, (float)iZ*VOXEL_TITLE_SIZE * V_SIZE);
 
 				VoxelTitle *title = new0 VoxelTitle(iX, iY, iZ, mtlType);
 				title->LocalTransform.SetTranslate(offset);
@@ -630,8 +630,8 @@ VoxelTitle *VoxelSection::LoadTitle(int iX, int iY, int iZ)
 {
 	int mapID = GetID();
 
-	APoint offset((float)iX*VOXEL_TITLE_SIZE,
-		(float)iY*VOXEL_TITLE_SIZE, (float)iZ*VOXEL_TITLE_SIZE);
+	APoint offset((float)iX*VOXEL_TITLE_SIZE* V_SIZE,
+		(float)iY*VOXEL_TITLE_SIZE* V_SIZE, (float)iZ*VOXEL_TITLE_SIZE* V_SIZE);
 
 	V_TitleDataPtr vd = new0 V_TitleData();
 	if (V_TitleData::Load(mapID, iX, iY, iZ, vd))

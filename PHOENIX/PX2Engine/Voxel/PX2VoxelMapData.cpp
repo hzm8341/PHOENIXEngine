@@ -76,7 +76,8 @@ bool V_TitleData::Save(int mapID, V_TitleData *data)
 	return true;
 }
 //----------------------------------------------------------------------------
-bool V_TitleData::Load(int mapID, int indexX, int indexY, int indexZ, V_TitleData *toData)
+bool V_TitleData::Load(int mapID, int indexX, int indexY, int indexZ,
+	V_TitleData *toData)
 {
 	std::string mapsDir = V_DATA_MAPS;
 	std::string mapIDDir = StringHelp::IntToString(mapID) + "/";
@@ -86,7 +87,11 @@ bool V_TitleData::Load(int mapID, int indexX, int indexY, int indexZ, V_TitleDat
 	std::string str1 = StringHelp::IntToString(indexY);
 	std::string str2 = StringHelp::IntToString(indexZ);
 
-	std::string path = mapsDir + mapIDDir + str0 + "_" + str1 + "_" + str2 + ".title";
+	std::string path = mapsDir + mapIDDir + str0 + "_" + str1 + "_" + str2 + 
+		".title";
+
+	if (!PX2_RM.IsFileFloderExist(path))
+		return false;
 
 	FileIO fo;
 	if (!fo.Open(path, FileIO::FM_DEFAULT_READ))
@@ -148,6 +153,7 @@ bool V_SectionData::Save(int mapID, V_SectionData *data)
 	std::string mapsDir = V_DATA_MAPS;
 	std::string mapIDDir = StringHelp::IntToString(mapID) + "/";
 	std::string mapIDStr = StringHelp::IntToString(mapID);
+
 	if (!PX2_RM.IsFileFloderExist(mapsDir + mapIDDir))
 	{
 		PX2_RM.CreateFloder(mapsDir, mapIDDir);

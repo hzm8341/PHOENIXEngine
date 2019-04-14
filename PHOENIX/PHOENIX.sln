@@ -17,6 +17,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{6F9C753A-F093-4AD9-A05F-A718FF5A0982}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FxCompiler", "Tools\FxCompiler\FxCompiler.vcxproj", "{739203C8-CB6E-4114-873E-2BE156583909}"
+	ProjectSection(ProjectDependencies) = postProject
+		{028CD2AA-AD64-41E2-8B5D-23A81CCB1068} = {028CD2AA-AD64-41E2-8B5D-23A81CCB1068}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{0F2DDA09-4937-46B3-BAF9-62DA979772A6}"
 EndProject

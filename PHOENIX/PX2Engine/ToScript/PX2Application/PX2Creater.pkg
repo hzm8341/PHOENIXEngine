@@ -18,8 +18,8 @@
 		// actor
 		Actor *CreateActor();
 		Actor *CreateActorBox();
-		Actor *CreateActor_InfinitePlane(const AVector &normal=AVector::UNIT_Z,
-			float originOffset=0.0f);
+		Actor *CreateActor_InfinitePlane(float planeViewSizeScale = 100.0f,
+			const AVector &normal=AVector::UNIT_Z, float originOffset=0.0f);
 
 		// sky
 		Movable *CreateSkyBox(const std::string &skyDirPath);

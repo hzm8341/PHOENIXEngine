@@ -45,7 +45,7 @@ namespace PX2
 		RobotMapData();
 		virtual ~RobotMapData();
 
-		void ConvertOriginToUsing();
+		void ConvertOriginToUsing(bool isSimple);
 
 	public:
 		std::vector<unsigned char> _ExtendLarger(

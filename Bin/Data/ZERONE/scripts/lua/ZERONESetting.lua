@@ -80,8 +80,8 @@ function zo_SettingFrame()
 	uiEditBoxID:GetBackPicBox():GetUIPicBox():SetPicBoxType(UIPicBox.PBT_NINE)
 	uiEditBoxID:GetBackPicBox():GetUIPicBox():SetTexCornerSize(6.0, 6.0, 6.0, 6.0)
 
-	ZERONE_EditBoxName:SetText("".. ZERONE_UIFace:GetName())
-	ZERONE_EditBoxID:SetText("".. ZERONE_UIFace:GetID())
+	ZERONE_EditBoxName:SetText("".. ZERONE_UIFaceCtrlScript:GetName())
+	ZERONE_EditBoxID:SetText("".. ZERONE_UIFaceCtrlScript:GetID())
 
     return frame
 end
@@ -96,8 +96,8 @@ function zo_SettingCallabck(ptr, callType)
         playFrameNormal(obj)
         
         if "BtnOK"==name then
-			ZERONE_UIFace:SetName(ZERONE_EditBoxName:GetText())
-			ZERONE_UIFace:SetID(ZERONE_EditBoxID:GetText())
+			ZERONE_UIFaceCtrlScript:SetName(ZERONE_EditBoxName:GetText())
+			ZERONE_UIFaceCtrlScript:SetID(ZERONE_EditBoxID:GetText())
 		end
     elseif UICT_RELEASED_NOTPICK==callType then
         playFrameNormal(obj)

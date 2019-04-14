@@ -345,7 +345,7 @@ function zo_UIPadCtrlCallback(ptr,callType)
         PX2_GR:PlayNormal(obj)        
         if "BtnClose" == name then
             ZERONE_FrameUICtrl:Show(false)
-            ZERONE_UIFace._btnUIPad:Check(false, false)
+            ZERONE_UIFaceCtrlScript._btnUIPad:Check(false, false)
 
         elseif "ButUIMode" == name then
             if 0==ZERONE_SimpleCtr_UIMode then

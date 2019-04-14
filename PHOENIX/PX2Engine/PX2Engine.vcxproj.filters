@@ -880,6 +880,9 @@
     <Filter Include="2.AI\Steer">
       <UniqueIdentifier>{8c0bee7e-d750-4376-b015-4601634d6bac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1.Ext\Voxel">
+      <UniqueIdentifier>{2c704f90-5ee2-425f-9340-759c1b192efb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\PX2Core.hpp">
@@ -5460,6 +5463,36 @@
     <ClInclude Include="AI\PX2AISteeringPath.hpp">
       <Filter>2.AI\Steer</Filter>
     </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelBlock.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelBlockMtl.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelDefine.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelManager.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelMapData.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelPre.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2Voxels.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelSection.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelSetBlockGet.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel\PX2VoxelTitle.hpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -8705,6 +8738,27 @@
     <ClCompile Include="AI\PX2AISteeringPath.cpp">
       <Filter>2.AI\Steer</Filter>
     </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelBlock.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelBlockMtl.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelManager.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelMapData.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelSection.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelSetBlockGet.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel\PX2VoxelTitle.cpp">
+      <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\PX2GraphicsRoot.inl">
@@ -9561,6 +9615,9 @@
     </None>
     <None Include="AI\PX2CellSpaceT.inl">
       <Filter>2.AI\Agent</Filter>
+    </None>
+    <None Include="Voxel\PX2VoxelSection.inl">
+      <Filter>1.Ext\Voxel</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

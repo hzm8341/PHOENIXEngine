@@ -114,9 +114,6 @@ namespace PX2
 		Texture2D *GetTextureMap();
 		UIFPicBox *GetUIFPicBoxMap();
 
-		Texture2D *GetTextureMapPathFind();
-		UIFPicBox *GetUIFPicBoxMapPathFind();
-
 		bool SaveMap(const std::string &filename);
 		bool LoadMap(const std::string &filename, const APoint &initPos = APoint::ORIGIN, float curAngle=0.0f);
 
@@ -134,8 +131,6 @@ namespace PX2
 
 	private:
 		void _RecreateMapTex(int mapSize);
-		void _RefreshVoxelSection(std::vector<unsigned char> &map,
-			float resolution);
 		void _LargerMapObst(Texture2D *tex2D);
 		void _SetPixelVal(Texture2D *tex2D, unsigned char *toData, int indexY, int indexX);
 		void _UpdateMapObst();

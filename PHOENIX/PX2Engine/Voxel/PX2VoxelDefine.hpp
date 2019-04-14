@@ -6,7 +6,8 @@
 namespace PX2
 {
 
-	const int VOXEL_TITLE_SIZE = 10;
+	const int VOXEL_TITLE_SIZE = 20;
+	const float V_SIZE = 0.05f;
 
 }
 

@@ -170,7 +170,7 @@ void ShaderParameters::UpdateConstants(const ShaderStruct *shaderStruc)
 	for (int i = 0; i < mNumConstants; ++i, ++constants)
 	{
 		ShaderFloat* constant = *constants;
-		if (constant->AllowUpdater())
+		if (constant && constant->AllowUpdater())
 		{
 			constant->Update(shaderStruc);
 		}

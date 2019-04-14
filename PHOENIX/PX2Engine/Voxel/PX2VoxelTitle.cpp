@@ -46,7 +46,7 @@ void VoxelTitle::_Init()
 	Front = 0;
 	Back = 0;
 
-	mIsNeedReGenMesh = true;
+	SetNeedReGenMesh(true);
 
 	VertexFormat *vf = 0;
 
@@ -126,9 +126,9 @@ void VoxelTitle::_Init()
 //----------------------------------------------------------------------------
 void VoxelTitle::GetBlockIndex(const APoint &localPos, int &indexX, int &indexY, int &indexZ)
 {
-	indexX = (int)Mathf::Floor(localPos.X());
-	indexY = (int)Mathf::Floor(localPos.Y());
-	indexZ = (int)Mathf::Floor(localPos.Z());
+	indexX = (int)Mathf::Floor(localPos.X() / V_SIZE);
+	indexY = (int)Mathf::Floor(localPos.Y() / V_SIZE);
+	indexZ = (int)Mathf::Floor(localPos.Z() / V_SIZE);
 }
 //----------------------------------------------------------------------------
 bool VoxelTitle::SetBlock(const APoint &localPos, int type, SetBlockGet *vbg)
@@ -235,9 +235,9 @@ bool VoxelTitle::IsContainPoint(const APoint &pos) const
 	const APoint &worldPos = WorldTransform.GetTranslate();
 
 	AxisAlignedBox3f box(
-		worldPos.X(), worldPos.X() + VOXEL_TITLE_SIZE, 
-		worldPos.Y(), worldPos.Y() + VOXEL_TITLE_SIZE,
-		worldPos.Z(), worldPos.Z() + VOXEL_TITLE_SIZE);
+		worldPos.X(), worldPos.X() + VOXEL_TITLE_SIZE* V_SIZE,
+		worldPos.Y(), worldPos.Y() + VOXEL_TITLE_SIZE* V_SIZE,
+		worldPos.Z(), worldPos.Z() + VOXEL_TITLE_SIZE* V_SIZE);
 
 	Vector3f vec(pos.X(), pos.Y(), pos.Z());
 	return box.Contain(vec);

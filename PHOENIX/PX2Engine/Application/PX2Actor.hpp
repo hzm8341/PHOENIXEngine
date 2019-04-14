@@ -34,6 +34,9 @@ namespace PX2
 		void SetAIType(AIType at);
 		AIType GetAIType() const;
 
+		void SetTexture(const std::string &filePath,
+			const Float4 &offset=Float4(0.0f, 0.0f, 1.0f, 1.0f));
+
 		AIAgentBase *GetAIAgentBase();
 		AIAgent *GetAIAgent();
 

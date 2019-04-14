@@ -5,4 +5,6 @@
 
 #include "PX2CorePre.hpp"
 
+#define PX2_USE_VOXEL
+
 #endif

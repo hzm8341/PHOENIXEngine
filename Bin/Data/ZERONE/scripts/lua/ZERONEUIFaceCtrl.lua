@@ -45,7 +45,6 @@ ZERONEUIFaceCtrl = class(LuaScriptController,
     _text = nil,
     _textPosition = nil,
     _textPositionCur = nil,
-    _textLost = nil,
 
     _vlc = nil,
 
@@ -68,9 +67,7 @@ function ZERONEUIFaceCtrl:OnAttached()
     self._scriptControl = Cast:ToSC(self.__object)
 	self._ctrlable = self._scriptControl:GetControlledable()
 
-    self._ctrlable:SetWidget(false)
-
-    ZERONE_UIFace = self
+    ZERONE_UIFaceCtrlScript = self
 
     -- strlable
     self._ctrlable:SetScriptHandlerWidgetPicked("ZERONEWidgetPicked")
@@ -119,20 +116,6 @@ function ZERONEUIFaceCtrl:OnAttached()
     textPositionCur:GetText():SetFontScale(0.7);
     textPositionCur:GetText():SetText("Position")
 
-    -- lost
-    local textLost = UIFText:New()
-    self._textLost = textLost
-    frame:AttachChild(textLost)
-    textLost.LocalTransform:SetTranslateY(-5.0)
-    textLost:GetText():SetFontColor(Float3.WHITE)
-    textLost:GetText():SetFontSize(24)
-    textLost:SetAnchorVer(1.0, 1.0)
-    textLost:SetAnchorParamVer(-90.0, -90.0)
-    textLost:SetSize(500.0, 100.0)
-    textLost:GetText():SetAutoWarp(true)
-    textLost:SetPivot(0.5, 0.5)
-    textLost:GetText():SetText("IsLost")
-
     -- cnt frame
     self:CreateContentFrame()
 
@@ -160,7 +143,7 @@ function ZERONEUIFaceCtrl:OnAttached()
         --if not ZERONE_IsPlayingMusics then
             coroutine.wrap(function()     
                 sleep(0.3)
-                ZERONE_UIFace:SetText(txt)
+                ZERONE_UIFaceCtrlScript:SetText(txt)
                 local fontWidth = ZERONE_SpeakText:GetText():GetTextWidth()
                 if fontWidth < (ZERONE_TextWidth-20.0) then
                     ZERONE_SpeakText:GetText():SetRectUseage(RU_ALIGNS)
@@ -181,7 +164,7 @@ function ZERONEUIFaceCtrl:OnAttached()
 
     UnRegistAllEventFunctions("VoiceSDKSpace::RecognizeResults")
     RegistEventFunction("VoiceSDKSpace::RecognizeResults", function(txt, txtJson)  
-        ZERONE_UIFace:SetText(txt)
+        ZERONE_UIFaceCtrlScript:SetText(txt)
         local fontWidth = ZERONE_SpeakText:GetText():GetTextWidth()
         if fontWidth < (ZERONE_TextWidth-20.0) then
             ZERONE_SpeakText:GetText():SetRectUseage(RU_ALIGNS)
@@ -206,7 +189,7 @@ function ZERONEUIFaceCtrl:OnAttached()
             PX2_VOICESDK:PlayHotMusic()
             PX2_VOICESDK:IngoreThisTimeAutoSpeech()
             
-            --ZERONE_UIFace:MusicPlayRandom()
+            --ZERONE_UIFaceCtrlScript:MusicPlayRandom()
             --PX2_VOICESDK:EnableAutoSpeakTTS(false)  
         elseif string.find(txt, strPlayMusic) then
             local subStr = ""..string.sub(txt, strLen +4, -4)  
@@ -215,15 +198,15 @@ function ZERONEUIFaceCtrl:OnAttached()
             PX2_VOICESDK:IngoreThisTimeAutoSpeech()
         elseif string.find(txt, "停止音乐") ==txt then
             ZERONE_IsPlayingMusics = false
-            ZERONE_UIFace:MusicStop()
+            ZERONE_UIFaceCtrlScript:MusicStop()
             --PX2_VOICESDK:EnableAutoSpeakTTS(true)            
         elseif "上一首"==txt or "上一手"==txt or "上一曲"==txt then
             if ZERONE_IsPlayingMusics then
-                ZERONE_UIFace:MusicBefore()
+                ZERONE_UIFaceCtrlScript:MusicBefore()
             end
         elseif "下一首"==txt  or "下一手"==txt or "下一曲"==txt then
             if ZERONE_IsPlayingMusics then
-                ZERONE_UIFace:MusicNext()
+                ZERONE_UIFaceCtrlScript:MusicNext()
             end
         end
     end)  
@@ -250,7 +233,6 @@ function ZERONEUIFaceCtrl:OnPUpdate()
     local dir = PX2_ROBOT:GetDirection()
     local up = PX2_ROBOT:GetUp()
     local right = PX2_ROBOT:GetRight()
-    local isLost = PX2_ROBOT:IsCurSlam3DTransformLost()
     local degree = PX2_ROBOT:GetSlam2DDegree()
 
     local txt = PX2_LM_APP:GetValue("Pos")..":"..StringHelp:FloatToString(pos:X())..","..StringHelp:FloatToString(pos:Y())..","..StringHelp:FloatToString(pos:Z()).." D:"..string.format("%.2f", degree)
@@ -258,15 +240,6 @@ function ZERONEUIFaceCtrl:OnPUpdate()
 
     local txtCur = PX2_LM_APP:GetValue("PickPos")..":"..string.format("%.2f", zo_MapPickPos.x) ..","..string.format("%.2f", zo_MapPickPos.y)
     self._textPositionCur:GetText():SetText(txtCur)
-
-    local txtIsLost = "true"
-    if isLost then
-        txtIsLost = "true"
-    else
-        txtIsLost = "false"
-    end
-    local txtLost = "IsLost:"..txtIsLost
-    self._textLost:GetText():SetText("")
 
     if self._IsDirectionChanged then
 
@@ -495,6 +468,7 @@ function ZERONEUIFaceCtrl:CreateContentFrame()
     self._background:AttachChild(frameContent)
     frameContent:SetAnchorHor(0.0, 1.0)
     frameContent:SetAnchorVer(0.0, 1.0)
+    frameContent:SetWidget(true)
 
     -- circle out
     local fPicEyeLeft = UIFPicBox:New()
@@ -625,22 +599,22 @@ function ZERONEUIFaceCtrl:CreateBtnsSetting()
     btnVoice:CreateAddText("V")
 
     -- btn 3d
-    local btn3D = UIButton:New("Btn3D")
-    self._btn3D = btn3D
-    self._background:AttachChild(btn3D)
-    btn3D.LocalTransform:SetTranslateY(-5.0)
-    btn3D:SetAnchorHor(1.0, 1.0)
-    btn3D:SetAnchorVer(0.0, 0.0)
-    btn3D:SetAnchorParamHor(-60.0, -60.0)
-    btn3D:SetAnchorParamVer(60.0, 60.0)
-    btn3D:SetSize(40.0, 40.0)
-    btn3D:SetStateColorDefaultWhite()
-    btn3D:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/engine/white.png")
-    btn3D:SetStateColor(UIButtonBase.BS_NORMAL, Float3:MakeColor(0, 121, 216))
-    btn3D:SetStateColor(UIButtonBase.BS_PRESSED, Float3:MakeColor(0, 121, 216))
-    btn3D:SetStateColor(UIButtonBase.BS_HOVERED, Float3:MakeColor(0, 121, 216))
-    btn3D:SetScriptHandler("zo_UICallabck")
-    btn3D:CreateAddText("3D")
+    -- local btn3D = UIButton:New("Btn3D")
+    -- self._btn3D = btn3D
+    -- self._background:AttachChild(btn3D)
+    -- btn3D.LocalTransform:SetTranslateY(-5.0)
+    -- btn3D:SetAnchorHor(1.0, 1.0)
+    -- btn3D:SetAnchorVer(0.0, 0.0)
+    -- btn3D:SetAnchorParamHor(-60.0, -60.0)
+    -- btn3D:SetAnchorParamVer(60.0, 60.0)
+    -- btn3D:SetSize(40.0, 40.0)
+    -- btn3D:SetStateColorDefaultWhite()
+    -- btn3D:GetPicBoxAtState(UIButtonBase.BS_NORMAL):SetTexture("Data/engine/white.png")
+    -- btn3D:SetStateColor(UIButtonBase.BS_NORMAL, Float3:MakeColor(0, 121, 216))
+    -- btn3D:SetStateColor(UIButtonBase.BS_PRESSED, Float3:MakeColor(0, 121, 216))
+    -- btn3D:SetStateColor(UIButtonBase.BS_HOVERED, Float3:MakeColor(0, 121, 216))
+    -- btn3D:SetScriptHandler("zo_UICallabck")
+    -- btn3D:CreateAddText("3D")
 
     -- chara
     local comBoxChara = UIComboBox:New("BtnComboxBoxChara")
@@ -1026,15 +1000,15 @@ function zo_UICallabck(ptr, callType)
 
         if "BtnSetting"==name then
             ZERONE_FrameSetting:Show(true)
-            -- ZERONE_EditBoxName:SetText("".. ZERONE_UIFace:GetName())
-            -- ZERONE_EditBoxID:SetText("".. ZERONE_UIFace:GetID())
+            -- ZERONE_EditBoxName:SetText("".. ZERONE_UIFaceCtrlScript:GetName())
+            -- ZERONE_EditBoxID:SetText("".. ZERONE_UIFaceCtrlScript:GetID())
         elseif "BtnCamera"==name then
             local platform = PX2_APP:GetPlatformType()
             if Application.PLT_ANDROID == platform then
-                if not ZERONE_UIFace:IsCameraOpened() then
-                    ZERONE_UIFace:OpenCamera(0)
+                if not ZERONE_UIFaceCtrlScript:IsCameraOpened() then
+                    ZERONE_UIFaceCtrlScript:OpenCamera(0)
                 else
-                    ZERONE_UIFace:CloseCamera()
+                    ZERONE_UIFaceCtrlScript:CloseCamera()
                 end
             elseif Application.PLT_LINUX == platform then
                 System:CallGetStatus("sh ../PHOENIXFrame/Raspberry/MJPG-Streamer/mjpg-streamer-experimental/start.sh")
@@ -1050,21 +1024,21 @@ function zo_UICallabck(ptr, callType)
         end
     elseif UICT_CHECKED==callType then
         if "BtnShowFace"==name then
-            ZERONE_UIFace._content:Show(true)
+            ZERONE_UIFaceCtrlScript._content:Show(true)
         elseif "BtnLidar"==name then
-            ZERONE_UIFace._MapFrame:Show(true)
+            ZERONE_UIFaceCtrlScript._MapFrame:Show(true)
         elseif "BtnLidarCur"==name then
-            ZERONE_UIFace._lidarFrame:Show(true)
+            ZERONE_UIFaceCtrlScript._lidarFrame:Show(true)
         elseif "BtnUICtrl"==name then
             ZERONE_FrameUICtrl:Show(true)
         end    
     elseif UICT_DISCHECKED==callType then
         if "BtnShowFace"==name then
-            ZERONE_UIFace._content:Show(false)
+            ZERONE_UIFaceCtrlScript._content:Show(false)
         elseif "BtnLidar"==name then
-            ZERONE_UIFace._MapFrame:Show(false)
+            ZERONE_UIFaceCtrlScript._MapFrame:Show(false)
         elseif "BtnLidarCur"==name then
-            ZERONE_UIFace._lidarFrame:Show(false)
+            ZERONE_UIFaceCtrlScript._lidarFrame:Show(false)
         elseif "BtnUICtrl"==name then
             ZERONE_FrameUICtrl:Show(false)
         end
@@ -1073,7 +1047,7 @@ function zo_UICallabck(ptr, callType)
     elseif UICT_ROUND_RELEASEDNOTPICK==callType then
     elseif UICT_COMBOBOX_CHOOSED==callType then
         if "BtnComboxBoxEdit"==name then    
-            local select = ZERONE_UIFace._btnMapDraw:GetChoose()
+            local select = ZERONE_UIFaceCtrlScript._btnMapDraw:GetChoose()
             if 0==select then
                 ZERONE_MAP_DrawType = 0
             elseif 1==select then
@@ -1082,7 +1056,7 @@ function zo_UICallabck(ptr, callType)
                 ZERONE_MAP_DrawType = 2
             end
         elseif "BtnComboxBoxChara"==name then
-            local select = ZERONE_UIFace._btnChara:GetChoose()
+            local select = ZERONE_UIFaceCtrlScript._btnChara:GetChoose()
             if 0==select then
                 PX2_ROBOT:SetRoleType(Robot.RT_MASTER)
             elseif 1==select then

@@ -1,6 +1,6 @@
 -- ZERONE.lua
 
-ZERONE_UIFace = nil
+ZERONE_UIFaceCtrlScript = nil
 ZERONE_IsZERO3DSceneCreated = false
 ZERONE_CurSerialOptType = 0 -- 1 car, 2 lidar, 3 axis
 ZERONE_IsFireRobot = false
@@ -35,8 +35,10 @@ function zo_ZERONE()
     -- ui
     local frameUIFface = UIFrame:New()
     frameZERONE:AttachChild(frameUIFface)
+    frameUIFface.LocalTransform:SetTranslateY(-15.0)
     frameUIFface:SetAnchorHor(0.0, 1.0)
     frameUIFface:SetAnchorVer(0.0, 1.0)
+    frameUIFface.LocalTransform:SetTranslateY(-10.0)
 
     local ctrlScript = ZERONEUIFaceCtrl:New()
     local ctrler = Cast:ToSC(ctrlScript.__object)
@@ -49,43 +51,45 @@ function zo_ZERONE()
     framePad:SetAnchorHor(0.0, 1.0)
     framePad:SetAnchorVer(0.0, 1.0)
     framePad:Show(false)
+
+    zo_Scene()
     
     -- event
     UnRegistAllEventFunctions("InputEventSpace::KeyPressed")
     RegistEventFunction("InputEventSpace::KeyPressed", function(keyStr)
         if "KC_0" == keyStr then
-            ZERONE_UIFace:SoundPlay(0)
+            ZERONE_UIFaceCtrlScript:SoundPlay(0)
         elseif "KC_1" == keyStr then
-            ZERONE_UIFace:SoundPlay(1)
+            ZERONE_UIFaceCtrlScript:SoundPlay(1)
         elseif "KC_2" == keyStr then
-            ZERONE_UIFace:SoundPlay(2)
+            ZERONE_UIFaceCtrlScript:SoundPlay(2)
         elseif "KC_3" == keyStr then
-            ZERONE_UIFace:SoundPlay(3)
+            ZERONE_UIFaceCtrlScript:SoundPlay(3)
         elseif "KC_4" == keyStr then
-            ZERONE_UIFace:SoundPlay(4)
+            ZERONE_UIFaceCtrlScript:SoundPlay(4)
         elseif "KC_5" == keyStr then
-            ZERONE_UIFace:SoundPlay(5)
+            ZERONE_UIFaceCtrlScript:SoundPlay(5)
         elseif "KC_6" == keyStr then
-            ZERONE_UIFace:SoundPlay(6)
+            ZERONE_UIFaceCtrlScript:SoundPlay(6)
         elseif "KC_LEFT" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(1, true)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(1, true)
             end
         elseif "KC_RIGHT" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(2, true)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(2, true)
             end
         elseif "KC_UP" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(3, true)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(3, true)
             end
         elseif "KC_DOWN" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(4, true)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(4, true)
             end
         elseif "KC_SPACE" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(0, true)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(0, true)
             end
 
             zo_SceneAddBox()
@@ -94,24 +98,24 @@ function zo_ZERONE()
     UnRegistAllEventFunctions("InputEventSpace::KeyReleased")
     RegistEventFunction("InputEventSpace::KeyReleased", function(keyStr)
         if "KC_LEFT" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(1, false)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(1, false)
             end
         elseif "KC_RIGHT" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(2, false)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(2, false)
             end
         elseif "KC_UP" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(3, false)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(3, false)
             end
         elseif "KC_DOWN" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(4, false)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(4, false)
             end
         elseif "KC_SPACE" == keyStr then
-            if nil~=ZERONE_UIFace then
-                ZERONE_UIFace:MoveControl(0, false)
+            if nil~=ZERONE_UIFaceCtrlScript then
+                ZERONE_UIFaceCtrlScript:MoveControl(0, false)
             end
         end
     end)

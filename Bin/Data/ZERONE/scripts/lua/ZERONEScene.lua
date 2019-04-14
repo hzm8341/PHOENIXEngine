@@ -33,13 +33,12 @@ function zo_Scene()
     cameraPlayCtrl:SetCameraDistance(40.0)
     cameraPlayCtrl:SetCameraDist(1.0, 60.0)
     cameraPlayCtrl:ResetPlay()
-
-    -- cam touchFrame
     local ui = PX2_PROJ:GetUI()
     local frameTouch = UIFrame:New()
     ui:AttachChild(frameTouch)
     frameTouch:SetAnchorHor(0.0, 1.0)
     frameTouch:SetAnchorVer(0.0, 1.0)
+    frameTouch.LocalTransform:SetTranslateY(-2.0)
     cameraPlayCtrl:SetTouchSizeNode(frameTouch)
     
     -- actor controlSetLineValueAtPos
@@ -70,9 +69,26 @@ function zo_Scene()
     localAgent:SetRobot(robot)
 
     -- actor rect
-    local actorRect = PX2_CREATER:CreateActor_InfinitePlane()
-    actorRect.LocalTransform:SetTranslateZ(-0.05)
+    local actorRect = PX2_CREATER:CreateActor_InfinitePlane(40.0)
+    actorRect.LocalTransform:SetTranslateZ(-0.001)
     scene:AttachChild(actorRect)
+    actorRect:SetTexture("Data/ZERONE/images/floor.png", Float4(0.0, 0.0, 4.0, 4.0))
+
+    
+    -- voxel
+    PX2_VOXELM:Initlize(VoxelManager.T_TEX)
+    local vs = VoxelSection:New()
+    vs:SetMinSize(-6, -6, 0)
+    vs:SetMaxSize(6, 6, 0)
+    vs:SetDistXY(10)
+    vs:SetDistZ(10)
+    vs:SetInitMtlType(0)
+    scene:AttachChild(vs)
+    PX2_ROBOT:SetVoxelSection(vs)
+
+    -- sky
+    local sky = PX2_CREATER:CreateSkyBox("Data/ZERONE/images/skynew/")
+    scene:AttachChild(sky)
 end
 
 function zo_SceneAddBox()

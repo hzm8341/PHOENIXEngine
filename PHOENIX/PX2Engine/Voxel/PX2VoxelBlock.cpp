@@ -3,6 +3,7 @@
 #include "PX2VoxelBlock.hpp"
 #include "PX2VoxelManager.hpp"
 #include "PX2Time.hpp"
+#include "PX2VoxelDefine.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -94,16 +95,16 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 	if (0 == MtlType) 
 		return;
 
-	AVector offset((float)IndexX, (float)IndexY, (float)IndexZ);
+	AVector offset((float)IndexX*V_SIZE, (float)IndexY*V_SIZE, (float)IndexZ*V_SIZE);
 
 	int startVertex1 = startVertex;
 	int startIndex1 = startIndex;
 	if (!Left || (Left && 0 == Left->MtlType))
 	{
-		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, 1.0f, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, V_SIZE, 0.0f) + offset;
 		vba.Position<Float3>(startVertex1 + 1) = APoint(0.0f, 0.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, 1.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 3) = APoint(0.0f, 0.0f, 1.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, V_SIZE, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 3) = APoint(0.0f, 0.0f, V_SIZE) + offset;
 
 		if (vba.HasNormal())
 		{
@@ -175,10 +176,10 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 
 	if (!Right || (Right && 0 == Right->MtlType))
 	{
-		vba.Position<Float3>(startVertex1 + 0) = APoint(1.0f, 0.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 1) = APoint(1.0f, 1.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 2) = APoint(1.0f, 0.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 3) = APoint(1.0f, 1.0f, 1.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 0) = APoint(V_SIZE, 0.0f, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 1) = APoint(V_SIZE, V_SIZE, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 2) = APoint(V_SIZE, 0.0f, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 3) = APoint(V_SIZE, V_SIZE, V_SIZE) + offset;
 
 		if (vba.HasNormal())
 		{
@@ -251,9 +252,9 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 	if (!Front || (Front && 0 == Front->MtlType))
 	{
 		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, 0.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 1) = APoint(1.0f, 0.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, 0.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 3) = APoint(1.0f, 0.0f, 1.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 1) = APoint(V_SIZE, 0.0f, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, 0.0f, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 3) = APoint(V_SIZE, 0.0f, V_SIZE) + offset;
 
 		if (vba.HasNormal())
 		{
@@ -325,10 +326,10 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 
 	if (!Back || (Back && 0 == Back->MtlType))
 	{
-		vba.Position<Float3>(startVertex1 + 0) = APoint(1.0f, 1.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 1) = APoint(0.0f, 1.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 2) = APoint(1.0f, 1.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 3) = APoint(0.0f, 1.0f, 1.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 0) = APoint(V_SIZE, V_SIZE, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 1) = APoint(0.0f, V_SIZE, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 2) = APoint(V_SIZE, V_SIZE, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 3) = APoint(0.0f, V_SIZE, V_SIZE) + offset;
 
 		if (vba.HasNormal())
 		{
@@ -400,10 +401,10 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 
 	if (!Bottom || (Bottom && 0 == Bottom->MtlType))
 	{
-		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, 1.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 1) = APoint(1.0f, 1.0f, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, V_SIZE, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 1) = APoint(V_SIZE, V_SIZE, 0.0f) + offset;
 		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, 0.0f, 0.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 3) = APoint(1.0f, 0.0f, 0.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 3) = APoint(V_SIZE, 0.0f, 0.0f) + offset;
 
 		if (vba.HasNormal())
 		{
@@ -470,10 +471,10 @@ void VoxelBlock::GenMesh(VertexBufferAccessor &vba, IndexBuffer *ib,
 
 	if (!Top || (Top && 0 == Top->MtlType))
 	{
-		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, 0.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 1) = APoint(1.0f, 0.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, 1.0f, 1.0f) + offset;
-		vba.Position<Float3>(startVertex1 + 3) = APoint(1.0f, 1.0f, 1.0f) + offset;
+		vba.Position<Float3>(startVertex1 + 0) = APoint(0.0f, 0.0f, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 1) = APoint(V_SIZE, 0.0f, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 2) = APoint(0.0f, V_SIZE, V_SIZE) + offset;
+		vba.Position<Float3>(startVertex1 + 3) = APoint(V_SIZE, V_SIZE, V_SIZE) + offset;
 		
 		if (vba.HasNormal())
 		{

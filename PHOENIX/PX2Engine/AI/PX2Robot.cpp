@@ -6,6 +6,7 @@
 #include "PX2JSONData.hpp"
 #include "PX2Timestamp.hpp"
 #include "PX2Timespan.hpp"
+#include "PX2VoxelPre.hpp"
 #if defined PX2_USE_VOXEL
 #include "PX2VoxelSection.hpp"
 #endif
@@ -110,6 +111,8 @@ mAgent(0)
 
 	mLeftSmoother = new Smoother<float>(16, 0.0f);
 	mRightSmoother = new Smoother<float>(16, 0.0f);
+
+	mVoxelSection = 0;
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -658,7 +661,7 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	}
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;
-	int resolution = mRobotMapData->MapStruct.MapResolution;
+	float resolution = mRobotMapData->MapStruct.MapResolution;
 	std::vector<unsigned char> map2DUsing = mRobotMapData->Map2DUsing;
 
 	if (mIsMapDataChanged && mIsInitSlamMap)
@@ -667,16 +670,13 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		int robotindex = 0;
 		int x = 0;
 		int y = 0;
-		int sx = 0;
-		int sy = 0;
+		int halfSize = mapSize * 0.5f;
 		char *dst = mTextureMap->GetData(0);
 		int width = mTextureMap->GetWidth();
 		for (int i = 0; i < mapAllSize; i++)
 		{
 			x = (i + width) % width;
 			y = ((width - 1) - i / width);
-			sx = (int)((float)x);
-			sy = (int)((float)y);
 
 			unsigned char *pixel = (unsigned char*)dst + y * width * 4 + x * 4;
 
@@ -772,6 +772,25 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 				isHasObst = false;
 			}
 
+			if (isHasObst)
+			{
+#if defined PX2_USE_VOXEL
+				float xPos = (x - halfSize) * resolution;
+				float yPos = (halfSize - y) * resolution;
+				APoint targetPos(xPos, yPos, 0.0f);
+				APoint targetPos1(xPos, yPos, 0.05f);
+				APoint targetPos2(xPos, yPos, 0.1f);
+
+				// obst
+				if (mVoxelSection)
+				{
+					mVoxelSection->SetBlock(targetPos, 1);
+					mVoxelSection->SetBlock(targetPos1, 1);
+					mVoxelSection->SetBlock(targetPos2, 1);
+				}
+#endif
+			}
+
 			int drawVaL = mRobotMapData->LineDrawMapData2D[i];
 			if (0 != drawVaL)
 			{
@@ -781,9 +800,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 				*(pixel + 3) = 255;
 			}
 		}
-
-		//_LargerMapObst(mTextureMap);
-		//_LargerMapObst(mTextureMap);
 
 		mUsingRunningMap2D.resize(mapAllSize);
 		memcpy(&mUsingRunningMap2D[0], mTextureMap->GetData(0), mapAllSize);
@@ -894,6 +910,7 @@ void Robot::SetSlam2DMap(std::vector<unsigned char> &map, int mapSize,
 	if (!map.empty())
 	{
 		mRobotMapData->Map2DOrigin = map;
+		mRobotMapData->ConvertOriginToUsing(false);
 		mIsMapDataChanged = true;
 	}
 	mRobotMapData->MapStruct.MapSize = mapSize;
@@ -977,52 +994,6 @@ void Robot::_SetPixelVal(Texture2D *tex2D, unsigned char *toData,
 	int pixelIndex = indexY*width + indexX;
 	unsigned char *pixel = toData + pixelIndex;
 	*pixel++ = 255;
-}
-//----------------------------------------------------------------------------
-void Robot::_RefreshVoxelSection(std::vector<unsigned char> &map,
-	float reso)
-{
-	if (map.empty())
-		return;
-
-	int robotindex = 0;
-	int x = 0;
-	int y = 0;
-	int width = mTextureMap->GetWidth();
-	for (int i = 0; i < width; i++)
-	{
-		x = i % width;
-		y = ((width - 1) - i / width);
-
-		APoint pos((x - mRobotMapX)*reso, (y-mRobotMapY)*reso, 0.0f);
-
-		int mapVal = map[i];
-
-		if (mapVal == 100)
-		{
-			// robot
-			robotindex = i;
-		}
-		else if (mapVal == 10)
-		{
-			// none
-		}
-		else if (mapVal == 200)
-		{
-			// space can go
-		}
-		else
-		{
-			if (0 == mapVal)
-			{
-#if defined PX2_USE_VOXEL
-				// obst
-				if (mVoxelSection)
-					mVoxelSection->SetBlock(pos, 1);
-#endif
-			}
-		}
-	}
 }
 //----------------------------------------------------------------------------
 void Robot::SetSlam2DPosition(const APoint &pos, float angle)

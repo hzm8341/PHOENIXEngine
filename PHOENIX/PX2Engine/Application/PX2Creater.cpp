@@ -310,14 +310,14 @@ Actor *Creater::CreateActorBox()
 	return actor;
 }
 //----------------------------------------------------------------------------
-Actor *Creater::CreateActor_InfinitePlane(const AVector &normal, 
-	float originOffset)
+Actor *Creater::CreateActor_InfinitePlane(float planeViewSizeScale,
+	const AVector &normal, float originOffset)
 {
 	Actor *actor = new0 Actor(Actor::AIT_AGENTOBJECT);
 	Movable *movRectangle = CreateMovable_Rectangle();
 	actor->AttachChild(movRectangle);
 	actor->SetPhysicsShapeType(Actor::PST_INFINITEPLANE);
-	movRectangle->LocalTransform.SetUniformScale(100.0f);
+	movRectangle->LocalTransform.SetUniformScale(planeViewSizeScale);
 
 	return actor;
 }

@@ -50,6 +50,50 @@ Actor::~Actor()
 {
 	GoOutEventWorld();
 }
+struct _ActorTexData
+{
+	std::string Filename;
+	Float4 UVOffset;
+};
+//----------------------------------------------------------------------------
+void _ActorTravelExecuteFun (Movable *mov, Any *data, bool &goOn)
+{
+	Renderable *rd = DynamicCast<Renderable>(mov);
+	if (rd)
+	{
+		_ActorTexData texData = PX2_ANY_AS(*data, _ActorTexData);
+
+		MaterialInstance *mi = rd->GetMaterialInstance();
+		mi->SetPixelTexture(0, "SampleBase", texData.Filename);
+
+		//ShaderFloatPtr sf = new0 ShaderFloat(1);
+		//sf->SetRegister(0, texData.UVOffset);
+		//MaterialInstance* miCopy = DynamicCast<MaterialInstance>(mi->Copy(""));
+		//miCopy->SetPixelConstant(0, "UVOffset", sf);
+		//miCopy->SetPixelTexture(0, "SampleBase", texData.Filename);
+		//miCopy->SetPixelConstant(0, "UVOffset", sf);
+
+		//if (texData.UVOffset[2] > 1.0f || texData.UVOffset[3] > 1.0f)
+		//{
+		//	miCopy->GetMaterial()->GetPixelShader(0, 0)->SetCoordinate(0, 0,
+		//		Shader::SC_REPEAT);
+		//	miCopy->GetMaterial()->GetPixelShader(0, 0)->SetCoordinate(0, 1,
+		//		Shader::SC_REPEAT);
+		//}
+
+		//rd->SetMaterialInstance(miCopy);
+	}
+}
+//----------------------------------------------------------------------------
+void Actor::SetTexture(const std::string &filePath, const Float4 &offset)
+{
+	_ActorTexData data;
+	data.Filename = filePath;
+	data.UVOffset = offset;
+
+	Any fileAny = data;
+	Node::TravelExecute(this, _ActorTravelExecuteFun, &fileAny);
+}
 //----------------------------------------------------------------------------
 void Actor::SetPhysicsShapeType(Actor::PhysicsShapeType type, 
 	Movable *meshMov)

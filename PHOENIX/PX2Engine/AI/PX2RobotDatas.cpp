@@ -120,19 +120,26 @@ std::vector<unsigned char> RobotMapData::_ExtendLarger(
 	return retMapping;
 }
 //----------------------------------------------------------------------------
-void RobotMapData::ConvertOriginToUsing()
+void RobotMapData::ConvertOriginToUsing(bool isSimple)
 {
-	std::vector<unsigned char> mapping = _ExtendLarger(Map2DOrigin, true);
-	std::vector<unsigned char> mapping1 = _ExtendLarger(mapping, false);
-	std::vector<unsigned char> mapping2 = _ExtendLarger(mapping1, false);
-	std::vector<unsigned char> mapping3 = _ExtendLarger(mapping2, false);
-	std::vector<unsigned char> mapping4 = _ExtendLarger(mapping3, false);
-	std::vector<unsigned char> mapping5 = _ExtendLarger(mapping4, false);
-	std::vector<unsigned char> mapping6 = _ExtendLarger(mapping5, false);
-	std::vector<unsigned char> mapping7 = _ExtendLarger(mapping6, false);
-	std::vector<unsigned char> mapping8 = _ExtendLarger(mapping7, false);
+	if (!isSimple)
+	{
+		std::vector<unsigned char> mapping = _ExtendLarger(Map2DOrigin, true);
+		std::vector<unsigned char> mapping1 = _ExtendLarger(mapping, false);
+		std::vector<unsigned char> mapping2 = _ExtendLarger(mapping1, false);
+		std::vector<unsigned char> mapping3 = _ExtendLarger(mapping2, false);
+		std::vector<unsigned char> mapping4 = _ExtendLarger(mapping3, false);
+		std::vector<unsigned char> mapping5 = _ExtendLarger(mapping4, false);
+		std::vector<unsigned char> mapping6 = _ExtendLarger(mapping5, false);
+		std::vector<unsigned char> mapping7 = _ExtendLarger(mapping6, false);
+		std::vector<unsigned char> mapping8 = _ExtendLarger(mapping7, false);
 
-	Map2DUsing = mapping8;
+		Map2DUsing = mapping8;
+	}
+	else 
+	{
+		Map2DUsing = Map2DOrigin;
+	}
 }
 //----------------------------------------------------------------------------
 void RobotMapData::_SetMapUsingData(std::vector<unsigned char> &maping, 
@@ -199,7 +206,7 @@ void RobotMapData::PostLink()
 {
 	Object::PostLink();
 
-	ConvertOriginToUsing();
+	ConvertOriginToUsing(false);
 }
 //----------------------------------------------------------------------------
 bool RobotMapData::Register(OutStream& target) const

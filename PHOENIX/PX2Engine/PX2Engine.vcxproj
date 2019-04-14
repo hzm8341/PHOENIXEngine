@@ -2468,6 +2468,16 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="Unity\ZLib\zconf.h" />
     <ClInclude Include="Unity\ZLib\zlib.h" />
     <ClInclude Include="Unity\ZLib\zutil.h" />
+    <ClInclude Include="Voxel\PX2VoxelBlock.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelBlockMtl.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelDefine.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelManager.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelMapData.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelPre.hpp" />
+    <ClInclude Include="Voxel\PX2Voxels.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelSection.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelSetBlockGet.hpp" />
+    <ClInclude Include="Voxel\PX2VoxelTitle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\detour\src\DetourAlloc.cpp" />
@@ -3551,6 +3561,13 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="Unity\ZLib\trees.c" />
     <ClCompile Include="Unity\ZLib\uncompr.c" />
     <ClCompile Include="Unity\ZLib\zutil.c" />
+    <ClCompile Include="Voxel\PX2VoxelBlock.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelBlockMtl.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelManager.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelMapData.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelSection.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelSetBlockGet.cpp" />
+    <ClCompile Include="Voxel\PX2VoxelTitle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AI\PX2AIAgent.inl" />
@@ -3838,6 +3855,7 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <None Include="Unity\PX2Selection.inl" />
     <None Include="Unity\PX2SoundSystem.inl" />
     <None Include="Unity\PX2UserActor.inl" />
+    <None Include="Voxel\PX2VoxelSection.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="AI\Slam2D\Eigen\CMakeLists.txt" />

@@ -54,18 +54,20 @@ void PdrShader::SetSamplerState(Renderer* renderer, const Shader* shader,
 			renderer->Enable((const Texture2D*)texture, textureUnit);
 			current.GetCurrent(target);
 
-			GLint wrap0 = gOGLWrapMode[shader->GetCoordinate(i, 0)];
+			Shader::SamplerCoordinate sc = shader->GetCoordinate(i, 0);
+			GLint wrap0 = gOGLWrapMode[sc];
 			if (wrap0 != current.mWrap[0])
 			{
 				current.mWrap[0] = wrap0;
-				glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(target, GL_TEXTURE_WRAP_S, wrap0);
 			}
 
-			GLint wrap1 = gOGLWrapMode[shader->GetCoordinate(i, 1)];
+			Shader::SamplerCoordinate sc1 = shader->GetCoordinate(i, 1);
+			GLint wrap1 = gOGLWrapMode[sc1];
 			if (wrap1 != current.mWrap[1])
 			{
 				current.mWrap[1] = wrap1;
-				glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glTexParameteri(target, GL_TEXTURE_WRAP_T, wrap0);
 			}
 			break;
 		}

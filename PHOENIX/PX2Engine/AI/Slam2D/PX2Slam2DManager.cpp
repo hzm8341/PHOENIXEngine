@@ -346,7 +346,7 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 			for (int i = 0; i < (int)lData.size(); i++)
 			{
 				lsd0.Datas[i].angle = lData[i].angle;
-				lsd0.Datas[i].signal = lData[i].signal;
+				lsd0.Datas[i].signal = (uint8_t)lData[i].signal;
 				lsd0.Datas[i].distance = lData[i].distance * 1000.0f;
 			}
 
@@ -427,6 +427,7 @@ void Slam2DManager::Update(double appSeconds, double elapsedSeconds)
 			curY = PX2_ROBOT.GetArduino()->GetCurAxisObj().Y + offsetDegree;
 
 			LiDarSlamData &lsd = lsd0;
+
 			if (!lsd.Datas.empty())
 				buf.put(lsd.Datas);
 #endif

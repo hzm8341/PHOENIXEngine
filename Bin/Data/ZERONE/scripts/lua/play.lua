@@ -21,6 +21,9 @@ function engine_project_preplay()
 	zo_AddLanguage()	
 
 	PX2_BLUETOOTH:SetDataProtocolHex(false)
+
+	PX2_ENGINECANVAS:SetClearColor(Float4:MakeColor(63, 72, 204, 255))
+    PX2_ENGINESCENECANVAS:SetClearColor(Float4:MakeColor(63, 72, 204, 255))
 end
 
 local autoConnectStr = ""
@@ -82,27 +85,27 @@ function engine_project_cmd(cmd, param0, param1, param2)
 		PX2_LOGGER:LogInfo("ZERONE", "raspberry")
 	elseif "1"==cmd then
 		-- left
-		if nil~=ZERONE_UIFace then
-			ZERONE_UIFace:MoveControl(1, false)
+		if nil~=ZERONE_UIFaceCtrlScript then
+			ZERONE_UIFaceCtrlScript:MoveControl(1, false)
 		end
 	elseif "2"==cmd then
 		-- right
-		if nil~=ZERONE_UIFace then
-			ZERONE_UIFace:MoveControl(2, false)
+		if nil~=ZERONE_UIFaceCtrlScript then
+			ZERONE_UIFaceCtrlScript:MoveControl(2, false)
 		end
 	elseif "3"==cmd then
 		-- up
-		if nil~=ZERONE_UIFace then
-			ZERONE_UIFace:MoveControl(3, false)
+		if nil~=ZERONE_UIFaceCtrlScript then
+			ZERONE_UIFaceCtrlScript:MoveControl(3, false)
 		end
 	elseif "4"==cmd then
 		-- down
-		if nil~=ZERONE_UIFace then
-			ZERONE_UIFace:MoveControl(4, false)
+		if nil~=ZERONE_UIFaceCtrlScript then
+			ZERONE_UIFaceCtrlScript:MoveControl(4, false)
 		end
 	elseif "0"==cmd then
-		if nil~=ZERONE_UIFace then
-			ZERONE_UIFace:MoveControl(0, false)
+		if nil~=ZERONE_UIFaceCtrlScript then
+			ZERONE_UIFaceCtrlScript:MoveControl(0, false)
 		end
 	end
 end

@@ -1,5 +1,5 @@
 <rootnode>
-	<enums num="90">
+	<enums num="91">
 		<enum name="FunParamType">
 			<enum_item itemstr="FPT_NONE"/>
 			<enum_item itemstr="FPT_CHAR"/>
@@ -237,7 +237,7 @@
 			<enum_item itemstr="UILPT_MAX_TYPE"/>
 		</enum>
 	</enums>
-	<classes num="173">
+	<classes num="179">
 		<class name="Rtti" parentname="" singletonname="">
 			<function name="Rtti" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
 			<function name="GetName" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="true" is_const="true">
@@ -9337,12 +9337,6 @@
 			</enum>
 			<function name="Robot" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="Robot" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
-			<function name="StartShareMemory" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="ShutdownShareMenory" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
 			<function name="Update" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="float appseconds" is_retrun="false" type_str="float" valuename_str="appseconds" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
@@ -9374,32 +9368,6 @@
 				<param paramstr="const AVector &amp;" is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="GetMatrix" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="const HMatrix &amp;" is_retrun="true" type_str="HMatrix" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="SetCurSlam3DCameraMatrix" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="HMatrix &amp;mat" is_retrun="false" type_str="HMatrix" valuename_str="mat" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
-			</function>
-			<function name="SetCurSlam3DTransformLost" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
-				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-				<param paramstr="bool lost" is_retrun="false" type_str="bool" valuename_str="lost" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="IsCurSlam3DTransformLost" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
-			</function>
-			<function name="GetCameraPosition" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="const APoint &amp;" is_retrun="true" type_str="APoint" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetCameraDirection" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="const AVector &amp;" is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetCameraUp" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="const AVector &amp;" is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetCameraRight" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
-				<param paramstr="const AVector &amp;" is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
-			</function>
-			<function name="GetCameraMatrix" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="const HMatrix &amp;" is_retrun="true" type_str="HMatrix" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="SetVoxelSection" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
@@ -10034,6 +10002,222 @@
 				<param paramstr="LBlock *" is_retrun="true" type_str="LBlock" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
 			</function>
 		</class>
+		<class name="VoxelBlockMtl" parentname="" singletonname="">
+			<function name="VoxelBlockMtl" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="VoxelBlockMtl" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+		</class>
+		<class name="VoxelBlock" parentname="" singletonname="">
+			<function name="VoxelBlock" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="VoxelBlock" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+		</class>
+		<class name="VoxelTitle" parentname="Node" singletonname="">
+			<function name="VoxelTitle" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="int x" is_retrun="false" type_str="int" valuename_str="x" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int y" is_retrun="false" type_str="int" valuename_str="y" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int z" is_retrun="false" type_str="int" valuename_str="z" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int initMtlType" is_retrun="false" type_str="int" valuename_str="initMtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="VoxelTitle" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="GetBlockIndex" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;localPos" is_retrun="false" type_str="APoint" valuename_str="localPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="int &amp;indexX" is_retrun="false" type_str="int" valuename_str="indexX" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+				<param paramstr="int &amp;indexY" is_retrun="false" type_str="int" valuename_str="indexY" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+				<param paramstr="int &amp;indexZ" is_retrun="false" type_str="int" valuename_str="indexZ" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+			</function>
+			<function name="SetBlock" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;localPos" is_retrun="false" type_str="APoint" valuename_str="localPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="int type" is_retrun="false" type_str="int" valuename_str="type" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="SetBlockGet *vbg" is_retrun="false" type_str="SetBlockGet" valuename_str="vbg" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetBlock" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int blockIndexX" is_retrun="false" type_str="int" valuename_str="blockIndexX" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int blockIndexY" is_retrun="false" type_str="int" valuename_str="blockIndexY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int blockIndexZ" is_retrun="false" type_str="int" valuename_str="blockIndexZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int mtlType" is_retrun="false" type_str="int" valuename_str="mtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="SetBlockGet *vbg" is_retrun="false" type_str="SetBlockGet" valuename_str="vbg" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="IsContainPoint" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;pos" is_retrun="false" type_str="APoint" valuename_str="pos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetGenTitleSideBlock" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="bool sideBlock" is_retrun="false" type_str="bool" valuename_str="sideBlock" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="IsGenTitleSideBlock" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTitlePath" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="std::string " is_retrun="true" type_str="std::string" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int mapID" is_retrun="false" type_str="int" valuename_str="mapID" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int indexX" is_retrun="false" type_str="int" valuename_str="indexX" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int indexY" is_retrun="false" type_str="int" valuename_str="indexY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int indexZ" is_retrun="false" type_str="int" valuename_str="indexZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="UpdateTitleSideBlock" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetNeedReGenMesh" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="bool need" is_retrun="false" type_str="bool" valuename_str="need" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="IsNeedReGenMesh" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="AddMovable" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Movable *mov" is_retrun="false" type_str="Movable" valuename_str="mov" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;worldPos" is_retrun="false" type_str="APoint" valuename_str="worldPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
+		<class name="VoxelSection" parentname="Node" singletonname="">
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VoxelSection *" is_retrun="true" type_str="VoxelSection" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="New" funtype="class_static" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VoxelSection *" is_retrun="true" type_str="VoxelSection" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="VoxelSection" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="VoxelSection" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="int distXY" is_retrun="false" type_str="int" valuename_str="distXY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int distZ" is_retrun="false" type_str="int" valuename_str="distZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="VoxelSection" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
+			<function name="SetMinSize" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int minSizeX" is_retrun="false" type_str="int" valuename_str="minSizeX" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int minSizeY" is_retrun="false" type_str="int" valuename_str="minSizeY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int minSizeZ" is_retrun="false" type_str="int" valuename_str="minSizeZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetMinSize" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int &amp;minSizeX" is_retrun="false" type_str="int" valuename_str="minSizeX" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+				<param paramstr="int &amp;minSizeY" is_retrun="false" type_str="int" valuename_str="minSizeY" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+				<param paramstr="int &amp;minSizeZ" is_retrun="false" type_str="int" valuename_str="minSizeZ" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+			</function>
+			<function name="SetMaxSize" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int maxSizeX" is_retrun="false" type_str="int" valuename_str="maxSizeX" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int maxSizeY" is_retrun="false" type_str="int" valuename_str="maxSizeY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int maxSizeZ" is_retrun="false" type_str="int" valuename_str="maxSizeZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetMaxSize" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int &amp;maxSizeX" is_retrun="false" type_str="int" valuename_str="maxSizeX" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+				<param paramstr="int &amp;maxSizeY" is_retrun="false" type_str="int" valuename_str="maxSizeY" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+				<param paramstr="int &amp;maxSizeZ" is_retrun="false" type_str="int" valuename_str="maxSizeZ" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="false"/>
+			</function>
+			<function name="GenTitles" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int maxZ" is_retrun="false" type_str="int" valuename_str="maxZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int mtlType" is_retrun="false" type_str="int" valuename_str="mtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetDistXY" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int val" is_retrun="false" type_str="int" valuename_str="val" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetDistZ" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int val" is_retrun="false" type_str="int" valuename_str="val" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetInitMtlType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int mtlType" is_retrun="false" type_str="int" valuename_str="mtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTitleRangeXY" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTitleRangeZ" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="int " is_retrun="true" type_str="int" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetAllBlocks" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int mtlType" is_retrun="false" type_str="int" valuename_str="mtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetBlock" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;worldPos" is_retrun="false" type_str="APoint" valuename_str="worldPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="int type" is_retrun="false" type_str="int" valuename_str="type" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="SetBlockGet *get=0" is_retrun="false" type_str="SetBlockGet" valuename_str="get" defaultvalue_Str="0" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetBlock" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int titleIndexX" is_retrun="false" type_str="int" valuename_str="titleIndexX" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int titleIndexY" is_retrun="false" type_str="int" valuename_str="titleIndexY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int titleIndexZ" is_retrun="false" type_str="int" valuename_str="titleIndexZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int blockIndexX" is_retrun="false" type_str="int" valuename_str="blockIndexX" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int blockIndexY" is_retrun="false" type_str="int" valuename_str="blockIndexY" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int blockIndexZ" is_retrun="false" type_str="int" valuename_str="blockIndexZ" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="int mtlType" is_retrun="false" type_str="int" valuename_str="mtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="SetBlockGet *get = 0" is_retrun="false" type_str="SetBlockGet" valuename_str="get" defaultvalue_Str="0" is_pointer="true" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GenMesh" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetTitleFromMap" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VoxelTitle *" is_retrun="true" type_str="VoxelTitle" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const Vector3f &amp;key" is_retrun="false" type_str="Vector3f" valuename_str="key" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetContainTitle" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VoxelTitle *" is_retrun="true" type_str="VoxelTitle" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;worldPos" is_retrun="false" type_str="APoint" valuename_str="worldPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="SetActorCenterPos" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const APoint &amp;pos" is_retrun="false" type_str="APoint" valuename_str="pos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetActorCenterPos" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const APoint &amp;" is_retrun="true" type_str="APoint" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetCenterIndexXYZ" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const AVector &amp;" is_retrun="true" type_str="AVector" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="UpdateWorldData" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="double applicationTime" is_retrun="false" type_str="double" valuename_str="applicationTime" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="double elapsedTime" is_retrun="false" type_str="double" valuename_str="elapsedTime" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+		</class>
+		<class name="VoxelManager" parentname="" singletonname="">
+			<enum name="Type">
+				<enum_item itemstr="T_TEX"/>
+				<enum_item itemstr="T_COLOR"/>
+				<enum_item itemstr="T_MAX_TYPE"/>
+			</enum>
+			<function name="VoxelManager" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="VoxelManager" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="Initlize" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="Type t" is_retrun="false" type_str="Type" valuename_str="t" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="Type " is_retrun="true" type_str="Type" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="LoadBlocksConfig" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="bool " is_retrun="true" type_str="bool" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;filename" is_retrun="false" type_str="std::string" valuename_str="filename" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetVoxelBlockMtlByType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VoxelBlockMtl *" is_retrun="true" type_str="VoxelBlockMtl" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="int mtlType" is_retrun="false" type_str="int" valuename_str="mtlType" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="GetVoxelBlockMtlByName" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="VoxelBlockMtl *" is_retrun="true" type_str="VoxelBlockMtl" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;name" is_retrun="false" type_str="std::string" valuename_str="name" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+			<function name="GetTexPackEle" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
+				<param paramstr="const TexPackElement &amp;" is_retrun="true" type_str="TexPackElement" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="const std::string &amp;faceImageName" is_retrun="false" type_str="std::string" valuename_str="faceImageName" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+			</function>
+		</class>
+		<class name="SetBlockGet" parentname="" singletonname="">
+			<function name="SetBlockGet" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+			<function name="SetBlockGet" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
+		</class>
 		<class name="Project" parentname="" singletonname="Application">
 			<enum name="ScreenOrientation">
 				<enum_item itemstr="SO_LANDSCAPE"/>
@@ -10164,6 +10348,11 @@
 			</function>
 			<function name="GetAIType" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="true">
 				<param paramstr="AIType " is_retrun="true" type_str="AIType" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+			</function>
+			<function name="SetTexture" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
+				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
+				<param paramstr="const std::string &amp;filePath" is_retrun="false" type_str="std::string" valuename_str="filePath" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="const Float4 &amp;offset=Float4" is_retrun="false" type_str="Float4" valuename_str="offset" defaultvalue_Str="Float4" is_pointer="false" is_ref="true" is_const="true"/>
 			</function>
 			<function name="GetAIAgentBase" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="AIAgentBase *" is_retrun="true" type_str="AIAgentBase" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
@@ -10473,6 +10662,7 @@
 			</function>
 			<function name="CreateActor_InfinitePlane" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="Actor *" is_retrun="true" type_str="Actor" valuename_str="" defaultvalue_Str="" is_pointer="true" is_ref="false" is_const="false"/>
+				<param paramstr="float planeViewSizeScale = 100.0f" is_retrun="false" type_str="float" valuename_str="planeViewSizeScale" defaultvalue_Str="100.0f" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const AVector &amp;normal=AVector::UNIT_Z" is_retrun="false" type_str="AVector" valuename_str="normal" defaultvalue_Str="AVector::UNIT_Z" is_pointer="false" is_ref="true" is_const="true"/>
 				<param paramstr="float originOffset=0.0f" is_retrun="false" type_str="float" valuename_str="originOffset" defaultvalue_Str="0.0f" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
