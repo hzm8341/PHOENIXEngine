@@ -28,15 +28,10 @@ using namespace PX2;
 #include <windows.h> 
 #endif
 //----------------------------------------------------------------------------
-#define BUF_SIZE 1024*128
-char szName[] = "PHOENIXSlam";    // 共享内存的名字
-//----------------------------------------------------------------------------
 Slam2DPlugin *Robot::mSlam2DPlugin = 0;
 //----------------------------------------------------------------------------
 Robot::Robot() :
 mLiDar(0),
-mIsSlamLost3D(false),
-mVoxelSection(0),
 mOffsetDegree(0.0f),
 mRobotMapX(0),
 mRobotMapY(0),
@@ -56,12 +51,6 @@ mAgent(0)
 {
 	mRoleType = RT_MASTER;
 
-	mBufShare = 0;
-
-#if defined _WIN32 || defined WIN32
-	mHandler = 0;
-#endif
-
 	mUIFrame = new0 UIFrame();
 
 	mUIVlc = new0 UIVlc();
@@ -71,10 +60,6 @@ mAgent(0)
 	mUIVlc->SetAnchorVer(0.0f, 1.0f);
 
 	mPosition = APoint::ORIGIN;
-
-	mCameraDirection = AVector::UNIT_Y;
-	mCameraRight = AVector::UNIT_X;
-	mCameraUp = AVector::UNIT_Z;
 
 	mDirection = AVector::UNIT_Y;
 	mRight = AVector::UNIT_X;
@@ -143,8 +128,6 @@ Robot::~Robot()
 	{
 		delete0(mRightSmoother);
 	}
-
-	ShutdownShareMenory();
 
 #if defined PX2_USE_SLAM2D
 	if (mSlam2DPlugin)
@@ -616,51 +599,6 @@ void Robot::_RecreateMapTex(int mapSize)
 	mPicBoxMap->GetUIPicBox()->SetTexture(mTextureMap);
 }
 //----------------------------------------------------------------------------
-void Robot::StartShareMemory()
-{
-	if (mBufShare)
-	{
-		ShutdownShareMenory();
-	}
-
-#if defined _WIN32 || defined WIN32
-	HANDLE hMapFile = CreateFileMapping(
-		INVALID_HANDLE_VALUE,    // 物理文件句柄  
-		NULL,                    // 默认安全级别  
-		PAGE_READWRITE,          // 可读可写  
-		0,                       // 高位文件大小  
-		BUF_SIZE,                // 地位文件大小  
-		szName                   // 共享内存名称  
-		);
-	mHandler = hMapFile;
-
-	mBufShare = (char *)MapViewOfFile(
-		hMapFile,            // 共享内存的句柄  
-		FILE_MAP_ALL_ACCESS, // 可读写许可  
-		0,
-		0,
-		BUF_SIZE
-		);
-
-	memset(mBufShare, 0, BUF_SIZE);
-#endif
-
-	mIsSlamLost3D = false;
-}
-//----------------------------------------------------------------------------
-void Robot::ShutdownShareMenory()
-{
-#if defined _WIN32 || defined WIN32
-	if (mBufShare)
-	{
-		UnmapViewOfFile(mBufShare);
-		CloseHandle((HANDLE)mHandler);
-		mBufShare = 0;
-		mHandler = 0;
-	}
-#endif
-}
-//----------------------------------------------------------------------------
 void Robot::Update(float appseconds, float elpasedSeconds)
 {
 	PX2_UNUSED(appseconds);
@@ -669,64 +607,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	if (mArduino)
 	{
 		mArduino->Update(elpasedSeconds);
-	}
-
-	if (mBufShare)
-	{
-		int bufShareLength = strlen(mBufShare);
-		PX2_UNUSED(bufShareLength);
-
-		JSONData data;
-		if (data.LoadBuffer(mBufShare))
-		{
-			std::string cam_matrix = data.GetMember("cam_mat").ToString();
-			bool isLost = data.GetMember("islost").ToBool();
-
-			SetCurSlam3DTransformLost(isLost);
-
-			HMatrix mat = _MatFromString(cam_matrix);
-			SetCurSlam3DCameraMatrix(mat);
-
-			AllPoints.clear();
-			JSONValue jValPointsAll = data.GetMember("points");
-			int arraySize = jValPointsAll.GetArraySize();
-			for (int i = 0; i < arraySize; i++)
-			{
-				JSONValue jMPoint = jValPointsAll.GetArrayElement(i);
-				std::string ptStraight = jMPoint.ToString();
-				bool isBad = false;
-				int key = 0;
-				APoint pt = _PtFromString(ptStraight, key, isBad);
-				Slam3DPoint spt;
-				spt.Key = key;
-				spt.Pos = pt;
-				spt.IsBad = isBad;
-				AllPoints.push_back(spt);
-			}
-			_RefreshVoxelSection(AllPoints, 1);
-
-			CurPoints.clear();
-			JSONValue jValPointsCur = data.GetMember("points_cur");
-			for (int i = 0; i < jValPointsCur.GetArraySize(); i++)
-			{
-				JSONValue jMPoint = jValPointsCur.GetArrayElement(i);
-				std::string ptStraight = jMPoint.ToString();
-				bool isBad = false;
-				int key = 0;
-				APoint pt = _PtFromString(ptStraight, key, isBad);
-				Slam3DPoint spt;
-				spt.Key = key;
-				spt.Pos = pt;
-				spt.IsBad = isBad;
-				CurPoints.push_back(spt);
-			}
-			_RefreshVoxelSection(CurPoints, 2);
-		}
-	}
-	else
-	{
-		//_RefreshVoxelSection(AllPoints, 1);
-		//_RefreshVoxelSection(CurPoints, 2);
 	}
 
 	if (mIsHasAxis)
@@ -937,43 +817,6 @@ void Robot::AdjustToDirection(const AVector &dir)
 	mAdjustToDirection = dir;
 }
 //----------------------------------------------------------------------------
-Float3 Robot::_FromString(const std::string &str)
-{
-	StringTokenizer stkCamPos(str, ",");
-	float x = StringHelp::StringToFloat(stkCamPos[0]);
-	float y = StringHelp::StringToFloat(stkCamPos[1]);
-	float z = StringHelp::StringToFloat(stkCamPos[2]);
-
-	return Float3(x, y, z);
-}
-//----------------------------------------------------------------------------
-HMatrix Robot::_MatFromString(const std::string &str)
-{
-	HMatrix mat;
-	StringTokenizer stkMat(str, ",");
-
-	for (int i = 0; i < 16; i++)
-	{
-		int row = (i + 4) % 4;
-		int col = i/4;
-		mat[row][col] = StringHelp::StringToFloat(stkMat[i]);
-	}
-
-	return mat;
-}
-//----------------------------------------------------------------------------
-APoint Robot::_PtFromString(const std::string &str, int &key, bool &isBad)
-{
-	StringTokenizer stkCamPos(str, ",");
-	float x = StringHelp::StringToFloat(stkCamPos[0]);
-	float y = StringHelp::StringToFloat(stkCamPos[1]);
-	float z = StringHelp::StringToFloat(stkCamPos[2]);
-	isBad = std::string("0") == stkCamPos[3];
-	key = StringHelp::StringToInt(stkCamPos[4]);
-
-	return APoint(x, y, z);
-}
-//----------------------------------------------------------------------------
 UIFrame *Robot::GetUIFrame()
 {
 	return mUIFrame;
@@ -992,107 +835,9 @@ APoint _ChangePoint(APoint from)
 	return pt;
 }
 //----------------------------------------------------------------------------
-void Robot::_RefreshVoxelSection(std::vector<Slam3DPoint> &points,
-	int mtlType)
-{
-	PX2_UNUSED(mtlType);
-
-	if (!mVoxelSection)
-		return;
-
-	for (int i = 0; i < (int)points.size(); i++)
-	{
-		Slam3DPoint &sp = points[i];
-		if (sp.IsBad)
-			continue;
-
-		APoint targetPos = _ChangePoint(sp.Pos);
-		targetPos.X() *= 10.0f;
-		targetPos.Y() *= 10.0f;
-		targetPos.Z() *= 10.0f;
-		if (targetPos.Z() < 0.2f)
-			continue;
-
-#if defined PX2_USE_VOXEL
-		mVoxelSection->SetBlock(targetPos, mtlType);
-#endif
-	}
-}
-//----------------------------------------------------------------------------
 void Robot::SetOffset(const AVector &offset)
 {
 	mOffset = offset;
-}
-//----------------------------------------------------------------------------
-void Robot::SetCurSlam3DTransformLost(bool lost)
-{
-	mIsSlamLost3D = lost;
-
-	if (mLiDar)
-	{
-		mLiDar->SetCurSlam3DTransformLost(lost);
-	}
-}
-//----------------------------------------------------------------------------
-bool Robot::IsCurSlam3DTransformLost() const
-{
-	return mIsSlamLost3D;
-}
-//----------------------------------------------------------------------------
-void Robot::SetCurSlam3DCameraMatrix(HMatrix &mat)
-{
-	if (mIsSlamLost3D)
-		return;
-
-	HMatrix matRot;
-	matRot.MakeRotation(AVector::UNIT_X, Mathf::DEG_TO_RAD * -90.0f);
-	HMatrix matrix = matRot * mat;
-
-	Scene *scene = PX2_PROJ.GetScene();
-	if (scene)
-	{
-		APoint pos = APoint(mat[0][3], mat[1][3], mat[2][3]);
-		APoint toPos = _ChangePoint(pos);
-		toPos.X() *= 10.0f;
-		toPos.Y() *= 10.0f;
-		toPos.Z() *= 10.0f;
-		toPos.Z() += 1.0f;
-
-		AVector right;
-		AVector dir;
-		AVector up;
-		matrix.GetColumn(0, right);
-		matrix.GetColumn(1, dir);
-		matrix.GetColumn(2, up);
-
-		AVector lastright = right;
-		AVector lastdir =  up;
-		AVector lastup = -dir;
-
-		mCameraPosition = toPos;
-		mCameraDirection = lastdir;
-		mCameraUp = lastup;
-		mCameraRight = lastright;
-		mCameraMatrix = HMatrix(mCameraRight, mCameraDirection, mCameraUp,
-			mCameraPosition, true);
-
-		mCameraPosition = mCameraPosition - mOffset;
-		mPosition = mCameraPosition;
-
-		mRight = mCameraRight;
-		mRight.Z() = 0.0f;
-		mRight.Normalize();
-		mDirection = AVector::UNIT_Z.Cross(mRight);
-		mDirection.Z() = 0.0f;
-		mDirection.Normalize();
-		mUp = AVector::UNIT_Z;
-		mMatrix = HMatrix(mRight, mDirection, mUp, mPosition, true);
-
-		if (mLiDar)
-		{
-			mLiDar->SetCurTransform(mMatrix);
-		}
-	}
 }
 //----------------------------------------------------------------------------
 void Robot::InitSlamMap(int mapSize, float resolution)

@@ -6,31 +6,6 @@ inline const AVector &Robot::GetOffset() const
 	return mOffset;
 }
 //----------------------------------------------------------------------------
-inline const APoint &Robot::GetCameraPosition() const
-{
-	return mCameraPosition;
-}
-//----------------------------------------------------------------------------
-inline const AVector &Robot::GetCameraDirection() const
-{
-	return mCameraDirection;
-}
-//----------------------------------------------------------------------------
-inline const AVector &Robot::GetCameraUp() const
-{
-	return mCameraUp;
-}
-//----------------------------------------------------------------------------
-inline const AVector &Robot::GetCameraRight() const
-{
-	return mCameraRight;
-}
-//----------------------------------------------------------------------------
-inline const HMatrix &Robot::GetCameraMatrix() const
-{
-	return mCameraMatrix;
-}
-//----------------------------------------------------------------------------
 inline const AVector &Robot::GetDirection() const
 {
 	return mDirection;

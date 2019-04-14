@@ -6,9 +6,6 @@
 		Robot();
 		virtual ~Robot();
 
-		void StartShareMemory();
-		void ShutdownShareMenory();
-
 		void Update(float appseconds, float elpasedSeconds);
 
 		UIFrame *GetUIFrame();
@@ -22,21 +19,6 @@
 		const AVector &GetUp() const;
 		const AVector &GetRight() const;
 		const HMatrix &GetMatrix() const;
-
-		// slam 3d
-	public:
-		void SetCurSlam3DCameraMatrix(HMatrix &mat);
-		void SetCurSlam3DTransformLost(bool lost);
-		bool IsCurSlam3DTransformLost() const;
-
-		const APoint &GetCameraPosition() const;
-		const AVector &GetCameraDirection() const;
-		const AVector &GetCameraUp() const;
-		const AVector &GetCameraRight() const;
-		const HMatrix &GetCameraMatrix() const;
-
-		std::vector<Slam3DPoint> AllPoints;
-		std::vector<Slam3DPoint> CurPoints;
 
 		void SetVoxelSection(VoxelSection *vs);
 		VoxelSection *GetVoxelSection();

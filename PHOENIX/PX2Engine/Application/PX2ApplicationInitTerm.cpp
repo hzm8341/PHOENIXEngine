@@ -877,8 +877,6 @@ bool Application::Terminate()
 
 	if (mRobot)
 	{
-		mRobot->ShutdownShareMenory();
-
 		delete0(mRobot);
 		Robot::Set(0);
 	}

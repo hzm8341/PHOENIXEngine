@@ -39,9 +39,6 @@ namespace PX2
 		Robot();
 		virtual ~Robot();
 
-		void StartShareMemory();
-		void ShutdownShareMenory();
-
 		void Update(float appseconds, float elpasedSeconds);
 
 		UIFrame *GetUIFrame();
@@ -50,58 +47,23 @@ namespace PX2
 		void SetOffset(const AVector &offset);
 		const AVector &GetOffset() const;
 
+		void SetVoxelSection(VoxelSection *vs);
+		VoxelSection *GetVoxelSection();
+
 		const APoint &GetPosition() const;
 		const AVector &GetDirection() const;
 		const AVector &GetUp() const;
 		const AVector &GetRight() const;
 		const HMatrix &GetMatrix() const;
-
-		// slam 3d
-	public:
-		void SetCurSlam3DCameraMatrix(HMatrix &mat);
-		void SetCurSlam3DTransformLost(bool lost);
-		bool IsCurSlam3DTransformLost() const;
-
-		const APoint &GetCameraPosition() const;
-		const AVector &GetCameraDirection() const;
-		const AVector &GetCameraUp() const;
-		const AVector &GetCameraRight() const;
-		const HMatrix &GetCameraMatrix() const;
-
-		std::vector<Slam3DPoint> AllPoints;
-		std::vector<Slam3DPoint> CurPoints;
-
-		void SetVoxelSection(VoxelSection *vs);
-		VoxelSection *GetVoxelSection();
-
-	private:
-		void _RefreshVoxelSection(std::vector<Slam3DPoint> &points, int mtlType);
-		Float3 _FromString(const std::string &str);
-		HMatrix _MatFromString(const std::string &str);
-		APoint _PtFromString(const std::string &str, int &key, bool &isBad);
-
-		AVector mOffset;
-
-		APoint mCameraPosition;
-		AVector mCameraDirection;
-		AVector mCameraUp;
-		AVector mCameraRight;
-		HMatrix mCameraMatrix;
-
-		bool mIsSlamLost3D;
 		
+	private:
 		UIFramePtr mUIFrame;
 		UIVLCPtr mUIVlc;
 
+		AVector mOffset;
+
 		LiDar *mLiDar;
 		VoxelSection *mVoxelSection;
-
-		char *mBufShare;
-
-#if defined _WIN32 || defined WIN32
-		void *mHandler;
-#endif
-		PolypointPtr mPolypoint;
 
 		// slam2d
 	public:

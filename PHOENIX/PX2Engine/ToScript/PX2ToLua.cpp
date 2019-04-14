@@ -1,6 +1,6 @@
 /*
 ** Lua binding: PX2
-** Generated automatically by tolua++-1.0.92 on 04/07/19 20:46:50.
+** Generated automatically by tolua++-1.0.92 on 04/14/19 14:01:20.
 */
 
 #ifndef __cplusplus
@@ -1163,69 +1163,68 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Mathf");
  tolua_usertype(tolua_S,"UDPNetInfo");
  tolua_usertype(tolua_S,"EngineSceneCanvas");
- tolua_usertype(tolua_S,"UITabFrame");
- tolua_usertype(tolua_S,"DatagramSocket");
+ tolua_usertype(tolua_S,"Application");
  tolua_usertype(tolua_S,"AnimationFrames");
  tolua_usertype(tolua_S,"Time");
  tolua_usertype(tolua_S,"UIWebFrame");
  tolua_usertype(tolua_S,"APoint");
- tolua_usertype(tolua_S,"PX2::Server::ServerType");
+ tolua_usertype(tolua_S,"DatagramSocket");
  tolua_usertype(tolua_S,"EffectModule");
  tolua_usertype(tolua_S,"Texture");
+ tolua_usertype(tolua_S,"PX2::Server::ServerType");
  tolua_usertype(tolua_S,"UIAuiBlockFramePtr");
- tolua_usertype(tolua_S,"GeneralClientConnector");
  tolua_usertype(tolua_S,"Scene");
  tolua_usertype(tolua_S,"UIPicBox");
  tolua_usertype(tolua_S,"Terrain");
- tolua_usertype(tolua_S,"GeneralServer");
+ tolua_usertype(tolua_S,"GeneralClientConnector");
  tolua_usertype(tolua_S,"JSONValue");
  tolua_usertype(tolua_S,"HPoint");
  tolua_usertype(tolua_S,"SkillInst");
  tolua_usertype(tolua_S,"Camera");
- tolua_usertype(tolua_S,"UIFText");
+ tolua_usertype(tolua_S,"GeneralServer");
  tolua_usertype(tolua_S,"Vector2f");
  tolua_usertype(tolua_S,"UI");
  tolua_usertype(tolua_S,"ShaderFloat");
  tolua_usertype(tolua_S,"CanvasInputData");
- tolua_usertype(tolua_S,"std::map<std::string,LParam*>");
+ tolua_usertype(tolua_S,"UIFText");
  tolua_usertype(tolua_S,"ResourceVersion");
  tolua_usertype(tolua_S,"Rectf");
  tolua_usertype(tolua_S,"XMLData");
  tolua_usertype(tolua_S,"std::vector<BloodTextObjPtr>");
- tolua_usertype(tolua_S,"AppBoostInfo");
+ tolua_usertype(tolua_S,"LParam");
  tolua_usertype(tolua_S,"UIPicBoxListController");
- tolua_usertype(tolua_S,"AVector");
+ tolua_usertype(tolua_S,"AppBoostInfo");
  tolua_usertype(tolua_S,"VertexShader");
+ tolua_usertype(tolua_S,"AVector");
  tolua_usertype(tolua_S,"URDoManager");
- tolua_usertype(tolua_S,"Creater");
  tolua_usertype(tolua_S,"AlphaProperty");
  tolua_usertype(tolua_S,"RibbonEmitter");
- tolua_usertype(tolua_S,"UISplitterFrame");
+ tolua_usertype(tolua_S,"Creater");
  tolua_usertype(tolua_S,"SizeNode");
  tolua_usertype(tolua_S,"Sound");
- tolua_usertype(tolua_S,"UIButton");
+ tolua_usertype(tolua_S,"UISplitterFrame");
  tolua_usertype(tolua_S,"SkillBuf");
+ tolua_usertype(tolua_S,"UIButton");
  tolua_usertype(tolua_S,"IPAddress");
- tolua_usertype(tolua_S,"Application");
  tolua_usertype(tolua_S,"InterpCurveScaleController");
  tolua_usertype(tolua_S,"LuaContext");
  tolua_usertype(tolua_S,"ScriptContext");
  tolua_usertype(tolua_S,"EngineUICanvas");
  tolua_usertype(tolua_S,"StencilProperty");
- tolua_usertype(tolua_S,"std::vector<CameraPtr>");
+ tolua_usertype(tolua_S,"UITabFrame");
  tolua_usertype(tolua_S,"SoundSystemInitInfo");
  tolua_usertype(tolua_S,"TerrainPage");
- tolua_usertype(tolua_S,"EnvirParamController");
+ tolua_usertype(tolua_S,"std::vector<CameraPtr>");
  tolua_usertype(tolua_S,"InterpCurveController");
  tolua_usertype(tolua_S,"Bound");
+ tolua_usertype(tolua_S,"EnvirParamController");
  tolua_usertype(tolua_S,"UISkill");
- tolua_usertype(tolua_S,"LParam");
  tolua_usertype(tolua_S,"TriggerController");
  tolua_usertype(tolua_S,"std::vector<Pointer0<FunObject> >");
+ tolua_usertype(tolua_S,"std::map<std::string,LParam*>");
  tolua_usertype(tolua_S,"LBlock");
  tolua_usertype(tolua_S,"std::list<Vector3f>");
  tolua_usertype(tolua_S,"Vector3f");
- tolua_usertype(tolua_S,"EffectModelNode");
  tolua_usertype(tolua_S,"Bluetooth");
  tolua_usertype(tolua_S,"Singleton<SoundSystem>");
  tolua_usertype(tolua_S,"std::wstring");
@@ -1236,19 +1235,19 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"AIAgent");
  tolua_usertype(tolua_S,"SoundSystem");
  tolua_usertype(tolua_S,"InterpCurveRotateController");
- tolua_usertype(tolua_S,"AIAgentObject");
+ tolua_usertype(tolua_S,"EffectModelNode");
  tolua_usertype(tolua_S,"Float4");
- tolua_usertype(tolua_S,"btRigidBody");
+ tolua_usertype(tolua_S,"AIAgentObject");
  tolua_usertype(tolua_S,"LanguageManager");
+ tolua_usertype(tolua_S,"btRigidBody");
  tolua_usertype(tolua_S,"DefChara");
- tolua_usertype(tolua_S,"HQuaternion");
  tolua_usertype(tolua_S,"std::vector<std::string>");
  tolua_usertype(tolua_S,"TouchState");
  tolua_usertype(tolua_S,"HMatrix");
  tolua_usertype(tolua_S,"Texture2D");
+ tolua_usertype(tolua_S,"HQuaternion");
  tolua_usertype(tolua_S,"AIAgentBase");
  tolua_usertype(tolua_S,"VoxelSection");
- tolua_usertype(tolua_S,"std::vector<Slam3DPoint>");
  tolua_usertype(tolua_S,"Robot");
  tolua_usertype(tolua_S,"DefBuf");
  tolua_usertype(tolua_S,"Float2");
@@ -86515,68 +86514,6 @@ static int tolua_PX2_Robot_delete00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: StartShareMemory of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_StartShareMemory00
-static int tolua_PX2_Robot_StartShareMemory00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'StartShareMemory'", NULL);
-#endif
-  {
-   self->StartShareMemory();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'StartShareMemory'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: ShutdownShareMenory of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_ShutdownShareMenory00
-static int tolua_PX2_Robot_ShutdownShareMenory00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ShutdownShareMenory'", NULL);
-#endif
-  {
-   self->ShutdownShareMenory();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ShutdownShareMenory'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: Update of class  Robot */
 #ifndef TOLUA_DISABLE_tolua_PX2_Robot_Update00
 static int tolua_PX2_Robot_Update00(lua_State* tolua_S)
@@ -86898,324 +86835,6 @@ static int tolua_PX2_Robot_GetMatrix00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'GetMatrix'.",&tolua_err);
  return 0;
 #endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: SetCurSlam3DCameraMatrix of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_SetCurSlam3DCameraMatrix00
-static int tolua_PX2_Robot_SetCurSlam3DCameraMatrix00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
-     (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"HMatrix",0,&tolua_err)) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-  HMatrix* mat = ((HMatrix*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetCurSlam3DCameraMatrix'", NULL);
-#endif
-  {
-   self->SetCurSlam3DCameraMatrix(*mat);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'SetCurSlam3DCameraMatrix'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: SetCurSlam3DTransformLost of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_SetCurSlam3DTransformLost00
-static int tolua_PX2_Robot_SetCurSlam3DTransformLost00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Robot",0,&tolua_err) ||
-     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-  bool lost = ((bool)  tolua_toboolean(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetCurSlam3DTransformLost'", NULL);
-#endif
-  {
-   self->SetCurSlam3DTransformLost(lost);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'SetCurSlam3DTransformLost'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: IsCurSlam3DTransformLost of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_IsCurSlam3DTransformLost00
-static int tolua_PX2_Robot_IsCurSlam3DTransformLost00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'IsCurSlam3DTransformLost'", NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->IsCurSlam3DTransformLost();
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'IsCurSlam3DTransformLost'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetCameraPosition of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetCameraPosition00
-static int tolua_PX2_Robot_GetCameraPosition00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCameraPosition'", NULL);
-#endif
-  {
-   const APoint& tolua_ret = (const APoint&)  self->GetCameraPosition();
-    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const APoint");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetCameraPosition'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetCameraDirection of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetCameraDirection00
-static int tolua_PX2_Robot_GetCameraDirection00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCameraDirection'", NULL);
-#endif
-  {
-   const AVector& tolua_ret = (const AVector&)  self->GetCameraDirection();
-    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const AVector");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetCameraDirection'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetCameraUp of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetCameraUp00
-static int tolua_PX2_Robot_GetCameraUp00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCameraUp'", NULL);
-#endif
-  {
-   const AVector& tolua_ret = (const AVector&)  self->GetCameraUp();
-    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const AVector");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetCameraUp'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetCameraRight of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetCameraRight00
-static int tolua_PX2_Robot_GetCameraRight00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCameraRight'", NULL);
-#endif
-  {
-   const AVector& tolua_ret = (const AVector&)  self->GetCameraRight();
-    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const AVector");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetCameraRight'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: GetCameraMatrix of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_PX2_Robot_GetCameraMatrix00
-static int tolua_PX2_Robot_GetCameraMatrix00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"const Robot",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  const Robot* self = (const Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetCameraMatrix'", NULL);
-#endif
-  {
-   const HMatrix& tolua_ret = (const HMatrix&)  self->GetCameraMatrix();
-    tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const HMatrix");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'GetCameraMatrix'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: AllPoints of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_get_Robot_AllPoints
-static int tolua_get_Robot_AllPoints(lua_State* tolua_S)
-{
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'AllPoints'",NULL);
-#endif
-   tolua_pushusertype(tolua_S,(void*)&self->AllPoints,"std::vector<Slam3DPoint>");
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: AllPoints of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_set_Robot_AllPoints
-static int tolua_set_Robot_AllPoints(lua_State* tolua_S)
-{
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'AllPoints'",NULL);
-  if ((tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"std::vector<Slam3DPoint>",0,&tolua_err)))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->AllPoints = *((std::vector<Slam3DPoint>*)  tolua_tousertype(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: CurPoints of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_get_Robot_CurPoints
-static int tolua_get_Robot_CurPoints(lua_State* tolua_S)
-{
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'CurPoints'",NULL);
-#endif
-   tolua_pushusertype(tolua_S,(void*)&self->CurPoints,"std::vector<Slam3DPoint>");
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: CurPoints of class  Robot */
-#ifndef TOLUA_DISABLE_tolua_set_Robot_CurPoints
-static int tolua_set_Robot_CurPoints(lua_State* tolua_S)
-{
-  Robot* self = (Robot*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'CurPoints'",NULL);
-  if ((tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"std::vector<Slam3DPoint>",0,&tolua_err)))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->CurPoints = *((std::vector<Slam3DPoint>*)  tolua_tousertype(tolua_S,2,0))
-;
- return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -107459,8 +107078,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_PX2_Robot_new00_local);
    tolua_function(tolua_S,".call",tolua_PX2_Robot_new00_local);
    tolua_function(tolua_S,"delete",tolua_PX2_Robot_delete00);
-   tolua_function(tolua_S,"StartShareMemory",tolua_PX2_Robot_StartShareMemory00);
-   tolua_function(tolua_S,"ShutdownShareMenory",tolua_PX2_Robot_ShutdownShareMenory00);
    tolua_function(tolua_S,"Update",tolua_PX2_Robot_Update00);
    tolua_function(tolua_S,"GetUIFrame",tolua_PX2_Robot_GetUIFrame00);
    tolua_function(tolua_S,"GetUIVlc",tolua_PX2_Robot_GetUIVlc00);
@@ -107471,16 +107088,6 @@ TOLUA_API int tolua_PX2_open (lua_State* tolua_S)
    tolua_function(tolua_S,"GetUp",tolua_PX2_Robot_GetUp00);
    tolua_function(tolua_S,"GetRight",tolua_PX2_Robot_GetRight00);
    tolua_function(tolua_S,"GetMatrix",tolua_PX2_Robot_GetMatrix00);
-   tolua_function(tolua_S,"SetCurSlam3DCameraMatrix",tolua_PX2_Robot_SetCurSlam3DCameraMatrix00);
-   tolua_function(tolua_S,"SetCurSlam3DTransformLost",tolua_PX2_Robot_SetCurSlam3DTransformLost00);
-   tolua_function(tolua_S,"IsCurSlam3DTransformLost",tolua_PX2_Robot_IsCurSlam3DTransformLost00);
-   tolua_function(tolua_S,"GetCameraPosition",tolua_PX2_Robot_GetCameraPosition00);
-   tolua_function(tolua_S,"GetCameraDirection",tolua_PX2_Robot_GetCameraDirection00);
-   tolua_function(tolua_S,"GetCameraUp",tolua_PX2_Robot_GetCameraUp00);
-   tolua_function(tolua_S,"GetCameraRight",tolua_PX2_Robot_GetCameraRight00);
-   tolua_function(tolua_S,"GetCameraMatrix",tolua_PX2_Robot_GetCameraMatrix00);
-   tolua_variable(tolua_S,"AllPoints",tolua_get_Robot_AllPoints,tolua_set_Robot_AllPoints);
-   tolua_variable(tolua_S,"CurPoints",tolua_get_Robot_CurPoints,tolua_set_Robot_CurPoints);
    tolua_function(tolua_S,"SetVoxelSection",tolua_PX2_Robot_SetVoxelSection00);
    tolua_function(tolua_S,"GetVoxelSection",tolua_PX2_Robot_GetVoxelSection00);
    tolua_constant(tolua_S,"RT_MASTER",Robot::RT_MASTER);
