@@ -10,6 +10,9 @@ inline void Enviroment::setup()
 	home = Vector2f(RRT_startx, RRT_starty);
 	Nodes start(RRT_startx, RRT_starty, 0);
 	this->nodes.push_back(start);
+
+	SMP::root = &(this->nodes.front());
+
 	SMP::start = Vector2f(RRT_startx, RRT_starty);
 	SMP::goalFound = false;
 }

@@ -27,9 +27,9 @@ const float inf = std::numeric_limits<float>::infinity();
 
 #define RRT_starradius 100
 
-#define RRT_startx 500
-#define RRT_starty 500
-#define RRT_goalx 250
-#define RRT_goaly 200
+#define RRT_startx 0
+#define RRT_starty 0
+#define RRT_goalx 5
+#define RRT_goaly 5
 
 #endif

@@ -20,6 +20,7 @@
 #include "PX2Smoother.hpp"
 #include "PX2SmartPointer.hpp"
 #include "PX2Actor.hpp"
+#include "PX2RRTEnviroment.hpp"
 
 namespace PX2
 {
@@ -250,6 +251,11 @@ namespace PX2
 		float mDragingLeftMoveSpeed;
 		int mDragingRightMoveType;
 		float mDragingRightMoveSpeed;
+
+	private:
+		RRTRobot *mRRTRobot;
+		Enviroment *mEnviroment;
+		std::list<RRTobstacles*> mObsts;
 	};
 
 #include "PX2Robot.inl"

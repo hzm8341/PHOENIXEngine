@@ -113,10 +113,49 @@ mAgent(0)
 	mRightSmoother = new Smoother<float>(16, 0.0f);
 
 	mVoxelSection = 0;
+
+	mEnviroment = new0 Enviroment();
+	mRRTRobot = new0 RRTRobot();
+
+	RRTmaze *wall = 0;
+	RRTobstacles * obst = 0;
+
+	Vector2f w(10/ 2, 0);
+	wall = new RRTmaze(w);
+	RRTobstacles *ob = wall;
+	mObsts.push_back(ob);
+
+	w = Vector2f(6 / 2, 0.6*6);
+	wall = new RRTmaze(w);
+	ob = wall;
+	mObsts.push_back(ob);
+
+	for (unsigned int i = 0; i < 5; i++)
+	{
+		obst = new0 RRTmovingObst();
+		mObsts.push_back(obst);
+	}
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
 {
+	if (mRRTRobot)
+	{
+		delete0(mRRTRobot);
+	}
+
+	if (mEnviroment)
+	{
+		delete0(mEnviroment);
+	}
+
+	auto it = mObsts.begin();
+	for (; it != mObsts.end(); it++)
+	{
+		delete0(*it);
+	}
+	mObsts.clear();
+
 	if (mLiDar)
 	{
 		delete0(mLiDar);
@@ -606,6 +645,11 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 {
 	PX2_UNUSED(appseconds);
 	PX2_UNUSED(elpasedSeconds);
+
+	if (mEnviroment)
+	{
+		mEnviroment->update(mRRTRobot, mObsts);
+	}
 
 	if (mArduino)
 	{

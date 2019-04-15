@@ -66,7 +66,9 @@ void RTRRTstar::expandAndRewire(std::list<Nodes>& nodes,
 		u.location.Y() = y_n;
 	}
 
-	if (!SMP::checkSample(u, obst)) return;
+	if (!SMP::checkSample(u, obst))
+		return;
+
 	if (SMP::checkCollision(u, *v, obst))
 	{
 		if (this->closestNeighbours.size() < RRT_maxNeighbours)
