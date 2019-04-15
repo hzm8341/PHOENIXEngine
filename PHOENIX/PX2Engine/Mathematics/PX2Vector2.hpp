@@ -47,6 +47,8 @@ namespace PX2
 		inline Real SquaredLength () const;
 		inline Real Dot (const Vector2& vec) const;
 		inline Real Normalize (const Real epsilon = Math<Real>::ZERO_TOLERANCE);
+		inline Real DistanceTo(const Vector2& vec);
+		inline Real SquaredDistanceTo(const Vector2& vec);
 
 		/// ·µ»Ø (y,-x).
 		inline Vector2 Perp () const;

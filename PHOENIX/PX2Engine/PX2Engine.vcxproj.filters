@@ -259,30 +259,6 @@
     <Filter Include="2.AI\Robot\Robot">
       <UniqueIdentifier>{a66f036d-0b2b-4e05-a95b-ae5a352b3590}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\Navigation">
-      <UniqueIdentifier>{6d9fb656-8290-4354-bb78-32e0a2da25f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\detour">
-      <UniqueIdentifier>{be962870-10dd-4d5d-930a-16482d94b931}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\detour\include">
-      <UniqueIdentifier>{3787b1ae-2e15-44b8-a580-88a5864d4a21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\detour\src">
-      <UniqueIdentifier>{987afe35-93e4-43fa-b0fd-0fb830796253}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\recast">
-      <UniqueIdentifier>{25d0c960-3d82-4cd8-88d7-87d71badb87e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\recast\include">
-      <UniqueIdentifier>{582ad1d9-31b7-46bd-8e1f-8c2a36a22099}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\recast\src">
-      <UniqueIdentifier>{b80f2928-68fd-4dfa-95dc-73de740d44a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\NavigationGrid">
-      <UniqueIdentifier>{0cc13495-2ddf-45e8-988e-64195b7e42d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3.Application\Net\General">
       <UniqueIdentifier>{0026d885-b15e-40d6-9f5f-46f066e566be}</UniqueIdentifier>
     </Filter>
@@ -291,105 +267,6 @@
     </Filter>
     <Filter Include="3.Application\Exports">
       <UniqueIdentifier>{7b90eca3-82ab-40b4-97a7-ae3c01e16e7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Path">
-      <UniqueIdentifier>{43ab1cff-3cdc-4029-a5f3-39c69593a53b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D">
-      <UniqueIdentifier>{fb194bbe-93ab-4321-b639-7d63a84820b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen">
-      <UniqueIdentifier>{a8791f50-3ddd-4be9-a3a0-33b5558afbb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src">
-      <UniqueIdentifier>{edf9f6ad-4d57-40aa-a5ed-0cced9b237f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Cholesky">
-      <UniqueIdentifier>{19660665-0b74-4b2d-a5bd-e53c451c9595}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\CholmodSupport">
-      <UniqueIdentifier>{4b0c17ae-e195-4e38-8962-9423af3dd195}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Eigenvalues">
-      <UniqueIdentifier>{c53be9a5-4125-4870-82aa-25f0e55cab35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Core">
-      <UniqueIdentifier>{f6208b61-7102-466e-ad2d-87678b976fda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Geometry">
-      <UniqueIdentifier>{d4a7ebc4-d4a1-47d2-96e3-a4f2b093993c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Householder">
-      <UniqueIdentifier>{2af5452a-12db-45ec-aa75-46c2d9a80ac4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\IterativeLinearSolvers">
-      <UniqueIdentifier>{6e9c0196-2885-474a-a247-9c89eaf1d3b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Jacobi">
-      <UniqueIdentifier>{559ef19e-a5fa-4177-b783-f80c295fdaa4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\LU">
-      <UniqueIdentifier>{007cdd9e-ed89-49e3-abf5-7d6df7392455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\MetisSupport">
-      <UniqueIdentifier>{30999419-b65f-4c13-b2ca-ca57128e25de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\misc">
-      <UniqueIdentifier>{030e06d4-b024-4268-9b10-4278691cc6fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\UmfPackSupport">
-      <UniqueIdentifier>{931d8adb-741d-4802-be6c-23f47f3d37d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SVD">
-      <UniqueIdentifier>{5d114e3b-8572-4d9d-9856-ef9f4608e442}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SuperLUSupport">
-      <UniqueIdentifier>{bc96de79-f525-4012-b184-2e6d45c57be5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\StlSupport">
-      <UniqueIdentifier>{0eb3808f-fb17-4fb1-afa7-04b3b78c2abb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SparseQR">
-      <UniqueIdentifier>{dac1072e-c976-461b-a269-8239962654d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SPQRSupport">
-      <UniqueIdentifier>{8694a10e-69a4-4fd6-a69a-4b0038f8e0a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SparseLU">
-      <UniqueIdentifier>{3815d924-2f97-4521-9879-f783f832e35c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SparseCore">
-      <UniqueIdentifier>{9a086f64-505e-4672-ac22-a61218d1e716}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\SparseCholesky">
-      <UniqueIdentifier>{ad85f829-10fe-4b28-8325-c74baa203a26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\QR">
-      <UniqueIdentifier>{672784e1-c64d-4d4f-a36c-a6fe19c63034}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\plugins">
-      <UniqueIdentifier>{eb803552-bbdd-491b-a504-c38f2792d572}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\PaStiXSupport">
-      <UniqueIdentifier>{29498349-d2a4-48bb-b969-ea1067d63726}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\PardisoSupport">
-      <UniqueIdentifier>{1fa30c74-b226-4ca2-ac8d-099ad8831766}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\OrderingMethods">
-      <UniqueIdentifier>{98ed98a1-69af-402a-9d1c-33f133c862f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Core\functors">
-      <UniqueIdentifier>{563fe543-d764-447c-91c0-62c70c7bb4a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Core\products">
-      <UniqueIdentifier>{6dbdac5e-1cac-46a5-a52a-12b5d330a67b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Eigen\src\Core\util">
-      <UniqueIdentifier>{feb93339-b57a-4f1c-8526-13ae5c7cb95f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Slam2D\Hector">
-      <UniqueIdentifier>{23a81a2b-7598-45c9-977f-04e24e372a17}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Base">
       <UniqueIdentifier>{70dcf9f3-c9c1-47b2-900a-c86dad0457e1}</UniqueIdentifier>
@@ -877,11 +754,143 @@
     <Filter Include="0.Base\Unity\Wifi">
       <UniqueIdentifier>{4472b59f-4f8e-438c-9a20-cf94bcfda375}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\Steer">
-      <UniqueIdentifier>{8c0bee7e-d750-4376-b015-4601634d6bac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1.Ext\Voxel">
       <UniqueIdentifier>{2c704f90-5ee2-425f-9340-759c1b192efb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations">
+      <UniqueIdentifier>{3c052798-4c89-4d21-975f-1307da5aff40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\Navigation">
+      <UniqueIdentifier>{6d9fb656-8290-4354-bb78-32e0a2da25f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\NavigationGrid">
+      <UniqueIdentifier>{0cc13495-2ddf-45e8-988e-64195b7e42d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\detour">
+      <UniqueIdentifier>{be962870-10dd-4d5d-930a-16482d94b931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\detour\include">
+      <UniqueIdentifier>{3787b1ae-2e15-44b8-a580-88a5864d4a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\detour\src">
+      <UniqueIdentifier>{987afe35-93e4-43fa-b0fd-0fb830796253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\Path">
+      <UniqueIdentifier>{43ab1cff-3cdc-4029-a5f3-39c69593a53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\recast">
+      <UniqueIdentifier>{25d0c960-3d82-4cd8-88d7-87d71badb87e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\recast\include">
+      <UniqueIdentifier>{582ad1d9-31b7-46bd-8e1f-8c2a36a22099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\recast\src">
+      <UniqueIdentifier>{b80f2928-68fd-4dfa-95dc-73de740d44a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Agent\Steer">
+      <UniqueIdentifier>{8c0bee7e-d750-4376-b015-4601634d6bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D">
+      <UniqueIdentifier>{fb194bbe-93ab-4321-b639-7d63a84820b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen">
+      <UniqueIdentifier>{a8791f50-3ddd-4be9-a3a0-33b5558afbb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src">
+      <UniqueIdentifier>{edf9f6ad-4d57-40aa-a5ed-0cced9b237f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Cholesky">
+      <UniqueIdentifier>{19660665-0b74-4b2d-a5bd-e53c451c9595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\CholmodSupport">
+      <UniqueIdentifier>{4b0c17ae-e195-4e38-8962-9423af3dd195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Eigenvalues">
+      <UniqueIdentifier>{c53be9a5-4125-4870-82aa-25f0e55cab35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Core">
+      <UniqueIdentifier>{f6208b61-7102-466e-ad2d-87678b976fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Core\functors">
+      <UniqueIdentifier>{563fe543-d764-447c-91c0-62c70c7bb4a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Core\products">
+      <UniqueIdentifier>{6dbdac5e-1cac-46a5-a52a-12b5d330a67b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Core\util">
+      <UniqueIdentifier>{feb93339-b57a-4f1c-8526-13ae5c7cb95f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Geometry">
+      <UniqueIdentifier>{d4a7ebc4-d4a1-47d2-96e3-a4f2b093993c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Householder">
+      <UniqueIdentifier>{2af5452a-12db-45ec-aa75-46c2d9a80ac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers">
+      <UniqueIdentifier>{6e9c0196-2885-474a-a247-9c89eaf1d3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\Jacobi">
+      <UniqueIdentifier>{559ef19e-a5fa-4177-b783-f80c295fdaa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\LU">
+      <UniqueIdentifier>{007cdd9e-ed89-49e3-abf5-7d6df7392455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\MetisSupport">
+      <UniqueIdentifier>{30999419-b65f-4c13-b2ca-ca57128e25de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\misc">
+      <UniqueIdentifier>{030e06d4-b024-4268-9b10-4278691cc6fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\UmfPackSupport">
+      <UniqueIdentifier>{931d8adb-741d-4802-be6c-23f47f3d37d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SVD">
+      <UniqueIdentifier>{5d114e3b-8572-4d9d-9856-ef9f4608e442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SuperLUSupport">
+      <UniqueIdentifier>{bc96de79-f525-4012-b184-2e6d45c57be5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\StlSupport">
+      <UniqueIdentifier>{0eb3808f-fb17-4fb1-afa7-04b3b78c2abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SparseQR">
+      <UniqueIdentifier>{dac1072e-c976-461b-a269-8239962654d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SPQRSupport">
+      <UniqueIdentifier>{8694a10e-69a4-4fd6-a69a-4b0038f8e0a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SparseLU">
+      <UniqueIdentifier>{3815d924-2f97-4521-9879-f783f832e35c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SparseCore">
+      <UniqueIdentifier>{9a086f64-505e-4672-ac22-a61218d1e716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\SparseCholesky">
+      <UniqueIdentifier>{ad85f829-10fe-4b28-8325-c74baa203a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\QR">
+      <UniqueIdentifier>{672784e1-c64d-4d4f-a36c-a6fe19c63034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\plugins">
+      <UniqueIdentifier>{eb803552-bbdd-491b-a504-c38f2792d572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\PaStiXSupport">
+      <UniqueIdentifier>{29498349-d2a4-48bb-b969-ea1067d63726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\PardisoSupport">
+      <UniqueIdentifier>{1fa30c74-b226-4ca2-ac8d-099ad8831766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Eigen\src\OrderingMethods">
+      <UniqueIdentifier>{98ed98a1-69af-402a-9d1c-33f133c862f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Robot\Slam2D\Hector">
+      <UniqueIdentifier>{23a81a2b-7598-45c9-977f-04e24e372a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\RRTStart">
+      <UniqueIdentifier>{71197d51-6cd1-4880-9487-20435f1a25fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\RRTStart\Star">
+      <UniqueIdentifier>{6cc3aa88-0c47-45c3-94be-14b4ad5d56dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -4498,46 +4507,46 @@
       <Filter>2.AI\Robot\Robot</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AINavigationMesh.hpp">
-      <Filter>2.AI\Navigation</Filter>
+      <Filter>2.AI\Navigations\Navigation</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AINavigationUtilities.hpp">
-      <Filter>2.AI\Navigation</Filter>
+      <Filter>2.AI\Navigations\Navigation</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIMeshUtilities.hpp">
-      <Filter>2.AI\Navigation</Filter>
+      <Filter>2.AI\Navigations\Navigation</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourAlloc.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourAssert.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourCommon.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourNavMesh.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourNavMeshBuilder.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourNavMeshQuery.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourNode.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\detour\include\DetourStatus.h">
-      <Filter>2.AI\detour\include</Filter>
+      <Filter>2.AI\Navigations\detour\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\recast\include\Recast.h">
-      <Filter>2.AI\recast\include</Filter>
+      <Filter>2.AI\Navigations\recast\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\recast\include\RecastAlloc.h">
-      <Filter>2.AI\recast\include</Filter>
+      <Filter>2.AI\Navigations\recast\include</Filter>
     </ClInclude>
     <ClInclude Include="AI\recast\include\RecastAssert.h">
-      <Filter>2.AI\recast\include</Filter>
+      <Filter>2.AI\Navigations\recast\include</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2Logic.hpp">
       <Filter>3.Application\ProjectSceneUI</Filter>
@@ -4558,22 +4567,22 @@
       <Filter>2.AI\Robot\Robot</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2NavBitArray.hpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2NavGridMap.hpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2NavHeapNode.hpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2NavMoveUnit.hpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2NavMoveManager.hpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2NavPoint2D.hpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClInclude>
     <ClInclude Include="Application\PX2GeneralClientConnector.hpp">
       <Filter>3.Application\Net\General</Filter>
@@ -4594,7 +4603,7 @@
       <Filter>3.Application\Net\Engine</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AIPath.hpp">
-      <Filter>2.AI\Path</Filter>
+      <Filter>2.AI\Navigations\Path</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AILidarData.hpp">
       <Filter>2.AI\Robot\LiDar</Filter>
@@ -4609,835 +4618,835 @@
       <Filter>3.Application</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\PX2Slam2DManager.hpp">
-      <Filter>2.AI\Slam2D</Filter>
+      <Filter>2.AI\Robot\Slam2D</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Slam2DPlugin.hpp">
-      <Filter>2.AI\Slam2D</Filter>
+      <Filter>2.AI\Robot\Slam2D</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Slam2DPlugin_Pre.hpp">
-      <Filter>2.AI\Slam2D</Filter>
+      <Filter>2.AI\Robot\Slam2D</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Cholesky\LDLT.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Cholesky</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Cholesky</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Cholesky\LLT.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Cholesky</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Cholesky</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Cholesky\LLT_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Cholesky</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Cholesky</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\CholmodSupport\CholmodSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\CholmodSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\CholmodSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\functors\AssignmentFunctors.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\functors</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\functors</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\functors\BinaryFunctors.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\functors</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\functors</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\functors\NullaryFunctors.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\functors</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\functors</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\functors\StlFunctors.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\functors</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\functors</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\functors\TernaryFunctors.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\functors</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\functors</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\functors\UnaryFunctors.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\functors</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\functors</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralBlockPanelKernel.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralMatrixMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralMatrixMatrix_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralMatrixMatrixTriangular.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralMatrixMatrixTriangular_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralMatrixVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\GeneralMatrixVector_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\Parallelizer.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\SelfadjointMatrixMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\SelfadjointMatrixMatrix_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\SelfadjointMatrixVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\SelfadjointMatrixVector_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\SelfadjointProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\SelfadjointRank2Update.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularMatrixMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularMatrixMatrix_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularMatrixVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularMatrixVector_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularSolverMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularSolverMatrix_BLAS.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\products\TriangularSolverVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\products</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\products</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\BlasUtil.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\Constants.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\DisableStupidWarnings.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\ForwardDeclarations.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\IndexedViewHelper.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\IntegralConstant.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\Macros.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\Memory.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\Meta.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\MKL_support.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\NonMPL2.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\ReenableStupidWarnings.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\StaticAssert.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\SymbolicIndex.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\util\XprHelper.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core\util</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core\util</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ArithmeticSequence.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Array.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ArrayBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ArrayWrapper.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Assign.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Assign_MKL.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\AssignEvaluator.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\BandMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Block.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\BooleanRedux.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CommaInitializer.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ConditionEstimator.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CoreEvaluators.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CoreIterators.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CwiseBinaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CwiseNullaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CwiseTernaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CwiseUnaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\CwiseUnaryView.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\DenseBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\DenseCoeffsBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\DenseStorage.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Diagonal.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\DiagonalMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\DiagonalProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Dot.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\EigenBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ForceAlignedAccess.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Fuzzy.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\GeneralProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\GenericPacketMath.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\GlobalFunctions.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\IndexedView.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Inverse.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\IO.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Map.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\MapBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\MathFunctions.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\MathFunctionsImpl.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Matrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\MatrixBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\NestByValue.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\NoAlias.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\NumTraits.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\PermutationMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\PlainObjectBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Product.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ProductEvaluators.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Random.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Redux.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Ref.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Replicate.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\ReturnByValue.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Reverse.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Select.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\SelfAdjointView.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\SelfCwiseBinaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Solve.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\SolverBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\SolveTriangular.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\StableNorm.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Stride.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Swap.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Transpose.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Transpositions.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\TriangularMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\VectorBlock.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\VectorwiseOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Core\Visitor.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Core</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Core</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\ComplexEigenSolver.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\ComplexSchur.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\ComplexSchur_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\EigenSolver.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\GeneralizedEigenSolver.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\GeneralizedSelfAdjointEigenSolver.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\HessenbergDecomposition.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\MatrixBaseEigenvalues.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\RealQZ.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\RealSchur.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\RealSchur_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\SelfAdjointEigenSolver.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\SelfAdjointEigenSolver_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Eigenvalues\Tridiagonalization.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Eigenvalues</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Eigenvalues</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\AlignedBox.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\AngleAxis.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\EulerAngles.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Homogeneous.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Hyperplane.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\OrthoMethods.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\ParametrizedLine.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Quaternion.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Rotation2D.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\RotationBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Scaling.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Transform.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Translation.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Geometry\Umeyama.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Geometry</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Householder\BlockHouseholder.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Householder</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Householder</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Householder\Householder.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Householder</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Householder</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Householder\HouseholderSequence.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Householder</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Householder</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\BasicPreconditioners.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\BiCGSTAB.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\ConjugateGradient.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\IncompleteCholesky.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\IncompleteLUT.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\IterativeSolverBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\LeastSquareConjugateGradient.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\IterativeLinearSolvers\SolveWithGuess.h">
-      <Filter>2.AI\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\IterativeLinearSolvers</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\Jacobi\Jacobi.h">
-      <Filter>2.AI\Slam2D\Eigen\src\Jacobi</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\Jacobi</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\LU\Determinant.h">
-      <Filter>2.AI\Slam2D\Eigen\src\LU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\LU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\LU\FullPivLU.h">
-      <Filter>2.AI\Slam2D\Eigen\src\LU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\LU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\LU\InverseImpl.h">
-      <Filter>2.AI\Slam2D\Eigen\src\LU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\LU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\LU\PartialPivLU.h">
-      <Filter>2.AI\Slam2D\Eigen\src\LU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\LU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\LU\PartialPivLU_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\LU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\LU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\MetisSupport\MetisSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\MetisSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\MetisSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\blas.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\Image.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\Kernel.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\lapack.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\lapacke.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\lapacke_mangling.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\misc\RealSvd2x2.h">
-      <Filter>2.AI\Slam2D\Eigen\src\misc</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\misc</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\OrderingMethods\Amd.h">
-      <Filter>2.AI\Slam2D\Eigen\src\OrderingMethods</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\OrderingMethods</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\OrderingMethods\Eigen_Colamd.h">
-      <Filter>2.AI\Slam2D\Eigen\src\OrderingMethods</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\OrderingMethods</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\OrderingMethods\Ordering.h">
-      <Filter>2.AI\Slam2D\Eigen\src\OrderingMethods</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\OrderingMethods</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\PardisoSupport\PardisoSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\PardisoSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\PardisoSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\PaStiXSupport\PaStiXSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\PaStiXSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\PaStiXSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\ArrayCwiseBinaryOps.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\ArrayCwiseUnaryOps.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\BlockMethods.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\CommonCwiseBinaryOps.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\CommonCwiseUnaryOps.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\IndexedViewMethods.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\MatrixCwiseBinaryOps.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\plugins\MatrixCwiseUnaryOps.h">
-      <Filter>2.AI\Slam2D\Eigen\src\plugins</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\plugins</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\QR\ColPivHouseholderQR.h">
-      <Filter>2.AI\Slam2D\Eigen\src\QR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\QR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\QR\ColPivHouseholderQR_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\QR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\QR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\QR\CompleteOrthogonalDecomposition.h">
-      <Filter>2.AI\Slam2D\Eigen\src\QR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\QR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\QR\FullPivHouseholderQR.h">
-      <Filter>2.AI\Slam2D\Eigen\src\QR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\QR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\QR\HouseholderQR.h">
-      <Filter>2.AI\Slam2D\Eigen\src\QR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\QR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\QR\HouseholderQR_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\QR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\QR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCholesky\SimplicialCholesky.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCholesky</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCholesky</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCholesky\SimplicialCholesky_impl.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCholesky</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCholesky</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\AmbiVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\CompressedStorage.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\ConservativeSparseSparseProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\MappedSparseMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseAssign.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseBlock.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseColEtree.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseCompressedBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseCwiseBinaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseCwiseUnaryOp.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseDenseProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseDiagonalProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseDot.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseFuzzy.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseMap.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseMatrixBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparsePermutation.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseProduct.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseRedux.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseRef.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseSelfAdjointView.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseSolverBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseSparseProductWithPruning.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseTranspose.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseTriangularView.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseUtil.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\SparseView.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseCore\TriangularSolver.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseCore</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseCore</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_column_bmod.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_column_dfs.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_copy_to_ucol.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_gemm_kernel.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_heap_relax_snode.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_kernel_bmod.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_Memory.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_panel_bmod.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_panel_dfs.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_pivotL.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_pruneL.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_relax_snode.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_Structs.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_SupernodalMatrix.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLU_Utils.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseLU\SparseLUImpl.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseLU</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseLU</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SparseQR\SparseQR.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SparseQR</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SparseQR</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SPQRSupport\SuiteSparseQRSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SPQRSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SPQRSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\StlSupport\details.h">
-      <Filter>2.AI\Slam2D\Eigen\src\StlSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\StlSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\StlSupport\StdDeque.h">
-      <Filter>2.AI\Slam2D\Eigen\src\StlSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\StlSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\StlSupport\StdList.h">
-      <Filter>2.AI\Slam2D\Eigen\src\StlSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\StlSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\StlSupport\StdVector.h">
-      <Filter>2.AI\Slam2D\Eigen\src\StlSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\StlSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SuperLUSupport\SuperLUSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SuperLUSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SuperLUSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SVD\BDCSVD.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SVD</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SVD</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SVD\JacobiSVD.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SVD</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SVD</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SVD\JacobiSVD_LAPACKE.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SVD</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SVD</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SVD\SVDBase.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SVD</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SVD</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\SVD\UpperBidiagonalization.h">
-      <Filter>2.AI\Slam2D\Eigen\src\SVD</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\SVD</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\Eigen\src\UmfPackSupport\UmfPackSupport.h">
-      <Filter>2.AI\Slam2D\Eigen\src\UmfPackSupport</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen\src\UmfPackSupport</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\buffer.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\config.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\DataPointContainer.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\GridMap.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\GridMapBase.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\GridMapCacheArray.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\GridMapLogOdds.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\GridMapReflectanceCount.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\GridMapSimpleCount.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\HectorMapMutex.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\HectorMapping.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\HectorSlamProcessor.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\MapDimensionProperties.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\MapLockerInterface.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\MapProcContainer.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\MapRepMultiMap.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\MapRepresentationInterface.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\MapRepSingleMap.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\OccGridMapBase.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\OccGridMapUtil.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\OccGridMapUtilConfig.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\ScanMatcher.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\timeout.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\UtilFunctions.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="AI\Slam2D\utils.h">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClInclude>
     <ClInclude Include="Mathematics\PX2Smooth.hpp">
       <Filter>0.Base\Mathematics\Algebra</Filter>
@@ -5446,22 +5455,22 @@
       <Filter>0.Base\Core\Untity</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AISteeringBehavior.hpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClInclude>
     <ClInclude Include="Core\PX2iniFileLoader.hpp">
       <Filter>0.Base\Core\Untity</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AISteeringParamLoader.hpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AISteeringWall2D.hpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2CellSpaceT.hpp">
       <Filter>2.AI\Agent</Filter>
     </ClInclude>
     <ClInclude Include="AI\PX2AISteeringPath.hpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClInclude>
     <ClInclude Include="Voxel\PX2VoxelBlock.hpp">
       <Filter>1.Ext\Voxel</Filter>
@@ -5492,6 +5501,33 @@
     </ClInclude>
     <ClInclude Include="Voxel\PX2VoxelTitle.hpp">
       <Filter>1.Ext\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTObstacle.hpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTnodeStruct.hpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTInformedstar.hpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTSMP.hpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTstar.hpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTStarParam.hpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTRobot.hpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RRTEnviroment.hpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PX2RT-RRTstar.hpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -8589,61 +8625,61 @@
       <Filter>2.AI\Robot\Robot</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AINavigationMesh.cpp">
-      <Filter>2.AI\Navigation</Filter>
+      <Filter>2.AI\Navigations\Navigation</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AINavigationUtilities.cpp">
-      <Filter>2.AI\Navigation</Filter>
+      <Filter>2.AI\Navigations\Navigation</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIMeshUtilities.cpp">
-      <Filter>2.AI\Navigation</Filter>
+      <Filter>2.AI\Navigations\Navigation</Filter>
     </ClCompile>
     <ClCompile Include="AI\detour\src\DetourAlloc.cpp">
-      <Filter>2.AI\detour\src</Filter>
+      <Filter>2.AI\Navigations\detour\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\detour\src\DetourCommon.cpp">
-      <Filter>2.AI\detour\src</Filter>
+      <Filter>2.AI\Navigations\detour\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\detour\src\DetourNavMesh.cpp">
-      <Filter>2.AI\detour\src</Filter>
+      <Filter>2.AI\Navigations\detour\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\detour\src\DetourNavMeshBuilder.cpp">
-      <Filter>2.AI\detour\src</Filter>
+      <Filter>2.AI\Navigations\detour\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\detour\src\DetourNavMeshQuery.cpp">
-      <Filter>2.AI\detour\src</Filter>
+      <Filter>2.AI\Navigations\detour\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\detour\src\DetourNode.cpp">
-      <Filter>2.AI\detour\src</Filter>
+      <Filter>2.AI\Navigations\detour\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\Recast.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastAlloc.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastArea.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastContour.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastFilter.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastLayers.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastMesh.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastMeshDetail.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastRasterization.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="AI\recast\src\RecastRegion.cpp">
-      <Filter>2.AI\recast\src</Filter>
+      <Filter>2.AI\Navigations\recast\src</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2Logic.cpp">
       <Filter>3.Application\ProjectSceneUI</Filter>
@@ -8664,16 +8700,16 @@
       <Filter>2.AI\Robot\Robot</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2NavBitArray.cpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2NavGridMap.cpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2NavMoveUnit.cpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2NavMoveManager.cpp">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2GeneralClientConnector.cpp">
       <Filter>3.Application\Net\General</Filter>
@@ -8691,7 +8727,7 @@
       <Filter>3.Application\Net\Engine</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AIPath.cpp">
-      <Filter>2.AI\Path</Filter>
+      <Filter>2.AI\Navigations\Path</Filter>
     </ClCompile>
     <ClCompile Include="Application\PX2EngineNetDefine.cpp">
       <Filter>3.Application\Net\Engine</Filter>
@@ -8706,37 +8742,37 @@
       <Filter>3.Application</Filter>
     </ClCompile>
     <ClCompile Include="AI\Slam2D\PX2Slam2DManager.cpp">
-      <Filter>2.AI\Slam2D</Filter>
+      <Filter>2.AI\Robot\Slam2D</Filter>
     </ClCompile>
     <ClCompile Include="AI\Slam2D\Slam2DPlugin.cpp">
-      <Filter>2.AI\Slam2D</Filter>
+      <Filter>2.AI\Robot\Slam2D</Filter>
     </ClCompile>
     <ClCompile Include="AI\Slam2D\Slam2DPluginDll.cpp">
-      <Filter>2.AI\Slam2D</Filter>
+      <Filter>2.AI\Robot\Slam2D</Filter>
     </ClCompile>
     <ClCompile Include="AI\Slam2D\buffer.cpp">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClCompile>
     <ClCompile Include="AI\Slam2D\HectorMapping.cpp">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClCompile>
     <ClCompile Include="AI\Slam2D\timeout.cpp">
-      <Filter>2.AI\Slam2D\Hector</Filter>
+      <Filter>2.AI\Robot\Slam2D\Hector</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AISteeringBehavior.cpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClCompile>
     <ClCompile Include="Core\PX2iniFileLoader.cpp">
       <Filter>0.Base\Core\Untity</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AISteeringParamLoader.cpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AISteeringWall2D.cpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClCompile>
     <ClCompile Include="AI\PX2AISteeringPath.cpp">
-      <Filter>2.AI\Steer</Filter>
+      <Filter>2.AI\Agent\Steer</Filter>
     </ClCompile>
     <ClCompile Include="Voxel\PX2VoxelBlock.cpp">
       <Filter>1.Ext\Voxel</Filter>
@@ -8758,6 +8794,27 @@
     </ClCompile>
     <ClCompile Include="Voxel\PX2VoxelTitle.cpp">
       <Filter>1.Ext\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RRTObstacle.cpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RRTRobot.cpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RRTEnviroment.cpp">
+      <Filter>2.AI\Navigations\RRTStart</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RRTstar.cpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RRTInformedstar.cpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RRTSMP.cpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PX2RT-RRTstar.cpp">
+      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -9515,103 +9572,103 @@
       <Filter>2.AI\Robot\Robot</Filter>
     </None>
     <None Include="AI\PX2NavBitArray.inl">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </None>
     <None Include="AI\PX2NavMoveManager.inl">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </None>
     <None Include="AI\PX2NavGridMap.inl">
-      <Filter>2.AI\NavigationGrid</Filter>
+      <Filter>2.AI\Navigations\NavigationGrid</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Cholesky">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\CholmodSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Core">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Dense">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Eigen">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Eigenvalues">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Geometry">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Householder">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\IterativeLinearSolvers">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Jacobi">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\KLUSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\LU">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\MetisSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\OrderingMethods">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\PardisoSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\PaStiXSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\QR">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\QtAlignedMalloc">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\Sparse">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SparseCholesky">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SparseCore">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SparseLU">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SparseQR">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SPQRSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\StdDeque">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\StdList">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\StdVector">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SuperLUSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\SVD">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\Slam2D\Eigen\UmfPackSupport">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </None>
     <None Include="AI\PX2CellSpaceT.inl">
       <Filter>2.AI\Agent</Filter>
@@ -9622,7 +9679,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="AI\Slam2D\Eigen\CMakeLists.txt">
-      <Filter>2.AI\Slam2D\Eigen</Filter>
+      <Filter>2.AI\Robot\Slam2D\Eigen</Filter>
     </Text>
   </ItemGroup>
 </Project>

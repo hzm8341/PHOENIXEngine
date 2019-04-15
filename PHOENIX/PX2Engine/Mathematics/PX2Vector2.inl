@@ -218,6 +218,20 @@ inline Real Vector2<Real>::Normalize (const Real epsilon)
 }
 //----------------------------------------------------------------------------
 template <typename Real>
+inline Real Vector2<Real>::DistanceTo(const Vector2& vec)
+{
+	Vector2<Real> diff = (*this) - vec;
+	return diff.Length();
+}
+//----------------------------------------------------------------------------
+template <typename Real>
+inline Real Vector2<Real>::SquaredDistanceTo(const Vector2& vec)
+{
+	Vector2<Real> diff = (*this) - vec;
+	return diff.SquaredLength();
+}
+//----------------------------------------------------------------------------
+template <typename Real>
 inline Vector2<Real> Vector2<Real>::Perp () const
 {
 	return Vector2

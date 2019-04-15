@@ -543,7 +543,7 @@ void AIAgent::_Update(double applicationTime, double elapsedTime)
 			AVector curVelocity = GetVelocityNoPhysics();
 			curVelocity.Z() = 0.0f;
 
-			AVector newVelocity = curVelocity + acce * elapsedTime;
+			AVector newVelocity = curVelocity + acce * (float)elapsedTime;
 			newVelocity.Z() = 0.0f;	
 
 			AVector newVelocityNormalize = newVelocity;
