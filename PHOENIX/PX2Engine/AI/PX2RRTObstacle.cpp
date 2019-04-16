@@ -9,10 +9,10 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 RRTobstacles::RRTobstacles()
 {
-	float x = Mathf::IntervalRandom(0, 600.0f);
-	float y = Mathf::IntervalRandom(0, 200.0f);
+	float x = Mathf::IntervalRandom(4, 10.0f);
+	float y = Mathf::IntervalRandom(4, 10.0f);
 	location = Vector2f(x, y);
-	radius = 10.0f;
+	radius = 0.3f;
 	color = { 200,50,10 };
 	mass = 3.14*radius*radius;
 }
@@ -76,11 +76,7 @@ bool RRTobstacles::isInside(Vector2f n)
 //----------------------------------------------------------------------------
 RRTmovingObst::RRTmovingObst()
 {
-	float x = 200.0f;
-	float y = 50.0f;
-	location = Vector2f(x, y);
-
-	radius = 10.0f;
+	radius = 0.3f;
 	mass = 3.14*radius*radius;
 	color = { 200,100,20 };
 }

@@ -7,7 +7,6 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 bool SMP::goalFound = false;
 bool SMP::sampledInGoalRegion = false;
-bool SMP::moveNow = false;
 Vector2f SMP::goal;
 Vector2f SMP::start;
 Nodes* SMP::targetNode = 0;
@@ -94,8 +93,8 @@ Nodes* SMP::nearestNode(Nodes n, std::list<Nodes*>& nodes)
 //----------------------------------------------------------------------------
 Nodes SMP::sampler()
 {
-	float x = Mathf::IntervalRandom(-10.0f, 10.0f);
-	float y = Mathf::IntervalRandom(-10.0f, 10.0f);
+	float x = Mathf::IntervalRandom(-5.0f, 5.0f);
+	float y = Mathf::IntervalRandom(-5.0f, 5.0f);
 	Nodes new_node;
 	new_node.location.X() = x;
 	new_node.location.Y() = y;

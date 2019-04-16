@@ -37,9 +37,6 @@ Nodes InformedRRTstar::sample(float c_max)
 {
 	float c_min = SMP::goal.DistanceTo(SMP::start);
 
-	if (std::abs(c_max - c_min) < 100 && usingInformedRRTstar)
-		SMP::moveNow = true;
-
 	Vector2f x_centre = (SMP::start + SMP::goal) / 2;
 	Vector2f dir = SMP::goal - SMP::start;
 	dir.Normalize();

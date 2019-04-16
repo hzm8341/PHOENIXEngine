@@ -39,7 +39,6 @@ namespace PX2
 
 		static bool goalFound;
 		static bool sampledInGoalRegion;
-		static bool moveNow;
 		static Vector2f start;
 		static Vector2f goal;
 		static Nodes* SMP::root;
