@@ -8,15 +8,15 @@
 
 const float inf = std::numeric_limits<float>::infinity();
 
-#define RRT_converge 1.3
-#define RRT_epsilon 25.0f
-#define RRT_starradius 3.0f
+#define RRT_converge 1
+#define RRT_epsilon 2
+#define RRT_sensorScanObstRadius 3.0f
 
-#define RRT_allowedTimeRewiring 10.0f
+#define RRT_allowedTimeRewiring 0.5f
 
-#define RRT_sensorRadius 3.0f
+#define RRT_starradius 2
 
-#define RRT_maxNeighbours 40
+#define RRT_maxNeighbours 50
 
 #define RRT_alpha 0.1
 #define RRT_beta 1.4

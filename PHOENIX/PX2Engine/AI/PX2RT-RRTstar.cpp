@@ -277,7 +277,8 @@ float RTRRTstar::cost(Nodes* node)
 void RTRRTstar::rewireRandomNode(const std::list<RRTobstacles*> &obst,
 	std::list<Nodes> &nodes)
 {
-	while (!rewireRand.empty())
+	while (!rewireRand.empty()&&
+		(Time::GetTimeInSeconds() - timeKeeper) < 0.5 * RRT_allowedTimeRewiring)
 	{
 		Nodes* Xr = rewireRand.front();
 		rewireRand.pop_front();
@@ -322,7 +323,8 @@ void RTRRTstar::rewireFromRoot(const list<RRTobstacles*> &obst,
 		rewireRoot.push_back(SMP::root);
 	}
 
-	while (!rewireRoot.empty())
+	while (!rewireRoot.empty() &&
+		(Time::GetTimeInSeconds() - timeKeeper) < RRT_allowedTimeRewiring)
 	{
 		Nodes* Xs = rewireRoot.front();
 		rewireRoot.pop_front();

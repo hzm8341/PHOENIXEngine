@@ -31,7 +31,7 @@ namespace PX2
 		float x() { return location.X(); }
 		float y() { return location.Y(); }
 		float accu() { return accuracy; }
-		float getScanRadius() { return scanRadius; }
+		float getScanObstRadius() { return scanObstRadius; }
 		Vector2f getLocation() { return location; }
 		Float3 getColor() { return color; }
 		void fillEnviroment(const std::list<RRTobstacles*> obst, std::list<Nodes> &node);
@@ -39,7 +39,7 @@ namespace PX2
 
 	private:
 		bool alive;
-		float scanRadius, mass, accuracy;
+		float scanObstRadius, mass, accuracy;
 
 		Float3 color;
 		Vector2f HOME, location;

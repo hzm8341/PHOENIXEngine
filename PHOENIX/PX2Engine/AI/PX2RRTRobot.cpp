@@ -9,7 +9,7 @@ void RRTRobot::setup()
 {
 	alive = true;
 	mass = 5.0; 
-	scanRadius = RRT_sensorRadius;
+	scanObstRadius = RRT_sensorScanObstRadius;
 	location = Vector2f::ZERO;
 	HOME = location;
 	
@@ -20,7 +20,7 @@ void RRTRobot::setup(Vector2f loc)
 {
 	alive = true;
 	mass = 5.0;
-	scanRadius = RRT_sensorRadius;
+	scanObstRadius = RRT_sensorScanObstRadius;
 	location = loc;
 	HOME = location;
 
@@ -62,7 +62,7 @@ void RRTRobot::fillEnviroment(const std::list<RRTobstacles*> obst,
 	{
 		float dist = this->location.DistanceTo(index->loc());
 
-		if (dist <= this->scanRadius + index->rad()) 
+		if (dist <= this->scanObstRadius + index->rad()) 
 		{
 			updateEnviroment(node, index);
 		}
