@@ -648,8 +648,8 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 	if (mEnviroment)
 	{
-		mRRTRobot->setPos(mPosition.To2());
-		mEnviroment->update(mRRTRobot, mObsts, this);
+		//mRRTRobot->setPos(mPosition.To2());
+		//mEnviroment->update(mRRTRobot, mObsts, this);
 	}
 
 	if (mArduino)
@@ -1355,21 +1355,17 @@ void Robot::_MoveTypeCal(const Vector2f &dir, float strength)
 }
 //----------------------------------------------------------------------------
 static float rad = 0.0f;
-static AVector lastNeedForce;
-static float lastForceTimer = 0.0f;
-static float rotRightDirTimer = 0.0f;
 void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 {
 	if (!mAgent)
 		return;
 
 	float forceVal = mForce.Normalize();
+	mDirection.Normalize();
 
 	float agentMaxForce = mAgent->GetMaxForce();
-	float forcePercent = forceVal / agentMaxForce;
 
-
-	mDirection.Normalize();
+	float width = 1;
 
 	float forceGo = 0.2f;
 	float turnRoundSpeed = 0.2f;
@@ -1377,10 +1373,7 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	float turnRoundVal = Mathf::Cos(turnRoundDegree);
 
 	float forceDotDirVal = mForce.Dot(mDirection);
-	float forceDotDirValABS = Mathf::FAbs(forceDotDirVal);
-
 	float radForce = Mathf::ACos(forceDotDirVal);
-	float degree = radForce * Mathf::RAD_TO_DEG;
 	float sinVal = Mathf::Sin(radForce);
 	float cosVal = Mathf::Cos(radForce);
 
@@ -1393,40 +1386,46 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	float rightSpeedA = 0.0f;
 	if (cross.Z() > 0.0f)
 	{
-		if (forceDotDirValABS < 0.001f)
+		if (forceVal < 0.01f)
 		{
 			rightSpeedA = 0.0f;
 			leftSpeedA = 0.0f;
 		}
-		else if (forceDotDirVal >= turnRoundVal)
-		{
-			// go right
-			rightSpeedA = forceGo - allSpdHor;
-			leftSpeedA = rightSpeedA + allSpdHor;
-		}
 		else
 		{
-			rightSpeedA = -turnRoundSpeed;
-			leftSpeedA = turnRoundSpeed;
+			if (forceDotDirVal >= turnRoundVal)
+			{
+				// go right
+				rightSpeedA = forceGo - allSpdHor;
+				leftSpeedA = rightSpeedA + allSpdHor;
+			}
+			else
+			{
+				rightSpeedA = -turnRoundSpeed;
+				leftSpeedA = turnRoundSpeed;
+			}
 		}
 	}
 	else
 	{
-		if (forceDotDirValABS < 0.001f)
+		if (forceVal < 0.01f)
 		{
 			rightSpeedA = 0.0f;
 			leftSpeedA = 0.0f;
 		}
-		else if (forceDotDirVal >= turnRoundVal)
-		{
-			// go left
-			leftSpeedA = forceGo - allSpdHor;
-			rightSpeedA = leftSpeedA + allSpdHor;
-		}
 		else
 		{
-			leftSpeedA = -turnRoundSpeed;
-			rightSpeedA = turnRoundSpeed;
+			if (forceDotDirVal >= turnRoundVal)
+			{
+				// go left
+				leftSpeedA = forceGo - allSpdHor;
+				rightSpeedA = leftSpeedA + allSpdHor;
+			}
+			else
+			{
+				leftSpeedA = -turnRoundSpeed;
+				rightSpeedA = turnRoundSpeed;
+			}
 		}
 	}
 
@@ -1436,10 +1435,9 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	mLeftSpeed = mLeftSmoother->Update(mLeftSpeed, elaplseSeconds);
 	mRightSpeed = mRightSmoother->Update(mRightSpeed, elaplseSeconds);
 
-	float width = 1;
 	float rotSpeed = mRightSpeed - mLeftSpeed;
 	float rotDist = rotSpeed * elaplseSeconds;
-	float rotRad = (rotDist / (width*Mathf::PI) ) * Mathf::TWO_PI;
+	float rotRad = (rotDist / width);
 	rad += rotRad;
 
 	float spd = (mLeftSpeed + mRightSpeed) * 0.5f;
@@ -1463,6 +1461,12 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		mVelocity = mDirection * mSpeed;
 
 		mPosition += mVelocity * elaplseSeconds;
+
+		mRobotState.Pos.X() = mPosition.X();
+		mRobotState.Pos.Y() = mPosition.Y();
+		mRobotState.velocity = mSpeed;
+		mRobotState.orientation = rad;
+		mRobotState.omega = rotRad /elaplseSeconds;
 	}
 
 	if (mCurPathPlan)
@@ -1526,7 +1530,8 @@ void Robot::GoTarget(const APoint &targetPos, PathType type)
 	{
 		if (mEnviroment)
 		{
-			Vector2f pos2 = targetPos.To2();
+			APoint targetPos1 = targetPos;
+			Vector2f pos2 = targetPos1.To2();
 			mEnviroment->targetSet(pos2);
 		}
 	}
@@ -1584,5 +1589,176 @@ void Robot::_UpdateAdjustDirection(const AVector &dir)
 			}
 		}
 	}
+}
+//----------------------------------------------------------------------------
+RobotState Robot::Motion(RobotState curState, float velocity, float omega)
+{
+	RobotState afterMoveState;
+
+	afterMoveState.Pos.X() = curState.Pos.X()+ velocity*DT*cos(curState.orientation);
+	afterMoveState.Pos.Y() = curState.Pos.Y() + velocity*DT*sin(curState.orientation);
+
+	afterMoveState.orientation = curState.orientation + omega * DT;
+	afterMoveState.velocity = velocity;
+	afterMoveState.omega = omega;
+
+	return afterMoveState;
+}
+//----------------------------------------------------------------------------
+std::vector<RobotState> Robot::GenerateTraj(RobotState initState, float vel,
+	float ome)
+{
+	RobotState tempState = initState;
+	vector<RobotState> trajectories;
+	float time = 0;
+	trajectories.push_back(initState);
+	while (time < PREDICT_TIME)
+	{
+		tempState = Motion(tempState, vel, ome);
+		trajectories.push_back(tempState);
+		time += DT;
+	}
+
+	return trajectories;
+}
+//----------------------------------------------------------------------------
+std::vector<float> Robot::CreateDW(RobotState curState)
+{
+	std::vector<float> dw(4);
+	float tmpMinVelocity = curState.velocity - MAX_ACCELERATE*DT;
+	float tmpMaxVelocity = curState.velocity + MAX_ACCELERATE*DT;
+	float tmpMinOmega = curState.omega - MAX_ACCOMEGA*DT;
+	float tmpMaxOmega = curState.omega + MAX_ACCOMEGA*DT;
+
+	dw[0] = tmpMinVelocity > MIN_VELOCITY ? tmpMinVelocity : MIN_VELOCITY;
+	dw[1] = tmpMaxVelocity < MAX_VELOCITY ? tmpMaxVelocity : MAX_VELOCITY;
+	dw[2] = tmpMinOmega;
+	dw[3] = tmpMaxOmega < MAX_OMEGA ? tmpMaxOmega : MAX_OMEGA;
+
+	return dw;
+}
+//----------------------------------------------------------------------------
+float Robot::CalcHeading(RobotState rState, const Vector2f &goal)
+{
+	float heading;
+
+	float dy = goal.Y() - rState.Pos.Y();
+	float dx = goal.X() - rState.Pos.X();
+
+	float goalTheta = atan2(dy, dx);
+	float targetTheta;
+	if (goalTheta > rState.orientation)
+	{
+		targetTheta = goalTheta - rState.orientation;
+	}
+	else
+	{
+		targetTheta = rState.orientation - goalTheta;
+	}
+
+	heading = 180 - targetTheta / M_PI * 180;
+
+	return heading;
+}
+//----------------------------------------------------------------------------
+float Robot::CalcClearance(RobotState rState, std::vector<Vector2f> &obs)
+{
+	float dist = 100;
+	float distTemp;
+	int numObs = (int)obs.size();
+	for (int i = 0; i < numObs; i++)
+	{
+		float dx = rState.Pos.X() - obs[i].X();
+		float dy = rState.Pos.Y() - obs[i].Y();
+		distTemp = sqrt(pow(dx, 2) + pow(dy, 2)) - ROBOT_RADIUS;
+
+		if (dist > distTemp)
+		{
+			dist = distTemp;
+		}
+	}
+
+	if (dist >= 2 * ROBOT_RADIUS)
+	{
+		dist = 2 * ROBOT_RADIUS;
+	}
+
+	return dist;
+}
+//----------------------------------------------------------------------------
+float CalcBreakingDist(float velo)
+{
+	float stopDist = 0;
+	while (velo > 0)
+	{
+		stopDist = stopDist + velo*DT;
+		velo = velo - MAX_ACCELERATE*DT;
+	}
+
+	return stopDist;
+}
+//----------------------------------------------------------------------------
+Vector2f Robot::DynamicWindowApproach(RobotState rState,
+	const Vector2f &target, std::vector<Vector2f> &obstacle)
+{
+	// 0:minVelocity, 1:maxVelocity, 2:minOmega, 3:maxOmega
+	std::vector<float> velocityAndOmegaRange = CreateDW(rState);
+	std::vector<EvaluationPara>evalParas;
+	float sumHeading = 0;
+	float sumClearance = 0;
+	float sumVelocity = 0;
+
+	for (double v = velocityAndOmegaRange[0]; v < velocityAndOmegaRange[1]; v += SAMPLING_VELOCITY)
+	{
+		for (double w = velocityAndOmegaRange[2]; w < velocityAndOmegaRange[3]; w += SAMPLING_OMEGA)
+		{
+			vector<RobotState> trajectories = GenerateTraj(rState, v, w);
+
+			//评价参数
+			EvaluationPara tempEvalPara;
+			float tempClearance = CalcClearance(trajectories.back(), obstacle);
+			float stopDist = CalcBreakingDist(v);
+			if (tempClearance > stopDist)
+			{
+				tempEvalPara.heading = CalcHeading(trajectories.back(), target);
+				tempEvalPara.clearance = tempClearance;
+				tempEvalPara.velocity = abs(v);
+				tempEvalPara.v = v;
+				tempEvalPara.w = w;
+
+				sumHeading = sumHeading + tempEvalPara.heading;
+				sumClearance = sumHeading + tempEvalPara.clearance;
+				sumVelocity = sumVelocity + tempEvalPara.velocity;
+
+				evalParas.push_back(tempEvalPara);
+			}
+		}
+	}
+
+	//平滑评价参数并选择最优速度
+	float selectedVelocity = 0;
+	float selectedOmega = 0;
+	float G = 0;
+	for (vector<EvaluationPara>::iterator i = evalParas.begin(); i < evalParas.end(); i++)
+	{
+		float smoothHeading = i->heading / sumHeading;
+		float smoothClearance = i->clearance / sumClearance;
+		float smoothVelocity = i->velocity / sumVelocity;
+
+		float tempG = WEIGHT_HEADING*smoothHeading + WEIGHT_CLEARANCE*smoothClearance + WEIGHT_VELOCITY*smoothVelocity;
+
+		if (tempG > G)
+		{
+			G = tempG;
+			selectedVelocity = i->v;
+			selectedOmega = i->w;
+		}
+	}
+
+	Vector2f selVelocity;
+	selVelocity[0] = selectedVelocity;
+	selVelocity[1] = selectedOmega;
+
+	return selVelocity;
 }
 //----------------------------------------------------------------------------

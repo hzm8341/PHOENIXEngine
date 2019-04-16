@@ -50,7 +50,7 @@ SteeringBehavior::SteeringBehavior(AIAgent* agent):
 		mWanderRadius * Mathf::Sin(theta), 0.0f);
 
 	FollowPathOn();
-	SeekOn();
+	//SeekOn();
 	//ObstacleAvoidanceOn();
 }
 //------------------------------------------------------------------------

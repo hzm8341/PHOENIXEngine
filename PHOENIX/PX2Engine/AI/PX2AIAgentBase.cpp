@@ -159,7 +159,8 @@ void AIAgentBase::SetPosition(const APoint& position)
 
 	if (mObst)
 	{
-		mObst->SetPos(position.To2());
+		APoint pos1 = position;
+		mObst->SetPos(pos1.To2());
 	}
 }
 //----------------------------------------------------------------------------

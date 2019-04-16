@@ -262,6 +262,19 @@ namespace PX2
 		RRTRobot *mRRTRobot;
 		Enviroment *mEnviroment;
 		std::list<RRTobstacles*> mObsts;
+
+	public:
+		Vector2f DynamicWindowApproach(RobotState rState, const Vector2f &target,
+			std::vector<Vector2f> &obstacle);
+
+		RobotState Motion(RobotState curState, float velocity, float omega);
+		std::vector<RobotState> GenerateTraj(RobotState initState, float vel, float ome);
+		std::vector<float> CreateDW(RobotState curState);
+		float CalcClearance(RobotState rState, std::vector<Vector2f> &obsts);
+		float CalcHeading(RobotState rState, const Vector2f &goal);
+
+	private:
+		RobotState mRobotState;
 	};
 
 #include "PX2Robot.inl"
