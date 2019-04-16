@@ -15,6 +15,7 @@ namespace PX2
 
 	class AIAgentWorld;
 	class Robot;
+	class RRTobstacles;
 
 	class PX2_ENGINE_ITEM AIAgentBase : public Controller
 	{
@@ -99,6 +100,9 @@ namespace PX2
 
 	protected:
 		Robot *mRobot;
+
+	private:
+		RRTobstacles *mObst;
 	};
 
 	PX2_REGISTER_STREAM(AIAgentBase);

@@ -117,24 +117,24 @@ mAgent(0)
 	mEnviroment = new0 Enviroment();
 	mRRTRobot = new0 RRTRobot();
 
-	RRTmaze *wall = 0;
-	RRTobstacles * obst = 0;
+	//RRTmaze *wall = 0;
+	//RRTobstacles * obst = 0;
 
-	Vector2f w(10/ 2, 0);
-	wall = new RRTmaze(w);
-	RRTobstacles *ob = wall;
-	mObsts.push_back(ob);
+	//Vector2f w(10/ 2, 0);
+	//wall = new RRTmaze(w);
+	//RRTobstacles *ob = wall;
+	//mObsts.push_back(ob);
 
-	w = Vector2f(6 / 2, 0.6*6);
-	wall = new RRTmaze(w);
-	ob = wall;
-	mObsts.push_back(ob);
+	//w = Vector2f(6 / 2, 0.6*6);
+	//wall = new RRTmaze(w);
+	//ob = wall;
+	//mObsts.push_back(ob);
 
-	for (unsigned int i = 0; i < 5; i++)
-	{
-		obst = new0 RRTmovingObst();
-		mObsts.push_back(obst);
-	}
+	//for (unsigned int i = 0; i < 5; i++)
+	//{
+	//	obst = new0 RRTmovingObst();
+	//	mObsts.push_back(obst);
+	//}
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
@@ -648,7 +648,8 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 
 	if (mEnviroment)
 	{
-		mEnviroment->update(mRRTRobot, mObsts);
+		mRRTRobot->setPos(mPosition.To2());
+		mEnviroment->update(mRRTRobot, mObsts, this);
 	}
 
 	if (mArduino)
@@ -1492,31 +1493,44 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	}
 }
 //----------------------------------------------------------------------------
-void Robot::GoTarget(const APoint &targetPos)
+void Robot::GoTarget(const APoint &targetPos, PathType type)
 {
 	mGoTargetPos = targetPos;
 
 	std::vector<PathingNode*> vec;
 	mAIAgentPath.Clear();
-	mCurPathPlan = mPathGraph->FindPath(mPosition, mGoTargetPos);
-	if (mCurPathPlan)
+
+	if (type == PT_A)
 	{
-		PathingNodeList list = mCurPathPlan->m_path;
-		int numPoints = list.size();
-
-		auto it = list.begin();
-		for (; it != list.end(); it++)
+		mCurPathPlan = mPathGraph->FindPath(mPosition, mGoTargetPos);
+		if (mCurPathPlan)
 		{
-			PathingNode *node = *it;
+			PathingNodeList list = mCurPathPlan->m_path;
+			int numPoints = list.size();
 
-			APoint pos = node->GetPos();
-			mAIAgentPath.AddWayPoint(pos);
+			auto it = list.begin();
+			for (; it != list.end(); it++)
+			{
+				PathingNode *node = *it;
 
-			SetLineValueAtPos(node->GetPos(), 0.05f, 200.0f);
+				APoint pos = node->GetPos();
+				mAIAgentPath.AddWayPoint(pos);
+
+				SetLineValueAtPos(node->GetPos(), 0.05f, 200.0f);
+			}
+
+			mCurPathPlan->ResetPath();
 		}
-
-		mCurPathPlan->ResetPath();
 	}
+	else
+	{
+		if (mEnviroment)
+		{
+			Vector2f pos2 = targetPos.To2();
+			mEnviroment->targetSet(pos2);
+		}
+	}
+
 
 	if (mAgent)
 	{

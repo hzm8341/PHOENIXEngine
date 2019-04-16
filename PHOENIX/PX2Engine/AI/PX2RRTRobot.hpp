@@ -22,10 +22,10 @@ namespace PX2
 		~RRTRobot() {};
 		void setup();
 		void setup(Vector2f loc);
-		void update();
-			void render();
+		void setPos(const Vector2f &pos);
+
+		void render();
 		void addForce(Vector2f force);
-		void controller(Vector2f target);
 
 		bool isAlive() { return alive; }
 		float x() { return location.X(); }
@@ -42,7 +42,7 @@ namespace PX2
 		float scanRadius, mass, accuracy;
 
 		Float3 color;
-		Vector2f HOME, location, velocity, accelaration, maxVelocity, maxForce;
+		Vector2f HOME, location;
 		Vector2f pt;
 	};
 

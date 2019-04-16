@@ -15,7 +15,9 @@ namespace PX2
 	public:
 		RRTobstacles();
 		RRTobstacles(Vector2f loc);
-		~RRTobstacles();
+		virtual ~RRTobstacles();
+
+		void SetPos(const Vector2f &pos);
 
 		virtual void render();
 		virtual Vector2f loc() { return location; }

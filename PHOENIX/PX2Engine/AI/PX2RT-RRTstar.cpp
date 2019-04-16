@@ -3,8 +3,9 @@
 #include "PX2RT-RRTstar.hpp"
 #include "PX2RRTStarParam.hpp"
 #include "PX2RRTRobot.hpp"
-#include "PX2Application.hpp"
+#include "PX2Time.hpp"
 using namespace PX2;
+using namespace std;
 
 std::set<Nodes*, nodes_compare> RTRRTstar::visited_set;
 bool RTRRTstar::goalDefined = false;
@@ -18,17 +19,21 @@ RTRRTstar::~RTRRTstar()
 }
 //----------------------------------------------------------------------------
 void RTRRTstar::nextIter(std::list<Nodes> &nodes,
-	const std::list<RRTobstacles*>& obst, RRTRobot* agent)
+	const std::list<RRTobstacles*>& obst, RRTRobot* robot)
 {
-	timeKeeper = PX2_APP.GetElapsedTime();
+	timeKeeper = Time::GetTimeInSeconds();
 	expandAndRewire(nodes, obst);
 	if (SMP::goalFound)
 		updateNextBestPath();
-	if (currPath.size() > 1 && agent->getLocation().DistanceTo(SMP::root->location) < 0.1)
+
+	Vector2f robotPos = robot->getLocation();
+	float robotDist = robotPos.DistanceTo(SMP::root->location);
+
+	if (currPath.size() > 1 && robotDist<RRT_converge)
 	{
 		//We have to pre-increment rather than post-increment
 		Nodes* nextPoint = *((++currPath.begin())); //Change the DS for path to vector?
-		changeRoot(nextPoint, nodes);
+		changeRoot(nextPoint);
 
 		RTRRTstar::visited_set.clear();
 		pushedToRewireRoot.clear();
@@ -37,16 +42,23 @@ void RTRRTstar::nextIter(std::list<Nodes> &nodes,
 	closestNeighbours.clear();
 }
 //----------------------------------------------------------------------------
-void RTRRTstar::changeRoot(Nodes* nextPoint, std::list<Nodes>& nodes)
+void RTRRTstar::changeRoot(Nodes* nextPoint)
 {
-	nextPoint->children.push_back(SMP::root);
-	nextPoint->parent = NULL;
-	nextPoint->prevParent = NULL;
-	nextPoint->costToStart = 0;
+	if (SMP::root != nextPoint)
+	{
+		nextPoint->children.push_back(SMP::root);
+		nextPoint->parent = 0;
+		nextPoint->prevParent = 0;
+		nextPoint->costToStart = 0;
 
-	SMP::root->parent = nextPoint;
-	SMP::root->costToStart = SMP::root->location.DistanceTo(nextPoint->location);
-	SMP::root = nextPoint;
+		SMP::root->parent = nextPoint;
+		if (nextPoint == SMP::root)
+		{
+			assertion(false, "");
+		}
+		SMP::root->costToStart = SMP::root->location.DistanceTo(nextPoint->location);
+		SMP::root = nextPoint;
+	}
 }
 //----------------------------------------------------------------------------
 void RTRRTstar::expandAndRewire(std::list<Nodes>& nodes, 
@@ -84,14 +96,27 @@ void RTRRTstar::expandAndRewire(std::list<Nodes>& nodes,
 	rewireFromRoot(obst, nodes);
 }
 //----------------------------------------------------------------------------
+bool isContain(std::list<Nodes*>&list, Nodes *node)
+{
+	auto it = list.begin();
+	for (; it != list.end(); it++)
+	{
+		if (node == *it)
+			return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
 void RTRRTstar::updateNextBestPath()
 {
 	std::list<Nodes*> updatedPath;
-	Nodes *pathNode = target;
+	Nodes *pathNode = targetNode;
 	if (SMP::goalFound) {
 		do
 		{
 			currPath.push_back(pathNode);
+
 			pathNode = pathNode->parent;
 		} while (pathNode != NULL);
 		currPath.reverse();
@@ -100,6 +125,7 @@ void RTRRTstar::updateNextBestPath()
 	else {
 		if (!goalDefined)
 			return;
+
 		Nodes* curr_node = SMP::root;
 		while (!curr_node->children.empty())
 		{
@@ -138,12 +164,12 @@ Nodes RTRRTstar::sample()
 {
 	float rand_num = Mathf::UnitRandom();
 
-	if (rand_num > 1 - RRT_alpha && SMP::target != NULL)
+	if (rand_num > (1 - RRT_alpha) && SMP::targetNode != 0)
 	{
 		float x = Mathf::IntervalRandom(SMP::root->location.X(), 
-			SMP::target->location.X());
+			SMP::targetNode->location.X());
 		float y = Mathf::IntervalRandom(SMP::root->location.Y(), 
-			SMP::target->location.Y());
+			SMP::targetNode->location.Y());
 		Nodes new_node;
 		new_node.location.X() = x;
 		new_node.location.Y() = y;
@@ -151,7 +177,7 @@ Nodes RTRRTstar::sample()
 	}
 	else if (rand_num >= (1 - RRT_alpha) / RRT_beta && SMP::goalFound)
 	{
-		return InformedRRTstar::sample(cost(SMP::target));
+		return InformedRRTstar::sample(cost(SMP::targetNode));
 	}
 	else
 	{
@@ -211,10 +237,11 @@ void RTRRTstar::addNode(Nodes n, Nodes* closest, std::list<Nodes>& nodes,
 
 	if (n.location.DistanceTo(SMP::goal) < RRT_converge)
 	{
-		if (SMP::target == 0 || 
-			(SMP::target != 0 && SMP::target->costToStart > n.costToStart))
+		if (SMP::targetNode == 0 ||
+			(SMP::targetNode != 0 && 
+				SMP::targetNode->costToStart > n.costToStart))
 		{
-			SMP::target = &(nodes.back());
+			SMP::targetNode = &(nodes.back());
 		}
 		SMP::goalFound = true;
 	}
@@ -247,13 +274,10 @@ float RTRRTstar::cost(Nodes* node)
 	}
 }
 //----------------------------------------------------------------------------
-void RTRRTstar::rewireRandomNode(const list<RRTobstacles*> &obst,
+void RTRRTstar::rewireRandomNode(const std::list<RRTobstacles*> &obst,
 	std::list<Nodes> &nodes)
 {
-	float elapsedTime = PX2_APP.GetElapsedTime();
-
-	while (!rewireRand.empty() && (elapsedTime - timeKeeper)
-		< 0.5 * RRT_allowedTimeRewiring)
+	while (!rewireRand.empty())
 	{
 		Nodes* Xr = rewireRand.front();
 		rewireRand.pop_front();
@@ -294,13 +318,11 @@ void RTRRTstar::rewireRandomNode(const list<RRTobstacles*> &obst,
 void RTRRTstar::rewireFromRoot(const list<RRTobstacles*> &obst, 
 	std::list<Nodes> &nodes) {
 
-	float elapsedTime = PX2_APP.GetElapsedTime();
-
 	if (rewireRoot.empty()) {
 		rewireRoot.push_back(SMP::root);
 	}
 
-	while (!rewireRoot.empty() && (elapsedTime - timeKeeper) < RRT_allowedTimeRewiring)
+	while (!rewireRoot.empty())
 	{
 		Nodes* Xs = rewireRoot.front();
 		rewireRoot.pop_front();
@@ -315,14 +337,16 @@ void RTRRTstar::rewireFromRoot(const list<RRTobstacles*> &obst,
 				safeNeighbours.push_back(*it);
 			it++;
 		}
-		if (safeNeighbours.empty()) continue;
+		if (safeNeighbours.empty())
+			continue;
 
 		safeNeighbours.remove(Xs->parent);
 		it = safeNeighbours.begin();
 		while (it != safeNeighbours.end()) {
 
 			float oldCost = cost(*it);
-			float newCost = cost(Xs) + Xs->location.DistanceTo((*it)->location);
+			float distTo = Xs->location.DistanceTo((*it)->location);
+			float newCost = cost(Xs) + distTo;
 			if (newCost < oldCost) {
 
 				(*it)->prevParent = (*it)->parent;

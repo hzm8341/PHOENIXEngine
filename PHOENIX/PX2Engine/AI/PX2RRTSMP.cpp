@@ -10,7 +10,7 @@ bool SMP::sampledInGoalRegion = false;
 bool SMP::moveNow = false;
 Vector2f SMP::goal;
 Vector2f SMP::start;
-Nodes* SMP::target = 0;
+Nodes* SMP::targetNode = 0;
 Nodes* SMP::nextTarget = 0;
 Nodes* SMP::root = 0;
 //----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ void SMP::addNode(Nodes n, std::list<Nodes>& nodes)
 	{
 		goalFound = true;
 		sampledInGoalRegion = true;
-		target = &(nodes.back());
+		targetNode = &(nodes.back());
 	}
 }
 //----------------------------------------------------------------------------
@@ -94,8 +94,8 @@ Nodes* SMP::nearestNode(Nodes n, std::list<Nodes*>& nodes)
 //----------------------------------------------------------------------------
 Nodes SMP::sampler()
 {
-	float x = 50.0f;
-	float y = 50.0f;
+	float x = Mathf::IntervalRandom(-10.0f, 10.0f);
+	float y = Mathf::IntervalRandom(-10.0f, 10.0f);
 	Nodes new_node;
 	new_node.location.X() = x;
 	new_node.location.Y() = y;

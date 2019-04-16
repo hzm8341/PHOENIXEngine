@@ -33,7 +33,7 @@ namespace PX2
 		void rewireFromRoot(const std::list<RRTobstacles*> &obst, std::list<Nodes> &nodes);
 		float cost(Nodes* node);
 		float getHeuristic(Nodes* u);
-		void changeRoot(Nodes* nextPoint, std::list<Nodes>& nodes);
+		void changeRoot(Nodes* nextPoint);
 		bool isPathToGoalAvailable();
 
 		std::list<Nodes*> rewireRand;

@@ -62,6 +62,11 @@ void RRTstar::nextIter(std::list<Nodes>& nodes, std::list<RRTobstacles*> obst,
 		it++;
 	}
 	u.parent = *index;
+	if (u.parent == &u)
+	{
+		assertion(false, "");
+	}
+
 	u.costToStart = minDist;
 
 	SMP::addNode(u, nodes);
@@ -77,6 +82,12 @@ void RRTstar::nextIter(std::list<Nodes>& nodes, std::list<RRTobstacles*> obst,
 		{
 			(*it)->prevParent = (*it)->parent;
 			(*it)->parent = &(nodes.back());
+
+			if ((*it)->parent == *it)
+			{
+				assertion(false, "");
+			}
+
 			(*it)->costToStart = dist1;
 		}
 		it++;

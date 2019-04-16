@@ -202,7 +202,13 @@ namespace PX2
 	public:
 		PathingGraph *GetPathingGraph();
 
-		void GoTarget(const APoint &targetPos);
+		enum PathType
+		{
+			PT_A,
+			PT_RRT,
+			PT_MAX_TYPE
+		};
+		void GoTarget(const APoint &targetPos, PathType type= PT_A);
 
 		void AdjustToDirection(const AVector &dir);
 

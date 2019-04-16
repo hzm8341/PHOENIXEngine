@@ -21,7 +21,7 @@ void InformedRRTstar::nextIter(std::list<Nodes> &nodes,
 			if ((*it)->costToStart < min_cost)
 			{
 				min_cost = (*it)->costToStart;
-				SMP::target = *it;
+				SMP::targetNode = *it;
 			}
 			it++;
 		}

@@ -11,6 +11,8 @@
 namespace PX2
 {
 
+	class Robot;
+
 	class PX2_ENGINE_ITEM Enviroment
 	{
 	public:
@@ -20,7 +22,7 @@ namespace PX2
 
 		void setup();
 		void setup(Vector2f _start);
-		void update(RRTRobot * car, std::list<RRTobstacles*> obst);
+		void update(RRTRobot * car, std::list<RRTobstacles*> obst, Robot *robot);
 		void targetSet(Vector2f loc);
 
 		int numofnode() { return (int)nodes.size(); };
@@ -31,11 +33,9 @@ namespace PX2
 	protected:
 		std::list<Nodes> nodes;
 		std::list<Nodes*> path;
-		RRTstar rrtstar;
-		InformedRRTstar irrtstar;
 		RTRRTstar rtrrtstar;
 		bool rrtFlag = true;
-		bool planner = true;
+		bool isHasPlanNow = true;
 
 		Vector2f goal;
 		Vector2f home;

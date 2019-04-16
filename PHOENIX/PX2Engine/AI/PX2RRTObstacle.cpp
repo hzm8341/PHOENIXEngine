@@ -29,6 +29,11 @@ RRTobstacles::~RRTobstacles()
 {
 }
 //----------------------------------------------------------------------------
+void RRTobstacles::SetPos(const Vector2f &pos)
+{
+	location = pos;
+}
+//----------------------------------------------------------------------------
 void RRTobstacles::render()
 {
 }
