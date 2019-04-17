@@ -25,6 +25,23 @@
 #include "PX2Actor.hpp"
 using namespace PX2;
 
+#define M_PI 3.1415927
+#define MAX_SPEED 0.2						//弧形轨迹：最大速度
+#define MIN_SPEED 0.0							//弧形轨迹：最小速度
+#define MAX_ACCELERATE 0.3						//动态窗口：最大加速度
+#define MAX_ACCOMEGA 50.0 / 180.0 * M_PI		//动态窗口：最大角加速度
+#define SAMPLING_SPEED 0.01					//速度采样间隔
+#define DT 0.1									//采样时间间隔
+#define PREDICT_TIME 6.0						//预测时间
+
+#define WEIGHT_HEADING 0.15						//HEADING权重
+#define WEIGHT_CLEARANCE 0.2					//CLEARANCE权重
+#define WEIGHT_VELOCITY 0.1						//VELOCITY权重
+
+#define GOAL_X 10								//目标横坐标
+#define GOAL_Y 10								//目标纵坐标
+#define ROBOT_RADIUS 0.1						//机器人半径
+
 #if defined _WIN32 || defined WIN32
 #include <windows.h> 
 #endif
@@ -242,131 +259,6 @@ int _Roundle(float number)
 {
 	return (number > 0.0) ? floor(number + 0.5f) : ceil(number - 0.5f);
 } 
-//----------------------------------------------------------------------------
-void Robot::_UpdateMapObstDyn(const APoint &pos)
-{
-	int mapSize = mRobotMapData->MapStruct.MapSize;
-	float halfMapSize = mapSize * 0.5f;
-	float resolution = mRobotMapData->MapStruct.MapResolution;
-	float mapWidth = mapSize * resolution;
-
-	int mapAllSize = mapSize * mapSize;
-	std::vector<unsigned char> map = mRobotMapData->Map2DUsing;
-
-	float minDist = Mathf::MAX_REAL;
-	int minX = Mathf::MAX_REAL;
-	int minY = Mathf::MAX_REAL;
-
-	int robotindex = 0;
-	int x = 0;
-	int y = 0;
-	for (int i = 0; i < mapAllSize; i++)
-	{
-		x = (i + mapSize) % mapSize;
-		y = ((mapSize - 1) - i / mapSize);
-
-		bool isHasObst = false;
-		int mapVal = 200;
-		if (!map.empty())
-		{
-			mapVal = map[i];
-
-			if (mapVal == 100)
-			{
-				// robot pos
-				robotindex = i;
-			}
-			else if (mapVal == 10)
-			{
-			}
-			else if (mapVal == 200)
-			{
-				// space can go
-			}
-			else
-			{
-				if (0 == mapVal)
-				{
-					// obst
-					isHasObst = true;
-				}
-				else
-				{
-				}
-			}
-		}
-
-		int adjustVal = mRobotMapData->SelfDrawMapData2D[i];
-		if (0 == adjustVal)
-		{
-			isHasObst = true;
-		}
-		else if (200 == adjustVal)
-		{
-		}
-		else if (201 == adjustVal)
-		{
-			isHasObst = false;
-		}
-
-		if (isHasObst)
-		{
-			float xPos = (x - halfMapSize) * resolution;
-			float yPos = (y - halfMapSize) * resolution;
-			APoint curPos(xPos, yPos, 0.0f);
-			AVector distVec = curPos - pos;
-			float lengthSquare = distVec.SquaredLength();
-
-			float adjustDist = 2.5f;
-			if (lengthSquare < adjustDist)
-			{
-				if (lengthSquare < minDist)
-				{
-					minX = x;
-					minY = y;
-					minDist = lengthSquare;
-				}
-			}
-		}
-	}
-
-	Scene *scene = PX2_PROJ.GetScene();
-	if (scene)
-	{
-		if (!mObstacleNode)
-		{
-			mObstacleNode = new0 Node();
-			scene->AttachChild(mObstacleNode);
-		}
-
-		if (minDist < 1000)
-		{
-			std::pair<int, int> key;
-			key.first = minX;
-			key.second = minY;
-
-			auto it = mObstacles.find(key);
-			if (it == mObstacles.end())
-			{
-				float xPos = (minX - halfMapSize) * resolution;
-				float yPos = (halfMapSize - minY) * resolution;
-
-				Actor *actor = PX2_CREATER.CreateActorBox();
-				mObstacleNode->AttachChild(actor);
-				actor->LocalTransform.SetTranslateY(4.0);
-				AIAgentBase *actAgentBase = actor->GetAIAgentBase();
-				actAgentBase->SetMass(0);
-				actAgentBase->SetMassZeroAvoid(true);
-				actAgentBase->SetRadius(0.15);
-				actAgentBase->SetPosition(APoint(xPos, yPos, 0.0));
-				mObstacleNode->AttachChild(actor);
-				actAgentBase->ResetPlay();
-
-				mObstacles[key] = actor;
-			}
-		}
-	}
-}
 //----------------------------------------------------------------------------
 void Robot::_UpdateMapObst()
 {
@@ -625,11 +517,6 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 	PX2_UNUSED(appseconds);
 	PX2_UNUSED(elpasedSeconds);
 
-	if (mEnviroment)
-	{
-		//mRRTRobot->setPos(mPosition.To2());
-		//mEnviroment->update(mRRTRobot, mObsts, this);
-	}
 
 	if (mArduino)
 	{
@@ -650,16 +537,17 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		mAxisRotMatrix = HMatrix(mAxisRight, mAxisDirection, mAxisUp, APoint::ORIGIN, true);
 	}
 
-	mRight = mDirection.Cross(AVector::UNIT_Z);
-	mUp = AVector::UNIT_Z;
-	mMatrix = HMatrix(mRight, mDirection, mUp, mPosition, true);
-
 	//_UpdateMapObstDyn(mPosition);
 
 	if (mLiDar)
 	{
 		mLiDar->Update(appseconds, elpasedSeconds);
 	}
+
+	mRight = mDirection.Cross(AVector::UNIT_Z);
+	mUp = AVector::UNIT_Z;
+	mMatrix = HMatrix(mRight, mDirection, mUp, mPosition, true);
+	mRobotState = _GetCurRobotState();
 
 	if (mIsAdjustToDirection)
 	{
@@ -673,16 +561,17 @@ void Robot::Update(float appseconds, float elpasedSeconds)
 		}
 	}
 
-	if (mIsUseForce)
-	{
-		mForceTimer += elpasedSeconds;
-		//if (mForceTimer > 0.1f)
-		{
-			_UpdateVirtualRobot(mForceTimer);
+	_UpdateVirtualRobot1(elpasedSeconds);
 
-			mForceTimer = 0.0f;
-		}
-	}
+	//if (mIsUseForce)
+	//{
+	//	mForceTimer += elpasedSeconds;
+	//	//if (mForceTimer > 0.1f)
+	//	{
+	//		//_UpdateVirtualRobot(elpasedSeconds);
+	//		mForceTimer = 0.0f;
+	//	}
+	//}
 
 	int mapSize = mRobotMapData->MapStruct.MapSize;
 	float resolution = mRobotMapData->MapStruct.MapResolution;
@@ -1195,12 +1084,10 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	float forceVal = mForce.Normalize();
 	mDirection.Normalize();
 
-	float agentMaxForce = mAgent->GetMaxForce();
-
 	float width = 1;
 
-	float forceGo = 0.2f;
-	float turnRoundSpeed = 0.2f;
+	float forceGo = MAX_SPEED;
+	float turnRoundSpeed = MAX_SPEED;
 	float turnRoundDegree = 20;
 	float turnRoundVal = Mathf::Cos(turnRoundDegree);
 
@@ -1272,7 +1159,7 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	float rotRad = (rotDist / width);
 	mRotationRad += rotRad;
 
-	float spd = (mLeftSpeed + mRightSpeed) * 0.5f;
+	mSpeed = (mLeftSpeed + mRightSpeed) * 0.5f;
 
 	if (mArduino->IsInitlized())
 	{
@@ -1281,7 +1168,6 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		mArduino->RunSpeed(0, iLeftSpeed);
 		mArduino->RunSpeed(1, iRightSpeed);
 
-		mSpeed = spd;
 		mVelocity = mDirection * mSpeed;
 	}
 	else
@@ -1289,7 +1175,6 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 		mDirection = AVector(-Mathf::Sin(mRotationRad), Mathf::Cos(mRotationRad), 0.0f);
 		mDirection.Normalize();
 
-		mSpeed = spd;
 		mVelocity = mDirection * mSpeed;
 
 		mPosition += mVelocity * elaplseSeconds;
@@ -1298,59 +1183,6 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 
 	if (mCurPathPlan)
 	{
-		Vector3f curNodePos = mCurPathPlan->GetCurrentNodePosition();
-		Vector2f curNodePos2 = Vector2f(curNodePos.X(), curNodePos.Y());
-
-		mRobotState.Pos = mPosition.To2();
-		mRobotState.velocity = mSpeed;
-		mRobotState.orientation = mRotationRad;
-		mRobotState.omega = 0.0f;
-
-		std::vector<Vector2f> obsts;
-
-		SteeringBehavior *steerBehavior = mAgent->GetSteeringBehavior();
-		if (steerBehavior)
-		{
-			std::vector<AIAgentObject*> objsNear = steerBehavior->GetNearbyObjects(2.0f);
-			for (int i = 0; i < (int)objsNear.size(); i++)
-			{
-				AIAgentObject *obj = objsNear[i];
-				if (obj)
-				{
-					APoint pos = obj->GetPosition();
-					obsts.push_back(pos.To2());
-				}
-			}
-		}
-
-		std::vector<std::vector<RobotState> > outRobotStates;
-	    Vector2f slectPos = DynamicWindowApproach(mRobotState, curNodePos2, obsts,
-			outRobotStates);
-
-		APoint slectPos3(slectPos.X(), slectPos.Y(), 0.01f);
-		APoint slectPos31(slectPos.X(), slectPos.Y(), 1.0f);
-		EngineSceneCanvas::GetSingleton().AddDebugLine(slectPos3, slectPos31,
-			Float4::YELLOW);
-
-		for (int i = 0; i < (int)outRobotStates.size(); i++)
-		{
-			std::vector<RobotState> states = outRobotStates[i];
-			if (states.size() > 1)
-			{
-				for (int j = 0; j < (int)states.size()-1; j++)
-				{
-					RobotState roS0 = states[j];
-					RobotState roS1 = states[j + 1];
-
-					APoint pos0(roS0.Pos.X(), roS0.Pos.Y(), 0.0f);
-					APoint pos1(roS1.Pos.X(), roS1.Pos.Y(), 0.0f);
-
-					EngineSceneCanvas::GetSingleton().AddDebugLine(pos0, pos1,
-						Float4::BLUE);
-				}
-			}
-		}
-
 		std::vector<PathingNode*> vec;
 		std::list<PathingNode*> list = mCurPathPlan->m_path;
 		auto it = list.begin();
@@ -1377,65 +1209,221 @@ void Robot::_UpdateVirtualRobot(float elaplseSeconds)
 	}
 }
 //----------------------------------------------------------------------------
+void Robot::_RunSpeed(float elaplseSeconds)
+{
+	if (mArduino && mArduino->IsInitlized())
+	{
+
+	}
+	else
+	{
+		RobotState rs = Motion(mRobotState, mLeftSpeed, mRightSpeed, 
+			elaplseSeconds);
+		mPosition = APoint(rs.Pos.X(), rs.Pos.Y(), 0.0f);
+		mRotationRad = rs.Orientation;
+		mDirection = AVector(-Mathf::Sin(mRotationRad), Mathf::Cos(mRotationRad), 0.0f);
+		mDirection.Normalize();
+	}
+}
+//----------------------------------------------------------------------------
+std::vector<Vector2f > Robot::GetNearObst(float radius)
+{
+	std::vector<Vector2f> obsts;
+
+	std::vector<AIAgentObject*> objs =
+		mAgent->GetSteeringBehavior()->GetNearbyObjects(radius);
+	for (int i = 0; i < (int)objs.size(); i++)
+	{
+		APoint pos = objs[i]->GetPosition();
+		obsts.push_back(pos.To2());
+	}
+
+	if (mRobotMapData)
+	{
+		int mapSize = mRobotMapData->MapStruct.MapSize;
+		float halfMapSize = mapSize * 0.5f;
+		float resolution = mRobotMapData->MapStruct.MapResolution;
+
+		float fxPosStart = mPosition.X() - radius;
+		int xPosStart = (int)(fxPosStart / resolution);
+		xPosStart += halfMapSize;
+		xPosStart = Math<int>::Clamp(xPosStart, 0, mapSize);
+
+		float fxPosEnd = mPosition.X() + radius;
+		int xPosEnd = (int)(fxPosEnd / resolution);
+		xPosEnd += halfMapSize;
+		xPosEnd = Math<int>::Clamp(xPosEnd, 0, mapSize);
+
+		float fyPosStart = mPosition.Y() - radius;
+		int yPosStart = (int)(fyPosStart / resolution);
+		yPosStart = halfMapSize + yPosStart;
+		yPosStart = Math<int>::Clamp(yPosStart, 0, mapSize);
+
+		float fyPosEnd = mPosition.Y() + radius;
+		int yPosEnd = (int)(fyPosEnd / resolution);
+		yPosEnd = halfMapSize + yPosEnd;
+		yPosEnd = Math<int>::Clamp(yPosEnd, 0, mapSize);
+
+		for (int y = yPosStart; y < yPosEnd; y++)
+		{
+			for (int x = xPosStart; x < xPosEnd; x++)
+			{
+				int index = y * mapSize + x;
+				int mapVal = mRobotMapData->Map2DUsing[index];
+
+				bool isObjst = false;
+				if (mapVal == 100)
+				{			
+					int a = 0;
+				}
+				else if (mapVal == 10)
+				{
+					//isObjst = true;
+				}
+				else if (mapVal == 200)
+				{
+					int a = 0;
+				}
+				else if (0 == mapVal)
+				{
+					isObjst = true;
+					int a = 0;
+				}
+				else
+				{
+					int a = 0;
+				}
+				if (isObjst)
+				{
+					float xPos = (x - halfMapSize) * resolution;
+					float yPos = (y - halfMapSize) * resolution;
+					obsts.push_back(Vector2f(xPos, yPos));
+				}
+			}
+		}
+	}
+
+	return obsts;
+}
+//----------------------------------------------------------------------------
 void Robot::_UpdateVirtualRobot1(float elaplseSeconds)
 {
 	if (!mAgent)
 		return;
 
-	mDirection = AVector(-Mathf::Sign(mRotationRad), Mathf::Cos(mRotationRad), 0.0f);
+	AISteeringPath &steerPath = mAgent->GetSteeringBehavior()->GetPath();
 
-	float forceVal = mForce.Normalize();
-	mDirection.Normalize();
+	std::vector<std::vector<RobotState> > outRobotStates;
 
-	mRobotState.Pos = mPosition.To2();
-	mRobotState.velocity = mSpeed;
-	mRobotState.orientation = mRotationRad;
-
-	if (forceVal > 0.001f)
+	int selectIndex = -1;
+	if (!steerPath.Finished())
 	{
-		float acc = forceVal / 10.0f;
+		//Vector3f targetPos = steerPath.CurrentWaypoint();
+		//AVector diff = targetPos - mPosition;
+		//float distance = diff.Normalize();
+		//float dotDirVal = diff.Dot(mDirection);
+		//float radForce = Mathf::ACos(dotDirVal);
+		//float sinVal = Mathf::Sin(radForce);
+		//float cosVal = Mathf::Cos(radForce);
 
-		float width = 1;
+		//float allSpdHor = MAX_SPEED * sinVal;
+		//allSpdHor = Mathf::FAbs(allSpdHor);
 
-		float forceGo = 0.2f;
-		float turnRoundSpeed = 0.2f;
-		float turnRoundDegree = 30;
-		float turnRoundVal = Mathf::Cos(turnRoundDegree);
+		//AVector cross = diff.Cross(mDirection);
 
-		float forceDotDirVal = mForce.Dot(mDirection);
-		float radForce = Mathf::ACos(forceDotDirVal);
-		float sinVal = Mathf::Sin(radForce);
-		float cosVal = Mathf::Cos(radForce);
+		//float turnRoundDegree = 20;
+		//float turnRoundVal = Mathf::Cos(turnRoundDegree);
 
-		mSpeed += acc * elaplseSeconds;
-		if (mSpeed > 0.2f)
-			mSpeed = 0.2f;
+		//bool goMoving = false;
+		//float leftSpeedA = 0.0f;
+		//float rightSpeedA = 0.0f;
+		//if (cross.Z() >= 0.0f)
+		//{
+		//	if (dotDirVal >= turnRoundVal)
+		//	{
+		//		// go right
+		//		goMoving = true;
 
-		float mega = 0.0f;
-		AVector cross = mForce.Cross(mDirection);
-		if (cross.Z() < 0.0f)
+		//		//rightSpeedA = MAX_SPEED - allSpdHor;
+		//		//leftSpeedA = rightSpeedA + allSpdHor;
+		//	}
+		//	else
+		//	{
+		//		leftSpeedA = MAX_SPEED;
+		//		rightSpeedA = -MAX_SPEED;
+		//	}
+
+		//}
+		//else
+		//{
+		//	if (dotDirVal >= turnRoundVal)
+		//	{
+		//		goMoving = true;
+
+		//		//leftSpeedA = MAX_SPEED - allSpdHor;
+		//		//rightSpeedA = leftSpeedA + allSpdHor;
+		//	}
+		//	else
+		//	{
+		//		leftSpeedA = -MAX_SPEED;
+		//		rightSpeedA = MAX_SPEED;
+		//	}
+		//}
+
+		//if (!goMoving)
+		//{
+		//	mLeftSpeed = leftSpeedA;
+		//	mRightSpeed = rightSpeedA;
+		//}
+		//else
 		{
-			mega = radForce;
+			APoint curWayPoint = steerPath.CurrentWaypoint();
+			Vector2f curWayPoint2 = curWayPoint.To2();
+
+			std::vector<Vector2f> obsts = GetNearObst(0.8f);
+
+			RobotState ste = _GetCurRobotState();
+			std::vector<float> selectPlan = DynamicWindowApproach(ste,
+				curWayPoint2, obsts, outRobotStates);
+
+			float leftSpeed = selectPlan[0];
+			float rightSpeed = selectPlan[1];
+			selectIndex = selectPlan[2];
+
+			mLeftSpeed = leftSpeed;
+			mRightSpeed = rightSpeed;
 		}
-		else
-		{
-			mega = -radForce;
-		}
 
-		if (mega < -MAX_OMEGA)
-			mega = -MAX_OMEGA;
-		if (mega > MAX_OMEGA)
-			mega = MAX_OMEGA;
-
-		mRobotState = Motion(mRobotState, mSpeed, mega, elaplseSeconds);
-
-		mPosition = APoint(mRobotState.Pos.X(), mRobotState.Pos.Y(), 0.0f);
-		mRotationRad = mRobotState.orientation;
+		_RunSpeed(elaplseSeconds);
 	}
 	else
+	{ 
+		mLeftSpeed = 0;
+		mRightSpeed = 0;
+	}
+
+	// draw paths
+	for (int i = 0; i < (int)outRobotStates.size(); i++)
 	{
-		mSpeed = 0.0f;
-		mRobotState.omega = 0.0f;
+		std::vector<RobotState> states = outRobotStates[i];
+		if (states.size() > 1)
+		{
+			Float4 addColor = Float4::GREEN;
+			if (selectIndex == i)
+				addColor = Float4::RED;
+
+			for (int j = 0; j < (int)states.size() - 1; j++)
+			{
+				RobotState roS0 = states[j];
+				RobotState roS1 = states[j + 1];
+
+				APoint pos0(roS0.Pos.X(), roS0.Pos.Y(), 0.0f);
+				APoint pos1(roS1.Pos.X(), roS1.Pos.Y(), 0.0f);
+
+				EngineSceneCanvas::GetSingleton().AddDebugLine(pos0, pos1,
+					addColor);
+			}
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -1444,7 +1432,7 @@ void Robot::GoTarget(const APoint &targetPos, PathType type)
 	mGoTargetPos = targetPos;
 
 	std::vector<PathingNode*> vec;
-	mAIAgentPath.Clear();
+	AISteeringPath aiAgentPath;
 
 	if (type == PT_A)
 	{
@@ -1460,7 +1448,7 @@ void Robot::GoTarget(const APoint &targetPos, PathType type)
 				PathingNode *node = *it;
 
 				APoint pos = node->GetPos();
-				mAIAgentPath.AddWayPoint(pos);
+				aiAgentPath.AddWayPoint(pos);
 
 				SetLineValueAtPos(node->GetPos(), 0.05f, 200.0f);
 			}
@@ -1481,7 +1469,7 @@ void Robot::GoTarget(const APoint &targetPos, PathType type)
 
 	if (mAgent)
 	{
-		mAgent->SetPath(mAIAgentPath);
+		mAgent->SetPath(aiAgentPath);
 	}
 }
 //----------------------------------------------------------------------------
@@ -1533,23 +1521,30 @@ void Robot::_UpdateAdjustDirection(const AVector &dir)
 	}
 }
 //----------------------------------------------------------------------------
-RobotState Robot::Motion(RobotState curState, float velocity, float omega,
-	float elapsedSeconds)
+RobotState Robot::Motion(RobotState curState, float leftSpeed, 
+	float rightSpeed, float elapsedSeconds)
 {
 	RobotState afterMoveState;
 
-	afterMoveState.Pos.X() = curState.Pos.X() - velocity*elapsedSeconds*Mathf::Sin(curState.orientation);
-	afterMoveState.Pos.Y() = curState.Pos.Y() + velocity*elapsedSeconds*Mathf::Cos(curState.orientation);
+	float rotSpeed = rightSpeed - leftSpeed;
+	float rotDist = rotSpeed * elapsedSeconds;
+	float rotRad = (rotDist / ROBOT_RADIUS);
 
-	afterMoveState.orientation = curState.orientation + omega * DT;
-	afterMoveState.velocity = velocity;
-	afterMoveState.omega = omega;
+	afterMoveState.Orientation = curState.Orientation + rotRad;
+	afterMoveState.LeftSpeed = leftSpeed;
+	afterMoveState.RightSpeed = rightSpeed;
+
+	float speed = (leftSpeed + rightSpeed) / 2.0f;
+
+	Vector2f direction(-Mathf::Sin(afterMoveState.Orientation), Mathf::Cos(afterMoveState.Orientation));
+	direction.Normalize();
+	afterMoveState.Pos = curState.Pos + direction * speed * elapsedSeconds;
 
 	return afterMoveState;
 }
 //----------------------------------------------------------------------------
-std::vector<RobotState> Robot::GenerateTraj(RobotState initState, float vel,
-	float ome)
+std::vector<RobotState> Robot::GenerateTraj(RobotState initState,
+	float leftSpeed, float rightSpeed)
 {
 	RobotState tempState = initState;
 	vector<RobotState> trajectories;
@@ -1557,7 +1552,7 @@ std::vector<RobotState> Robot::GenerateTraj(RobotState initState, float vel,
 	trajectories.push_back(initState);
 	while (time < PREDICT_TIME)
 	{
-		tempState = Motion(tempState, vel, ome, DT);
+		tempState = Motion(tempState, leftSpeed, rightSpeed, DT);
 		trajectories.push_back(tempState);
 		time += DT;
 	}
@@ -1568,45 +1563,55 @@ std::vector<RobotState> Robot::GenerateTraj(RobotState initState, float vel,
 std::vector<float> Robot::CreateDW(RobotState curState)
 {
 	std::vector<float> dw(4);
-	float tmpMinVelocity = curState.velocity - MAX_ACCELERATE*DT;
-	float tmpMaxVelocity = curState.velocity + MAX_ACCELERATE*DT;
-	float tmpMinOmega = curState.omega - MAX_ACCOMEGA*DT;
-	float tmpMaxOmega = curState.omega + MAX_ACCOMEGA*DT;
+	float tmpMinLeftSpeed = curState.LeftSpeed - MAX_ACCELERATE*DT;
+	float tmpMaxLeftSpeed = curState.LeftSpeed + MAX_ACCELERATE*DT;
 
-	dw[0] = tmpMinVelocity > MIN_VELOCITY ? tmpMinVelocity : MIN_VELOCITY;
-	dw[1] = tmpMaxVelocity < MAX_VELOCITY ? tmpMaxVelocity : MAX_VELOCITY;
-	dw[2] = tmpMinOmega;
-	dw[3] = tmpMaxOmega < MAX_OMEGA ? tmpMaxOmega : MAX_OMEGA;
+	float tmpMinRightSpeed = curState.RightSpeed - MAX_ACCELERATE*DT;
+	float tmpMaxRightSpeed = curState.RightSpeed + MAX_ACCELERATE*DT;
+
+	dw[0] = Mathf::Clamp(tmpMinLeftSpeed, MIN_SPEED, MAX_SPEED);
+	dw[1] = Mathf::Clamp(tmpMaxLeftSpeed, MIN_SPEED, MAX_SPEED);
+
+	dw[2] = Mathf::Clamp(tmpMinRightSpeed, MIN_SPEED, MAX_SPEED);
+	dw[3] = Mathf::Clamp(tmpMaxRightSpeed, MIN_SPEED, MAX_SPEED);
 
 	return dw;
 }
 //----------------------------------------------------------------------------
+RobotState Robot::_GetCurRobotState()
+{
+	RobotState state;
+	state.Pos = mPosition.To2();
+	state.LeftSpeed = mLeftSpeed;
+	state.RightSpeed = mRightSpeed;
+	state.Orientation = mRotationRad;
+
+	return state;
+}
+//----------------------------------------------------------------------------
 float Robot::CalcHeading(RobotState rState, const Vector2f &goal)
 {
-	float heading;
+	AVector diff = APoint(goal.X(), goal.Y(), 0.0f)
+		- APoint(rState.Pos.X(), rState.Pos.Y(), 0.0f);
+	float diffLength = diff.Normalize();
+	if (diffLength < 0.01f)
+		return 180.0f;
 
-	float dy = goal.Y() - rState.Pos.Y();
-	float dx = goal.X() - rState.Pos.X();
+	AVector dir = AVector(-Mathf::Sin(rState.Orientation), 
+		Mathf::Cos(rState.Orientation), 0.0f);
+	dir.Normalize();
 
-	float goalTheta = atan2(-dx, dy);
-	float targetTheta;
-	if (goalTheta > rState.orientation)
-	{
-		targetTheta = goalTheta - rState.orientation;
-	}
-	else
-	{
-		targetTheta = rState.orientation - goalTheta;
-	}
+	float dotVal = diff.Dot(dir);
 
-	heading = targetTheta / M_PI * 180;
+	float rad = Mathf::ACos(dotVal);
+	float degree = rad * Mathf::RAD_TO_DEG;
 
-	return heading;
+	return 180.0f - degree;
 }
 //----------------------------------------------------------------------------
 float Robot::CalcClearance(RobotState rState, std::vector<Vector2f> &obs)
 {
-	float dist = 100;
+	float dist = 100.0f;
 	float distTemp;
 	int numObs = (int)obs.size();
 	for (int i = 0; i < numObs; i++)
@@ -1616,7 +1621,7 @@ float Robot::CalcClearance(RobotState rState, std::vector<Vector2f> &obs)
 
 		distTemp = length - ROBOT_RADIUS;
 
-		if (dist > distTemp)
+		if (distTemp < dist)
 		{
 			dist = distTemp;
 		}
@@ -1642,76 +1647,94 @@ float CalcBreakingDist(float velo)
 	return stopDist;
 }
 //----------------------------------------------------------------------------
-Vector2f Robot::DynamicWindowApproach(RobotState rState,
+std::vector<float> Robot::DynamicWindowApproach(RobotState rState,
 	const Vector2f &target, std::vector<Vector2f> &obstacle, 
 	std::vector<std::vector<RobotState> > &outRobotStates)
 {
-	// 0:minVelocity, 1:maxVelocity, 2:minOmega, 3:maxOmega
+	// 0:leftMin, 1:leftMax, 2:rightMin, 3:rightMax
 	std::vector<float> velocityAndOmegaRange = CreateDW(rState);
+
 	std::vector<EvaluationPara> evalParas;
 	float sumHeading = 0;
 	float sumClearance = 0;
-	float sumVelocity = 0;
+	float sumSpeed = 0;
 
-	for (double v = velocityAndOmegaRange[0]; v < velocityAndOmegaRange[1]; v += SAMPLING_VELOCITY)
+	for (float l = velocityAndOmegaRange[0]; l < velocityAndOmegaRange[1]; l += SAMPLING_SPEED)
 	{
-		for (double w = velocityAndOmegaRange[2]; w < velocityAndOmegaRange[3]; w += SAMPLING_OMEGA)
+		for (double r = velocityAndOmegaRange[2]; r < velocityAndOmegaRange[3]; r += SAMPLING_SPEED)
 		{
-			vector<RobotState> trajectories = GenerateTraj(rState, v, w);
+			std::vector<RobotState> trajectories = GenerateTraj(rState, l, r);
 
-			//评价参数
-			EvaluationPara tempEvalPara;
-			float tempClearance = CalcClearance(trajectories.back(), obstacle);
-			float stopDist = CalcBreakingDist(v);
+			RobotState stateBack = trajectories.back();
 
-			if (tempClearance > stopDist)
+			float speed = (l + r) / 2.0f;
+
+			float tempClearance = CalcClearance(stateBack, obstacle);
+			float stopDist = CalcBreakingDist(speed);
+
+			if (tempClearance > 0.0f)
 			{
 				outRobotStates.push_back(trajectories);
 
-				RobotState stateBack = trajectories.back();
+				EvaluationPara tempEvalPara;
+				tempEvalPara.Index = (int)outRobotStates.size() - 1;
 
-				tempEvalPara.heading = CalcHeading(stateBack, target);
-				tempEvalPara.clearance = tempClearance;
-				tempEvalPara.velocity = abs(v);
-				tempEvalPara.v = v;
-				tempEvalPara.w = w;
-				tempEvalPara.Pos = stateBack.Pos;
+				tempEvalPara.DiffHeading = CalcHeading(stateBack, target);
 
-				sumHeading = sumHeading + tempEvalPara.heading;
-				sumClearance = sumHeading + tempEvalPara.clearance;
-				sumVelocity = sumVelocity + tempEvalPara.velocity;
+				tempEvalPara.Clearance = tempClearance;
+				tempEvalPara.Leftspped = l;
+				tempEvalPara.RightSpeed = r;
+				tempEvalPara.Speed = speed;
+
+				sumSpeed += speed;
+				sumHeading += tempEvalPara.DiffHeading;
+				sumClearance += tempClearance;
 
 				evalParas.push_back(tempEvalPara);
 			}
 		}
 	}
 
-	//平滑评价参数并选择最优速度
-	float selectedVelocity = 0;
-	float selectedOmega = 0;
-	Vector2f selectedPos;
-	float G = 0;
-	for (vector<EvaluationPara>::iterator i = evalParas.begin(); i < evalParas.end(); i++)
+	float selectedLeftSpeed = 0;
+	float selectedRightSpeed = 0;
+	int selectIndex = -1;
+
+	std::vector<float> selVelocity;
+	selVelocity.resize(3);
+
+	if (evalParas.empty())
 	{
-		float smoothHeading = i->heading / sumHeading;
-		float smoothClearance = i->clearance / sumClearance;
-		float smoothVelocity = i->velocity / sumVelocity;
-
-		float tempG = WEIGHT_HEADING*smoothHeading + WEIGHT_CLEARANCE*smoothClearance + WEIGHT_VELOCITY*smoothVelocity;
-
-		if (tempG > G)
+		/*_*/
+	}
+	else
+	{
+		float G = 0;
+		EvaluationPara selectEva;
+		for (vector<EvaluationPara>::iterator i = evalParas.begin(); i < evalParas.end(); i++)
 		{
-			G = tempG;
-			selectedVelocity = i->v;
-			selectedOmega = i->w;
-			selectedPos = i->Pos;
+			float smoothHeading = i->DiffHeading / sumHeading;
+			float smoothClearance = i->Clearance / sumClearance;
+			float smoothVelocity = i->Speed / sumSpeed;
+
+			float tempG = WEIGHT_HEADING*smoothHeading + WEIGHT_CLEARANCE*smoothClearance + WEIGHT_VELOCITY*smoothVelocity;
+			(*i).LastValue = tempG;
+
+			if (tempG > G)
+			{
+				G = tempG;
+				selectedLeftSpeed = i->Leftspped;
+				selectedRightSpeed = i->RightSpeed;
+				selectIndex = (*i).Index;
+
+				selectEva = *i;
+			}
 		}
 	}
 
-	Vector2f selVelocity;
-	selVelocity[0] = selectedVelocity;
-	selVelocity[1] = selectedOmega;
+	selVelocity[0] = selectedLeftSpeed;
+	selVelocity[1] = selectedRightSpeed;
+	selVelocity[2] = selectIndex;
 
-	return selectedPos;
+	return selVelocity;
 }
 //----------------------------------------------------------------------------

@@ -92,7 +92,7 @@ namespace PX2
 		float        mViewDistance;
 
 		//pointer to any current path
-		AIAgentPath mPath;
+		AISteeringPath mPath;
 
 		float        mWaypointSeekDistSq;
 		Vector3f     m_vOffset;
@@ -157,6 +157,7 @@ namespace PX2
 		void SetOffset(const Vector3f offset) { m_vOffset = offset; }
 		Vector3f GetOffset()const { return m_vOffset; }
 		void SetPath(std::list<Vector3f> new_path) { mPath.Set(new_path); }
+		AISteeringPath &GetPath() { return mPath; }
 
 		Vector3f Force()const { return m_vSteeringForce; }
 

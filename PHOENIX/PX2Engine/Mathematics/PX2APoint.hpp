@@ -73,8 +73,8 @@ namespace PX2
 		*/
 		float Dot (const AVector& vec) const;
 
-		Vector2f To2();
-		Vector3f To3();
+		Vector2f To2() const;
+		Vector3f To3() const;
 
 		// ÌØ¶¨Öµ
 		static const APoint ORIGIN;  // (0,0,0,1)

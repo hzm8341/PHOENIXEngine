@@ -241,7 +241,7 @@ void AIAgent::SetMaxSpeed(float speed)
 	mMaxSpeed = Mathf::Max(0.0f, speed);
 }
 //----------------------------------------------------------------------------
-void AIAgent::SetPath(const AIAgentPath& path)
+void AIAgent::SetPath(const AISteeringPath& path)
 {
 	mSteeringBehavior->SetPath(path.GetPath());
 	mIsHasPath = true;

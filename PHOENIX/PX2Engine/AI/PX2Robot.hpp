@@ -135,7 +135,6 @@ namespace PX2
 		void _LargerMapObst(Texture2D *tex2D);
 		void _SetPixelVal(Texture2D *tex2D, unsigned char *toData, int indexY, int indexX);
 		void _UpdateMapObst();
-		void _UpdateMapObstDyn(const APoint &pos);
 		void _SetGraphValue(int x, int y, float val);
 
 		RoleType mRoleType;
@@ -223,7 +222,6 @@ namespace PX2
 
 		PathingGraphPtr mPathGraph;
 		PathPlanPtr mCurPathPlan;
-		AIAgentPath mAIAgentPath;
 		APoint mGoTargetPos;
 		APoint mGoingPos;
 
@@ -252,6 +250,8 @@ namespace PX2
 	private:
 		void _UpdateVirtualRobot(float elaplseSeconds);
 		void _UpdateVirtualRobot1(float elaplseSeconds);
+		void _RunSpeed(float elaplseSeconds);
+		std::vector<Vector2f > GetNearObst(float radius = 1.5f);
 
 	private:
 		RRTRobot *mRRTRobot;
@@ -259,16 +259,18 @@ namespace PX2
 		std::list<RRTobstacles*> mObsts;
 
 	public:
-		Vector2f DynamicWindowApproach(RobotState rState, const Vector2f &target,
+		std::vector<float> DynamicWindowApproach(RobotState rState, const Vector2f &target,
 			std::vector<Vector2f> &obstacle, std::vector<std::vector<RobotState> > &outRobotStates);
 
-		RobotState Motion(RobotState curState, float velocity, float omega, float elapsedSeconds);
-		std::vector<RobotState> GenerateTraj(RobotState initState, float vel, float ome);
+		RobotState Motion(RobotState curState, float leftSpeed, float rightSpeed, float elapsedSeconds);
+		std::vector<RobotState> GenerateTraj(RobotState initState, float leftSpeed, float rightSpeed);
 		std::vector<float> CreateDW(RobotState curState);
 		float CalcClearance(RobotState rState, std::vector<Vector2f> &obsts);
 		float CalcHeading(RobotState rState, const Vector2f &goal);
 
 	private:
+		RobotState _GetCurRobotState();
+
 		RobotState mRobotState;
 	};
 

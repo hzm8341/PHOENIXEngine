@@ -67,7 +67,7 @@ mPickedWidget(0)
 	SetBrightnessSelfCtrled(true);
 
 	VertexFormat *vfPoly = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PCT1);
-	mDebugPolyVB = new0 VertexBuffer(1000, vfPoly->GetStride(), Buffer::BU_DYNAMIC);
+	mDebugPolyVB = new0 VertexBuffer(20000, vfPoly->GetStride(), Buffer::BU_DYNAMIC);
 	mDebugPoly = new0 Polysegment(vfPoly, mDebugPolyVB, false);
 	mDebugPoly->SetNumSegments(0);
 	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();
@@ -1331,17 +1331,24 @@ void Canvas::ClearDebugLine()
 void Canvas::AddDebugLine(const APoint &fromPos, const APoint &toPos,
 	const Float4 &color)
 {
+	int maxSeg = mDebugPoly->GetMaxNumSegments();
 	int numPoly = mDebugPoly->GetNumSegments();
 
-	VertexBufferAccessor vba(mDebugPoly);
+	if (numPoly < maxSeg)
+	{
+		VertexBufferAccessor vba(mDebugPoly);
 
-	int index = numPoly * 2;
-	vba.Position<Float3>(index) = fromPos;
-	vba.Color<Float4>(0, index) = color;
-	vba.Position<Float3>(index + 1) = toPos;
-	vba.Color<Float4>(0, index + 1) = color;
+		int index = numPoly * 2;
+		vba.Position<Float3>(index) = fromPos;
+		vba.Color<Float4>(0, index) = color;
+		vba.Position<Float3>(index + 1) = toPos;
+		vba.Color<Float4>(0, index + 1) = color;
 
-	mDebugPoly->SetNumSegments(numPoly + 1);
+		mDebugPoly->SetNumSegments(numPoly + 1);
+	}
+	else {
+		assertion(false, "not enoughSeg!");
+	}
 }
 //----------------------------------------------------------------------------
 
@@ -1431,7 +1438,7 @@ void Canvas::PostLink()
 	SizeNode::PostLink();
 
 	VertexFormat *vfPoly = PX2_GR.GetVertexFormat(GraphicsRoot::VFT_PC);
-	mDebugPolyVB = new0 VertexBuffer(1000, vfPoly->GetStride(), Buffer::BU_DYNAMIC);
+	mDebugPolyVB = new0 VertexBuffer(20000, vfPoly->GetStride(), Buffer::BU_DYNAMIC);
 	mDebugPoly = new0 Polysegment(vfPoly, mDebugPolyVB, false);
 	mDebugPoly->SetNumSegments(0);
 	MaterialInstance *mi = VertexColor4Material::CreateUniqueInstance();

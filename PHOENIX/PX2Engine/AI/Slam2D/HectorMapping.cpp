@@ -7,7 +7,7 @@ HectorMapping::HectorMapping(): lastGetMapUpdateIndex(-100)
 {
   mIsUpdateMap = true;
 
-  p_map_resolution_ = 0.02;//0.08;//0.025; // 0.08
+  p_map_resolution_ = 0.01;//0.08;//0.025; // 0.08
   p_map_size_ = 1024;
   p_map_start_x_ = 0.5; 
   p_map_start_y_ = 0.5;

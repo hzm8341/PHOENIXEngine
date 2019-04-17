@@ -7,12 +7,34 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-void AIAgentPath::AddWayPoint(const APoint &new_point)
+AISteeringPath::AISteeringPath() :
+	m_bLooped(false) 
+{
+}
+//----------------------------------------------------------------------------
+AISteeringPath::~AISteeringPath() 
+{
+}
+//----------------------------------------------------------------------------
+Vector3f AISteeringPath::CurrentWaypoint()const 
+{ 
+	return *curWaypoint;
+}
+//----------------------------------------------------------------------------
+bool AISteeringPath::Finished()
+{ 
+	if (mWayPoints.empty())
+		return true;
+
+	return !(curWaypoint != mWayPoints.end()); 
+}
+//----------------------------------------------------------------------------
+void AISteeringPath::AddWayPoint(const APoint &new_point)
 {
 	mWayPoints.push_back(Vector3f(new_point.X(), new_point.Y(), 0.0f));
 }
 //----------------------------------------------------------------------------
-void AIAgentPath::Update()
+void AISteeringPath::Update()
 {
 	if ((int)mWayPoints.size() > 0)
 	{

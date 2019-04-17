@@ -10,14 +10,14 @@
 namespace PX2
 {
 
-	class PX2_ENGINE_ITEM AIAgentPath
+	class PX2_ENGINE_ITEM AISteeringPath
 	{
 	public:
-		AIAgentPath() :m_bLooped(false) {}
-		~AIAgentPath() {}
+		AISteeringPath();
+		~AISteeringPath();
 
-		Vector3f CurrentWaypoint()const { return *curWaypoint; }
-		bool Finished() { return !(curWaypoint != mWayPoints.end()); }
+		Vector3f CurrentWaypoint() const;
+		bool Finished();
 		inline void SetNextWaypoint();
 
 		void LoopOn() { m_bLooped = true; }
@@ -26,7 +26,7 @@ namespace PX2
 		void AddWayPoint(const APoint &new_point);
 
 		void Set(std::list<Vector3f> new_path) { mWayPoints = new_path; curWaypoint = mWayPoints.begin(); }
-		void Set(const AIAgentPath& path) { mWayPoints = path.GetPath(); curWaypoint = mWayPoints.begin(); }
+		void Set(const AISteeringPath& path) { mWayPoints = path.GetPath(); curWaypoint = mWayPoints.begin(); }
 
 		void Clear() { mWayPoints.clear(); }
 
@@ -41,7 +41,7 @@ namespace PX2
 
 	};
 	//----------------------------------------------------------------------------
-	inline void AIAgentPath::SetNextWaypoint()
+	inline void AISteeringPath::SetNextWaypoint()
 	{
 		assert(mWayPoints.size() > 0);
 

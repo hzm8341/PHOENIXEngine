@@ -58,7 +58,7 @@ namespace PX2
 		void SetMaxSpeed(float speed);
 		float GetMaxSpeed() const;
 
-		void SetPath(const AIAgentPath& path);
+		void SetPath(const AISteeringPath& path);
 		void RemovePath();
 		bool IsPathOver() const;
 

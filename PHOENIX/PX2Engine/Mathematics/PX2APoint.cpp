@@ -200,12 +200,12 @@ float APoint::Dot (const AVector& vec) const
 	return mTuple[0]*vec[0] + mTuple[1]*vec[1] + mTuple[2]*vec[2];
 }
 //----------------------------------------------------------------------------
-Vector2f APoint::To2()
+Vector2f APoint::To2() const
 {
 	return Vector2f(mTuple[0], mTuple[1]);
 }
 //----------------------------------------------------------------------------
-Vector3f APoint::To3()
+Vector3f APoint::To3() const
 {
 	return Vector3f(mTuple[0], mTuple[1], mTuple[2]);
 }
