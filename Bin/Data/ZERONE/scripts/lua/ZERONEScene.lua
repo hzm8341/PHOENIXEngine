@@ -70,11 +70,10 @@ function zo_Scene()
 
     -- actor rect
     local actorRect = PX2_CREATER:CreateActor_InfinitePlane(40.0)
-    actorRect.LocalTransform:SetTranslateZ(-0.001)
+    actorRect.LocalTransform:SetTranslateZ(-0.01)
     scene:AttachChild(actorRect)
     actorRect:SetTexture("Data/ZERONE/images/floor.png", Float4(0.0, 0.0, 4.0, 4.0))
 
-    
     -- voxel
     PX2_VOXELM:Initlize(VoxelManager.T_TEX)
     local vs = VoxelSection:New()

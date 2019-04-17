@@ -32,9 +32,9 @@ using namespace PX2;
 #define MAX_ACCOMEGA 50.0 / 180.0 * M_PI		//动态窗口：最大角加速度
 #define SAMPLING_SPEED 0.01					//速度采样间隔
 #define DT 0.1									//采样时间间隔
-#define PREDICT_TIME 6.0						//预测时间
+#define PREDICT_TIME 3.0						//预测时间
 
-#define WEIGHT_HEADING 0.15						//HEADING权重
+#define WEIGHT_HEADING 0.05						//HEADING权重
 #define WEIGHT_CLEARANCE 0.2					//CLEARANCE权重
 #define WEIGHT_VELOCITY 0.1						//VELOCITY权重
 
@@ -1318,25 +1318,25 @@ void Robot::_UpdateVirtualRobot1(float elaplseSeconds)
 	int selectIndex = -1;
 	if (!steerPath.Finished())
 	{
-		//Vector3f targetPos = steerPath.CurrentWaypoint();
-		//AVector diff = targetPos - mPosition;
-		//float distance = diff.Normalize();
-		//float dotDirVal = diff.Dot(mDirection);
-		//float radForce = Mathf::ACos(dotDirVal);
-		//float sinVal = Mathf::Sin(radForce);
-		//float cosVal = Mathf::Cos(radForce);
+		Vector3f targetPos = steerPath.CurrentWaypoint();
+		AVector diff = targetPos - mPosition;
+		float distance = diff.Normalize();
+		float dotDirVal = diff.Dot(mDirection);
+		float radForce = Mathf::ACos(dotDirVal);
+		float sinVal = Mathf::Sin(radForce);
+		float cosVal = Mathf::Cos(radForce);
 
-		//float allSpdHor = MAX_SPEED * sinVal;
-		//allSpdHor = Mathf::FAbs(allSpdHor);
+		float allSpdHor = MAX_SPEED * sinVal;
+		allSpdHor = Mathf::FAbs(allSpdHor);
 
-		//AVector cross = diff.Cross(mDirection);
+		AVector cross = diff.Cross(mDirection);
 
-		//float turnRoundDegree = 20;
-		//float turnRoundVal = Mathf::Cos(turnRoundDegree);
+		float turnRoundDegree = 20;
+		float turnRoundVal = Mathf::Cos(turnRoundDegree);
 
-		//bool goMoving = false;
-		//float leftSpeedA = 0.0f;
-		//float rightSpeedA = 0.0f;
+		bool goMoving = false;
+		float leftSpeedA = 0.0f;
+		float rightSpeedA = 0.0f;
 		//if (cross.Z() >= 0.0f)
 		//{
 		//	if (dotDirVal >= turnRoundVal)
@@ -1344,8 +1344,8 @@ void Robot::_UpdateVirtualRobot1(float elaplseSeconds)
 		//		// go right
 		//		goMoving = true;
 
-		//		//rightSpeedA = MAX_SPEED - allSpdHor;
-		//		//leftSpeedA = rightSpeedA + allSpdHor;
+		//		rightSpeedA = MAX_SPEED - allSpdHor;
+		//		leftSpeedA = rightSpeedA + allSpdHor;
 		//	}
 		//	else
 		//	{
@@ -1360,8 +1360,8 @@ void Robot::_UpdateVirtualRobot1(float elaplseSeconds)
 		//	{
 		//		goMoving = true;
 
-		//		//leftSpeedA = MAX_SPEED - allSpdHor;
-		//		//rightSpeedA = leftSpeedA + allSpdHor;
+		//		leftSpeedA = MAX_SPEED - allSpdHor;
+		//		rightSpeedA = leftSpeedA + allSpdHor;
 		//	}
 		//	else
 		//	{
@@ -1619,7 +1619,7 @@ float Robot::CalcClearance(RobotState rState, std::vector<Vector2f> &obs)
 		Vector2f diff = rState.Pos - obs[i];
 		float length = diff.Length();
 
-		distTemp = length - ROBOT_RADIUS;
+		distTemp = length - ROBOT_RADIUS * 2;
 
 		if (distTemp < dist)
 		{
@@ -1672,7 +1672,7 @@ std::vector<float> Robot::DynamicWindowApproach(RobotState rState,
 			float tempClearance = CalcClearance(stateBack, obstacle);
 			float stopDist = CalcBreakingDist(speed);
 
-			if (tempClearance > 0.0f)
+			if (tempClearance > stopDist)
 			{
 				outRobotStates.push_back(trajectories);
 

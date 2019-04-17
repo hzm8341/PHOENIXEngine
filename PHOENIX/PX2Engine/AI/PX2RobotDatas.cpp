@@ -143,26 +143,26 @@ std::vector<unsigned char> RobotMapData::_ExtendLarger(
 //----------------------------------------------------------------------------
 void RobotMapData::ConvertOriginToUsing(bool isSimple)
 {
-	Map2DUsing = _ExtendLarger(Map2DOrigin, true);
+	//Map2DUsing = _ExtendLarger(Map2DOrigin, true);
 
-	//if (!isSimple)
-	//{
-	//	std::vector<unsigned char> mapping = _ExtendLarger(Map2DOrigin, true);
-	//	std::vector<unsigned char> mapping1 = _ExtendLarger(mapping, false);
-	//	std::vector<unsigned char> mapping2 = _ExtendLarger(mapping1, false);
-	//	std::vector<unsigned char> mapping3 = _ExtendLarger(mapping2, false);
-	//	std::vector<unsigned char> mapping4 = _ExtendLarger(mapping3, false);
-	//	std::vector<unsigned char> mapping5 = _ExtendLarger(mapping4, false);
-	//	std::vector<unsigned char> mapping6 = _ExtendLarger(mapping5, false);
-	//	std::vector<unsigned char> mapping7 = _ExtendLarger(mapping6, false);
-	//	std::vector<unsigned char> mapping8 = _ExtendLarger(mapping7, false);
+	if (!isSimple)
+	{
+		std::vector<unsigned char> mapping = _ExtendLarger(Map2DOrigin, true);
+		std::vector<unsigned char> mapping1 = _ExtendLarger(mapping, false);
+		std::vector<unsigned char> mapping2 = _ExtendLarger(mapping1, false);
+		std::vector<unsigned char> mapping3 = _ExtendLarger(mapping2, false);
+		std::vector<unsigned char> mapping4 = _ExtendLarger(mapping3, false);
+		std::vector<unsigned char> mapping5 = _ExtendLarger(mapping4, false);
+		std::vector<unsigned char> mapping6 = _ExtendLarger(mapping5, false);
+		std::vector<unsigned char> mapping7 = _ExtendLarger(mapping6, false);
+		std::vector<unsigned char> mapping8 = _ExtendLarger(mapping7, false);
 
-	//	Map2DUsing = mapping8;
-	//}
-	//else 
-	//{
-	//	Map2DUsing = Map2DOrigin;
-	//}
+		Map2DUsing = mapping8;
+	}
+	else
+	{
+		Map2DUsing = Map2DOrigin;
+	}
 }
 //----------------------------------------------------------------------------
 void RobotMapData::_SetMapUsingData(std::vector<unsigned char> &maping, 

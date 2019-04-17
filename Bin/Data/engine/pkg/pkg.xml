@@ -1,5 +1,5 @@
 <rootnode>
-	<enums num="91">
+	<enums num="92">
 		<enum name="FunParamType">
 			<enum_item itemstr="FPT_NONE"/>
 			<enum_item itemstr="FPT_CHAR"/>
@@ -9335,6 +9335,11 @@
 				<enum_item itemstr="RT_CONNECTOR_CALCULATE"/>
 				<enum_item itemstr="RT_MAX_TYPE"/>
 			</enum>
+			<enum name="PathType">
+				<enum_item itemstr="PT_A"/>
+				<enum_item itemstr="PT_RRT"/>
+				<enum_item itemstr="PT_MAX_TYPE"/>
+			</enum>
 			<function name="Robot" funtype="class_constructor" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false"/>
 			<function name="Robot" funtype="class_destructor" is_operator="false" is_purevirtual="false" is_virtual="true" is_inline="false" is_const="false"/>
 			<function name="Update" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
@@ -9457,6 +9462,7 @@
 			<function name="GoTarget" funtype="class_member" is_operator="false" is_purevirtual="false" is_virtual="false" is_inline="false" is_const="false">
 				<param paramstr="void " is_retrun="true" type_str="void" valuename_str="" defaultvalue_Str="" is_pointer="false" is_ref="false" is_const="false"/>
 				<param paramstr="const APoint &amp;targetPos" is_retrun="false" type_str="APoint" valuename_str="targetPos" defaultvalue_Str="" is_pointer="false" is_ref="true" is_const="true"/>
+				<param paramstr="PathType type= PT_A" is_retrun="false" type_str="PathType" valuename_str="type" defaultvalue_Str="PT_A" is_pointer="false" is_ref="false" is_const="false"/>
 			</function>
 		</class>
 		<class name="AIAgentBase" parentname="Controller" singletonname="">

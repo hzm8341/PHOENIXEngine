@@ -397,7 +397,7 @@ function ZERO_MapPicBoxCallback(ptr)
             _IsPressed = false
             if not _IsMoved then
                 local pos = APoint(zo_MapPickPos.x, zo_MapPickPos.y, 0.0)
-                PX2_ROBOT:GoTarget(pos)
+                PX2_ROBOT:GoTarget(pos, Robot.PT_A)
             end
         elseif UIPT_MOVED == lastPickData.PickType then
             _IsMoved = true
