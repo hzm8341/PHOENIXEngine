@@ -96,6 +96,8 @@ namespace PX2
 		void ApplyForce(const AVector &force);
 		void ApplyForcing(const AVector &force);
 
+		SteeringBehavior *GetSteeringBehavior();
+
 	public_internal:
 		void SetAIAgentWorld(AIAgentWorld *agentWorld);
 

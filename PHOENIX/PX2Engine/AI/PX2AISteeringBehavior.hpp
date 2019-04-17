@@ -25,6 +25,8 @@ namespace PX2
 
 		enum summing_method { weighted_average, prioritized };
 
+		std::vector<AIAgentObject*> GetNearbyObjects(float radius);
+
 	private:
 
 		enum behavior_type
@@ -119,6 +121,7 @@ namespace PX2
 		Vector3f Evade(const AIAgent* agent);
 		Vector3f Wander();
 		Vector3f ObstacleAvoidance(const std::vector<AIAgentObject*>& obstacles);
+
 		Vector3f WallAvoidance(const std::vector<Wall2D> &walls);
 		Vector3f FollowPath();
 

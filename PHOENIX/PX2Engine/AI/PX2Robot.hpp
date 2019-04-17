@@ -171,6 +171,7 @@ namespace PX2
 	public:
 		APoint mPosition;
 		APoint mLastPostion;
+		float mRotationRad;
 		AVector mDirection;
 		AVector mUp;
 		AVector mRight;
@@ -249,14 +250,8 @@ namespace PX2
 		Smoother<float> *mRightSmoother;
 
 	private:
-		void _CalSpeed(const Vector2f &dir, float power);
-		void _MoveTypeCal(const Vector2f &dir, float strength);
 		void _UpdateVirtualRobot(float elaplseSeconds);
-
-		int mDragingLeftMoveType;
-		float mDragingLeftMoveSpeed;
-		int mDragingRightMoveType;
-		float mDragingRightMoveSpeed;
+		void _UpdateVirtualRobot1(float elaplseSeconds);
 
 	private:
 		RRTRobot *mRRTRobot;
@@ -265,9 +260,9 @@ namespace PX2
 
 	public:
 		Vector2f DynamicWindowApproach(RobotState rState, const Vector2f &target,
-			std::vector<Vector2f> &obstacle);
+			std::vector<Vector2f> &obstacle, std::vector<std::vector<RobotState> > &outRobotStates);
 
-		RobotState Motion(RobotState curState, float velocity, float omega);
+		RobotState Motion(RobotState curState, float velocity, float omega, float elapsedSeconds);
 		std::vector<RobotState> GenerateTraj(RobotState initState, float vel, float ome);
 		std::vector<float> CreateDW(RobotState curState);
 		float CalcClearance(RobotState rState, std::vector<Vector2f> &obsts);

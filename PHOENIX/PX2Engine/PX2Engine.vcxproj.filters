@@ -763,9 +763,6 @@
     <Filter Include="2.AI\Navigations\Navigation">
       <UniqueIdentifier>{6d9fb656-8290-4354-bb78-32e0a2da25f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\Navigations\NavigationGrid">
-      <UniqueIdentifier>{0cc13495-2ddf-45e8-988e-64195b7e42d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2.AI\Navigations\detour">
       <UniqueIdentifier>{be962870-10dd-4d5d-930a-16482d94b931}</UniqueIdentifier>
     </Filter>
@@ -891,6 +888,9 @@
     </Filter>
     <Filter Include="2.AI\Navigations\RRTStart\Star">
       <UniqueIdentifier>{6cc3aa88-0c47-45c3-94be-14b4ad5d56dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.AI\Navigations\NavigationGrid">
+      <UniqueIdentifier>{0cc13495-2ddf-45e8-988e-64195b7e42d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

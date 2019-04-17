@@ -74,19 +74,20 @@ namespace PX2
 	struct PX2_ENGINE_ITEM EvaluationPara
 	{
 		float heading, clearance, velocity, v, w;
+		Vector2f Pos;
 	};
 
 #define M_PI 3.1415927
-#define MAX_VELOCITY 1.0						//弧形轨迹：最大速度
+#define MAX_VELOCITY 0.2						//弧形轨迹：最大速度
 #define MIN_VELOCITY 0							//弧形轨迹：最小速度
 #define MAX_OMEGA 20.0 / 180.0 * M_PI			//弧形轨迹：最大角速度
 #define MIN_OMEGA 0								//弧形轨迹：最小角速度
 #define MAX_ACCELERATE 0.2						//动态窗口：最大加速度
 #define MAX_ACCOMEGA 50.0 / 180.0 * M_PI		//动态窗口：最大角加速度
-#define SAMPLING_VELOCITY 0.01					//速度采样间隔
-#define SAMPLING_OMEGA 1 / 180.0 * M_PI			//角速度采样间隔
-#define DT 0.1									//采样时间间隔
-#define PREDICT_TIME 3.0						//预测时间
+#define SAMPLING_VELOCITY 0.02					//速度采样间隔
+#define SAMPLING_OMEGA 3 / 180.0 * M_PI			//角速度采样间隔
+#define DT 0.2									//采样时间间隔
+#define PREDICT_TIME 8.0						//预测时间
 
 #define WEIGHT_HEADING 0.05						//HEADING权重
 #define WEIGHT_CLEARANCE 0.2					//CLEARANCE权重

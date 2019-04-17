@@ -513,6 +513,11 @@ void AIAgent::ApplyForcing(const AVector &force)
 	mForcing = force;
 }
 //----------------------------------------------------------------------------
+SteeringBehavior *AIAgent::GetSteeringBehavior()
+{
+	return mSteeringBehavior;
+}
+//----------------------------------------------------------------------------
 void AIAgent::_Update(double applicationTime, double elapsedTime)
 {
 	AIAgentBase::_Update(applicationTime, elapsedTime);

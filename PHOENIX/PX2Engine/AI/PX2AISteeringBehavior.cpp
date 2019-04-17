@@ -639,6 +639,35 @@ Vector3f SteeringBehavior::ObstacleAvoidance(
 	return vec;
 }
 //------------------------------------------------------------------------
+std::vector<AIAgentObject*> SteeringBehavior::GetNearbyObjects(float radius)
+{
+	std::vector<AIAgentObject*> objsOut;
+
+	mAgent->GetAIAgentWorld()->TagObstaclesWithinViewRange(mAgent,
+		radius);
+
+	const std::vector<AIAgentObject*>& obstacles =
+		mAgent->GetAIAgentWorld()->GetObjects();
+
+	AIAgentObject* closestIntersectingObstacle = NULL;
+	float distToClosestIP = Mathf::MAX_REAL;
+
+	Vector3f localPosOfClosestObstacle;
+	std::vector<AIAgentObject*>::const_iterator curOb = obstacles.begin();
+
+	while (curOb != obstacles.end())
+	{
+		if ((*curOb)->IsTagged())
+		{
+			objsOut.push_back(*curOb);
+		}
+
+		curOb++;
+	}
+
+	return objsOut;
+}
+//------------------------------------------------------------------------
 bool SteeringBehavior::IsGoingToCollide(
 	const std::vector<AIAgentObject*>& obstacles, float length)
 {
