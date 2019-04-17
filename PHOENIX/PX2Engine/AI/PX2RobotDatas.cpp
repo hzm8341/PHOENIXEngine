@@ -153,11 +153,8 @@ void RobotMapData::ConvertOriginToUsing(bool isSimple)
 		std::vector<unsigned char> mapping3 = _ExtendLarger(mapping2, false);
 		std::vector<unsigned char> mapping4 = _ExtendLarger(mapping3, false);
 		std::vector<unsigned char> mapping5 = _ExtendLarger(mapping4, false);
-		std::vector<unsigned char> mapping6 = _ExtendLarger(mapping5, false);
-		std::vector<unsigned char> mapping7 = _ExtendLarger(mapping6, false);
-		std::vector<unsigned char> mapping8 = _ExtendLarger(mapping7, false);
 
-		Map2DUsing = mapping8;
+		Map2DUsing = mapping5;
 	}
 	else
 	{

@@ -28,11 +28,11 @@ using namespace PX2;
 #define M_PI 3.1415927
 #define MAX_SPEED 0.2						//弧形轨迹：最大速度
 #define MIN_SPEED 0.0							//弧形轨迹：最小速度
-#define MAX_ACCELERATE 0.3						//动态窗口：最大加速度
+#define MAX_ACCELERATE 0.5						//动态窗口：最大加速度
 #define MAX_ACCOMEGA 50.0 / 180.0 * M_PI		//动态窗口：最大角加速度
-#define SAMPLING_SPEED 0.01					//速度采样间隔
+#define SAMPLING_SPEED 0.008					//速度采样间隔
 #define DT 0.1									//采样时间间隔
-#define PREDICT_TIME 3.0						//预测时间
+#define PREDICT_TIME 2.5						//预测时间
 
 #define WEIGHT_HEADING 0.05						//HEADING权重
 #define WEIGHT_CLEARANCE 0.2					//CLEARANCE权重
