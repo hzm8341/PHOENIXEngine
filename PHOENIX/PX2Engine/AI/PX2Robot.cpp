@@ -32,7 +32,7 @@ using namespace PX2;
 #define MAX_ACCOMEGA 50.0 / 180.0 * M_PI		//动态窗口：最大角加速度
 #define SAMPLING_SPEED 0.008					//速度采样间隔
 #define DT 0.1									//采样时间间隔
-#define PREDICT_TIME 2.5						//预测时间
+#define PREDICT_TIME 1.8						//预测时间
 
 #define WEIGHT_HEADING 0.05						//HEADING权重
 #define WEIGHT_CLEARANCE 0.2					//CLEARANCE权重
