@@ -983,8 +983,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2AISteeringPath.hpp" />
     <ClInclude Include="AI\PX2AISteeringWall2D.hpp" />
     <ClInclude Include="AI\PX2CellSpaceT.hpp" />
-    <ClInclude Include="AI\PX2RRTEnviroment.hpp" />
-    <ClInclude Include="AI\PX2RRTInformedstar.hpp" />
     <ClInclude Include="AI\PX2NavBitArray.hpp" />
     <ClInclude Include="AI\PX2NavGridMap.hpp" />
     <ClInclude Include="AI\PX2NavHeapNode.hpp" />
@@ -994,13 +992,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClInclude Include="AI\PX2Robot.hpp" />
     <ClInclude Include="AI\PX2RobotDatas.hpp" />
     <ClInclude Include="AI\PX2AISteeringBehavior.hpp" />
-    <ClInclude Include="AI\PX2RRTnodeStruct.hpp" />
-    <ClInclude Include="AI\PX2RRTObstacle.hpp" />
-    <ClInclude Include="AI\PX2RRTRobot.hpp" />
-    <ClInclude Include="AI\PX2RRTSMP.hpp" />
-    <ClInclude Include="AI\PX2RRTstar.hpp" />
-    <ClInclude Include="AI\PX2RRTStarParam.hpp" />
-    <ClInclude Include="AI\PX2RT-RRTstar.hpp" />
     <ClInclude Include="AI\PX2WRConstant.hpp" />
     <ClInclude Include="AI\PX2WRLidar.hpp" />
     <ClInclude Include="AI\recast\include\Recast.h" />
@@ -2530,13 +2521,6 @@ xcopy /DY "$(TargetPath)" ..\..\Bin</Command>
     <ClCompile Include="AI\PX2Robot.cpp" />
     <ClCompile Include="AI\PX2RobotDatas.cpp" />
     <ClCompile Include="AI\PX2AISteeringBehavior.cpp" />
-    <ClCompile Include="AI\PX2RRTEnviroment.cpp" />
-    <ClCompile Include="AI\PX2RRTInformedstar.cpp" />
-    <ClCompile Include="AI\PX2RRTObstacle.cpp" />
-    <ClCompile Include="AI\PX2RRTRobot.cpp" />
-    <ClCompile Include="AI\PX2RT-RRTstar.cpp" />
-    <ClCompile Include="AI\PX2RRTSMP.cpp" />
-    <ClCompile Include="AI\PX2RRTstar.cpp" />
     <ClCompile Include="AI\PX2WRLidar.cpp" />
     <ClCompile Include="AI\recast\src\Recast.cpp" />
     <ClCompile Include="AI\recast\src\RecastAlloc.cpp" />

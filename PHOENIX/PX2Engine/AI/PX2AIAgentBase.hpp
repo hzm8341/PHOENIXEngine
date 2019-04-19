@@ -15,7 +15,6 @@ namespace PX2
 
 	class AIAgentWorld;
 	class Robot;
-	class RRTobstacles;
 
 	class PX2_ENGINE_ITEM AIAgentBase : public Controller
 	{

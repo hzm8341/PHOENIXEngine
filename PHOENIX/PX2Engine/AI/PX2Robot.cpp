@@ -128,30 +128,10 @@ mRotationRad(0.0f)
 	mRightSmoother = new Smoother<float>(16, 0.0f);
 
 	mVoxelSection = 0;
-
-	mEnviroment = new0 Enviroment();
-	mRRTRobot = new0 RRTRobot();
 }
 //----------------------------------------------------------------------------
 Robot::~Robot()
 {
-	if (mRRTRobot)
-	{
-		delete0(mRRTRobot);
-	}
-
-	if (mEnviroment)
-	{
-		delete0(mEnviroment);
-	}
-
-	auto it = mObsts.begin();
-	for (; it != mObsts.end(); it++)
-	{
-		delete0(*it);
-	}
-	mObsts.clear();
-
 	if (mLiDar)
 	{
 		delete0(mLiDar);
@@ -1456,16 +1436,6 @@ void Robot::GoTarget(const APoint &targetPos, PathType type)
 			mCurPathPlan->ResetPath();
 		}
 	}
-	else
-	{
-		if (mEnviroment)
-		{
-			APoint targetPos1 = targetPos;
-			Vector2f pos2 = targetPos1.To2();
-			mEnviroment->targetSet(pos2);
-		}
-	}
-
 
 	if (mAgent)
 	{

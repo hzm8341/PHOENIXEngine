@@ -252,9 +252,6 @@ namespace PX2
 		void _RunSpeed(float elaplseSeconds);
 		std::vector<Vector2f > GetNearObst(float radius = 1.5f);
 
-	private:
-		std::list<RRTobstacles*> mObsts;
-
 	public:
 		std::vector<float> DynamicWindowApproach(RobotState rState, const Vector2f &target,
 			std::vector<Vector2f> &obstacle, std::vector<std::vector<RobotState> > &outRobotStates);

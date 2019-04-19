@@ -883,12 +883,6 @@
     <Filter Include="2.AI\Robot\Slam2D\Hector">
       <UniqueIdentifier>{23a81a2b-7598-45c9-977f-04e24e372a17}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2.AI\Navigations\RRTStart">
-      <UniqueIdentifier>{71197d51-6cd1-4880-9487-20435f1a25fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2.AI\Navigations\RRTStart\Star">
-      <UniqueIdentifier>{6cc3aa88-0c47-45c3-94be-14b4ad5d56dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2.AI\Navigations\NavigationGrid">
       <UniqueIdentifier>{0cc13495-2ddf-45e8-988e-64195b7e42d2}</UniqueIdentifier>
     </Filter>
@@ -5502,33 +5496,6 @@
     <ClInclude Include="Voxel\PX2VoxelTitle.hpp">
       <Filter>1.Ext\Voxel</Filter>
     </ClInclude>
-    <ClInclude Include="AI\PX2RRTObstacle.hpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTnodeStruct.hpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTInformedstar.hpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTSMP.hpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTstar.hpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTStarParam.hpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTRobot.hpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RRTEnviroment.hpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\PX2RT-RRTstar.hpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\PX2GraphicsRoot.cpp">
@@ -8794,27 +8761,6 @@
     </ClCompile>
     <ClCompile Include="Voxel\PX2VoxelTitle.cpp">
       <Filter>1.Ext\Voxel</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RRTObstacle.cpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RRTRobot.cpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RRTEnviroment.cpp">
-      <Filter>2.AI\Navigations\RRTStart</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RRTstar.cpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RRTInformedstar.cpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RRTSMP.cpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\PX2RT-RRTstar.cpp">
-      <Filter>2.AI\Navigations\RRTStart\Star</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
