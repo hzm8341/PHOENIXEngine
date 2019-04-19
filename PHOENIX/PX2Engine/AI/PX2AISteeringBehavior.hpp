@@ -17,7 +17,7 @@ namespace PX2
 	const float WanderRad = 1.2f;
 	const float WanderDist = 2.0f;
 	const float WanderJitterPerSec = 80.0f;
-	const float WaypointSeekDist = 0.4;
+	const float WaypointSeekDist = 0.4f;
 
 	class PX2_ENGINE_ITEM SteeringBehavior
 	{

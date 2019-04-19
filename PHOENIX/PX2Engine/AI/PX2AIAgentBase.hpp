@@ -100,9 +100,6 @@ namespace PX2
 
 	protected:
 		Robot *mRobot;
-
-	private:
-		RRTobstacles *mObst;
 	};
 
 	PX2_REGISTER_STREAM(AIAgentBase);

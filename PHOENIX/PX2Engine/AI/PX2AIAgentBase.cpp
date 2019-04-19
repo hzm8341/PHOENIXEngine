@@ -28,19 +28,13 @@ mIsMassZeroAvoid(false),
 mRadius(DEFAULT_AGENT_RADIUS),
 mRobot(0),
 mIsUsePhysics(false),
-mIsTag(false),
-mObst(0)
+mIsTag(false)
 {
-	mObst = new0 RRTobstacles();
+
 }
 //----------------------------------------------------------------------------
 AIAgentBase::~AIAgentBase()
 {
-	if (mObst)
-	{
-		delete0(mObst);
-	}
-
 	if (mRigidBody)
 	{
 		PhysicsUtilities::DeleteRigidBody(mRigidBody);
@@ -156,12 +150,6 @@ void AIAgentBase::SetPosition(const APoint& position)
 	{
 		AIAgentUtilities::SetWorldTansform(mNode, position);
 	}
-
-	if (mObst)
-	{
-		APoint pos1 = position;
-		mObst->SetPos(pos1.To2());
-	}
 }
 //----------------------------------------------------------------------------
 APoint AIAgentBase::GetPosition() const
@@ -186,10 +174,6 @@ APoint AIAgentBase::GetPosition() const
 			APoint pos = mNode->WorldTransform.GetTranslate();
 			pos.Z() = 0.0f;
 			return pos;
-		}
-		else if (mObst)
-		{
-			return APoint(mObst->getX(), mObst->getY(), 0.0f);
 		}
 	}
 
@@ -350,10 +334,8 @@ mAgentWorld(0),
 mRigidBody(0),
 mNode(0),
 mRobot(0),
-mIsTag(false),
-mObst(0)
+mIsTag(false)
 {
-	mObst = new0 RRTobstacles();
 }
 //----------------------------------------------------------------------------
 void AIAgentBase::Load(InStream& source)

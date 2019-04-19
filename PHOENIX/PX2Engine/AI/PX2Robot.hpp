@@ -20,7 +20,6 @@
 #include "PX2Smoother.hpp"
 #include "PX2SmartPointer.hpp"
 #include "PX2Actor.hpp"
-#include "PX2RRTEnviroment.hpp"
 
 namespace PX2
 {
@@ -254,8 +253,6 @@ namespace PX2
 		std::vector<Vector2f > GetNearObst(float radius = 1.5f);
 
 	private:
-		RRTRobot *mRRTRobot;
-		Enviroment *mEnviroment;
 		std::list<RRTobstacles*> mObsts;
 
 	public:
